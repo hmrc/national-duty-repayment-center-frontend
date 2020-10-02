@@ -5,11 +5,11 @@ import play.api.libs.json.{Json, OFormat}
 
 final case class Content(
                           claimDetails: ClaimDetails,
-                          agentDetails: AgentDetails,
-                          importerDetails: ImporterDetails,
+                          agentDetails: UserDetails,
+                          importerDetails: UserDetails,
                           bankDetails: AllBankDetails,
-                          dutyTypeTaxList: DutyTypeTaxList,
-                          documentList: DocumentList
+                          dutyTypeTaxList: Seq[DutyTypeTaxList],
+                          documentList: Seq[DocumentList]
                         )
 
 object Content {
