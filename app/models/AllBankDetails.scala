@@ -18,7 +18,10 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class AllBankDetails(agentBankDetails: BankDetails, importerBankDetails: BankDetails)
+case class AllBankDetails(
+                           agentBankDetails: BankDetails,
+                           importerBankDetails: BankDetails
+                         )
 
 object AllBankDetails {
 

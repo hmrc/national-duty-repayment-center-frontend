@@ -26,4 +26,5 @@ final case class BankDetails(
 object BankDetails {
 
   implicit val format: OFormat[BankDetails] = Json.format[BankDetails]
+
 }

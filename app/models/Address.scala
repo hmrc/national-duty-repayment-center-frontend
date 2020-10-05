@@ -18,15 +18,19 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class DutyTypeTaxList(
-                                  `type`: String,
-                                  paidAmount: Option[String],
-                                  dueAmount: Option[String],
-                                  ClaimAmount: Option[String]
-                                )
+final case class Address(
+                          addressLine1:String,
+                          addressLine2:Option[String],
+                          city:String,
+                          region:String,
+                          countryCode:String,
+                          postalCode:Option[String],
+                          telephoneNumber:Option[String],
+                          emailAddress:Option[String]
+                        )
 
-object DutyTypeTaxList {
+object Address {
 
-  implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
+  implicit val format: OFormat[Address] = Json.format[Address]
 
 }

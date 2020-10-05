@@ -20,9 +20,9 @@ package models
 import play.api.libs.json._
 final case class Content(
                           claimDetails: ClaimDetails,
-                          agentDetails: UserDetails,
+                          agentDetails: Option[UserDetails],
                           importerDetails: UserDetails,
-                          bankDetails: AllBankDetails,
+                          bankDetails: Option[AllBankDetails],
                           dutyTypeTaxList: Seq[DutyTypeTaxList],
                           documentList: Seq[DocumentList]
                         )

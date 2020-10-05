@@ -20,7 +20,7 @@ import play.api.libs.json.{Json, OFormat}
 
 final case class DocumentList(
                                `type`: String,
-                               description: String
+                               description: Option[String]
                              )
 
 object DocumentList {
