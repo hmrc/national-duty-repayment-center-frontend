@@ -3,7 +3,6 @@ package models.responses
 import play.api.libs.json.{Json, OFormat}
 
 final case class ClientClaimFailureResponse(
-                                             //                                status: String,
                                              correlationID: String,
                                              processingDate: String,
                                              errorCode: String, //confirm?
