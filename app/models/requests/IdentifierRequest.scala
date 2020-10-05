@@ -14,24 +14,7 @@
  * limitations under the License.
  */
 
-package models.requests
+package models.requests;
+import play.api.mvc.{Request, WrappedRequest}
 
-import models.Content
-
-class CreateClaimRequest {
-
-  import play.api.libs.json.{Json, OFormat}
-
-  final case class CreateClaimRequest(
-                                       acknowledgementReference: String,
-                                       applicationType: String,
-                                       originatingSystem: String,
-                                       content: Content
-                                     )
-
-  object CreateClaimRequest {
-    implicit val formats: OFormat[CreateClaimRequest] = Json.format[CreateClaimRequest]
-
-  }
-
-}
+case class IdentifierRequest[A] (request: Request[A], identifier: String) extends WrappedRequest[A](request)
