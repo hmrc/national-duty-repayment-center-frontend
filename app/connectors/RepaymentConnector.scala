@@ -36,18 +36,11 @@ class RepaymentConnector @Inject()(
   private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center-frontend")
 
 
-  def submitRepayment(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] = {
-    val url = s"$baseUrl/discounted-dining-participant/submit-registration"
+  def submitClaim(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] = {
+    val url = s"$baseUrl/national-duty-repayment-center/submit-claim"
 
     httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](url, request)
   }
 
 
-  def getRepayment(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[Option[ClientClaimSuccessResponse]] = {
-    val url = s"$baseUrl/discounted-dining-participant/get-registration"
-
-    httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](url, request).map(Some(_))
-  }.recover {
-    case _: NotFoundException => None
-  }
 }
