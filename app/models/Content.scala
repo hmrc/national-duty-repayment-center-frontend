@@ -16,8 +16,9 @@
 
 package models
 
-
 import play.api.libs.json._
+
+
 final case class Content(
                           claimDetails: ClaimDetails,
                           agentDetails: Option[UserDetails],
@@ -28,7 +29,5 @@ final case class Content(
                         )
 
 object Content {
-
   implicit val format: OFormat[Content] = Json.format[Content]
-
 }

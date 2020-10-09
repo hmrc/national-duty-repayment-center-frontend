@@ -16,13 +16,17 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+sealed trait ClaimType
 
-final case class DocumentList(
-                               `type`: String,
-                               description: Option[String]
-                             )
+object ClaimType extends Enumerable.Implicits {
+  case object Single extends WithName("01") with ClaimType
+  case object Multiple extends WithName("02") with ClaimType
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+  val values: Seq[ClaimType] = Seq(
+    Single,
+    Multiple
+  )
+
+  implicit val enumerable: Enumerable[ClaimType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

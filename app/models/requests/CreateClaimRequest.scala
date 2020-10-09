@@ -16,22 +16,17 @@
 
 package models.requests
 
-import models.Content
+import models.{AcknowledgementReference, ApplicationType, Content, OriginatingSystem}
+import play.api.libs.json.{Json, OFormat}
 
-class CreateClaimRequest {
+final case class CreateClaimRequest(
+                                     acknowledgementReference: AcknowledgementReference,
+                                     originatingSystem: OriginatingSystem,
+                                     applicationType: ApplicationType,
+                                     content: Content
+                                   )
 
-  import play.api.libs.json.{Json, OFormat}
-
-  final case class CreateClaimRequest(
-                                       acknowledgementReference: String,
-                                       applicationType: String,
-                                       originatingSystem: String,
-                                       content: Content
-                                     )
-
-  object CreateClaimRequest {
-    implicit val formats: OFormat[CreateClaimRequest] = Json.format[CreateClaimRequest]
-
-  }
-
+object CreateClaimRequest {
+  implicit val formats: OFormat[CreateClaimRequest] = Json.format[CreateClaimRequest]
 }
+

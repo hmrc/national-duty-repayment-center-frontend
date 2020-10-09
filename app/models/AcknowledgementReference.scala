@@ -16,13 +16,11 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Format
 
-final case class DocumentList(
-                               `type`: String,
-                               description: Option[String]
-                             )
+case class AcknowledgementReference(value: String)
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+object AcknowledgementReference {
+  implicit val format: Format[AcknowledgementReference] =
+    JsonFormatUtils.stringFormat(AcknowledgementReference.apply)(_.value)
 }

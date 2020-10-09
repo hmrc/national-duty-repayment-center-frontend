@@ -26,7 +26,5 @@ final case class DutyTypeTaxList(
                                 )
 
 object DutyTypeTaxList {
-
   implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
-
 }

@@ -16,13 +16,11 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Format
 
-final case class DocumentList(
-                               `type`: String,
-                               description: Option[String]
-                             )
+case class OriginatingSystem(value: String)
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+object OriginatingSystem {
+  implicit val format: Format[OriginatingSystem] =
+    JsonFormatUtils.stringFormat(OriginatingSystem.apply)(_.value)
 }

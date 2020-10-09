@@ -16,13 +16,14 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Format
 
-final case class DocumentList(
-                               `type`: String,
-                               description: Option[String]
-                             )
+case class NoOfEntries(value: String)
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+object NoOfEntries {
+  implicit val format: Format[NoOfEntries] =
+    JsonFormatUtils.stringFormat(NoOfEntries.apply)(_.value)
+
+  val validationRegex: String = ???
+
 }

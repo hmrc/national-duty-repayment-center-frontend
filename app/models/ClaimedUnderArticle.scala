@@ -16,13 +16,20 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
 
-final case class DocumentList(
-                               `type`: String,
-                               description: Option[String]
-                             )
+sealed trait ClaimedUnderArticle
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+object ClaimedUnderArticle extends Enumerable.Implicits {
+  case object OverchargedAmountsOfImportOrExportDuty extends WithName("117") with ClaimedUnderArticle
+  case object ErrorByTheCompetentAuthorities extends WithName("119") with ClaimedUnderArticle
+  case object Equity extends WithName("120") with ClaimedUnderArticle
+
+  val values: Seq[ClaimedUnderArticle] = Seq(
+    OverchargedAmountsOfImportOrExportDuty,
+    ErrorByTheCompetentAuthorities,
+    Equity
+  )
+
+  implicit val enumerable: Enumerable[ClaimedUnderArticle] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

@@ -16,28 +16,27 @@
 
 package models
 
+import java.time.LocalDate
 import play.api.libs.json.{Json, OFormat}
 
 final case class ClaimDetails(
-                               formType: String,
-                               customRegulationType: String,
-                               claimedUnderArticle: String,
-                               claimant: String,
-                               claimType: String,
-                               noOfEntries: Option[String],
-                               epu: String,
-                               entryNumber: String,
-                               entryDate: String,
-                               claimReason: String,
-                               claimDescription: String,
-                               dateReceived: String,
-                               claimDate: String,
-                               payeeIndicator: String,
-                               paymentMethod: String
+                               formType: FormType,
+                               customRegulationType: CustomRegulationType,
+                               claimedUnderArticle: ClaimedUnderArticle,
+                               claimant: Claimant,
+                               claimType: ClaimType,
+                               noOfEntries: Option[NoOfEntries],
+                               epu: EPU,
+                               entryNumber: EntryNumber,
+                               entryDate: LocalDate,
+                               claimReason: ClaimReason,
+                               claimDescription: ClaimDescription,
+                               dateReceived: LocalDate,
+                               claimDate: LocalDate,
+                               payeeIndicator: PayeeIndicator,
+                               paymentMethod: PaymentMethod
                              )
 
 object ClaimDetails {
-
   implicit val format: OFormat[ClaimDetails] = Json.format[ClaimDetails]
-
 }

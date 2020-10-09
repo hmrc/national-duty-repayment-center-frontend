@@ -16,13 +16,14 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Format
 
-final case class DocumentList(
-                               `type`: String,
-                               description: Option[String]
-                             )
+case class ClaimDescription(value: String)
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+object ClaimDescription {
+  implicit val format: Format[ClaimDescription] =
+    JsonFormatUtils.stringFormat(ClaimDescription.apply)(_.value)
+
+  val validationRegex: String = ???
+
 }

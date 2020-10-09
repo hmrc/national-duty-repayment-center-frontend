@@ -16,13 +16,19 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+sealed trait PayeeIndicator
 
-final case class DocumentList(
-                               `type`: String,
-                               description: Option[String]
-                             )
+object PayeeIndicator extends Enumerable.Implicits {
+  case object Importer extends WithName("01") with PayeeIndicator
+  case object Agent extends WithName("02") with PayeeIndicator
+  case object CurrentMonthAmendment extends WithName("03") with PayeeIndicator
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+  val values: Seq[PayeeIndicator] = Seq(
+    Importer,
+    Agent,
+    CurrentMonthAmendment
+  )
+
+  implicit val enumerable: Enumerable[PayeeIndicator] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }
