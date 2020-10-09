@@ -22,7 +22,7 @@ final case class DutyTypeTaxList(
                                   `type`: String,
                                   paidAmount: Option[String],
                                   dueAmount: Option[String],
-                                  ClaimAmount: Option[String]
+                                  claimAmount: Option[String]
                                 )
 
 object DutyTypeTaxList {

@@ -112,5 +112,81 @@ trait ModelGenerators {
       payeeIndicator,
       paymentMethod
     )
+  }
+
+  implicit val arbitraryUserDetails: Arbitrary[UserDetails] = Arbitrary {
+    for {
+      vatNumber <- arbitrary[String]
+      eori <- 'GB'+numberStringGen(15)
+      name <- arbitrary[String]
+      address <- arbitrary[Address]
+    } yield UserDetails(vatNumber,
+      eori,
+      name,
+      address
+    )
+  }
+
+  implicit val arbitraryAddress: Arbitrary[Address] = Arbitrary {
+    for {
+      addressLine1 <- arbitrary[String]
+      addressLine2 <- arbitrary[String]
+      city:String <- arbitrary[String]
+      region <- arbitrary[String]
+      countryCode <- arbitrary[String]
+      postalCode <- arbitrary[String]
+      telephoneNumber <- arbitrary[String]
+      emailAddress <- arbitrary[String]
+    } yield Address(addressLine1,
+      addressLine2,
+      city,
+      region,
+      countryCode,
+      postalCode,
+      telephoneNumber,
+      emailAddress
+    )
+  }
+
+  implicit val arbitraryAllBankDetails: Arbitrary[AllBankDetails] = Arbitrary {
+    for {
+      agentBankDetails <- arbitrary[BankDetails]
+      importerBankDetails <- arbitrary[BankDetails]
+    } yield AllBankDetails(agentBankDetails,
+      importerBankDetails
+    )
+  }
+
+  implicit val arbitraryBankDetails: Arbitrary[BankDetails] = Arbitrary {
+    for {
+      accountName <- arbitrary[String]
+      sortCode <- arbitrary[String]
+      accountNumber <- arbitrary[String]
+    } yield BankDetails(accountName,
+      sortCode,
+      accountNumber
+    )
+  }
+
+  implicit val arbitraryDutyTypeTaxList: Arbitrary[DutyTypeTaxList] = Arbitrary {
+    for {
+      `type` <- arbitrary[String]
+      paidAmount <- arbitrary[String]
+      dueAmount <- arbitrary[String]
+      claimAmount <- arbitrary[Address]
+    } yield DutyTypeTaxList(`type`,
+      paidAmount,
+      dueAmount,
+      claimAmount
+    )
+  }
+
+  implicit val arbitraryDocumentList: Arbitrary[DocumentList] = Arbitrary {
+    for {
+      `type` <- arbitrary[String]
+      description <- arbitrary[String]
+    } yield DocumentList(`type`,
+      description
+    )
   }*/
 }
