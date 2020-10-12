@@ -20,8 +20,8 @@ import play.api.libs.json.{Json, OFormat}
 
 final case class UserDetails(
                              vatNumber: Option[String],
-                             eori: String,
-                             name: String,
+                             eori: EORI,
+                             name: UserName,
                              address: Address
                            )
 

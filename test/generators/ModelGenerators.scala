@@ -17,7 +17,9 @@
 package generators
 
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.{Calendar, Date}
+
 import models.requests.CreateClaimRequest
 import models._
 import org.scalacheck.Arbitrary.arbitrary
@@ -26,43 +28,106 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  self: Generators =>
+
   val numberStringGen = (n: Int) => Gen.listOfN(n, Gen.numStr).map(_.mkString)
 
-  val sf = new SimpleDateFormat("M/d/yyyy")
-  val now = new Date
-  val cal = Calendar.getInstance()
-  cal.set(2013, 0, 1)
+  implicit lazy val arbitraryEORI: Arbitrary[EORI] =
+    Arbitrary {
+      "GB" + Gen.listOfN(15, Gen.numStr).map(_.mkString)
+    }
 
-  val dates =
-    Iterator.
-      continually{
-        val d = cal.getTime
-        cal.add(Calendar.DAY_OF_YEAR, 1)
-        sf.format(d)
-      }.
-      takeWhile(_ => cal.getTimeInMillis() <= now.getTime).
-      toSeq
+  implicit lazy val arbitrarySortCode: Arbitrary[SortCode] =
+    Arbitrary {
+      Gen.listOfN(6, Gen.numStr).map(_.mkString)
+    }
 
+  implicit lazy val arbitraryFormType: Arbitrary[FormType] =
+    Arbitrary {
+      arbitrary[String].map(FormType.apply)
+    }
 
-  def stringsWithMaxLength(maxLength: Int): Gen[String] =
-    for {
-      length <- choose(1, maxLength)
-      chars <- listOfN(length, arbitrary[Char])
-    } yield chars.mkString
-
-  //check this works
-  def entryNumberGenerator: Gen[String] =
-    for {
-      firstPart <- listOfN(6, arbitrary[Int])
-      secondPart <- listOfN(1,Gen.alphaNumStr)
-    } yield (firstPart::secondPart).mkString
-
-  implicit lazy val arbitraryBusinessType: Arbitrary[CustomRegulationType] =
+  implicit lazy val arbitraryCustomRegulationType: Arbitrary[CustomRegulationType] =
     Arbitrary {
       Gen.oneOf(CustomRegulationType.values.toSeq)
     }
 
-  /*implicit val arbitraryCreateClaimRequest: Arbitrary[CreateClaimRequest] = Arbitrary {
+  implicit lazy val arbitraryClaimedUnderArticle: Arbitrary[ClaimedUnderArticle] =
+    Arbitrary {
+      Gen.oneOf(ClaimedUnderArticle.values.toSeq)
+    }
+
+  implicit lazy val arbitraryClaimant: Arbitrary[Claimant] =
+    Arbitrary {
+      Gen.oneOf(Claimant.values.toSeq)
+    }
+
+  implicit lazy val arbitraryClaimType: Arbitrary[ClaimType] =
+    Arbitrary {
+      Gen.oneOf(ClaimType.values.toSeq)
+    }
+
+  implicit lazy val arbitraryNoOfEntries: Arbitrary[NoOfEntries] =
+    Arbitrary {
+      arbitrary[String].map(NoOfEntries.apply)
+    }
+
+  implicit lazy val arbitraryEPU: Arbitrary[EPU] =
+    Arbitrary {
+      arbitrary[String].map(EPU.apply)
+    }
+
+  implicit lazy val arbitraryUserName: Arbitrary[UserName] =
+    Arbitrary {
+      arbitrary[String].map(UserName.apply)
+    }
+
+  implicit lazy val arbitraryEntryNumber: Arbitrary[EntryNumber] =
+    Arbitrary {
+      arbitrary[String].map(EntryNumber.apply)
+    }
+
+  implicit lazy val arbitraryClaimReason: Arbitrary[ClaimReason] =
+    Arbitrary {
+      Gen.oneOf(ClaimReason.values.toSeq)
+    }
+
+  implicit lazy val arbitraryClaimDescription: Arbitrary[ClaimDescription] =
+    Arbitrary {
+      arbitrary[String].map(ClaimDescription.apply)
+    }
+
+  implicit lazy val arbitraryPayeeIndicator: Arbitrary[PayeeIndicator] =
+    Arbitrary {
+      Gen.oneOf(PayeeIndicator.values.toSeq)
+    }
+
+  implicit lazy val arbitraryPaymentMethod: Arbitrary[PaymentMethod] =
+    Arbitrary {
+      Gen.oneOf(PaymentMethod.values.toSeq)
+    }
+
+  implicit val arbitraryBankDetails: Arbitrary[BankDetails] = Arbitrary {
+    for {
+      accountName <- arbitrary[AccountName]
+      sortCode <- arbitrary[SortCode]
+      accountNumber <- arbitrary[AccountNumber]
+    } yield BankDetails(accountName,
+      sortCode,
+      accountNumber
+    )
+  }
+
+  implicit val arbitraryAllBankDetails: Arbitrary[AllBankDetails] = Arbitrary {
+    for {
+      agentBankDetails <- arbitrary[BankDetails]
+      importerBankDetails <- arbitrary[BankDetails]
+    } yield AllBankDetails(agentBankDetails,
+      importerBankDetails
+    )
+  }
+
+  implicit val arbitraryCreateClaimRequest: Arbitrary[CreateClaimRequest] = Arbitrary {
     for {
       claimDetails <- arbitrary[ClaimDetails]
       agentDetails <- arbitrary[UserDetails]
@@ -75,33 +140,33 @@ trait ModelGenerators {
         acknowledgementReference = "X123456",
         originatingSystem = "Digital",
         applicationType = "NDRC",
-        Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails),Some(dutyTypeTaxList),Seq[Some(documentList)]
+        Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails),Some(dutyTypeTaxList),Some(documentList))
       )
   }
 
   implicit val arbitraryClaimDetails: Arbitrary[ClaimDetails] = Arbitrary {
     for {
-      formType <- "01"
-      customRegulationType <- Gen.oneOf(Seq("01", "02"))
-      claimedUnderArticle <- Gen.oneOf(Seq("117", "119", "120"))
-      claimant <- Gen.oneOf(Seq("117", "119", "120"))
-      claimType <- Gen.oneOf(Seq("01", "02"))
-      noOfEntries <- Gen.choose(0, 999999999).toString
-      epu <- numberStringGen(3)
-      entryNumber <- entryNumberGenerator
-      entryDate <- Gen.oneOf(dates)
-      claimReason <- Gen.oneOf(Seq("01", "02", "03", "04", "05", "06", "07", "08", "09"))
-      claimDescription <- arbitrary[String]
-      dateReceived <- Gen.oneOf(dates)
-      claimDate <- Gen.oneOf(dates)
-      payeeIndicator <- Gen.oneOf(Seq("01", "02", "03"))
-      paymentMethod <- Gen.oneOf(Seq("01", "02", "03"))
+      formType <- arbitrary[FormType]
+      customRegulationType <- arbitrary[CustomRegulationType]
+      claimedUnderArticle <- arbitrary[ClaimedUnderArticle]
+      claimant <- arbitrary[Claimant]
+      claimType <- arbitrary[ClaimType]
+      noOfEntries <- arbitrary[NoOfEntries]
+      epu <- arbitrary[EPU]
+      entryNumber <- arbitrary[EntryNumber]
+      entryDate <- datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2020, 1, 1))
+      claimReason <- arbitrary[ClaimReason]
+      claimDescription <- arbitrary[ClaimDescription]
+      dateReceived <- datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2020, 1, 1))
+      claimDate <- datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2020, 1, 1))
+      payeeIndicator <- arbitrary[PayeeIndicator]
+      paymentMethod <- arbitrary[PaymentMethod]
     } yield ClaimDetails(formType,
       customRegulationType,
       claimedUnderArticle,
       claimant,
       claimType,
-      noOfEntries,
+      Some(noOfEntries),
       epu,
       entryNumber,
       entryDate,
@@ -111,19 +176,6 @@ trait ModelGenerators {
       claimDate,
       payeeIndicator,
       paymentMethod
-    )
-  }
-
-  implicit val arbitraryUserDetails: Arbitrary[UserDetails] = Arbitrary {
-    for {
-      vatNumber <- arbitrary[String]
-      eori <- 'GB'+numberStringGen(15)
-      name <- arbitrary[String]
-      address <- arbitrary[Address]
-    } yield UserDetails(vatNumber,
-      eori,
-      name,
-      address
     )
   }
 
@@ -138,55 +190,27 @@ trait ModelGenerators {
       telephoneNumber <- arbitrary[String]
       emailAddress <- arbitrary[String]
     } yield Address(addressLine1,
-      addressLine2,
+      Some(addressLine2),
       city,
       region,
       countryCode,
-      postalCode,
-      telephoneNumber,
-      emailAddress
+      Some(postalCode),
+      Some(telephoneNumber),
+      Some(emailAddress)
     )
   }
 
-  implicit val arbitraryAllBankDetails: Arbitrary[AllBankDetails] = Arbitrary {
+  implicit val arbitraryUserDetails: Arbitrary[UserDetails] = Arbitrary {
     for {
-      agentBankDetails <- arbitrary[BankDetails]
-      importerBankDetails <- arbitrary[BankDetails]
-    } yield AllBankDetails(agentBankDetails,
-      importerBankDetails
+      vatNumber <- arbitrary[String]
+      eori <- arbitrary[EORI]
+      name <- arbitrary[UserName]
+      address <- arbitrary[Address]
+    } yield UserDetails(Some(vatNumber),
+      eori,
+      name,
+      address
     )
   }
-
-  implicit val arbitraryBankDetails: Arbitrary[BankDetails] = Arbitrary {
-    for {
-      accountName <- arbitrary[String]
-      sortCode <- arbitrary[String]
-      accountNumber <- arbitrary[String]
-    } yield BankDetails(accountName,
-      sortCode,
-      accountNumber
-    )
-  }
-
-  implicit val arbitraryDutyTypeTaxList: Arbitrary[DutyTypeTaxList] = Arbitrary {
-    for {
-      `type` <- arbitrary[String]
-      paidAmount <- arbitrary[String]
-      dueAmount <- arbitrary[String]
-      claimAmount <- arbitrary[Address]
-    } yield DutyTypeTaxList(`type`,
-      paidAmount,
-      dueAmount,
-      claimAmount
-    )
-  }
-
-  implicit val arbitraryDocumentList: Arbitrary[DocumentList] = Arbitrary {
-    for {
-      `type` <- arbitrary[String]
-      description <- arbitrary[String]
-    } yield DocumentList(`type`,
-      description
-    )
-  }*/
 }
+
