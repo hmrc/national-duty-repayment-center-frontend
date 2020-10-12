@@ -43,11 +43,6 @@ trait ModelGenerators {
       "NDRC"
     }
 
-  implicit lazy val arbitraryAcknowledgementReference: Arbitrary[AcknowledgementReference] =
-    Arbitrary {
-      self.stringsWithMaxLength(32)
-    }
-
   implicit lazy val arbitrarySortCode: Arbitrary[SortCode] =
     Arbitrary {
       Gen.listOfN(6, Gen.numStr).map(_.mkString)
@@ -71,6 +66,26 @@ trait ModelGenerators {
   implicit lazy val arbitraryCustomRegulationType: Arbitrary[CustomRegulationType] =
     Arbitrary {
       Gen.oneOf(CustomRegulationType.values)
+    }
+
+  implicit lazy val arbitraryDocumentUploadType: Arbitrary[DocumentUploadType] =
+    Arbitrary {
+      Gen.oneOf(DocumentUploadType.values)
+    }
+
+  implicit lazy val arbitraryDocumentDescription: Arbitrary[DocumentDescription] =
+    Arbitrary {
+      self.stringsWithMaxLength(1500)
+    }
+
+  implicit lazy val arbitraryEori: Arbitrary[EORI] =
+    Arbitrary {
+      self.stringsWithMaxLength(17)
+    }
+
+  implicit lazy val arbitraryVrn: Arbitrary[VRN] =
+    Arbitrary {
+      Gen.listOfN(9, Gen.numStr).map(_.mkString)
     }
 
   implicit lazy val arbitraryClaimedUnderArticle: Arbitrary[ClaimedUnderArticle] =
@@ -141,12 +156,12 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryPayeeIndicator: Arbitrary[PayeeIndicator] =
     Arbitrary {
-      Gen.oneOf(PayeeIndicator.values.toSeq)
+      Gen.oneOf(PayeeIndicator.values)
     }
 
   implicit lazy val arbitraryPaymentMethod: Arbitrary[PaymentMethod] =
     Arbitrary {
-      Gen.oneOf(PaymentMethod.values.toSeq)
+      Gen.oneOf(PaymentMethod.values)
     }
 
   implicit val arbitraryBankDetails: Arbitrary[BankDetails] = Arbitrary {
@@ -179,13 +194,13 @@ trait ModelGenerators {
       importerDetails <- arbitrary[UserDetails]
       bankDetails <- arbitrary[AllBankDetails]
       dutyTypeTaxList <- arbitrary[DutyTypeTaxList]
-      documentList <- arbitrary[Seq[DocumentList]]
+      documentList <- arbitrary[DocumentList]
     } yield
       CreateClaimRequest(
         acknowledgementReference = acknowledgementReference,
         originatingSystem = originatingSystem,
         applicationType = applicationType,
-        Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails),Seq[Some(dutyTypeTaxList)],Some(documentList))
+        Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails),Seq(dutyTypeTaxList),Seq(documentList))
       )
   }
 
@@ -226,28 +241,28 @@ trait ModelGenerators {
 
   implicit val arbitraryAddress: Arbitrary[Address] = Arbitrary {
     for {
-      addressLine1 <- arbitrary[String]
-      addressLine2 <- arbitrary[String]
-      city:String <- arbitrary[String]
-      region <- arbitrary[String]
-      countryCode <- arbitrary[String]
-      postalCode <- arbitrary[String]
-      telephoneNumber <- arbitrary[String]
-      emailAddress <- arbitrary[String]
+      addressLine1 <- self.stringsWithMaxLength(128)
+      addressLine2 <- Gen.option(self.stringsWithMaxLength(128))
+      city <- self.stringsWithMaxLength(64)
+      region <- self.stringsWithMaxLength(64)
+      countryCode <- Gen.pick(2, 'A' to 'Z')
+      postalCode <- Gen.option(arbitrary[String])
+      telephoneNumber <- Gen.option(Gen.listOfN(11, Gen.numStr).map(_.mkString))
+      emailAddress <- Gen.option(self.stringsWithMaxLength(85))
     } yield Address(addressLine1,
-      Some(addressLine2),
+      addressLine2,
       city,
       region,
-      countryCode,
-      Some(postalCode),
-      Some(telephoneNumber),
-      Some(emailAddress)
+      countryCode.mkString,
+      postalCode,
+      telephoneNumber,
+      emailAddress
     )
   }
 
   implicit val arbitraryUserDetails: Arbitrary[UserDetails] = Arbitrary {
     for {
-      vatNumber <- arbitrary[String]
+      vatNumber <- arbitrary[VRN]
       eori <- arbitrary[EORI]
       name <- arbitrary[UserName]
       address <- arbitrary[Address]
@@ -255,6 +270,30 @@ trait ModelGenerators {
       eori,
       name,
       address
+    )
+  }
+
+  implicit val arbitraryDutyTypeTaxList: Arbitrary[DutyTypeTaxList] = Arbitrary {
+    for {
+      dutyType <- arbitrary[DutyType]
+      paidAmount <- arbitrary[PaidAmount]
+      dueAmount <- arbitrary[DueAmount]
+      claimAmount <- arbitrary[ClaimAmount]
+    } yield DutyTypeTaxList(
+      dutyType,
+      Some(paidAmount),
+      Some(dueAmount),
+      Some(claimAmount)
+    )
+  }
+
+  implicit val arbitraryDocumentList: Arbitrary[DocumentList] = Arbitrary {
+    for {
+      documentType <- arbitrary[DocumentUploadType]
+      documentDescription <- arbitrary[DocumentDescription]
+    } yield DocumentList(
+      documentType,
+      Some(documentDescription)
     )
   }
 }

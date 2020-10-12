@@ -16,19 +16,11 @@
 
 package models
 
-sealed trait DutyType
+import play.api.libs.json.Format
 
-object DutyType extends Enumerable.Implicits {
-  case object Customs extends WithName("01") with DutyType
-  case object Vat extends WithName("02") with DutyType
-  case object Other extends WithName("02") with DutyType
+case class VRN(value: String)
 
-  val values: Seq[DutyType] = Seq(
-    Customs,
-    Vat,
-    Other
-  )
-
-  implicit val enumerable: Enumerable[DutyType] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+object VRN {
+  implicit val format: Format[VRN] =
+    JsonFormatUtils.stringFormat(VRN.apply)(_.value)
 }
