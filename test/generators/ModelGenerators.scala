@@ -30,32 +30,32 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryAcknowledgementReference: Arbitrary[AcknowledgementReference] =
     Arbitrary {
-      self.stringsWithMaxLength(32)
+      self.stringsWithMaxLength(32).map(AcknowledgementReference.apply)
     }
 
   implicit lazy val arbitraryOriginatingSystem: Arbitrary[OriginatingSystem] =
     Arbitrary {
-      "Digital"
+      self.stringsWithMaxLength(32).map(OriginatingSystem.apply)
     }
 
   implicit lazy val arbitraryApplicationType: Arbitrary[ApplicationType] =
     Arbitrary {
-      "NDRC"
+      self.stringsWithMaxLength(32).map(ApplicationType.apply)
     }
 
   implicit lazy val arbitrarySortCode: Arbitrary[SortCode] =
     Arbitrary {
-      Gen.listOfN(6, Gen.numStr).map(_.mkString)
+      Gen.listOfN(6, Gen.numStr).map(_.mkString).map(SortCode.apply)
     }
 
   implicit lazy val arbitraryAccountName: Arbitrary[AccountName] =
     Arbitrary {
-      self.stringsWithMaxLength(40)
+      self.stringsWithMaxLength(40).map(AccountName.apply)
     }
 
   implicit lazy val arbitraryAccountNumber: Arbitrary[AccountNumber] =
     Arbitrary {
-      Gen.listOfN(8, Gen.numStr).map(_.mkString)
+      Gen.listOfN(8, Gen.numStr).map(_.mkString).map(AccountNumber.apply)
     }
 
   implicit lazy val arbitraryFormType: Arbitrary[FormType] =
@@ -75,17 +75,17 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryDocumentDescription: Arbitrary[DocumentDescription] =
     Arbitrary {
-      self.stringsWithMaxLength(1500)
+      self.stringsWithMaxLength(1500).map(DocumentDescription.apply)
     }
 
   implicit lazy val arbitraryEori: Arbitrary[EORI] =
     Arbitrary {
-      self.stringsWithMaxLength(17)
+      self.stringsWithMaxLength(17).map(EORI.apply)
     }
 
   implicit lazy val arbitraryVrn: Arbitrary[VRN] =
     Arbitrary {
-      Gen.listOfN(9, Gen.numStr).map(_.mkString)
+      Gen.listOfN(9, Gen.numStr).map(_.mkString).map(VRN.apply)
     }
 
   implicit lazy val arbitraryClaimedUnderArticle: Arbitrary[ClaimedUnderArticle] =
@@ -106,17 +106,17 @@ trait ModelGenerators {
   //TODO: generate string with decimal place
   implicit lazy val arbitraryClaimAmount: Arbitrary[ClaimAmount] =
     Arbitrary {
-      dutyAmount
+      dutyAmount.map(ClaimAmount.apply)
     }
 
   implicit lazy val arbitraryPaidAmount: Arbitrary[PaidAmount] =
     Arbitrary {
-      dutyAmount
+      dutyAmount.map(PaidAmount.apply)
     }
 
   implicit lazy val arbitraryDueAmount: Arbitrary[DueAmount] =
     Arbitrary {
-      dutyAmount
+      dutyAmount.map(DueAmount.apply)
     }
 
   implicit lazy val arbitraryClaimType: Arbitrary[ClaimType] =
