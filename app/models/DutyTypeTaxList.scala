@@ -19,10 +19,10 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 final case class DutyTypeTaxList(
-                                  `type`: String,
-                                  paidAmount: Option[String],
-                                  dueAmount: Option[String],
-                                  claimAmount: Option[String]
+                                  `type`: DutyType,
+                                  paidAmount: Option[PaidAmount],
+                                  dueAmount: Option[DueAmount],
+                                  claimAmount: Option[ClaimAmount]
                                 )
 
 object DutyTypeTaxList {

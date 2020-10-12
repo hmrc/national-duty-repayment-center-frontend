@@ -16,30 +16,51 @@
 
 package generators
 
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.{Calendar, Date}
-
 import models.requests.CreateClaimRequest
 import models._
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Gen.{choose, listOfN}
 import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
   self: Generators =>
 
-  val numberStringGen = (n: Int) => Gen.listOfN(n, Gen.numStr).map(_.mkString)
+  lazy val dutyAmount: Gen[String] = Gen.listOfN(14, Gen.numStr).map(_.mkString)
 
-  implicit lazy val arbitraryEORI: Arbitrary[EORI] =
+  implicit lazy val arbitraryAcknowledgementReference: Arbitrary[AcknowledgementReference] =
     Arbitrary {
-      "GB" + Gen.listOfN(15, Gen.numStr).map(_.mkString)
+      self.stringsWithMaxLength(32)
+    }
+
+  implicit lazy val arbitraryOriginatingSystem: Arbitrary[OriginatingSystem] =
+    Arbitrary {
+      "Digital"
+    }
+
+  implicit lazy val arbitraryApplicationType: Arbitrary[ApplicationType] =
+    Arbitrary {
+      "NDRC"
+    }
+
+  implicit lazy val arbitraryAcknowledgementReference: Arbitrary[AcknowledgementReference] =
+    Arbitrary {
+      self.stringsWithMaxLength(32)
     }
 
   implicit lazy val arbitrarySortCode: Arbitrary[SortCode] =
     Arbitrary {
       Gen.listOfN(6, Gen.numStr).map(_.mkString)
+    }
+
+  implicit lazy val arbitraryAccountName: Arbitrary[AccountName] =
+    Arbitrary {
+      self.stringsWithMaxLength(40)
+    }
+
+  implicit lazy val arbitraryAccountNumber: Arbitrary[AccountNumber] =
+    Arbitrary {
+      Gen.listOfN(8, Gen.numStr).map(_.mkString)
     }
 
   implicit lazy val arbitraryFormType: Arbitrary[FormType] =
@@ -49,22 +70,43 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryCustomRegulationType: Arbitrary[CustomRegulationType] =
     Arbitrary {
-      Gen.oneOf(CustomRegulationType.values.toSeq)
+      Gen.oneOf(CustomRegulationType.values)
     }
 
   implicit lazy val arbitraryClaimedUnderArticle: Arbitrary[ClaimedUnderArticle] =
     Arbitrary {
-      Gen.oneOf(ClaimedUnderArticle.values.toSeq)
+      Gen.oneOf(ClaimedUnderArticle.values)
     }
 
   implicit lazy val arbitraryClaimant: Arbitrary[Claimant] =
     Arbitrary {
-      Gen.oneOf(Claimant.values.toSeq)
+      Gen.oneOf(Claimant.values)
+    }
+
+  implicit lazy val arbitraryDutyType: Arbitrary[DutyType] =
+    Arbitrary {
+      Gen.oneOf(DutyType.values)
+    }
+
+  //TODO: generate string with decimal place
+  implicit lazy val arbitraryClaimAmount: Arbitrary[ClaimAmount] =
+    Arbitrary {
+      dutyAmount
+    }
+
+  implicit lazy val arbitraryPaidAmount: Arbitrary[PaidAmount] =
+    Arbitrary {
+      dutyAmount
+    }
+
+  implicit lazy val arbitraryDueAmount: Arbitrary[DueAmount] =
+    Arbitrary {
+      dutyAmount
     }
 
   implicit lazy val arbitraryClaimType: Arbitrary[ClaimType] =
     Arbitrary {
-      Gen.oneOf(ClaimType.values.toSeq)
+      Gen.oneOf(ClaimType.values)
     }
 
   implicit lazy val arbitraryNoOfEntries: Arbitrary[NoOfEntries] =
@@ -89,7 +131,7 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryClaimReason: Arbitrary[ClaimReason] =
     Arbitrary {
-      Gen.oneOf(ClaimReason.values.toSeq)
+      Gen.oneOf(ClaimReason.values)
     }
 
   implicit lazy val arbitraryClaimDescription: Arbitrary[ClaimDescription] =
@@ -129,18 +171,21 @@ trait ModelGenerators {
 
   implicit val arbitraryCreateClaimRequest: Arbitrary[CreateClaimRequest] = Arbitrary {
     for {
+      acknowledgementReference <- arbitrary[AcknowledgementReference]
+      originatingSystem <- arbitrary[OriginatingSystem]
+      applicationType <- arbitrary[ApplicationType]
       claimDetails <- arbitrary[ClaimDetails]
       agentDetails <- arbitrary[UserDetails]
       importerDetails <- arbitrary[UserDetails]
       bankDetails <- arbitrary[AllBankDetails]
-      dutyTypeTaxList <- arbitrary[Seq[DutyTypeTaxList]]
+      dutyTypeTaxList <- arbitrary[DutyTypeTaxList]
       documentList <- arbitrary[Seq[DocumentList]]
     } yield
       CreateClaimRequest(
-        acknowledgementReference = "X123456",
-        originatingSystem = "Digital",
-        applicationType = "NDRC",
-        Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails),Some(dutyTypeTaxList),Some(documentList))
+        acknowledgementReference = acknowledgementReference,
+        originatingSystem = originatingSystem,
+        applicationType = applicationType,
+        Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails),Seq[Some(dutyTypeTaxList)],Some(documentList))
       )
   }
 
