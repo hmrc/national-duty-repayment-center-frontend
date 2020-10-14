@@ -22,22 +22,21 @@ import org.scalatest.{FreeSpec, MustMatchers}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsObject, JsSuccess, Json}
 
-class CreateClaimRequestSpec extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with Generators {
+import models.AcknowledgementReference
 
-  "CreateClaimRequest mode" - {
+class AcknowledgementReferenceSpec extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with Generators {
+
+  "AcknowledgementReference mode" - {
     "must serialise" in {
-      forAll(arbitrary[CreateClaimRequest]) {
-        createClaimRequest =>
-          val json = generateSubmissionJson(createClaimRequest)
-          json.validate[CreateClaimRequest] mustEqual JsSuccess(createClaimRequest)
+      forAll(arbitrary[AcknowledgementReference]) {
+        acknowledgementReference =>
+
+          val json = generateSubmissionJson(acknowledgementReference)
+          (json \ "acknowledgementReference").validate[AcknowledgementReference] mustEqual JsSuccess(acknowledgementReference)
       }
     }
   }
 
-  def generateSubmissionJson(cmr: CreateClaimRequest) : JsObject =
-    Json.obj("acknowledgementReference" -> cmr.acknowledgementReference,
-      "applicationType" -> cmr.applicationType,
-      "originatingSystem" -> cmr.originatingSystem
-    )
-
+  def generateSubmissionJson(cmr: AcknowledgementReference) : JsObject =
+    Json.obj("acknowledgementReference" -> cmr.value)
 }
