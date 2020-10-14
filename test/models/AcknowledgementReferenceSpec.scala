@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models.requests
+package models
 
 import generators.Generators
 import org.scalacheck.Arbitrary.arbitrary
@@ -22,21 +22,20 @@ import org.scalatest.{FreeSpec, MustMatchers}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsObject, JsSuccess, Json}
 
-import models.AcknowledgementReference
-
 class AcknowledgementReferenceSpec extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with Generators {
 
   "AcknowledgementReference mode" - {
     "must serialise" in {
-      forAll(arbitrary[AcknowledgementReference]) {
+
+      val ackRef = stringsWithMaxLength(32)
+
+      forAll(ackRef) {
         acknowledgementReference =>
 
-          val json = generateSubmissionJson(acknowledgementReference)
-          (json \ "acknowledgementReference").validate[AcknowledgementReference] mustEqual JsSuccess(acknowledgementReference)
+          val json = Json.obj("acknowledgementReference" -> acknowledgementReference)
+
+          json.validate[AcknowledgementReference] mustEqual JsSuccess(acknowledgementReference)
       }
     }
   }
-
-  def generateSubmissionJson(cmr: AcknowledgementReference) : JsObject =
-    Json.obj("acknowledgementReference" -> cmr.value)
 }

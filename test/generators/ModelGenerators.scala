@@ -60,7 +60,7 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryFormType: Arbitrary[FormType] =
     Arbitrary {
-      arbitrary[String].map(FormType.apply)
+      self.stringsWithMaxLength(2).map(FormType.apply)
     }
 
   implicit lazy val arbitraryCustomRegulationType: Arbitrary[CustomRegulationType] =
@@ -126,22 +126,22 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryNoOfEntries: Arbitrary[NoOfEntries] =
     Arbitrary {
-      arbitrary[String].map(NoOfEntries.apply)
+      Gen.listOfN(2, Gen.numStr).map(_.mkString).map(NoOfEntries.apply)
     }
 
   implicit lazy val arbitraryEPU: Arbitrary[EPU] =
     Arbitrary {
-      arbitrary[String].map(EPU.apply)
+      self.stringsWithMinAndMaxLength(3,3).map(EPU.apply)
     }
 
   implicit lazy val arbitraryUserName: Arbitrary[UserName] =
     Arbitrary {
-      arbitrary[String].map(UserName.apply)
+      self.stringsWithMaxLength(512).map(UserName.apply)
     }
 
   implicit lazy val arbitraryEntryNumber: Arbitrary[EntryNumber] =
     Arbitrary {
-      arbitrary[String].map(EntryNumber.apply)
+      self.stringsWithMinAndMaxLength(7,7).map(EntryNumber.apply)
     }
 
   implicit lazy val arbitraryClaimReason: Arbitrary[ClaimReason] =
@@ -151,7 +151,7 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryClaimDescription: Arbitrary[ClaimDescription] =
     Arbitrary {
-      arbitrary[String].map(ClaimDescription.apply)
+      self.stringsWithMaxLength(1500).map(ClaimDescription.apply)
     }
 
   implicit lazy val arbitraryPayeeIndicator: Arbitrary[PayeeIndicator] =
@@ -221,22 +221,25 @@ trait ModelGenerators {
       claimDate <- datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2020, 1, 1))
       payeeIndicator <- arbitrary[PayeeIndicator]
       paymentMethod <- arbitrary[PaymentMethod]
-    } yield ClaimDetails(formType,
-      customRegulationType,
-      claimedUnderArticle,
-      claimant,
-      claimType,
-      Some(noOfEntries),
-      epu,
-      entryNumber,
-      entryDate,
-      claimReason,
-      claimDescription,
-      dateReceived,
-      claimDate,
-      payeeIndicator,
-      paymentMethod
-    )
+    } yield {
+      println("formType " + formType)
+      ClaimDetails(formType,
+        customRegulationType,
+        claimedUnderArticle,
+        claimant,
+        claimType,
+        Some(noOfEntries),
+        epu,
+        entryNumber,
+        entryDate,
+        claimReason,
+        claimDescription,
+        dateReceived,
+        claimDate,
+        payeeIndicator,
+        paymentMethod
+      )
+    }
   }
 
   implicit val arbitraryAddress: Arbitrary[Address] = Arbitrary {
