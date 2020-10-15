@@ -27,7 +27,8 @@ object ClaimReason extends Enumerable.Implicits {
   case object Preference extends WithName("06") with ClaimReason
   case object ReturnedGoodsRelief extends WithName("07") with ClaimReason
   case object ReturnOfUnwantedGoods extends WithName("08") with ClaimReason
-  case object Other extends WithName("09") with ClaimReason
+  case object Value extends WithName("09") with ClaimReason
+  case object Other extends WithName("10") with ClaimReason
 
   val values: Seq[ClaimReason] = Seq(
     RetroActiveQuota,
@@ -38,6 +39,7 @@ object ClaimReason extends Enumerable.Implicits {
     Preference,
     ReturnedGoodsRelief,
     ReturnOfUnwantedGoods,
+    Value,
     Other
   )
 

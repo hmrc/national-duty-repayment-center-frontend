@@ -24,8 +24,9 @@ object DocumentUploadType extends Enumerable.Implicits {
   case object CopyOfC88 extends WithName("03") with DocumentUploadType
   case object PackingList extends WithName("04") with DocumentUploadType
   case object ProofOfOrigin extends WithName("05") with DocumentUploadType
-  case object SubstituteEntry extends WithName("06") with DocumentUploadType
-  case object Other extends WithName("07") with DocumentUploadType
+  case object ProofOfAuthority extends WithName("06") with DocumentUploadType
+  case object SubstituteEntry extends WithName("07") with DocumentUploadType
+  case object Other extends WithName("08") with DocumentUploadType
 
   val values: Seq[DocumentUploadType] = Seq(
     Invoice,
@@ -33,6 +34,7 @@ object DocumentUploadType extends Enumerable.Implicits {
     CopyOfC88,
     PackingList,
     ProofOfOrigin,
+    ProofOfAuthority,
     SubstituteEntry,
     Other
   )
