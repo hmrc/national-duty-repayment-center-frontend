@@ -17,10 +17,9 @@
 package models
 
 import generators.Generators
-import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.{FreeSpec, MustMatchers}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.libs.json.{JsObject, JsSuccess, Json}
+import play.api.libs.json.{JsSuccess, Json}
 
 class AcknowledgementReferenceSpec extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with Generators {
 

@@ -48,17 +48,17 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         PaymentMethod = PaymentMethod.BACS,
       )
 
-      val address = Address(addressLine1 = "line 1",
-        addressLine2 = Some("line 2"),
-        city = "city",
-        region = "region",
-        countryCode = "GB",
-        postalCode = Some("ZZ111ZZ"),
-        telephoneNumber = Some("12345678"),
-        emailAddress = Some("example@example.com")
+      val address = Address(AddressLine1 = "line 1",
+        AddressLine2 = Some("line 2"),
+        City = "city",
+        Region = "region",
+        CountryCode = "GB",
+        PostalCode = Some("ZZ111ZZ"),
+        TelephoneNumber = Some("12345678"),
+        EmailAddress = Some("example@example.com")
       )
 
-      val userDetails = UserDetails(VatNumber = Some(VRN("123456789")),
+      val userDetails = UserDetails(VATNumber = Some(VRN("123456789")),
         EORI = EORI("GB123456789123456"),
         Name = UserName("Joe Bloggs"),
         Address = address
@@ -106,7 +106,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "CustomRegulationType" -> "02",
             "ClaimedUnderArticle" -> "120",
             "Claimant" -> "02",
-            "ClaimType" -> "01",
+            "ClaimType" -> "02",
             "NoOfEntries" -> "10",
             "EPU" -> "777",
             "EntryNumber" -> "123456A",

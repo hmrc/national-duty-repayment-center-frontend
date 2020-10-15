@@ -22,7 +22,6 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-import models.PayeeIndicator
 
 class PayeeIndicatorTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 

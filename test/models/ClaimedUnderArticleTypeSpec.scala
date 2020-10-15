@@ -22,8 +22,6 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-import models.ClaimedUnderArticle
-
 class ClaimedUnderArticleTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   "ClaimedUnderArticle" must {
