@@ -22,7 +22,4 @@ case class EPU(value: String)
 
 object EPU {
   implicit val format: Format[EPU] = JsonFormatUtils.stringFormat(EPU.apply)(_.value)
-
-  val validationRegex: String = ???
-
 }

@@ -20,10 +20,10 @@ import models.{AcknowledgementReference, ApplicationType, Content, OriginatingSy
 import play.api.libs.json.{Json, OFormat}
 
 final case class CreateClaimRequest(
-                                     acknowledgementReference: AcknowledgementReference,
-                                     originatingSystem: OriginatingSystem,
-                                     applicationType: ApplicationType,
-                                     content: Content
+                                     AcknowledgementReference: AcknowledgementReference,
+                                     ApplicationType: ApplicationType,
+                                     OriginatingSystem: OriginatingSystem,
+                                     Content: Content
                                    )
 
 object CreateClaimRequest {

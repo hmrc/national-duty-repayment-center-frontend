@@ -184,7 +184,7 @@ trait ModelGenerators {
     )
   }
 
-  implicit val arbitraryCreateClaimRequest: Arbitrary[CreateClaimRequest] = Arbitrary {
+  /*implicit val arbitraryCreateClaimRequest: Arbitrary[CreateClaimRequest] = Arbitrary {
     for {
       acknowledgementReference <- arbitrary[AcknowledgementReference]
       originatingSystem <- arbitrary[OriginatingSystem]
@@ -193,16 +193,16 @@ trait ModelGenerators {
       agentDetails <- arbitrary[UserDetails]
       importerDetails <- arbitrary[UserDetails]
       bankDetails <- arbitrary[AllBankDetails]
-      dutyTypeTaxList <- arbitrary[DutyTypeTaxList]
+      dutyTypeTaxDetails <- arbitrary[DutyTypeTaxDetails]
       documentList <- arbitrary[DocumentList]
     } yield
       CreateClaimRequest(
         acknowledgementReference = acknowledgementReference,
-        originatingSystem = originatingSystem,
         applicationType = applicationType,
-        Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails),Seq(dutyTypeTaxList),Seq(documentList))
+        originatingSystem = originatingSystem,
+        Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails), dutyTypeTaxDetails,Seq(documentList))
       )
-  }
+  }*/
 
   implicit val arbitraryClaimDetails: Arbitrary[ClaimDetails] = Arbitrary {
     for {

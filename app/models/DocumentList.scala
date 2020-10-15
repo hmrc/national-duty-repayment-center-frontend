@@ -19,8 +19,8 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 final case class DocumentList(
-                               `type`: DocumentUploadType,
-                               description: Option[DocumentDescription]
+                               Type: DocumentUploadType,
+                               Description: Option[DocumentDescription]
                              )
 
 object DocumentList {

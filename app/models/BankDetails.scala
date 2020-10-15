@@ -19,12 +19,10 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 final case class BankDetails(
-                              accountName: AccountName,
-                              sortCode: SortCode,
-                              accountNumber: AccountNumber)
+                              AccountName: AccountName,
+                              SortCode: SortCode,
+                              AccountNumber: AccountNumber)
 
 object BankDetails {
-
   implicit val format: OFormat[BankDetails] = Json.format[BankDetails]
-
 }

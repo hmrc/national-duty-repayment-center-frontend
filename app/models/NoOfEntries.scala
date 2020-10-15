@@ -24,6 +24,4 @@ object NoOfEntries {
   implicit val format: Format[NoOfEntries] =
     JsonFormatUtils.stringFormat(NoOfEntries.apply)(_.value)
 
-  val validationRegex: String = ???
-
 }

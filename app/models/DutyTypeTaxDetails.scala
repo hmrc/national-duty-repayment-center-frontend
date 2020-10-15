@@ -16,11 +16,12 @@
 
 package models
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Json, OFormat}
 
-case class EntryNumber(value: String)
+final case class DutyTypeTaxDetails (
+                                    DutyTypeTaxList: Seq[DutyTypeTaxList]
+                                    )
 
-object EntryNumber {
-  implicit val format: Format[EntryNumber] =
-    JsonFormatUtils.stringFormat(EntryNumber.apply)(_.value)
+object DutyTypeTaxDetails {
+  implicit val format: OFormat[DutyTypeTaxDetails] = Json.format[DutyTypeTaxDetails]
 }
