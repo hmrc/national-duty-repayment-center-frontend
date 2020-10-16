@@ -16,19 +16,18 @@
 
 package models
 
-
 import play.api.libs.json._
+
+
 final case class Content(
-                          claimDetails: ClaimDetails,
-                          agentDetails: Option[UserDetails],
-                          importerDetails: UserDetails,
-                          bankDetails: Option[AllBankDetails],
-                          dutyTypeTaxList: Seq[DutyTypeTaxList],
-                          documentList: Seq[DocumentList]
+                          ClaimDetails: ClaimDetails,
+                          AgentDetails: Option[UserDetails],
+                          ImporterDetails: UserDetails,
+                          BankDetails: Option[AllBankDetails],
+                          DutyTypeTaxDetails: DutyTypeTaxDetails,
+                          DocumentList: Seq[DocumentList]
                         )
 
 object Content {
-
   implicit val format: OFormat[Content] = Json.format[Content]
-
 }

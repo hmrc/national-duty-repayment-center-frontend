@@ -16,27 +16,48 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+import play.api.libs.json._
+
+import scala.util.{Failure, Success, Try}
 
 final case class ClaimDetails(
-                               formType: String,
-                               customRegulationType: String,
-                               claimedUnderArticle: String,
-                               claimant: String,
-                               claimType: String,
-                               noOfEntries: Option[String],
-                               epu: String,
-                               entryNumber: String,
-                               entryDate: String,
-                               claimReason: String,
-                               claimDescription: String,
-                               dateReceived: String,
-                               claimDate: String,
-                               payeeIndicator: String,
-                               paymentMethod: String
+                               FormType: FormType,
+                               CustomRegulationType: CustomRegulationType,
+                               ClaimedUnderArticle: ClaimedUnderArticle,
+                               Claimant: Claimant,
+                               ClaimType: ClaimType,
+                               NoOfEntries: Option[NoOfEntries],
+                               EPU: EPU,
+                               EntryNumber: EntryNumber,
+                               EntryDate: LocalDate,
+                               ClaimReason: ClaimReason,
+                               ClaimDescription: ClaimDescription,
+                               DateReceived: LocalDate,
+                               ClaimDate: LocalDate,
+                               PayeeIndicator: PayeeIndicator,
+                               PaymentMethod: PaymentMethod
                              )
 
 object ClaimDetails {
+
+  implicit val dateFormat: Format[LocalDate] = new Format[LocalDate] {
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+
+    override def writes(o: LocalDate): JsValue = JsString(o.format(formatter))
+
+    override def reads(json: JsValue): JsResult[LocalDate] = json match {
+      case JsString(s) ⇒
+        Try(LocalDate.parse(s, formatter)) match {
+          case Success(date) ⇒ JsSuccess(date)
+          case Failure(error) ⇒ JsError(s"Could not parse date as yyyyMMdd: ${error.getMessage}")
+        }
+
+      case other ⇒ JsError(s"Expected string but got $other")
+    }
+  }
 
   implicit val format: OFormat[ClaimDetails] = Json.format[ClaimDetails]
 

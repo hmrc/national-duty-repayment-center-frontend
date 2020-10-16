@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package models.responses
+package models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class ClientClaimSuccessResponse(
-                                             status: String,
-                                             caseID: String,
-                                             processingDate: String,
-                                             statusText: Option[String],
-                                             pxObjClass: Option[String]
-                                           )
+final case class DutyTypeTaxDetails (
+                                    DutyTypeTaxList: Seq[DutyTypeTaxList]
+                                    )
 
-
-object ClientClaimSuccessResponse {
-  implicit val format: OFormat[ClientClaimSuccessResponse] = Json.format[ClientClaimSuccessResponse]
+object DutyTypeTaxDetails {
+  implicit val format: OFormat[DutyTypeTaxDetails] = Json.format[DutyTypeTaxDetails]
 }

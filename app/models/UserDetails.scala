@@ -19,14 +19,12 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 final case class UserDetails(
-                             vatNumber: Option[String],
-                             eori: String,
-                             name: String,
-                             address: Address
+                             VATNumber: Option[VRN],
+                             EORI: EORI,
+                             Name: UserName,
+                             Address: Address
                            )
 
 object UserDetails{
-
   implicit val format: OFormat[UserDetails] = Json.format[UserDetails]
-
 }

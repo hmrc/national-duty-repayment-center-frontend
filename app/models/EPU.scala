@@ -16,15 +16,10 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Format
 
-final case class DutyTypeTaxList(
-                                  Type: DutyType,
-                                  PaidAmount: Option[PaidAmount],
-                                  DueAmount: Option[DueAmount],
-                                  ClaimAmount: Option[ClaimAmount]
-                                )
+case class EPU(value: String)
 
-object DutyTypeTaxList {
-  implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
+object EPU {
+  implicit val format: Format[EPU] = JsonFormatUtils.stringFormat(EPU.apply)(_.value)
 }

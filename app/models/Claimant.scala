@@ -16,15 +16,17 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+sealed trait Claimant
 
-final case class DutyTypeTaxList(
-                                  Type: DutyType,
-                                  PaidAmount: Option[PaidAmount],
-                                  DueAmount: Option[DueAmount],
-                                  ClaimAmount: Option[ClaimAmount]
-                                )
+object Claimant extends Enumerable.Implicits {
+  case object Importer extends WithName("01") with Claimant
+  case object RepresentativeOfTheImporter extends WithName("02") with Claimant
 
-object DutyTypeTaxList {
-  implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
+  val values: Seq[Claimant] = Seq(
+    Importer,
+    RepresentativeOfTheImporter
+  )
+
+  implicit val enumerable: Enumerable[Claimant] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

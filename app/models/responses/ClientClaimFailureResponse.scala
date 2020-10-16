@@ -29,7 +29,5 @@ final case class ClientClaimFailureResponse(
 
 
 object ClientClaimFailureResponse {
-
   implicit val format: OFormat[ClientClaimFailureResponse] = Json.format[ClientClaimFailureResponse]
-
 }

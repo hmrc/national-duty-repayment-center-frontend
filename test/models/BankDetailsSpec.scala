@@ -16,15 +16,31 @@
 
 package models
 
-import play.api.libs.json.{Json, OFormat}
+import generators.Generators
+import play.api.libs.json.{JsError, JsString, Json}
+import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
-final case class DutyTypeTaxList(
-                                  Type: DutyType,
-                                  PaidAmount: Option[PaidAmount],
-                                  DueAmount: Option[DueAmount],
-                                  ClaimAmount: Option[ClaimAmount]
-                                )
+class BankDetailsSpec extends WordSpec with MustMatchers with Generators with ScalaCheckPropertyChecks  with OptionValues {
 
-object DutyTypeTaxList {
-  implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
+
+  "Bank Details" must {
+    "must serialise" in {
+
+      val bnkDtls = stringsWithMaxLength(40)
+      forAll(bnkDtls) {
+        bankDetails =>
+
+          Json.toJson(bankDetails) mustEqual JsString(bankDetails)
+          println(bnkDtls)
+      }
+
+    }
+
+
+  }
+
+
+
+
 }
