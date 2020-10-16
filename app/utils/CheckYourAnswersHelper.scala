@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def claimantType: Option[AnswerRow] = userAnswers.get(ClaimantTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimantType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"claimantType.$x")),
+        routes.ClaimantTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
   private def yesOrNo(answer: Boolean)(implicit messages: Messages): Html =
     if (answer) {
       HtmlFormat.escape(messages("site.yes"))
