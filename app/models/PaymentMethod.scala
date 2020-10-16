@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+sealed trait PaymentMethod
 
-trait UserAnswersEntryGenerators extends PageGenerators {
+object PaymentMethod extends Enumerable.Implicits {
+  case object CurrentMonthAmendment extends WithName("01") with PaymentMethod
+  case object BACS extends WithName("02") with PaymentMethod
+  case object PayableOrder extends WithName("03") with PaymentMethod
+
+  val values: Seq[PaymentMethod] = Seq(
+    CurrentMonthAmendment,
+    BACS,
+    PayableOrder
+  )
+
+  implicit val enumerable: Enumerable[PaymentMethod] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

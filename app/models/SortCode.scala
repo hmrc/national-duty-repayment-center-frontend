@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Format
 
-trait UserAnswersEntryGenerators extends PageGenerators {
+case class SortCode(value: String)
+
+object SortCode {
+  implicit val format: Format[SortCode] =
+    JsonFormatUtils.stringFormat(SortCode.apply)(_.value)
 }

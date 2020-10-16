@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{Json, OFormat}
 
-trait UserAnswersEntryGenerators extends PageGenerators {
+final case class Address(
+                          AddressLine1:String,
+                          AddressLine2:Option[String],
+                          City:String,
+                          Region:String,
+                          CountryCode:String,
+                          PostalCode:Option[String],
+                          TelephoneNumber:Option[String],
+                          EmailAddress:Option[String]
+                        )
+
+object Address {
+
+  implicit val format: OFormat[Address] = Json.format[Address]
+
 }

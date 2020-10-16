@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+sealed trait DutyType
 
-trait UserAnswersEntryGenerators extends PageGenerators {
+object DutyType extends Enumerable.Implicits {
+  case object Customs extends WithName("01") with DutyType
+  case object Vat extends WithName("02") with DutyType
+  case object Other extends WithName("03") with DutyType
+
+  val values: Seq[DutyType] = Seq(
+    Customs,
+    Vat,
+    Other
+  )
+
+  implicit val enumerable: Enumerable[DutyType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

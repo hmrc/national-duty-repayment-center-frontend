@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+sealed trait PayeeIndicator
 
-trait UserAnswersEntryGenerators extends PageGenerators {
+object PayeeIndicator extends Enumerable.Implicits {
+  case object Importer extends WithName("01") with PayeeIndicator
+  case object Agent extends WithName("02") with PayeeIndicator
+  case object CurrentMonthAmendment extends WithName("03") with PayeeIndicator
+
+  val values: Seq[PayeeIndicator] = Seq(
+    Importer,
+    Agent,
+    CurrentMonthAmendment
+  )
+
+  implicit val enumerable: Enumerable[PayeeIndicator] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

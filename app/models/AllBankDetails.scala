@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{Json, OFormat}
 
-trait UserAnswersEntryGenerators extends PageGenerators {
+case class AllBankDetails(
+                           ImporterBankDetails: BankDetails,
+                           AgentBankDetails: BankDetails
+                         )
+
+object AllBankDetails {
+
+  implicit val format: OFormat[AllBankDetails] = Json.format[AllBankDetails]
+
 }

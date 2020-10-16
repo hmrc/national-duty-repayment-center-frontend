@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+sealed trait ClaimType
 
-trait UserAnswersEntryGenerators extends PageGenerators {
+object ClaimType extends Enumerable.Implicits {
+  case object Single extends WithName("01") with ClaimType
+  case object Multiple extends WithName("02") with ClaimType
+
+  val values: Seq[ClaimType] = Seq(
+    Single,
+    Multiple
+  )
+
+  implicit val enumerable: Enumerable[ClaimType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package generators
+package models
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+sealed trait CustomRegulationType
 
-trait UserAnswersEntryGenerators extends PageGenerators {
+object CustomRegulationType extends Enumerable.Implicits {
+  case object UnionsCustomsCodeRegulation extends WithName("01") with CustomRegulationType
+  case object UKCustomsCodeRegulation extends WithName("02") with CustomRegulationType
+
+  val values: Seq[CustomRegulationType] = Seq(
+    UnionsCustomsCodeRegulation,
+    UKCustomsCodeRegulation
+  )
+
+  implicit val enumerable: Enumerable[CustomRegulationType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
+
 }
