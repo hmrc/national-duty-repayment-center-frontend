@@ -35,7 +35,7 @@ class RepaymentConnector @Inject()(
                                     implicit ec: ExecutionContext
                                   ) extends HttpErrorFunctions {
 
-  private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center-frontend")
+  private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center")
 
 
   def submitRepayment(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] = {
