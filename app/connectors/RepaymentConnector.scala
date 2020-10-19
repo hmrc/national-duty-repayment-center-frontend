@@ -20,9 +20,9 @@ import com.google.inject.Inject
 import config.Service
 import models.requests.CreateClaimRequest
 import models.responses.ClientClaimSuccessResponse
-import uk.gov.hmrc.http.{HeaderCarrier, HttpErrorFunctions, NotFoundException}
+import uk.gov.hmrc.http._
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import play.api.Configuration
+import play.api.{Configuration, http}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -37,12 +37,8 @@ class RepaymentConnector @Inject()(
 
   private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center")
 
-
-  def submitRepayment(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] = {
-    val url = s"$baseUrl/discounted-dining-participant/submit-registration"
-
-    httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](url, request)
-  }
+  def submitRepayment(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
+    httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](s"$baseUrl/national-duty-repayment-center/create-case", request)
 
 
 }
