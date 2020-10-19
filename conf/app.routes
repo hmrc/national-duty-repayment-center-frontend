@@ -12,7 +12,7 @@ GET        /check-your-answers                          controllers.CheckYourAns
 
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
 
-GET        /claimantType                        controllers.ClaimantTypeController.onPageLoad(mode: Mode = NormalMode)
-POST       /claimantType                        controllers.ClaimantTypeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeClaimantType                  controllers.ClaimantTypeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeClaimantType                  controllers.ClaimantTypeController.onSubmit(mode: Mode = CheckMode)
+GET        /claimantType                                controllers.ClaimantTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimantType                                controllers.ClaimantTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimantType                          controllers.ClaimantTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimantType                          controllers.ClaimantTypeController.onSubmit(mode: Mode = CheckMode)

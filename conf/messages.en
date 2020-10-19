@@ -45,7 +45,7 @@ unauthorised.heading = You can’t access this service with this account
 
 claimantType.title = Are you the importer or their representative?
 claimantType.heading = Are you the importer or their representative?
-claimantType.importer = I am the importer
-claimantType.representative = I am a representative of the importer
+claimantType.01 = I am the importer
+claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
 claimantType.error.required = Select claimantType

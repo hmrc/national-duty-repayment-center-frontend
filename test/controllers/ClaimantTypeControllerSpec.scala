@@ -131,36 +131,5 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
       application.stop()
     }
-
-    "redirect to Session Expired for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request = FakeRequest(GET, claimantTypeRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request =
-        FakeRequest(POST, claimantTypeRoute)
-          .withFormUrlEncodedBody(("value", ClaimantType.values.head.toString))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
   }
 }
