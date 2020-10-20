@@ -60,3 +60,8 @@ importerEori.heading = What is your EORI number?
 importerEori.checkYourAnswersLabel = What is your EORI number?
 importerEori.error.required = Enter your EORI number
 importerEori.error.length = EORI number must be 17 characters or less
+
+isVatRegistered.title = Are you VAT registered?
+isVatRegistered.heading = Are you VAT registered?
+isVatRegistered.checkYourAnswersLabel = Are you VAT registered?
+isVatRegistered.error.required = Select yes if you are VAT registered

@@ -26,3 +26,8 @@ GET        /importerEori                        controllers.ImporterEoriControll
 POST       /importerEori                        controllers.ImporterEoriController.onSubmit(mode: Mode = NormalMode)
 GET        /changeImporterEori                  controllers.ImporterEoriController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeImporterEori                  controllers.ImporterEoriController.onSubmit(mode: Mode = CheckMode)
+
+GET        /isVatRegistered                        controllers.IsVatRegisteredController.onPageLoad(mode: Mode = NormalMode)
+POST       /isVatRegistered                        controllers.IsVatRegisteredController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsVatRegistered                  controllers.IsVatRegisteredController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsVatRegistered                  controllers.IsVatRegisteredController.onSubmit(mode: Mode = CheckMode)

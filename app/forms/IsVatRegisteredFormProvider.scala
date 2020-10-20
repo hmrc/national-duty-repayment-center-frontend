@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import org.scalacheck.Arbitrary
-import pages._
+import javax.inject.Inject
 
-trait PageGenerators {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  implicit lazy val arbitraryIsVatRegisteredPage: Arbitrary[IsVatRegisteredPage.type] =
-    Arbitrary(IsVatRegisteredPage)
+class IsVatRegisteredFormProvider @Inject() extends Mappings {
 
-  implicit lazy val arbitraryImporterEoriPage: Arbitrary[ImporterEoriPage.type] =
-    Arbitrary(ImporterEoriPage)
-
-  implicit lazy val arbitraryImporterHasEoriPage: Arbitrary[ImporterHasEoriPage.type] =
-    Arbitrary(ImporterHasEoriPage)
-
-  implicit lazy val arbitraryClaimantTypePage: Arbitrary[ClaimantTypePage.type] =
-    Arbitrary(ClaimantTypePage)
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("isVatRegistered.error.required")
+    )
 }
