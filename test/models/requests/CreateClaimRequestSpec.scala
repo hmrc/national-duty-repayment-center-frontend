@@ -34,7 +34,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         FormType = FormType("01"),
         CustomRegulationType = CustomRegulationType.UKCustomsCodeRegulation,
         ClaimedUnderArticle = ClaimedUnderArticle.Equity,
-        Claimant = Claimant.RepresentativeOfTheImporter,
+        Claimant = ClaimantType.Representative,
         ClaimType = ClaimType.Multiple,
         NoOfEntries = Some(NoOfEntries("10")),
         EPU = EPU("777"),
