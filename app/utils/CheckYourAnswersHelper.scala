@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def importerHasEori: Option[AnswerRow] = userAnswers.get(ImporterHasEoriPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("importerHasEori.checkYourAnswersLabel")),
+        yesOrNo(x),
+        routes.ImporterHasEoriController.onPageLoad(CheckMode).url
+      )
+  }
+
   private def yesOrNo(answer: Boolean)(implicit messages: Messages): Html =
     if (answer) {
       HtmlFormat.escape(messages("site.yes"))

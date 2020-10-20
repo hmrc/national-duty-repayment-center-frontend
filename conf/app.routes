@@ -11,3 +11,8 @@ GET        /this-service-has-been-reset                 controllers.SessionExpir
 GET        /check-your-answers                          controllers.CheckYourAnswersController.onPageLoad
 
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
+
+GET        /importerHasEori                        controllers.ImporterHasEoriController.onPageLoad(mode: Mode = NormalMode)
+POST       /importerHasEori                        controllers.ImporterHasEoriController.onSubmit(mode: Mode = NormalMode)
+GET        /changeImporterHasEori                  controllers.ImporterHasEoriController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeImporterHasEori                  controllers.ImporterHasEoriController.onSubmit(mode: Mode = CheckMode)
