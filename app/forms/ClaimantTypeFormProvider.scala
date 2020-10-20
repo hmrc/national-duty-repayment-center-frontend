@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import javax.inject.Inject
 
-class ImporterHasEoriPageSpec extends PageBehaviours {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.ClaimantType
 
-  "ImporterHasEoriPage" must {
+class ClaimantTypeFormProvider @Inject() extends Mappings {
 
-    beRetrievable[Boolean](ImporterHasEoriPage)
-
-    beSettable[Boolean](ImporterHasEoriPage)
-
-    beRemovable[Boolean](ImporterHasEoriPage)
-  }
+  def apply(): Form[ClaimantType] =
+    Form(
+      "value" -> enumerable[ClaimantType]("claimantType.error.required")
+    )
 }

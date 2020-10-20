@@ -16,16 +16,17 @@
 
 package pages
 
+import models.ClaimantType
 import pages.behaviours.PageBehaviours
 
-class ImporterHasEoriPageSpec extends PageBehaviours {
+class ClaimantTypeSpec extends PageBehaviours {
 
-  "ImporterHasEoriPage" must {
+  "ClaimantTypePage" must {
 
-    beRetrievable[Boolean](ImporterHasEoriPage)
+    beRetrievable[ClaimantType](ClaimantTypePage)
 
-    beSettable[Boolean](ImporterHasEoriPage)
+    beSettable[ClaimantType](ClaimantTypePage)
 
-    beRemovable[Boolean](ImporterHasEoriPage)
+    beRemovable[ClaimantType](ClaimantTypePage)
   }
 }

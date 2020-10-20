@@ -23,4 +23,7 @@ trait PageGenerators {
 
   implicit lazy val arbitraryImporterHasEoriPage: Arbitrary[ImporterHasEoriPage.type] =
     Arbitrary(ImporterHasEoriPage)
+
+  implicit lazy val arbitraryClaimantTypePage: Arbitrary[ClaimantTypePage.type] =
+    Arbitrary(ClaimantTypePage)
 }

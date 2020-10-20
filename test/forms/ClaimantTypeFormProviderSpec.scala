@@ -16,24 +16,24 @@
 
 package forms
 
-import forms.behaviours.BooleanFieldBehaviours
+import forms.behaviours.OptionFieldBehaviours
+import models.ClaimantType
 import play.api.data.FormError
 
-class ImporterHasEoriFormProviderSpec extends BooleanFieldBehaviours {
+class ClaimantTypeFormProviderSpec extends OptionFieldBehaviours {
 
-  val requiredKey = "importerHasEori.error.required"
-  val invalidKey = "error.boolean"
-
-  val form = new ImporterHasEoriFormProvider()()
+  val form = new ClaimantTypeFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
+    val requiredKey = "claimantType.error.required"
 
-    behave like booleanField(
+    behave like optionsField[ClaimantType](
       form,
       fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+      validValues  = ClaimantType.values,
+      invalidError = FormError(fieldName, "error.invalid")
     )
 
     behave like mandatoryField(

@@ -16,16 +16,12 @@
 
 package pages
 
-import pages.behaviours.PageBehaviours
+import models.ClaimantType
+import play.api.libs.json.JsPath
 
-class ImporterHasEoriPageSpec extends PageBehaviours {
+case object ClaimantTypePage extends QuestionPage[ClaimantType] {
 
-  "ImporterHasEoriPage" must {
+  override def path: JsPath = JsPath \ toString
 
-    beRetrievable[Boolean](ImporterHasEoriPage)
-
-    beSettable[Boolean](ImporterHasEoriPage)
-
-    beRemovable[Boolean](ImporterHasEoriPage)
-  }
+  override def toString: String = "claimantType"
 }

@@ -17,43 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.ImporterHasEoriFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.ClaimantTypeFormProvider
+import models.{NormalMode, ClaimantType, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ImporterHasEoriPage
+import pages.ClaimantTypePage
 import play.api.inject.bind
-import play.api.libs.json.{JsBoolean, Json}
+import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ImporterHasEoriView
+import views.html.ClaimantTypeView
 
 import scala.concurrent.Future
 
-class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
+class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ImporterHasEoriFormProvider()
+  lazy val claimantTypeRoute = routes.ClaimantTypeController.onPageLoad(NormalMode).url
+
+  val formProvider = new ClaimantTypeFormProvider()
   val form = formProvider()
 
-  lazy val importerHasEoriRoute = routes.ImporterHasEoriController.onPageLoad(NormalMode).url
-
-  "ImporterHasEori Controller" must {
+  "ClaimantType Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, importerHasEoriRoute)
+      val request = FakeRequest(GET, claimantTypeRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ImporterHasEoriView]
+      val view = application.injector.instanceOf[ClaimantTypeView]
 
       status(result) mustEqual OK
 
@@ -65,20 +65,20 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterHasEoriPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, ClaimantType.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, importerHasEoriRoute)
+      val request = FakeRequest(GET, claimantTypeRoute)
 
-      val view = application.injector.instanceOf[ImporterHasEoriView]
+      val view = application.injector.instanceOf[ClaimantTypeView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(ClaimantType.values.head), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -98,8 +98,8 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, importerHasEoriRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+        FakeRequest(POST, claimantTypeRoute)
+          .withFormUrlEncodedBody(("value", ClaimantType.options.head.value))
 
       val result = route(application, request).value
 
@@ -115,12 +115,12 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, importerHasEoriRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, claimantTypeRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[ImporterHasEoriView]
+      val view = application.injector.instanceOf[ClaimantTypeView]
 
       val result = route(application, request).value
 
@@ -128,38 +128,6 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       contentAsString(result) mustEqual
         view(boundForm, NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request = FakeRequest(GET, importerHasEoriRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request =
-        FakeRequest(POST, importerHasEoriRoute)
-          .withFormUrlEncodedBody(("value", "true"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

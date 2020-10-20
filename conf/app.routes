@@ -16,3 +16,8 @@ GET        /importerHasEori                        controllers.ImporterHasEoriCo
 POST       /importerHasEori                        controllers.ImporterHasEoriController.onSubmit(mode: Mode = NormalMode)
 GET        /changeImporterHasEori                  controllers.ImporterHasEoriController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeImporterHasEori                  controllers.ImporterHasEoriController.onSubmit(mode: Mode = CheckMode)
+
+GET        /claimantType                                controllers.ClaimantTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimantType                                controllers.ClaimantTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimantType                          controllers.ClaimantTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimantType                          controllers.ClaimantTypeController.onSubmit(mode: Mode = CheckMode)

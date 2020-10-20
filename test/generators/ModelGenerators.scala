@@ -24,7 +24,13 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
-  self: Generators =>
+  implicit lazy val arbitraryClaimantType: Arbitrary[ClaimantType] =
+    Arbitrary {
+      Gen.oneOf(ClaimantType.values.toSeq)
+    }
+}
+
+  /*self: Generators =>
 
   lazy val dutyAmount: Gen[String] = Gen.listOfN(14, Gen.numStr).map(_.mkString)
 
@@ -91,11 +97,6 @@ trait ModelGenerators {
   implicit lazy val arbitraryClaimedUnderArticle: Arbitrary[ClaimedUnderArticle] =
     Arbitrary {
       Gen.oneOf(ClaimedUnderArticle.values)
-    }
-
-  implicit lazy val arbitraryClaimant: Arbitrary[Claimant] =
-    Arbitrary {
-      Gen.oneOf(Claimant.values)
     }
 
   implicit lazy val arbitraryDutyType: Arbitrary[DutyType] =
@@ -184,7 +185,7 @@ trait ModelGenerators {
     )
   }
 
-  /*implicit val arbitraryCreateClaimRequest: Arbitrary[CreateClaimRequest] = Arbitrary {
+  implicit val arbitraryCreateClaimRequest: Arbitrary[CreateClaimRequest] = Arbitrary {
     for {
       acknowledgementReference <- arbitrary[AcknowledgementReference]
       originatingSystem <- arbitrary[OriginatingSystem]
@@ -202,14 +203,14 @@ trait ModelGenerators {
         originatingSystem = originatingSystem,
         Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails), dutyTypeTaxDetails,Seq(documentList))
       )
-  }*/
+  }
 
   implicit val arbitraryClaimDetails: Arbitrary[ClaimDetails] = Arbitrary {
     for {
       formType <- arbitrary[FormType]
       customRegulationType <- arbitrary[CustomRegulationType]
       claimedUnderArticle <- arbitrary[ClaimedUnderArticle]
-      claimant <- arbitrary[Claimant]
+      claimantType <- arbitrary[ClaimantType]
       claimType <- arbitrary[ClaimType]
       noOfEntries <- arbitrary[NoOfEntries]
       epu <- arbitrary[EPU]
@@ -299,5 +300,5 @@ trait ModelGenerators {
       Some(documentDescription)
     )
   }
-}
+}*/
 
