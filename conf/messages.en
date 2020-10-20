@@ -43,6 +43,11 @@ site.textarea.char_limit = (Limit is {0} characters)
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
+importerHasEori.title = Do you have an EORI number?
+importerHasEori.heading = Do you have an EORI number?
+importerHasEori.checkYourAnswersLabel = Do you have an EORI number?
+importerHasEori.error.required = Select yes if you have an EORI numer
+
 claimantType.title = Are you the importer or their representative?
 claimantType.heading = Are you the importer or their representative?
 claimantType.01 = I am the importer

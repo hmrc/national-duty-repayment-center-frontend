@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def importerHasEori: Option[AnswerRow] = userAnswers.get(ImporterHasEoriPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("importerHasEori.checkYourAnswersLabel")),
+        yesOrNo(x),
+        routes.ImporterHasEoriController.onPageLoad(CheckMode).url
+      )
+  }
+
   def claimantType: Option[AnswerRow] = userAnswers.get(ClaimantTypePage) map {
     x =>
       AnswerRow(
