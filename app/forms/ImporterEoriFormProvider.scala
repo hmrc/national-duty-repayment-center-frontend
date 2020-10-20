@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import org.scalacheck.Arbitrary
-import pages._
+import javax.inject.Inject
 
-trait PageGenerators {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  implicit lazy val arbitraryImporterEoriPage: Arbitrary[ImporterEoriPage.type] =
-    Arbitrary(ImporterEoriPage)
+class ImporterEoriFormProvider @Inject() extends Mappings {
 
-  implicit lazy val arbitraryImporterHasEoriPage: Arbitrary[ImporterHasEoriPage.type] =
-    Arbitrary(ImporterHasEoriPage)
-
-  implicit lazy val arbitraryClaimantTypePage: Arbitrary[ClaimantTypePage.type] =
-    Arbitrary(ClaimantTypePage)
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("importerEori.error.required")
+        .verifying(maxLength(17, "importerEori.error.length"))
+    )
 }

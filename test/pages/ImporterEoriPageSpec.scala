@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import org.scalacheck.Arbitrary
-import pages._
+import pages.behaviours.PageBehaviours
 
-trait PageGenerators {
 
-  implicit lazy val arbitraryImporterEoriPage: Arbitrary[ImporterEoriPage.type] =
-    Arbitrary(ImporterEoriPage)
+class ImporterEoriPageSpec extends PageBehaviours {
 
-  implicit lazy val arbitraryImporterHasEoriPage: Arbitrary[ImporterHasEoriPage.type] =
-    Arbitrary(ImporterHasEoriPage)
+  "ImporterEoriPage" must {
 
-  implicit lazy val arbitraryClaimantTypePage: Arbitrary[ClaimantTypePage.type] =
-    Arbitrary(ClaimantTypePage)
+    beRetrievable[String](ImporterEoriPage)
+
+    beSettable[String](ImporterEoriPage)
+
+    beRemovable[String](ImporterEoriPage)
+  }
 }
