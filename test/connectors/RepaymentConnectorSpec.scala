@@ -32,7 +32,6 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import base.SpecBase
 import models.responses.ClientClaimSuccessResponse
 
-
 class RepaymentConnectorSpec extends SpecBase
 
   with WireMockHelper
@@ -46,7 +45,6 @@ class RepaymentConnectorSpec extends SpecBase
         "microservice.services.national-duty-repayment-center.port" -> server.port
       )
       .build()
-  val connector = app.injector.instanceOf[RepaymentConnector]
 
   "SubmitRepayment" must {
 
@@ -54,7 +52,6 @@ class RepaymentConnectorSpec extends SpecBase
       val app = application
 
       running(app) {
-        val connector = app.injector.instanceOf[RepaymentConnector]
 
         val url = s"/national-duty-repayment-center/create-case"
         val responseBody =
@@ -62,7 +59,7 @@ class RepaymentConnectorSpec extends SpecBase
              |  "caseID": "1"
              |}
              |""".stripMargin
-
+        val connector = app.injector.instanceOf[RepaymentConnector]
         server.stubFor(
           post(urlEqualTo(url))
             .willReturn(ok(responseBody))
@@ -74,19 +71,19 @@ class RepaymentConnectorSpec extends SpecBase
 
     "must return None if the backend can't find a registration with case ID" in {
 
+      val app = application
       val url = s"/national-duty-repayment-center/create-case"
 
-      running(application) {
+      running(app) {
         val connector = app.injector.instanceOf[RepaymentConnector]
 
         server.stubFor(post(urlEqualTo(url)).willReturn(notFound()))
 
-        val result = connector.submitRepayment(createClaimRequest).futureValue
+        val result = connector.submitRepayment(createClaimRequest).value
         result mustBe None
       }
     }
   }
-
 
 
 }
