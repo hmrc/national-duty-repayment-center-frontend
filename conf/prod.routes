@@ -1,5 +1,5 @@
 # Add all the application routes to the app.routes file
-->         /national-duty-repayment-center-frontend                    app.Routes
+->         /national-duty-repayment-center                    app.Routes
 ->         /                          health.Routes
 ->     	   /template                  template.Routes
 
