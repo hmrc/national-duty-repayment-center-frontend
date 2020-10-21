@@ -46,3 +46,8 @@ GET        /articleType                        controllers.ArticleTypeController
 POST       /articleType                        controllers.ArticleTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeArticleType                  controllers.ArticleTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeArticleType                  controllers.ArticleTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /numberOfEntriesType                        controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /numberOfEntriesType                        controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNumberOfEntriesType                  controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNumberOfEntriesType                  controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = CheckMode)

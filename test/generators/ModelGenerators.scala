@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryNumberOfEntriesType: Arbitrary[NumberOfEntriesType] =
+    Arbitrary {
+      Gen.oneOf(NumberOfEntriesType.values.toSeq)
+    }
+
   implicit lazy val arbitraryArticleType: Arbitrary[ArticleType] =
     Arbitrary {
       Gen.oneOf(ArticleType.values.toSeq)

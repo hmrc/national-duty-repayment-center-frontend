@@ -28,7 +28,7 @@ final case class ClaimDetails(
                                CustomRegulationType: CustomsRegulationType,
                                ClaimedUnderArticle: ArticleType,
                                Claimant: ClaimantType,
-                               ClaimType: ClaimType,
+                               ClaimType: NumberOfEntriesType,
                                NoOfEntries: Option[NoOfEntries],
                                EPU: EPU,
                                EntryNumber: EntryNumber,

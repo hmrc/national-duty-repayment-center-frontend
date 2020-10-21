@@ -86,3 +86,10 @@ articleType.119 = Article 119: Error by the competent authorities
 articleType.120 = Article 120: Equity
 articleType.checkYourAnswersLabel = Which article are you applying for repayment under?
 articleType.error.required = Select which article are you applying for repayment under?
+
+numberOfEntriesType.title = How many entries do you want to submit?
+numberOfEntriesType.heading = How many entries do you want to submit?
+numberOfEntriesType.01 = One single entry
+numberOfEntriesType.02 = More than one entry
+numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
+numberOfEntriesType.error.required = Select how many entries do you want to submit

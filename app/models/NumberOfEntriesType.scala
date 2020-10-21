@@ -16,17 +16,25 @@
 
 package models
 
-sealed trait ClaimType
+import play.api.libs.json._
+import viewmodels.RadioOption
 
-object ClaimType extends Enumerable.Implicits {
-  case object Single extends WithName("01") with ClaimType
-  case object Multiple extends WithName("02") with ClaimType
+sealed trait NumberOfEntriesType
 
-  val values: Seq[ClaimType] = Seq(
-    Single,
-    Multiple
+object NumberOfEntriesType extends Enumerable.Implicits {
+
+  case object Single extends WithName("01") with NumberOfEntriesType
+  case object Multiple extends WithName("02") with NumberOfEntriesType
+
+  val values: Seq[NumberOfEntriesType] = Seq(
+    Single, Multiple
   )
 
-  implicit val enumerable: Enumerable[ClaimType] =
+  val options: Seq[RadioOption] = values.map {
+    value =>
+      RadioOption("numberOfEntriesType", value.toString)
+  }
+
+  implicit val enumerable: Enumerable[NumberOfEntriesType] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }
