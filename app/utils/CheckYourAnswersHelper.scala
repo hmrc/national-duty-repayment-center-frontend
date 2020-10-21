@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def howManyEntries: Option[AnswerRow] = userAnswers.get(HowManyEntriesPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("howManyEntries.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.HowManyEntriesController.onPageLoad(CheckMode).url
+      )
+  }
+
   def numberOfEntriesType: Option[AnswerRow] = userAnswers.get(NumberOfEntriesTypePage) map {
     x =>
       AnswerRow(

@@ -51,3 +51,8 @@ GET        /numberOfEntriesType                        controllers.NumberOfEntri
 POST       /numberOfEntriesType                        controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeNumberOfEntriesType                  controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeNumberOfEntriesType                  controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /howManyEntries                        controllers.HowManyEntriesController.onPageLoad(mode: Mode = NormalMode)
+POST       /howManyEntries                        controllers.HowManyEntriesController.onSubmit(mode: Mode = NormalMode)
+GET        /changeHowManyEntries                  controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeHowManyEntries                  controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)

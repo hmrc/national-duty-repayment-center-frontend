@@ -93,3 +93,9 @@ numberOfEntriesType.01 = One single entry
 numberOfEntriesType.02 = More than one entry
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
 numberOfEntriesType.error.required = Select how many entries do you want to submit
+
+howManyEntries.title = How many entries are you claiming for?
+howManyEntries.heading = How many entries are you claiming for?
+howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
+howManyEntries.error.required = Enter how many entries are you claiming for?
+howManyEntries.error.length = HowManyEntries must be 2 characters or less
