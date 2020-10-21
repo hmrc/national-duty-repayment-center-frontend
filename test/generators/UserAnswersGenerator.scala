@@ -27,6 +27,7 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(ClaimEpuPage.type, JsValue)] ::
     arbitrary[(HowManyEntriesPage.type, JsValue)] ::
     arbitrary[(NumberOfEntriesTypePage.type, JsValue)] ::
     arbitrary[(ArticleTypePage.type, JsValue)] ::

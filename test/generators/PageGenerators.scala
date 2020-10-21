@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryClaimEpuPage: Arbitrary[ClaimEpuPage.type] =
+    Arbitrary(ClaimEpuPage)
+
   implicit lazy val arbitraryHowManyEntriesPage: Arbitrary[HowManyEntriesPage.type] =
     Arbitrary(HowManyEntriesPage)
 

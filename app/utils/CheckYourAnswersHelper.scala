@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def claimEpu: Option[AnswerRow] = userAnswers.get(ClaimEpuPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimEpu.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ClaimEpuController.onPageLoad(CheckMode).url
+      )
+  }
+
   def howManyEntries: Option[AnswerRow] = userAnswers.get(HowManyEntriesPage) map {
     x =>
       AnswerRow(

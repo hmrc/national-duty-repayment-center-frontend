@@ -56,3 +56,8 @@ GET        /howManyEntries                        controllers.HowManyEntriesCont
 POST       /howManyEntries                        controllers.HowManyEntriesController.onSubmit(mode: Mode = NormalMode)
 GET        /changeHowManyEntries                  controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeHowManyEntries                  controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)
+
+GET        /claimEpu                        controllers.ClaimEpuController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimEpu                        controllers.ClaimEpuController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimEpu                  controllers.ClaimEpuController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimEpu                  controllers.ClaimEpuController.onSubmit(mode: Mode = CheckMode)
