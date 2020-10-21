@@ -78,3 +78,11 @@ customsRegulationType.01 = UK Customs Code Regulation (UK) Unknown
 customsRegulationType.02 = Unions Customs Code Regulation (EU) 952/2013
 customsRegulationType.checkYourAnswersLabel = Which regulation are you applying for repayment under?
 customsRegulationType.error.required = Select which regulation are you applying for repayment under
+
+articleType.title = Which article are you applying for repayment under?
+articleType.heading = Which article are you applying for repayment under?
+articleType.117 = Article 117: Overcharged amounts of import or export duty
+articleType.119 = Article 119: Error by the competent authorities
+articleType.120 = Article 120: Equity
+articleType.checkYourAnswersLabel = Which article are you applying for repayment under?
+articleType.error.required = Select which article are you applying for repayment under?

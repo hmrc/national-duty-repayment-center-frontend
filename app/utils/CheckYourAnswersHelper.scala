@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def articleType: Option[AnswerRow] = userAnswers.get(ArticleTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("articleType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"articleType.$x")),
+        routes.ArticleTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
   def customsRegulationType: Option[AnswerRow] = userAnswers.get(CustomsRegulationTypePage) map {
     x =>
       AnswerRow(

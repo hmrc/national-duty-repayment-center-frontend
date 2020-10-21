@@ -16,20 +16,26 @@
 
 package models
 
+import play.api.libs.json._
+import viewmodels.RadioOption
 
-sealed trait ClaimedUnderArticle
+sealed trait ArticleType
 
-object ClaimedUnderArticle extends Enumerable.Implicits {
-  case object OverchargedAmountsOfImportOrExportDuty extends WithName("117") with ClaimedUnderArticle
-  case object ErrorByTheCompetentAuthorities extends WithName("119") with ClaimedUnderArticle
-  case object Equity extends WithName("120") with ClaimedUnderArticle
+object ArticleType extends Enumerable.Implicits {
 
-  val values: Seq[ClaimedUnderArticle] = Seq(
-    OverchargedAmountsOfImportOrExportDuty,
-    ErrorByTheCompetentAuthorities,
-    Equity
+  case object OverchargedAmountsOfImportOrExportDuty extends WithName("117") with ArticleType
+  case object ErrorByTheCompetentAuthorities extends WithName("119") with ArticleType
+  case object Equity extends WithName("120") with ArticleType
+
+  val values: Seq[ArticleType] = Seq(
+    OverchargedAmountsOfImportOrExportDuty, ErrorByTheCompetentAuthorities, Equity
   )
 
-  implicit val enumerable: Enumerable[ClaimedUnderArticle] =
+  val options: Seq[RadioOption] = values.map {
+    value =>
+      RadioOption("articleType", value.toString)
+  }
+
+  implicit val enumerable: Enumerable[ArticleType] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

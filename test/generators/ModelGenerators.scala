@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryArticleType: Arbitrary[ArticleType] =
+    Arbitrary {
+      Gen.oneOf(ArticleType.values.toSeq)
+    }
+
   implicit lazy val arbitraryCustomsRegulationType: Arbitrary[CustomsRegulationType] =
     Arbitrary {
       Gen.oneOf(CustomsRegulationType.values.toSeq)

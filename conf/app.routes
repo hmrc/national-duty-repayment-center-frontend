@@ -41,3 +41,8 @@ GET        /customsRegulationType                        controllers.CustomsRegu
 POST       /customsRegulationType                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeCustomsRegulationType                  controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCustomsRegulationType                  controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /articleType                        controllers.ArticleTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /articleType                        controllers.ArticleTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeArticleType                  controllers.ArticleTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeArticleType                  controllers.ArticleTypeController.onSubmit(mode: Mode = CheckMode)

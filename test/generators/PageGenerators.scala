@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryArticleTypePage: Arbitrary[ArticleTypePage.type] =
+    Arbitrary(ArticleTypePage)
+
   implicit lazy val arbitraryCustomsRegulationTypePage: Arbitrary[CustomsRegulationTypePage.type] =
     Arbitrary(CustomsRegulationTypePage)
 
