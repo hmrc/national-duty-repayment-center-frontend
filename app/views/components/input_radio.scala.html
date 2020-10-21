@@ -19,6 +19,8 @@
 @(
         field: Field,
         legend: String,
+        label: Option[String] = None,
+        labelClass: Option[String] = None,
         legendClass: Option[String] = None,
         hint: Option[String] = None,
         trackGa: Boolean = false,
@@ -30,7 +32,7 @@
     <fieldset id="@{field.id}" @if(field.hasErrors || hint.nonEmpty){aria-describedby="@if(field.hasErrors){error-message-@{field.id}-input} @if(hint.nonEmpty){hint-@{field.id}}"}>
         @if(headingIsLegend){
             <legend>
-                <h1 @if(legendClass.nonEmpty){class="@legendClass" }else{class="heading-xlarge"}>@legend</h1>
+                <div @if(labelClass.isDefined) {class="@labelClass"}>@label</div>
             </legend>
         } else {
             <legend @if(legendClass.nonEmpty){class="@legendClass" }>
