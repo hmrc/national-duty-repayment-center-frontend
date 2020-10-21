@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def claimEntryDate: Option[AnswerRow] = userAnswers.get(ClaimEntryDatePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimEntryDate.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.ClaimEntryDateController.onPageLoad(CheckMode).url
+      )
+  }
+
   def claimEntryNumber: Option[AnswerRow] = userAnswers.get(ClaimEntryNumberPage) map {
     x =>
       AnswerRow(

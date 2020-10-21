@@ -111,3 +111,11 @@ claimEntryNumber.heading = What is the entry number?
 claimEntryNumber.checkYourAnswersLabel = What is the entry number?
 claimEntryNumber.error.required = Enter the entry number
 claimEntryNumber.error.length = Entry number must be 7 characters or less
+
+claimEntryDate.title = What was the entry date?
+claimEntryDate.heading = What was the entry date?
+claimEntryDate.checkYourAnswersLabel = What was the entry date?
+claimEntryDate.error.required.all = Enter the entry date
+claimEntryDate.error.required.two = The entry date must include {0} and {1}
+claimEntryDate.error.required = The entry date must include {0}
+claimEntryDate.error.invalid = Enter a real entry date
