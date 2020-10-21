@@ -24,6 +24,16 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators {
 
+  self: Generators =>
+
+  implicit lazy val arbitraryCustomsRegulationTypeUserAnswersEntry: Arbitrary[(CustomsRegulationTypePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[CustomsRegulationTypePage.type]
+        value <- arbitrary[CustomsRegulationType].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryImporterClaimantVrnUserAnswersEntry: Arbitrary[(ImporterClaimantVrnPage.type, JsValue)] =
     Arbitrary {
       for {
@@ -31,8 +41,6 @@ trait UserAnswersEntryGenerators extends PageGenerators {
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
-
-  self: Generators =>
 
   implicit lazy val arbitraryIsVatRegisteredUserAnswersEntry: Arbitrary[(IsVatRegisteredPage.type, JsValue)] =
     Arbitrary {

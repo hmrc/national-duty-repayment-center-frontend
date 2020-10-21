@@ -17,43 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.ImporterClaimantVrnFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.CustomsRegulationTypeFormProvider
+import models.{NormalMode, CustomsRegulationType, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ImporterClaimantVrnPage
+import pages.CustomsRegulationTypePage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ImporterClaimantVrnView
+import views.html.CustomsRegulationTypeView
 
 import scala.concurrent.Future
 
-class ImporterClaimantVrnControllerSpec extends SpecBase with MockitoSugar {
+class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ImporterClaimantVrnFormProvider()
+  lazy val customsRegulationTypeRoute = routes.CustomsRegulationTypeController.onPageLoad(NormalMode).url
+
+  val formProvider = new CustomsRegulationTypeFormProvider()
   val form = formProvider()
 
-  lazy val importerClaimantVrnRoute = routes.ImporterClaimantVrnController.onPageLoad(NormalMode).url
-
-  "ImporterClaimantVrn Controller" must {
+  "CustomsRegulationType Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, importerClaimantVrnRoute)
+      val request = FakeRequest(GET, customsRegulationTypeRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ImporterClaimantVrnView]
+      val view = application.injector.instanceOf[CustomsRegulationTypeView]
 
       status(result) mustEqual OK
 
@@ -65,20 +65,20 @@ class ImporterClaimantVrnControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterClaimantVrnPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, importerClaimantVrnRoute)
+      val request = FakeRequest(GET, customsRegulationTypeRoute)
 
-      val view = application.injector.instanceOf[ImporterClaimantVrnView]
+      val view = application.injector.instanceOf[CustomsRegulationTypeView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(CustomsRegulationType.values.head), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -98,12 +98,13 @@ class ImporterClaimantVrnControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, importerClaimantVrnRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, customsRegulationTypeRoute)
+          .withFormUrlEncodedBody(("value", CustomsRegulationType.options.head.value))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -114,12 +115,12 @@ class ImporterClaimantVrnControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, importerClaimantVrnRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, customsRegulationTypeRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[ImporterClaimantVrnView]
+      val view = application.injector.instanceOf[CustomsRegulationTypeView]
 
       val result = route(application, request).value
 
@@ -135,12 +136,11 @@ class ImporterClaimantVrnControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, importerClaimantVrnRoute)
+      val request = FakeRequest(GET, customsRegulationTypeRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -151,8 +151,8 @@ class ImporterClaimantVrnControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, importerClaimantVrnRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, customsRegulationTypeRoute)
+          .withFormUrlEncodedBody(("value", CustomsRegulationType.values.head.toString))
 
       val result = route(application, request).value
 

@@ -71,3 +71,10 @@ importerClaimantVrn.heading = What is your VRN number?
 importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
+
+customsRegulationType.title = Which regulation are you applying for repayment under?
+customsRegulationType.heading = Which regulation are you applying for repayment under?
+customsRegulationType.01 = UK Customs Code Regulation (UK) Unknown
+customsRegulationType.02 = Unions Customs Code Regulation (EU) 952/2013
+customsRegulationType.checkYourAnswersLabel = Which regulation are you applying for repayment under?
+customsRegulationType.error.required = Select which regulation are you applying for repayment under

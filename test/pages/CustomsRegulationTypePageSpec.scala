@@ -16,17 +16,17 @@
 
 package pages
 
+import models.CustomsRegulationType
 import pages.behaviours.PageBehaviours
 
+class CustomsRegulationTypeSpec extends PageBehaviours {
 
-class ImporterClaimantVrnPageSpec extends PageBehaviours {
+  "CustomsRegulationTypePage" must {
 
-  "ImporterClaimantVrnPage" must {
+    beRetrievable[CustomsRegulationType](CustomsRegulationTypePage)
 
-    beRetrievable[String](ImporterClaimantVrnPage)
+    beSettable[CustomsRegulationType](CustomsRegulationTypePage)
 
-    beSettable[String](ImporterClaimantVrnPage)
-
-    beRemovable[String](ImporterClaimantVrnPage)
+    beRemovable[CustomsRegulationType](CustomsRegulationTypePage)
   }
 }

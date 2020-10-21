@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def customsRegulationType: Option[AnswerRow] = userAnswers.get(CustomsRegulationTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("customsRegulationType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"customsRegulationType.$x")),
+        routes.CustomsRegulationTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
   def importerClaimantVrn: Option[AnswerRow] = userAnswers.get(ImporterClaimantVrnPage) map {
     x =>
       AnswerRow(

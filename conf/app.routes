@@ -36,3 +36,8 @@ GET        /importerClaimantVrn                        controllers.ImporterClaim
 POST       /importerClaimantVrn                        controllers.ImporterClaimantVrnController.onSubmit(mode: Mode = NormalMode)
 GET        /changeImporterClaimantVrn                  controllers.ImporterClaimantVrnController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeImporterClaimantVrn                  controllers.ImporterClaimantVrnController.onSubmit(mode: Mode = CheckMode)
+
+GET        /customsRegulationType                        controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /customsRegulationType                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCustomsRegulationType                  controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCustomsRegulationType                  controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = CheckMode)

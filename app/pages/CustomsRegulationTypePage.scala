@@ -16,17 +16,12 @@
 
 package pages
 
-import pages.behaviours.PageBehaviours
+import models.CustomsRegulationType
+import play.api.libs.json.JsPath
 
+case object CustomsRegulationTypePage extends QuestionPage[CustomsRegulationType] {
 
-class ImporterClaimantVrnPageSpec extends PageBehaviours {
+  override def path: JsPath = JsPath \ toString
 
-  "ImporterClaimantVrnPage" must {
-
-    beRetrievable[String](ImporterClaimantVrnPage)
-
-    beSettable[String](ImporterClaimantVrnPage)
-
-    beRemovable[String](ImporterClaimantVrnPage)
-  }
+  override def toString: String = "customsRegulationType"
 }

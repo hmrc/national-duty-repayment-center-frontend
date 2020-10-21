@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package models
+package forms
 
-sealed trait CustomRegulationType
+import javax.inject.Inject
 
-object CustomRegulationType extends Enumerable.Implicits {
-  case object UnionsCustomsCodeRegulation extends WithName("01") with CustomRegulationType
-  case object UKCustomsCodeRegulation extends WithName("02") with CustomRegulationType
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.CustomsRegulationType
 
-  val values: Seq[CustomRegulationType] = Seq(
-    UnionsCustomsCodeRegulation,
-    UKCustomsCodeRegulation
-  )
+class CustomsRegulationTypeFormProvider @Inject() extends Mappings {
 
-  implicit val enumerable: Enumerable[CustomRegulationType] =
-    Enumerable(values.map(v => v.toString -> v): _*)
-
+  def apply(): Form[CustomsRegulationType] =
+    Form(
+      "value" -> enumerable[CustomsRegulationType]("customsRegulationType.error.required")
+    )
 }

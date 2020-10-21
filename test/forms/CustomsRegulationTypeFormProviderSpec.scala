@@ -16,32 +16,24 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
+import forms.behaviours.OptionFieldBehaviours
+import models.CustomsRegulationType
 import play.api.data.FormError
 
-class ImporterClaimantVrnFormProviderSpec extends StringFieldBehaviours {
+class CustomsRegulationTypeFormProviderSpec extends OptionFieldBehaviours {
 
-  val requiredKey = "importerClaimantVrn.error.required"
-  val lengthKey = "importerClaimantVrn.error.length"
-  val maxLength = 9
-
-  val form = new ImporterClaimantVrnFormProvider()()
+  val form = new CustomsRegulationTypeFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
+    val requiredKey = "customsRegulationType.error.required"
 
-    behave like fieldThatBindsValidData(
+    behave like optionsField[CustomsRegulationType](
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      validValues  = CustomsRegulationType.values,
+      invalidError = FormError(fieldName, "error.invalid")
     )
 
     behave like mandatoryField(
