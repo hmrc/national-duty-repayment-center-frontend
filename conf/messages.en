@@ -105,3 +105,9 @@ claimEpu.heading = Enter the EPU
 claimEpu.checkYourAnswersLabel = Enter the EPU
 claimEpu.error.required = Enter the EPU
 claimEpu.error.length = EPU must be 3 characters or less
+
+claimEntryNumber.title = What is the entry number?
+claimEntryNumber.heading = What is the entry number?
+claimEntryNumber.checkYourAnswersLabel = What is the entry number?
+claimEntryNumber.error.required = Enter the entry number
+claimEntryNumber.error.length = Entry number must be 7 characters or less
