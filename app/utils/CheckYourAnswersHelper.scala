@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def importerClaimantVrn: Option[AnswerRow] = userAnswers.get(ImporterClaimantVrnPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("importerClaimantVrn.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ImporterClaimantVrnController.onPageLoad(CheckMode).url
+      )
+  }
+
   def isVatRegistered: Option[AnswerRow] = userAnswers.get(IsVatRegisteredPage) map {
     x =>
       AnswerRow(
