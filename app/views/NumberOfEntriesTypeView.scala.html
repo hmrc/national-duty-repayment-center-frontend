@@ -16,6 +16,9 @@
 
 @import controllers.routes._
 @import models.{Mode, NumberOfEntriesType}
+@import uk.gov.hmrc.play.views.html._
+@import views.ViewUtils._
+
 
 @this(
     main_template: MainTemplate,
@@ -34,9 +37,13 @@
 
         @components.error_summary(form.errors)
 
+        @components.heading(messages("numberOfEntriesType.heading"))
+
         @components.input_radio(
             field = form("value"),
             legend = messages("numberOfEntriesType.heading"),
+            label = Some(messages("numberOfEntriesType.heading")),
+            labelClass = Some("visually-hidden"),
             headingIsLegend = true,
             inputs = NumberOfEntriesType.options.toSeq
         )
