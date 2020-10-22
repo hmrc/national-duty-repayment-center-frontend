@@ -40,7 +40,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         EPU = EPU("777"),
         EntryNumber = EntryNumber("123456A"),
         EntryDate = LocalDate.of(2020,1,1),
-        ClaimReason = ClaimReason.Preference,
+        ClaimReason = ClaimReasonType.Preference,
         ClaimDescription = ClaimDescription("this is a claim description"),
         DateReceived = LocalDate.of(2020,8,5),
         ClaimDate = LocalDate.of(2020,8,5),

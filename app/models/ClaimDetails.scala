@@ -33,7 +33,7 @@ final case class ClaimDetails(
                                EPU: EPU,
                                EntryNumber: EntryNumber,
                                EntryDate: LocalDate,
-                               ClaimReason: ClaimReason,
+                               ClaimReason: ClaimReasonType,
                                ClaimDescription: ClaimDescription,
                                DateReceived: LocalDate,
                                ClaimDate: LocalDate,

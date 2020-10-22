@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def claimReasonType: Option[AnswerRow] = userAnswers.get(ClaimReasonTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimReasonType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"claimReasonType.$x")),
+        routes.ClaimReasonTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
   def claimEntryDate: Option[AnswerRow] = userAnswers.get(ClaimEntryDatePage) map {
     x =>
       AnswerRow(

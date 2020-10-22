@@ -71,3 +71,8 @@ GET        /claimEntryDate                  controllers.ClaimEntryDateController
 POST       /claimEntryDate                  controllers.ClaimEntryDateController.onSubmit(mode: Mode = NormalMode)
 GET        /changeClaimEntryDate                        controllers.ClaimEntryDateController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeClaimEntryDate                        controllers.ClaimEntryDateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /claimReasonType                        controllers.ClaimReasonTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimReasonType                        controllers.ClaimReasonTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimReasonType                  controllers.ClaimReasonTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimReasonType                  controllers.ClaimReasonTypeController.onSubmit(mode: Mode = CheckMode)
