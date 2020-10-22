@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-sealed trait CustomRegulationType
+import play.api.libs.json.JsPath
 
-object CustomRegulationType extends Enumerable.Implicits {
-  case object UnionsCustomsCodeRegulation extends WithName("01") with CustomRegulationType
-  case object UKCustomsCodeRegulation extends WithName("02") with CustomRegulationType
+case object ClaimEpuPage extends QuestionPage[String] {
 
-  val values: Seq[CustomRegulationType] = Seq(
-    UnionsCustomsCodeRegulation,
-    UKCustomsCodeRegulation
-  )
+  override def path: JsPath = JsPath \ toString
 
-  implicit val enumerable: Enumerable[CustomRegulationType] =
-    Enumerable(values.map(v => v.toString -> v): _*)
-
+  override def toString: String = "claimEpu"
 }

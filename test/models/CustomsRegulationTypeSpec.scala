@@ -22,41 +22,41 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class CustomRegulationTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class CustomsRegulationTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "CustomRegulationType" must {
-    "serialise" in {
-
-      val gen = Gen.oneOf(CustomRegulationType.values)
-
-      forAll(gen) {
-        customRegulationType =>
-
-          Json.toJson(customRegulationType) mustEqual JsString(customRegulationType.toString)
-      }
-    }
+  "CustomsRegulationType" must {
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(CustomRegulationType.values)
+      val gen = Gen.oneOf(CustomsRegulationType.values.toSeq)
 
       forAll(gen) {
-        customRegulationType =>
+        customsRegulationType =>
 
-          JsString(customRegulationType.toString).validate[CustomRegulationType].asOpt.value mustEqual customRegulationType
+          JsString(customsRegulationType.toString).validate[CustomsRegulationType].asOpt.value mustEqual customsRegulationType
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!CustomRegulationType.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!CustomsRegulationType.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[CustomRegulationType] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[CustomsRegulationType] mustEqual JsError("error.invalid")
+      }
+    }
+
+    "serialise" in {
+
+      val gen = Gen.oneOf(CustomsRegulationType.values.toSeq)
+
+      forAll(gen) {
+        customsRegulationType =>
+
+          Json.toJson(customsRegulationType) mustEqual JsString(customsRegulationType.toString)
       }
     }
   }
-
 }

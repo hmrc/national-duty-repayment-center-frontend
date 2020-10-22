@@ -18,45 +18,45 @@ package models
 
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class ClaimReasonSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class ClaimReasonTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "ClaimReason" must {
-    "serialise" in {
-
-      val gen = Gen.oneOf(ClaimReason.values)
-
-      forAll(gen) {
-        claimReason =>
-
-          Json.toJson(claimReason) mustEqual JsString(claimReason.toString)
-      }
-    }
+  "ClaimReasonType" must {
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(ClaimReason.values)
+      val gen = Gen.oneOf(ClaimReasonType.values.toSeq)
 
       forAll(gen) {
-        claimReason =>
+        claimReasonType =>
 
-          JsString(claimReason.toString).validate[ClaimReason].asOpt.value mustEqual claimReason
+          JsString(claimReasonType.toString).validate[ClaimReasonType].asOpt.value mustEqual claimReasonType
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!ClaimReason.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!ClaimReasonType.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[ClaimReason] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[ClaimReasonType] mustEqual JsError("error.invalid")
+      }
+    }
+
+    "serialise" in {
+
+      val gen = Gen.oneOf(ClaimReasonType.values.toSeq)
+
+      forAll(gen) {
+        claimReasonType =>
+
+          Json.toJson(claimReasonType) mustEqual JsString(claimReasonType.toString)
       }
     }
   }
-
 }

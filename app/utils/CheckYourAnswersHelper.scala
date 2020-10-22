@@ -28,6 +28,105 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def claimReasonType: Option[AnswerRow] = userAnswers.get(ClaimReasonTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimReasonType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"claimReasonType.$x")),
+        routes.ClaimReasonTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def claimEntryDate: Option[AnswerRow] = userAnswers.get(ClaimEntryDatePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimEntryDate.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.ClaimEntryDateController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def claimEntryNumber: Option[AnswerRow] = userAnswers.get(ClaimEntryNumberPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimEntryNumber.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ClaimEntryNumberController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def claimEpu: Option[AnswerRow] = userAnswers.get(ClaimEpuPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimEpu.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ClaimEpuController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def howManyEntries: Option[AnswerRow] = userAnswers.get(HowManyEntriesPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("howManyEntries.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.HowManyEntriesController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def numberOfEntriesType: Option[AnswerRow] = userAnswers.get(NumberOfEntriesTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("numberOfEntriesType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"numberOfEntriesType.$x")),
+        routes.NumberOfEntriesTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def articleType: Option[AnswerRow] = userAnswers.get(ArticleTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("articleType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"articleType.$x")),
+        routes.ArticleTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def customsRegulationType: Option[AnswerRow] = userAnswers.get(CustomsRegulationTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("customsRegulationType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"customsRegulationType.$x")),
+        routes.CustomsRegulationTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def importerClaimantVrn: Option[AnswerRow] = userAnswers.get(ImporterClaimantVrnPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("importerClaimantVrn.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ImporterClaimantVrnController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def isVatRegistered: Option[AnswerRow] = userAnswers.get(IsVatRegisteredPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("isVatRegistered.checkYourAnswersLabel")),
+        yesOrNo(x),
+        routes.IsVatRegisteredController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def importerEori: Option[AnswerRow] = userAnswers.get(ImporterEoriPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("importerEori.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ImporterEoriController.onPageLoad(CheckMode).url
+      )
+  }
+
   def importerHasEori: Option[AnswerRow] = userAnswers.get(ImporterHasEoriPage) map {
     x =>
       AnswerRow(

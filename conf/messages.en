@@ -54,3 +54,83 @@ claimantType.01 = I am the importer
 claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
 claimantType.error.required = Select claimantType
+
+importerEori.title = What is your EORI number?
+importerEori.heading = What is your EORI number?
+importerEori.checkYourAnswersLabel = What is your EORI number?
+importerEori.error.required = Enter your EORI number
+importerEori.error.length = EORI number must be 17 characters or less
+
+isVatRegistered.title = Are you VAT registered?
+isVatRegistered.heading = Are you VAT registered?
+isVatRegistered.checkYourAnswersLabel = Are you VAT registered?
+isVatRegistered.error.required = Select yes if you are VAT registered
+
+importerClaimantVrn.title = What is your VRN number?
+importerClaimantVrn.heading = What is your VRN number?
+importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
+importerClaimantVrn.error.required = Enter your VRN number
+importerClaimantVrn.error.length = VRN number must be 9 characters or less
+
+customsRegulationType.title = Which regulation are you applying for repayment under?
+customsRegulationType.heading = Which regulation are you applying for repayment under?
+customsRegulationType.01 = UK Customs Code Regulation (UK) Unknown
+customsRegulationType.02 = Unions Customs Code Regulation (EU) 952/2013
+customsRegulationType.checkYourAnswersLabel = Which regulation are you applying for repayment under?
+customsRegulationType.error.required = Select which regulation are you applying for repayment under
+
+articleType.title = Which article are you applying for repayment under?
+articleType.heading = Which article are you applying for repayment under?
+articleType.117 = Article 117: Overcharged amounts of import or export duty
+articleType.119 = Article 119: Error by the competent authorities
+articleType.120 = Article 120: Equity
+articleType.checkYourAnswersLabel = Which article are you applying for repayment under?
+articleType.error.required = Select which article are you applying for repayment under?
+
+numberOfEntriesType.title = How many entries do you want to submit?
+numberOfEntriesType.heading = How many entries do you want to submit?
+numberOfEntriesType.01 = One single entry
+numberOfEntriesType.02 = More than one entry
+numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
+numberOfEntriesType.error.required = Select how many entries do you want to submit
+
+howManyEntries.title = How many entries are you claiming for?
+howManyEntries.heading = How many entries are you claiming for?
+howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
+howManyEntries.error.required = Enter how many entries are you claiming for?
+howManyEntries.error.length = HowManyEntries must be 2 characters or less
+
+claimEpu.title = Enter the EPU
+claimEpu.heading = Enter the EPU
+claimEpu.checkYourAnswersLabel = Enter the EPU
+claimEpu.error.required = Enter the EPU
+claimEpu.error.length = EPU must be 3 characters or less
+
+claimEntryNumber.title = What is the entry number?
+claimEntryNumber.heading = What is the entry number?
+claimEntryNumber.checkYourAnswersLabel = What is the entry number?
+claimEntryNumber.error.required = Enter the entry number
+claimEntryNumber.error.length = Entry number must be 7 characters or less
+
+claimEntryDate.title = What was the entry date?
+claimEntryDate.heading = What was the entry date?
+claimEntryDate.checkYourAnswersLabel = What was the entry date?
+claimEntryDate.error.required.all = Enter the entry date
+claimEntryDate.error.required.two = The entry date must include {0} and {1}
+claimEntryDate.error.required = The entry date must include {0}
+claimEntryDate.error.invalid = Enter a real entry date
+
+claimReasonType.title = What does your application relate to?
+claimReasonType.heading = What does your application relate to?
+claimReasonType.01 = Retro-active quota
+claimReasonType.02 = CPC change
+claimReasonType.03 = Currency change
+claimReasonType.04 = Commodity code change
+claimReasonType.05 = Customs special procedures
+claimReasonType.06 = Preference
+claimReasonType.07 = Returned goods relief
+claimReasonType.08 = Return of unwanted goods
+claimReasonType.09 = Value
+claimReasonType.10 = Other
+claimReasonType.checkYourAnswersLabel = What does your application relate to?
+claimReasonType.error.required = Select what does your application relates to

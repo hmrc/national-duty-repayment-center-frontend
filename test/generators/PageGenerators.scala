@@ -21,6 +21,39 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryClaimReasonTypePage: Arbitrary[ClaimReasonTypePage.type] =
+    Arbitrary(ClaimReasonTypePage)
+
+  implicit lazy val arbitraryClaimEntryDatePage: Arbitrary[ClaimEntryDatePage.type] =
+    Arbitrary(ClaimEntryDatePage)
+
+  implicit lazy val arbitraryClaimEntryNumberPage: Arbitrary[ClaimEntryNumberPage.type] =
+    Arbitrary(ClaimEntryNumberPage)
+
+  implicit lazy val arbitraryClaimEpuPage: Arbitrary[ClaimEpuPage.type] =
+    Arbitrary(ClaimEpuPage)
+
+  implicit lazy val arbitraryHowManyEntriesPage: Arbitrary[HowManyEntriesPage.type] =
+    Arbitrary(HowManyEntriesPage)
+
+  implicit lazy val arbitraryNumberOfEntriesTypePage: Arbitrary[NumberOfEntriesTypePage.type] =
+    Arbitrary(NumberOfEntriesTypePage)
+
+  implicit lazy val arbitraryArticleTypePage: Arbitrary[ArticleTypePage.type] =
+    Arbitrary(ArticleTypePage)
+
+  implicit lazy val arbitraryCustomsRegulationTypePage: Arbitrary[CustomsRegulationTypePage.type] =
+    Arbitrary(CustomsRegulationTypePage)
+
+  implicit lazy val arbitraryImporterClaimantVrnPage: Arbitrary[ImporterClaimantVrnPage.type] =
+    Arbitrary(ImporterClaimantVrnPage)
+
+  implicit lazy val arbitraryIsVatRegisteredPage: Arbitrary[IsVatRegisteredPage.type] =
+    Arbitrary(IsVatRegisteredPage)
+
+  implicit lazy val arbitraryImporterEoriPage: Arbitrary[ImporterEoriPage.type] =
+    Arbitrary(ImporterEoriPage)
+
   implicit lazy val arbitraryImporterHasEoriPage: Arbitrary[ImporterHasEoriPage.type] =
     Arbitrary(ImporterHasEoriPage)
 

@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package models
+package forms
 
-sealed trait ClaimType
+import javax.inject.Inject
 
-object ClaimType extends Enumerable.Implicits {
-  case object Single extends WithName("01") with ClaimType
-  case object Multiple extends WithName("02") with ClaimType
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  val values: Seq[ClaimType] = Seq(
-    Single,
-    Multiple
-  )
+class ImporterEoriFormProvider @Inject() extends Mappings {
 
-  implicit val enumerable: Enumerable[ClaimType] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("importerEori.error.required")
+        .verifying(maxLength(17, "importerEori.error.length"))
+    )
 }
