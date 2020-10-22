@@ -76,3 +76,8 @@ GET        /claimReasonType                        controllers.ClaimReasonTypeCo
 POST       /claimReasonType                        controllers.ClaimReasonTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeClaimReasonType                  controllers.ClaimReasonTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeClaimReasonType                  controllers.ClaimReasonTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /whatAreTheGoods                        controllers.WhatAreTheGoodsController.onPageLoad(mode: Mode = NormalMode)
+POST       /whatAreTheGoods                        controllers.WhatAreTheGoodsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhatAreTheGoods                  controllers.WhatAreTheGoodsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhatAreTheGoods                  controllers.WhatAreTheGoodsController.onSubmit(mode: Mode = CheckMode)

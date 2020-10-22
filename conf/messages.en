@@ -134,3 +134,10 @@ claimReasonType.09 = Value
 claimReasonType.10 = Other
 claimReasonType.checkYourAnswersLabel = What does your application relate to?
 claimReasonType.error.required = Select what does your application relates to
+
+whatAreTheGoods.title = Tell us about the goods
+whatAreTheGoods.heading = Tell us about the goods
+whatAreTheGoods.checkYourAnswersLabel = Tell us about the goods
+whatAreTheGoods.error.required = Enter a description about the goods
+whatAreTheGoods.error.length = description must be 750 characters or less
+whatAreTheGoods.hint = Explain in detail what the goods are.

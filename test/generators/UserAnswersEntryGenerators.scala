@@ -26,6 +26,14 @@ trait UserAnswersEntryGenerators extends PageGenerators {
 
   self: Generators =>
 
+  implicit lazy val arbitraryWhatAreTheGoodsUserAnswersEntry: Arbitrary[(WhatAreTheGoodsPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[WhatAreTheGoodsPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryClaimReasonTypeUserAnswersEntry: Arbitrary[(ClaimReasonTypePage.type, JsValue)] =
     Arbitrary {
       for {
