@@ -141,3 +141,10 @@ whatAreTheGoods.checkYourAnswersLabel = Tell us about the goods
 whatAreTheGoods.error.required = Enter a description about the goods
 whatAreTheGoods.error.length = description must be 750 characters or less
 whatAreTheGoods.hint = Explain in detail what the goods are.
+
+reasonForOverpayment.title = Reason for overpayment
+reasonForOverpayment.heading = Reason for overpayment
+reasonForOverpayment.checkYourAnswersLabel = Reason for overpayment
+reasonForOverpayment.error.required = Enter a reason for overpayment
+reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or less
+reasonForOverpayment.hint = Explain in detail why an overpayment has been made.

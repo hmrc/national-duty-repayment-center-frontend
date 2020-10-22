@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def reasonForOverpayment: Option[AnswerRow] = userAnswers.get(ReasonForOverpaymentPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("reasonForOverpayment.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ReasonForOverpaymentController.onPageLoad(CheckMode).url
+      )
+  }
+
   def whatAreTheGoods: Option[AnswerRow] = userAnswers.get(WhatAreTheGoodsPage) map {
     x =>
       AnswerRow(
