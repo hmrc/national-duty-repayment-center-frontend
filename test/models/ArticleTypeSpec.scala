@@ -18,45 +18,45 @@ package models
 
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class ClaimTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class ArticleTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "ClaimType" must {
-    "serialise" in {
-
-      val gen = Gen.oneOf(ClaimType.values)
-
-      forAll(gen) {
-        claimType =>
-
-        Json.toJson(claimType) mustEqual JsString(claimType.toString)
-      }
-    }
+  "ArticleType" must {
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(ClaimType.values)
+      val gen = Gen.oneOf(ArticleType.values.toSeq)
 
       forAll(gen) {
-        claimType =>
+        articleType =>
 
-          JsString(claimType.toString).validate[ClaimType].asOpt.value mustEqual claimType
+          JsString(articleType.toString).validate[ArticleType].asOpt.value mustEqual articleType
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!ClaimType.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!ArticleType.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[ClaimType] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[ArticleType] mustEqual JsError("error.invalid")
+      }
+    }
+
+    "serialise" in {
+
+      val gen = Gen.oneOf(ArticleType.values.toSeq)
+
+      forAll(gen) {
+        articleType =>
+
+          Json.toJson(articleType) mustEqual JsString(articleType.toString)
       }
     }
   }
-
 }

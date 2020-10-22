@@ -21,3 +21,58 @@ GET        /claimantType                                controllers.ClaimantType
 POST       /claimantType                                controllers.ClaimantTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeClaimantType                          controllers.ClaimantTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeClaimantType                          controllers.ClaimantTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /importerEori                        controllers.ImporterEoriController.onPageLoad(mode: Mode = NormalMode)
+POST       /importerEori                        controllers.ImporterEoriController.onSubmit(mode: Mode = NormalMode)
+GET        /changeImporterEori                  controllers.ImporterEoriController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeImporterEori                  controllers.ImporterEoriController.onSubmit(mode: Mode = CheckMode)
+
+GET        /isVatRegistered                        controllers.IsVatRegisteredController.onPageLoad(mode: Mode = NormalMode)
+POST       /isVatRegistered                        controllers.IsVatRegisteredController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsVatRegistered                  controllers.IsVatRegisteredController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsVatRegistered                  controllers.IsVatRegisteredController.onSubmit(mode: Mode = CheckMode)
+
+GET        /importerClaimantVrn                        controllers.ImporterClaimantVrnController.onPageLoad(mode: Mode = NormalMode)
+POST       /importerClaimantVrn                        controllers.ImporterClaimantVrnController.onSubmit(mode: Mode = NormalMode)
+GET        /changeImporterClaimantVrn                  controllers.ImporterClaimantVrnController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeImporterClaimantVrn                  controllers.ImporterClaimantVrnController.onSubmit(mode: Mode = CheckMode)
+
+GET        /customsRegulationType                        controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /customsRegulationType                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCustomsRegulationType                  controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCustomsRegulationType                  controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /articleType                        controllers.ArticleTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /articleType                        controllers.ArticleTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeArticleType                  controllers.ArticleTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeArticleType                  controllers.ArticleTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /numberOfEntriesType                        controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /numberOfEntriesType                        controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNumberOfEntriesType                  controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNumberOfEntriesType                  controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /howManyEntries                        controllers.HowManyEntriesController.onPageLoad(mode: Mode = NormalMode)
+POST       /howManyEntries                        controllers.HowManyEntriesController.onSubmit(mode: Mode = NormalMode)
+GET        /changeHowManyEntries                  controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeHowManyEntries                  controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)
+
+GET        /claimEpu                        controllers.ClaimEpuController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimEpu                        controllers.ClaimEpuController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimEpu                  controllers.ClaimEpuController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimEpu                  controllers.ClaimEpuController.onSubmit(mode: Mode = CheckMode)
+
+GET        /claimEntryNumber                        controllers.ClaimEntryNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimEntryNumber                        controllers.ClaimEntryNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimEntryNumber                  controllers.ClaimEntryNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimEntryNumber                  controllers.ClaimEntryNumberController.onSubmit(mode: Mode = CheckMode)
+
+GET        /claimEntryDate                  controllers.ClaimEntryDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimEntryDate                  controllers.ClaimEntryDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimEntryDate                        controllers.ClaimEntryDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimEntryDate                        controllers.ClaimEntryDateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /claimReasonType                        controllers.ClaimReasonTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimReasonType                        controllers.ClaimReasonTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimReasonType                  controllers.ClaimReasonTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimReasonType                  controllers.ClaimReasonTypeController.onSubmit(mode: Mode = CheckMode)
