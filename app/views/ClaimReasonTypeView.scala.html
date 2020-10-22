@@ -16,6 +16,10 @@
 
 @import controllers.routes._
 @import models.{Mode, ClaimReasonType}
+@import uk.gov.hmrc.play.views.html._
+@import views.ViewUtils._
+
+
 
 @this(
     main_template: MainTemplate,
@@ -34,9 +38,13 @@
 
         @components.error_summary(form.errors)
 
+        @components.heading(messages("claimReasonType.heading"))
+
         @components.input_radio(
             field = form("value"),
             legend = messages("claimReasonType.heading"),
+            label = Some(messages("claimReasonType.heading")),
+            labelClass = Some("visually-hidden"),
             headingIsLegend = true,
             inputs = ClaimReasonType.options.toSeq
         )
