@@ -34,9 +34,13 @@
 
         @components.error_summary(form.errors)
 
+        @components.heading(messages("isVatRegistered.heading"))
+
         @components.input_yes_no(
             field = form("value"),
             legend = messages("isVatRegistered.heading"),
+            label = Some(messages("isVatRegistered.heading")),
+            labelClass = Some("visually-hidden"),
             headingIsLegend = true
         )
 
