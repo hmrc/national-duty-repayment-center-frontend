@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryImporterNamePage: Arbitrary[ImporterNamePage.type] =
+    Arbitrary(ImporterNamePage)
+
   implicit lazy val arbitraryEvidenceSupportingDocsPage: Arbitrary[EvidenceSupportingDocsPage.type] =
     Arbitrary(EvidenceSupportingDocsPage)
 
