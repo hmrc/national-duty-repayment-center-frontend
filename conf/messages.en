@@ -134,3 +134,38 @@ claimReasonType.09 = Value
 claimReasonType.10 = Other
 claimReasonType.checkYourAnswersLabel = What does your application relate to?
 claimReasonType.error.required = Select what does your application relates to
+
+whatAreTheGoods.title = Tell us about the goods
+whatAreTheGoods.heading = Tell us about the goods
+whatAreTheGoods.checkYourAnswersLabel = Tell us about the goods
+whatAreTheGoods.error.required = Enter a description about the goods
+whatAreTheGoods.error.length = description must be 750 characters or less
+whatAreTheGoods.hint = Explain in detail what the goods are.
+
+reasonForOverpayment.title = Reason for overpayment
+reasonForOverpayment.heading = Reason for overpayment
+reasonForOverpayment.checkYourAnswersLabel = Reason for overpayment
+reasonForOverpayment.error.required = Enter a reason for overpayment
+reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or less
+reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
+
+claimRepaymentType.title = What are you claiming repayment of?
+claimRepaymentType.heading = What are you claiming repayment of?
+claimRepaymentType.01 = Customs Duty
+claimRepaymentType.02 = VAT
+claimRepaymentType.03 = Another type of duty
+claimRepaymentType.checkYourAnswersLabel = What are you claiming repayment of?
+claimRepaymentType.error.required = Select What are you claiming repayment of
+
+evidenceSupportingDocs.title = What evidence do you have to support the application?
+evidenceSupportingDocs.heading = What evidence do you have to support the application?
+evidenceSupportingDocs.01 = Invoice
+evidenceSupportingDocs.02 = Transport documents
+evidenceSupportingDocs.03 = C88
+evidenceSupportingDocs.04 = Packing list
+evidenceSupportingDocs.05 = Proof of origin
+evidenceSupportingDocs.06 = Proof of authority
+evidenceSupportingDocs.07 = Substitute entry
+evidenceSupportingDocs.08 = Other
+evidenceSupportingDocs.checkYourAnswersLabel = What evidence do you have to support the application?
+evidenceSupportingDocs.error.required = Select what evidence do you have to support the application

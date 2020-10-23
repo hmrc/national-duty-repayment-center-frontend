@@ -28,6 +28,42 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def evidenceSupportingDocs: Option[AnswerRow] = userAnswers.get(EvidenceSupportingDocsPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("evidenceSupportingDocs.checkYourAnswersLabel")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"evidenceSupportingDocs.$value")).toString).mkString(",<br>")),
+        routes.EvidenceSupportingDocsController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def claimRepaymentType: Option[AnswerRow] = userAnswers.get(ClaimRepaymentTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimRepaymentType.checkYourAnswersLabel")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"claimRepaymentType.$value")).toString).mkString(",<br>")),
+        routes.ClaimRepaymentTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def reasonForOverpayment: Option[AnswerRow] = userAnswers.get(ReasonForOverpaymentPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("reasonForOverpayment.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ReasonForOverpaymentController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def whatAreTheGoods: Option[AnswerRow] = userAnswers.get(WhatAreTheGoodsPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("whatAreTheGoods.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.WhatAreTheGoodsController.onPageLoad(CheckMode).url
+      )
+  }
+
   def claimReasonType: Option[AnswerRow] = userAnswers.get(ClaimReasonTypePage) map {
     x =>
       AnswerRow(

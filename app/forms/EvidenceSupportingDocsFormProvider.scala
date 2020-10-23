@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package forms
 
-import play.api.libs.json.{Json, OFormat}
+import javax.inject.Inject
 
-final case class DutyTypeTaxList(
-                                  Type: ClaimRepaymentType,
-                                  PaidAmount: Option[PaidAmount],
-                                  DueAmount: Option[DueAmount],
-                                  ClaimAmount: Option[ClaimAmount]
-                                )
+import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.data.Forms.set
+import models.EvidenceSupportingDocs
 
-object DutyTypeTaxList {
-  implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
+class EvidenceSupportingDocsFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Set[EvidenceSupportingDocs]] =
+    Form(
+      "value" -> set(enumerable[EvidenceSupportingDocs]("evidenceSupportingDocs.error.required")).verifying(nonEmptySet("evidenceSupportingDocs.error.required"))
+    )
 }

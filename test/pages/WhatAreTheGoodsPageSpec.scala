@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.{Json, OFormat}
+import pages.behaviours.PageBehaviours
 
-final case class DutyTypeTaxList(
-                                  Type: ClaimRepaymentType,
-                                  PaidAmount: Option[PaidAmount],
-                                  DueAmount: Option[DueAmount],
-                                  ClaimAmount: Option[ClaimAmount]
-                                )
 
-object DutyTypeTaxList {
-  implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
+class WhatAreTheGoodsPageSpec extends PageBehaviours {
+
+  "WhatAreTheGoodsPage" must {
+
+    beRetrievable[String](WhatAreTheGoodsPage)
+
+    beSettable[String](WhatAreTheGoodsPage)
+
+    beRemovable[String](WhatAreTheGoodsPage)
+  }
 }

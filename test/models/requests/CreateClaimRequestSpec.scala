@@ -17,8 +17,6 @@
 package models.requests
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-
 import models._
 import base.SpecBase
 import org.scalatest.MustMatchers
@@ -71,15 +69,15 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
 
 
       val dutyTypeTaxList = Seq(
-        DutyTypeTaxList(DutyType.Customs, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
-        DutyTypeTaxList(DutyType.Vat, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
-        DutyTypeTaxList(DutyType.Other, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00")))
+        DutyTypeTaxList(ClaimRepaymentType.Customs, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
+        DutyTypeTaxList(ClaimRepaymentType.Vat, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
+        DutyTypeTaxList(ClaimRepaymentType.Other, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00")))
       )
 
       val documentList = Seq(
-        DocumentList(DocumentUploadType.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
-        DocumentList(DocumentUploadType.Invoice, Some(DocumentDescription("this is an invoice"))),
-        DocumentList(DocumentUploadType.PackingList, Some(DocumentDescription("this is a packing list"))),
+        DocumentList(EvidenceSupportingDocs.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
+        DocumentList(EvidenceSupportingDocs.Invoice, Some(DocumentDescription("this is an invoice"))),
+        DocumentList(EvidenceSupportingDocs.PackingList, Some(DocumentDescription("this is a packing list"))),
       )
 
       val dutyTypeTaxDetails = DutyTypeTaxDetails(dutyTypeTaxList)

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.{Json, OFormat}
+import models.EvidenceSupportingDocs
+import pages.behaviours.PageBehaviours
 
-final case class DutyTypeTaxList(
-                                  Type: ClaimRepaymentType,
-                                  PaidAmount: Option[PaidAmount],
-                                  DueAmount: Option[DueAmount],
-                                  ClaimAmount: Option[ClaimAmount]
-                                )
+class EvidenceSupportingDocsPageSpec extends PageBehaviours {
 
-object DutyTypeTaxList {
-  implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
+  "EvidenceSupportingDocsPage" must {
+
+    beRetrievable[Set[EvidenceSupportingDocs]](EvidenceSupportingDocsPage)
+
+    beSettable[Set[EvidenceSupportingDocs]](EvidenceSupportingDocsPage)
+
+    beRemovable[Set[EvidenceSupportingDocs]](EvidenceSupportingDocsPage)
+  }
 }

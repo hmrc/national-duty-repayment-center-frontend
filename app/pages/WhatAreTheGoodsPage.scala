@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.JsPath
 
-final case class DutyTypeTaxList(
-                                  Type: ClaimRepaymentType,
-                                  PaidAmount: Option[PaidAmount],
-                                  DueAmount: Option[DueAmount],
-                                  ClaimAmount: Option[ClaimAmount]
-                                )
+case object WhatAreTheGoodsPage extends QuestionPage[String] {
 
-object DutyTypeTaxList {
-  implicit val format: OFormat[DutyTypeTaxList] = Json.format[DutyTypeTaxList]
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "whatAreTheGoods"
 }
