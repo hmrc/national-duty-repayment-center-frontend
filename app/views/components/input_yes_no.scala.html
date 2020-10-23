@@ -30,7 +30,8 @@
 
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
-    <fieldset class="inline" id="@{field.id}" @if(field.hasErrors || hint.nonEmpty){aria-describedby="@if(field.hasErrors){error-message-@{field.id}-input} @if(hint.nonEmpty){hint-@{field.id}}"}>
+    <fieldset class="inline" id="@{field.id}" @if(field.hasErrors || hint.isDefined){aria-describedby="@if(hint.isDefined){hint-@{field.id}-input}@if(field.hasErrors && hint.isDefined){ }@if(field.hasErrors){error-message-@{field.id}-input}"}>
+
 
         <legend>
             @if(label.isDefined){
