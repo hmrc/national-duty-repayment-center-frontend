@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package forms
 
-import play.api.libs.json.{Json, OFormat}
+import javax.inject.Inject
 
-final case class DocumentList(
-                               Type: EvidenceSupportingDocs,
-                               Description: Option[DocumentDescription]
-                             )
+import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.data.Forms.set
+import models.EvidenceSupportingDocs
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+class EvidenceSupportingDocsFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Set[EvidenceSupportingDocs]] =
+    Form(
+      "value" -> set(enumerable[EvidenceSupportingDocs]("evidenceSupportingDocs.error.required")).verifying(nonEmptySet("evidenceSupportingDocs.error.required"))
+    )
 }

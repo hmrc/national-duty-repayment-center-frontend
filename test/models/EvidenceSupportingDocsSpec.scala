@@ -16,49 +16,48 @@
 
 package models
 
+import generators.ModelGenerators
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-import models.DocumentUploadType
+class EvidenceSupportingDocsSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues with ModelGenerators {
 
-class DocumentUploadTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
-
-  "DocumentUploadType" must {
-    "serialise" in {
-
-      val gen = Gen.oneOf(DocumentUploadType.values)
-
-      forAll(gen) {
-        documentUploadType =>
-
-          Json.toJson(documentUploadType) mustEqual JsString(documentUploadType.toString)
-      }
-    }
+  "EvidenceSupportingDocs" must {
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(DocumentUploadType.values)
+      val gen = arbitrary[EvidenceSupportingDocs]
 
       forAll(gen) {
-        documentUploadType =>
+        evidenceSupportingDocs =>
 
-          JsString(documentUploadType.toString).validate[DocumentUploadType].asOpt.value mustEqual documentUploadType
+          JsString(evidenceSupportingDocs.toString).validate[EvidenceSupportingDocs].asOpt.value mustEqual evidenceSupportingDocs
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!DocumentUploadType.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!EvidenceSupportingDocs.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[DocumentUploadType] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[EvidenceSupportingDocs] mustEqual JsError("error.invalid")
+      }
+    }
+
+    "serialise" in {
+
+      val gen = arbitrary[EvidenceSupportingDocs]
+
+      forAll(gen) {
+        evidenceSupportingDocs =>
+
+          Json.toJson(evidenceSupportingDocs) mustEqual JsString(evidenceSupportingDocs.toString)
       }
     }
   }
-
 }

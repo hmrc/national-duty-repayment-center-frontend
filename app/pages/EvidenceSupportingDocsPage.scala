@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.{Json, OFormat}
+import models.EvidenceSupportingDocs
+import play.api.libs.json.JsPath
 
-final case class DocumentList(
-                               Type: EvidenceSupportingDocs,
-                               Description: Option[DocumentDescription]
-                             )
+case object EvidenceSupportingDocsPage extends QuestionPage[Set[EvidenceSupportingDocs]] {
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "evidenceSupportingDocs"
 }

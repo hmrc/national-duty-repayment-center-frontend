@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.{Json, OFormat}
+import models.EvidenceSupportingDocs
+import pages.behaviours.PageBehaviours
 
-final case class DocumentList(
-                               Type: EvidenceSupportingDocs,
-                               Description: Option[DocumentDescription]
-                             )
+class EvidenceSupportingDocsPageSpec extends PageBehaviours {
 
-object DocumentList {
-  implicit val format: OFormat[DocumentList] = Json.format[DocumentList]
+  "EvidenceSupportingDocsPage" must {
+
+    beRetrievable[Set[EvidenceSupportingDocs]](EvidenceSupportingDocsPage)
+
+    beSettable[Set[EvidenceSupportingDocs]](EvidenceSupportingDocsPage)
+
+    beRemovable[Set[EvidenceSupportingDocs]](EvidenceSupportingDocsPage)
+  }
 }

@@ -156,3 +156,16 @@ claimRepaymentType.02 = VAT
 claimRepaymentType.03 = Another type of duty
 claimRepaymentType.checkYourAnswersLabel = What are you claiming repayment of?
 claimRepaymentType.error.required = Select What are you claiming repayment of
+
+evidenceSupportingDocs.title = What evidence do you have to support the application?
+evidenceSupportingDocs.heading = What evidence do you have to support the application?
+evidenceSupportingDocs.01 = Invoice
+evidenceSupportingDocs.02 = Transport documents
+evidenceSupportingDocs.03 = C88
+evidenceSupportingDocs.04 = Packing list
+evidenceSupportingDocs.05 = Proof of origin
+evidenceSupportingDocs.06 = Proof of authority
+evidenceSupportingDocs.07 = Substitute entry
+evidenceSupportingDocs.08 = Other
+evidenceSupportingDocs.checkYourAnswersLabel = What evidence do you have to support the application?
+evidenceSupportingDocs.error.required = Select what evidence do you have to support the application

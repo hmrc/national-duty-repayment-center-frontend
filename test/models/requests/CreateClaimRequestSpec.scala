@@ -75,9 +75,9 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       )
 
       val documentList = Seq(
-        DocumentList(DocumentUploadType.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
-        DocumentList(DocumentUploadType.Invoice, Some(DocumentDescription("this is an invoice"))),
-        DocumentList(DocumentUploadType.PackingList, Some(DocumentDescription("this is a packing list"))),
+        DocumentList(EvidenceSupportingDocs.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
+        DocumentList(EvidenceSupportingDocs.Invoice, Some(DocumentDescription("this is an invoice"))),
+        DocumentList(EvidenceSupportingDocs.PackingList, Some(DocumentDescription("this is a packing list"))),
       )
 
       val dutyTypeTaxDetails = DutyTypeTaxDetails(dutyTypeTaxList)

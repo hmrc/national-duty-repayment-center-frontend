@@ -91,3 +91,8 @@ GET        /claimRepaymentType                        controllers.ClaimRepayment
 POST       /claimRepaymentType                        controllers.ClaimRepaymentTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeClaimRepaymentType                  controllers.ClaimRepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeClaimRepaymentType                  controllers.ClaimRepaymentTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onPageLoad(mode: Mode = NormalMode)
+POST       /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeEvidenceSupportingDocs                  controllers.EvidenceSupportingDocsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeEvidenceSupportingDocs                  controllers.EvidenceSupportingDocsController.onSubmit(mode: Mode = CheckMode)

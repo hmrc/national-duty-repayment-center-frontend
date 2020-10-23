@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryEvidenceSupportingDocs: Arbitrary[EvidenceSupportingDocs] =
+    Arbitrary {
+      Gen.oneOf(EvidenceSupportingDocs.values.toSeq)
+    }
+
   implicit lazy val arbitraryClaimRepaymentType: Arbitrary[ClaimRepaymentType] =
     Arbitrary {
       Gen.oneOf(ClaimRepaymentType.values.toSeq)
