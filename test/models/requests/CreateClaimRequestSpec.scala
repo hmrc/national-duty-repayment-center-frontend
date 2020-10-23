@@ -17,8 +17,6 @@
 package models.requests
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-
 import models._
 import base.SpecBase
 import org.scalatest.MustMatchers
@@ -71,9 +69,9 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
 
 
       val dutyTypeTaxList = Seq(
-        DutyTypeTaxList(DutyType.Customs, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
-        DutyTypeTaxList(DutyType.Vat, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
-        DutyTypeTaxList(DutyType.Other, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00")))
+        DutyTypeTaxList(ClaimRepaymentType.Customs, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
+        DutyTypeTaxList(ClaimRepaymentType.Vat, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
+        DutyTypeTaxList(ClaimRepaymentType.Other, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00")))
       )
 
       val documentList = Seq(

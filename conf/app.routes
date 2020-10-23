@@ -86,3 +86,8 @@ GET        /reasonForOverpayment                        controllers.ReasonForOve
 POST       /reasonForOverpayment                        controllers.ReasonForOverpaymentController.onSubmit(mode: Mode = NormalMode)
 GET        /changeReasonForOverpayment                  controllers.ReasonForOverpaymentController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeReasonForOverpayment                  controllers.ReasonForOverpaymentController.onSubmit(mode: Mode = CheckMode)
+
+GET        /claimRepaymentType                        controllers.ClaimRepaymentTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /claimRepaymentType                        controllers.ClaimRepaymentTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeClaimRepaymentType                  controllers.ClaimRepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeClaimRepaymentType                  controllers.ClaimRepaymentTypeController.onSubmit(mode: Mode = CheckMode)

@@ -16,47 +16,48 @@
 
 package models
 
+import generators.ModelGenerators
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class DutyTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class ClaimRepaymentTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues with ModelGenerators {
 
-  "DutyType" must {
-    "serialise" in {
-
-      val gen = Gen.oneOf(DutyType.values)
-
-      forAll(gen) {
-        dutyType =>
-
-          Json.toJson(dutyType) mustEqual JsString(dutyType.toString)
-      }
-    }
+  "ClaimRepaymentType" must {
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(DutyType.values)
+      val gen = arbitrary[ClaimRepaymentType]
 
       forAll(gen) {
-        dutyType =>
+        claimRepaymentType =>
 
-          JsString(dutyType.toString).validate[DutyType].asOpt.value mustEqual dutyType
+          JsString(claimRepaymentType.toString).validate[ClaimRepaymentType].asOpt.value mustEqual claimRepaymentType
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!DutyType.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!ClaimRepaymentType.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[DutyType] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[ClaimRepaymentType] mustEqual JsError("error.invalid")
+      }
+    }
+
+    "serialise" in {
+
+      val gen = arbitrary[ClaimRepaymentType]
+
+      forAll(gen) {
+        claimRepaymentType =>
+
+          Json.toJson(claimRepaymentType) mustEqual JsString(claimRepaymentType.toString)
       }
     }
   }
-
 }

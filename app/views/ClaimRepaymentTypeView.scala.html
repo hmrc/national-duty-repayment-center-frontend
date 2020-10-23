@@ -14,31 +14,31 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
-@import models.Mode
+@import controllers.routes.ClaimRepaymentTypeController
+@import models.{Mode, ClaimRepaymentType}
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[Set[ClaimRepaymentType]], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("whatAreTheGoods.title")}"
+    title = s"${errorPrefix(form)} ${messages("claimRepaymentType.title")}"
     ) {
 
-    @formHelper(action = WhatAreTheGoodsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = ClaimRepaymentTypeController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.input_text(
-          field = form("value"),
-          label = messages("whatAreTheGoods.heading"),
-          headingIsLabel = true,
-          hint = Some(messages("whatAreTheGoods.hint"))
+        @components.input_checkboxes(
+            field = form("value"),
+            legend = messages("claimRepaymentType.heading"),
+            headingIsLegend = true,
+            inputs = ClaimRepaymentType.options
         )
 
         @components.submit_button()

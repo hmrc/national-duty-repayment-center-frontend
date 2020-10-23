@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-sealed trait DutyType
+import models.ClaimRepaymentType
+import pages.behaviours.PageBehaviours
 
-object DutyType extends Enumerable.Implicits {
-  case object Customs extends WithName("01") with DutyType
-  case object Vat extends WithName("02") with DutyType
-  case object Other extends WithName("03") with DutyType
+class ClaimRepaymentTypePageSpec extends PageBehaviours {
 
-  val values: Seq[DutyType] = Seq(
-    Customs,
-    Vat,
-    Other
-  )
+  "ClaimRepaymentTypePage" must {
 
-  implicit val enumerable: Enumerable[DutyType] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+    beRetrievable[Set[ClaimRepaymentType]](ClaimRepaymentTypePage)
+
+    beSettable[Set[ClaimRepaymentType]](ClaimRepaymentTypePage)
+
+    beRemovable[Set[ClaimRepaymentType]](ClaimRepaymentTypePage)
+  }
 }

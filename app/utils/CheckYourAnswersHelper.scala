@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def claimRepaymentType: Option[AnswerRow] = userAnswers.get(ClaimRepaymentTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("claimRepaymentType.checkYourAnswersLabel")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"claimRepaymentType.$value")).toString).mkString(",<br>")),
+        routes.ClaimRepaymentTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
   def reasonForOverpayment: Option[AnswerRow] = userAnswers.get(ReasonForOverpaymentPage) map {
     x =>
       AnswerRow(

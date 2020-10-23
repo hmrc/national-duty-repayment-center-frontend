@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryClaimRepaymentType: Arbitrary[ClaimRepaymentType] =
+    Arbitrary {
+      Gen.oneOf(ClaimRepaymentType.values.toSeq)
+    }
+
   implicit lazy val arbitraryClaimReasonType: Arbitrary[ClaimReasonType] =
     Arbitrary {
       Gen.oneOf(ClaimReasonType.values.toSeq)
