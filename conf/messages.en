@@ -169,3 +169,9 @@ evidenceSupportingDocs.07 = Substitute entry
 evidenceSupportingDocs.08 = Other
 evidenceSupportingDocs.checkYourAnswersLabel = What evidence do you have to support the application?
 evidenceSupportingDocs.error.required = Select what evidence do you have to support the application
+
+importerName.title = What is your name?
+importerName.heading = What is your name?
+importerName.checkYourAnswersLabel = What is your name?
+importerName.error.required = Enter your name
+importerName.error.length = Your name must be 512 characters or less

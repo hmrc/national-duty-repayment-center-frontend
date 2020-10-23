@@ -96,3 +96,8 @@ GET        /evidenceSupportingDocs                        controllers.EvidenceSu
 POST       /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEvidenceSupportingDocs                  controllers.EvidenceSupportingDocsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEvidenceSupportingDocs                  controllers.EvidenceSupportingDocsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /importerName                        controllers.ImporterNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /importerName                        controllers.ImporterNameController.onSubmit(mode: Mode = NormalMode)
+GET        /changeImporterName                  controllers.ImporterNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeImporterName                  controllers.ImporterNameController.onSubmit(mode: Mode = CheckMode)
