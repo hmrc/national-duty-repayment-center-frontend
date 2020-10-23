@@ -16,6 +16,8 @@
 
 @import controllers.routes._
 @import models.Mode
+@import uk.gov.hmrc.play.views.html._
+@import views.ViewUtils._
 
 @this(
     main_template: MainTemplate,
@@ -32,11 +34,15 @@
 
         @components.back_link()
 
+        @components.heading(messages("importerHasEori.heading"))
+
         @components.error_summary(form.errors)
 
         @components.input_yes_no(
             field = form("value"),
             legend = messages("importerHasEori.heading"),
+            label = Some(messages("importerHasEori.heading")),
+            labelClass = Some("visually-hidden"),
             headingIsLegend = true
         )
 
