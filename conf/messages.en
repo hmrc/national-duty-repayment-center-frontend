@@ -170,8 +170,16 @@ evidenceSupportingDocs.08 = Other
 evidenceSupportingDocs.checkYourAnswersLabel = What evidence do you have to support the application?
 evidenceSupportingDocs.error.required = Select what evidence do you have to support the application
 
-importerName.title = What is your name?
-importerName.heading = What is your name?
-importerName.checkYourAnswersLabel = What is your name?
-importerName.error.required = Enter your name
-importerName.error.length = Your name must be 512 characters or less
+importerName.title = What is the importer's name?
+importerName.heading = What is the importer's name?
+importerName.checkYourAnswersLabel = What is the importer's name?
+importerName.error.required = Enter importer's name
+importerName.error.length = Importer's name must be 512 characters or less
+
+contactType.title = How should we contact you?
+contactType.heading = How should we contact you?
+contactType.01 = Email
+contactType.02 = Phone
+contactType.checkYourAnswersLabel = How should we contact you?
+contactType.error.required = Select Contact Type
+contactType.hint = We will only use these details if we need more information to complete your application.
