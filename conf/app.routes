@@ -106,3 +106,8 @@ GET        /contactType                        controllers.ContactTypeController
 POST       /contactType                        controllers.ContactTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeContactType                  controllers.ContactTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeContactType                  controllers.ContactTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /phoneNumber                        controllers.PhoneNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /phoneNumber                        controllers.PhoneNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /changePhoneNumber                  controllers.PhoneNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePhoneNumber                  controllers.PhoneNumberController.onSubmit(mode: Mode = CheckMode)

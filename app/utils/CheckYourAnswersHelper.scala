@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def phoneNumber: Option[AnswerRow] = userAnswers.get(PhoneNumberPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("phoneNumber.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.PhoneNumberController.onPageLoad(CheckMode).url
+      )
+  }
+
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
     x =>
       AnswerRow(
