@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("contactType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"contactType.$x")),
+        routes.ContactTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
   def importerName: Option[AnswerRow] = userAnswers.get(ImporterNamePage) map {
     x =>
       AnswerRow(

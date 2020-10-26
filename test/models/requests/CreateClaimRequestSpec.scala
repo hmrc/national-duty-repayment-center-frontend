@@ -17,8 +17,10 @@
 package models.requests
 
 import java.time.LocalDate
+
 import models._
 import base.SpecBase
+import models.ContactType.{Email, Phone}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
