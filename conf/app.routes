@@ -106,3 +106,8 @@ GET        /contactType                        controllers.ContactTypeController
 POST       /contactType                        controllers.ContactTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeContactType                  controllers.ContactTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeContactType                  controllers.ContactTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /emailAddress                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /emailAddress                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeEmailAddress                  controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeEmailAddress                  controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)

@@ -183,3 +183,10 @@ contactType.02 = Phone
 contactType.checkYourAnswersLabel = How should we contact you?
 contactType.error.required = Select Contact Type
 contactType.hint = We will only use these details if we need more information to complete your application.
+
+emailAddress.title = What is your email address?
+emailAddress.heading = What is your email address?
+emailAddress.checkYourAnswersLabel = What is your email address?
+emailAddress.error.required = Enter Email Address
+emailAddress.error.length = Email Address must be 85 characters or less
+emailAddress.hint = Enter an email address in the correct format, like name@example.com.
