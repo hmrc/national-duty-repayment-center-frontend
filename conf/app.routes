@@ -140,3 +140,8 @@ GET        /enterAgentEORI                        controllers.EnterAgentEORICont
 POST       /enterAgentEORI                        controllers.EnterAgentEORIController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEnterAgentEORI                  controllers.EnterAgentEORIController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEnterAgentEORI                  controllers.EnterAgentEORIController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agentImporterHasEORI                        controllers.AgentImporterHasEORIController.onPageLoad(mode: Mode = NormalMode)
+POST       /agentImporterHasEORI                        controllers.AgentImporterHasEORIController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAgentImporterHasEORI                  controllers.AgentImporterHasEORIController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAgentImporterHasEORI                  controllers.AgentImporterHasEORIController.onSubmit(mode: Mode = CheckMode)

@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def agentImporterHasEORI: Option[AnswerRow] = userAnswers.get(AgentImporterHasEORIPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("agentImporterHasEORI.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"agentImporterHasEORI.$x")),
+        routes.AgentImporterHasEORIController.onPageLoad(CheckMode).url
+      )
+  }
+
   def enterAgentEORI: Option[AnswerRow] = userAnswers.get(EnterAgentEORIPage) map {
     x =>
       AnswerRow(

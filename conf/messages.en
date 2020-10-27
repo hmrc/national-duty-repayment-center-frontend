@@ -224,3 +224,10 @@ enterAgentEORI.heading = What is the importer''s EORI number?
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
 enterAgentEORI.error.required = Enter Agent EORI Number
 enterAgentEORI.error.length = Agent EORI number must be 17 characters or less
+
+agentImporterHasEORI.title = Does the importer have an EORI number?
+agentImporterHasEORI.heading = Does the importer have an EORI number?
+agentImporterHasEORI.01 = Yes
+agentImporterHasEORI.02 = No
+agentImporterHasEORI.checkYourAnswersLabel = Does the importer have an EORI number?
+agentImporterHasEORI.error.required = Select importer has an EORI number or not
