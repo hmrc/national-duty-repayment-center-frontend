@@ -183,3 +183,9 @@ contactType.02 = Phone
 contactType.checkYourAnswersLabel = How should we contact you?
 contactType.error.required = Select Contact Type
 contactType.hint = We will only use these details if we need more information to complete your application.
+
+agentNameImporter.title = What is your name?
+agentNameImporter.heading = What is your name?
+agentNameImporter.checkYourAnswersLabel = What is your name?
+agentNameImporter.error.required = Enter your name
+agentNameImporter.error.length = Your name must be 512 characters or less
