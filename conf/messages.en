@@ -184,8 +184,25 @@ contactType.checkYourAnswersLabel = How should we contact you?
 contactType.error.required = Select Contact Type
 contactType.hint = We will only use these details if we need more information to complete your application.
 
+
 agentNameImporter.title = What is your name?
 agentNameImporter.heading = What is your name?
 agentNameImporter.checkYourAnswersLabel = What is your name?
 agentNameImporter.error.required = Enter your name
 agentNameImporter.error.length = Your name must be 512 characters or less
+
+phoneNumber.title = Enter your phone number
+phoneNumber.heading = Enter your phone number
+phoneNumber.checkYourAnswersLabel = Enter your phone number
+phoneNumber.error.required = Enter phone number
+phoneNumber.error.length = Phone number must be 11 characters or less
+phoneNumber.hint = This can be a mobile or landline number, for example 07700 900 982 or 01632 960 001. For international numbers, include the country code.
+
+emailAddress.title = What is your email address?
+emailAddress.heading = What is your email address?
+emailAddress.checkYourAnswersLabel = What is your email address?
+emailAddress.error.required = Enter Email Address
+emailAddress.error.length = Email Address must be 85 characters or less
+emailAddress.hint = Enter an email address in the correct format, like name@example.com.
+
+

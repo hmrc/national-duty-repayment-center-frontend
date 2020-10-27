@@ -107,7 +107,19 @@ POST       /contactType                        controllers.ContactTypeController
 GET        /changeContactType                  controllers.ContactTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeContactType                  controllers.ContactTypeController.onSubmit(mode: Mode = CheckMode)
 
+
 GET        /agentNameImporter                        controllers.AgentNameImporterController.onPageLoad(mode: Mode = NormalMode)
 POST       /agentNameImporter                        controllers.AgentNameImporterController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAgentNameImporter                  controllers.AgentNameImporterController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentNameImporter                  controllers.AgentNameImporterController.onSubmit(mode: Mode = CheckMode)
+
+
+GET        /phoneNumber                        controllers.PhoneNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /phoneNumber                        controllers.PhoneNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /changePhoneNumber                  controllers.PhoneNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /changePhoneNumber                  controllers.PhoneNumberController.onSubmit(mode: Mode = CheckMode)
+
+GET        /emailAddress                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /emailAddress                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeEmailAddress                  controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeEmailAddress                  controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
