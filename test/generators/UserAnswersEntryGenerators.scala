@@ -31,6 +31,14 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       for {
         page  <- arbitrary[AgentImporterHasEORIPage.type]
         value <- arbitrary[AgentImporterHasEORI].map(Json.toJson(_))
+        } yield (page, value)
+    }
+  
+  implicit lazy val arbitraryIsImporterVatRegisteredUserAnswersEntry: Arbitrary[(IsImporterVatRegisteredPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IsImporterVatRegisteredPage.type]
+        value <- arbitrary[IsImporterVatRegistered].map(Json.toJson(_))
       } yield (page, value)
     }
 

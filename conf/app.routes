@@ -135,7 +135,6 @@ POST       /repaymentType                        controllers.RepaymentTypeContro
 GET        /changeRepaymentType                  controllers.RepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeRepaymentType                  controllers.RepaymentTypeController.onSubmit(mode: Mode = CheckMode)
 
-
 GET        /enterAgentEORI                        controllers.EnterAgentEORIController.onPageLoad(mode: Mode = NormalMode)
 POST       /enterAgentEORI                        controllers.EnterAgentEORIController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEnterAgentEORI                  controllers.EnterAgentEORIController.onPageLoad(mode: Mode = CheckMode)
@@ -145,3 +144,9 @@ GET        /agentImporterHasEORI                        controllers.AgentImporte
 POST       /agentImporterHasEORI                        controllers.AgentImporterHasEORIController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAgentImporterHasEORI                  controllers.AgentImporterHasEORIController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentImporterHasEORI                  controllers.AgentImporterHasEORIController.onSubmit(mode: Mode = CheckMode)
+
+GET        /isImporterVatRegistered                        controllers.IsImporterVatRegisteredController.onPageLoad(mode: Mode = NormalMode)
+POST       /isImporterVatRegistered                        controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsImporterVatRegistered                  controllers.IsImporterVatRegisteredController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsImporterVatRegistered                  controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = CheckMode)
+

@@ -231,3 +231,11 @@ agentImporterHasEORI.01 = Yes
 agentImporterHasEORI.02 = No
 agentImporterHasEORI.checkYourAnswersLabel = Does the importer have an EORI number?
 agentImporterHasEORI.error.required = Select importer has an EORI number or not
+
+isImporterVatRegistered.title = Is the importer VAT registered?
+isImporterVatRegistered.heading = Is the importer VAT registered?
+isImporterVatRegistered.01 = Yes
+isImporterVatRegistered.02 = No
+isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
+isImporterVatRegistered.error.required = Select whether the importer is VAT registered?
+

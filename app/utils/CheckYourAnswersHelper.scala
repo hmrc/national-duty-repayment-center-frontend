@@ -34,6 +34,15 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("agentImporterHasEORI.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"agentImporterHasEORI.$x")),
         routes.AgentImporterHasEORIController.onPageLoad(CheckMode).url
+    )
+  }
+  
+  def isImporterVatRegistered: Option[AnswerRow] = userAnswers.get(IsImporterVatRegisteredPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("isImporterVatRegistered.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"isImporterVatRegistered.$x")),
+        routes.IsImporterVatRegisteredController.onPageLoad(CheckMode).url
       )
   }
 

@@ -28,6 +28,11 @@ trait ModelGenerators {
     Arbitrary {
       Gen.oneOf(AgentImporterHasEORI.values.toSeq)
     }
+  
+  implicit lazy val arbitraryIsImporterVatRegistered: Arbitrary[IsImporterVatRegistered] =
+    Arbitrary {
+      Gen.oneOf(IsImporterVatRegistered.values.toSeq)
+    }
 
   implicit lazy val arbitraryWhomToPay: Arbitrary[WhomToPay] =
     Arbitrary {
