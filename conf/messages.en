@@ -205,11 +205,17 @@ emailAddress.error.required = Enter Email Address
 emailAddress.error.length = Email Address must be 85 characters or less
 emailAddress.hint = Enter an email address in the correct format, like name@example.com.
 
-
-
 whomToPay.title = Who is to be repaid?
 whomToPay.heading = Who is to be repaid?
 whomToPay.01 = Importer
 whomToPay.02 = Representative
 whomToPay.checkYourAnswersLabel = Who is to be repaid?
 whomToPay.error.required = Select who is to be repaid
+
+repaymentType.title = Select repayment method
+repaymentType.heading = Select repayment method
+repaymentType.01 = BACS
+repaymentType.02 = Current month amendment (CMA)
+repaymentType.checkYourAnswersLabel = Select repayment method
+repaymentType.error.required = Select repayment method
+

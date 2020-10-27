@@ -124,7 +124,14 @@ POST       /emailAddress                        controllers.EmailAddressControll
 GET        /changeEmailAddress                  controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEmailAddress                  controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
 
+
 GET        /whomToPay                        controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
 POST       /whomToPay                        controllers.WhomToPayController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhomToPay                  controllers.WhomToPayController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhomToPay                  controllers.WhomToPayController.onSubmit(mode: Mode = CheckMode)
+
+GET        /repaymentType                        controllers.RepaymentTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /repaymentType                        controllers.RepaymentTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeRepaymentType                  controllers.RepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeRepaymentType                  controllers.RepaymentTypeController.onSubmit(mode: Mode = CheckMode)
+

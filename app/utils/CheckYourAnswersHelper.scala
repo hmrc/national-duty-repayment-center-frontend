@@ -28,12 +28,20 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+
   def whomToPay: Option[AnswerRow] = userAnswers.get(WhomToPayPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("whomToPay.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"whomToPay.$x")),
         routes.WhomToPayController.onPageLoad(CheckMode).url
+
+  def repaymentType: Option[AnswerRow] = userAnswers.get(RepaymentTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("repaymentType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"repaymentType.$x")),
+        routes.RepaymentTypeController.onPageLoad(CheckMode).url
       )
   }
 

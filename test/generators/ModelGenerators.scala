@@ -27,6 +27,10 @@ trait ModelGenerators {
   implicit lazy val arbitraryWhomToPay: Arbitrary[WhomToPay] =
     Arbitrary {
       Gen.oneOf(WhomToPay.values.toSeq)
+
+  implicit lazy val arbitraryRepaymentType: Arbitrary[RepaymentType] =
+    Arbitrary {
+      Gen.oneOf(RepaymentType.values.toSeq)
     }
 
   implicit lazy val arbitraryContactType: Arbitrary[ContactType] =
