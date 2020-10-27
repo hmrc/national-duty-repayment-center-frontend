@@ -206,3 +206,10 @@ emailAddress.error.length = Email Address must be 85 characters or less
 emailAddress.hint = Enter an email address in the correct format, like name@example.com.
 
 
+
+whomToPay.title = Who is to be repaid?
+whomToPay.heading = Who is to be repaid?
+whomToPay.01 = Importer
+whomToPay.02 = Representative
+whomToPay.checkYourAnswersLabel = Who is to be repaid?
+whomToPay.error.required = Select who is to be repaid
