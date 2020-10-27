@@ -35,6 +35,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
         routes.AgentNameImporterController.onPageLoad(CheckMode).url
+      )
+  }
 
   def phoneNumber: Option[AnswerRow] = userAnswers.get(PhoneNumberPage) map {
     x =>
