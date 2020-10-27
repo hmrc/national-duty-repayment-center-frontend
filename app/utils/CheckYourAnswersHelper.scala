@@ -35,6 +35,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("whomToPay.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"whomToPay.$x")),
         routes.WhomToPayController.onPageLoad(CheckMode).url
+      )
+  }
 
   def repaymentType: Option[AnswerRow] = userAnswers.get(RepaymentTypePage) map {
     x =>
@@ -61,7 +63,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("phoneNumber.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
         routes.PhoneNumberController.onPageLoad(CheckMode).url
-        )
+      )
   }
 
   def emailAddress: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
