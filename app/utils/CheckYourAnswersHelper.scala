@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def enterAgentEORI: Option[AnswerRow] = userAnswers.get(EnterAgentEORIPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("enterAgentEORI.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.EnterAgentEORIController.onPageLoad(CheckMode).url
+      )
+  }
+
 
   def whomToPay: Option[AnswerRow] = userAnswers.get(WhomToPayPage) map {
     x =>
