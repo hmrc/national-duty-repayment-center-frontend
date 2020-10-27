@@ -224,3 +224,10 @@ enterAgentEORI.heading = What is the importer''s EORI number?
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
 enterAgentEORI.error.required = Enter Agent EORI Number
 enterAgentEORI.error.length = Agent EORI number must be 17 characters or less
+
+isImporterVatRegistered.title = Is the importer VAT registered?
+isImporterVatRegistered.heading = Is the importer VAT registered?
+isImporterVatRegistered.01 = Yes
+isImporterVatRegistered.02 = No
+isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
+isImporterVatRegistered.error.required = Select whether the importer is VAT registered?

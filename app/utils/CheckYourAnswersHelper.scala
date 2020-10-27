@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def isImporterVatRegistered: Option[AnswerRow] = userAnswers.get(IsImporterVatRegisteredPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("isImporterVatRegistered.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"isImporterVatRegistered.$x")),
+        routes.IsImporterVatRegisteredController.onPageLoad(CheckMode).url
+      )
+  }
+
   def enterAgentEORI: Option[AnswerRow] = userAnswers.get(EnterAgentEORIPage) map {
     x =>
       AnswerRow(
