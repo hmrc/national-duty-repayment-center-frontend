@@ -185,6 +185,12 @@ contactType.error.required = Select Contact Type
 contactType.hint = We will only use these details if we need more information to complete your application.
 
 
+agentNameImporter.title = What is your name?
+agentNameImporter.heading = What is your name?
+agentNameImporter.checkYourAnswersLabel = What is your name?
+agentNameImporter.error.required = Enter your name
+agentNameImporter.error.length = Your name must be 512 characters or less
+
 phoneNumber.title = Enter your phone number
 phoneNumber.heading = Enter your phone number
 phoneNumber.checkYourAnswersLabel = Enter your phone number
@@ -198,4 +204,5 @@ emailAddress.checkYourAnswersLabel = What is your email address?
 emailAddress.error.required = Enter Email Address
 emailAddress.error.length = Email Address must be 85 characters or less
 emailAddress.hint = Enter an email address in the correct format, like name@example.com.
+
 
