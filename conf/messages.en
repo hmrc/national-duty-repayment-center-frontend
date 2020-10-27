@@ -219,3 +219,8 @@ repaymentType.02 = Current month amendment (CMA)
 repaymentType.checkYourAnswersLabel = Select repayment method
 repaymentType.error.required = Select repayment method
 
+enterAgentEORI.title = What is the importer''s EORI number?
+enterAgentEORI.heading = What is the importer''s EORI number?
+enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
+enterAgentEORI.error.required = Enter Agent EORI Number
+enterAgentEORI.error.length = Agent EORI number must be 17 characters or less
