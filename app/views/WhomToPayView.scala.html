@@ -34,13 +34,9 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading(messages("whomToPay.heading"))
-
         @components.input_radio(
             field = form("value"),
             legend = messages("whomToPay.heading"),
-            label = Some(messages("whomToPay.heading")),
-            labelClass = Some("visually-hidden"),
             headingIsLegend = true,
             inputs = WhomToPay.options.toSeq
         )
