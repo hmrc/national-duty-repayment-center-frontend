@@ -37,13 +37,9 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading(messages("numberOfEntriesType.heading"))
-
         @components.input_radio(
             field = form("value"),
             legend = messages("numberOfEntriesType.heading"),
-            label = Some(messages("numberOfEntriesType.heading")),
-            labelClass = Some("visually-hidden"),
             headingIsLegend = true,
             inputs = NumberOfEntriesType.options.toSeq
         )

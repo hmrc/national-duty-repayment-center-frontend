@@ -16,6 +16,8 @@
 
 @import controllers.routes._
 @import models.{Mode, IsImporterVatRegistered}
+@import uk.gov.hmrc.play.views.html._
+@import views.ViewUtils._
 
 @this(
     main_template: MainTemplate,
@@ -33,8 +35,6 @@
         @components.back_link()
 
         @components.error_summary(form.errors)
-
-        @components.heading(messages("isImporterVatRegistered.heading"))
 
         @components.input_radio(
             field = form("value"),
