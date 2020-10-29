@@ -114,6 +114,7 @@ claimEntryNumber.error.length = Entry number must be 7 characters or less
 
 claimEntryDate.title = What was the entry date?
 claimEntryDate.heading = What was the entry date?
+claimEntryDate.hint = For example, 27 3 2007
 claimEntryDate.checkYourAnswersLabel = What was the entry date?
 claimEntryDate.error.required.all = Enter the entry date
 claimEntryDate.error.required.two = The entry date must include {0} and {1}
