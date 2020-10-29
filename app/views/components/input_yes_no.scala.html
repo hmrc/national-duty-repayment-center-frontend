@@ -30,13 +30,19 @@
 
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
-    <fieldset class="inline" id="@{field.id}" @if(field.hasErrors || hint.nonEmpty){aria-describedby="@if(hint.isDefined){hint-@{field.id}-input}@if(field.hasErrors && hint.isDefined){ }@if(field.hasErrors){error-message-@{field.id}-input}"}>
+    <fieldset class="inline" id="@{field.id}" @if(field.hasErrors || hint.isDefined){aria-describedby="@if(hint.isDefined){hint-@{field.id}-input}@if(field.hasErrors && hint.isDefined){ }@if(field.hasErrors){error-message-@{field.id}-input}"}>
+
 
         <legend>
-            <h1 @if(legendClass.nonEmpty){class="@legendClass" }else{class="heading-large"}>@legend</h1>
+            @if(label.isDefined){
+            <div @if(labelClass.isDefined) {class="@labelClass"}>@label</div>
+            }
+            @labelHtml.map {lb => @lb}
         </legend>
 
-        @if(hint.nonEmpty){
+        @contentHtml.map {content => @content}
+
+        @if(hint.isDefined){
         <div class="form-hint mb-2" id="hint-@{field.id}-input">@hint</div>
         }
 

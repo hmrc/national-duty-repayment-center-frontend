@@ -36,10 +36,11 @@
 
         @components.error_summary(form.errors)
 
-        @components.input_yes_no(
+        @components.input_radio(
             field = form("value"),
             legend = messages("isImporterVatRegistered.heading"),
             headingIsLegend = true,
+            inputs = IsImporterVatRegistered.options.toSeq
         )
 
         @components.submit_button()
