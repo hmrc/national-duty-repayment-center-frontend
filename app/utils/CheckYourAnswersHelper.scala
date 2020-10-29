@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def vATPaid: Option[AnswerRow] = userAnswers.get(VATPaidPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("vATPaid.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.VATPaidController.onPageLoad(CheckMode).url
+      )
+  }
+
   def agentImporterHasEORI: Option[AnswerRow] = userAnswers.get(AgentImporterHasEORIPage) map {
     x =>
       AnswerRow(

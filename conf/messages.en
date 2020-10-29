@@ -239,3 +239,8 @@ isImporterVatRegistered.02 = No
 isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
 isImporterVatRegistered.error.required = Select whether the importer is VAT registered?
 
+vATPaid.title = How much VAT did you pay?
+vATPaid.heading = How much VAT did you pay?
+vATPaid.checkYourAnswersLabel = How much VAT did you pay?
+vATPaid.error.required = Enter VAT you paid?
+vATPaid.error.length = VAT paid must be 14 characters or less
