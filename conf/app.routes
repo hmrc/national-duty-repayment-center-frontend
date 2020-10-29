@@ -150,3 +150,8 @@ POST       /isImporterVatRegistered                        controllers.IsImporte
 GET        /changeIsImporterVatRegistered                  controllers.IsImporterVatRegisteredController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIsImporterVatRegistered                  controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = CheckMode)
 
+
+GET        /vatPaid                        controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /vatPaid                        controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /changeVATPaid                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeVATPaid                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)

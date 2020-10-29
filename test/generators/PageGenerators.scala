@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryVATPaidPage: Arbitrary[VATPaidPage.type] =
+    Arbitrary(VATPaidPage)
+
   implicit lazy val arbitraryAgentImporterHasEORIPage: Arbitrary[AgentImporterHasEORIPage.type] =
     Arbitrary(AgentImporterHasEORIPage)
 
