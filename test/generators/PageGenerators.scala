@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryVATDueToHMRCPage: Arbitrary[VATDueToHMRCPage.type] =
+    Arbitrary(VATDueToHMRCPage)
+
   implicit lazy val arbitraryVATPaidPage: Arbitrary[VATPaidPage.type] =
     Arbitrary(VATPaidPage)
 
