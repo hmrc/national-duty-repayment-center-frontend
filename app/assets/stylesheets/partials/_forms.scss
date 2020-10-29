@@ -158,3 +158,22 @@ override character count display
 .form-label {
     padding-bottom: 0px;
 }
+/* form element Fixed width inputs added in line with GDS*/
+.govuk-input--width-20 {
+    max-width: 41ex;
+}
+.govuk-input--width-10 {
+    max-width: 23ex;
+}
+.govuk-input--width-5 {
+    max-width: 10.8ex;
+}
+.govuk-input--width-4 {
+    max-width: 9ex;
+}
+.govuk-input--width-3 {
+    max-width: 7.2ex;
+}
+.govuk-input--width-2 {
+    max-width: 5.4ex;
+}
