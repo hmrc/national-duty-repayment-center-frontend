@@ -155,3 +155,8 @@ GET        /vatPaid                        controllers.VATPaidController.onPageL
 POST       /vatPaid                        controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
 GET        /changeVATPaid                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeVATPaid                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
+
+GET        /vatDueToHMRC                        controllers.VATDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
+POST       /vatDueToHMRC                        controllers.VATDueToHMRCController.onSubmit(mode: Mode = NormalMode)
+GET        /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onSubmit(mode: Mode = CheckMode)

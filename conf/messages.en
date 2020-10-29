@@ -244,3 +244,9 @@ vATPaid.heading = How much VAT did you pay?
 vATPaid.checkYourAnswersLabel = How much VAT did you pay?
 vATPaid.error.required = Enter VAT you paid?
 vATPaid.error.length = VAT paid must be 14 characters or less
+
+vATDueToHMRC.title = How much VAT was due to HMRC?
+vATDueToHMRC.heading = How much VAT was due to HMRC?
+vATDueToHMRC.checkYourAnswersLabel = How much VAT was due to HMRC?
+vATDueToHMRC.error.required = Enter VAT Due to HMRC
+vATDueToHMRC.error.length = VAT due must be 14 characters or less
