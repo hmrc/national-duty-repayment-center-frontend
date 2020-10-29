@@ -34,15 +34,11 @@
 
         @components.back_link()
 
-        @components.heading(messages("importerHasEori.heading"))
-
         @components.error_summary(form.errors)
 
         @components.input_yes_no(
             field = form("value"),
             legend = messages("importerHasEori.heading"),
-            label = Some(messages("importerHasEori.heading")),
-            labelClass = Some("visually-hidden"),
             headingIsLegend = true
         )
 

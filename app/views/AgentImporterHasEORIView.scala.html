@@ -34,11 +34,10 @@
 
         @components.error_summary(form.errors)
 
-        @components.input_radio(
+        @components.input_yes_no(
             field = form("value"),
             legend = messages("agentImporterHasEORI.heading"),
             headingIsLegend = true,
-            inputs = AgentImporterHasEORI.options.toSeq
         )
 
         @components.submit_button()
