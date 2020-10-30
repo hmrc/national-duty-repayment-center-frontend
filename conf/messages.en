@@ -239,3 +239,9 @@ isImporterVatRegistered.02 = No
 isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
 isImporterVatRegistered.error.required = Select whether the importer is VAT registered?
 
+
+customsDutyPaid.title = How much Customs Duty did you pay?
+customsDutyPaid.heading = How much Customs Duty did you pay?
+customsDutyPaid.checkYourAnswersLabel = How much Customs Duty did you pay?
+customsDutyPaid.error.required = Enter How much Customs Duty you paid
+customsDutyPaid.error.length = Customs Duty paid must be 14 characters or less

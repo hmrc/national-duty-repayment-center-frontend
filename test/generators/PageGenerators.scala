@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryCustomsDutyPaidPage: Arbitrary[CustomsDutyPaidPage.type] =
+    Arbitrary(CustomsDutyPaidPage)
+
   implicit lazy val arbitraryAgentImporterHasEORIPage: Arbitrary[AgentImporterHasEORIPage.type] =
     Arbitrary(AgentImporterHasEORIPage)
 

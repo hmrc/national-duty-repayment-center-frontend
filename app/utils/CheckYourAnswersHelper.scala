@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def customsDutyPaid: Option[AnswerRow] = userAnswers.get(CustomsDutyPaidPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.CustomsDutyPaidController.onPageLoad(CheckMode).url
+      )
+  }
+
   def agentImporterHasEORI: Option[AnswerRow] = userAnswers.get(AgentImporterHasEORIPage) map {
     x =>
       AnswerRow(
