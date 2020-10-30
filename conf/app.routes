@@ -175,3 +175,8 @@ GET        /otherDutiesPaid                        controllers.OtherDutiesPaidCo
 POST       /otherDutiesPaid                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
 GET        /changeOtherDutiesPaid                  controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeOtherDutiesPaid                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
+
+GET        /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
+POST       /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = NormalMode)
+GET        /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = CheckMode)
