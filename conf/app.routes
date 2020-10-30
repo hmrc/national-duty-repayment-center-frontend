@@ -165,3 +165,8 @@ GET        /customsDutyPaid                        controllers.customsDutyPaidCo
 POST       /customsDutyPaid                        controllers.customsDutyPaidController.onSubmit(mode: Mode = NormalMode)
 GET        /changecustomsDutyPaid                  controllers.customsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /changecustomsDutyPaid                  controllers.customsDutyPaidController.onSubmit(mode: Mode = CheckMode)
+
+GET        /customsDutyDue                        controllers.CustomsDutyDueController.onPageLoad(mode: Mode = NormalMode)
+POST       /customsDutyDue                        controllers.CustomsDutyDueController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCustomsDutyDue                  controllers.CustomsDutyDueController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCustomsDutyDue                  controllers.CustomsDutyDueController.onSubmit(mode: Mode = CheckMode)
