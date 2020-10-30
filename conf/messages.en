@@ -251,3 +251,9 @@ vATDueToHMRC.heading = How much VAT was due to HMRC?
 vATDueToHMRC.checkYourAnswersLabel = How much VAT was due to HMRC?
 vATDueToHMRC.error.required = Enter VAT Due to HMRC
 vATDueToHMRC.error.length = VAT due must be 14 characters or less
+
+customsDutyPaid.title = How much Customs Duty did you pay?
+customsDutyPaid.heading = How much Customs Duty did you pay?
+customsDutyPaid.checkYourAnswersLabel = How much Customs Duty did you pay?
+customsDutyPaid.error.required = Enter How much Customs Duty you paid
+customsDutyPaid.error.length = Customs Duty paid must be 14 characters or less
