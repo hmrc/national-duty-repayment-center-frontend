@@ -269,3 +269,9 @@ otherDutiesPaid.heading = How much was paid in other duties?
 otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
 otherDutiesPaid.error.required = Enter Other Duties Paid
 otherDutiesPaid.error.length = Other Duties Paid must be 14 characters or less
+
+otherDutiesDueToHMRC.title = How much was due in other duties to HMRC?
+otherDutiesDueToHMRC.heading = How much was due in other duties to HMRC?
+otherDutiesDueToHMRC.checkYourAnswersLabel = How much was due in other duties to HMRC?
+otherDutiesDueToHMRC.error.required = Enter Other Duties Due to HMRC
+otherDutiesDueToHMRC.error.length = Other Duties Due to HMRC must be 14 characters or less
