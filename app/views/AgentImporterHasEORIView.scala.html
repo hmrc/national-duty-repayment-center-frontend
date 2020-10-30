@@ -34,6 +34,7 @@
 
         @components.error_summary(form.errors)
 
+        <div class="inline">
         @components.input_radio(
             field = form("value"),
             legend = messages("agentImporterHasEORI.heading"),
@@ -42,5 +43,6 @@
         )
 
         @components.submit_button()
+        </div>
     }
 }
