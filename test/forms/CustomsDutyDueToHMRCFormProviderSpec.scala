@@ -19,13 +19,13 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class customsDutyPaidFormProviderSpec extends StringFieldBehaviours {
+class CustomsDutyDueToHMRCFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "customsDutyPaid.error.required"
-  val lengthKey = "customsDutyPaid.error.length"
+  val requiredKey = "customsDutyDueToHMRC.error.required"
+  val lengthKey = "customsDutyDueToHMRC.error.length"
   val maxLength = 14
 
-  val form = new customsDutyPaidFormProvider()()
+  val form = new CustomsDutyDueToHMRCFormProvider()()
 
   ".value" must {
 

@@ -16,17 +16,11 @@
 
 package pages
 
-import pages.behaviours.PageBehaviours
+import play.api.libs.json.JsPath
 
+case object CustomsDutyDueToHMRCPage extends QuestionPage[String] {
 
-class customsDutyPaidPageSpec extends PageBehaviours {
+  override def path: JsPath = JsPath \ toString
 
-  "customsDutyPaidPage" must {
-
-    beRetrievable[String](customsDutyPaidPage)
-
-    beSettable[String](customsDutyPaidPage)
-
-    beRemovable[String](customsDutyPaidPage)
-  }
+  override def toString: String = "customsDutyDueToHMRC"
 }

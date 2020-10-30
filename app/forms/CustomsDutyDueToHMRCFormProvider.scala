@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import javax.inject.Inject
 
+import forms.mappings.Mappings
+import play.api.data.Form
 
-class customsDutyPaidPageSpec extends PageBehaviours {
+class CustomsDutyDueToHMRCFormProvider @Inject() extends Mappings {
 
-  "customsDutyPaidPage" must {
-
-    beRetrievable[String](customsDutyPaidPage)
-
-    beSettable[String](customsDutyPaidPage)
-
-    beRemovable[String](customsDutyPaidPage)
-  }
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("customsDutyDueToHMRC.error.required")
+        .verifying(maxLength(14, "customsDutyDueToHMRC.error.length"))
+    )
 }

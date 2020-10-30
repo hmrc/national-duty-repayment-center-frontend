@@ -19,14 +19,14 @@ package pages
 import pages.behaviours.PageBehaviours
 
 
-class customsDutyPaidPageSpec extends PageBehaviours {
+class CustomsDutyDueToHMRCPageSpec extends PageBehaviours {
 
-  "customsDutyPaidPage" must {
+  "CustomsDutyDueToHMRCPage" must {
 
-    beRetrievable[String](customsDutyPaidPage)
+    beRetrievable[String](CustomsDutyDueToHMRCPage)
 
-    beSettable[String](customsDutyPaidPage)
+    beSettable[String](CustomsDutyDueToHMRCPage)
 
-    beRemovable[String](customsDutyPaidPage)
+    beRemovable[String](CustomsDutyDueToHMRCPage)
   }
 }
