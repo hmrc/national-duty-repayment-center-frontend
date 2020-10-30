@@ -151,7 +151,18 @@ GET        /changeIsImporterVatRegistered                  controllers.IsImporte
 POST       /changeIsImporterVatRegistered                  controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = CheckMode)
 
 
+
 GET        /customsDutyPaid                        controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = NormalMode)
 POST       /customsDutyPaid                        controllers.CustomsDutyPaidController.onSubmit(mode: Mode = NormalMode)
 GET        /changeCustomsDutyPaid                  controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCustomsDutyPaid                  controllers.CustomsDutyPaidController.onSubmit(mode: Mode = CheckMode)
+
+GET        /vatPaid                        controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /vatPaid                        controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /changeVATPaid                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeVATPaid                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
+
+GET        /vatDueToHMRC                        controllers.VATDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
+POST       /vatDueToHMRC                        controllers.VATDueToHMRCController.onSubmit(mode: Mode = NormalMode)
+GET        /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onSubmit(mode: Mode = CheckMode)

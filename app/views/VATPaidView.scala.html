@@ -14,6 +14,9 @@
  * limitations under the License.
  *@
 
+@import controllers.routes._
+@import models.Mode
+
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
@@ -22,20 +25,19 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("claimEntryDate.title")}"
-) {
+    title = s"${errorPrefix(form)} ${messages("vATPaid.title")}"
+    ) {
 
-    @formHelper(action = ClaimEntryDateController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = VATPaidController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.input_date(
-            field = form("value"),
-            legend = messages("claimEntryDate.heading"),
-            hint = Some(messages("claimEntryDate.hint")),
-            headingIsLegend = true
+        @components.input_text(
+          field = form("value"),
+          label = messages("vATPaid.heading"),
+          headingIsLabel = true
         )
 
         @components.submit_button()

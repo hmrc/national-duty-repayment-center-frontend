@@ -114,6 +114,7 @@ claimEntryNumber.error.length = Entry number must be 7 characters or less
 
 claimEntryDate.title = What was the entry date?
 claimEntryDate.heading = What was the entry date?
+claimEntryDate.hint = For example, 27 3 2007
 claimEntryDate.checkYourAnswersLabel = What was the entry date?
 claimEntryDate.error.required.all = Enter the entry date
 claimEntryDate.error.required.two = The entry date must include {0} and {1}
@@ -245,3 +246,15 @@ customsDutyPaid.heading = How much Customs Duty did you pay?
 customsDutyPaid.checkYourAnswersLabel = How much Customs Duty did you pay?
 customsDutyPaid.error.required = Enter How much Customs Duty you paid
 customsDutyPaid.error.length = Customs Duty paid must be 14 characters or less
+
+vATPaid.title = How much VAT did you pay?
+vATPaid.heading = How much VAT did you pay?
+vATPaid.checkYourAnswersLabel = How much VAT did you pay?
+vATPaid.error.required = Enter VAT you paid?
+vATPaid.error.length = VAT paid must be 14 characters or less
+
+vATDueToHMRC.title = How much VAT was due to HMRC?
+vATDueToHMRC.heading = How much VAT was due to HMRC?
+vATDueToHMRC.checkYourAnswersLabel = How much VAT was due to HMRC?
+vATDueToHMRC.error.required = Enter VAT Due to HMRC
+vATDueToHMRC.error.length = VAT due must be 14 characters or less

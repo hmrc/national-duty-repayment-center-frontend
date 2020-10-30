@@ -28,12 +28,30 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+
   def customsDutyPaid: Option[AnswerRow] = userAnswers.get(CustomsDutyPaidPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
         routes.CustomsDutyPaidController.onPageLoad(CheckMode).url
+
+  def vATDueToHMRC: Option[AnswerRow] = userAnswers.get(VATDueToHMRCPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("vATDueToHMRC.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.VATDueToHMRCController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def vATPaid: Option[AnswerRow] = userAnswers.get(VATPaidPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("vATPaid.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.VATPaidController.onPageLoad(CheckMode).url
+
       )
   }
 

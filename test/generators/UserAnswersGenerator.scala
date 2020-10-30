@@ -28,6 +28,8 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(CustomsDutyPaidPage.type, JsValue)] ::
+    arbitrary[(VATDueToHMRCPage.type, JsValue)] ::
+    arbitrary[(VATPaidPage.type, JsValue)] ::
     arbitrary[(AgentImporterHasEORIPage.type, JsValue)] ::
     arbitrary[(IsImporterVatRegisteredPage.type, JsValue)] ::
     arbitrary[(EnterAgentEORIPage.type, JsValue)] ::
