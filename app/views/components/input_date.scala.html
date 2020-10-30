@@ -43,7 +43,7 @@
             </div>
         }
 
-        <div id="@field.id" class="form-date">
+        <div id="@field.id-data" class="form-date">
             @List("day", "month", "year").map { part =>
               <div class="form-control-wrapper form-group form-group-@part">
                 <label class="form-label" for="@field(part).id">@messages(s"date.$part")</label>
