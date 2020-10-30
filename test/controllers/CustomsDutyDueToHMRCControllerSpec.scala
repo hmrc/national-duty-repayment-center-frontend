@@ -17,43 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.customsDutyPaidFormProvider
+import forms.CustomsDutyDueToHMRCFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.customsDutyPaidPage
+import pages.CustomsDutyDueToHMRCPage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.customsDutyPaidView
+import views.html.CustomsDutyDueToHMRCView
 
 import scala.concurrent.Future
 
-class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
+class CustomsDutyDueToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new customsDutyPaidFormProvider()
+  val formProvider = new CustomsDutyDueToHMRCFormProvider()
   val form = formProvider()
 
-  lazy val customsDutyPaidRoute = routes.customsDutyPaidController.onPageLoad(NormalMode).url
+  lazy val customsDutyDueToHMRCRoute = routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode).url
 
-  "customsDutyPaid Controller" must {
+  "CustomsDutyDueToHMRC Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, customsDutyPaidRoute)
+      val request = FakeRequest(GET, customsDutyDueToHMRCRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[CustomsDutyDueToHMRCView]
 
       status(result) mustEqual OK
 
@@ -65,13 +65,13 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(customsDutyPaidPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(CustomsDutyDueToHMRCPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, customsDutyPaidRoute)
+      val request = FakeRequest(GET, customsDutyDueToHMRCRoute)
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[CustomsDutyDueToHMRCView]
 
       val result = route(application, request).value
 
@@ -98,7 +98,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, customsDutyPaidRoute)
+        FakeRequest(POST, customsDutyDueToHMRCRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
@@ -114,12 +114,12 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, customsDutyPaidRoute)
+        FakeRequest(POST, customsDutyDueToHMRCRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[CustomsDutyDueToHMRCView]
 
       val result = route(application, request).value
 
@@ -135,7 +135,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, customsDutyPaidRoute)
+      val request = FakeRequest(GET, customsDutyDueToHMRCRoute)
 
       val result = route(application, request).value
 
@@ -151,7 +151,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, customsDutyPaidRoute)
+        FakeRequest(POST, customsDutyDueToHMRCRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value

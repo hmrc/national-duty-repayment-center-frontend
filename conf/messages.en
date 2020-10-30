@@ -257,3 +257,9 @@ customsDutyPaid.heading = How much Customs Duty did you pay?
 customsDutyPaid.checkYourAnswersLabel = How much Customs Duty did you pay?
 customsDutyPaid.error.required = Enter How much Customs Duty you paid
 customsDutyPaid.error.length = Customs Duty paid must be 14 characters or less
+
+customsDutyDueToHMRC.title = How much Customs Duty was due to HMRC?
+customsDutyDueToHMRC.heading = How much Customs Duty was due to HMRC?
+customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty was due to HMRC?
+customsDutyDueToHMRC.error.required = Enter Customs Duty Due To HMRC
+customsDutyDueToHMRC.error.length = Customs Duty Due To HMRC must be 14 characters or less

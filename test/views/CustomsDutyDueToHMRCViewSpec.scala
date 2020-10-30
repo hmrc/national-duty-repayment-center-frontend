@@ -17,22 +17,22 @@
 package views
 
 import controllers.routes
-import forms.customsDutyPaidFormProvider
+import forms.CustomsDutyDueToHMRCFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.customsDutyPaidView
+import views.html.CustomsDutyDueToHMRCView
 
-class customsDutyPaidViewSpec extends StringViewBehaviours {
+class CustomsDutyDueToHMRCViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "customsDutyPaid"
+  val messageKeyPrefix = "customsDutyDueToHMRC"
 
-  val form = new customsDutyPaidFormProvider()()
+  val form = new CustomsDutyDueToHMRCFormProvider()()
 
-  "customsDutyPaidView view" must {
+  "CustomsDutyDueToHMRCView view" must {
 
-    val view = viewFor[customsDutyPaidView](Some(emptyUserAnswers))
+    val view = viewFor[CustomsDutyDueToHMRCView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -41,6 +41,6 @@ class customsDutyPaidViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.customsDutyPaidController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.CustomsDutyDueToHMRCController.onSubmit(NormalMode).url)
   }
 }
