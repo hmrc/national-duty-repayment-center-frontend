@@ -290,3 +290,9 @@ agentImporterAddress.heading = What is the importer's address?
 agentImporterAddress.checkYourAnswersLabel = What is the importer's address?
 agentImporterAddress.error.required = Enter Importer's address
 agentImporterAddress.error.length = Importer's address must be 9 characters or less
+
+confirmation.title = Application complete
+confirmation.heading = Application complete
+confirmation.whatHappensNext.heading = What happens next
+confirmation.whatHappensNext.p1 = We’ve sent your application to the NDRC team.
+confirmation.whatHappensNext.p2 = They will contact you either to confirm your registration, or to ask for more information.
