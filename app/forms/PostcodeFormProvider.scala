@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.PostcodeLookup
+import play.api.data.Forms.{optional, _}
+import play.api.data.{Form, Forms}
 
+class PostcodeFormProvider @Inject() extends Mappings {
 
-class ImporterAddressPageSpec extends PageBehaviours {
-
-  "ImporterAddressPage" must {
-
-    beRetrievable[String](ImporterAddressPage)
-
-    beSettable[String](ImporterAddressPage)
-
-    beRemovable[String](ImporterAddressPage)
-  }
+  def apply(): Form[PostcodeLookup] =
+    Form(
+      mapping(
+        "address-postcode" -> text("postcode.error.required"),
+        "address-propertyNumber" -> optional(Forms.text
+          .verifying(maxLength(40, "postcode.propertyNumber.error.length")))
+      )(PostcodeLookup.apply)(PostcodeLookup.unapply)
+    )
 }

@@ -17,9 +17,9 @@
 package controllers
 
 import controllers.actions._
-import forms.ImporterAddressFormProvider
+import forms.{AddressFormProvider, AddressSelectionFormProvider, PostcodeFormProvider, ImporterAddressFormProvider}
 import javax.inject.Inject
-import models.Mode
+import models.{Address, Mode, PostcodeLookup}
 import navigation.Navigator
 import pages.ImporterAddressPage
 import org.slf4j.LoggerFactory
@@ -39,163 +39,39 @@ class ImporterAddressController @Inject()(
                                            identify: IdentifierAction,
                                            getData: DataRetrievalAction,
                                            requireData: DataRequiredAction,
-                                           formProvider: ImporterAddressFormProvider,
+                                           addressFormProvider: ImporterAddressFormProvider,
+                                           postcodeFormProvider: PostcodeFormProvider,
+                                           addressSelectionFormProvider: AddressSelectionFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
                                            view: ImporterAddressView
                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form = addressFormProvider()
 
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
 
-  private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
-
-  private val addressForm = addressFormProvider()
-  private val postcodeForm = postcodeFormProvider()
-  private val selectionForm = addressSelectionFormProvider()
-
-  def postcodePageLoad(index: Index, mode: Mode): Action[AnyContent] =
-    (identify andThen checkRegistration andThen getData andThen requireData).async { implicit request =>
-      requirePreviousAnswers(index, mode, request.userAnswers) {
-        val preparedForm = request.userAnswers.get(RestaurantPostcodePage(index)) match {
-          case None => postcodeForm
-          case Some(value) =>
-            postcodeForm.fill(PostcodeLookup(value, None))
-        }
-        Future.successful(Ok(postcodeView(preparedForm, index, mode)))
+      val preparedForm = request.userAnswers.get(ImporterAddressPage) match {
+        case None => form
+        case Some(value) => form.fill(value)
       }
-    }
 
-  def postcodeSubmit(index: Index, mode: Mode): Action[AnyContent] =
-    (identify andThen checkRegistration andThen getData andThen requireData).async { implicit request =>
-      requirePreviousAnswers(index, mode, request.userAnswers) {
-        postcodeForm.bindFromRequest.fold(
-          formWithErrors =>
-            Future.successful(BadRequest(postcodeView(formWithErrors, index, mode))),
-          lookup => {
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(RestaurantPostcodePage(index), lookup.postcode))
-              _ <- sessionRepository.set(updatedAnswers)
-              lookupResult <- doPostcodeLookup(lookup, index, mode, selectionForm)
-            } yield lookupResult
-          }
-        )
-      }
-    }
-
-  private def doPostcodeLookup(lookup: PostcodeLookup,
-                               index: Index,
-                               mode: Mode,
-                               form: Form[JsObject])(implicit request: RequestWithInternalId[_]): Future[Result] = {
-    addressLookupConnector.addressLookup(lookup) map {
-      case Left(err) =>
-        logger.warn(s"Address lookup failure $err")
-        BadRequest(postcodeView(buildLookupFailureError(lookup), index, mode))
-
-      case Right(candidates) if candidates.noOfHits == 0 =>
-        BadRequest(postcodeView(buildLookupFailureError(lookup), index, mode))
-
-      case Right(candidates) =>
-        val selectionItems = sorter.sort(candidates.candidateAddresses)
-          .map(RestaurantLocationInfo.fromLookupResponse)
-          .map(a => RadioItem(
-            content = Text(a.address.inlineText),
-            value = Some(Json.toJson(a).toString())))
-        if (form.hasErrors) {
-          BadRequest(addressFoundView(form, lookup, selectionItems, index, mode))
-        } else {
-          Ok(addressFoundView(form, lookup, selectionItems, index, mode))
-        }
-    }
+      Ok(view(preparedForm, mode))
   }
 
-  private def buildLookupFailureError(lookup: PostcodeLookup) =
-    if (lookup.houseNumber.isDefined) {
-      postcodeForm.fill(lookup).withError("address-propertyNumber", "postcode.propertyNumber.error.noneFound")
-    } else {
-      postcodeForm.fill(lookup).withError("address-postcode", "postcode.error.noneFound")
-    }
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
 
-  private def extractSearchTerms(formData: Option[Map[String, Seq[String]]]): Option[PostcodeLookup] = for {
-    form <- formData
-    postcode <- form.get("address-postcode").flatMap(_.headOption)
-    propertyNumber = form.get("address-propertyNumber").flatMap(_.headOption)
-  } yield PostcodeLookup(postcode, propertyNumber)
+      form.bindFromRequest().fold(
+        formWithErrors =>
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
-  def addressSelectOnLoad(index: Index, mode: Mode): Action[AnyContent] =
-    (identify andThen checkRegistration andThen getData andThen requireData).async { request =>
-      requirePreviousAnswers(index, mode, request.userAnswers) {
-        Future.successful(Redirect(routes.RestaurantAddressController.postcodePageLoad(index, mode)))
-      }
-    }
-
-  def addressSelectSubmit(index: Index, mode: Mode): Action[AnyContent] =
-    (identify andThen checkRegistration andThen getData andThen requireData).async { implicit request =>
-      requirePreviousAnswers(index, mode, request.userAnswers) {
-        extractSearchTerms(request.body.asFormUrlEncoded).map { searchTerms =>
-          selectionForm.bindFromRequest().fold(
-            formWithErrors =>
-              doPostcodeLookup(searchTerms, index, mode, formWithErrors),
-
-            js =>
-              addressForm.bind(js.value.getOrElse("address", Json.obj())).fold(
-                addressFormWithErrors =>
-                  Future.successful(BadRequest(addressView(addressFormWithErrors, index, mode))),
-                address => {
-                  val selectedAddress = RestaurantLocationInfo.format.reads(js).getOrElse(RestaurantLocationInfo(address, None, None))
-                  for {
-                    updatedAddress <- Future.fromTry(request.userAnswers.set(RestaurantAddressPage(index), selectedAddress.address))
-                    updatedUprn <- selectedAddress.uprn match {
-                      case Some(uprn) => Future.fromTry(updatedAddress.set(UprnQuery(index), uprn))
-                      case None => Future.successful(updatedAddress)
-                    }
-                    updatedAnswers <- selectedAddress.location match {
-                      case Some(location) => Future.fromTry(updatedUprn.set(LocationQuery(index), location))
-                      case None => Future.successful(updatedUprn)
-                    }
-                    _ <- sessionRepository.set(updatedAnswers)
-                  } yield Redirect(navigator.nextPage(RestaurantAddressPage(index), mode, updatedAnswers))
-                }
-              )
-          )
-        }.getOrElse(Future.successful(Redirect(routes.RestaurantAddressController.enteredAddressPageLoad(index, mode))))
-      }
-    }
-
-  def enteredAddressPageLoad(index: Index, mode: Mode): Action[AnyContent] =
-    (identify andThen checkRegistration andThen getData andThen requireData).async { implicit request =>
-      requirePreviousAnswers(index, mode, request.userAnswers) {
-
-        val preparedForm = request.userAnswers.get(RestaurantAddressPage(index)) match {
-          case None => addressForm
-          case Some(value) => addressForm.fill(value)
-        }
-
-        Future.successful(Ok(addressView(preparedForm, index, mode)))
-      }
-    }
-
-  def enteredAddressSubmit(index: Index, mode: Mode): Action[AnyContent] =
-    (identify andThen checkRegistration andThen getData andThen requireData).async { implicit request =>
-      requirePreviousAnswers(index, mode, request.userAnswers) {
-        addressForm.bindFromRequest().fold(
-          formWithErrors =>
-            Future.successful(BadRequest(addressView(formWithErrors, index, mode))),
-
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(RestaurantAddressPage(index), value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(RestaurantAddressPage(index), mode, updatedAnswers))
-        )
-      }
-    }
-
-  private def requirePreviousAnswers(index: Index, mode: Mode, userAnswers: UserAnswers)(block: => Future[Result]): Future[Result] = {
-    userAnswers.get(RestaurantNamePage(index)) match {
-      case Some(_) => block
-      case None => Future.successful(Redirect(routes.RestaurantNameController.onPageLoad(index, mode)))
-    }
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(ImporterAddressPage, mode, updatedAnswers))
+      )
   }
-
 
 }

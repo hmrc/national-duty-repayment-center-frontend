@@ -282,7 +282,6 @@ importerAddress.heading = What is your address?
 importerAddress.checkYourAnswersLabel = What is your address?
 importerAddress.manual = Enter address manually
 importerAddress.hint = Postcode
-
 importerAddress.error.required = Enter your address
 importerAddress.error.length = Your address must be 9 characters or less
 

@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import pages.behaviours.PageBehaviours
-
-
-class ImporterAddressPageSpec extends PageBehaviours {
-
-  "ImporterAddressPage" must {
-
-    beRetrievable[String](ImporterAddressPage)
-
-    beSettable[String](ImporterAddressPage)
-
-    beRemovable[String](ImporterAddressPage)
-  }
+final case class PostcodeLookup(postcode: String, houseNumber: Option[String]) {
+  val postCodeTrimmed: String = postcode.replaceAll(" ", "")
 }

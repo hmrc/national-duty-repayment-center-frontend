@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.data.Forms.mapping
+import play.api.libs.json.{JsObject, Json}
 
+class AddressSelectionFormProvider extends Mappings {
 
-class ImporterAddressPageSpec extends PageBehaviours {
-
-  "ImporterAddressPage" must {
-
-    beRetrievable[String](ImporterAddressPage)
-
-    beSettable[String](ImporterAddressPage)
-
-    beRemovable[String](ImporterAddressPage)
-  }
+  def apply(): Form[JsObject] = Form(
+    mapping (
+      "value" -> text("addressFound.error")
+    )(s => Json.parse(s).as[JsObject])((js:JsObject) => Some(js.toString))
+  )
 }

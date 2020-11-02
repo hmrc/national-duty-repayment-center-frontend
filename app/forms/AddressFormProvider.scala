@@ -28,37 +28,56 @@ class AddressFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Address] = Form(
     mapping(
-      "line1" ->
-        text("address.error.line1.required")
+      "AddressLine1" ->
+        text("address.error.AddressLine1.required")
           .verifying(firstError(
-            maxLength(maxLineLength, "address.error.line1.length"),
+            maxLength(maxLineLength, "address.error.AddressLine1.length"),
        //     regexp(Validation.safeInputPattern,"address.error.line1.invalid")
           )),
-      "line2" ->
+      "AddressLine2" ->
         optional(Forms.text
           .verifying(firstError(
-            maxLength(maxLineLength, "address.error.line2.length"),
+            maxLength(maxLineLength, "address.error.AddressLine2.length"),
       //      regexp(Validation.safeInputPattern,"address.error.line2.invalid")
           ))),
-      "town" ->
-        text("address.error.town.required")
+      "City" ->
+        text("address.error.City.required")
           .verifying(firstError(
-            maxLength(maxLineLength, "address.error.town.length"),
+            maxLength(maxLineLength, "address.error.City.length"),
         //    regexp(Validation.safeInputPattern,"address.error.town.invalid")
           )),
-      "county" ->
+      "Region" ->
+        text("address.error.Region.required")
+          .verifying(firstError(
+            maxLength(maxLineLength, "address.error.Region.length"),
+            //    regexp(Validation.safeInputPattern,"address.error.town.invalid")
+          )),
+      "CountryCode" ->
+        text("address.error.CountryCode.required")
+          .verifying(firstError(
+            maxLength(maxLineLength, "address.error.CountryCode.length"),
+            //    regexp(Validation.safeInputPattern,"address.error.town.invalid")
+          )),
+      "PostalCode" ->
         optional(Forms.text
           .verifying(firstError(
-            maxLength(maxCountyLength, "address.error.county.length"),
+            maxLength(maxCountyLength, "address.error.PostalCode.length"),
           //  regexp(Validation.safeInputPattern,"address.error.county.invalid")
           ))),
-      "postCode" ->
-        text("address.error.postCode.required")
+      "TelephoneNumber" ->
+        optional(Forms.text
           .verifying(firstError(
-          //  regexp(Validation.postcodeRegex, "address.error.postCode.invalid")
-          ))
-    )(Address.apply)(address => Some((address.AddressLine1, Some(address.AddressLine2), address.City, address.Region,
-      address.CountryCode, Some(address.PostalCode), Some(address.TelephoneNumber),Some(address.EmailAddress))))
+            maxLength(maxCountyLength, "address.error.TelephoneNumber.length"),
+            //  regexp(Validation.safeInputPattern,"address.error.county.invalid")
+          ))),
+      "EmailAddress" ->
+        optional(Forms.text
+          .verifying(firstError(
+            maxLength(maxCountyLength, "address.error.EmailAddress.length"),
+            //  regexp(Validation.safeInputPattern,"address.error.county.invalid")
+          )))
+    )(Address.apply)(address => Some((address.AddressLine1,address.AddressLine2, address.City, address.Region,
+      address.CountryCode, address.PostalCode, address.TelephoneNumber,address.EmailAddress)))
   )
 
 }
