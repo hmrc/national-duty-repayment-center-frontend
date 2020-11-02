@@ -27,19 +27,17 @@ import play.api.{Configuration, http}
 import scala.concurrent.{ExecutionContext, Future}
 
 
-
-class RepaymentConnector @Inject()(
-                                    config: Configuration,
-                                    httpClient: HttpClient
-                                  )(
-                                    implicit ec: ExecutionContext
-                                  ) extends HttpErrorFunctions {
+class NDRCConnector @Inject()(
+                               config: Configuration,
+                               httpClient: HttpClient
+                             )(
+                               implicit ec: ExecutionContext
+                             ) extends HttpErrorFunctions {
 
   private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center")
 
-  def submitRepayment(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
+  def submitClaim(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
     httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](s"$baseUrl/national-duty-repayment-center/create-case", request)
-
 
 }
 
