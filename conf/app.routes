@@ -180,3 +180,5 @@ GET        /otherDutiesDueToHMRC                        controllers.OtherDutiesD
 POST       /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = NormalMode)
 GET        /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = CheckMode)
+
+GET        /confirmation                       controllers.confirmationController.onPageLoad()

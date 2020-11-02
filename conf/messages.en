@@ -275,3 +275,9 @@ otherDutiesDueToHMRC.heading = How much was due in other duties to HMRC?
 otherDutiesDueToHMRC.checkYourAnswersLabel = How much was due in other duties to HMRC?
 otherDutiesDueToHMRC.error.required = Enter Other Duties Due to HMRC
 otherDutiesDueToHMRC.error.length = Other Duties Due to HMRC must be 14 characters or less
+
+confirmation.title = Application complete
+confirmation.heading = Application complete
+confirmation.whatHappensNext.heading = What happens next
+confirmation.whatHappensNext.p1 = We’ve sent your application to the NDRC team.
+confirmation.whatHappensNext.p2 = They will contact you either to confirm your registration, or to ask for more information.
