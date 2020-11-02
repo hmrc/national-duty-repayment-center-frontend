@@ -37,6 +37,7 @@ site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
 site.continue = Continue
+find.address = Find address
 site.service_name = National Duty Repayment Centre
 site.textarea.char_limit = (Limit is {0} characters)
 
@@ -275,3 +276,13 @@ otherDutiesDueToHMRC.heading = How much was due in other duties to HMRC?
 otherDutiesDueToHMRC.checkYourAnswersLabel = How much was due in other duties to HMRC?
 otherDutiesDueToHMRC.error.required = Enter Other Duties Due to HMRC
 otherDutiesDueToHMRC.error.length = Other Duties Due to HMRC must be 14 characters or less
+
+importerAddress.title = What is your address?
+importerAddress.heading = What is your address?
+importerAddress.checkYourAnswersLabel = What is your address?
+importerAddress.manual = Enter address manually
+importerAddress.hint = Postcode
+
+importerAddress.error.required = Enter your address
+importerAddress.error.length = Your address must be 9 characters or less
+

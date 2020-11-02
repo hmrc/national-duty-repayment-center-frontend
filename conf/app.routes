@@ -180,3 +180,8 @@ GET        /otherDutiesDueToHMRC                        controllers.OtherDutiesD
 POST       /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = NormalMode)
 GET        /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = CheckMode)
+
+GET        /importerAddress                        controllers.ImporterAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /importerAddress                        controllers.ImporterAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeImporterAddress                  controllers.ImporterAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeImporterAddress                  controllers.ImporterAddressController.onSubmit(mode: Mode = CheckMode)

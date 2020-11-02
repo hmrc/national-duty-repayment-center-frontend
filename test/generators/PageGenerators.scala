@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryImporterAddressPage: Arbitrary[ImporterAddressPage.type] =
+    Arbitrary(ImporterAddressPage)
+
   implicit lazy val arbitraryOtherDutiesDueToHMRCPage: Arbitrary[OtherDutiesDueToHMRCPage.type] =
     Arbitrary(OtherDutiesDueToHMRCPage)
 
