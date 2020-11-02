@@ -27,10 +27,29 @@ final case class Address(
                           PostalCode:Option[String],
                           TelephoneNumber:Option[String],
                           EmailAddress:Option[String]
-                        )
+                        ){
+  val inlineText: String = List(
+    AddressLine1,
+    Some(AddressLine2),
+    City,
+    Region,
+    CountryCode,
+    Some(PostalCode),
+    Some(TelephoneNumber),
+    Some(EmailAddress),
+
+  ).collect { case Some(x) => x }.mkString(", ")
+}
 
 object Address {
 
   implicit val format: OFormat[Address] = Json.format[Address]
 
+//  def fromLookupResponse(candidate: LookedUpAddressWrapper): Address = Address(
+//    candidate.address.lines.headOption.getOrElse(""),
+//    candidate.address.lines.lift(1),
+//    candidate.address.town,
+//    candidate.address.county,
+//    candidate.address.postcode
+//  )
 }
