@@ -34,6 +34,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("article.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"article.$x")),
         routes.ArticleController.onPageLoad(CheckMode).url
+      )
+  }
 
   def agentImporterManualAddress: Option[AnswerRow] = userAnswers.get(AgentImporterManualAddressPage) map {
     x =>
