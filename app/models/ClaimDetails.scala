@@ -26,7 +26,7 @@ import scala.util.{Failure, Success, Try}
 final case class ClaimDetails(
                                FormType: FormType,
                                CustomRegulationType: CustomsRegulationType,
-                               ClaimedUnderArticle: ArticleType,
+                               ClaimedUnderArticle: Article,
                                Claimant: ClaimantType,
                                ClaimType: NumberOfEntriesType,
                                NoOfEntries: Option[NoOfEntries],

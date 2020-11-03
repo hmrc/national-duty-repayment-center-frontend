@@ -198,3 +198,8 @@ POST       /changeImporterManualAddress                  controllers.ImporterMan
 
 GET        /confirmation                       controllers.confirmationController.onPageLoad()
 
+
+GET        /article                        controllers.ArticleController.onPageLoad(mode: Mode = NormalMode)
+POST       /article                        controllers.ArticleController.onSubmit(mode: Mode = NormalMode)
+GET        /changeArticle                  controllers.ArticleController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeArticle                  controllers.ArticleController.onSubmit(mode: Mode = CheckMode)

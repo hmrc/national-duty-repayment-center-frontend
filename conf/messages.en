@@ -306,3 +306,11 @@ confirmation.heading = Application complete
 confirmation.whatHappensNext.heading = What happens next
 confirmation.whatHappensNext.p1 = We’ve sent your application to the NDRC team.
 confirmation.whatHappensNext.p2 = They will contact you either to confirm your registration, or to ask for more information.
+
+article.title = Why are you applying for this repayment?
+article.heading = Why are you applying for this repayment?
+article.01 = Overpayment of duty or VAT
+article.02 = Error by customs
+article.03 = Exceptional circumstances
+article.checkYourAnswersLabel = Why are you applying for this repayment?
+article.error.required = Select Article
