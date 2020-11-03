@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 final case class DocumentList(
-                               Type: DocumentUploadType,
+                               Type: EvidenceSupportingDocs,
                                Description: Option[DocumentDescription]
                              )
 

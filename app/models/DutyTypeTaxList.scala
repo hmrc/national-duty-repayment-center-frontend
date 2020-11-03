@@ -19,7 +19,7 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 final case class DutyTypeTaxList(
-                                  Type: DutyType,
+                                  Type: ClaimRepaymentType,
                                   PaidAmount: Option[PaidAmount],
                                   DueAmount: Option[DueAmount],
                                   ClaimAmount: Option[ClaimAmount]

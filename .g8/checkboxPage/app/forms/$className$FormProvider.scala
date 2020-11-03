@@ -14,3 +14,4 @@ class $className$FormProvider @Inject() extends Mappings {
       "value" -> set(enumerable[$className$]("$className;format="decap"$.error.required")).verifying(nonEmptySet("$className;format="decap"$.error.required"))
     )
 }
+git

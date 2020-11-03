@@ -26,7 +26,7 @@
 <div class="form-group @if(field.hasErrors){form-group-error}">
     @if(headingIsLabel){
         <h1 class="form-label">
-            <label @if(labelClass.nonEmpty){class="@labelClass" }else{class="heading-xlarge"} for="@{field.id}">
+            <label @if(labelClass.nonEmpty){class="@labelClass" }else{class="heading-large"} for="@{field.id}">
                 @label
             </label>
         </h1>
@@ -46,12 +46,12 @@
     }
     <div class="form-control-wrapper">
         <input
-        class="form-control @inputClass @if(field.hasErrors){form-control-error}"
+        class="form-control--full-width form-control @inputClass"
         type="text"
         id="@{field.id}"
         name="@{field.name}"
         value="@{field.value}"
-        @if(field.hasErrors || hint.nonEmpty){aria-describedby="@if(field.hasErrors){error-message-@{field.id}-input} @if(hint.nonEmpty){hint-@{field.id}}"}
+        @if(field.hasErrors){aria-describedby="error-message-@{field.id}-input"}
         />
     </div>
 </div>

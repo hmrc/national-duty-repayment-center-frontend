@@ -36,11 +36,16 @@ p.font-xsmall{
   display: block;
 }
 
-
 /* CYA padding in line with current GDS */
 @media screen and (min-width: 769px) {
   .govuk-check-your-answers > * > * {
     padding-top: 0.53em;
     padding-bottom: 0.53em;
   }
+}
+
+.form-hint {
+    color: #505a5f;
+    margin: 0 0 15px 0;
+    padding: 0px;
 }

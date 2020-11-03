@@ -17,6 +17,7 @@
 package generators
 
 import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
@@ -26,6 +27,41 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(AgentImporterAddressPage.type, JsValue)] ::
+    arbitrary[(ImporterAddressPage.type, JsValue)] ::
+    arbitrary[(OtherDutiesDueToHMRCPage.type, JsValue)] ::
+    arbitrary[(OtherDutiesPaidPage.type, JsValue)] ::
+    arbitrary[(CustomsDutyDueToHMRCPage.type, JsValue)] ::
+    arbitrary[(customsDutyPaidPage.type, JsValue)] ::
+    arbitrary[(VATDueToHMRCPage.type, JsValue)] ::
+    arbitrary[(VATPaidPage.type, JsValue)] ::
+    arbitrary[(AgentImporterHasEORIPage.type, JsValue)] ::
+    arbitrary[(IsImporterVatRegisteredPage.type, JsValue)] ::
+    arbitrary[(EnterAgentEORIPage.type, JsValue)] ::
+    arbitrary[(WhomToPayPage.type, JsValue)] ::
+    arbitrary[(RepaymentTypePage.type, JsValue)] ::
+    arbitrary[(AgentNameImporterPage.type, JsValue)] ::
+    arbitrary[(PhoneNumberPage.type, JsValue)] ::
+    arbitrary[(EmailAddressPage.type, JsValue)] ::
+    arbitrary[(ContactTypePage.type, JsValue)] ::
+    arbitrary[(ImporterNamePage.type, JsValue)] ::
+    arbitrary[(EvidenceSupportingDocsPage.type, JsValue)] ::
+    arbitrary[(ClaimRepaymentTypePage.type, JsValue)] ::
+    arbitrary[(ReasonForOverpaymentPage.type, JsValue)] ::
+    arbitrary[(WhatAreTheGoodsPage.type, JsValue)] ::
+    arbitrary[(ClaimReasonTypePage.type, JsValue)] ::
+    arbitrary[(ClaimEntryDatePage.type, JsValue)] ::
+    arbitrary[(ClaimEntryNumberPage.type, JsValue)] ::
+    arbitrary[(ClaimEpuPage.type, JsValue)] ::
+    arbitrary[(HowManyEntriesPage.type, JsValue)] ::
+    arbitrary[(NumberOfEntriesTypePage.type, JsValue)] ::
+    arbitrary[(ArticleTypePage.type, JsValue)] ::
+    arbitrary[(CustomsRegulationTypePage.type, JsValue)] ::
+    arbitrary[(ImporterClaimantVrnPage.type, JsValue)] ::
+    arbitrary[(IsVatRegisteredPage.type, JsValue)] ::
+    arbitrary[(ImporterEoriPage.type, JsValue)] ::
+    arbitrary[(ImporterHasEoriPage.type, JsValue)] ::
+    arbitrary[(ClaimantTypePage.type, JsValue)] ::
     Nil
 
   implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] = {
