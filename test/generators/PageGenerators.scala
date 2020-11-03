@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryTypeOfRepaymentPage: Arbitrary[TypeOfRepaymentPage.type] =
+    Arbitrary(TypeOfRepaymentPage)
+
   implicit lazy val arbitraryImporterManualAddressPage: Arbitrary[ImporterManualAddressPage.type] =
     Arbitrary(ImporterManualAddressPage)
 

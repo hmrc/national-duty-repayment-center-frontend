@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryTypeOfRepayment: Arbitrary[TypeOfRepayment] =
+    Arbitrary {
+      Gen.oneOf(TypeOfRepayment.values.toSeq)
+    }
+
   implicit lazy val arbitraryAgentImporterHasEORI: Arbitrary[AgentImporterHasEORI] =
     Arbitrary {
       Gen.oneOf(AgentImporterHasEORI.values.toSeq)

@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def typeOfRepayment: Option[AnswerRow] = userAnswers.get(TypeOfRepaymentPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("typeOfRepayment.checkYourAnswersLabel")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"typeOfRepayment.$value")).toString).mkString(",<br>")),
+        routes.TypeOfRepaymentController.onPageLoad(CheckMode).url
+      )
+  }
+
   def importerManualAddress: Option[AnswerRow] = userAnswers.get(ImporterManualAddressPage) map {
     x =>
       AnswerRow(
