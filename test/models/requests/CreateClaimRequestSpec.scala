@@ -33,7 +33,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       val claimDetails = ClaimDetails(
         FormType = FormType("01"),
         CustomRegulationType = CustomsRegulationType.UKCustomsCodeRegulation,
-        ClaimedUnderArticle = ArticleType.Equity,
+        ClaimedUnderArticle = ArticleType.OverPaymentOfDutyOrVAT,
         Claimant = ClaimantType.Representative,
         ClaimType = NumberOfEntriesType.Multiple,
         NoOfEntries = Some(NoOfEntries("10")),

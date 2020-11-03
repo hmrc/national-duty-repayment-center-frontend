@@ -23,12 +23,12 @@ sealed trait ArticleType
 
 object ArticleType extends Enumerable.Implicits {
 
-  case object OverchargedAmountsOfImportOrExportDuty extends WithName("117") with ArticleType
-  case object ErrorByTheCompetentAuthorities extends WithName("119") with ArticleType
-  case object Equity extends WithName("120") with ArticleType
+  case object OverPaymentOfDutyOrVAT extends WithName("117") with ArticleType
+  case object ErrorByCustoms extends WithName("119") with ArticleType
+  case object ExceptionalCircumstances extends WithName("120") with ArticleType
 
   val values: Seq[ArticleType] = Seq(
-    OverchargedAmountsOfImportOrExportDuty, ErrorByTheCompetentAuthorities, Equity
+    OverPaymentOfDutyOrVAT, ErrorByCustoms, ExceptionalCircumstances
   )
 
   val options: Seq[RadioOption] = values.map {
