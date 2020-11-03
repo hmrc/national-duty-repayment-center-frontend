@@ -290,3 +290,13 @@ agentImporterAddress.heading = What is the importer's address?
 agentImporterAddress.checkYourAnswersLabel = What is the importer's address?
 agentImporterAddress.error.required = Enter Importer's address
 agentImporterAddress.error.length = Importer's address must be 9 characters or less
+
+importerManualAddress.title = Enter your business address
+importerManualAddress.heading = Enter your business address
+importerManualAddress.addressLine1.heading = Building and street
+importerManualAddress.city.heading = Town or city
+importerManualAddress.county.heading = County
+importerManualAddress.checkYourAnswersLabel = Enter your business address
+importerManualAddress.error.required = Enter your business address
+importerManualAddress.hint = We will use this to send letters about this application.
+importerManualAddress.error.length = Your Manual Address must be 128 characters or less

@@ -190,3 +190,8 @@ GET        /agentImporterAddress                        controllers.AgentImporte
 POST       /agentImporterAddress                        controllers.AgentImporterAddressController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAgentImporterAddress                  controllers.AgentImporterAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentImporterAddress                  controllers.AgentImporterAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /importerManualAddress                        controllers.ImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /importerManualAddress                        controllers.ImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeImporterManualAddress                  controllers.ImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeImporterManualAddress                  controllers.ImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
