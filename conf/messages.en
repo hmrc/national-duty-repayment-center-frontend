@@ -307,6 +307,13 @@ confirmation.whatHappensNext.heading = What happens next
 confirmation.whatHappensNext.p1 = We’ve sent your application to the NDRC team.
 confirmation.whatHappensNext.p2 = They will contact you either to confirm your registration, or to ask for more information.
 
+agentImporterManualAddress.title = Enter their address
+agentImporterManualAddress.heading = Enter their address
+agentImporterManualAddress.checkYourAnswersLabel = Enter their address
+agentImporterManualAddress.error.required = Enter their address
+agentImporterManualAddress.hint = We will use this to send letters about this application.
+agentImporterManualAddress.error.length = Their Manual Address must be 128 characters or less
+
 typeOfRepayment.title = What was overpaid?
 typeOfRepayment.heading = What was overpaid?
 typeOfRepayment.01 = Customs Duty
