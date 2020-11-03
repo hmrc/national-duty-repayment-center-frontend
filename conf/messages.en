@@ -314,3 +314,10 @@ article.02 = Error by customs
 article.03 = Exceptional circumstances
 article.checkYourAnswersLabel = Why are you applying for this repayment?
 article.error.required = Select Article
+
+agentImporterManualAddress.title = Enter their address
+agentImporterManualAddress.heading = Enter their address
+agentImporterManualAddress.checkYourAnswersLabel = Enter their address
+agentImporterManualAddress.error.required = Enter their address
+agentImporterManualAddress.hint = We will use this to send letters about this application.
+agentImporterManualAddress.error.length = Their Manual Address must be 128 characters or less

@@ -31,6 +31,12 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       for {
         page  <- arbitrary[ArticlePage.type]
         value <- arbitrary[Article].map(Json.toJson(_))
+
+  implicit lazy val arbitraryAgentImporterManualAddressUserAnswersEntry: Arbitrary[(AgentImporterManualAddressPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[AgentImporterManualAddressPage.type]
+        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
 

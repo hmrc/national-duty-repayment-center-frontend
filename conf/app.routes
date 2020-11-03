@@ -198,8 +198,13 @@ POST       /changeImporterManualAddress                  controllers.ImporterMan
 
 GET        /confirmation                       controllers.confirmationController.onPageLoad()
 
-
 GET        /article                        controllers.ArticleController.onPageLoad(mode: Mode = NormalMode)
 POST       /article                        controllers.ArticleController.onSubmit(mode: Mode = NormalMode)
 GET        /changeArticle                  controllers.ArticleController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeArticle                  controllers.ArticleController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAgentImporterManualAddress                  controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAgentImporterManualAddress                  controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
+
