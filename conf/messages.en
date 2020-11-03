@@ -73,12 +73,12 @@ importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
-customsRegulationType.title = Which regulation are you applying for repayment under?
-customsRegulationType.heading = Which regulation are you applying for repayment under?
-customsRegulationType.01 = UK Customs Code Regulation (UK) Unknown
-customsRegulationType.02 = Unions Customs Code Regulation (EU) 952/2013
-customsRegulationType.checkYourAnswersLabel = Which regulation are you applying for repayment under?
-customsRegulationType.error.required = Select which regulation are you applying for repayment under
+customsRegulationType.title = Was the overpayment made before 1 Janurary 2021?
+customsRegulationType.heading = Was the overpayment made before 1 Janurary 2021?
+customsRegulationType.01 = Yes
+customsRegulationType.02 = No
+customsRegulationType.checkYourAnswersLabel = Was the overpayment made before 1 Janurary 2021?
+customsRegulationType.error.required = Select whether the overpayment was made before 1 Janurary 2021?
 
 articleType.title = Which article are you applying for repayment under?
 articleType.heading = Which article are you applying for repayment under?
