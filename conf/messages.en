@@ -80,12 +80,12 @@ customsRegulationType.02 = No
 customsRegulationType.checkYourAnswersLabel = Was the overpayment made before 1 Janurary 2021?
 customsRegulationType.error.required = Select whether the overpayment was made before 1 Janurary 2021?
 
-articleType.title = Which article are you applying for repayment under?
-articleType.heading = Which article are you applying for repayment under?
-articleType.117 = Article 117: Overcharged amounts of import or export duty
-articleType.119 = Article 119: Error by the competent authorities
-articleType.120 = Article 120: Equity
-articleType.checkYourAnswersLabel = Which article are you applying for repayment under?
+articleType.title = Why are you applying for this repayment?
+articleType.heading = Why are you applying for this repayment?
+articleType.117 = Overpayment of duty or VAT
+articleType.119 = Error by customs
+articleType.120 = Exceptional circumstances
+articleType.checkYourAnswersLabel = Why are you applying for this repayment?
 articleType.error.required = Select which article are you applying for repayment under?
 
 numberOfEntriesType.title = How many entries do you want to submit?
