@@ -203,3 +203,8 @@ GET        /agentImporterManualAddress                        controllers.AgentI
 POST       /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAgentImporterManualAddress                  controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentImporterManualAddress                  controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /bankDetails                        controllers.BankDetailsController.onPageLoad(mode: Mode = NormalMode)
+POST       /bankDetails                        controllers.BankDetailsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBankDetails                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBankDetails                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)

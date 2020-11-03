@@ -313,3 +313,15 @@ agentImporterManualAddress.checkYourAnswersLabel = Enter their address
 agentImporterManualAddress.error.required = Enter their address
 agentImporterManualAddress.hint = We will use this to send letters about this application.
 agentImporterManualAddress.error.length = Their Manual Address must be 128 characters or less
+
+bankDetails.title = Enter UK bank details
+bankDetails.heading = Enter UK bank details
+bankDetails.checkYourAnswersLabel = Enter UK bank details
+bankDetails.name.heading = Name on the account
+bankDetails.name.hint = Enter your name as it appears on your bank statement.
+bankDetails.sortcode.heading = Sort code
+bankDetails.sortcode.hint = Must be 6 digits long.
+bankDetails.accountnumber.heading = Account number
+bankDetails.accountnumber.hint = Must be between 6 and 8 digits long.
+bankDetails.error.required = Enter UK bank details
+bankDetails.error.length = Name on the account must be 40 characters or less
