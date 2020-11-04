@@ -210,3 +210,5 @@ GET        /changeBankDetails                  controllers.BankDetailsController
 POST       /changeBankDetails                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
 GET        /importerAddressConfirmation                       controllers.ImporterAddressConfirmationController.onPageLoad()
+
+GET        /agentImporterAddressConfirmation                       controllers.AgentImporterAddressConfirmationController.onPageLoad()
