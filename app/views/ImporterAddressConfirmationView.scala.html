@@ -19,35 +19,36 @@
 @import models.Mode
 
 @this(
-    main_template: MainTemplate,
-    formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
-    govukSelect : GovukSelect,
-    link: components.link
+        main_template: MainTemplate,
+        formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
+        govukSelect: GovukSelect,
+        link: components.link
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
 @pageHint = {
-<span class="govuk-hint">
-            @messages("importerAddress.hint")
-    </span>
+    <h2 class="govuk-heading-m" style="margin-bottom: 0.3em">
+        @messages("importerAddress.hint")
+        <p/>
+    </h2>
 }
 
 @h4_1 = {
-<span class="govuk-hint">
+    <strongr >
         NE98 1AE
-    </span>
+    </strongr>
 }
 
 @h4_2 = {
-<span class="govuk-hint">
-        @messages("importerAddressConfirmation.address")
-    </span>
+    <h2 class="govuk-hint">
+    @messages("importerAddressConfirmation.address")
+    </h2>
 }
 
 @main_template(
     title = messages("importerAddressConfirmation.title")
-    ) {
+) {
 
     @components.back_link()
 
@@ -57,30 +58,28 @@
 
     @h4_1
     @link("", messages("importerAddressConfirmation.link1"))
-
+    <p/>
     @h4_2
     @govukSelect(Select(
-    id = "sort",
-    name = "sort",
-    items = Seq(
-    SelectItem(
-    value = Some("published"),
-    text = "Recently published"
-    ),
-    SelectItem(
-    value = Some("updated"),
-    text = "Recently updated",
-    selected = true
-    ),
-    SelectItem(
-    value = Some("views"),
-    text = "Most views"
-    )
-    ),
-    label = Label(
-    content = Text("Sort by")
-    )
+        id = "sort",
+        name = "sort",
+        items = Seq(
+            SelectItem(
+                value = Some("published"),
+                text = "Recently published"
+            ),
+            SelectItem(
+                value = Some("updated"),
+                text = "Recently updated",
+                selected = true
+            ),
+            SelectItem(
+                value = Some("views"),
+                text = "Most views"
+            )
+        )
     ))
+    <p/>
 
     @link("", messages("importerAddressConfirmation.link2"))
 
