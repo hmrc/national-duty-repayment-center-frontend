@@ -36,7 +36,6 @@
 
 @h4_1 = {
     <strongr >
-        NE98 1AE
     </strongr>
 }
 
@@ -62,22 +61,7 @@
     @h4_2
     @govukSelect(Select(
         id = "sort",
-        name = "sort",
-        items = Seq(
-            SelectItem(
-                value = Some("published"),
-                text = "Recently published"
-            ),
-            SelectItem(
-                value = Some("updated"),
-                text = "Recently updated",
-                selected = true
-            ),
-            SelectItem(
-                value = Some("views"),
-                text = "Most views"
-            )
-        )
+        name = "sort"
     ))
     <p/>
 
