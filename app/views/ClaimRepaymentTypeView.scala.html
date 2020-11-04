@@ -37,6 +37,7 @@
         @components.input_checkboxes(
             field = form("value"),
             legend = messages("claimRepaymentType.heading"),
+            hint = Some(messages("claimRepaymentType.hint")),
             headingIsLegend = true,
             inputs = ClaimRepaymentType.options
         )
