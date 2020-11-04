@@ -333,3 +333,6 @@ importerAddressConfirmation.heading = Select your address
 importerAddressConfirmation.link1 = change
 importerAddressConfirmation.link2 = I can't find my address in the list
 importerAddressConfirmation.address = Select an address
+
+agentImporterAddressConfirmation.title = Select their address
+agentImporterAddressConfirmation.heading = Select their address
