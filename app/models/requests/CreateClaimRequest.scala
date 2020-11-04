@@ -16,8 +16,10 @@
 
 package models.requests
 
-import models.{AcknowledgementReference, ApplicationType, ClaimDetails, Content, OriginatingSystem, UserAnswers}
-import pages.{ArticleTypePage, ClaimantTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage}
+import java.time.LocalDate
+
+import models.{AcknowledgementReference, ApplicationType, ClaimDetails, Content, FormType, OriginatingSystem, UserAnswers}
+import pages.{ArticleTypePage, ClaimEntryDatePage, ClaimEpuPage, ClaimReasonTypePage, ClaimantTypePage, CustomsRegulationTypePage, HowManyEntriesPage, NumberOfEntriesTypePage, ReasonForOverpaymentPage, RepaymentTypePage, WhomToPayPage}
 import play.api.libs.json.{Json, OFormat}
 
 final case class CreateClaimRequest(
@@ -31,29 +33,51 @@ object CreateClaimRequest {
   implicit val formats: OFormat[CreateClaimRequest] = Json.format[CreateClaimRequest]
 
   def buildValidClaimRequest(userAnswers: UserAnswers): Option[CreateClaimRequest] = {
-    def getRestaurants(userAnswers: UserAnswers): Option[Seq[RestaurantInfo]] = for {
-      numberOfRestaurants <- userAnswers.get(NumberOfRestaurantsPage)
-      restaurantsJson <- if (numberOfRestaurants > Constants.largeBusinessCutoff) Some(Seq.empty) else userAnswers.get(AllRestaurantJsonQuery)
-      if restaurantsJson.forall(_.value.get("restaurantRegisteredWithLocalAuthority").contains(JsTrue))
-      restaurants <- if (numberOfRestaurants > Constants.largeBusinessCutoff) Some(Seq.empty) else userAnswers.get(AllRestaurantsQuery)
-      if restaurants.nonEmpty || numberOfRestaurants > Constants.largeBusinessCutoff
-    } yield restaurants
 
     def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
-      formType <- "01"
       customRegulationType <- userAnswers.get(CustomsRegulationTypePage)
       claimedUnderArticle <- userAnswers.get(ArticleTypePage)
       claimant <- userAnswers.get(ClaimantTypePage)
       claimType <- userAnswers.get(NumberOfEntriesTypePage)
-      noOfEntries <- userAnswers.get(NumberOfEntriesTypePage)
-
-    }
+      noOfEntries <- userAnswers.get(HowManyEntriesPage)
+      epu <- userAnswers.get(ClaimEpuPage)
+      entryNumber <- userAnswers.get(ClaimEntryDatePage)
+      entryDate <- userAnswers.get(ClaimEntryDatePage)
+      claimReason <- userAnswers.get(ClaimReasonTypePage)
+      claimDescription <- userAnswers.get(ReasonForOverpaymentPage)
+      payeeIndicator <- userAnswers.get(WhomToPayPage)
+      paymentMethod <- userAnswers.get(RepaymentTypePage)
+    } yield ClaimDetails(FormType("01"),
+      customRegulationType,
+      claimedUnderArticle,
+      claimant,
+      claimType,
+      noOfEntries,
+      epu,
+      entryNumber,
+      entryDate,
+      claimReason,
+      claimDescription,
+      LocalDate.now(),
+      LocalDate.now(),
+      payeeIndicator,
+      paymentMethod)
 
     def getContent(userAnswers: UserAnswers): Option[Content] = for {
-      claimDetails <- getClaimDetails,
-      agentDetails <-
-
-    }
+      claimDetails <- getClaimDetails(userAnswers)
+      agentDetails <- ???
+      importDetails <- ???
+      bankDetails <- ???
+      dutyTypeTaxDetails <- ???
+      documentList <- ???
+    } yield Content(
+      claimDetails,
+      agentDetails,
+      importDetails,
+      bankDetails,
+      dutyTypeTaxDetails,
+      documentList
+    )
 
 
     for {
