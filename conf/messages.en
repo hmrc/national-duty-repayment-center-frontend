@@ -153,6 +153,7 @@ reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
 
 claimRepaymentType.title = What was overpaid?
 claimRepaymentType.heading = What was overpaid?
+claimRepaymentType.hint = Select all that apply.
 claimRepaymentType.01 = Customs Duty
 claimRepaymentType.02 = VAT
 claimRepaymentType.03 = Another type of duty
