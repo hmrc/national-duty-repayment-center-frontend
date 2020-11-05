@@ -1,0 +1,14 @@
+@this(
+    main_template: MainTemplate
+)
+
+@()(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("repaymentAmountSummary.title")
+    ) {
+
+    @components.back_link()
+
+    @components.heading("repaymentAmountSummary.heading")
+}

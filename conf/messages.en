@@ -336,3 +336,20 @@ importerAddressConfirmation.address = Select an address
 
 agentImporterAddressConfirmation.title = Select their address
 agentImporterAddressConfirmation.heading = Select their address
+
+repaymentAmountSummary.title = Repayment Amount Summary
+repaymentAmountSummary.heading = Repayment Amount Summary
+repaymentAmountSummary.customsduty=Customs Duty
+repaymentAmountSummary.customsduty.paid=Customs Duty paid
+repaymentAmountSummary.customsduty.due=Customs Duty that was due
+repaymentAmountSummary.customsduty.total=Total Customs Duty repayment amount
+repaymentAmountSummary.vat=VAT
+repaymentAmountSummary.vat.paid=VAT paid
+repaymentAmountSummary.vat.due=VAT that was due
+repaymentAmountSummary.vat.total=Total VAT repayment amount
+repaymentAmountSummary.otherduties=Other duties
+repaymentAmountSummary.otherduties.paid=Other duties paid
+repaymentAmountSummary.otherduties.due=Other duties that were due
+repaymentAmountSummary.otherduties.total=Total other duties repayment amount
+repaymentAmountSummary.total=Total
+repaymentAmountSummary.total.amount=Total repayment amount
