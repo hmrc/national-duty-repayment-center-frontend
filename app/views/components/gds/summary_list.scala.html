@@ -14,26 +14,20 @@
  * limitations under the License.
  *@
 
-@import models.Mode
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukSummaryList
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 
-@import summary.customsDuty_section
-@this(
-        main_template: MainTemplate,
-        customsDuty_section: customsDuty_section
+@this(govukSummaryList: GovukSummaryList)
 
+@(id: String, heading: Option[String] = None, summaryListRows: Seq[Option[SummaryListRow]], classes: String = "govuk-!-margin-bottom-9")
 
-)
-@()(implicit request: Request[_], messages: Messages)
-
-@main_template(
-    title = messages("repaymentAmountSummary.title")
-) {
-
-    @components.back_link()
-
-    @components.heading("repaymentAmountSummary.heading")
-
-    @customsDuty_section
-
-
+@heading.map { header =>
+ <h2 class="govuk-heading-m">@header</h2>
 }
+
+@govukSummaryList(SummaryList(
+ rows = summaryListRows.flatten,
+ classes = classes,
+ attributes = Map("id" -> id)
+))

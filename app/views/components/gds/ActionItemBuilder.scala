@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,28 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import models.Mode
+package views.components.gds
 
-@import summary.customsDuty_section
-@this(
-        main_template: MainTemplate,
-        customsDuty_section: customsDuty_section
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.ActionItem
 
+object ActionItemBuilder {
 
-)
-@()(implicit request: Request[_], messages: Messages)
-
-@main_template(
-    title = messages("repaymentAmountSummary.title")
-) {
-
-    @components.back_link()
-
-    @components.heading("repaymentAmountSummary.heading")
-
-    @customsDuty_section
-
-
+  def actionItem(href: String, content: Content, visuallyHiddenText: Option[String]) =
+    ActionItem(href = href, content = content, visuallyHiddenText = visuallyHiddenText, classes = "govuk-link--no-visited-state")
 }

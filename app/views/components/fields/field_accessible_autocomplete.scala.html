@@ -14,26 +14,8 @@
  * limitations under the License.
  *@
 
-@import models.Mode
+@import views.html.components.fields.field_accessible_autocomplete_with_header
 
-@import summary.customsDuty_section
-@this(
-        main_template: MainTemplate,
-        customsDuty_section: customsDuty_section
+@(field: Field, label: String, labelClass: Option[String], hintText: Option[String], emptySelectValue: String, args: (Symbol, Any)*)(implicit messages: Messages)
 
-
-)
-@()(implicit request: Request[_], messages: Messages)
-
-@main_template(
-    title = messages("repaymentAmountSummary.title")
-) {
-
-    @components.back_link()
-
-    @components.heading("repaymentAmountSummary.heading")
-
-    @customsDuty_section
-
-
-}
+@field_accessible_autocomplete_with_header(field, label, labelClass, None, hintText, emptySelectValue,false, args:_*)
