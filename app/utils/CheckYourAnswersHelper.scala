@@ -214,7 +214,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("reasonForOverpayment.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         routes.ReasonForOverpaymentController.onPageLoad(CheckMode).url
       )
   }
@@ -250,7 +250,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("claimEntryNumber.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         routes.ClaimEntryNumberController.onPageLoad(CheckMode).url
       )
   }
@@ -259,7 +259,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("claimEpu.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         routes.ClaimEpuController.onPageLoad(CheckMode).url
       )
   }
@@ -268,7 +268,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("howManyEntries.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         routes.HowManyEntriesController.onPageLoad(CheckMode).url
       )
   }

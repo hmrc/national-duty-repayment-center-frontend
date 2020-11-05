@@ -37,8 +37,8 @@ final case class ClaimDetails(
                                ClaimDescription: ClaimDescription,
                                DateReceived: LocalDate,
                                ClaimDate: LocalDate,
-                               PayeeIndicator: PayeeIndicator,
-                               PaymentMethod: PaymentMethod
+                               PayeeIndicator: WhomToPay,
+                               PaymentMethod: RepaymentType
                              )
 
 object ClaimDetails {

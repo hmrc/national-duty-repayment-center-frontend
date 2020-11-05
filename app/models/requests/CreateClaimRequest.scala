@@ -18,8 +18,8 @@ package models.requests
 
 import java.time.LocalDate
 
-import models.{AcknowledgementReference, ApplicationType, ClaimDetails, Content, FormType, OriginatingSystem, UserAnswers}
-import pages.{ArticleTypePage, ClaimEntryDatePage, ClaimEpuPage, ClaimReasonTypePage, ClaimantTypePage, CustomsRegulationTypePage, HowManyEntriesPage, NumberOfEntriesTypePage, ReasonForOverpaymentPage, RepaymentTypePage, WhomToPayPage}
+import models.{AcknowledgementReference, ApplicationType, ClaimDetails, Content, FormType, OriginatingSystem, UserAnswers, UserDetails}
+import pages.{ArticleTypePage, ClaimEntryDatePage, ClaimEntryNumberPage, ClaimEpuPage, ClaimReasonTypePage, ClaimantTypePage, CustomsRegulationTypePage, HowManyEntriesPage, NumberOfEntriesTypePage, ReasonForOverpaymentPage, RepaymentTypePage, WhomToPayPage}
 import play.api.libs.json.{Json, OFormat}
 
 final case class CreateClaimRequest(
@@ -39,9 +39,9 @@ object CreateClaimRequest {
       claimedUnderArticle <- userAnswers.get(ArticleTypePage)
       claimant <- userAnswers.get(ClaimantTypePage)
       claimType <- userAnswers.get(NumberOfEntriesTypePage)
-      noOfEntries <- userAnswers.get(HowManyEntriesPage)
+      noOfEntries <- Some(userAnswers.get(HowManyEntriesPage))
       epu <- userAnswers.get(ClaimEpuPage)
-      entryNumber <- userAnswers.get(ClaimEntryDatePage)
+      entryNumber <- userAnswers.get(ClaimEntryNumberPage)
       entryDate <- userAnswers.get(ClaimEntryDatePage)
       claimReason <- userAnswers.get(ClaimReasonTypePage)
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage)
@@ -63,17 +63,21 @@ object CreateClaimRequest {
       payeeIndicator,
       paymentMethod)
 
+    def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
+      eori <- userAnswers.get(Agent)
+    }
+
     def getContent(userAnswers: UserAnswers): Option[Content] = for {
       claimDetails <- getClaimDetails(userAnswers)
       agentDetails <- ???
-      importDetails <- ???
+      importerDetails <- ???
       bankDetails <- ???
       dutyTypeTaxDetails <- ???
       documentList <- ???
     } yield Content(
       claimDetails,
       agentDetails,
-      importDetails,
+      importerDetails,
       bankDetails,
       dutyTypeTaxDetails,
       documentList

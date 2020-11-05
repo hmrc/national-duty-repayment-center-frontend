@@ -16,9 +16,10 @@
 
 package pages
 
+import models.EPU
 import play.api.libs.json.JsPath
 
-case object ClaimEpuPage extends QuestionPage[String] {
+case object ClaimEpuPage extends QuestionPage[EPU] {
 
   override def path: JsPath = JsPath \ toString
 
