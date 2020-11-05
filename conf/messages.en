@@ -151,14 +151,14 @@ reasonForOverpayment.error.required = Enter a reason for overpayment
 reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or less
 reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
 
-claimRepaymentType.title = What was overpaid?
-claimRepaymentType.heading = What was overpaid?
+claimRepaymentType.title = What do you want to reclaim?
+claimRepaymentType.heading = What do you want to reclaim?
 claimRepaymentType.hint = Select all that apply.
 claimRepaymentType.01 = Customs Duty
 claimRepaymentType.02 = VAT
 claimRepaymentType.03 = Another type of duty
-claimRepaymentType.checkYourAnswersLabel = What was overpaid?
-claimRepaymentType.error.required = Select what was overpaid
+claimRepaymentType.checkYourAnswersLabel = What do you want to reclaim?
+claimRepaymentType.error.required = Select What do you want to reclaim?
 
 evidenceSupportingDocs.title = What evidence do you have to support the application?
 evidenceSupportingDocs.heading = What evidence do you have to support the application?
