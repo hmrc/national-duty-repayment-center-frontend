@@ -15,6 +15,7 @@
  *@
 
 @import models.Mode
+@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 
 @import summary.customsDuty_section
 @this(
@@ -23,7 +24,7 @@
 
 
 )
-@()(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("repaymentAmountSummary.title")
@@ -33,7 +34,14 @@
 
     @components.heading("repaymentAmountSummary.heading")
 
-    @customsDuty_section
+    @for(section <- answerSections){
+        @{
+            section match {
+                case a: AnswerSection => components.answer_section(a)
+                case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+            }
+        }
+    }
 
-
+    @components.submit_button()
 }
