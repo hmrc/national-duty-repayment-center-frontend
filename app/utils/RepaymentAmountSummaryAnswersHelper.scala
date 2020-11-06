@@ -25,30 +25,38 @@ import viewmodels.AnswerRow
 
 class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  def displayCustomsDuty: Option[AnswerRow] = userAnswers.get(ClaimRepaymentTypePage) map {
+  def displayCustomsDuty(index: String, answers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = answers.get(ClaimRepaymentTypePage).map {
     x =>
       AnswerRow(
-        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.customsduty.$value")).toString).mkString("<br>")),
-        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.cd.$value")).toString).mkString("<br>")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.customsduty.$index")).toString).mkString("")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.cd.$index")).toString).mkString("")),
         routes.ClaimRepaymentTypeController.onPageLoad(CheckMode).url
       )
   }
 
-  def displayVAT: Option[AnswerRow] = userAnswers.get(ClaimRepaymentTypePage) map {
+  def displayVAT(index: String, answers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = answers.get(ClaimRepaymentTypePage).map {
     x =>
       AnswerRow(
-        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.vat.$value")).toString).mkString("<br>")),
-        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.cd.$value")).toString).mkString("<br>")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.vat.$index")).toString).mkString("")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.cd.$index")).toString).mkString("")),
         routes.ClaimRepaymentTypeController.onPageLoad(CheckMode).url
       )
   }
 
-  def displayOtherDuties: Option[AnswerRow] = userAnswers.get(ClaimRepaymentTypePage) map {
+  def displayOtherDuties(index: String, answers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = answers.get(ClaimRepaymentTypePage).map {
     x =>
       AnswerRow(
-        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.otherduties.$value")).toString).mkString("<br>")),
-        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.cd.$value")).toString).mkString("<br>")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.otherduties.$index")).toString).mkString("")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.cd.$index")).toString).mkString("")),
         routes.ClaimRepaymentTypeController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def displayTotal(answers: UserAnswers)(implicit messages: Messages): Option[AnswerRow] = answers.get(ClaimRepaymentTypePage).map {
+    x =>
+      AnswerRow(
+        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.total.amount")).toString).mkString("")),
+        Html(x.map(value => HtmlFormat.escape(messages(s"repaymentAmountSummary.cd.1")).toString).mkString("")),""
       )
   }
 
