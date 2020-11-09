@@ -199,7 +199,7 @@ phoneNumber.heading = Enter your phone number
 phoneNumber.checkYourAnswersLabel = Enter your phone number
 phoneNumber.error.required = Enter phone number
 phoneNumber.error.length = Phone number must be 11 characters or less
-phoneNumber.hint = This can be a mobile or landline number, for example 07700 900 982 or 01632 960 001. For international numbers, include the country code.
+phoneNumber.hint = We will use this if we need to contact you for further information.
 
 emailAddress.title = What is your email address?
 emailAddress.heading = What is your email address?
