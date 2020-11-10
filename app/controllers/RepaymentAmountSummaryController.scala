@@ -18,7 +18,10 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import play.api.i18n.{I18nSupport, MessagesApi}
+import models.ClaimRepaymentType
+import models.requests.DataRequest
+import pages.{ClaimRepaymentTypePage, CustomsDutyDueToHMRCPage, OtherDutiesDueToHMRCPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage, customsDutyPaidPage}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.RepaymentAmountSummaryAnswersHelper
@@ -26,47 +29,18 @@ import viewmodels.AnswerSection
 import views.html.RepaymentAmountSummaryView
 
 class RepaymentAmountSummaryController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: RepaymentAmountSummaryView
-                                     ) extends FrontendBaseController with I18nSupport {
+                                                  override val messagesApi: MessagesApi,
+                                                  identify: IdentifierAction,
+                                                  getData: DataRetrievalAction,
+                                                  requireData: DataRequiredAction,
+                                                  val controllerComponents: MessagesControllerComponents,
+                                                  view: RepaymentAmountSummaryView
+                                                ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
-
-      var customDutySection = AnswerSection(Some("Customs Duty"), Seq(
-        helper.displayCustomsDuty("0", request.userAnswers).get,
-        helper.displayCustomsDuty("1", request.userAnswers).get,
-        helper.displayCustomsDuty("2", request.userAnswers).get
-      ))
-
-      var vatSection = AnswerSection(Some("VAT"), Seq(
-        helper.displayVAT("0", request.userAnswers).get,
-        helper.displayVAT("1", request.userAnswers).get,
-        helper.displayVAT("2", request.userAnswers).get
-      ))
-
-      var otherDutiesSection = AnswerSection(Some("Other duties"), Seq(
-        helper.displayOtherDuties("0", request.userAnswers).get,
-        helper.displayOtherDuties("1", request.userAnswers).get,
-        helper.displayOtherDuties("2", request.userAnswers).get
-      ))
-
-      var totalSection = AnswerSection(Some("Total"), Seq(
-        helper.displayTotal(request.userAnswers).get
-      ))
-
-      val sections = Seq(Seq(customDutySection, vatSection, otherDutiesSection, totalSection
-      )).flatten
-
-      Ok(view(sections))
+      Ok(view(Seq(helper.getSections()).flatten))
   }
-
-
-
 }
