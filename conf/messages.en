@@ -56,9 +56,9 @@ claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
 claimantType.error.required = Select claimantType
 
-importerEori.title = What is the importer's EORI number?
-importerEori.heading = What is the importer's EORI number?
-importerEori.checkYourAnswersLabel = What is the importer's EORI number?
+importerEori.title = What is the importer''s EORI number?
+importerEori.heading = What is the importer''s EORI number?
+importerEori.checkYourAnswersLabel = What is the importer''s EORI number?
 importerEori.error.required = Enter your EORI number
 importerEori.error.length = EORI number must be 17 characters or less
 
@@ -328,8 +328,8 @@ bankDetails.accountnumber.hint = Must be between 6 and 8 digits long.
 bankDetails.error.required = Enter UK bank details
 bankDetails.error.length = Name on the account must be 40 characters or less
 
-importerAddressConfirmation.title = Select their address
-importerAddressConfirmation.heading = Select their address
+importerAddressConfirmation.title = Select your address
+importerAddressConfirmation.heading = Select your address
 importerAddressConfirmation.link1 = change
 importerAddressConfirmation.link2 = I can't find my address in the list
 importerAddressConfirmation.address = Select an address
