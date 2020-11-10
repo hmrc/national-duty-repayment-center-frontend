@@ -56,9 +56,9 @@ claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
 claimantType.error.required = Select claimantType
 
-importerEori.title = What is the importer's EORI number?
-importerEori.heading = What is the importer's EORI number?
-importerEori.checkYourAnswersLabel = What is the importer's EORI number?
+importerEori.title = What is the importer''s EORI number?
+importerEori.heading = What is the importer''s EORI number?
+importerEori.checkYourAnswersLabel = What is the importer''s EORI number?
 importerEori.error.required = Enter your EORI number
 importerEori.error.length = EORI number must be 17 characters or less
 

@@ -54,7 +54,7 @@ p.font-xsmall{
     padding-bottom: 15px;
 }
 .mb-05 {
-    margin-bottom: 5px;
+    margin-bottom: 5px !important;
 }
 .mb-15 {
     margin-bottom: 15px;
@@ -67,4 +67,7 @@ p.font-xsmall{
 }
 #bank-details .form-hint{
     margin-bottom: 10px;
+}
+.pr-bottom-margin {
+    margin-bottom: 0.3em !important;
 }
