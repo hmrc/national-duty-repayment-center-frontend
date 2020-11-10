@@ -328,8 +328,8 @@ bankDetails.accountnumber.hint = Must be between 6 and 8 digits long.
 bankDetails.error.required = Enter UK bank details
 bankDetails.error.length = Name on the account must be 40 characters or less
 
-importerAddressConfirmation.title = Select your address
-importerAddressConfirmation.heading = Select your address
+importerAddressConfirmation.title = Select their address
+importerAddressConfirmation.heading = Select their address
 importerAddressConfirmation.link1 = change
 importerAddressConfirmation.link2 = I can't find my address in the list
 importerAddressConfirmation.address = Select an address

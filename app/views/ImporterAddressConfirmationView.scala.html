@@ -28,10 +28,7 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @pageHint = {
-    <h2 class="govuk-heading-m" style="margin-bottom: 0.3em">
-        @messages("importerAddress.hint")
-        <p/>
-    </h2>
+    <h2 class="heading-medium mb-05">@messages("importerAddress.hint")</h2>
 }
 
 @h4_1 = {
@@ -40,9 +37,7 @@
 }
 
 @h4_2 = {
-    <h2 class="govuk-hint">
-    @messages("importerAddressConfirmation.address")
-    </h2>
+    <h2 class="heading-medium mb-05">@messages("importerAddressConfirmation.address")</h2>
 }
 
 @main_template(
@@ -50,22 +45,29 @@
 ) {
 
     @components.back_link()
-
-    @components.heading("importerAddressConfirmation.heading")
+<div class="form-group">
+<h1 class="heading-large mt-0 mb-3" for="field-name">@messages("importerAddressConfirmation.heading")</h1>
 
     @pageHint
 
     @h4_1
-    @link("", messages("importerAddressConfirmation.link1"))
-    <p/>
+<p>@link("", messages("importerAddressConfirmation.link1"))</p>
     @h4_2
-    @govukSelect(Select(
-        id = "sort",
-        name = "sort"
-    ))
-    <p/>
-
-    @link("", messages("importerAddressConfirmation.link2"))
+<div class="form-control-wrapper">
+        @govukSelect(Select(
+            id = "sort",
+            name = "field-name",
+                items = Seq(
+                SelectItem(
+                value = Some("published"),
+                text = "HMRC Longbenton"
+                )
+            )
+        ))
+</div>
+</div>
+<p class="mt-0">@link("", messages("importerAddressConfirmation.link2"))</p>
 
     @components.submit_button()
 }
+</form>
