@@ -25,12 +25,14 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  def displayDuty(index: String, amount: String, dutyType: String) : Option[AnswerRow] = {
+  def displayDuty(index: String, amount: Double, dutyType: String) : Option[AnswerRow] = {
+
     getAnswerRow(index, amount, dutyType)
   }
 
-  private def getAnswerRow(index: String, amount: String, dutyType: String) : Option[AnswerRow] =
+  private def getAnswerRow(index: String, amount: Double, dutyType: String) : Option[AnswerRow] =
     userAnswers.get(ClaimRepaymentTypePage).map {
+
     val isCustomDutyExists = dutyType.equals("repaymentAmountSummary.customsduty")
     val isVATExists = dutyType.equals("repaymentAmountSummary.vat")
     val isOtherDutiesExists = dutyType.equals("repaymentAmountSummary.otherduties")
@@ -59,41 +61,48 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   }
 
   def getSections(): Seq[AnswerSection] = {
+
     val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
-    var sections = Seq[AnswerSection]()
+    val customDutyPaid = userAnswers.get(customsDutyPaidPage).getOrElse("0.0").toDouble
+    val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
+    val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
+    val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
+    val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0").toDouble
+    val otherDutiesDue = userAnswers.get(OtherDutiesDueToHMRCPage).getOrElse("0.0").toDouble
 
-    val customDutyPaid = userAnswers.get(customsDutyPaidPage).getOrElse("0")
-    val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0")
-    val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0")
-    val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0")
-    val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).getOrElse("0")
-    val otherDutiesDue = userAnswers.get(OtherDutiesDueToHMRCPage).getOrElse("0")
-
-    for (claimType <- claimRepaymentType) {
-      val selection: AnswerSection = claimRepaymentType match {
-        case x if ClaimRepaymentType.Customs == claimType => getAnswerSection("repaymentAmountSummary.customsduty"
+    val sections: Seq[AnswerSection] = claimRepaymentType.map { result =>
+      result match {
+        case ClaimRepaymentType.Customs => getAnswerSection("repaymentAmountSummary.customsduty"
           , customDutyPaid, customDutyDue)
-        case x if ClaimRepaymentType.Vat == claimType => getAnswerSection("repaymentAmountSummary.vat"
+        case ClaimRepaymentType.Vat => getAnswerSection("repaymentAmountSummary.vat"
           , vatPaid, vatDue)
-        case x if ClaimRepaymentType.Other == claimType => getAnswerSection("repaymentAmountSummary.otherduties"
+        case ClaimRepaymentType.Other => getAnswerSection("repaymentAmountSummary.otherduties"
           , otherDutiesPaid, otherDutiesDue)
       }
+    }.toSeq
 
-      sections = sections ++ Seq(selection)
-    }
-
-    if (claimRepaymentType.size > 1) {
-      val totalSection = getAnswerSection("repaymentAmountSummary.total",
-        (customDutyPaid.toInt - customDutyDue.toInt + vatPaid.toInt - vatDue.toInt +
-        otherDutiesPaid.toInt - otherDutiesDue.toInt).toString,"")
-
-      sections = sections ++ Seq(totalSection
-      )
-    }
     sections
   }
 
-  private def getAnswerSection(dutyType: String, dutyPaid: String, dutyDue: String): AnswerSection = {
+  def getTotalAmount(): Double = {
+    val customDutyPaid = userAnswers.get(customsDutyPaidPage).getOrElse("0.0").toDouble
+    val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
+    val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
+    val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
+    val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0").toDouble
+    val otherDutiesDue = userAnswers.get(OtherDutiesDueToHMRCPage).getOrElse("0.0").toDouble
+
+    (customDutyPaid - customDutyDue + vatPaid - vatDue +
+      otherDutiesPaid - otherDutiesDue)
+  }
+
+  def getTotalSection(): AnswerSection = {
+
+      getAnswerSection("repaymentAmountSummary.total",
+        getTotalAmount(), 0.0)
+  }
+
+  private def getAnswerSection(dutyType: String, dutyPaid: Double, dutyDue: Double): AnswerSection = {
     val answerSection : AnswerSection = dutyType match {
       case "repaymentAmountSummary.total" =>
          AnswerSection(Some(dutyType), Seq(
@@ -103,7 +112,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
          AnswerSection(Some(dutyType), Seq(
           displayDuty("0", dutyPaid, dutyType).get,
           displayDuty("1", dutyDue, dutyType).get,
-          displayDuty("2", (dutyPaid.toInt - dutyDue.toInt).toString, dutyType).get
+          displayDuty("2", (dutyPaid - dutyDue), dutyType).get
         ))
     }
     answerSection

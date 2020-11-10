@@ -18,14 +18,10 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import models.ClaimRepaymentType
-import models.requests.DataRequest
-import pages.{ClaimRepaymentTypePage, CustomsDutyDueToHMRCPage, OtherDutiesDueToHMRCPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage, customsDutyPaidPage}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.RepaymentAmountSummaryAnswersHelper
-import viewmodels.AnswerSection
 import views.html.RepaymentAmountSummaryView
 
 class RepaymentAmountSummaryController @Inject()(
@@ -41,6 +37,12 @@ class RepaymentAmountSummaryController @Inject()(
     implicit request =>
 
       val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
-      Ok(view(Seq(helper.getSections()).flatten))
+
+      val sections = Seq(
+        helper.getSections(),
+        Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)
+      ).flatten
+
+      Ok(view(sections))
   }
 }
