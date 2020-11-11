@@ -33,13 +33,15 @@
 
     @components.back_link()
 <div class="form-group">
-<h1 class="heading-large mt-0 mb-3" for="field-name">@messages("importerAddressConfirmation.heading")</h1>
+    <h1 class="form-label">
+        <label class="heading-large mt-0 mb-3" for="field-id">
+            @messages("importerAddressConfirmation.heading")
+        </label>
+    </h1>
 
     <h2 class="heading-medium pr-bottom-margin">@messages("importerAddress.postCode")</h2>
 
     <p class="mt-0">
-        <strongr >
-        </strongr>
         @link("", messages("importerAddressConfirmation.link1"))
     </p>
 
@@ -48,14 +50,14 @@
 
     <div class="form-control-wrapper">
         @govukSelect(Select(
-        id = "sort",
-        name = "field-name",
-        items = Seq(
-        SelectItem(
-        value = Some("published"),
-        text = "HMRC Longbenton"
-        )
-        )
+            id = "field-id",
+            name = "field-name",
+            items = Seq(
+                SelectItem(
+                value = Some("published"),
+                text = "HMRC Longbenton"
+                )
+            )
         ))
     </div>
 
