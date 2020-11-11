@@ -27,43 +27,43 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@pageHint = {
-<h2 class="govuk-heading-m" style="margin-bottom: 0.3em">
-    @messages("importerAddress.hint")
-    <p/>
-</h2>
-}
-
-@h4_1 = {
-<strongr >
-</strongr>
-}
-
-@h4_2 = {
-<h2 class="govuk-hint">
-    @messages("importerAddressConfirmation.address")
-</h2>
-}
-
 @main_template(title = messages("agentImporterAddressConfirmation.title")) {
 
         @components.back_link()
+<div class="form-group">
 
-        @components.heading("agentImporterAddressConfirmation.heading")
+    <h1 class="form-label">
+        <label class="heading-large mt-0 mb-3" for="field-id">
+            @messages("agentImporterAddressConfirmation.heading")
+        </label>
+    </h1>
 
-        @pageHint
+    <h2 class="heading-medium pr-bottom-margin">
+        @messages("importerAddress.postCode")
+    </h2>
 
-        @h4_1
-        @link("", messages("importerAddressConfirmation.link1"))
-        <p/>
-        @h4_2
+    <p class="mt-0">@link("", messages("importerAddressConfirmation.link1"))</p>
+
+    <h2 class="heading-medium pr-bottom-margin">
+        @messages("importerAddressConfirmation.address")
+    </h2>
+
+    <div class="form-control-wrapper">
         @govukSelect(Select(
-        id = "sort",
-        name = "sort"
+            id = "field-id",
+            name = "field-name",
+                items = Seq(
+                SelectItem(
+                value = Some("published"),
+                text = "HMRC Longbenton"
+                )
+            )
         ))
-        <p/>
 
-        @link("", messages("importerAddressConfirmation.link2"))
+    </div>
 
-        @components.submit_button()
+</div>
+    <p class="mt-0">@link("", messages("importerAddressConfirmation.link2"))</p>
+
+    @components.submit_button()
 }
