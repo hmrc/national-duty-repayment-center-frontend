@@ -92,10 +92,7 @@ POST       /claimRepaymentType                        controllers.ClaimRepayment
 GET        /changeClaimRepaymentType                  controllers.ClaimRepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeClaimRepaymentType                  controllers.ClaimRepaymentTypeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onPageLoad(mode: Mode = NormalMode)
-POST       /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onSubmit(mode: Mode = NormalMode)
-GET        /changeEvidenceSupportingDocs                  controllers.EvidenceSupportingDocsController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeEvidenceSupportingDocs                  controllers.EvidenceSupportingDocsController.onSubmit(mode: Mode = CheckMode)
+GET        /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onPageLoad()
 
 GET        /importerName                        controllers.ImporterNameController.onPageLoad(mode: Mode = NormalMode)
 POST       /importerName                        controllers.ImporterNameController.onSubmit(mode: Mode = NormalMode)
@@ -209,6 +206,6 @@ POST       /bankDetails                        controllers.BankDetailsController
 GET        /changeBankDetails                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBankDetails                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
-GET        /importerAddressConfirmation                       controllers.ImporterAddressConfirmationController.onPageLoad()
+GET        /importerAddressConfirmation                 controllers.ImporterAddressConfirmationController.onPageLoad()
 
-GET        /agentImporterAddressConfirmation                       controllers.AgentImporterAddressConfirmationController.onPageLoad()
+GET        /agentImporterAddressConfirmation            controllers.AgentImporterAddressConfirmationController.onPageLoad()

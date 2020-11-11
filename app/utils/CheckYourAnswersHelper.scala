@@ -219,14 +219,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def evidenceSupportingDocs: Option[AnswerRow] = userAnswers.get(EvidenceSupportingDocsPage) map {
+  /*def evidenceSupportingDocs: Option[AnswerRow] = userAnswers.get(EvidenceSupportingDocsPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("evidenceSupportingDocs.checkYourAnswersLabel")),
         Html(x.map(value => HtmlFormat.escape(messages(s"evidenceSupportingDocs.$value")).toString).mkString(",<br>")),
         routes.EvidenceSupportingDocsController.onPageLoad(CheckMode).url
       )
-  }
+  }*/
 
   def claimRepaymentType: Option[AnswerRow] = userAnswers.get(ClaimRepaymentTypePage) map {
     x =>
