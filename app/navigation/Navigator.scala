@@ -27,7 +27,27 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case _ => _ => routes.IndexController.onPageLoad()
+    case ClaimantTypePage => _ => routes.NumberOfEntriesTypeController.onPageLoad(NormalMode)
+    case NumberOfEntriesTypePage => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
+    case CustomsRegulationTypePage => _ => routes.ArticleTypeController.onPageLoad(NormalMode)
+    case ArticleTypePage => _ => routes.ClaimEpuController.onPageLoad(NormalMode)
+    case ClaimEpuPage => _ => routes.ClaimEntryNumberController.onPageLoad(NormalMode)
+    case ClaimEntryNumberPage => _ => routes.ClaimEntryDateController.onPageLoad(NormalMode)
+    case ClaimEntryDatePage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
+    case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
+    case ReasonForOverpaymentPage => _ => routes.WhatAreTheGoodsController.onPageLoad(NormalMode)
+    case WhatAreTheGoodsPage => _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
+    case ClaimRepaymentTypePage => _ => routes.customsDutyPaidController.onPageLoad(NormalMode)
+    case customsDutyPaidPage => _ => routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
+    case CustomsDutyDueToHMRCPage => _ => routes.VATPaidController.onPageLoad(NormalMode)
+    case VATPaidPage => _ => routes.VATDueToHMRCController.onPageLoad(NormalMode)
+    case VATDueToHMRCPage => _ => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+    case OtherDutiesPaidPage => _ => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
+    case OtherDutiesDueToHMRCPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
+     // Todo Supporting documents,
+    //  Todo Upload a file
+
+
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
