@@ -104,55 +104,47 @@ object CreateClaimRequest {
         AccountNumber = bankDetails.accountNumberPadded
     )
 
-    def calcDutyClaimAmount(userAnswers: UserAnswers): Double = {
-      userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble - userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
-    }
-
-    def calcVatClaimAmount(userAnswers: UserAnswers): Double = {
-      userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble - userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
-    }
-
-    def calcOtherDutiesClaimAmount(userAnswers: UserAnswers): Double = {
-      userAnswers.get(OtherDutiesDueToHMRCPage).getOrElse("0.0").toDouble - userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0").toDouble
-    }
-
-    def getTypeTaxDetails(userAnswers: UserAnswers): Option[Seq[DutyTypeTaxDetails]] = for {
-      customsDutyPaid <- userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0")
-      customsDutyDue <- userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0")
-      dutyClaimAmount <- calcDutyClaimAmount(userAnswers).toString
-      vatDue <- userAnswers.get(VATDueToHMRCPage).getOrElse("0.0")
-      vatPaid <- userAnswers.get(VATPaidPage).getOrElse("0.0")
-      vatClaimAmount <- calcVatClaimAmount(userAnswers).toString
-      otherDutiesDue <- userAnswers.get(OtherDutiesDueToHMRCPage).getOrElse("0.0")
-      otherDutiesPaid <- userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0")
-      otherDutiesClaimAmount <- calcOtherDutiesClaimAmount(userAnswers).toString
-    } yield DutyTypeTaxDetails(
-      Seq(
-        DutyTypeTaxList(ClaimRepaymentType.Customs, Some(customsDutyPaid.toString), Some(customsDutyDue.toString), Some(dutyClaimAmount.toString)),
-        DutyTypeTaxList(ClaimRepaymentType.Vat, Some(vatPaid.toString),Some(vatDue.toString), Some(vatClaimAmount.toString)),
-        DutyTypeTaxList(ClaimRepaymentType.Other, Some(otherDutiesPaid.toString),Some(otherDutiesDue.toString), Some(otherDutiesClaimAmount.toString))
+    def getTypeTaxDetails(userAnswers: UserAnswers): Option[DutyTypeTaxDetails] = for {
+      customsDutyPaid <- userAnswers.get(CustomsDutyPaidPage)
+      customsDutyDue <- userAnswers.get(CustomsDutyDueToHMRCPage)
+      vatPaid <- userAnswers.get(VATPaidPage)
+      vatDue <- userAnswers.get(VATDueToHMRCPage)
+      otherDutiesPaid <- userAnswers.get(OtherDutiesPaidPage)
+      otherDutiesDue <- userAnswers.get(OtherDutiesDueToHMRCPage)
+    } yield {
+      val dutyClaimAmount: String = (customsDutyPaid.toDouble - customsDutyDue.toDouble).toString
+      val vatClaimAmount: String = (vatPaid.toDouble - vatDue.toDouble).toString
+      val otherDutiesClaimAmount: String = (otherDutiesPaid.toDouble - otherDutiesDue.toDouble).toString
+      DutyTypeTaxDetails(
+        Seq(
+          DutyTypeTaxList(ClaimRepaymentType.Customs, Some(customsDutyPaid), Some(customsDutyDue), Some(dutyClaimAmount)),
+          DutyTypeTaxList(ClaimRepaymentType.Vat, Some(vatPaid),Some(vatDue), Some(vatClaimAmount)),
+          DutyTypeTaxList(ClaimRepaymentType.Other, Some(otherDutiesPaid),Some(otherDutiesDue), Some(otherDutiesClaimAmount))
+        )
       )
-    )
+    }
 
-    def getDocumentList(): Seq[DocumentList] = {
-      Seq(DocumentList(EvidenceSupportingDocs.Other, None))
+    def getDocumentList(): DocumentList = {
+      DocumentList(EvidenceSupportingDocs.Other, None)
     }
 
     def getContent(userAnswers: UserAnswers): Option[Content] = for {
-      claimDetails: ClaimDetails <- getClaimDetails(userAnswers)
-      agentDetails: UserDetails <- getAgentUserDetails(userAnswers)
-      importerDetails: UserDetails <- getImporterUserDetails(userAnswers)
-      bankDetails: AllBankDetails <- getBankDetails(userAnswers)
-      dutyTypeTaxDetails: DutyTypeTaxDetails <- getTypeTaxDetails(userAnswers)
-      documentList: DocumentList <- Seq(DocumentList(EvidenceSupportingDocs.Other, None))
-    } yield Content(
-      claimDetails,
-      Some(agentDetails),
-      importerDetails,
-      Some(bankDetails),
-      dutyTypeTaxDetails,
-      Seq(documentList)
-    )
+      claimDetails <- getClaimDetails(userAnswers)
+      agentDetails <- getAgentUserDetails(userAnswers)
+      importerDetails <- getImporterUserDetails(userAnswers)
+      bankDetails <- getBankDetails(userAnswers)
+      dutyTypeTaxDetails <- getTypeTaxDetails(userAnswers)
+    } yield {
+      val documentList = getDocumentList()
+      Content(
+        claimDetails,
+        Some(agentDetails),
+        importerDetails,
+        Some(bankDetails),
+        dutyTypeTaxDetails,
+        Seq(documentList)
+      )
+    }
 
 
     for {

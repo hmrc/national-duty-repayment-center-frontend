@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.customsDutyPaidFormProvider
+import forms.CustomsDutyPaidFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -30,14 +30,14 @@ import views.html.customsDutyPaidView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class customsDutyPaidController @Inject()(
+class CustomsDutyPaidController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: customsDutyPaidFormProvider,
+                                        formProvider: CustomsDutyPaidFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: customsDutyPaidView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
