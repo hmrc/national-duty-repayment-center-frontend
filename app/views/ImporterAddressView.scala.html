@@ -35,15 +35,21 @@
 
             @components.error_summary(form.errors)
 
+            <div class="mb-30">
+                @components.heading(messages("importerAddress.heading"))
+            </div>
+
+            <p class="mb-5 mt-0">@messages("importerAddress.postCode")</p>
+
             @components.input_text(
                 field = form("value"),
                 label = messages("importerAddress.heading"),
-                headingIsLabel = true,
-                hint = Some(messages("importerAddress.hint"))
-
+                labelClass = Some("visually-hidden"),
+                headingIsLabel = false,
+                inputClass = Some("govuk-input--width-10 mb-15")
             )
 
-            @link("", messages("importerAddress.manual"))
+            <p>@link("", messages("importerAddress.manual"))</p>
 
             @components.find_address_button()
         }

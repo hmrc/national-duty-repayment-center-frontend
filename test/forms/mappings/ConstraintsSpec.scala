@@ -86,6 +86,24 @@ class ConstraintsSpec extends WordSpec with MustMatchers with ScalaCheckProperty
     }
   }
 
+  "minimumValue" must {
+
+    "return Valid for a number more than the threshold" in {
+      val result = minimumValue(1, "error.min").apply(2)
+      result mustEqual Valid
+    }
+
+    "return Valid for a number equal to the threshold" in {
+      val result = minimumValue(1, "error.min").apply(1)
+      result mustEqual Valid
+    }
+
+    "return Invalid for a number below the threshold" in {
+      val result = minimumValue(2, "error.min").apply(1)
+      result mustEqual Invalid("error.min", 1)
+    }
+  }
+
   "regexp" must {
 
     "return Valid for an input that matches the expression" in {

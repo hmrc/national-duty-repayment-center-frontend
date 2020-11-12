@@ -17,15 +17,15 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.EntryNumber
 import play.api.data.Form
 
 class ClaimEntryNumberFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[EntryNumber] =
     Form(
       "value" -> text("claimEntryNumber.error.required")
-        .verifying(maxLength(7, "claimEntryNumber.error.length"))
+        .verifying(maxLength(7, "claimEntryNumber.error.length")).transform[EntryNumber](EntryNumber.apply, _.value)
     )
 }

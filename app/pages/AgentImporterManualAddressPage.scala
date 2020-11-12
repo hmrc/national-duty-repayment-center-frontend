@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.Format
+import play.api.libs.json.JsPath
 
-case class SortCode(value: String)
+case object AgentImporterManualAddressPage extends QuestionPage[String] {
 
-object SortCode {
-  implicit val format: Format[SortCode] =
-    JsonFormatUtils.stringFormat(SortCode.apply)(_.value)
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "agentImporterManualAddress"
 }

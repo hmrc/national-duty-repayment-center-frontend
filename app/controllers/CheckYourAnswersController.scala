@@ -18,6 +18,7 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.NormalMode
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -45,12 +46,12 @@ class CheckYourAnswersController @Inject()(
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      for {
-        caseId          <- participantRegistrationService.submitRegistration(request.internalId, request.userAnswers)
+    implicit request => ???
+      /*for {
+        //caseId          <- participantRegistrationService.submitRegistration(request.internalId, request.userAnswers)
         //updatedRegistrationId   <- Future.fromTry(request.userAnswers.set(RegistrationIdQuery, registrationId))
         //updatedRegistrationDate <- Future.fromTry(updatedRegistrationId.set(RegistrationDateQuery, LocalDate.now))
         //_                       <- sessionRepository.set(updatedRegistrationDate)
-      } yield Redirect(navigator.nextPage(DeclarationPage, NormalMode, updatedRegistrationDate))
+      } yield Redirect(navigator.nextPage(DeclarationPage, NormalMode, updatedRegistrationDate))*/
   }
 }

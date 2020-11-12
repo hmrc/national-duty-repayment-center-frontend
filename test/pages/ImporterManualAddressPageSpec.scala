@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.Format
+import pages.behaviours.PageBehaviours
 
-case class AccountNumber(value: String)
 
-object AccountNumber {
-  implicit val format: Format[AccountNumber] =
-    JsonFormatUtils.stringFormat(AccountNumber.apply)(_.value)
+class ImporterManualAddressPageSpec extends PageBehaviours {
+
+  "ImporterManualAddressPage" must {
+
+    beRetrievable[String](ImporterManualAddressPage)
+
+    beSettable[String](ImporterManualAddressPage)
+
+    beRemovable[String](ImporterManualAddressPage)
+  }
 }

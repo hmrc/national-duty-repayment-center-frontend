@@ -17,15 +17,50 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
-import play.api.data.Form
+import models.Address
+import play.api.data.{Form, Forms}
+import play.api.data.Forms.{mapping, optional}
 
 class ImporterAddressFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("importerAddress.error.required")
-        .verifying(maxLength(9, "importerAddress.error.length"))
-    )
+  private val maxLineLength = 128
+  private val maxCityLength = 64
+  private val maxRegionLength = 64
+  private val maxCCLength = 2
+
+  def apply(): Form[Address] = Form(
+    mapping(
+      "AddressLine1" ->
+        text("importerAddress.error.line1.required")
+          .verifying(firstError(
+            maxLength(maxLineLength, "importerAddress.error.line1.length")
+          )),
+      "AddressLine2" ->
+        optional(Forms.text
+          .verifying(firstError(
+            maxLength(maxLineLength, "importerAddress.error.line2.length")
+          ))),
+      "City" ->
+        text("importerAddress.error.city.required")
+          .verifying(firstError(
+            maxLength(maxCityLength, "importerAddress.error.city.length")
+          )),
+      "Region" ->
+        text("importerAddress.error.region.required")
+          .verifying(firstError(
+            maxLength(maxRegionLength, "importerAddress.error.region.length")
+          )),
+      "CountryCode" ->
+        text("importerAddress.error.countryCode.required")
+          .verifying(firstError(
+            maxLength(maxRegionLength, "importerAddress.error.region.length")
+          )),
+      "PostalCode" ->
+        optional(Forms.text
+          .verifying(firstError(
+            maxLength(maxCCLength, "importerAddress.error.postcode.min.length")
+          )))
+    )(Address.apply)(importerAddress => Some((importerAddress.AddressLine1, importerAddress.AddressLine2, importerAddress.City, importerAddress.Region, importerAddress.CountryCode, importerAddress.PostalCode)))
+  )
 }

@@ -18,8 +18,9 @@ package models.requests
 
 import java.time.LocalDate
 
-import models.{AcknowledgementReference, ApplicationType, ClaimDetails, Content, FormType, OriginatingSystem, UserAnswers, UserDetails}
-import pages.{ArticleTypePage, ClaimEntryDatePage, ClaimEntryNumberPage, ClaimEpuPage, ClaimReasonTypePage, ClaimantTypePage, CustomsRegulationTypePage, HowManyEntriesPage, NumberOfEntriesTypePage, ReasonForOverpaymentPage, RepaymentTypePage, WhomToPayPage}
+import models.WhomToPay.{Importer, Representative}
+import models._
+import pages._
 import play.api.libs.json.{Json, OFormat}
 
 final case class CreateClaimRequest(
@@ -63,36 +64,103 @@ object CreateClaimRequest {
       payeeIndicator,
       paymentMethod)
 
+    //TODO: Business decision to never send the VRN. API schema should be changed to replect this so we can change the UserDetails model
     def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
-      eori <- userAnswers.get(Agent)
+      eori <- userAnswers.get(EnterAgentEORIPage)
+      name <- userAnswers.get(AgentNameImporterPage)
+      address <- userAnswers.get(AgentImporterAddressPage)
+    } yield UserDetails(
+      None,
+      eori,
+      name,
+      address
+    )
+
+    //TODO: Business decision to never send the VRN. API schema should be changed to reflect this so we can change the UserDetails model
+    def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
+      eori <- userAnswers.get(ImporterEoriPage)
+      name <- userAnswers.get(ImporterNamePage)
+      address <- userAnswers.get(ImporterAddressPage)
+    } yield UserDetails(
+      None,
+      eori,
+      name,
+      address
+    )
+
+    def getBankDetails(userAnswers: UserAnswers): Option[AllBankDetails] = userAnswers.get(RepaymentTypePage) match {
+      case Some(RepaymentType.BACS) =>
+        for {
+          bankDetails <- userAnswers.get(BankDetailsPage)
+        } yield userAnswers.get(WhomToPayPage) match {
+          case Some(Importer) => AllBankDetails(ImporterBankDetails = Some(bankDetails), AgentBankDetails = None)
+          case Some(Representative) => AllBankDetails(ImporterBankDetails = None, AgentBankDetails = Some(bankDetails))
+        }
+      case _ => None
+    }
+
+    def cleanseBankDetails(bankDetails: BankDetails): BankDetails = bankDetails.copy(
+        SortCode      = bankDetails.sortCodeTrimmed,
+        AccountNumber = bankDetails.accountNumberPadded
+    )
+
+    def calcDutyClaimAmount(userAnswers: UserAnswers): Double = {
+      userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble - userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
+    }
+
+    def calcVatClaimAmount(userAnswers: UserAnswers): Double = {
+      userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble - userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
+    }
+
+    def calcOtherDutiesClaimAmount(userAnswers: UserAnswers): Double = {
+      userAnswers.get(OtherDutiesDueToHMRCPage).getOrElse("0.0").toDouble - userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0").toDouble
+    }
+
+    def getTypeTaxDetails(userAnswers: UserAnswers): Option[Seq[DutyTypeTaxDetails]] = for {
+      customsDutyPaid <- userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0")
+      customsDutyDue <- userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0")
+      dutyClaimAmount <- calcDutyClaimAmount(userAnswers).toString
+      vatDue <- userAnswers.get(VATDueToHMRCPage).getOrElse("0.0")
+      vatPaid <- userAnswers.get(VATPaidPage).getOrElse("0.0")
+      vatClaimAmount <- calcVatClaimAmount(userAnswers).toString
+      otherDutiesDue <- userAnswers.get(OtherDutiesDueToHMRCPage).getOrElse("0.0")
+      otherDutiesPaid <- userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0")
+      otherDutiesClaimAmount <- calcOtherDutiesClaimAmount(userAnswers).toString
+    } yield DutyTypeTaxDetails(
+      Seq(
+        DutyTypeTaxList(ClaimRepaymentType.Customs, Some(customsDutyPaid.toString), Some(customsDutyDue.toString), Some(dutyClaimAmount.toString)),
+        DutyTypeTaxList(ClaimRepaymentType.Vat, Some(vatPaid.toString),Some(vatDue.toString), Some(vatClaimAmount.toString)),
+        DutyTypeTaxList(ClaimRepaymentType.Other, Some(otherDutiesPaid.toString),Some(otherDutiesDue.toString), Some(otherDutiesClaimAmount.toString))
+      )
+    )
+
+    def getDocumentList(): Seq[DocumentList] = {
+      Seq(DocumentList(EvidenceSupportingDocs.Other, None))
     }
 
     def getContent(userAnswers: UserAnswers): Option[Content] = for {
-      claimDetails <- getClaimDetails(userAnswers)
-      agentDetails <- ???
-      importerDetails <- ???
-      bankDetails <- ???
-      dutyTypeTaxDetails <- ???
-      documentList <- ???
+      claimDetails: ClaimDetails <- getClaimDetails(userAnswers)
+      agentDetails: UserDetails <- getAgentUserDetails(userAnswers)
+      importerDetails: UserDetails <- getImporterUserDetails(userAnswers)
+      bankDetails: AllBankDetails <- getBankDetails(userAnswers)
+      dutyTypeTaxDetails: DutyTypeTaxDetails <- getTypeTaxDetails(userAnswers)
+      documentList: DocumentList <- Seq(DocumentList(EvidenceSupportingDocs.Other, None))
     } yield Content(
       claimDetails,
-      agentDetails,
+      Some(agentDetails),
       importerDetails,
-      bankDetails,
+      Some(bankDetails),
       dutyTypeTaxDetails,
-      documentList
+      Seq(documentList)
     )
 
 
     for {
-      acknowledgementReference <- AcknowledgementReference("123456").value
-      applicationType <- ApplicationType("NDRC").value
-      originatingSystem <- OriginatingSystem("Digital").value
       content <- getContent(userAnswers)
     } yield CreateClaimRequest(
-      acknowledgementReference,
-      applicationType,
-      originatingSystem,
+      AcknowledgementReference("123456"),
+      ApplicationType("NDRC"),
+      OriginatingSystem("Digital"),
       content
     )
   }

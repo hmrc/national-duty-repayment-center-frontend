@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.Format
+import play.api.libs.json.JsPath
 
-case class AccountName(value: String)
+case object CustomsDutyPaidPage extends QuestionPage[String] {
 
-object AccountName {
-  implicit val format: Format[AccountName] =
-    JsonFormatUtils.stringFormat(AccountName.apply)(_.value)
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "customsDutyPaid"
 }

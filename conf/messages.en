@@ -73,19 +73,19 @@ importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
-customsRegulationType.title = Which regulation are you applying for repayment under?
-customsRegulationType.heading = Which regulation are you applying for repayment under?
-customsRegulationType.01 = UK Customs Code Regulation (UK) Unknown
-customsRegulationType.02 = Unions Customs Code Regulation (EU) 952/2013
-customsRegulationType.checkYourAnswersLabel = Which regulation are you applying for repayment under?
-customsRegulationType.error.required = Select which regulation are you applying for repayment under
+customsRegulationType.title = Was the overpayment made before 1 Janurary 2021?
+customsRegulationType.heading = Was the overpayment made before 1 Janurary 2021?
+customsRegulationType.01 = Yes
+customsRegulationType.02 = No
+customsRegulationType.checkYourAnswersLabel = Was the overpayment made before 1 Janurary 2021?
+customsRegulationType.error.required = Select whether the overpayment was made before 1 Janurary 2021?
 
-articleType.title = Which article are you applying for repayment under?
-articleType.heading = Which article are you applying for repayment under?
-articleType.117 = Article 117: Overcharged amounts of import or export duty
-articleType.119 = Article 119: Error by the competent authorities
-articleType.120 = Article 120: Equity
-articleType.checkYourAnswersLabel = Which article are you applying for repayment under?
+articleType.title = Why are you applying for this repayment?
+articleType.heading = Why are you applying for this repayment?
+articleType.117 = Overpayment of duty or VAT
+articleType.119 = Error by customs
+articleType.120 = Exceptional circumstances
+articleType.checkYourAnswersLabel = Why are you applying for this repayment?
 articleType.error.required = Select which article are you applying for repayment under?
 
 numberOfEntriesType.title = How many entries do you want to submit?
@@ -151,13 +151,14 @@ reasonForOverpayment.error.required = Enter a reason for overpayment
 reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or less
 reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
 
-claimRepaymentType.title = What are you claiming repayment of?
-claimRepaymentType.heading = What are you claiming repayment of?
+claimRepaymentType.title = What was overpaid?
+claimRepaymentType.heading = What was overpaid?
+claimRepaymentType.hint = Select all that apply.
 claimRepaymentType.01 = Customs Duty
 claimRepaymentType.02 = VAT
 claimRepaymentType.03 = Another type of duty
-claimRepaymentType.checkYourAnswersLabel = What are you claiming repayment of?
-claimRepaymentType.error.required = Select What are you claiming repayment of
+claimRepaymentType.checkYourAnswersLabel = What was overpaid?
+claimRepaymentType.error.required = Select what was overpaid
 
 evidenceSupportingDocs.title = What evidence do you have to support the application?
 evidenceSupportingDocs.heading = What evidence do you have to support the application?
@@ -281,6 +282,7 @@ importerAddress.title = What is your address?
 importerAddress.heading = What is your address?
 importerAddress.checkYourAnswersLabel = What is your address?
 importerAddress.manual = Enter address manually
+importerAddress.postCode = Postcode
 importerAddress.hint = Postcode
 importerAddress.error.required = Enter your address
 importerAddress.error.length = Your address must be 9 characters or less
@@ -291,8 +293,46 @@ agentImporterAddress.checkYourAnswersLabel = What is the importer's address?
 agentImporterAddress.error.required = Enter Importer's address
 agentImporterAddress.error.length = Importer's address must be 9 characters or less
 
+importerManualAddress.title = Enter your business address
+importerManualAddress.heading = Enter your business address
+importerManualAddress.addressLine1.heading = Building and street
+importerManualAddress.city.heading = Town or city
+importerManualAddress.county.heading = County
+importerManualAddress.checkYourAnswersLabel = Enter your business address
+importerManualAddress.error.required = Enter your business address
+importerManualAddress.hint = We will use this to send letters about this application.
+importerManualAddress.error.length = Your Manual Address must be 128 characters or less
+
 confirmation.title = Application complete
 confirmation.heading = Application complete
 confirmation.whatHappensNext.heading = What happens next
 confirmation.whatHappensNext.p1 = We’ve sent your application to the NDRC team.
 confirmation.whatHappensNext.p2 = They will contact you either to confirm your registration, or to ask for more information.
+
+agentImporterManualAddress.title = Enter their address
+agentImporterManualAddress.heading = Enter their address
+agentImporterManualAddress.checkYourAnswersLabel = Enter their address
+agentImporterManualAddress.error.required = Enter their address
+agentImporterManualAddress.hint = We will use this to send letters about this application.
+agentImporterManualAddress.error.length = Their Manual Address must be 128 characters or less
+
+bankDetails.title = Enter UK bank details
+bankDetails.heading = Enter UK bank details
+bankDetails.checkYourAnswersLabel = Enter UK bank details
+bankDetails.name.heading = Name on the account
+bankDetails.name.hint = Enter your name as it appears on your bank statement.
+bankDetails.sortcode.heading = Sort code
+bankDetails.sortcode.hint = Must be 6 digits long.
+bankDetails.accountnumber.heading = Account number
+bankDetails.accountnumber.hint = Must be between 6 and 8 digits long.
+bankDetails.error.required = Enter UK bank details
+bankDetails.error.length = Name on the account must be 40 characters or less
+
+importerAddressConfirmation.title = Select your address
+importerAddressConfirmation.heading = Select your address
+importerAddressConfirmation.link1 = change
+importerAddressConfirmation.link2 = I can't find my address in the list
+importerAddressConfirmation.address = Select an address
+
+agentImporterAddressConfirmation.title = Select their address
+agentImporterAddressConfirmation.heading = Select their address

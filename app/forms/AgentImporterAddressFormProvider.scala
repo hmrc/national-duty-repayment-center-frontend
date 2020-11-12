@@ -17,13 +17,13 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.Address
 import play.api.data.Form
 
 class AgentImporterAddressFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[Address] =
     Form(
       "value" -> text("agentImporterAddress.error.required")
         .verifying(maxLength(9, "agentImporterAddress.error.length"))

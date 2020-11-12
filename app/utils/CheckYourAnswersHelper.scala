@@ -28,11 +28,38 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def bankDetails: Option[AnswerRow] = userAnswers.get(BankDetailsPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("bankDetails.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.BankDetailsController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def agentImporterManualAddress: Option[AnswerRow] = userAnswers.get(AgentImporterManualAddressPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("agentImporterManualAddress.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.AgentImporterManualAddressController.onPageLoad(CheckMode).url
+      )
+  }
+
+  def importerManualAddress: Option[AnswerRow] = userAnswers.get(ImporterManualAddressPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("importerManualAddress.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        routes.ImporterManualAddressController.onPageLoad(CheckMode).url
+      )
+  }
+
   def agentImporterAddress: Option[AnswerRow] = userAnswers.get(AgentImporterAddressPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.toString),
         routes.AgentImporterAddressController.onPageLoad(CheckMode).url
       )
   }
@@ -41,7 +68,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.toString),
         routes.ImporterAddressController.onPageLoad(CheckMode).url
       )
   }
@@ -122,7 +149,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("enterAgentEORI.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         routes.EnterAgentEORIController.onPageLoad(CheckMode).url
       )
   }
@@ -151,7 +178,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         routes.AgentNameImporterController.onPageLoad(CheckMode).url
       )
   }
@@ -187,7 +214,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         routes.ImporterNameController.onPageLoad(CheckMode).url
       )
   }
@@ -322,7 +349,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerEori.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         routes.ImporterEoriController.onPageLoad(CheckMode).url
       )
   }

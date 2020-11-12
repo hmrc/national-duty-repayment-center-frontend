@@ -192,4 +192,24 @@ POST       /agentImporterAddress                        controllers.AgentImporte
 GET        /changeAgentImporterAddress                  controllers.AgentImporterAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentImporterAddress                  controllers.AgentImporterAddressController.onSubmit(mode: Mode = CheckMode)
 
+GET        /importerManualAddress                        controllers.ImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /importerManualAddress                        controllers.ImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeImporterManualAddress                  controllers.ImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeImporterManualAddress                  controllers.ImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
+
 GET        /confirmation                       controllers.confirmationController.onPageLoad()
+
+
+GET        /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAgentImporterManualAddress                  controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAgentImporterManualAddress                  controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET        /bankDetails                        controllers.BankDetailsController.onPageLoad(mode: Mode = NormalMode)
+POST       /bankDetails                        controllers.BankDetailsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeBankDetails                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeBankDetails                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
+
+GET        /importerAddressConfirmation                       controllers.ImporterAddressConfirmationController.onPageLoad()
+
+GET        /agentImporterAddressConfirmation                       controllers.AgentImporterAddressConfirmationController.onPageLoad()
