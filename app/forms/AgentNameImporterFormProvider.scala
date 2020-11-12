@@ -26,8 +26,7 @@ class AgentNameImporterFormProvider @Inject() extends Mappings {
   def apply(): Form[UserName] =
     Form(
       "value" -> text("agentNameImporter.error.required")
-        .verifying(maxLength(512, "agentNameImporter.error.length"))
+        .verifying(maxLength(512, "agentNameImporter.error.length")).transform[UserName](UserName.apply, _.value)
     )
-
 
 }

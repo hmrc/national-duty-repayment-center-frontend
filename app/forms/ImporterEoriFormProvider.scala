@@ -17,15 +17,15 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.EORI
 import play.api.data.Form
 
 class ImporterEoriFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[EORI] =
     Form(
       "value" -> text("importerEori.error.required")
-        .verifying(maxLength(17, "importerEori.error.length"))
+        .verifying(maxLength(17, "importerEori.error.length")).transform[EORI](EORI.apply, _.value)
     )
 }

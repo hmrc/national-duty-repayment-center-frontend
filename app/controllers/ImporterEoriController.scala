@@ -49,7 +49,7 @@ class ImporterEoriController @Inject()(
 
       val preparedForm = request.userAnswers.get(ImporterEoriPage) match {
         case None => form
-        case Some(value) => form.fill(value.toString)
+        case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, mode))

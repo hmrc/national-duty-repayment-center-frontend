@@ -19,13 +19,48 @@ package forms
 import javax.inject.Inject
 import forms.mappings.Mappings
 import models.Address
-import play.api.data.Form
+import play.api.data.{Form, Forms}
+import play.api.data.Forms.{mapping, optional}
 
 class AgentImporterAddressFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Address] =
-    Form(
-      "value" -> text("agentImporterAddress.error.required")
-        .verifying(maxLength(9, "agentImporterAddress.error.length"))
-    )
+  private val maxLineLength = 128
+  private val maxCityLength = 64
+  private val maxRegionLength = 64
+  private val maxCCLength = 2
+
+  def apply(): Form[Address] = Form(
+    mapping(
+      "AddressLine1" ->
+        text("agentImporterAddress.error.line1.required")
+          .verifying(firstError(
+            maxLength(maxLineLength, "agentImporterAddress.error.line1.length")
+          )),
+      "AddressLine2" ->
+        optional(Forms.text
+          .verifying(firstError(
+            maxLength(maxLineLength, "agentImporterAddress.error.line2.length")
+          ))),
+      "City" ->
+        text("agentImporterAddress.error.city.required")
+          .verifying(firstError(
+            maxLength(maxCityLength, "agentImporterAddress.error.city.length")
+          )),
+      "Region" ->
+        text("agentImporterAddress.error.region.required")
+          .verifying(firstError(
+            maxLength(maxRegionLength, "agentImporterAddress.error.region.length")
+          )),
+      "CountryCode" ->
+        text("agentImporterAddress.error.countryCode.required")
+          .verifying(firstError(
+            maxLength(maxRegionLength, "agentImporterAddress.error.region.length")
+          )),
+      "PostalCode" ->
+        optional(Forms.text
+          .verifying(firstError(
+            maxLength(maxCCLength, "agentImporterAddress.error.postcode.min.length")
+          )))
+    )(Address.apply)(agentImporterAddress => Some((agentImporterAddress.AddressLine1, agentImporterAddress.AddressLine2, agentImporterAddress.City, agentImporterAddress.Region, agentImporterAddress.CountryCode, agentImporterAddress.PostalCode)))
+  )
 }

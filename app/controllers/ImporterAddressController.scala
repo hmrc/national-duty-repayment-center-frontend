@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.{AddressFormProvider, AddressSelectionFormProvider, PostcodeFormProvider, ImporterAddressFormProvider}
+import forms.{AddressSelectionFormProvider, PostcodeFormProvider, ImporterAddressFormProvider}
 import javax.inject.Inject
 import models.{Address, Mode, PostcodeLookup}
 import navigation.Navigator

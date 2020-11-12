@@ -32,7 +32,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("bankDetails.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.AccountName),
         routes.BankDetailsController.onPageLoad(CheckMode).url
       )
   }
@@ -100,7 +100,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def customsDutyPaid: Option[AnswerRow] = userAnswers.get(customsDutyPaidPage) map {
+  def customsDutyPaid: Option[AnswerRow] = userAnswers.get(CustomsDutyPaidPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),

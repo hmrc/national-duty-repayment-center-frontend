@@ -17,15 +17,15 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.UserName
 import play.api.data.Form
 
 class ImporterNameFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[UserName] =
     Form(
       "value" -> text("importerName.error.required")
-        .verifying(maxLength(512, "importerName.error.length"))
+        .verifying(maxLength(512, "importerName.error.length")).transform[UserName](UserName.apply, _.value)
     )
 }

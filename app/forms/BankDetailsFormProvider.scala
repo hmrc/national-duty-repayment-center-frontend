@@ -17,15 +17,27 @@
 package forms
 
 import javax.inject.Inject
-
+import models.BankDetails
 import forms.mappings.Mappings
 import play.api.data.Form
+import play.api.data.Forms._
 
 class BankDetailsFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("bankDetails.error.required")
-        .verifying(maxLength(40, "bankDetails.error.length"))
-    )
+  def apply(): Form[BankDetails] = Form(
+    mapping(
+      "accountName" -> text("bankDetails.error.accountName.required")
+        .verifying(firstError(
+          maxLength(40, "bankDetails.error.accountName.length")
+        )),
+      "sortCode" -> text("bankDetails.error.sortCode.required")
+        .verifying(firstError(
+          regexp(Validation.sortCodePattern.toString, "bankDetails.error.sortCode.invalid")
+        )),
+      "accountNumber" -> text("bankDetails.error.accountNumber.required")
+        .verifying(firstError(
+          regexp(Validation.accountNumberPattern.toString, "bankDetails.error.accountNumber.invalid")
+        ))
+    )(BankDetails.apply)(BankDetails.unapply)
+  )
 }
