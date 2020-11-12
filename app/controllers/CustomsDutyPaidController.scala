@@ -21,7 +21,7 @@ import forms.customsDutyPaidFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.customsDutyPaidPage
+import pages.CustomsDutyPaidPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,7 +30,7 @@ import views.html.customsDutyPaidView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class customsDutyPaidController @Inject()(
+class CustomsDutyPaidController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
@@ -47,7 +47,7 @@ class customsDutyPaidController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(customsDutyPaidPage) match {
+      val preparedForm = request.userAnswers.get(CustomsDutyPaidPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class customsDutyPaidController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(customsDutyPaidPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsDutyPaidPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(customsDutyPaidPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(CustomsDutyPaidPage, mode, updatedAnswers))
       )
   }
 }

@@ -100,12 +100,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def customsDutyPaid: Option[AnswerRow] = userAnswers.get(customsDutyPaidPage) map {
+  def customsDutyPaid: Option[AnswerRow] = userAnswers.get(CustomsDutyPaidPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        routes.customsDutyPaidController.onPageLoad(CheckMode).url
+        routes.CustomsDutyPaidController.onPageLoad(CheckMode).url
       )
   }
 
