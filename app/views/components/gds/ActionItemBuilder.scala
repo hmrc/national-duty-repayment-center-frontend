@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package viewmodels
+package views.components.gds
 
-import play.twirl.api.Html
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.ActionItem
 
-case class AnswerRow(label: Html, answer: Html, changeUrl: Option[String] = None)
+object ActionItemBuilder {
+
+  def actionItem(href: String, content: Content, visuallyHiddenText: Option[String]) =
+    ActionItem(href = href, content = content, visuallyHiddenText = visuallyHiddenText, classes = "govuk-link--no-visited-state")
+}

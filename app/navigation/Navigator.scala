@@ -43,6 +43,7 @@ class Navigator @Inject()() {
     case VATPaidPage => _ => routes.VATDueToHMRCController.onPageLoad(NormalMode)
     case VATDueToHMRCPage => _ => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
     case OtherDutiesPaidPage => _ => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
+    case OtherDutiesDueToHMRCPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
 
 
   }

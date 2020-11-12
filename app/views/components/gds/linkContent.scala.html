@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package viewmodels
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
-import play.twirl.api.Html
+@this()
 
-case class AnswerRow(label: Html, answer: Html, changeUrl: Option[String] = None)
+@(message: String)
+
+<span aria-hidden="true">
+  @message
+</span>

@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package viewmodels
+@import views.html.components.fields.field_accessible_autocomplete_with_header
 
-import play.twirl.api.Html
+@(field: Field, label: String, labelClass: Option[String], hintText: Option[String], emptySelectValue: String, args: (Symbol, Any)*)(implicit messages: Messages)
 
-case class AnswerRow(label: Html, answer: Html, changeUrl: Option[String] = None)
+@field_accessible_autocomplete_with_header(field, label, labelClass, None, hintText, emptySelectValue,false, args:_*)

@@ -24,7 +24,7 @@ import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
 import views.html.customsDutyPaidView
 
-class customsDutyPaidViewSpec extends StringViewBehaviours {
+class CustomsDutyPaidViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "customsDutyPaid"
 
@@ -41,6 +41,6 @@ class customsDutyPaidViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.customsDutyPaidController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.CustomsDutyPaidController.onSubmit(NormalMode).url)
   }
 }

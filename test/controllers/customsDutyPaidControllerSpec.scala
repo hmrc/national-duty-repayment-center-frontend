@@ -41,7 +41,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new customsDutyPaidFormProvider()
   val form = formProvider()
 
-  lazy val customsDutyPaidRoute = routes.customsDutyPaidController.onPageLoad(NormalMode).url
+  lazy val customsDutyPaidRoute = routes.CustomsDutyPaidController.onPageLoad(NormalMode).url
 
   "customsDutyPaid Controller" must {
 

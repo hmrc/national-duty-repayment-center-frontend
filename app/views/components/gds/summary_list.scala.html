@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package viewmodels
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukSummaryList
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 
-import play.twirl.api.Html
+@this(govukSummaryList: GovukSummaryList)
 
-case class AnswerRow(label: Html, answer: Html, changeUrl: Option[String] = None)
+@(id: String, heading: Option[String] = None, summaryListRows: Seq[Option[SummaryListRow]], classes: String = "govuk-!-margin-bottom-9")
+
+@heading.map { header =>
+ <h2 class="govuk-heading-m">@header</h2>
+}
+
+@govukSummaryList(SummaryList(
+ rows = summaryListRows.flatten,
+ classes = classes,
+ attributes = Map("id" -> id)
+))
