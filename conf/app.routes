@@ -208,4 +208,10 @@ POST       /changeBankDetails                  controllers.BankDetailsController
 
 GET        /importerAddressConfirmation                 controllers.ImporterAddressConfirmationController.onPageLoad()
 
+
+GET        /agentImporterAddressConfirmation                       controllers.AgentImporterAddressConfirmationController.onPageLoad()
+
+GET        /repaymentAmountSummary                       controllers.RepaymentAmountSummaryController.onPageLoad()
+
 GET        /agentImporterAddressConfirmation            controllers.AgentImporterAddressConfirmationController.onPageLoad()
+
