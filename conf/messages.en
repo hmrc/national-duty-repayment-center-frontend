@@ -56,9 +56,9 @@ claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
 claimantType.error.required = Select claimantType
 
-importerEori.title = What is your EORI number?
-importerEori.heading = What is your EORI number?
-importerEori.checkYourAnswersLabel = What is your EORI number?
+importerEori.title = What is the importer''s EORI number?
+importerEori.heading = What is the importer''s EORI number?
+importerEori.checkYourAnswersLabel = What is the importer''s EORI number?
 importerEori.error.required = Enter your EORI number
 importerEori.error.length = EORI number must be 17 characters or less
 
@@ -73,20 +73,20 @@ importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
-customsRegulationType.title = Was the overpayment made before 1 Janurary 2021?
-customsRegulationType.heading = Was the overpayment made before 1 Janurary 2021?
+customsRegulationType.title = Was the overpayment made before 1 January 2021?
+customsRegulationType.heading = Was the overpayment made before 1 January 2021?
 customsRegulationType.01 = Yes
 customsRegulationType.02 = No
-customsRegulationType.checkYourAnswersLabel = Was the overpayment made before 1 Janurary 2021?
-customsRegulationType.error.required = Select whether the overpayment was made before 1 Janurary 2021?
+customsRegulationType.checkYourAnswersLabel = Was the overpayment made before 1 January 2021?
+customsRegulationType.error.required = Select whether the overpayment was made before 1 January 2021?
 
-articleType.title = Which article are you applying for repayment under?
-articleType.heading = Which article are you applying for repayment under?
+articleType.title = Which article are you reclaiming under?
+articleType.heading = Which article are you reclaiming under?
 articleType.117 = Article 117: Overcharged amounts of import or export duty
 articleType.119 = Article 119: Error by the competent authorities
 articleType.120 = Article 120: Equity
-articleType.checkYourAnswersLabel = Which article are you applying for repayment under?
-articleType.error.required = Select which article are you applying for repayment under?
+articleType.checkYourAnswersLabel = Which article are you reclaiming under?
+articleType.error.required = Select which article are you reclaiming under?
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
@@ -151,27 +151,29 @@ reasonForOverpayment.error.required = Enter a reason for overpayment
 reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or less
 reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
 
-claimRepaymentType.title = What was overpaid?
-claimRepaymentType.heading = What was overpaid?
+claimRepaymentType.title = What do you want to reclaim?
+claimRepaymentType.heading = What do you want to reclaim?
 claimRepaymentType.hint = Select all that apply.
 claimRepaymentType.01 = Customs Duty
 claimRepaymentType.02 = VAT
 claimRepaymentType.03 = Another type of duty
-claimRepaymentType.checkYourAnswersLabel = What was overpaid?
-claimRepaymentType.error.required = Select what was overpaid
+claimRepaymentType.checkYourAnswersLabel = What do you want to reclaim?
+claimRepaymentType.error.required = Select What do you want to reclaim?
 
-evidenceSupportingDocs.title = What evidence do you have to support the application?
-evidenceSupportingDocs.heading = What evidence do you have to support the application?
-evidenceSupportingDocs.01 = Invoice
-evidenceSupportingDocs.02 = Transport documents
-evidenceSupportingDocs.03 = C88
-evidenceSupportingDocs.04 = Packing list
-evidenceSupportingDocs.05 = Proof of origin
-evidenceSupportingDocs.06 = Proof of authority
-evidenceSupportingDocs.07 = Substitute entry
-evidenceSupportingDocs.08 = Other
-evidenceSupportingDocs.checkYourAnswersLabel = What evidence do you have to support the application?
-evidenceSupportingDocs.error.required = Select what evidence do you have to support the application
+evidenceSupportingDocs.title = Supporting documents
+evidenceSupportingDocs.heading = Supporting documents
+evidenceSupportingDocs.paragraph1 = You need to send us all supporting documents for this application.
+evidenceSupportingDocs.paragraph2 = This can include:
+evidenceSupportingDocs.bullet1 = airway bill
+evidenceSupportingDocs.bullet2 = bill of lading
+evidenceSupportingDocs.bullet3 = C88
+evidenceSupportingDocs.bullet4 = E2
+evidenceSupportingDocs.bullet5 = invoice
+evidenceSupportingDocs.bullet6 = packing list
+evidenceSupportingDocs.bullet7 = proof of origin
+evidenceSupportingDocs.bullet8 = substitute entry
+evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
+evidenceSupportingDocs.error.required = Select Supporting documents
 
 importerName.title = What is the importer's name?
 importerName.heading = What is the importer's name?
@@ -199,7 +201,7 @@ phoneNumber.heading = Enter your phone number
 phoneNumber.checkYourAnswersLabel = Enter your phone number
 phoneNumber.error.required = Enter phone number
 phoneNumber.error.length = Phone number must be 11 characters or less
-phoneNumber.hint = This can be a mobile or landline number, for example 07700 900 982 or 01632 960 001. For international numbers, include the country code.
+phoneNumber.hint = We will use this if we need to contact you for further information.
 
 emailAddress.title = What is your email address?
 emailAddress.heading = What is your email address?

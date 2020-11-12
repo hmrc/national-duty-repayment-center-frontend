@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package views
+@(items: String*)(implicit messages: Messages)
 
-import views.behaviours.ViewBehaviours
-import views.html.EvidenceSupportingDocsView
-
-class EvidenceSupportingDocsViewSpec extends ViewBehaviours {
-
-  "EvidenceSupportingDocsView" must {
-
-    val view = viewFor[EvidenceSupportingDocsView](Some(emptyUserAnswers))
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "evidenceSupportingDocs")
-
-    behave like pageWithBackLink(applyView)
-  }
-
-}
+<ul class="list list-bullet mt-0">
+    @items.map{ item =>
+    <li class="acceList_item">@item</li>
+    }
+</ul>

@@ -15,13 +15,12 @@
  *@
 
 @(
-        field: Field,
-        label: String,
-        secondaryLabel: Option[String] = None,
-        inputClass: Option[String] = None,
-        labelClass: Option[String] = None,
-        hint: Option[String] = None,
-        headingIsLabel: Boolean = false
+field: Field,
+label: String,
+inputClass: Option[String] = None,
+hint: Option[String] = None,
+labelClass: Option[String] = None,
+headingIsLabel: Boolean = false,
 )(implicit messages: Messages)
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
@@ -38,7 +37,7 @@
     }
 
     @if(hint.nonEmpty){
-    <div class="form-hint" id="hint-@{field.id}">@hint</div>
+    <div class="form-hint" id="hint-@{field.id}-input">@hint</div>
     }
 
     @field.errors.map { error =>
@@ -46,14 +45,17 @@
         <span class="visually-hidden">@messages("error.browser.title.prefix") </span>@messages(error.message, error.args: _*)
     </div>
     }
-    <div class="form-control-wrapper char-counter" data-char-counter>
-        <textarea
-            class="form-control form-control--full-width @inputClass"
-            id="@{field.id}"
-            name="@{field.id}"
-            value="@{field.value}"
-            @if(field.hasErrors || hint.isDefined){aria-describedby="@if(hint.isDefined){hint-@{field.id}}@if(field.hasErrors && hint.isDefined){ }@if(field.hasErrors){error-message-@{field.id}-input}"}
-            rows="5"
-        >@{field.value}</textarea>
+    <div class="form-control-wrapper">
+        <input
+                class="form-control--full-width form-control @inputClass"
+                type="text"
+                id="@{field.id}"
+                name="@{field.name}"
+                value="@{field.value}"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                spellcheck="false"
+                @if(field.hasErrors || hint.isDefined){aria-describedby="@if(hint.isDefined){hint-@{field.id}-input}@if(field.hasErrors && hint.isDefined){ }@if(field.hasErrors){error-message-@{field.id}-input}"}
+        />
     </div>
 </div>

@@ -25,6 +25,9 @@ Pulled from GDS elements typography
 .bold {
   font-weight: 700;
 }
+.bold-4 {
+    font-weight: 400;
+}
 label > .bold {
   display: block; /*temp fix until form story can fix label structure*/
 }
@@ -53,6 +56,10 @@ label > .bold {
 
 .mb-0 {
     margin-bottom: 0px !important;
+}
+
+.mb-1 {
+  margin-bottom: ($spacer * 0.25) !important;
 }
 
 .mb-2 {

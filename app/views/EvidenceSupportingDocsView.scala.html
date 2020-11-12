@@ -14,33 +14,38 @@
  * limitations under the License.
  *@
 
-@import controllers.routes.EvidenceSupportingDocsController
-@import models.{Mode, EvidenceSupportingDocs}
+@import controllers.routes._
+@import models.Mode
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    main_template: MainTemplate
+
 )
 
-@(form: Form[Set[EvidenceSupportingDocs]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("evidenceSupportingDocs.title")}"
-    ) {
-
-    @formHelper(action = EvidenceSupportingDocsController.onSubmit(mode), 'autoComplete -> "off") {
+@main_template(title = messages("evidenceSupportingDocs.title")) {
 
         @components.back_link()
 
-        @components.error_summary(form.errors)
 
-        @components.input_checkboxes(
-            field = form("value"),
-            legend = messages("evidenceSupportingDocs.heading"),
-            headingIsLegend = true,
-            inputs = EvidenceSupportingDocs.options
+        <h1 class="heading-large mt-0 mb-3">@messages("evidenceSupportingDocs.heading")</h1>
+
+        <p class="mt-0">@messages("evidenceSupportingDocs.paragraph1")</p>
+
+        <p class="mt-0">@messages("evidenceSupportingDocs.paragraph2")</p>
+
+        @components.list_items(
+            messages("evidenceSupportingDocs.bullet1"),
+            messages("evidenceSupportingDocs.bullet2"),
+            messages("evidenceSupportingDocs.bullet3"),
+            messages("evidenceSupportingDocs.bullet4"),
+            messages("evidenceSupportingDocs.bullet5"),
+            messages("evidenceSupportingDocs.bullet6"),
+            messages("evidenceSupportingDocs.bullet7"),
+            messages("evidenceSupportingDocs.bullet8")
         )
 
         @components.submit_button()
     }
-}
+
