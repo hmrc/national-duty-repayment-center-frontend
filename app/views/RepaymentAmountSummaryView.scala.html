@@ -23,22 +23,28 @@
 )
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("repaymentAmountSummary.title")
-) {
+    @main_template(
+        title = messages("repaymentAmountSummary.title")
+    ) {
 
-    @components.back_link()
+        @components.back_link()
 
-    @components.heading("repaymentAmountSummary.heading")
+        @components.heading("repaymentAmountSummary.heading")
 
-    @for(section <- answerSections){
-        @{
-            section match {
-                case a: AnswerSection => components.answer_section(a)
-                case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+        @for(section <- answerSections) {
+            @{
+                section match {
+                    case a: AnswerSection => components.answer_section(a)
+                    case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+                }
             }
         }
-    }
+        <div>
+            <span>
+                <a class="govuk-link" href="@routes.EvidenceSupportingDocsController.onPageLoad()"/>
 
-    @components.submit_button()
-}
+            </span>
+        </div>
+
+        @components.submit_button()
+    }
