@@ -39,14 +39,13 @@ class Navigator @Inject()() {
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes. WhatAreTheGoodsController.onPageLoad(NormalMode)
     case WhatAreTheGoodsPage => _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
-    case ClaimRepaymentTypePage => claimRepaymentType
+    case ClaimRepaymentTypePage => getClaimRepaymentType
     case CustomsDutyPaidPage => _ => routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
-    case CustomsDutyDueToHMRCPage => _ => routes.VATPaidController.onPageLoad(NormalMode)
+    case CustomsDutyDueToHMRCPage => getVATRepaymentType
     case VATPaidPage => _ => routes.VATDueToHMRCController.onPageLoad(NormalMode)
-    case VATDueToHMRCPage => _ => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+    case VATDueToHMRCPage => getOtherRepaymentType
     case OtherDutiesPaidPage => _ => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
     case OtherDutiesDueToHMRCPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
-
   }
 
   private def howManyEntries(answers: UserAnswers): Call = answers.get(NumberOfEntriesTypePage) match {
@@ -55,13 +54,22 @@ class Navigator @Inject()() {
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def claimRepaymentType(answers: UserAnswers): Set[Call] = answers.get(ClaimRepaymentTypePage).get.map
-  { result =>
-      result match {
-    case ClaimRepaymentType.Customs  => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
-    case ClaimRepaymentType.Vat  => routes.VATPaidController.onPageLoad(NormalMode)
-    case ClaimRepaymentType.Other  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
-  } }
+  private def getClaimRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
+      case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs))  => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
+      case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat)) => routes.VATPaidController.onPageLoad(NormalMode)
+      case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+  }
+
+  private def getVATRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat))  => routes.VATPaidController.onPageLoad(NormalMode)
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad
+  }
+
+  private def getOtherRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad
+  }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
     case _ => _ => routes.CheckYourAnswersController.onPageLoad()
