@@ -101,10 +101,10 @@ howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
 howManyEntries.error.required = Enter how many entries are you claiming for?
 howManyEntries.error.length = HowManyEntries must be 2 characters or less
 
-claimEpu.title = Enter the EPU
-claimEpu.heading = Enter the EPU
-claimEpu.checkYourAnswersLabel = Enter the EPU
-claimEpu.error.required = Enter the EPU
+claimEpu.title = Enter the entry processing unit (EPU)
+claimEpu.heading = Enter the entry processing unit (EPU)
+claimEpu.checkYourAnswersLabel = Enter the entry processing unit (EPU)
+claimEpu.error.required = Enter the entry processing unit (EPU)
 claimEpu.error.length = EPU must be 3 characters or less
 
 claimEntryNumber.title = What is the entry number?
