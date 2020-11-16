@@ -192,6 +192,14 @@ override character count display
     outline-offset: 0;
     box-shadow: inset 0 0 0 2px;
 }
+.city.column-two-thirds {
+    width: 66.66667% !important;
+}
+@media screen and (max-width: 767px) {
+    .city.column-two-thirds {
+        width: 100% !important;
+    }
+}
 @media (min-width: 40.0625em) {
     .govuk-select {
         font-size: 19px;
