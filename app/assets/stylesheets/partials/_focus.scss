@@ -26,6 +26,7 @@ select:focus,
 }
 .button {
   border: 2px solid transparent;
+  padding: 8px 10px 7px;
 }
 .button:focus:not(:active):not(:hover) {
   border-color: #fd0;
