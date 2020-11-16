@@ -193,7 +193,7 @@ POST       /importerManualAddress                        controllers.ImporterMan
 GET        /changeImporterManualAddress                  controllers.ImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeImporterManualAddress                  controllers.ImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
 
-GET        /confirmation                       controllers.confirmationController.onPageLoad()
+GET        /confirmation                       controllers.ConfirmationController.onPageLoad()
 
 
 GET        /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)

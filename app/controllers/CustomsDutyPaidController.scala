@@ -26,7 +26,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.customsDutyPaidView
+import views.html.CustomsDutyPaidView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -39,7 +39,7 @@ class CustomsDutyPaidController @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: customsDutyPaidFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: customsDutyPaidView
+                                        view: CustomsDutyPaidView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()

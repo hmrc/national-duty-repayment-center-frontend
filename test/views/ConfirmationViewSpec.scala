@@ -17,13 +17,13 @@
 package views
 
 import views.behaviours.ViewBehaviours
-import views.html.confirmationView
+import views.html.ConfirmationView
 
 class confirmationViewSpec extends ViewBehaviours {
 
   "confirmation view" must {
 
-    val view = viewFor[confirmationView](Some(emptyUserAnswers))
+    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
 
     val applyView = view.apply()(fakeRequest, messages)
 

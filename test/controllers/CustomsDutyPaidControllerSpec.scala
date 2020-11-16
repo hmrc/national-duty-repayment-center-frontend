@@ -25,12 +25,11 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CustomsDutyPaidPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.customsDutyPaidView
+import views.html.CustomsDutyPaidView
 
 import scala.concurrent.Future
 
@@ -53,7 +52,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[CustomsDutyPaidView]
 
       status(result) mustEqual OK
 
@@ -71,7 +70,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val request = FakeRequest(GET, customsDutyPaidRoute)
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[CustomsDutyPaidView]
 
       val result = route(application, request).value
 
@@ -119,7 +118,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[CustomsDutyPaidView]
 
       val result = route(application, request).value
 

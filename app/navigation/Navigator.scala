@@ -46,6 +46,32 @@ class Navigator @Inject()() {
     case VATDueToHMRCPage => getOtherRepaymentType
     case OtherDutiesPaidPage => _ => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
     case OtherDutiesDueToHMRCPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
+    //case AgentImporterHasEORIPage => getEORIStatus
+    case ImporterEoriPage => _ => routes.IsVatRegisteredController.onPageLoad(NormalMode)
+    case IsImporterVatRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
+    case ImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
+    case ImporterAddressPage => _ => routes.ImporterAddressConfirmationController.onPageLoad
+    case ImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
+    case ImporterHasEoriPage => getEORIConfirmation
+    case IsVatRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
+    case PhoneNumberPage => _ => routes.RepaymentTypeController.onPageLoad(NormalMode)
+    case RepaymentTypePage => getRepaymentMethodType
+    case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad
+  }
+
+  private def getEORIStatus(answers: UserAnswers): Call = answers.get(AgentImporterHasEORIPage) match {
+    case Some(AgentImporterHasEORI.Yes)  => routes.ImporterEoriController.onPageLoad(NormalMode)
+    case _ => routes.IsVatRegisteredController.onPageLoad(NormalMode)
+  }
+
+  private def getEORIConfirmation(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
+    case Some(true)  => routes.ImporterEoriController.onPageLoad(NormalMode)
+    case _ => routes.IsVatRegisteredController.onPageLoad(NormalMode)
+  }
+
+  private def getRepaymentMethodType(answers: UserAnswers): Call = answers.get(RepaymentTypePage) match {
+    case Some(RepaymentType.BACS)  => routes.BankDetailsController.onPageLoad(NormalMode)
+    case _ => routes.CheckYourAnswersController.onPageLoad
   }
 
   private def howManyEntries(answers: UserAnswers): Call = answers.get(NumberOfEntriesTypePage) match {
