@@ -52,7 +52,7 @@
             <span>
                 @{
                 answers.get(ClaimantTypePage) match {
-                        case Some(ClaimantType.Importer) => <a class="govuk-link" href="importerHasEori"/>
+                        case Some(ClaimantType.Importer) => <a class="govuk-link" href="fileUpload"/>
                         case Some(ClaimantType.Representative) => <a class="govuk-link" href="agentImporterHasEORI"/>
                         case _ => <a class="govuk-link" href="/"/>
                 }}

@@ -215,3 +215,15 @@ GET        /repaymentAmountSummary                       controllers.RepaymentAm
 
 GET        /agentImporterAddressConfirmation            controllers.AgentImporterAddressConfirmationController.onPageLoad()
 
+
+GET        /fileUpload                       controllers.FileUploadController.onPageLoad()
+
+GET        /additionalFileUpload                        controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = NormalMode)
+POST       /additionalFileUpload                        controllers.AdditionalFileUploadController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAdditionalFileUpload                  controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAdditionalFileUpload                  controllers.AdditionalFileUploadController.onSubmit(mode: Mode = CheckMode)
+
+GET        /contactByEmail                        controllers.ContactByEmailController.onPageLoad(mode: Mode = NormalMode)
+POST       /contactByEmail                        controllers.ContactByEmailController.onSubmit(mode: Mode = NormalMode)
+GET        /changeContactByEmail                  controllers.ContactByEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeContactByEmail                  controllers.ContactByEmailController.onSubmit(mode: Mode = CheckMode)

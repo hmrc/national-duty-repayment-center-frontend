@@ -52,13 +52,15 @@ class Navigator @Inject()() {
     case ImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
     case ImporterHasEoriPage => getEORIConfirmation
     case IsVatRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
-    case PhoneNumberPage => _ => routes.RepaymentTypeController.onPageLoad(NormalMode)
+    case PhoneNumberPage => _ => routes.ContactByEmailController.onPageLoad(NormalMode)
+    case ContactByEmailPage => _ => routes.RepaymentTypeController.onPageLoad(NormalMode)
     case RepaymentTypePage => getRepaymentMethodType
     case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad
     case EnterAgentEORIPage => _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
     case AgentNameImporterPage => _ => routes.AgentImporterAddressController.onPageLoad(NormalMode)
     case AgentImporterAddressPage => _ => routes.AgentImporterAddressConfirmationController.onPageLoad
     case AgentImporterManualAddressPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
+    case AdditionalFileUploadPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
     case _ => _ => routes.IndexController.onPageLoad()
   }
 

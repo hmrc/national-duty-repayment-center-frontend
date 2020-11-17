@@ -24,6 +24,16 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  implicit lazy val arbitraryContactByEmail: Arbitrary[ContactByEmail] =
+    Arbitrary {
+      Gen.oneOf(ContactByEmail.values.toSeq)
+    }
+
+  implicit lazy val arbitraryAdditionalFileUpload: Arbitrary[AdditionalFileUpload] =
+    Arbitrary {
+      Gen.oneOf(AdditionalFileUpload.values.toSeq)
+    }
+
   implicit lazy val arbitraryAgentImporterHasEORI: Arbitrary[AgentImporterHasEORI] =
     Arbitrary {
       Gen.oneOf(AgentImporterHasEORI.values.toSeq)

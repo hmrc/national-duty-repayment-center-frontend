@@ -28,6 +28,24 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def contactByEmail: Option[AnswerRow] = userAnswers.get(ContactByEmailPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"contactByEmail.$x")),
+        Some(routes.ContactByEmailController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def additionalFileUpload: Option[AnswerRow] = userAnswers.get(AdditionalFileUploadPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("additionalFileUpload.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"additionalFileUpload.$x")),
+        Some(routes.AdditionalFileUploadController.onPageLoad(CheckMode).url)
+      )
+  }
+
   def bankDetails: Option[AnswerRow] = userAnswers.get(BankDetailsPage) map {
     x =>
       AnswerRow(
