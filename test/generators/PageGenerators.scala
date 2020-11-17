@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryContactByEmailPage: Arbitrary[ContactByEmailPage.type] =
+    Arbitrary(ContactByEmailPage)
+
   implicit lazy val arbitraryAdditionalFileUploadPage: Arbitrary[AdditionalFileUploadPage.type] =
     Arbitrary(AdditionalFileUploadPage)
 

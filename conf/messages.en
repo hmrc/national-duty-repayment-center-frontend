@@ -363,3 +363,10 @@ additionalFileUpload.01 = Yes
 additionalFileUpload.02 = No
 additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
 additionalFileUpload.error.required = Select additionalFileUpload
+
+contactByEmail.title = Can we contact you by email?
+contactByEmail.heading = Can we contact you by email?
+contactByEmail.01 = Yes
+contactByEmail.02 = No
+contactByEmail.checkYourAnswersLabel = ContactByEmail
+contactByEmail.error.required = Select contactByEmail
