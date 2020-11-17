@@ -354,3 +354,5 @@ repaymentAmountSummary.otherduties.1=Other duties that were due
 repaymentAmountSummary.otherduties.2=Total other duties repayment amount
 repaymentAmountSummary.total=Total
 repaymentAmountSummary.total.amount=Total repayment amount
+fileUpload.title = Upload a file
+fileUpload.heading = Upload a file

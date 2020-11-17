@@ -215,3 +215,5 @@ GET        /repaymentAmountSummary                       controllers.RepaymentAm
 
 GET        /agentImporterAddressConfirmation            controllers.AgentImporterAddressConfirmationController.onPageLoad()
 
+
+GET        /fileUpload                       controllers.FileUploadController.onPageLoad()
