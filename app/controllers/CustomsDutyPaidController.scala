@@ -21,16 +21,16 @@ import forms.customsDutyPaidFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.customsDutyPaidPage
+import pages.CustomsDutyPaidPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.customsDutyPaidView
+import views.html.CustomsDutyPaidView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class customsDutyPaidController @Inject()(
+class CustomsDutyPaidController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
@@ -39,7 +39,7 @@ class customsDutyPaidController @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: customsDutyPaidFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: customsDutyPaidView
+                                        view: CustomsDutyPaidView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -47,7 +47,7 @@ class customsDutyPaidController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(customsDutyPaidPage) match {
+      val preparedForm = request.userAnswers.get(CustomsDutyPaidPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class customsDutyPaidController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(customsDutyPaidPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsDutyPaidPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(customsDutyPaidPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(CustomsDutyPaidPage, mode, updatedAnswers))
       )
   }
 }

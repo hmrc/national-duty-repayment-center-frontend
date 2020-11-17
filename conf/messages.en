@@ -56,9 +56,9 @@ claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
 claimantType.error.required = Select claimantType
 
-importerEori.title = What is the importer''s EORI number?
-importerEori.heading = What is the importer''s EORI number?
-importerEori.checkYourAnswersLabel = What is the importer''s EORI number?
+importerEori.title = What is your EORI number?
+importerEori.heading = What is your EORI number?
+importerEori.checkYourAnswersLabel = What is your EORI number?
 importerEori.error.required = Enter your EORI number
 importerEori.error.length = EORI number must be 17 characters or less
 
@@ -175,11 +175,11 @@ evidenceSupportingDocs.bullet8 = substitute entry
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
 
-importerName.title = What is the importer's name?
-importerName.heading = What is the importer's name?
-importerName.checkYourAnswersLabel = What is the importer's name?
-importerName.error.required = Enter importer's name
-importerName.error.length = Importer's name must be 512 characters or less
+agentNameImporter.title = What is the importer's name?
+agentNameImporter.heading = What is the importer's name?
+agentNameImporter.checkYourAnswersLabel = What is the importer's name?
+agentNameImporter.error.required = Enter importer's name
+agentNameImporter.error.length = Importer's name must be 512 characters or less
 
 contactType.title = How should we contact you?
 contactType.heading = How should we contact you?
@@ -189,12 +189,11 @@ contactType.checkYourAnswersLabel = How should we contact you?
 contactType.error.required = Select Contact Type
 contactType.hint = We will only use these details if we need more information to complete your application.
 
-
-agentNameImporter.title = What is your name?
-agentNameImporter.heading = What is your name?
-agentNameImporter.checkYourAnswersLabel = What is your name?
-agentNameImporter.error.required = Enter your name
-agentNameImporter.error.length = Your name must be 512 characters or less
+importerName.title = What is your name?
+importerName.heading = What is your name?
+importerName.checkYourAnswersLabel = What is your name?
+importerName.error.required = Enter your name
+importerName.error.length = Your name must be 512 characters or less
 
 phoneNumber.title = Enter your phone number
 phoneNumber.heading = Enter your phone number

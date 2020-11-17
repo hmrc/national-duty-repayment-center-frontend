@@ -16,13 +16,15 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.ClaimantType
+@import pages.ClaimantTypePage
 
 @this(
     main_template: MainTemplate
 
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(answers: UserAnswers)(implicit request: Request[_], messages: Messages)
 
 @main_template(title = messages("evidenceSupportingDocs.title")) {
 
@@ -45,6 +47,17 @@
             messages("evidenceSupportingDocs.bullet7"),
             messages("evidenceSupportingDocs.bullet8")
         )
+
+        <div>
+            <span>
+                @{
+                answers.get(ClaimantTypePage) match {
+                        case Some(ClaimantType.Importer) => <a class="govuk-link" href="importerHasEori"/>
+                        case Some(ClaimantType.Representative) => <a class="govuk-link" href="agentImporterHasEORI"/>
+                        case _ => <a class="govuk-link" href="/"/>
+                }}
+            </span>
+        </div>
 
         @components.submit_button()
     }

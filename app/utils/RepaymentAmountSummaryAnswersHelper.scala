@@ -49,7 +49,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
         Html(x.map(value => HtmlFormat.escape(message).toString).mkString("")),
         Html(x.map(value => HtmlFormat.escape("£" + amount).toString).mkString("")),
         index match {
-          case "0" if isCustomDutyExists => Some(routes.customsDutyPaidController.onPageLoad(CheckMode).url)
+          case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
           case "1" if isCustomDutyExists => Some(routes.CustomsDutyDueToHMRCController.onPageLoad(CheckMode).url)
           case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(CheckMode).url)
           case "1" if isVATExists => Some(routes.VATDueToHMRCController.onPageLoad(CheckMode).url)
@@ -63,7 +63,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   def getSections(): Seq[AnswerSection] = {
 
     val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
-    val customDutyPaid = userAnswers.get(customsDutyPaidPage).getOrElse("0.0").toDouble
+    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble
     val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
     val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
     val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
@@ -85,7 +85,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   }
 
   def getTotalAmount(): Double = {
-    val customDutyPaid = userAnswers.get(customsDutyPaidPage).getOrElse("0.0").toDouble
+    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble
     val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
     val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
     val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble

@@ -158,10 +158,10 @@ POST       /vatDueToHMRC                        controllers.VATDueToHMRCControll
 GET        /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onSubmit(mode: Mode = CheckMode)
 
-GET        /customsDutyPaid                        controllers.customsDutyPaidController.onPageLoad(mode: Mode = NormalMode)
-POST       /customsDutyPaid                        controllers.customsDutyPaidController.onSubmit(mode: Mode = NormalMode)
-GET        /changecustomsDutyPaid                  controllers.customsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
-POST       /changecustomsDutyPaid                  controllers.customsDutyPaidController.onSubmit(mode: Mode = CheckMode)
+GET        /customsDutyPaid                        controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /customsDutyPaid                        controllers.CustomsDutyPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /changecustomsDutyPaid                  controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /changecustomsDutyPaid                  controllers.CustomsDutyPaidController.onSubmit(mode: Mode = CheckMode)
 
 GET        /customsDutyDueToHMRC                        controllers.CustomsDutyDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
 POST       /customsDutyDueToHMRC                        controllers.CustomsDutyDueToHMRCController.onSubmit(mode: Mode = NormalMode)
@@ -193,7 +193,7 @@ POST       /importerManualAddress                        controllers.ImporterMan
 GET        /changeImporterManualAddress                  controllers.ImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeImporterManualAddress                  controllers.ImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
 
-GET        /confirmation                       controllers.confirmationController.onPageLoad()
+GET        /confirmation                       controllers.ConfirmationController.onPageLoad()
 
 
 GET        /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)

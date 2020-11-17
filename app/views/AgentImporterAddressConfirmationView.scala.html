@@ -42,7 +42,7 @@
         @messages("importerAddress.postCode")
     </h2>
 
-    <p class="mt-0">@link("", messages("importerAddressConfirmation.link1"))</p>
+    <p class="mt-0">@link("agentImporterAddress", messages("importerAddressConfirmation.link1"))</p>
 
     <h2 class="heading-medium pr-bottom-margin">
         @messages("importerAddressConfirmation.address")
@@ -63,7 +63,14 @@
     </div>
 
 </div>
-    <p class="mt-0">@link("", messages("importerAddressConfirmation.link2"))</p>
+    <p class="mt-0">@link("agentImporterManualAddress", messages("importerAddressConfirmation.link2"))</p>
+
+        <div>
+            <span>
+                <a class="govuk-link" href="@routes.ImporterHasEoriController.onPageLoad(NormalMode)"/>
+
+            </span>
+        </div>
 
     @components.submit_button()
 }

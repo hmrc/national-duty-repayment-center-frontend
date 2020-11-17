@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.confirmationView
+import views.html.ConfirmationView
 
 class confirmationControllerSpec extends SpecBase {
 
@@ -29,11 +29,11 @@ class confirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.confirmationController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[confirmationView]
+      val view = application.injector.instanceOf[ConfirmationView]
 
       status(result) mustEqual OK
 

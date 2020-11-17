@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package views
 
-import play.api.libs.json.JsPath
+import views.behaviours.ViewBehaviours
+import views.html.ConfirmationView
 
-case object customsDutyPaidPage extends QuestionPage[String] {
+class confirmationViewSpec extends ViewBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  "confirmation view" must {
 
-  override def toString: String = "customsDutyPaid"
+    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
+
+    val applyView = view.apply()(fakeRequest, messages)
+
+    behave like normalPage(applyView, "confirmation")
+  }
 }
