@@ -71,6 +71,11 @@ p.font-xsmall{
 .extra-heading-margin {
     margin-right: -45px;
 }
+@media screen and (max-width: 767px) {
+   .extra-heading-margin {
+          margin-right: 0px;
+   }
+}
 #bank-details .form-hint{
     margin-bottom: 10px;
 }
