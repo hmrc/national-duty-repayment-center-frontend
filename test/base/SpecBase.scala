@@ -21,7 +21,7 @@ import java.time.LocalDate
 import config.FrontendAppConfig
 import controllers.actions._
 import models.requests.CreateClaimRequest
-import models.{AccountName, AccountNumber, AcknowledgementReference, Address, AllBankDetails, ApplicationType, BankDetails, ClaimAmount, ClaimDescription, ClaimDetails, ClaimReason, ClaimType, Claimant, ClaimedUnderArticle, Content, CustomRegulationType, DocumentDescription, DocumentList, DocumentUploadType, DueAmount, DutyType, DutyTypeTaxDetails, DutyTypeTaxList, EORI, EPU, EntryNumber, FormType, NoOfEntries, OriginatingSystem, PaidAmount, PayeeIndicator, PaymentMethod, SortCode, UserAnswers, UserDetails, UserName, VRN}
+import models._
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatestplus.play.PlaySpec
@@ -58,20 +58,20 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   val claimDetails = ClaimDetails(
     FormType = FormType("01"),
-    CustomRegulationType = CustomRegulationType.UKCustomsCodeRegulation,
-    ClaimedUnderArticle = ClaimedUnderArticle.Equity,
-    Claimant = Claimant.RepresentativeOfTheImporter,
-    ClaimType = ClaimType.Multiple,
+    CustomRegulationType = CustomsRegulationType.UKCustomsCodeRegulation,
+    ClaimedUnderArticle = ArticleType.ErrorByCustoms,
+    Claimant = ClaimantType.Representative,
+    ClaimType = NumberOfEntriesType.Multiple,
     NoOfEntries = Some(NoOfEntries("10")),
     EPU = EPU("777"),
     EntryNumber = EntryNumber("123456A"),
     EntryDate = LocalDate.of(2020,1,1),
-    ClaimReason = ClaimReason.Preference,
+    ClaimReason = ClaimReasonType.Preference,
     ClaimDescription = ClaimDescription("this is a claim description"),
     DateReceived = LocalDate.of(2020,8,5),
     ClaimDate = LocalDate.of(2020,8,5),
-    PayeeIndicator = PayeeIndicator.Importer,
-    PaymentMethod = PaymentMethod.BACS,
+    PayeeIndicator = WhomToPay.Importer,
+    PaymentMethod = RepaymentType.BACS,
   )
 
   val address = Address(AddressLine1 = "line 1",
@@ -79,9 +79,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     City = "city",
     Region = "region",
     CountryCode = "GB",
-    PostalCode = Some("ZZ111ZZ"),
-    TelephoneNumber = Some("12345678"),
-    EmailAddress = Some("example@example.com")
+    PostalCode = Some("ZZ111ZZ")
   )
 
   val userDetails = UserDetails(VATNumber = Some(VRN("123456789")),
@@ -91,21 +89,21 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   )
 
   val bankDetails = AllBankDetails(
-    AgentBankDetails = BankDetails(AccountName("account name"), SortCode("123456"), AccountNumber("12345678")),
-    ImporterBankDetails = BankDetails(AccountName("account name"), SortCode("123456"), AccountNumber("12345678"))
+    AgentBankDetails = Some(BankDetails("account name", "123456", "12345678")),
+    ImporterBankDetails = Some(BankDetails("account name", "123456", "12345678"))
   )
 
 
   val dutyTypeTaxList = Seq(
-    DutyTypeTaxList(DutyType.Customs, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
-    DutyTypeTaxList(DutyType.Vat, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
-    DutyTypeTaxList(DutyType.Other, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00")))
+    DutyTypeTaxList(ClaimRepaymentType.Customs, Some("100.00"), Some("50.00"), Some("50.00")),
+    DutyTypeTaxList(ClaimRepaymentType.Vat, Some("100.00"), Some("50.00"), Some("50.00")),
+    DutyTypeTaxList(ClaimRepaymentType.Other, Some("100.00"), Some("50.00"), Some("50.00"))
   )
 
   val documentList = Seq(
-    DocumentList(DocumentUploadType.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
-    DocumentList(DocumentUploadType.Invoice, Some(DocumentDescription("this is an invoice"))),
-    DocumentList(DocumentUploadType.PackingList, Some(DocumentDescription("this is a packing list"))),
+    DocumentList(EvidenceSupportingDocs.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
+    DocumentList(EvidenceSupportingDocs.Invoice, Some(DocumentDescription("this is an invoice"))),
+    DocumentList(EvidenceSupportingDocs.PackingList, Some(DocumentDescription("this is a packing list"))),
   )
 
   val dutyTypeTaxDetails = DutyTypeTaxDetails(dutyTypeTaxList)

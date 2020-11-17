@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.customsDutyPaidFormProvider
+import forms.CustomsDutyPaidFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +28,7 @@ class customsDutyPaidViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "customsDutyPaid"
 
-  val form = new customsDutyPaidFormProvider()()
+  val form = new CustomsDutyPaidFormProvider()()
 
   "customsDutyPaidView view" must {
 
@@ -41,6 +41,6 @@ class customsDutyPaidViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.customsDutyPaidController.onSubmit(NormalMode).url)
+    behave like stringPage(form, applyView, messageKeyPrefix, routes.CustomsDutyPaidController.onSubmit(NormalMode).url)
   }
 }

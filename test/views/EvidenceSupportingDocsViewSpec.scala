@@ -18,7 +18,6 @@ package views
 
 import forms.EvidenceSupportingDocsFormProvider
 import models.{EvidenceSupportingDocs, NormalMode}
-import play.api.Application
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.CheckboxViewBehaviours

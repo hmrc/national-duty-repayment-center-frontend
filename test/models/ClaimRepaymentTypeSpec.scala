@@ -23,13 +23,13 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class ClaimRepaymentTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues with ModelGenerators {
+class ClaimRepaymentTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   "ClaimRepaymentType" must {
 
     "deserialise valid values" in {
 
-      val gen = arbitrary[ClaimRepaymentType]
+      val gen = Gen.oneOf(ClaimRepaymentType.values)
 
       forAll(gen) {
         claimRepaymentType =>
@@ -51,7 +51,7 @@ class ClaimRepaymentTypeSpec extends WordSpec with MustMatchers with ScalaCheckP
 
     "serialise" in {
 
-      val gen = arbitrary[ClaimRepaymentType]
+      val gen = Gen.oneOf(ClaimRepaymentType.values)
 
       forAll(gen) {
         claimRepaymentType =>

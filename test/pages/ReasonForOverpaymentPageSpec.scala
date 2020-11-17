@@ -16,6 +16,7 @@
 
 package pages
 
+import models.ClaimDescription
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class ReasonForOverpaymentPageSpec extends PageBehaviours {
 
   "ReasonForOverpaymentPage" must {
 
-    beRetrievable[String](ReasonForOverpaymentPage)
+    beRetrievable[ClaimDescription](ReasonForOverpaymentPage)
 
-    beSettable[String](ReasonForOverpaymentPage)
+    beSettable[ClaimDescription](ReasonForOverpaymentPage)
 
-    beRemovable[String](ReasonForOverpaymentPage)
+    beRemovable[ClaimDescription](ReasonForOverpaymentPage)
   }
 }

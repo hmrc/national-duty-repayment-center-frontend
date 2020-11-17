@@ -16,6 +16,7 @@
 
 package pages
 
+import models.EPU
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class ClaimEpuPageSpec extends PageBehaviours {
 
   "ClaimEpuPage" must {
 
-    beRetrievable[String](ClaimEpuPage)
+    beRetrievable[EPU](ClaimEpuPage)
 
-    beSettable[String](ClaimEpuPage)
+    beSettable[EPU](ClaimEpuPage)
 
-    beRemovable[String](ClaimEpuPage)
+    beRemovable[EPU](ClaimEpuPage)
   }
 }

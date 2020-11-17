@@ -16,6 +16,7 @@
 
 package pages
 
+import models.UserName
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class AgentNameImporterPageSpec extends PageBehaviours {
 
   "AgentNameImporterPage" must {
 
-    beRetrievable[String](AgentNameImporterPage)
+    beRetrievable[UserName](AgentNameImporterPage)
 
-    beSettable[String](AgentNameImporterPage)
+    beSettable[UserName](AgentNameImporterPage)
 
-    beRemovable[String](AgentNameImporterPage)
+    beRemovable[UserName](AgentNameImporterPage)
   }
 }

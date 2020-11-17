@@ -16,6 +16,7 @@
 
 package pages
 
+import models.NoOfEntries
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class HowManyEntriesPageSpec extends PageBehaviours {
 
   "HowManyEntriesPage" must {
 
-    beRetrievable[String](HowManyEntriesPage)
+    beRetrievable[NoOfEntries](HowManyEntriesPage)
 
-    beSettable[String](HowManyEntriesPage)
+    beSettable[NoOfEntries](HowManyEntriesPage)
 
-    beRemovable[String](HowManyEntriesPage)
+    beRemovable[NoOfEntries](HowManyEntriesPage)
   }
 }

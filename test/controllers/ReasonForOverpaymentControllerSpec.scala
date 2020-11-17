@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ReasonForOverpaymentFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{ClaimDescription, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -65,7 +65,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReasonForOverpaymentPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ReasonForOverpaymentPage, ClaimDescription("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(ClaimDescription("answer")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

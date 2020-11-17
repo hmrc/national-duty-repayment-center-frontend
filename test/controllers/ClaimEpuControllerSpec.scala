@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ClaimEpuFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{EPU, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -65,7 +65,7 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimEpuPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimEpuPage, EPU("123")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(EPU("123")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

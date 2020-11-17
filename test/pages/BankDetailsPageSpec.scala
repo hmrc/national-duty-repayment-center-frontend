@@ -16,6 +16,7 @@
 
 package pages
 
+import models.BankDetails
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class BankDetailsPageSpec extends PageBehaviours {
 
   "BankDetailsPage" must {
 
-    beRetrievable[String](BankDetailsPage)
+    beRetrievable[BankDetails](BankDetailsPage)
 
-    beSettable[String](BankDetailsPage)
+    beSettable[BankDetails](BankDetailsPage)
 
-    beRemovable[String](BankDetailsPage)
+    beRemovable[BankDetails](BankDetailsPage)
   }
 }

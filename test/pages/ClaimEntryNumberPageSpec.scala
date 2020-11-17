@@ -16,6 +16,7 @@
 
 package pages
 
+import models.EntryNumber
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class ClaimEntryNumberPageSpec extends PageBehaviours {
 
   "ClaimEntryNumberPage" must {
 
-    beRetrievable[String](ClaimEntryNumberPage)
+    beRetrievable[EntryNumber](ClaimEntryNumberPage)
 
-    beSettable[String](ClaimEntryNumberPage)
+    beSettable[EntryNumber](ClaimEntryNumberPage)
 
-    beRemovable[String](ClaimEntryNumberPage)
+    beRemovable[EntryNumber](ClaimEntryNumberPage)
   }
 }

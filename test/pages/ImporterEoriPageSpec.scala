@@ -16,6 +16,7 @@
 
 package pages
 
+import models.EORI
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class ImporterEoriPageSpec extends PageBehaviours {
 
   "ImporterEoriPage" must {
 
-    beRetrievable[String](ImporterEoriPage)
+    beRetrievable[EORI](ImporterEoriPage)
 
-    beSettable[String](ImporterEoriPage)
+    beSettable[EORI](ImporterEoriPage)
 
-    beRemovable[String](ImporterEoriPage)
+    beRemovable[EORI](ImporterEoriPage)
   }
 }

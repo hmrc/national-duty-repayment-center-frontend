@@ -18,7 +18,6 @@ package views
 
 import forms.ClaimRepaymentTypeFormProvider
 import models.{ClaimRepaymentType, NormalMode}
-import play.api.Application
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.CheckboxViewBehaviours

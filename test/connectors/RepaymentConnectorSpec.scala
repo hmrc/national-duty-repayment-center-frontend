@@ -59,12 +59,12 @@ class RepaymentConnectorSpec extends SpecBase
              |  "caseID": "1"
              |}
              |""".stripMargin
-        val connector = app.injector.instanceOf[RepaymentConnector]
+        val connector = app.injector.instanceOf[NDRCConnector]
         server.stubFor(
           post(urlEqualTo(url))
             .willReturn(ok(responseBody))
         )
-        val result = connector.submitRepayment(createClaimRequest).futureValue
+        val result = connector.submitClaim(createClaimRequest).futureValue
         result mustEqual ClientClaimSuccessResponse("1")
       }
     }
@@ -75,11 +75,11 @@ class RepaymentConnectorSpec extends SpecBase
       val url = s"/national-duty-repayment-center/create-case"
 
       running(app) {
-        val connector = app.injector.instanceOf[RepaymentConnector]
+        val connector = app.injector.instanceOf[NDRCConnector]
 
         server.stubFor(post(urlEqualTo(url)).willReturn(notFound()))
 
-        val result = connector.submitRepayment(createClaimRequest).value
+        val result = connector.submitClaim(createClaimRequest).value
         result mustBe None
       }
     }
