@@ -315,7 +315,6 @@ agentImporterManualAddress.title = Enter their address
 agentImporterManualAddress.heading = Enter their address
 agentImporterManualAddress.checkYourAnswersLabel = Enter their address
 agentImporterManualAddress.error.required = Enter their address
-agentImporterManualAddress.hint = We will use this to send letters about this application.
 agentImporterManualAddress.error.length = Their Manual Address must be 128 characters or less
 
 bankDetails.title = Enter UK bank details
