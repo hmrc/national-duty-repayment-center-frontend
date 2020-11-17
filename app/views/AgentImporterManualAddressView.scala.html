@@ -24,6 +24,12 @@
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
+@pageHint = {
+    <p class="paragraph-bottom mt-0">
+        @messages("agentImporterManualAddress.hint")
+    </p>
+}
+
 @main_template(
     title = s"${errorPrefix(form)} ${messages("agentImporterManualAddress.title")}"
     ) {
@@ -37,8 +43,12 @@
 <fieldset class="govuk-fieldset">
 
     <legend>
-        @components.heading("agentImporterManualAddress.heading")
+        <h1 class="heading-large mt-0 mb-3">
+            @messages("agentImporterManualAddress.heading")
+        </h1>
     </legend>
+
+    @pageHint
 
         @components.input_text(
           field = form("value"),
