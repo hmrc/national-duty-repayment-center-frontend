@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryAdditionalFileUploadPage: Arbitrary[AdditionalFileUploadPage.type] =
+    Arbitrary(AdditionalFileUploadPage)
+
   implicit lazy val arbitraryBankDetailsPage: Arbitrary[BankDetailsPage.type] =
     Arbitrary(BankDetailsPage)
 

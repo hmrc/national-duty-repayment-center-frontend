@@ -356,3 +356,10 @@ repaymentAmountSummary.total=Total
 repaymentAmountSummary.total.amount=Total repayment amount
 fileUpload.title = Upload a file
 fileUpload.heading = Upload a file
+
+additionalFileUpload.title = You have uploaded x file
+additionalFileUpload.heading = You have uploaded x file
+additionalFileUpload.01 = Yes
+additionalFileUpload.02 = No
+additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
+additionalFileUpload.error.required = Select additionalFileUpload

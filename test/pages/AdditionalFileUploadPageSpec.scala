@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.FileUploadView
+import models.AdditionalFileUpload
+import pages.behaviours.PageBehaviours
 
-class FileUploadViewSpec extends ViewBehaviours {
+class AdditionalFileUploadSpec extends PageBehaviours {
 
-  "FileUpload view" must {
+  "AdditionalFileUploadPage" must {
 
-    val view = viewFor[FileUploadView](Some(emptyUserAnswers))
+    beRetrievable[AdditionalFileUpload](AdditionalFileUploadPage)
 
-    val applyView = view.apply()(fakeRequest, messages)
+    beSettable[AdditionalFileUpload](AdditionalFileUploadPage)
 
-    behave like normalPage(applyView, "fileUpload")
-
-    behave like pageWithBackLink(applyView)
+    beRemovable[AdditionalFileUpload](AdditionalFileUploadPage)
   }
 }

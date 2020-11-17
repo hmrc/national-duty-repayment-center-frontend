@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package pages
 
-import views.behaviours.ViewBehaviours
-import views.html.FileUploadView
+import models.AdditionalFileUpload
+import play.api.libs.json.JsPath
 
-class FileUploadViewSpec extends ViewBehaviours {
+case object AdditionalFileUploadPage extends QuestionPage[AdditionalFileUpload] {
 
-  "FileUpload view" must {
+  override def path: JsPath = JsPath \ toString
 
-    val view = viewFor[FileUploadView](Some(emptyUserAnswers))
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "fileUpload")
-
-    behave like pageWithBackLink(applyView)
-  }
+  override def toString: String = "additionalFileUpload"
 }

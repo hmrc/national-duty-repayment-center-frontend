@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-package views
+package models
 
-import views.behaviours.ViewBehaviours
-import views.html.FileUploadView
+import play.api.libs.json._
+import viewmodels.RadioOption
 
-class FileUploadViewSpec extends ViewBehaviours {
+sealed trait AdditionalFileUpload
 
-  "FileUpload view" must {
+object AdditionalFileUpload extends Enumerable.Implicits {
 
-    val view = viewFor[FileUploadView](Some(emptyUserAnswers))
+  case object Yes extends WithName("01") with AdditionalFileUpload
+  case object No extends WithName("02") with AdditionalFileUpload
 
-    val applyView = view.apply()(fakeRequest, messages)
+  val values: Seq[AdditionalFileUpload] = Seq(
+    Yes, No
+  )
 
-    behave like normalPage(applyView, "fileUpload")
-
-    behave like pageWithBackLink(applyView)
+  val options: Seq[RadioOption] = values.map {
+    value =>
+      RadioOption("additionalFileUpload", value.toString)
   }
+
+  implicit val enumerable: Enumerable[AdditionalFileUpload] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

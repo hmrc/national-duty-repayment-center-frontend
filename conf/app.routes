@@ -217,3 +217,8 @@ GET        /agentImporterAddressConfirmation            controllers.AgentImporte
 
 
 GET        /fileUpload                       controllers.FileUploadController.onPageLoad()
+
+GET        /additionalFileUpload                        controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = NormalMode)
+POST       /additionalFileUpload                        controllers.AdditionalFileUploadController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAdditionalFileUpload                  controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAdditionalFileUpload                  controllers.AdditionalFileUploadController.onSubmit(mode: Mode = CheckMode)

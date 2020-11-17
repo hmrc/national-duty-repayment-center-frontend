@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package views
+package forms
 
-import views.behaviours.ViewBehaviours
-import views.html.FileUploadView
+import javax.inject.Inject
 
-class FileUploadViewSpec extends ViewBehaviours {
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.AdditionalFileUpload
 
-  "FileUpload view" must {
+class AdditionalFileUploadFormProvider @Inject() extends Mappings {
 
-    val view = viewFor[FileUploadView](Some(emptyUserAnswers))
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "fileUpload")
-
-    behave like pageWithBackLink(applyView)
-  }
+  def apply(): Form[AdditionalFileUpload] =
+    Form(
+      "value" -> enumerable[AdditionalFileUpload]("additionalFileUpload.error.required")
+    )
 }
