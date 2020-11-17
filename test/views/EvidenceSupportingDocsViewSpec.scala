@@ -25,7 +25,7 @@ class EvidenceSupportingDocsViewSpec extends ViewBehaviours {
 
     val view = viewFor[EvidenceSupportingDocsView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(emptyUserAnswers)(fakeRequest, messages)
 
     behave like normalPage(applyView, "evidenceSupportingDocs")
 

@@ -22,8 +22,6 @@ import controllers.routes
 import pages._
 import models._
 
-import scala.collection.mutable
-
 @Singleton
 class Navigator @Inject()() {
 
@@ -46,9 +44,9 @@ class Navigator @Inject()() {
     case VATDueToHMRCPage => getOtherRepaymentType
     case OtherDutiesPaidPage => _ => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
     case OtherDutiesDueToHMRCPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
-    //case AgentImporterHasEORIPage => getEORIStatus
-    case ImporterEoriPage => _ => routes.IsVatRegisteredController.onPageLoad(NormalMode)
-    case IsImporterVatRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
+    case AgentImporterHasEORIPage => getAgentEORIStatus
+    case ImporterEoriPage => getEORIPage
+    case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)
     case ImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
     case ImporterAddressPage => _ => routes.ImporterAddressConfirmationController.onPageLoad
     case ImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
@@ -57,11 +55,21 @@ class Navigator @Inject()() {
     case PhoneNumberPage => _ => routes.RepaymentTypeController.onPageLoad(NormalMode)
     case RepaymentTypePage => getRepaymentMethodType
     case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad
+    case EnterAgentEORIPage => _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
+    case AgentNameImporterPage => _ => routes.AgentImporterAddressController.onPageLoad(NormalMode)
+    case AgentImporterAddressPage => _ => routes.AgentImporterAddressConfirmationController.onPageLoad
+    case AgentImporterManualAddressPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
+    case _ => _ => routes.IndexController.onPageLoad()
   }
 
-  private def getEORIStatus(answers: UserAnswers): Call = answers.get(AgentImporterHasEORIPage) match {
-    case Some(AgentImporterHasEORI.Yes)  => routes.ImporterEoriController.onPageLoad(NormalMode)
+  private def getEORIPage(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
+    case Some(ClaimantType.Representative)  => routes.ImporterNameController.onPageLoad(NormalMode)
     case _ => routes.IsVatRegisteredController.onPageLoad(NormalMode)
+  }
+
+  private def getAgentEORIStatus(answers: UserAnswers): Call = answers.get(AgentImporterHasEORIPage) match {
+    case Some(AgentImporterHasEORI.Yes)  => routes.EnterAgentEORIController.onPageLoad(NormalMode)
+    case _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
   }
 
   private def getEORIConfirmation(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
