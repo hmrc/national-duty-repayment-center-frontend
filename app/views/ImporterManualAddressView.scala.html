@@ -27,9 +27,9 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @pageHint = {
-    <div class="form-hint">
+    <p class="paragraph-bottom mt-0">
         @messages("importerManualAddress.hint")
-    </div>
+    </p>
 }
 
 @main_template(
@@ -44,7 +44,11 @@
 
 <fieldset class="govuk-fieldset">
 
-        @components.heading("importerManualAddress.heading")
+    <legend>
+        <h1 class="heading-large mt-0 mb-3">
+            @messages("importerManualAddress.heading")
+        </h1>
+    </legend>
 
         @pageHint
 
@@ -85,6 +89,7 @@
             inputClass = Some("govuk-input--width-10"),
             headingIsLabel = false
         )
+
 </fieldset>
         @components.submit_button()
     }
