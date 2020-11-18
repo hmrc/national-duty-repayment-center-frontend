@@ -21,25 +21,25 @@
 
 <h2>@messages(answerSection.headingKey)</h2>
 
-<ul role="list" class="govuk-check-your-answers cya-questions-long section">
+<dl class="govuk-summary-list">
     @components.answer_row(answerSection.relevanceRow)
 @for(row <- answerSection.rows){
-    <li>
-        <div class="cya-question">@row.answer</div>
-        <div class="cya-answer">
+    <dt class="govuk-summary-list__row">
+        <dd class="govuk-summary-list__value">@row.answer</dd>
+        <dd class="govuk-summary-list__actions">
             <a href="@row.deleteUrl">
                 <span aria-hidden="true">@messages("site.delete")</span>
                 <span class="visually-hidden">@messages("site.hidden-delete", row.answer)</span>
             </a>
-        </div>
-        <div class="cya-change">
+        </dd>
+        <dd class="govuk-summary-list__actions">
             <a href="@row.changeUrl">
                 <span aria-hidden="true">@messages("site.edit")</span>
                 <span class="visually-hidden">@messages("site.hidden-edit", row.answer)</span>
             </a>
-        </div>
-    </li>
+        </dd>
+    </dt>
 }
-</ul>
+</dl>
 
 <a href="@answerSection.addLinkUrl">@messages(answerSection.addLinkKey)</a>
