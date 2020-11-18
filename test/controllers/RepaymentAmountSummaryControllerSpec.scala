@@ -31,20 +31,20 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
     AnswerSection(Some("Customs Duty"), Seq(
       AnswerRow(Html("Customs Duty paid"), Html("£0.0"), Some("/national-duty-repayment-center/changecustomsDutyPaid")),
       AnswerRow(Html("Customs Duty that was due"), Html("£0.0"), Some("/national-duty-repayment-center/changeCustomsDutyDueToHMRC")),
-      AnswerRow(Html("Total Customs Duty repayment amount"), Html("£0.0"))
+      AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),
     AnswerSection(Some("VAT"), Seq(
       AnswerRow(Html("VAT paid"), Html("£0.0"), Some("/national-duty-repayment-center/changeVATPaid")),
       AnswerRow(Html("VAT that was due"), Html("£0.0"), Some("/national-duty-repayment-center/changeVATDueToHMRC")),
-      AnswerRow(Html("Total VAT repayment amount"), Html("£0.0"))
+      AnswerRow(Html("Total VAT repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),
     AnswerSection(Some("Other duties"), Seq(
       AnswerRow(Html("Other duties paid"), Html("£0.0"), Some("/national-duty-repayment-center/changeOtherDutiesPaid")),
       AnswerRow(Html("Other duties that were due"), Html("£0.0"), Some("/national-duty-repayment-center/changeOtherDutiesDueToHMRC")),
-      AnswerRow(Html("Total other duties repayment amount"), Html("£0.0"))
+      AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),
     AnswerSection(Some("Total"), Seq(
-      AnswerRow(Html("Total repayment amount"), Html("£0.0"))
+      AnswerRow(Html("Total repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     ))
   )
 

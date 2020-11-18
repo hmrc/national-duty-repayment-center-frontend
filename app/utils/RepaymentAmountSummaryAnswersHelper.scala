@@ -26,7 +26,6 @@ import viewmodels.{AnswerRow, AnswerSection}
 class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
   def displayDuty(index: String, amount: Double, dutyType: String) : Option[AnswerRow] = {
-
     getAnswerRow(index, amount, dutyType)
   }
 
@@ -44,10 +43,16 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
       case _ => messages(s"$dutyType")
     }
 
+    def formattedAmount: String = index match {
+      case "2" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount) + "</span>"
+      case "0" if dutyType == "repaymentAmountSummary.total.amount" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount) + "</span>"
+      case _ => HtmlFormat.escape("£" + amount).toString()
+    }
+
     x =>
       AnswerRow(
         Html(x.map(value => HtmlFormat.escape(message).toString).mkString("")),
-        Html(x.map(value => HtmlFormat.escape("£" + amount).toString).mkString("")),
+        Html(x.map(value => formattedAmount).mkString("")),
         index match {
           case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
           case "1" if isCustomDutyExists => Some(routes.CustomsDutyDueToHMRCController.onPageLoad(CheckMode).url)
@@ -106,7 +111,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
     val answerSection : AnswerSection = dutyType match {
       case "repaymentAmountSummary.total" =>
          AnswerSection(Some(dutyType), Seq(
-          displayDuty("",dutyPaid, "repaymentAmountSummary.total.amount").get
+          displayDuty("0",dutyPaid, "repaymentAmountSummary.total.amount").get
         ))
       case _ =>
          AnswerSection(Some(dutyType), Seq(
