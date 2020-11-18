@@ -16,6 +16,8 @@
 
 package generators
 
+import java.time.LocalDate
+import models.requests.CreateClaimRequest
 import models._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
@@ -26,6 +28,16 @@ trait ModelGenerators {
 
   //telephoneNumber <- Gen.option(Gen.listOfN(11, Gen.numStr).map(_.mkString))
   //emailAddress <- Gen.option(self.stringsWithMaxLength(85))
+
+  implicit lazy val arbitraryContactByEmail: Arbitrary[ContactByEmail] =
+    Arbitrary {
+      Gen.oneOf(ContactByEmail.values.toSeq)
+    }
+
+  implicit lazy val arbitraryAdditionalFileUpload: Arbitrary[AdditionalFileUpload] =
+    Arbitrary {
+      Gen.oneOf(AdditionalFileUpload.values.toSeq)
+    }
 
   implicit lazy val arbitraryAgentImporterHasEORI: Arbitrary[AgentImporterHasEORI] =
     Arbitrary {

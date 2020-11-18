@@ -17,16 +17,18 @@
 package views
 
 import views.behaviours.ViewBehaviours
-import views.html.confirmationView
+import views.html.FileUploadView
 
-class confirmationViewSpec extends ViewBehaviours {
+class FileUploadViewSpec extends ViewBehaviours {
 
-  "confirmation view" must {
+  "FileUpload view" must {
 
-    val view = viewFor[confirmationView](Some(emptyUserAnswers))
+    val view = viewFor[FileUploadView](Some(emptyUserAnswers))
 
     val applyView = view.apply()(fakeRequest, messages)
 
-    behave like normalPage(applyView, "confirmation")
+    behave like normalPage(applyView, "fileUpload")
+
+    behave like pageWithBackLink(applyView)
   }
 }

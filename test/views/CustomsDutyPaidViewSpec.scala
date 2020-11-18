@@ -22,9 +22,9 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.customsDutyPaidView
+import views.html.CustomsDutyPaidView
 
-class customsDutyPaidViewSpec extends StringViewBehaviours {
+class CustomsDutyPaidViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "customsDutyPaid"
 
@@ -32,7 +32,7 @@ class customsDutyPaidViewSpec extends StringViewBehaviours {
 
   "customsDutyPaidView view" must {
 
-    val view = viewFor[customsDutyPaidView](Some(emptyUserAnswers))
+    val view = viewFor[CustomsDutyPaidView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)

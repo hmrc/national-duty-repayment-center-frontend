@@ -34,29 +34,35 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("bankDetails.heading")
-
+        <h1 class="heading-large mt-0 mb-3">@messages("bankDetails.heading")</h1>
+    <div id="bank-details">
         @components.input_text(
           field = form("value"),
           label = messages("bankDetails.name.heading"),
+          labelClass = Some("bold-4"),
           headingIsLabel = false,
           hint = Some(messages("bankDetails.name.hint"))
         )
 
-        @components.input_text(
+        @components.bank_details(
             field = form("sortcode"),
             label = messages("bankDetails.sortcode.heading"),
+            labelClass = Some("bold-4"),
+            inputClass = Some("govuk-input--width-5"),
             headingIsLabel = false,
             hint = Some(messages("bankDetails.sortcode.hint"))
         )
 
-        @components.input_text(
+        @components.bank_details(
             field = form("accountnumber"),
             label = messages("bankDetails.accountnumber.heading"),
+            labelClass = Some("bold-4"),
+            inputClass = Some("govuk-input--width-10"),
             headingIsLabel = false,
             hint = Some(messages("bankDetails.accountnumber.hint"))
         )
 
         @components.submit_button()
+    </div>
     }
 }

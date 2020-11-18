@@ -39,7 +39,7 @@
                 @components.heading(messages("importerAddress.heading"))
             </div>
 
-            <p class="mb-5 mt-0">@messages("importerAddress.postCode")</p>
+            <p class="mb-05 mt-0">@messages("importerAddress.postCode")</p>
 
             @components.input_text(
                 field = form("value"),
@@ -49,7 +49,7 @@
                 inputClass = Some("govuk-input--width-10 mb-15")
             )
 
-            <p>@link("", messages("importerAddress.manual"))</p>
+            <p>@link("importerManualAddress", messages("importerAddress.manual"))</p>
 
             @components.find_address_button()
         }

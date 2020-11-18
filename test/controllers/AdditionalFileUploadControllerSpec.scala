@@ -17,42 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.CustomsDutyPaidFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.AdditionalFileUploadFormProvider
+import models.{NormalMode, AdditionalFileUpload, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CustomsDutyPaidPage
+import pages.AdditionalFileUploadPage
 import play.api.inject.bind
+import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.customsDutyPaidView
+import views.html.AdditionalFileUploadView
 
 import scala.concurrent.Future
 
-class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
+class AdditionalFileUploadControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new CustomsDutyPaidFormProvider()
+  lazy val additionalFileUploadRoute = routes.AdditionalFileUploadController.onPageLoad(NormalMode).url
+
+  val formProvider = new AdditionalFileUploadFormProvider()
   val form = formProvider()
 
-  lazy val CustomsDutyPaidRoute = routes.CustomsDutyPaidController.onPageLoad(NormalMode).url
-
-  "customsDutyPaid Controller" must {
+  "AdditionalFileUpload Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, CustomsDutyPaidRoute)
+      val request = FakeRequest(GET, additionalFileUploadRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[AdditionalFileUploadView]
 
       status(result) mustEqual OK
 
@@ -64,20 +65,20 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CustomsDutyPaidPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AdditionalFileUploadPage, AdditionalFileUpload.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, CustomsDutyPaidRoute)
+      val request = FakeRequest(GET, additionalFileUploadRoute)
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[AdditionalFileUploadView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(AdditionalFileUpload.values.head), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -97,12 +98,13 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, CustomsDutyPaidRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, additionalFileUploadRoute)
+          .withFormUrlEncodedBody(("value", AdditionalFileUpload.options.head.value))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -113,12 +115,12 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, CustomsDutyPaidRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, additionalFileUploadRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[customsDutyPaidView]
+      val view = application.injector.instanceOf[AdditionalFileUploadView]
 
       val result = route(application, request).value
 
@@ -134,12 +136,11 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, CustomsDutyPaidRoute)
+      val request = FakeRequest(GET, additionalFileUploadRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -150,8 +151,8 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, CustomsDutyPaidRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, additionalFileUploadRoute)
+          .withFormUrlEncodedBody(("value", AdditionalFileUpload.values.head.toString))
 
       val result = route(application, request).value
 

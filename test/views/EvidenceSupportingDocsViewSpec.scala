@@ -16,30 +16,20 @@
 
 package views
 
-import forms.EvidenceSupportingDocsFormProvider
-import models.{EvidenceSupportingDocs, NormalMode}
-import play.api.data.Form
-import play.twirl.api.HtmlFormat
-import views.behaviours.CheckboxViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.EvidenceSupportingDocsView
 
-class EvidenceSupportingDocsViewSpec extends CheckboxViewBehaviours[EvidenceSupportingDocs] {
-
-  val messageKeyPrefix = "evidenceSupportingDocs"
-
-  val form = new EvidenceSupportingDocsFormProvider()()
+class EvidenceSupportingDocsViewSpec extends ViewBehaviours {
 
   "EvidenceSupportingDocsView" must {
 
     val view = viewFor[EvidenceSupportingDocsView](Some(emptyUserAnswers))
 
-    def applyView(form: Form[Set[EvidenceSupportingDocs]]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode)(fakeRequest, messages)
+    val applyView = view.apply(emptyUserAnswers)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView, "evidenceSupportingDocs")
 
-    behave like pageWithBackLink(applyView(form))
-
-    behave like checkboxPage(form, applyView, messageKeyPrefix, EvidenceSupportingDocs.options)
+    behave like pageWithBackLink(applyView)
   }
+
 }

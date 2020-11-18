@@ -93,10 +93,7 @@ POST       /claimRepaymentType                        controllers.ClaimRepayment
 GET        /changeClaimRepaymentType                  controllers.ClaimRepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeClaimRepaymentType                  controllers.ClaimRepaymentTypeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onPageLoad(mode: Mode = NormalMode)
-POST       /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onSubmit(mode: Mode = NormalMode)
-GET        /changeEvidenceSupportingDocs                  controllers.EvidenceSupportingDocsController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeEvidenceSupportingDocs                  controllers.EvidenceSupportingDocsController.onSubmit(mode: Mode = CheckMode)
+GET        /evidenceSupportingDocs                        controllers.EvidenceSupportingDocsController.onPageLoad()
 
 GET        /importerName                        controllers.ImporterNameController.onPageLoad(mode: Mode = NormalMode)
 POST       /importerName                        controllers.ImporterNameController.onSubmit(mode: Mode = NormalMode)
@@ -197,7 +194,7 @@ POST       /importerManualAddress                        controllers.ImporterMan
 GET        /changeImporterManualAddress                  controllers.ImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeImporterManualAddress                  controllers.ImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
 
-GET        /confirmation                       controllers.confirmationController.onPageLoad()
+GET        /confirmation                       controllers.ConfirmationController.onPageLoad()
 
 
 GET        /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
@@ -210,6 +207,24 @@ POST       /bankDetails                        controllers.BankDetailsController
 GET        /changeBankDetails                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBankDetails                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
-GET        /importerAddressConfirmation                       controllers.ImporterAddressConfirmationController.onPageLoad()
+GET        /importerAddressConfirmation                 controllers.ImporterAddressConfirmationController.onPageLoad()
+
 
 GET        /agentImporterAddressConfirmation                       controllers.AgentImporterAddressConfirmationController.onPageLoad()
+
+GET        /repaymentAmountSummary                       controllers.RepaymentAmountSummaryController.onPageLoad()
+
+GET        /agentImporterAddressConfirmation            controllers.AgentImporterAddressConfirmationController.onPageLoad()
+
+
+GET        /fileUpload                       controllers.FileUploadController.onPageLoad()
+
+GET        /additionalFileUpload                        controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = NormalMode)
+POST       /additionalFileUpload                        controllers.AdditionalFileUploadController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAdditionalFileUpload                  controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAdditionalFileUpload                  controllers.AdditionalFileUploadController.onSubmit(mode: Mode = CheckMode)
+
+GET        /contactByEmail                        controllers.ContactByEmailController.onPageLoad(mode: Mode = NormalMode)
+POST       /contactByEmail                        controllers.ContactByEmailController.onSubmit(mode: Mode = NormalMode)
+GET        /changeContactByEmail                  controllers.ContactByEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeContactByEmail                  controllers.ContactByEmailController.onSubmit(mode: Mode = CheckMode)

@@ -73,20 +73,20 @@ importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
-customsRegulationType.title = Was the overpayment made before 1 Janurary 2021?
-customsRegulationType.heading = Was the overpayment made before 1 Janurary 2021?
+customsRegulationType.title = Was the overpayment made before 1 January 2021?
+customsRegulationType.heading = Was the overpayment made before 1 January 2021?
 customsRegulationType.01 = Yes
 customsRegulationType.02 = No
-customsRegulationType.checkYourAnswersLabel = Was the overpayment made before 1 Janurary 2021?
-customsRegulationType.error.required = Select whether the overpayment was made before 1 Janurary 2021?
+customsRegulationType.checkYourAnswersLabel = Was the overpayment made before 1 January 2021?
+customsRegulationType.error.required = Select whether the overpayment was made before 1 January 2021?
 
-articleType.title = Why are you applying for this repayment?
-articleType.heading = Why are you applying for this repayment?
-articleType.117 = Overpayment of duty or VAT
-articleType.119 = Error by customs
-articleType.120 = Exceptional circumstances
-articleType.checkYourAnswersLabel = Why are you applying for this repayment?
-articleType.error.required = Select which article are you applying for repayment under?
+articleType.title = Which article are you reclaiming under?
+articleType.heading = Which article are you reclaiming under?
+articleType.117 = Article 117: Overcharged amounts of import or export duty
+articleType.119 = Article 119: Error by the competent authorities
+articleType.120 = Article 120: Equity
+articleType.checkYourAnswersLabel = Which article are you reclaiming under?
+articleType.error.required = Select which article are you reclaiming under?
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
@@ -101,10 +101,10 @@ howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
 howManyEntries.error.required = Enter how many entries are you claiming for?
 howManyEntries.error.length = HowManyEntries must be 2 characters or less
 
-claimEpu.title = Enter the EPU
-claimEpu.heading = Enter the EPU
-claimEpu.checkYourAnswersLabel = Enter the EPU
-claimEpu.error.required = Enter the EPU
+claimEpu.title = Enter the entry processing unit (EPU)
+claimEpu.heading = Enter the entry processing unit (EPU)
+claimEpu.checkYourAnswersLabel = Enter the entry processing unit (EPU)
+claimEpu.error.required = Enter the entry processing unit (EPU)
 claimEpu.error.length = EPU must be 3 characters or less
 
 claimEntryNumber.title = What is the entry number?
@@ -151,33 +151,35 @@ reasonForOverpayment.error.required = Enter a reason for overpayment
 reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or less
 reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
 
-claimRepaymentType.title = What was overpaid?
-claimRepaymentType.heading = What was overpaid?
+claimRepaymentType.title = What do you want to reclaim?
+claimRepaymentType.heading = What do you want to reclaim?
 claimRepaymentType.hint = Select all that apply.
 claimRepaymentType.01 = Customs Duty
 claimRepaymentType.02 = VAT
 claimRepaymentType.03 = Another type of duty
-claimRepaymentType.checkYourAnswersLabel = What was overpaid?
-claimRepaymentType.error.required = Select what was overpaid
+claimRepaymentType.checkYourAnswersLabel = What do you want to reclaim?
+claimRepaymentType.error.required = Select What do you want to reclaim?
 
-evidenceSupportingDocs.title = What evidence do you have to support the application?
-evidenceSupportingDocs.heading = What evidence do you have to support the application?
-evidenceSupportingDocs.01 = Invoice
-evidenceSupportingDocs.02 = Transport documents
-evidenceSupportingDocs.03 = C88
-evidenceSupportingDocs.04 = Packing list
-evidenceSupportingDocs.05 = Proof of origin
-evidenceSupportingDocs.06 = Proof of authority
-evidenceSupportingDocs.07 = Substitute entry
-evidenceSupportingDocs.08 = Other
-evidenceSupportingDocs.checkYourAnswersLabel = What evidence do you have to support the application?
-evidenceSupportingDocs.error.required = Select what evidence do you have to support the application
+evidenceSupportingDocs.title = Supporting documents
+evidenceSupportingDocs.heading = Supporting documents
+evidenceSupportingDocs.paragraph1 = You need to send us all supporting documents for this application.
+evidenceSupportingDocs.paragraph2 = This can include:
+evidenceSupportingDocs.bullet1 = airway bill
+evidenceSupportingDocs.bullet2 = bill of lading
+evidenceSupportingDocs.bullet3 = C88
+evidenceSupportingDocs.bullet4 = E2
+evidenceSupportingDocs.bullet5 = invoice
+evidenceSupportingDocs.bullet6 = packing list
+evidenceSupportingDocs.bullet7 = proof of origin
+evidenceSupportingDocs.bullet8 = substitute entry
+evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
+evidenceSupportingDocs.error.required = Select Supporting documents
 
-importerName.title = What is the importer's name?
-importerName.heading = What is the importer's name?
-importerName.checkYourAnswersLabel = What is the importer's name?
-importerName.error.required = Enter importer's name
-importerName.error.length = Importer's name must be 512 characters or less
+agentNameImporter.title = What is the importer's name?
+agentNameImporter.heading = What is the importer's name?
+agentNameImporter.checkYourAnswersLabel = What is the importer's name?
+agentNameImporter.error.required = Enter importer's name
+agentNameImporter.error.length = Importer's name must be 512 characters or less
 
 contactType.title = How should we contact you?
 contactType.heading = How should we contact you?
@@ -187,19 +189,18 @@ contactType.checkYourAnswersLabel = How should we contact you?
 contactType.error.required = Select Contact Type
 contactType.hint = We will only use these details if we need more information to complete your application.
 
-
-agentNameImporter.title = What is your name?
-agentNameImporter.heading = What is your name?
-agentNameImporter.checkYourAnswersLabel = What is your name?
-agentNameImporter.error.required = Enter your name
-agentNameImporter.error.length = Your name must be 512 characters or less
+importerName.title = What is your name?
+importerName.heading = What is your name?
+importerName.checkYourAnswersLabel = What is your name?
+importerName.error.required = Enter your name
+importerName.error.length = Your name must be 512 characters or less
 
 phoneNumber.title = Enter your phone number
 phoneNumber.heading = Enter your phone number
 phoneNumber.checkYourAnswersLabel = Enter your phone number
 phoneNumber.error.required = Enter phone number
 phoneNumber.error.length = Phone number must be 11 characters or less
-phoneNumber.hint = This can be a mobile or landline number, for example 07700 900 982 or 01632 960 001. For international numbers, include the country code.
+phoneNumber.hint = We will use this if we need to contact you for further information.
 
 emailAddress.title = What is your email address?
 emailAddress.heading = What is your email address?
@@ -311,9 +312,9 @@ confirmation.whatHappensNext.p2 = They will contact you either to confirm your r
 
 agentImporterManualAddress.title = Enter their address
 agentImporterManualAddress.heading = Enter their address
+agentImporterManualAddress.hint = We will use this to send letters about this application.
 agentImporterManualAddress.checkYourAnswersLabel = Enter their address
 agentImporterManualAddress.error.required = Enter their address
-agentImporterManualAddress.hint = We will use this to send letters about this application.
 agentImporterManualAddress.error.length = Their Manual Address must be 128 characters or less
 
 bankDetails.title = Enter UK bank details
@@ -336,3 +337,36 @@ importerAddressConfirmation.address = Select an address
 
 agentImporterAddressConfirmation.title = Select their address
 agentImporterAddressConfirmation.heading = Select their address
+
+repaymentAmountSummary.title = Repayment Amount Summary
+repaymentAmountSummary.heading = Repayment Amount Summary
+repaymentAmountSummary.customsduty=Customs Duty
+repaymentAmountSummary.customsduty.0=Customs Duty paid
+repaymentAmountSummary.customsduty.1=Customs Duty that was due
+repaymentAmountSummary.customsduty.2=Total Customs Duty repayment amount
+repaymentAmountSummary.vat=VAT
+repaymentAmountSummary.vat.0=VAT paid
+repaymentAmountSummary.vat.1=VAT that was due
+repaymentAmountSummary.vat.2=Total VAT repayment amount
+repaymentAmountSummary.otherduties=Other duties
+repaymentAmountSummary.otherduties.0=Other duties paid
+repaymentAmountSummary.otherduties.1=Other duties that were due
+repaymentAmountSummary.otherduties.2=Total other duties repayment amount
+repaymentAmountSummary.total=Total
+repaymentAmountSummary.total.amount=Total repayment amount
+fileUpload.title = Upload a file
+fileUpload.heading = Upload a file
+
+additionalFileUpload.title = You have uploaded x file
+additionalFileUpload.heading = You have uploaded x file
+additionalFileUpload.01 = Yes
+additionalFileUpload.02 = No
+additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
+additionalFileUpload.error.required = Select additionalFileUpload
+
+contactByEmail.title = Can we contact you by email?
+contactByEmail.heading = Can we contact you by email?
+contactByEmail.01 = Yes
+contactByEmail.02 = No
+contactByEmail.checkYourAnswersLabel = ContactByEmail
+contactByEmail.error.required = Select contactByEmail

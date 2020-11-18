@@ -17,7 +17,8 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
-import play.api.data.FormError
+import models.EORI
+import play.api.data.{Form, FormError}
 
 class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
 
@@ -25,7 +26,7 @@ class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
   val lengthKey = "enterAgentEORI.error.length"
   val maxLength = 17
 
-  val form = new EnterAgentEORIFormProvider()()
+  val form: Form[EORI] = new EnterAgentEORIFormProvider()()
 
   ".value" must {
 

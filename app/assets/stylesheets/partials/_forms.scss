@@ -177,3 +177,32 @@ override character count display
 .govuk-input--width-2 {
     max-width: 5.4ex;
 }
+/* select options drop down */
+.govuk-select {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 5px;
+    border: 2px solid #0b0c0c;
+}
+.govuk-select:focus {
+    outline: 3px solid #ffdd00;
+    outline-offset: 0;
+    box-shadow: inset 0 0 0 2px;
+}
+.city.column-two-thirds {
+    width: 66.66667% !important;
+}
+@media screen and (max-width: 767px) {
+    .city.column-two-thirds {
+        width: 100% !important;
+    }
+}
+@media (min-width: 40.0625em) {
+    .govuk-select {
+        font-size: 19px;
+        line-height: 1.25;
+    }
+}
