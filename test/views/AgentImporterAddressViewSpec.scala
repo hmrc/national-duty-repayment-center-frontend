@@ -16,15 +16,14 @@
 
 package views
 
-import controllers.routes
 import forms.AgentImporterAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.AgentImporterAddressView
 
-class AgentImporterAddressViewSpec extends StringViewBehaviours {
+class AgentImporterAddressViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "agentImporterAddress"
 
@@ -41,6 +40,5 @@ class AgentImporterAddressViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.AgentImporterAddressController.onSubmit(NormalMode).url)
   }
 }

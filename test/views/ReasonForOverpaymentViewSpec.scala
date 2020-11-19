@@ -16,15 +16,14 @@
 
 package views
 
-import controllers.routes
 import forms.ReasonForOverpaymentFormProvider
 import models.{ClaimDescription, NormalMode}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.ResaonForOverpaymentViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.ReasonForOverpaymentView
 
-class ReasonForOverpaymentViewSpec extends ResaonForOverpaymentViewBehaviours {
+class ReasonForOverpaymentViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "reasonForOverpayment"
 
@@ -40,7 +39,5 @@ class ReasonForOverpaymentViewSpec extends ResaonForOverpaymentViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
-
-    behave like reasonForOverpaymentPage(form, applyView, messageKeyPrefix, routes.ReasonForOverpaymentController.onSubmit(NormalMode).url)
   }
 }

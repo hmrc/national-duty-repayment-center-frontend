@@ -21,10 +21,10 @@ import forms.ImporterEoriFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.ImporterEoriView
 
-class ImporterEoriViewSpec extends StringViewBehaviours {
+class ImporterEoriViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "importerEori"
 
@@ -40,7 +40,5 @@ class ImporterEoriViewSpec extends StringViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
-
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.ImporterEoriController.onSubmit(NormalMode).url)
   }
 }

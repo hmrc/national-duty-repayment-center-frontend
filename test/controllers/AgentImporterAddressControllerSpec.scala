@@ -111,7 +111,10 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, agentImporterAddressRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value" -> , "answer"))
+
+      "value"->  """{"line1":"Line1","town":"TOWN","postCode":"AA1 1AA"}""",
+      "address-postcode" -> "AA1 1AA"
 
       val result = route(application, request).value
 
