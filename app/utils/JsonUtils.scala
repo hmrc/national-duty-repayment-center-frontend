@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package models.requests;
+package utils
 
-import models.InternalId
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.retrieve.Credentials
+import play.api.libs.json.{JsNull, JsObject, Json}
 
-trait RequestWithInternalId[A] extends Request[A] {
-  def internalId: InternalId
-  def affinityGroup: AffinityGroup
-  def credentials: Credentials
+trait JsonUtils {
+  def jsonObjNoNulls(fields: (String, Json.JsValueWrapper)*): JsObject =
+    JsObject(Json.obj(fields:_*).fields.filterNot(_._2 == JsNull).filterNot(_._2 == Json.obj()))
 }
-
-case class IdentifierRequest[A] (request: Request[A], identifier: String) extends WrappedRequest[A](request)

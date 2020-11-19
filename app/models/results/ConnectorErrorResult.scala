@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package models.requests;
+package models.results
 
-import models.InternalId
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.retrieve.Credentials
-
-trait RequestWithInternalId[A] extends Request[A] {
-  def internalId: InternalId
-  def affinityGroup: AffinityGroup
-  def credentials: Credentials
+sealed trait ConnectorErrorResult {
+  val body: String
 }
 
-case class IdentifierRequest[A] (request: Request[A], identifier: String) extends WrappedRequest[A](request)
+case object InvalidJson extends ConnectorErrorResult {
+  override val body: String = "Invalid JSON received"
+}
+
+case object NotFound extends ConnectorErrorResult {
+  override val body: String = "Not found"
+}
+
+case class UnexpectedResponseStatus(status: Int, body: String) extends ConnectorErrorResult
+
+case class UnexpectedException(message: String) extends ConnectorErrorResult {
+  override val body: String = message
+}

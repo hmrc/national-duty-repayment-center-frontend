@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package models.requests;
+package models
 
-import models.InternalId
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.retrieve.Credentials
+import play.api.libs.json.Format
 
-trait RequestWithInternalId[A] extends Request[A] {
-  def internalId: InternalId
-  def affinityGroup: AffinityGroup
-  def credentials: Credentials
+final case class InternalId(value: String)
+
+object InternalId {
+  implicit val formal: Format[InternalId] = JsonFormatUtils.stringFormat(InternalId.apply)(_.value)
 }
-
-case class IdentifierRequest[A] (request: Request[A], identifier: String) extends WrappedRequest[A](request)
