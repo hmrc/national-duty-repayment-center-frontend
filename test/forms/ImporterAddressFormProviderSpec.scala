@@ -27,9 +27,13 @@ class ImporterAddressFormProviderSpec extends StringFieldBehaviours {
 
   val form = new ImporterAddressFormProvider()()
 
-  ".value" must {
+  ".line1" must {
 
-    val fieldName = "value"
+    val fieldName = "line1"
+    val requiredKey = "address.error.line1.required"
+    val lengthKey = "address.error.line1.length"
+    val invalidKey = "address.error.line1.invalid"
+    val maxLength = 35
 
     behave like fieldThatBindsValidData(
       form,

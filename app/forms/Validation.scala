@@ -20,7 +20,9 @@ import scala.util.matching.Regex
 
 object Validation {
 
-  val accountNumberPattern: Regex   = "^[ -]*(?:\\d[ -]*){6,8}$".r.anchored
+  val accountNumberPattern: Regex   = "^[ -]*(?:\\d[ -]*){8,8}$".r.anchored
   val sortCodePattern: Regex        = "^[ -]*(?:\\d[ -]*){6,6}$".r.anchored
+  val safeInputPattern              = """^[A-Za-z0-9À-ÿ \!\)\(.,_/’'"&-]+$"""
+  val postcodeRegex                 = """^[ ]*[A-Za-z][ ]*[A-Za-z]{0,1}[ ]*[0-9][ ]*[0-9A-Za-z]{0,1}[ ]*[0-9][ ]*[A-Za-z][ ]*[A-Za-z][ ]*$"""
 
 }

@@ -16,7 +16,6 @@
 
 package models
 
-import pages.{BankDetailsPage, RepaymentTypePage}
 import play.api.libs.json.{Json, OFormat}
 
 final case class BankDetails(

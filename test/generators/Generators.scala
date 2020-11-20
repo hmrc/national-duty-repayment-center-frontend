@@ -46,6 +46,32 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     }
   }
 
+  def safeInputs: Gen[Char] = Gen.oneOf(
+    Gen.alphaChar,
+    Gen.numChar,
+    Gen.const('"'),
+    Gen.const('\''),
+    Gen.const('.'),
+    Gen.const(','),
+    Gen.const('/'),
+    Gen.const('-'),
+    Gen.const('_'),
+    Gen.const(' '),
+    Gen.const('&'),
+    Gen.const('’'),
+    Gen.const('('),
+    Gen.const(')'),
+    Gen.const('!'),
+    Gen.oneOf('À' to 'ÿ')
+  )
+
+  def unsafeInputs: Gen[Char] = Gen.oneOf(
+    Gen.const('<'),
+    Gen.const('>'),
+    Gen.const('='),
+    Gen.const('|')
+  )
+
   def intsInRangeWithCommas(min: Int, max: Int): Gen[String] = {
     val numberGen = choose[Int](min, max)
     genIntersperseString(numberGen.toString, ",")
@@ -96,6 +122,17 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
       chars <- listOfN(length, arbitrary[Char])
     } yield chars.mkString
 
+  def safeInputsWithMaxLength(maxLength: Int): Gen[String] = for {
+    length <- choose(1, maxLength)
+    chars  <- listOfN(length, safeInputs)
+  } yield chars.mkString
+
+  def unsafeInputsWithMaxLength(maxLength: Int): Gen[String] = for {
+    length      <- choose(2, maxLength)
+    invalidChar <- unsafeInputs
+    validChars  <- listOfN(length - 1, safeInputs)
+  } yield (validChars :+ invalidChar).mkString
+
   def stringsLongerThan(minLength: Int): Gen[String] = for {
     maxLength <- (minLength * 2).max(100)
     length    <- Gen.chooseNum(minLength + 1, maxLength)
@@ -123,4 +160,14 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
         Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate
     }
   }
+
+  val validPostcodes: Gen[String] = for {
+    numberOfLeadingChars <- Gen.choose(1, 2)
+    leadingChars         <- Gen.listOfN(numberOfLeadingChars, Gen.alphaChar)
+    numberOfDigits       <- Gen.choose(1, 2)
+    firstPartDigits      <- Gen.listOfN(numberOfDigits, Gen.numChar)
+    separator            <- Gen.oneOf(Gen.const(" "), Gen.const(""))
+    secondPartDigit      <- Gen.numChar
+    secondPartChars      <- Gen.listOfN(2, Gen.alphaChar)
+  } yield s"${leadingChars.mkString}${firstPartDigits.mkString}$separator${secondPartDigit.toString}${secondPartChars.mkString}"
 }

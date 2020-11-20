@@ -32,34 +32,39 @@ class AgentImporterAddressFormProvider @Inject() extends Mappings {
   def apply(): Form[Address] = Form(
     mapping(
       "AddressLine1" ->
-        text("agentImporterAddress.error.line1.required")
+        text("agentImporterAddress.line1.error.required")
           .verifying(firstError(
-            maxLength(maxLineLength, "agentImporterAddress.error.line1.length")
+            maxLength(maxLineLength, "agentImporterAddress.line1.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterAddress.line1.error.invalid")
           )),
       "AddressLine2" ->
         optional(Forms.text
           .verifying(firstError(
-            maxLength(maxLineLength, "agentImporterAddress.error.line2.length")
+            maxLength(maxLineLength, "agentImporterAddress.line2.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterAddress.line2.error.invalid")
           ))),
       "City" ->
-        text("agentImporterAddress.error.city.required")
+        text("agentImporterAddress.city.error.required")
           .verifying(firstError(
-            maxLength(maxCityLength, "agentImporterAddress.error.city.length")
+            maxLength(maxCityLength, "agentImporterAddress.city.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterAddress.city.error.invalid")
           )),
       "Region" ->
-        text("agentImporterAddress.error.region.required")
+        text("agentImporterAddress.region.error.required")
           .verifying(firstError(
-            maxLength(maxRegionLength, "agentImporterAddress.error.region.length")
+            maxLength(maxRegionLength, "agentImporterAddress.region.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterAddress.region.error.invalid")
           )),
       "CountryCode" ->
-        text("agentImporterAddress.error.countryCode.required")
+        text("agentImporterAddress.countryCode.error.required")
           .verifying(firstError(
-            maxLength(maxRegionLength, "agentImporterAddress.error.region.length")
+            maxLength(maxCCLength, "agentImporterAddress.countryCode.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterAddress.countryCode.error.invalid")
           )),
       "PostalCode" ->
         optional(Forms.text
           .verifying(firstError(
-            maxLength(maxCCLength, "agentImporterAddress.error.postcode.min.length")
+            regexp(Validation.postcodeRegex, "agentImporterAddress.postalCode.error.invalid")
           )))
     )(Address.apply)(agentImporterAddress => Some((agentImporterAddress.AddressLine1, agentImporterAddress.AddressLine2, agentImporterAddress.City, agentImporterAddress.Region, agentImporterAddress.CountryCode, agentImporterAddress.PostalCode)))
   )
