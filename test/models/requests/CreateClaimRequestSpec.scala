@@ -113,7 +113,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "DateReceived" -> "20200805",
             "ClaimDate" -> "20200805",
             "PayeeIndicator" -> "01",
-            "PaymentMethod" -> "02",
+            "PaymentMethod" -> "01",
             ),
           "AgentDetails" -> Json.obj(
           "VATNumber" -> "123456789",
@@ -125,9 +125,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "City" -> "city",
             "Region" -> "region",
             "CountryCode" -> "GB",
-            "PostalCode" -> "ZZ111ZZ",
-            "TelephoneNumber" -> "12345678",
-            "EmailAddress" -> "example@example.com"
+            "PostalCode" -> "ZZ111ZZ"
             )
           ),
           "ImporterDetails" -> Json.obj(
@@ -140,9 +138,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
               "City" -> "city",
               "Region" -> "region",
               "CountryCode" -> "GB",
-              "PostalCode" -> "ZZ111ZZ",
-              "TelephoneNumber" -> "12345678",
-              "EmailAddress" -> "example@example.com"
+              "PostalCode" -> "ZZ111ZZ"
             )
           ),
           "BankDetails" -> Json.obj(
