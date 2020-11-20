@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package models.responses
+package queries
 
-import models.ClaimId
-import play.api.libs.json.{Json, OFormat}
+import java.time.LocalDate
 
-final case class ClientClaimSuccessResponse(
-                                             claimID: ClaimId
-                                           )
+import play.api.libs.json.JsPath
 
-
-object ClientClaimSuccessResponse {
-  implicit val format: OFormat[ClientClaimSuccessResponse] = Json.format[ClientClaimSuccessResponse]
+object ClaimDateQuery extends Gettable[LocalDate] with Settable[LocalDate] {
+  def path: JsPath = JsPath \ "claimDate"
 }

@@ -18,7 +18,11 @@ package services
 
 import connectors.NDRCConnector
 import javax.inject.Inject
-
+import models.{ClaimId, UserAnswers}
+import models.requests.{CreateClaimRequest, DataRequest}
+import models.responses.ClientClaimSuccessResponse
+import uk.gov.hmrc.http.HeaderCarrier
+import play.api.Logger
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -29,22 +33,21 @@ class ClaimService @Inject()(
                             ) {
 
 
-  /*def submitClaim(internalId: InternalId, userAnswers: UserAnswers)(implicit hc: HeaderCarrier,
-                                                                           request: DataRequest[_]): Future[CaseId] = {
-    val maybeRegistrationRequest = RegistrationRequest.buildValidRegistrationRequest(internalId, userAnswers)
+  def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[ClaimId] = {
+    val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
 
     maybeRegistrationRequest match {
       case Some(value) =>
         for {
-          caseId <- nDRCConnector.submitClaim(value)
+          claimId: ClientClaimSuccessResponse <- nDRCConnector.submitClaim(value)
         } yield {
           //val _ = auditService.audit(buildAuditModel(value, registration, request))
-          registration.id
+          claimId.claimID
         }
       case None =>
         Logger.error("Unsuccessful claim submission, did not contain sufficient UserAnswers data to construct CreateClaimRequest")
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct CreateClaimRequest")
     }
-  }*/
+  }
 }
 

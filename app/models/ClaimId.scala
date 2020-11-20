@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package models.responses
+package models
 
-import models.ClaimId
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Format
 
-final case class ClientClaimSuccessResponse(
-                                             claimID: ClaimId
-                                           )
+final case class ClaimId(value: String)
 
-
-object ClientClaimSuccessResponse {
-  implicit val format: OFormat[ClientClaimSuccessResponse] = Json.format[ClientClaimSuccessResponse]
+object ClaimId {
+  implicit val format: Format[ClaimId] = JsonFormatUtils.stringFormat(ClaimId.apply)(_.value)
 }

@@ -30,6 +30,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
 import com.github.tomakehurst.wiremock.client.WireMock._
 import base.SpecBase
+import models.ClaimId
 import models.responses.ClientClaimSuccessResponse
 
 class RepaymentConnectorSpec extends SpecBase
@@ -56,7 +57,7 @@ class RepaymentConnectorSpec extends SpecBase
         val url = s"/national-duty-repayment-center/create-case"
         val responseBody =
           s"""{
-             |  "caseID": "1"
+             |  "claimID": "1"
              |}
              |""".stripMargin
         val connector = app.injector.instanceOf[NDRCConnector]
@@ -65,7 +66,7 @@ class RepaymentConnectorSpec extends SpecBase
             .willReturn(ok(responseBody))
         )
         val result = connector.submitClaim(createClaimRequest).futureValue
-        result mustEqual ClientClaimSuccessResponse("1")
+        result mustEqual ClientClaimSuccessResponse(ClaimId("1"))
       }
     }
 

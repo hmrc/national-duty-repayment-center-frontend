@@ -16,24 +16,36 @@
 
 package controllers
 
+import java.time.LocalDate
+
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.NormalMode
+import models.{ClaimId, NormalMode}
+import navigation.Navigator
+import pages.CheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import queries.{ClaimDateQuery, ClaimIdQuery}
+import repositories.SessionRepository
+import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import viewmodels.AnswerSection
 import views.html.CheckYourAnswersView
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class CheckYourAnswersController @Inject()(
                                             override val messagesApi: MessagesApi,
                                             identify: IdentifierAction,
                                             getData: DataRetrievalAction,
                                             requireData: DataRequiredAction,
+                                            sessionRepository: SessionRepository,
+                                            claimService: ClaimService,
+                                            navigator: Navigator,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: CheckYourAnswersView
-                                          ) extends FrontendBaseController with I18nSupport {
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -46,12 +58,12 @@ class CheckYourAnswersController @Inject()(
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request => ???
-      /*for {
-        //caseId          <- participantRegistrationService.submitRegistration(request.internalId, request.userAnswers)
-        //updatedRegistrationId   <- Future.fromTry(request.userAnswers.set(RegistrationIdQuery, registrationId))
-        //updatedRegistrationDate <- Future.fromTry(updatedRegistrationId.set(RegistrationDateQuery, LocalDate.now))
-        //_                       <- sessionRepository.set(updatedRegistrationDate)
-      } yield Redirect(navigator.nextPage(DeclarationPage, NormalMode, updatedRegistrationDate))*/
+    implicit request =>
+      for {
+        claimId                 <- claimService.submitClaim(request.userAnswers)
+        //updatedClaimId          <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, value = claimId))
+        //updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
+        //_                       <- sessionRepository.set(updatedClaimDate)
+      } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package models
+package queries
 
-import play.api.libs.json.Format
+import models.ClaimId
+import play.api.libs.json.JsPath
 
-final case class CaseId(value: String)
-
-object CaseId {
-  implicit val format: Format[CaseId] = JsonFormatUtils.stringFormat(CaseId.apply)(_.value)
+object ClaimIdQuery extends Gettable[ClaimId] with Settable[ClaimId] {
+  def path: JsPath = JsPath \ "claimId"
 }

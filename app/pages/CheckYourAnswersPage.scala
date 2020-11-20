@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 
-package models.responses
+package pages
 
-import models.ClaimId
-import play.api.libs.json.{Json, OFormat}
-
-final case class ClientClaimSuccessResponse(
-                                             claimID: ClaimId
-                                           )
-
-
-object ClientClaimSuccessResponse {
-  implicit val format: OFormat[ClientClaimSuccessResponse] = Json.format[ClientClaimSuccessResponse]
-}
+case object CheckYourAnswersPage extends Page
