@@ -58,7 +58,9 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       val userDetails = UserDetails(VATNumber = Some(VRN("123456789")),
         EORI = EORI("GB123456789123456"),
         Name = UserName("Joe Bloggs"),
-        Address = address
+        Address = address,
+        TelephoneNumber = Some("12345678"),
+        EmailAddress = Some("example@example.com")
       )
 
       val bankDetails = AllBankDetails(
