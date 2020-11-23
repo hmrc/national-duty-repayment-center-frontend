@@ -47,9 +47,9 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
     userAnswersId,
     Json.obj(
       BankDetailsPage.toString -> Json.obj(
-        "accountName"   -> "name",
-        "sortCode"      -> "123456",
-        "accountNumber" -> "00123456"
+        "AccountName"   -> "name",
+        "SortCode"      -> "123456",
+        "AccountNumber" -> "00123456"
       )
     )
   )
@@ -108,7 +108,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, bankDetailsRoute)
-          .withFormUrlEncodedBody(("accountName", "name"), ("sortCode", "123456"), ("accountNumber", "00123456"))
+          .withFormUrlEncodedBody(("AccountName", "name"), ("SortCode", "123456"), ("AccountNumber", "00123456"))
 
       val result = route(application, request).value
 

@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("bankDetails.title")}"
     ) {
 
-    @formHelper(action = BankDetailsController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = BankDetailsController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "novalidate") {
 
         @components.back_link()
 
@@ -37,7 +37,7 @@
         <h1 class="heading-large mt-0 mb-3">@messages("bankDetails.heading")</h1>
     <div id="bank-details">
         @components.input_text(
-          field = form("value"),
+          field = form("AccountName"),
           label = messages("bankDetails.name.heading"),
           labelClass = Some("bold-4"),
           headingIsLabel = false,
@@ -45,21 +45,21 @@
         )
 
         @components.bank_details(
-            field = form("sortcode"),
-            label = messages("bankDetails.sortcode.heading"),
+            field = form("SortCode"),
+            label = messages("bankDetails.sortCode.heading"),
             labelClass = Some("bold-4"),
             inputClass = Some("govuk-input--width-5"),
             headingIsLabel = false,
-            hint = Some(messages("bankDetails.sortcode.hint"))
+            hint = Some(messages("bankDetails.sortCode.hint"))
         )
 
         @components.bank_details(
-            field = form("accountnumber"),
-            label = messages("bankDetails.accountnumber.heading"),
+            field = form("AccountNumber"),
+            label = messages("bankDetails.accountNumber.heading"),
             labelClass = Some("bold-4"),
             inputClass = Some("govuk-input--width-10"),
             headingIsLabel = false,
-            hint = Some(messages("bankDetails.accountnumber.hint"))
+            hint = Some(messages("bankDetails.accountNumber.hint"))
         )
 
         @components.submit_button()
