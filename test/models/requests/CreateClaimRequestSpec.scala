@@ -128,7 +128,9 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "Region" -> "region",
             "CountryCode" -> "GB",
             "PostalCode" -> "ZZ111ZZ"
-            )
+            ),
+            "TelephoneNumber" -> "12345678",
+            "EmailAddress" -> "example@example.com"
           ),
           "ImporterDetails" -> Json.obj(
             "VATNumber" -> "123456789",
@@ -141,7 +143,9 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
               "Region" -> "region",
               "CountryCode" -> "GB",
               "PostalCode" -> "ZZ111ZZ"
-            )
+            ),
+            "TelephoneNumber" -> "12345678",
+            "EmailAddress" -> "example@example.com"
           ),
           "BankDetails" -> Json.obj(
             "ImporterBankDetails" -> Json.obj(
