@@ -27,9 +27,9 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
 
   val form = new BankDetailsFormProvider()()
 
-  ".accountName" must {
+  ".AccountName" must {
 
-    val fieldName = "accountName"
+    val fieldName = "AccountName"
     val requiredKey = "bankDetails.name.error.required"
     val lengthKey = "bankDetails.name.error.length"
     val invalidKey = "bankDetails.name.error.invalid"
@@ -62,9 +62,9 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
     )
   }
 
-  ".sortCode" must {
+  ".SortCode" must {
 
-    val fieldName = "sortCode"
+    val fieldName = "SortCode"
     val requiredKey = "bankDetails.sortCode.error.required"
     val invalidKey = "bankDetails.sortCode.error.invalid"
 
@@ -127,9 +127,9 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
     }
   }
 
-  ".accountNumber" must {
+  ".AccountNumber" must {
 
-    val fieldName = "accountNumber"
+    val fieldName = "AccountNumber"
     val requiredKey = "bankDetails.accountNumber.error.required"
     val invalidKey = "bankDetails.accountNumber.error.invalid"
     val minLength = 8
