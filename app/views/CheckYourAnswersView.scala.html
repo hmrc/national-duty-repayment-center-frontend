@@ -17,7 +17,8 @@
 @import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 
 @this(
-    main_template: MainTemplate
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
 )
 
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
@@ -37,5 +38,9 @@
                 case r: RepeaterAnswerSection => components.repeater_answer_section(r)
             }
         }
+    }
+
+    @formHelper(action = CheckYourAnswersController.onSubmit()) {
+        @components.button("site.confirmAndSend")
     }
 }

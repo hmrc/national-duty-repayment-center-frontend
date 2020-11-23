@@ -20,7 +20,6 @@ import java.time.LocalDate
 
 import models._
 import base.SpecBase
-import models.ContactType.{Email, Phone}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
@@ -44,8 +43,8 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         ClaimDescription = ClaimDescription("this is a claim description"),
         DateReceived = LocalDate.of(2020,8,5),
         ClaimDate = LocalDate.of(2020,8,5),
-        PayeeIndicator = PayeeIndicator.Importer,
-        PaymentMethod = PaymentMethod.BACS,
+        PayeeIndicator = WhomToPay.Importer,
+        PaymentMethod = RepaymentType.BACS,
       )
 
       val address = Address(AddressLine1 = "line 1",
@@ -53,9 +52,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         City = "city",
         Region = "region",
         CountryCode = "GB",
-        PostalCode = Some("ZZ111ZZ"),
-        TelephoneNumber = Some("12345678"),
-        EmailAddress = Some("example@example.com")
+        PostalCode = Some("ZZ111ZZ")
       )
 
       val userDetails = UserDetails(VATNumber = Some(VRN("123456789")),
@@ -65,15 +62,15 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       )
 
       val bankDetails = AllBankDetails(
-        AgentBankDetails = BankDetails(AccountName("account name"), SortCode("123456"), AccountNumber("12345678")),
-        ImporterBankDetails = BankDetails(AccountName("account name"), SortCode("123456"), AccountNumber("12345678"))
+        AgentBankDetails = Some(BankDetails("account name", "123456", "12345678")),
+        ImporterBankDetails = Some(BankDetails("account name", "123456", "12345678"))
       )
 
 
       val dutyTypeTaxList = Seq(
-        DutyTypeTaxList(ClaimRepaymentType.Customs, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
-        DutyTypeTaxList(ClaimRepaymentType.Vat, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00"))),
-        DutyTypeTaxList(ClaimRepaymentType.Other, Some(PaidAmount("100.00")), Some(DueAmount("50.00")), Some(ClaimAmount("50.00")))
+        DutyTypeTaxList(ClaimRepaymentType.Customs, Some("100.00"), Some("50.00"), Some("50.00")),
+        DutyTypeTaxList(ClaimRepaymentType.Vat, Some("100.00"), Some("50.00"), Some("50.00")),
+        DutyTypeTaxList(ClaimRepaymentType.Other, Some("100.00"), Some("50.00"), Some("50.00"))
       )
 
       val documentList = Seq(
@@ -116,7 +113,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "DateReceived" -> "20200805",
             "ClaimDate" -> "20200805",
             "PayeeIndicator" -> "01",
-            "PaymentMethod" -> "02",
+            "PaymentMethod" -> "01",
             ),
           "AgentDetails" -> Json.obj(
           "VATNumber" -> "123456789",
@@ -128,9 +125,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "City" -> "city",
             "Region" -> "region",
             "CountryCode" -> "GB",
-            "PostalCode" -> "ZZ111ZZ",
-            "TelephoneNumber" -> "12345678",
-            "EmailAddress" -> "example@example.com"
+            "PostalCode" -> "ZZ111ZZ"
             )
           ),
           "ImporterDetails" -> Json.obj(
@@ -143,9 +138,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
               "City" -> "city",
               "Region" -> "region",
               "CountryCode" -> "GB",
-              "PostalCode" -> "ZZ111ZZ",
-              "TelephoneNumber" -> "12345678",
-              "EmailAddress" -> "example@example.com"
+              "PostalCode" -> "ZZ111ZZ"
             )
           ),
           "BankDetails" -> Json.obj(

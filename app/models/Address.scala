@@ -24,9 +24,7 @@ final case class Address(
                           City:String,
                           Region:String,
                           CountryCode:String,
-                          PostalCode:Option[String],
-                          TelephoneNumber:Option[String],
-                          EmailAddress:Option[String]
+                          PostalCode:Option[String]
                         ){
   val inlineText: String = List(
     AddressLine1,
@@ -34,10 +32,7 @@ final case class Address(
     City,
     Region,
     CountryCode,
-    Some(PostalCode),
-    Some(TelephoneNumber),
-    Some(EmailAddress),
-
+    Some(PostalCode)
   ).collect { case Some(x) => x }.mkString(", ")
 }
 

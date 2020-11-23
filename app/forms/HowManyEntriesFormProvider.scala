@@ -17,15 +17,15 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.NoOfEntries
 import play.api.data.Form
 
 class HowManyEntriesFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[NoOfEntries] =
     Form(
       "value" -> text("howManyEntries.error.required")
-        .verifying(maxLength(2, "howManyEntries.error.length"))
+        .verifying(maxLength(2, "howManyEntries.error.length")).transform[NoOfEntries](NoOfEntries.apply, _.value)
     )
 }

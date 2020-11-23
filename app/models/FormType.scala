@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.Format
 
-case class FormType(value: String)
+case class  FormType(value: String)
 
 object FormType {
   implicit val format: Format[FormType] =

@@ -16,15 +16,14 @@
 
 package views
 
-import controllers.routes
 import forms.BankDetailsFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.BankDetailsView
 
-class BankDetailsViewSpec extends StringViewBehaviours {
+class BankDetailsViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "bankDetails"
 
@@ -40,7 +39,5 @@ class BankDetailsViewSpec extends StringViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
-
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.BankDetailsController.onSubmit(NormalMode).url)
   }
 }

@@ -16,20 +16,19 @@
 
 package models
 
-import generators.ModelGenerators
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class EvidenceSupportingDocsSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues with ModelGenerators {
+class EvidenceSupportingDocsSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   "EvidenceSupportingDocs" must {
 
     "deserialise valid values" in {
 
-      val gen = arbitrary[EvidenceSupportingDocs]
+      val gen = Gen.oneOf(EvidenceSupportingDocs.values)
 
       forAll(gen) {
         evidenceSupportingDocs =>
@@ -51,7 +50,7 @@ class EvidenceSupportingDocsSpec extends WordSpec with MustMatchers with ScalaCh
 
     "serialise" in {
 
-      val gen = arbitrary[EvidenceSupportingDocs]
+      val gen = Gen.oneOf(EvidenceSupportingDocs.values)
 
       forAll(gen) {
         evidenceSupportingDocs =>

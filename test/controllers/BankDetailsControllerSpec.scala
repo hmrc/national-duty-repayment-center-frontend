@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.BankDetailsFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{BankDetails, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -43,6 +43,17 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad(NormalMode).url
 
+  private val userAnswers = UserAnswers(
+    userAnswersId,
+    Json.obj(
+      BankDetailsPage.toString -> Json.obj(
+        "accountName"   -> "name",
+        "sortCode"      -> "123456",
+        "accountNumber" -> "00123456"
+      )
+    )
+  )
+
   "BankDetails Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -65,8 +76,6 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(BankDetailsPage, "answer").success.value
-
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, bankDetailsRoute)
@@ -78,7 +87,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(BankDetails("name", "123456", "00123456")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -99,7 +108,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, bankDetailsRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("accountName", "name"), ("sortCode", "123456"), ("accountNumber", "00123456"))
 
       val result = route(application, request).value
 

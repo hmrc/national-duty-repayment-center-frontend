@@ -24,6 +24,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  self: Generators =>
+
+  //telephoneNumber <- Gen.option(Gen.listOfN(11, Gen.numStr).map(_.mkString))
+  //emailAddress <- Gen.option(self.stringsWithMaxLength(85))
+
   implicit lazy val arbitraryContactByEmail: Arbitrary[ContactByEmail] =
     Arbitrary {
       Gen.oneOf(ContactByEmail.values.toSeq)
@@ -36,62 +41,120 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryAgentImporterHasEORI: Arbitrary[AgentImporterHasEORI] =
     Arbitrary {
-      Gen.oneOf(AgentImporterHasEORI.values.toSeq)
+      Gen.oneOf(AgentImporterHasEORI.values)
     }
   
   implicit lazy val arbitraryIsImporterVatRegistered: Arbitrary[IsImporterVatRegistered] =
     Arbitrary {
-      Gen.oneOf(IsImporterVatRegistered.values.toSeq)
+      Gen.oneOf(IsImporterVatRegistered.values)
     }
 
   implicit lazy val arbitraryWhomToPay: Arbitrary[WhomToPay] =
     Arbitrary {
-      Gen.oneOf(WhomToPay.values.toSeq)
+      Gen.oneOf(WhomToPay.values)
     }
 
   implicit lazy val arbitraryRepaymentType: Arbitrary[RepaymentType] =
     Arbitrary {
-      Gen.oneOf(RepaymentType.values.toSeq)
+      Gen.oneOf(RepaymentType.values)
     }
 
   implicit lazy val arbitraryContactType: Arbitrary[ContactType] =
     Arbitrary {
-      Gen.oneOf(ContactType.values.toSeq)
+      Gen.oneOf(ContactType.values)
     }
 
   implicit lazy val arbitraryEvidenceSupportingDocs: Arbitrary[EvidenceSupportingDocs] =
     Arbitrary {
-      Gen.oneOf(EvidenceSupportingDocs.values.toSeq)
+      Gen.oneOf(EvidenceSupportingDocs.values)
     }
 
   implicit lazy val arbitraryClaimRepaymentType: Arbitrary[ClaimRepaymentType] =
     Arbitrary {
-      Gen.oneOf(ClaimRepaymentType.values.toSeq)
+      Gen.oneOf(ClaimRepaymentType.values)
     }
 
   implicit lazy val arbitraryClaimReasonType: Arbitrary[ClaimReasonType] =
     Arbitrary {
-      Gen.oneOf(ClaimReasonType.values.toSeq)
+      Gen.oneOf(ClaimReasonType.values)
     }
 
   implicit lazy val arbitraryNumberOfEntriesType: Arbitrary[NumberOfEntriesType] =
     Arbitrary {
-      Gen.oneOf(NumberOfEntriesType.values.toSeq)
+      Gen.oneOf(NumberOfEntriesType.values)
     }
 
   implicit lazy val arbitraryArticleType: Arbitrary[ArticleType] =
     Arbitrary {
-      Gen.oneOf(ArticleType.values.toSeq)
+      Gen.oneOf(ArticleType.values)
     }
 
   implicit lazy val arbitraryCustomsRegulationType: Arbitrary[CustomsRegulationType] =
     Arbitrary {
-      Gen.oneOf(CustomsRegulationType.values.toSeq)
+      Gen.oneOf(CustomsRegulationType.values)
     }
 
   implicit lazy val arbitraryClaimantType: Arbitrary[ClaimantType] =
     Arbitrary {
-      Gen.oneOf(ClaimantType.values.toSeq)
+      Gen.oneOf(ClaimantType.values)
+    }
+
+  implicit val arbitraryBankDetails: Arbitrary[BankDetails] = Arbitrary {
+    for {
+      accountName <- arbitrary[String]
+      sortCode <- arbitrary[String]
+      accountNumber <- arbitrary[String]
+    } yield BankDetails(accountName,
+      sortCode,
+      accountNumber
+    )
+  }
+
+  implicit lazy val arbitraryNoOfEntries: Arbitrary[NoOfEntries] =
+    Arbitrary {
+      Gen.listOfN(2, Gen.numStr).map(_.mkString).map(NoOfEntries.apply)
+    }
+
+  implicit lazy val arbitraryEori: Arbitrary[EORI] =
+    Arbitrary {
+      self.stringsWithMaxLength(17).map(EORI.apply)
+    }
+
+  implicit lazy val arbitraryEPU: Arbitrary[EPU] =
+    Arbitrary {
+      self.stringsWithMinAndMaxLength(3,3).map(EPU.apply)
+    }
+
+  implicit lazy val arbitraryEntryNumber: Arbitrary[EntryNumber] =
+    Arbitrary {
+      self.stringsWithMinAndMaxLength(7,7).map(EntryNumber.apply)
+    }
+
+  implicit lazy val arbitraryUserName: Arbitrary[UserName] =
+    Arbitrary {
+      self.stringsWithMaxLength(512).map(UserName.apply)
+    }
+
+  implicit val arbitraryAddress: Arbitrary[Address] = Arbitrary {
+    for {
+      addressLine1 <- self.stringsWithMaxLength(128)
+      addressLine2 <- Gen.option(self.stringsWithMaxLength(128))
+      city <- self.stringsWithMaxLength(64)
+      region <- self.stringsWithMaxLength(64)
+      countryCode <- Gen.pick(2, 'A' to 'Z')
+      postalCode <- Gen.option(arbitrary[String])
+    } yield Address(addressLine1,
+      addressLine2,
+      city,
+      region,
+      countryCode.mkString,
+      postalCode
+    )
+  }
+
+  implicit lazy val arbitraryClaimDescription: Arbitrary[ClaimDescription] =
+    Arbitrary {
+      self.stringsWithMaxLength(750).map(ClaimDescription.apply)
     }
 }
 
@@ -195,30 +258,21 @@ trait ModelGenerators {
       Gen.listOfN(2, Gen.numStr).map(_.mkString).map(NoOfEntries.apply)
     }
 
-  implicit lazy val arbitraryEPU: Arbitrary[EPU] =
-    Arbitrary {
-      self.stringsWithMinAndMaxLength(3,3).map(EPU.apply)
-    }
+
 
   implicit lazy val arbitraryUserName: Arbitrary[UserName] =
     Arbitrary {
       self.stringsWithMaxLength(512).map(UserName.apply)
     }
 
-  implicit lazy val arbitraryEntryNumber: Arbitrary[EntryNumber] =
-    Arbitrary {
-      self.stringsWithMinAndMaxLength(7,7).map(EntryNumber.apply)
-    }
+
 
   implicit lazy val arbitraryClaimReason: Arbitrary[ClaimReason] =
     Arbitrary {
       Gen.oneOf(ClaimReason.values)
     }
 
-  implicit lazy val arbitraryClaimDescription: Arbitrary[ClaimDescription] =
-    Arbitrary {
-      self.stringsWithMaxLength(1500).map(ClaimDescription.apply)
-    }
+
 
   implicit lazy val arbitraryPayeeIndicator: Arbitrary[PayeeIndicator] =
     Arbitrary {
@@ -230,16 +284,7 @@ trait ModelGenerators {
       Gen.oneOf(PaymentMethod.values)
     }
 
-  implicit val arbitraryBankDetails: Arbitrary[BankDetails] = Arbitrary {
-    for {
-      accountName <- arbitrary[AccountName]
-      sortCode <- arbitrary[SortCode]
-      accountNumber <- arbitrary[AccountNumber]
-    } yield BankDetails(accountName,
-      sortCode,
-      accountNumber
-    )
-  }
+
 
   implicit val arbitraryAllBankDetails: Arbitrary[AllBankDetails] = Arbitrary {
     for {
@@ -308,26 +353,7 @@ trait ModelGenerators {
     }
   }
 
-  implicit val arbitraryAddress: Arbitrary[Address] = Arbitrary {
-    for {
-      addressLine1 <- self.stringsWithMaxLength(128)
-      addressLine2 <- Gen.option(self.stringsWithMaxLength(128))
-      city <- self.stringsWithMaxLength(64)
-      region <- self.stringsWithMaxLength(64)
-      countryCode <- Gen.pick(2, 'A' to 'Z')
-      postalCode <- Gen.option(arbitrary[String])
-      telephoneNumber <- Gen.option(Gen.listOfN(11, Gen.numStr).map(_.mkString))
-      emailAddress <- Gen.option(self.stringsWithMaxLength(85))
-    } yield Address(addressLine1,
-      addressLine2,
-      city,
-      region,
-      countryCode.mkString,
-      postalCode,
-      telephoneNumber,
-      emailAddress
-    )
-  }
+
 
   implicit val arbitraryUserDetails: Arbitrary[UserDetails] = Arbitrary {
     for {

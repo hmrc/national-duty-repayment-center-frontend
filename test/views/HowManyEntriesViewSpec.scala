@@ -16,15 +16,14 @@
 
 package views
 
-import controllers.routes
 import forms.HowManyEntriesFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.HowManyEntriesView
 
-class HowManyEntriesViewSpec extends StringViewBehaviours {
+class HowManyEntriesViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "howManyEntries"
 
@@ -40,7 +39,5 @@ class HowManyEntriesViewSpec extends StringViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
-
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.HowManyEntriesController.onSubmit(NormalMode).url)
   }
 }

@@ -20,9 +20,9 @@ import play.api.libs.json.{Json, OFormat}
 
 final case class DutyTypeTaxList(
                                   Type: ClaimRepaymentType,
-                                  PaidAmount: Option[PaidAmount],
-                                  DueAmount: Option[DueAmount],
-                                  ClaimAmount: Option[ClaimAmount]
+                                  PaidAmount: Option[String],
+                                  DueAmount: Option[String],
+                                  ClaimAmount: Option[String]
                                 )
 
 object DutyTypeTaxList {

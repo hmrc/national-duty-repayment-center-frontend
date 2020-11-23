@@ -16,15 +16,14 @@
 
 package views
 
-import controllers.routes
 import forms.ClaimEntryNumberFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.ClaimEntryNumberView
 
-class ClaimEntryNumberViewSpec extends StringViewBehaviours {
+class ClaimEntryNumberViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "claimEntryNumber"
 
@@ -40,7 +39,5 @@ class ClaimEntryNumberViewSpec extends StringViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
-
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.ClaimEntryNumberController.onSubmit(NormalMode).url)
   }
 }

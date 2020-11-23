@@ -17,15 +17,15 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.EPU
 import play.api.data.Form
 
 class ClaimEpuFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[EPU] =
     Form(
       "value" -> text("claimEpu.error.required")
-        .verifying(maxLength(3, "claimEpu.error.length"))
+        .verifying(maxLength(3, "claimEpu.error.length")).transform[EPU](EPU.apply, _.value)
     )
 }

@@ -19,9 +19,23 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 final case class BankDetails(
-                              AccountName: AccountName,
-                              SortCode: SortCode,
-                              AccountNumber: AccountNumber)
+                              AccountName: String,
+                              SortCode: String,
+                              AccountNumber: String) {
+
+  val sortCodeTrimmed: String =
+    SortCode
+      .replaceAll(" ", "")
+      .replaceAll("-", "")
+
+  private val accountNumberLength = 8
+
+  val accountNumberPadded: String =
+    AccountNumber
+      .replaceAll(" ", "")
+      .replaceAll("-", "")
+      .reverse.padTo(accountNumberLength, '0').reverse
+}
 
 object BankDetails {
   implicit val format: OFormat[BankDetails] = Json.format[BankDetails]

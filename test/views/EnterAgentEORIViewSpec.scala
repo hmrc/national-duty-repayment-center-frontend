@@ -16,15 +16,14 @@
 
 package views
 
-import controllers.routes
 import forms.EnterAgentEORIFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.EnterAgentEORIView
 
-class EnterAgentEORIViewSpec extends StringViewBehaviours {
+class EnterAgentEORIViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "enterAgentEORI"
 
@@ -40,7 +39,5 @@ class EnterAgentEORIViewSpec extends StringViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
-
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.EnterAgentEORIController.onSubmit(NormalMode).url)
   }
 }

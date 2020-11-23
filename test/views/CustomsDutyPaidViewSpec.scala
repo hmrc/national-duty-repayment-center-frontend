@@ -17,7 +17,7 @@
 package views
 
 import controllers.routes
-import forms.customsDutyPaidFormProvider
+import forms.CustomsDutyPaidFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -28,7 +28,7 @@ class CustomsDutyPaidViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "customsDutyPaid"
 
-  val form = new customsDutyPaidFormProvider()()
+  val form = new CustomsDutyPaidFormProvider()()
 
   "customsDutyPaidView view" must {
 
