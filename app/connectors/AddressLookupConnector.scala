@@ -21,25 +21,22 @@ import connectors.httpparsers.AddressLookupHttpParser
 import connectors.httpparsers.AddressLookupHttpParser.AddressLookupResponse
 import javax.inject.Inject
 import models.PostcodeLookup
-import models.audit.AddressLookupAuditModel
-import models.requests.RequestWithInternalId
+import models.requests.{IdentifierRequest}
 import play.api.http.HeaderNames
 import play.api.libs.json.{JsValue, Json}
-import services.AuditService
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
-class AddressLookupConnector @Inject()(httpClient: HttpClient,
-                                       auditService: AuditService)
+class AddressLookupConnector @Inject()(httpClient: HttpClient)
                                       (implicit appConfig: FrontendAppConfig,
                                        ec: ExecutionContext) {
   private def getResponseJson(response: HttpResponse): JsValue = Try(response.json).getOrElse(Json.obj())
 
   def addressLookup(query: PostcodeLookup)
-                   (implicit hc: HeaderCarrier, request: RequestWithInternalId[_]): Future[AddressLookupResponse] = {
+                   (implicit hc: HeaderCarrier, request: IdentifierRequest[_]): Future[AddressLookupResponse] = {
     lazy val url = appConfig.addressLookupServiceUrl.baseUrl + "/v2/uk/addresses"
 
     val urlParams = Seq(
@@ -53,13 +50,7 @@ class AddressLookupConnector @Inject()(httpClient: HttpClient,
       queryParams = urlParams,
       headers = Seq(HeaderNames.USER_AGENT -> appConfig.appName)
     )(AddressLookupHttpParser.AddressLookupReads, hc, ec).map {
-      case (connectorResponse, httpResponse) =>
-        auditService.audit(AddressLookupAuditModel(
-          request.internalId.value,
-          getResponseJson(httpResponse),
-          request.headers.get(HeaderNames.USER_AGENT).getOrElse("UNKNOWN")
-        ))
-        connectorResponse
+      case (connectorResponse, httpResponse) => connectorResponse
     }
   }
 }

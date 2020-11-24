@@ -16,15 +16,6 @@
 
 package models.requests;
 
-import models.InternalId
 import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.retrieve.Credentials
-
-trait RequestWithInternalId[A] extends Request[A] {
-  def internalId: InternalId
-  def affinityGroup: AffinityGroup
-  def credentials: Credentials
-}
 
 case class IdentifierRequest[A] (request: Request[A], identifier: String) extends WrappedRequest[A](request)

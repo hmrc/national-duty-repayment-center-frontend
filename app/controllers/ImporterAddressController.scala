@@ -16,18 +16,24 @@
 
 package controllers
 
+import connectors.AddressLookupConnector
 import controllers.actions._
-import forms.{AddressFormProvider, AddressSelectionFormProvider, PostcodeFormProvider, ImporterAddressFormProvider}
+import forms.{AddressFormProvider, AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
 import javax.inject.Inject
+import models.requests.IdentifierRequest
 import models.{Address, Mode, PostcodeLookup}
 import navigation.Navigator
 import pages.ImporterAddressPage
 import org.slf4j.LoggerFactory
+import play.api.data.Form
+import play.api.libs.json.{JsObject, Json}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.Aliases.{RadioItem, Text}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.ImporterAddressView
+import utils.AddressSorter
+import views.html.{ImporterAddressConfirmationView, ImporterAddressView}
 
 import scala.collection.script.Index
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,10 +49,15 @@ class ImporterAddressController @Inject()(
                                            postcodeFormProvider: PostcodeFormProvider,
                                            addressSelectionFormProvider: AddressSelectionFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
-                                           view: ImporterAddressView
+                                           view: ImporterAddressView,
+                                           addressLookupConnector: AddressLookupConnector,
+                                           sorter: AddressSorter,
+                                           addressConfirmationView : ImporterAddressConfirmationView
                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = addressFormProvider()
+  val postcodeForm = postcodeFormProvider()
+  val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -58,6 +69,52 @@ class ImporterAddressController @Inject()(
 
       Ok(view(preparedForm, mode))
   }
+
+  def postcodeSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      postcodeForm.bindFromRequest.fold(
+        formWithErrors =>
+          Future.successful(BadRequest(view(formWithErrors, mode))),
+        lookup => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, lookup.postcode))
+            _              <- sessionRepository.set(updatedAnswers)
+            lookupResult   <- doPostcodeLookup(lookup, mode, selectionForm)
+          } yield lookupResult
+        }
+      )
+  }
+
+  private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject])(implicit request: IdentifierRequest[_]): Future[Result] = {
+    addressLookupConnector.addressLookup(lookup) map {
+      case Left(err) =>
+        logger.warn(s"Address lookup failure $err")
+        BadRequest(view(buildLookupFailureError(lookup), mode))
+
+      case Right(candidates) if candidates.noOfHits == 0 =>
+        BadRequest(view(buildLookupFailureError(lookup), mode))
+
+      case Right(candidates) =>
+        val selectionItems = sorter.sort(candidates.candidateAddresses)
+          .map(Address.fromLookupResponse)
+          .map(a => RadioItem(
+            content = Text(a.inlineText),
+            value = Some(Json.toJson(a).toString())))
+        if (form.hasErrors) {
+          BadRequest(addressConfirmationView(lookup, selectionItems))
+        } else {
+          Ok(addressConfirmationView(lookup, selectionItems))
+        }
+    }
+  }
+
+  private def buildLookupFailureError(lookup: PostcodeLookup) =
+    if (lookup.houseNumber.isDefined) {
+      postcodeForm.fill(lookup).withError("address-propertyNumber", "postcode.propertyNumber.error.noneFound")
+    } else {
+      postcodeForm.fill(lookup).withError("address-postcode", "postcode.error.noneFound")
+    }
+
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>

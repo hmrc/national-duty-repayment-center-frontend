@@ -17,7 +17,6 @@
 package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.audit.AddressLookupAuditModel
 import models.requests.IdentifierRequest
 import models.responses._
 import models.results.{InvalidJson, UnexpectedResponseStatus}
@@ -35,10 +34,7 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.running
-import services.AuditService
-import testutils.WireMockHelper
-import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.retrieve.Credentials
+import utils.WireMockHelper
 import uk.gov.hmrc.http.HeaderCarrier
 
 class AddressLookupConnectorSpec
@@ -63,7 +59,6 @@ class AddressLookupConnectorSpec
       .configure(
         "microservice.services.address-lookup.port" -> server.port
       )
-      .bindings(bind[AuditService].toInstance(mock[AuditService]))
       .build()
 
   def addressJson(id: String): String =
@@ -116,7 +111,6 @@ class AddressLookupConnectorSpec
           running(app) {
 
             val connector = app.injector.instanceOf[AddressLookupConnector]
-            val auditService = app.injector.instanceOf[AuditService]
 
             server.stubFor(
               get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(ok(happyJson))
@@ -131,13 +125,6 @@ class AddressLookupConnectorSpec
               LookedUpAddressWrapper("GB200000706255", Uprn(200000706253L), expectedAddress, "en", Some(Location(50.9986451, -1.4690977))),
             )))
 
-            verify(auditService, times(1)).audit(
-              equalTo(AddressLookupAuditModel(
-                "identifier",
-                Json.parse(happyJson),
-                "User Agent"
-              ))
-            )(any(), any(), any())
           }
         }
       }
@@ -150,7 +137,6 @@ class AddressLookupConnectorSpec
           running(app) {
 
             val connector = app.injector.instanceOf[AddressLookupConnector]
-            val auditService = app.injector.instanceOf[AuditService]
 
             val invalidJson = """{"foo" : "bar"}"""
             server.stubFor(
@@ -160,14 +146,6 @@ class AddressLookupConnectorSpec
             val result = connector.addressLookup(PostcodeLookup("AA11ZZ", None)).futureValue
 
             result mustBe Left(InvalidJson)
-
-            verify(auditService, times(1)).audit(
-              equalTo(AddressLookupAuditModel(
-                "identifier",
-                Json.parse(invalidJson),
-                "User Agent"
-              ))
-            )(any(), any(), any())
           }
         }
       }
