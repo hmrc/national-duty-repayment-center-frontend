@@ -73,12 +73,12 @@ importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
-customsRegulationType.title = Was the overpayment made before 1 January 2021?
-customsRegulationType.heading = Was the overpayment made before 1 January 2021?
-customsRegulationType.01 = Yes
-customsRegulationType.02 = No
-customsRegulationType.checkYourAnswersLabel = Was the overpayment made before 1 January 2021?
-customsRegulationType.error.required = Select whether the overpayment was made before 1 January 2021?
+customsRegulationType.title = What was the entry acceptance date?
+customsRegulationType.heading = What was the entry acceptance date?
+customsRegulationType.01 = From 1 January 2021
+customsRegulationType.02 = On or before 31 December 2020
+customsRegulationType.checkYourAnswersLabel = What was the entry acceptance date?
+customsRegulationType.error.required = Select the entry acceptance date?
 
 articleType.title = Which article are you reclaiming under?
 articleType.heading = Which article are you reclaiming under?
