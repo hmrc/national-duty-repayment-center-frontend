@@ -80,13 +80,13 @@ customsRegulationType.02 = On or before 31 December 2020
 customsRegulationType.checkYourAnswersLabel = What was the entry acceptance date?
 customsRegulationType.error.required = Select the entry acceptance date?
 
-articleType.title = Which article are you reclaiming under?
-articleType.heading = Which article are you reclaiming under?
-articleType.117 = Article 117: Overcharged amounts of import or export duty
-articleType.119 = Article 119: Error by the competent authorities
-articleType.120 = Article 120: Equity
-articleType.checkYourAnswersLabel = Which article are you reclaiming under?
-articleType.error.required = Select which article are you reclaiming under?
+articleType.title = Why are you applying for this repayment?
+articleType.heading = Why are you applying for this repayment?
+articleType.117 = Overpayment of duty or VAT (Article 117)
+articleType.119 = Error by customs (Article 119)
+articleType.120 = Exceptional circumstances (Article 120)
+articleType.checkYourAnswersLabel = Why are you applying for this repayment?
+articleType.error.required = Select why are you applying for this repayment
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
