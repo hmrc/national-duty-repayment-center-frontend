@@ -34,7 +34,7 @@ object LookedUpAddressWrapper {
   implicit val reads: Reads[LookedUpAddressWrapper] = Json.reads[LookedUpAddressWrapper]
 }
 
-case class LookedUpAddress(line1: String, line2: Option[String], city: String, region: String, countryCode: String, postalCode: Option[String])
+case class LookedUpAddress(lines: Seq[String], city: String, region: String, countryCode: String, postalCode: Option[String])
 
 object LookedUpAddress {
   implicit val reads: Reads[LookedUpAddress] = Json.reads[LookedUpAddress]

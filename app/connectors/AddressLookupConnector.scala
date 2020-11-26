@@ -21,7 +21,7 @@ import connectors.httpparsers.AddressLookupHttpParser
 import connectors.httpparsers.AddressLookupHttpParser.AddressLookupResponse
 import javax.inject.Inject
 import models.PostcodeLookup
-import models.requests.{IdentifierRequest}
+import models.requests.IdentifierRequest
 import play.api.http.HeaderNames
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -33,10 +33,9 @@ import scala.util.Try
 class AddressLookupConnector @Inject()(httpClient: HttpClient)
                                       (implicit appConfig: FrontendAppConfig,
                                        ec: ExecutionContext) {
-  private def getResponseJson(response: HttpResponse): JsValue = Try(response.json).getOrElse(Json.obj())
 
   def addressLookup(query: PostcodeLookup)
-                   (implicit hc: HeaderCarrier, request: IdentifierRequest[_]): Future[AddressLookupResponse] = {
+                   (implicit hc: HeaderCarrier): Future[AddressLookupResponse] = {
     lazy val url = appConfig.addressLookupServiceUrl.baseUrl + "/v2/uk/addresses"
 
     val urlParams = Seq(
@@ -50,7 +49,8 @@ class AddressLookupConnector @Inject()(httpClient: HttpClient)
       queryParams = urlParams,
       headers = Seq(HeaderNames.USER_AGENT -> appConfig.appName)
     )(AddressLookupHttpParser.AddressLookupReads, hc, ec).map {
-      case (connectorResponse, httpResponse) => connectorResponse
+      case (connectorResponse, _) =>
+        connectorResponse
     }
   }
 }

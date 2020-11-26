@@ -29,7 +29,7 @@
         title = s"${errorPrefix(form)} ${messages("importerAddress.title")}"
     ) {
 
-        @formHelper(action = ImporterAddressController.onSubmit(mode), 'autoComplete -> "off") {
+        @formHelper(action = ImporterAddressController.postcodeSubmit(mode), 'autoComplete -> "off") {
 
             @components.back_link()
 

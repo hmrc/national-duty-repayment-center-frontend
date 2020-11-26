@@ -63,21 +63,9 @@ class AddressFormProvider @Inject() extends Mappings {
           .verifying(firstError(
             maxLength(maxCountyLength, "address.error.PostalCode.length"),
           //  regexp(Validation.safeInputPattern,"address.error.county.invalid")
-          ))),
-      "TelephoneNumber" ->
-        optional(Forms.text
-          .verifying(firstError(
-            maxLength(maxCountyLength, "address.error.TelephoneNumber.length"),
-            //  regexp(Validation.safeInputPattern,"address.error.county.invalid")
-          ))),
-      "EmailAddress" ->
-        optional(Forms.text
-          .verifying(firstError(
-            maxLength(maxCountyLength, "address.error.EmailAddress.length"),
-            //  regexp(Validation.safeInputPattern,"address.error.county.invalid")
           )))
     )(Address.apply)(address => Some((address.AddressLine1,address.AddressLine2, address.City, address.Region,
-      address.CountryCode, address.PostalCode, address.TelephoneNumber,address.EmailAddress)))
+      address.CountryCode, address.PostalCode)))
   )
 
 }

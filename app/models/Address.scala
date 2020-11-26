@@ -42,8 +42,8 @@ object Address {
   implicit val format: OFormat[Address] = Json.format[Address]
 
   def fromLookupResponse(candidate: LookedUpAddressWrapper): Address = Address(
-    candidate.address.line1,
-    candidate.address.line2,
+    candidate.address.lines.headOption.getOrElse(""),
+    candidate.address.lines.lift(1),
     candidate.address.city,
     candidate.address.region,
     candidate.address.countryCode,

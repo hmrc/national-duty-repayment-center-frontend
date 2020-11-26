@@ -23,7 +23,7 @@ import javax.inject.Inject
 import models.requests.IdentifierRequest
 import models.{Address, Mode, PostcodeLookup}
 import navigation.Navigator
-import pages.ImporterAddressPage
+import pages.{ImporterAddressPage, ImporterPostcodePage}
 import org.slf4j.LoggerFactory
 import play.api.data.Form
 import play.api.libs.json.{JsObject, Json}
@@ -53,10 +53,12 @@ class ImporterAddressController @Inject()(
                                            addressLookupConnector: AddressLookupConnector,
                                            sorter: AddressSorter,
                                            addressConfirmationView : ImporterAddressConfirmationView
-                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                         )(implicit ec: ExecutionContext)
+                                          extends FrontendBaseController with I18nSupport {
 
-  val form = addressFormProvider()
-  val postcodeForm = postcodeFormProvider()
+  private val form = addressFormProvider()
+  private val postcodeForm = postcodeFormProvider()
+  private val selectionForm = addressSelectionFormProvider()
   val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -77,7 +79,7 @@ class ImporterAddressController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode))),
         lookup => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, lookup.postcode))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterPostcodePage, lookup.postcode))
             _              <- sessionRepository.set(updatedAnswers)
             lookupResult   <- doPostcodeLookup(lookup, mode, selectionForm)
           } yield lookupResult
@@ -85,7 +87,7 @@ class ImporterAddressController @Inject()(
       )
   }
 
-  private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject])(implicit request: IdentifierRequest[_]): Future[Result] = {
+  private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject]): Future[Result] = {
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
