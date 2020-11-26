@@ -73,12 +73,12 @@ importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
-customsRegulationType.title = What was the entry acceptance date?
-customsRegulationType.heading = What was the entry acceptance date?
+customsRegulationType.title = What was the acceptance date for all entries?
+customsRegulationType.heading = What was the acceptance date for all entries?
 customsRegulationType.01 = From 1 January 2021
 customsRegulationType.02 = On or before 31 December 2020
-customsRegulationType.checkYourAnswersLabel = What was the entry acceptance date?
-customsRegulationType.error.required = Select the entry acceptance date?
+customsRegulationType.checkYourAnswersLabel = WWhat was the acceptance date for all entries?
+customsRegulationType.error.required = Select the entry acceptance date for all entries
 
 articleType.title = Why are you applying for this repayment?
 articleType.heading = Why are you applying for this repayment?
