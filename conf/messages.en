@@ -77,7 +77,7 @@ customsRegulationType.title = What was the acceptance date for all entries?
 customsRegulationType.heading = What was the acceptance date for all entries?
 customsRegulationType.01 = From 1 January 2021
 customsRegulationType.02 = On or before 31 December 2020
-customsRegulationType.checkYourAnswersLabel = WWhat was the acceptance date for all entries?
+customsRegulationType.checkYourAnswersLabel = What was the acceptance date for all entries?
 customsRegulationType.error.required = Select the entry acceptance date for all entries
 
 articleType.title = Why are you applying for this repayment?
