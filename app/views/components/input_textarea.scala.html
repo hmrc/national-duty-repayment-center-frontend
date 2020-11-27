@@ -21,7 +21,8 @@
         inputClass: Option[String] = None,
         labelClass: Option[String] = None,
         hint: Option[String] = None,
-        headingIsLabel: Boolean = false
+        headingIsLabel: Boolean = false,
+        charCount: Int = 0
 )(implicit messages: Messages)
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
@@ -41,19 +42,26 @@
     <div class="form-hint" id="hint-@{field.id}">@hint</div>
     }
 
-    @field.errors.map { error =>
-    <div class="error-message" id="error-message-@{field.id}-input">
-        <span class="visually-hidden">@messages("error.browser.title.prefix") </span>@messages(error.message, error.args: _*)
-    </div>
-    }
-    <div class="form-control-wrapper char-counter" data-char-counter>
-        <textarea
-            class="form-control form-control--full-width @inputClass"
-            id="@{field.id}"
-            name="@{field.id}"
-            value="@{field.value}"
-            @if(field.hasErrors || hint.isDefined){aria-describedby="@if(hint.isDefined){hint-@{field.id}}@if(field.hasErrors && hint.isDefined){ }@if(field.hasErrors){error-message-@{field.id}-input}"}
-            rows="5"
-        >@{field.value}</textarea>
+    <div class="govuk-character-count @if(field.hasErrors) {form-field--error}" data-module="govuk-character-count" data-maxlength="@{charCount}">
+        @field.errors.map { error =>
+        <div class="error-message" id="error-message-@{field.id}-input">
+            <span class="visually-hidden">@messages("error.browser.title.prefix") </span>@messages(error.message, error.args: _*)
+        </div>
+        }
+        <div class="form-control-wrapper data-char-counter" >
+            <textarea
+                class="form-control form-control--full-width @inputClass govuk-js-character-count"
+                id="@{field.id}"
+                name="@{field.id}"
+                value="@{field.value}"
+                @if(field.hasErrors || hint.isDefined){aria-describedby="@if(hint.isDefined){hint-@{field.id}}@if(field.hasErrors && hint.isDefined){ }@if(field.hasErrors){error-message-@{field.id}-input}"}
+                rows="5"
+            >@{field.value}</textarea>
+        </div>
+        <span id="@{field.name}-info" class="form-hint-char-count govuk-character-count__message" aria-live="polite">
+            You can enter up to @charCount characters
+        </span>
     </div>
 </div>
+
+

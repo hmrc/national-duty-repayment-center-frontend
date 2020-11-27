@@ -206,3 +206,17 @@ override character count display
         line-height: 1.25;
     }
 }
+.govuk-character-count__message {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.govuk-error-message {
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 700;
+    margin-bottom: 15px;
+    clear: both;
+    color: #d4351c;
+}
