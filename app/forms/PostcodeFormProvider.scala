@@ -27,7 +27,7 @@ class PostcodeFormProvider @Inject() extends Mappings {
   def apply(): Form[PostcodeLookup] =
     Form(
       mapping(
-        "address-postcode" -> text("postcode.error.required"),
+        "value" -> text("postcode.error.required"),
         "address-propertyNumber" -> optional(Forms.text
           .verifying(maxLength(40, "postcode.propertyNumber.error.length")))
       )(PostcodeLookup.apply)(PostcodeLookup.unapply)

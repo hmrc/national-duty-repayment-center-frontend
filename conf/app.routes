@@ -179,7 +179,7 @@ GET        /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesD
 POST       /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = CheckMode)
 
 GET        /importerAddress                        controllers.ImporterAddressController.onPageLoad(mode: Mode = NormalMode)
-POST       /importerAddress                        controllers.ImporterAddressController.onSubmit(mode: Mode = NormalMode)
+POST       /importerAddress                        controllers.ImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
 GET        /changeImporterAddress                  controllers.ImporterAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeImporterAddress                  controllers.ImporterAddressController.onSubmit(mode: Mode = CheckMode)
 
@@ -206,7 +206,6 @@ POST       /bankDetails                        controllers.BankDetailsController
 GET        /changeBankDetails                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBankDetails                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
-GET        /importerAddressConfirmation                 controllers.ImporterAddressConfirmationController.onPageLoad()
 
 
 GET        /agentImporterAddressConfirmation                       controllers.AgentImporterAddressConfirmationController.onPageLoad()
@@ -227,3 +226,5 @@ GET        /contactByEmail                        controllers.ContactByEmailCont
 POST       /contactByEmail                        controllers.ContactByEmailController.onSubmit(mode: Mode = NormalMode)
 GET        /changeContactByEmail                  controllers.ContactByEmailController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeContactByEmail                  controllers.ContactByEmailController.onSubmit(mode: Mode = CheckMode)
+
+GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)

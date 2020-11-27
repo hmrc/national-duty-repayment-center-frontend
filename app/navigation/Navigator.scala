@@ -48,7 +48,7 @@ class Navigator @Inject()() {
     case ImporterEoriPage => getEORIPage
     case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)
     case ImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
-    case ImporterAddressPage => _ => routes.ImporterAddressConfirmationController.onPageLoad
+    //case ImporterAddressPage => _ => routes.ImporterAddressConfirmationController.onPageLoad
     case ImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
     case ImporterHasEoriPage => getEORIConfirmation
     case IsVatRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)

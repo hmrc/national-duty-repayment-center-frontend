@@ -36,13 +36,13 @@ class AddressLookupConnector @Inject()(httpClient: HttpClient)
 
   def addressLookup(query: PostcodeLookup)
                    (implicit hc: HeaderCarrier): Future[AddressLookupResponse] = {
-    lazy val url = appConfig.addressLookupServiceUrl.baseUrl + "/v2/uk/addresses"
+    lazy val url = appConfig.addressLookupServiceUrl.baseUrl + "/v1/uk/addresses"
 
     val urlParams = Seq(
-      Some("postcode" -> query.postCodeTrimmed),
-      query.houseNumber.map("filter" -> _)
+      Some("postcode" -> query.postCodeTrimmed)
     ).collect { case Some(x) => x }
 
+    println("bey "+url+":"+urlParams)
 
     httpClient.GET(
       url = url,
