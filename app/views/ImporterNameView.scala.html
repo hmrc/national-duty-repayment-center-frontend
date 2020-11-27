@@ -43,14 +43,14 @@
             </legend>
 
         @components.input_text(
-            field = form("value"),
+            field = form("importer-first-name"),
             label = messages("importerName.firstName.label"),
             headingIsLabel = false
         )
 
         @components.input_text(
-            field = form("value"),
-            label = messages("importerName.SecondName.label"),
+            field = form("importer-first-name"),
+            label = messages("importerName.LastName.label"),
             headingIsLabel = false
         )
         @components.submit_button()
