@@ -61,7 +61,21 @@ class Navigator @Inject()() {
     case AgentImporterAddressPage => _ => routes.AgentImporterAddressConfirmationController.onPageLoad
     case AgentImporterManualAddressPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
     case AdditionalFileUploadPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
+    case WhomToPayPage => whomToPayRoute
+    case IndirectRepresentativePage => indirectRepresentativeRoute
     case _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def whomToPayRoute(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
+    case Some(WhomToPay.Importer) => routes.BankDetailsController.onPageLoad(NormalMode)
+    case Some(WhomToPay.Representative) => routes.IndirectRepresentativeController.onPageLoad(NormalMode)
+    case None => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def indirectRepresentativeRoute(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
+    case Some(true)  => routes.BankDetailsController.onPageLoad(NormalMode)
+    case Some(false) => ???
+    case None        => routes.SessionExpiredController.onPageLoad()
   }
 
   private def getEORIPage(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
@@ -79,8 +93,10 @@ class Navigator @Inject()() {
     case _ => routes.IsVatRegisteredController.onPageLoad(NormalMode)
   }
 
-  private def getRepaymentMethodType(answers: UserAnswers): Call = answers.get(RepaymentTypePage) match {
-    case Some(RepaymentType.BACS)  => routes.BankDetailsController.onPageLoad(NormalMode)
+  private def getRepaymentMethodType(answers: UserAnswers): Call =
+    (answers.get(RepaymentTypePage), answers.get(ClaimantTypePage)) match {
+    case (Some(RepaymentType.BACS),Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
+    case (Some(RepaymentType.BACS), Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
     case _ => routes.CheckYourAnswersController.onPageLoad
   }
 

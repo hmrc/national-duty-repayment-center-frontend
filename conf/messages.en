@@ -405,3 +405,14 @@ contactByEmail.01 = Yes
 contactByEmail.02 = No
 contactByEmail.checkYourAnswersLabel = ContactByEmail
 contactByEmail.error.required = Select contactByEmail
+
+howManyEntries.title = howManyEntries
+howManyEntries.heading = howManyEntries
+howManyEntries.checkYourAnswersLabel = howManyEntries
+howManyEntries.error.required = Enter howManyEntries
+howManyEntries.error.length = HowManyEntries must be 2 characters or less
+
+indirectRepresentative.title = Are you an indirect representative of the importer?
+indirectRepresentative.heading = Are you an indirect representative of the importer?
+indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?
+indirectRepresentative.error.required = Select yes if are you an indirect representative of the importer

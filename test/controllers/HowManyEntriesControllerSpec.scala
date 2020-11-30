@@ -99,7 +99,7 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, howManyEntriesRoute)
-          .withFormUrlEncodedBody(("value", "10"))
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 

@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryIndirectRepresentativePage: Arbitrary[IndirectRepresentativePage.type] =
+    Arbitrary(IndirectRepresentativePage)
+
   implicit lazy val arbitraryContactByEmailPage: Arbitrary[ContactByEmailPage.type] =
     Arbitrary(ContactByEmailPage)
 
