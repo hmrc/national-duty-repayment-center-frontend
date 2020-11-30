@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.customsDutyPaidFormProvider
+import forms.CustomsDutyPaidFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
@@ -33,14 +33,14 @@ import views.html.CustomsDutyPaidView
 
 import scala.concurrent.Future
 
-class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
+class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new customsDutyPaidFormProvider()
+  val formProvider = new CustomsDutyPaidFormProvider()
   val form = formProvider()
 
-  lazy val customsDutyPaidRoute = routes.CustomsDutyPaidController.onPageLoad(NormalMode).url
+  lazy val CustomsDutyPaidRoute = routes.CustomsDutyPaidController.onPageLoad(NormalMode).url
 
   "customsDutyPaid Controller" must {
 
@@ -48,7 +48,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, customsDutyPaidRoute)
+      val request = FakeRequest(GET, CustomsDutyPaidRoute)
 
       val result = route(application, request).value
 
@@ -68,7 +68,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, customsDutyPaidRoute)
+      val request = FakeRequest(GET, CustomsDutyPaidRoute)
 
       val view = application.injector.instanceOf[CustomsDutyPaidView]
 
@@ -97,7 +97,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, customsDutyPaidRoute)
+        FakeRequest(POST, CustomsDutyPaidRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
@@ -113,7 +113,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, customsDutyPaidRoute)
+        FakeRequest(POST, CustomsDutyPaidRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
@@ -134,7 +134,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, customsDutyPaidRoute)
+      val request = FakeRequest(GET, CustomsDutyPaidRoute)
 
       val result = route(application, request).value
 
@@ -150,7 +150,7 @@ class customsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, customsDutyPaidRoute)
+        FakeRequest(POST, CustomsDutyPaidRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value

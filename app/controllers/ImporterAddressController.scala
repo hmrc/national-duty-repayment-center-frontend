@@ -18,9 +18,8 @@ package controllers
 
 import connectors.AddressLookupConnector
 import controllers.actions._
-import forms.{AddressFormProvider, AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
+import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
 import javax.inject.Inject
-import models.requests.IdentifierRequest
 import models.{Address, Mode, PostcodeLookup}
 import navigation.Navigator
 import pages.{ImporterAddressPage, ImporterPostcodePage}

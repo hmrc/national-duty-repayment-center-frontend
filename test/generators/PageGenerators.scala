@@ -51,7 +51,7 @@ trait PageGenerators {
   implicit lazy val arbitraryCustomsDutyDueToHMRCPage: Arbitrary[CustomsDutyDueToHMRCPage.type] =
     Arbitrary(CustomsDutyDueToHMRCPage)
 
-  implicit lazy val arbitrarycustomsDutyPaidPage: Arbitrary[CustomsDutyPaidPage.type] =
+  implicit lazy val arbitraryCustomsDutyPaidPage: Arbitrary[CustomsDutyPaidPage.type] =
     Arbitrary(CustomsDutyPaidPage)
 
   implicit lazy val arbitraryVATDueToHMRCPage: Arbitrary[VATDueToHMRCPage.type] =

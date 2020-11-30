@@ -25,7 +25,7 @@ class customsDutyPaidFormProviderSpec extends StringFieldBehaviours {
   val lengthKey = "customsDutyPaid.error.length"
   val maxLength = 14
 
-  val form = new customsDutyPaidFormProvider()()
+  val form = new CustomsDutyPaidFormProvider()()
 
   ".value" must {
 

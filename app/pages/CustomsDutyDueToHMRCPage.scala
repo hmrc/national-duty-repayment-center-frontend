@@ -16,6 +16,7 @@
 
 package pages
 
+import models.DueAmount
 import play.api.libs.json.JsPath
 
 case object CustomsDutyDueToHMRCPage extends QuestionPage[String] {

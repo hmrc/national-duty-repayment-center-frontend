@@ -16,15 +16,14 @@
 
 package views
 
-import controllers.routes
 import forms.ImporterNameFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.ImporterNameView
 
-class ImporterNameViewSpec extends StringViewBehaviours {
+class ImporterNameViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "importerName"
 
@@ -40,7 +39,5 @@ class ImporterNameViewSpec extends StringViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
-
-    behave like stringPage(form, applyView, messageKeyPrefix, routes.ImporterNameController.onSubmit(NormalMode).url)
   }
 }

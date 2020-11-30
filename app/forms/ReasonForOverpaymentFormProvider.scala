@@ -17,15 +17,15 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.ClaimDescription
 import play.api.data.Form
 
 class ReasonForOverpaymentFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[ClaimDescription] =
     Form(
       "value" -> text("reasonForOverpayment.error.required")
-        .verifying(maxLength(750, "reasonForOverpayment.error.length"))
+        .verifying(maxLength(750, "reasonForOverpayment.error.length")).transform[ClaimDescription](ClaimDescription.apply, _.value)
     )
 }

@@ -50,7 +50,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("bankDetails.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.AccountName),
         Some(routes.BankDetailsController.onPageLoad(CheckMode).url)
       )
   }
@@ -77,7 +77,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.toString),
         Some(routes.AgentImporterAddressController.onPageLoad(CheckMode).url)
       )
   }
@@ -86,7 +86,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.toString),
         Some(routes.ImporterAddressController.onPageLoad(CheckMode).url)
       )
   }
@@ -167,7 +167,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("enterAgentEORI.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         Some(routes.EnterAgentEORIController.onPageLoad(CheckMode).url)
       )
   }
@@ -196,7 +196,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         Some(routes.AgentNameImporterController.onPageLoad(CheckMode).url)
       )
   }
@@ -232,19 +232,19 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
       )
   }
 
-  /*def evidenceSupportingDocs: Option[AnswerRow] = userAnswers.get(EvidenceSupportingDocsPage) map {
+  def evidenceSupportingDocs: Option[AnswerRow] = userAnswers.get(EvidenceSupportingDocsPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("evidenceSupportingDocs.checkYourAnswersLabel")),
         Html(x.map(value => HtmlFormat.escape(messages(s"evidenceSupportingDocs.$value")).toString).mkString(",<br>")),
-        Some(routes.EvidenceSupportingDocsController.onPageLoad(CheckMode).url)
+        Some(routes.EvidenceSupportingDocsController.onPageLoad().url)
       )
-  }*/
+  }
 
   def claimRepaymentType: Option[AnswerRow] = userAnswers.get(ClaimRepaymentTypePage) map {
     x =>
@@ -259,7 +259,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("reasonForOverpayment.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         Some(routes.ReasonForOverpaymentController.onPageLoad(CheckMode).url)
       )
   }
@@ -295,7 +295,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("claimEntryNumber.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         Some(routes.ClaimEntryNumberController.onPageLoad(CheckMode).url)
       )
   }
@@ -304,7 +304,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("claimEpu.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         Some(routes.ClaimEpuController.onPageLoad(CheckMode).url)
       )
   }
@@ -313,7 +313,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("howManyEntries.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         Some(routes.HowManyEntriesController.onPageLoad(CheckMode).url)
       )
   }
@@ -367,7 +367,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerEori.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.value),
         Some(routes.ImporterEoriController.onPageLoad(CheckMode).url)
       )
   }

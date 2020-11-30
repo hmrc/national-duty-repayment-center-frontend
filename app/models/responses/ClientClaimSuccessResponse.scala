@@ -16,14 +16,11 @@
 
 package models.responses
 
+import models.ClaimId
 import play.api.libs.json.{Json, OFormat}
 
 final case class ClientClaimSuccessResponse(
-                                             status: String,
-                                             caseID: String,
-                                             processingDate: String,
-                                             statusText: Option[String],
-                                             pxObjClass: Option[String]
+                                             claimID: ClaimId
                                            )
 
 

@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package models
+package forms
 
-import play.api.libs.json.Format
+import scala.util.matching.Regex
 
-case class AccountName(value: String)
+object Validation {
 
-object AccountName {
-  implicit val format: Format[AccountName] =
-    JsonFormatUtils.stringFormat(AccountName.apply)(_.value)
+  val accountNumberPattern: Regex   = "^[ -]*(?:\\d[ -]*){6,8}$".r.anchored
+  val sortCodePattern: Regex        = "^[ -]*(?:\\d[ -]*){6,6}$".r.anchored
+  val safeInputPattern              = """^[A-Za-z0-9À-ÿ \!\)\(.,_/’'"&-]+$"""
+  val postcodeRegex                 = """^[ ]*[A-Za-z][ ]*[A-Za-z]{0,1}[ ]*[0-9][ ]*[0-9A-Za-z]{0,1}[ ]*[0-9][ ]*[A-Za-z][ ]*[A-Za-z][ ]*$"""
+
 }

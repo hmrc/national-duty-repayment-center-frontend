@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package models
+package queries
 
-import play.api.libs.json.Format
+import java.time.LocalDate
 
-case class AccountNumber(value: String)
+import play.api.libs.json.JsPath
 
-object AccountNumber {
-  implicit val format: Format[AccountNumber] =
-    JsonFormatUtils.stringFormat(AccountNumber.apply)(_.value)
+object ClaimDateQuery extends Gettable[LocalDate] with Settable[LocalDate] {
+  def path: JsPath = JsPath \ "claimDate"
 }

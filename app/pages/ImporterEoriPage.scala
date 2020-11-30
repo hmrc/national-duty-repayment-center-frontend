@@ -16,9 +16,10 @@
 
 package pages
 
+import models.EORI
 import play.api.libs.json.JsPath
 
-case object ImporterEoriPage extends QuestionPage[String] {
+case object ImporterEoriPage extends QuestionPage[EORI] {
 
   override def path: JsPath = JsPath \ toString
 

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ImporterNameFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers, UserName}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -65,7 +65,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterNamePage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ImporterNamePage, UserName("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(UserName("answer")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

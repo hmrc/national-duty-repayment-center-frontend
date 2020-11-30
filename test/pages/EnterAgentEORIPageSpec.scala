@@ -16,6 +16,7 @@
 
 package pages
 
+import models.EORI
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class EnterAgentEORIPageSpec extends PageBehaviours {
 
   "EnterAgentEORIPage" must {
 
-    beRetrievable[String](EnterAgentEORIPage)
+    beRetrievable[EORI](EnterAgentEORIPage)
 
-    beSettable[String](EnterAgentEORIPage)
+    beSettable[EORI](EnterAgentEORIPage)
 
-    beRemovable[String](EnterAgentEORIPage)
+    beRemovable[EORI](EnterAgentEORIPage)
   }
 }

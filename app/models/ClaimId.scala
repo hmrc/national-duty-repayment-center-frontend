@@ -16,19 +16,10 @@
 
 package models
 
-sealed trait PaymentMethod
+import play.api.libs.json.Format
 
-object PaymentMethod extends Enumerable.Implicits {
-  case object CurrentMonthAmendment extends WithName("01") with PaymentMethod
-  case object BACS extends WithName("02") with PaymentMethod
-  case object PayableOrder extends WithName("03") with PaymentMethod
+final case class ClaimId(value: String)
 
-  val values: Seq[PaymentMethod] = Seq(
-    CurrentMonthAmendment,
-    BACS,
-    PayableOrder
-  )
-
-  implicit val enumerable: Enumerable[PaymentMethod] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+object ClaimId {
+  implicit val format: Format[ClaimId] = JsonFormatUtils.stringFormat(ClaimId.apply)(_.value)
 }
