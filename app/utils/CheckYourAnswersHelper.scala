@@ -192,14 +192,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
 
-  def agentNameImporter: Option[AnswerRow] = userAnswers.get(AgentNameImporterPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.value),
-        Some(routes.AgentNameImporterController.onPageLoad(CheckMode).url)
-      )
-  }
+//  def agentNameImporter: Option[AnswerRow] = userAnswers.get(AgentNameImporterPage) map {
+//    x =>
+//      AnswerRow(
+//        HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
+//        HtmlFormat.escape(x.value),
+//        Some(routes.AgentNameImporterController.onPageLoad(CheckMode).url)
+//      )
+//  }
 
   def phoneNumber: Option[AnswerRow] = userAnswers.get(PhoneNumberPage) map {
     x =>
@@ -228,11 +228,20 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def importerName: Option[AnswerRow] = userAnswers.get(ImporterNamePage) map {
+  def importerFirstName: Option[AnswerRow] = userAnswers.get(ImporterNamePage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.value),
+        HtmlFormat.escape(x.firstName),
+        Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def importerLastName: Option[AnswerRow] = userAnswers.get(ImporterNamePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.firstName),
         Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
       )
   }
