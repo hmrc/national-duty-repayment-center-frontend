@@ -29,11 +29,11 @@ final case class Address(
                         ){
   val inlineText: String = List(
     AddressLine1,
-    Some(AddressLine2),
+    AddressLine2,
     City,
     Region,
     CountryCode,
-    Some(PostalCode)
+    PostalCode
   ).collect { case Some(x) => x }.mkString(", ")
 }
 
@@ -44,9 +44,9 @@ object Address {
   def fromLookupResponse(candidate: LookedUpAddressWrapper): Address = Address(
     candidate.address.lines.headOption.getOrElse(""),
     candidate.address.lines.lift(1),
-    candidate.address.city,
-    candidate.address.region,
-    candidate.address.countryCode,
-    candidate.address.postalCode
+    candidate.address.town,
+    if (candidate.address.county == None) "" else candidate.address.county.get,
+    "GB",
+    Some(candidate.address.postcode)
   )
 }

@@ -37,6 +37,7 @@ object AddressLookupHttpParser {
             case JsSuccess(model, _) =>
               Right(model)
             case JsError(errors) =>
+              println("Test............"+response.body)
               logger.warn("Failed trying to parse JSON", errors)
               Left(InvalidJson)
           }

@@ -29,7 +29,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.Aliases.{RadioItem, Text}
+import uk.gov.hmrc.govukfrontend.views.Aliases.{SelectItem, Text}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddressSorter
@@ -72,8 +72,8 @@ class ImporterAddressController @Inject()(
   }
 
   def postcodeSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+
     implicit request =>
-      println("hey 4")
       postcodeForm.bindFromRequest.fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode))),
@@ -88,23 +88,25 @@ class ImporterAddressController @Inject()(
   }
 
   private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject])(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
-    println("hey 3")
+
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
         BadRequest(view(buildLookupFailureError(lookup), mode))
 
       case Right(candidates) if candidates.noOfHits == 0 =>
-        println("hey 1")
         BadRequest(view(buildLookupFailureError(lookup), mode))
 
       case Right(candidates) =>
-        println("hey 2")
         val selectionItems = sorter.sort(candidates.candidateAddresses)
           .map(Address.fromLookupResponse)
-          .map(a => RadioItem(
-            content = Text(a.inlineText),
+          .map(a => SelectItem(
+            text = a.AddressLine1+" "+
+              (if (a.AddressLine2 == None) "" else a.AddressLine2.get)+" "+
+              (if (a.City == None) "" else a.City)+" "+
+              (if (a.Region == None) "" else a.Region),
             value = Some(Json.toJson(a).toString())))
+
         if (form.hasErrors) {
           BadRequest(addressConfirmationView(lookup, selectionItems))
         } else {

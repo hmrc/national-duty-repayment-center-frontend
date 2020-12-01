@@ -42,8 +42,6 @@ class AddressLookupConnector @Inject()(httpClient: HttpClient)
       Some("postcode" -> query.postCodeTrimmed)
     ).collect { case Some(x) => x }
 
-    println("bey "+url+":"+urlParams)
-
     httpClient.GET(
       url = url,
       queryParams = urlParams,
