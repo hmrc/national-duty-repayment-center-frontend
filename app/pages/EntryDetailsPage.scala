@@ -16,18 +16,12 @@
 
 package pages
 
-import models.EntryNumber
-import pages.behaviours.PageBehaviours
+import models.EntryDetails
+import play.api.libs.json.JsPath
 
+case object EntryDetailsPage extends QuestionPage[EntryDetails] {
 
-class ClaimEntryNumberPageSpec extends PageBehaviours {
+  override def path: JsPath = JsPath \ toString
 
-  "ClaimEntryNumberPage" must {
-
-    beRetrievable[EntryNumber](ClaimEntryNumberPage)
-
-    beSettable[EntryNumber](ClaimEntryNumberPage)
-
-    beRemovable[EntryNumber](ClaimEntryNumberPage)
-  }
+  override def toString: String = "entryDetails"
 }

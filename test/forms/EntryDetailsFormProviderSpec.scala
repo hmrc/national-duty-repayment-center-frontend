@@ -19,13 +19,13 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class ClaimEntryNumberFormProviderSpec extends StringFieldBehaviours {
+class EntryDetailsFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "claimEntryNumber.error.required"
-  val lengthKey = "claimEntryNumber.error.length"
-  val maxLength = 7
+  val requiredKey = "claimEpu.error.required"
+  val lengthKey = "claimEpu.error.length"
+  val maxLength = 3
 
-  val form = new ClaimEntryNumberFormProvider()()
+  val form = new EntryDetailsFormProvider()()
 
   ".value" must {
 

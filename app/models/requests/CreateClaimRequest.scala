@@ -41,7 +41,7 @@ object CreateClaimRequest {
       claimant <- userAnswers.get(ClaimantTypePage)
       claimType <- userAnswers.get(NumberOfEntriesTypePage)
       noOfEntries <- Some(userAnswers.get(HowManyEntriesPage))
-      epu <- userAnswers.get(ClaimEpuPage)
+      entryDetails <- userAnswers.get(EntryDetailsPage)
       entryNumber <- userAnswers.get(ClaimEntryNumberPage)
       entryDate <- userAnswers.get(ClaimEntryDatePage)
       claimReason <- userAnswers.get(ClaimReasonTypePage)
@@ -54,9 +54,7 @@ object CreateClaimRequest {
       claimant,
       claimType,
       noOfEntries,
-      epu,
-      entryNumber,
-      entryDate,
+      entryDetails,
       claimReason,
       claimDescription,
       LocalDate.now(),

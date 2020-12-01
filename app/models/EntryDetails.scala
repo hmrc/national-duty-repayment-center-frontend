@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.EPU
-import pages.behaviours.PageBehaviours
+import java.time.LocalDate
 
+import play.api.libs.json.{Json, OFormat}
 
-class ClaimEpuPageSpec extends PageBehaviours {
-
-  "ClaimEpuPage" must {
-
-    beRetrievable[EPU](ClaimEpuPage)
-
-    beSettable[EPU](ClaimEpuPage)
-
-    beRemovable[EPU](ClaimEpuPage)
-  }
+final case class EntryDetails(
+                              EPU: String,
+                              EntryNumber: String,
+                              EntryDate: LocalDate) {
 }
+
+object EntryDetails {
+  implicit val format: OFormat[EntryDetails] = Json.format[EntryDetails]
+}
+

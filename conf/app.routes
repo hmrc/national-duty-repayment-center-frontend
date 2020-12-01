@@ -58,20 +58,10 @@ POST       /howManyEntries                        controllers.HowManyEntriesCont
 GET        /changeHowManyEntries                  controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeHowManyEntries                  controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)
 
-GET        /claimEpu                        controllers.ClaimEpuController.onPageLoad(mode: Mode = NormalMode)
-POST       /claimEpu                        controllers.ClaimEpuController.onSubmit(mode: Mode = NormalMode)
-GET        /changeClaimEpu                  controllers.ClaimEpuController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeClaimEpu                  controllers.ClaimEpuController.onSubmit(mode: Mode = CheckMode)
-
-GET        /claimEntryNumber                        controllers.ClaimEntryNumberController.onPageLoad(mode: Mode = NormalMode)
-POST       /claimEntryNumber                        controllers.ClaimEntryNumberController.onSubmit(mode: Mode = NormalMode)
-GET        /changeClaimEntryNumber                  controllers.ClaimEntryNumberController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeClaimEntryNumber                  controllers.ClaimEntryNumberController.onSubmit(mode: Mode = CheckMode)
-
-GET        /claimEntryDate                  controllers.ClaimEntryDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /claimEntryDate                  controllers.ClaimEntryDateController.onSubmit(mode: Mode = NormalMode)
-GET        /changeClaimEntryDate                        controllers.ClaimEntryDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeClaimEntryDate                        controllers.ClaimEntryDateController.onSubmit(mode: Mode = CheckMode)
+GET        /entryDetails                        controllers.EntryDetailsController.onPageLoad(mode: Mode = NormalMode)
+POST       /entryDetails                        controllers.EntryDetailsController.onSubmit(mode: Mode = NormalMode)
+GET        /changeEntryDetails                  controllers.EntryDetailsController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeEntryDetails                  controllers.EntryDetailsController.onSubmit(mode: Mode = CheckMode)
 
 GET        /claimReasonType                        controllers.ClaimReasonTypeController.onPageLoad(mode: Mode = NormalMode)
 POST       /claimReasonType                        controllers.ClaimReasonTypeController.onSubmit(mode: Mode = NormalMode)

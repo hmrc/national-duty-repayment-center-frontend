@@ -280,10 +280,10 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryClaimEpuUserAnswersEntry: Arbitrary[(ClaimEpuPage.type, JsValue)] =
+  implicit lazy val arbitraryClaimEpuUserAnswersEntry: Arbitrary[(EntryDetailsPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[ClaimEpuPage.type]
+        page  <- arbitrary[EntryDetailsPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }

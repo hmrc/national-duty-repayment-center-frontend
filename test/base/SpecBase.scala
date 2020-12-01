@@ -63,9 +63,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     Claimant = ClaimantType.Representative,
     ClaimType = NumberOfEntriesType.Multiple,
     NoOfEntries = Some(NoOfEntries("10")),
-    EPU = EPU("777"),
-    EntryNumber = EntryNumber("123456A"),
-    EntryDate = LocalDate.of(2020,1,1),
+    EntryDetails = entryDetails,
     ClaimReason = ClaimReasonType.Preference,
     ClaimDescription = ClaimDescription("this is a claim description"),
     DateReceived = LocalDate.of(2020,8,5),
@@ -93,6 +91,12 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   val bankDetails = AllBankDetails(
     AgentBankDetails = Some(BankDetails("account name", "123456", "12345678")),
     ImporterBankDetails = Some(BankDetails("account name", "123456", "12345678"))
+  )
+
+  val entryDetails = EntryDetails(
+    EPU = "123",
+    EntryNumber = "123456Q",
+    EntryDate = LocalDate.of(2020,8,5)
   )
 
 

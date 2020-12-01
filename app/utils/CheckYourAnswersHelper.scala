@@ -291,30 +291,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def claimEntryDate: Option[AnswerRow] = userAnswers.get(ClaimEntryDatePage) map {
+  def entryDetails: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("claimEntryDate.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.format(dateFormatter)),
-        Some(routes.ClaimEntryDateController.onPageLoad(CheckMode).url)
-      )
-  }
-
-  def claimEntryNumber: Option[AnswerRow] = userAnswers.get(ClaimEntryNumberPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("claimEntryNumber.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.value),
-        Some(routes.ClaimEntryNumberController.onPageLoad(CheckMode).url)
-      )
-  }
-
-  def claimEpu: Option[AnswerRow] = userAnswers.get(ClaimEpuPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("claimEpu.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.value),
-        Some(routes.ClaimEpuController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(messages("entryDetails.claimEpu.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.EPU),
+        Some(routes.EntryDetailsController.onPageLoad(CheckMode).url)
       )
   }
 

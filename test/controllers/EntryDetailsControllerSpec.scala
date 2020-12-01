@@ -16,44 +16,59 @@
 
 package controllers
 
+import java.time.{LocalDate, ZoneOffset}
+
 import base.SpecBase
-import forms.ClaimEpuFormProvider
-import models.{EPU, NormalMode, UserAnswers}
+import forms.EntryDetailsFormProvider
+import models.{EPU, EntryDetails, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ClaimEpuPage
+import pages.EntryDetailsPage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ClaimEpuView
+import views.html.EntryDetailsView
 
 import scala.concurrent.Future
 
-class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
+class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ClaimEpuFormProvider()
+  val formProvider = new EntryDetailsFormProvider()
   val form = formProvider()
 
-  lazy val claimEpuRoute = routes.ClaimEpuController.onPageLoad(NormalMode).url
+  val validDateAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  "ClaimEpu Controller" must {
+  lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad(NormalMode).url
+
+  private val userAnswers = UserAnswers(
+    userAnswersId,
+    Json.obj(
+      EntryDetailsPage.toString -> Json.obj(
+        "EPU"   -> "123",
+        "EntryNumber"      -> "123456Q",
+        "EntryDate" -> validDateAnswer
+      )
+    )
+  )
+
+  "EntryDetails Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, claimEpuRoute)
+      val request = FakeRequest(GET, entryDetailsRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ClaimEpuView]
+      val view = application.injector.instanceOf[EntryDetailsView]
 
       status(result) mustEqual OK
 
@@ -65,20 +80,18 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimEpuPage, EPU("123")).success.value
-
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, claimEpuRoute)
+      val request = FakeRequest(GET, entryDetailsRoute)
 
-      val view = application.injector.instanceOf[ClaimEpuView]
+      val view = application.injector.instanceOf[EntryDetailsView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(EPU("123")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -98,8 +111,8 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, claimEpuRoute)
-          .withFormUrlEncodedBody(("value", "789"))
+        FakeRequest(POST, entryDetailsRoute)
+          .withFormUrlEncodedBody(("EPU", "123"), ("EntryNumber", "123456Q"), ("EntryDate", validDateAnswer.toString))
 
       val result = route(application, request).value
 
@@ -114,12 +127,12 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, claimEpuRoute)
+        FakeRequest(POST, entryDetailsRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[ClaimEpuView]
+      val view = application.injector.instanceOf[EntryDetailsView]
 
       val result = route(application, request).value
 
@@ -135,7 +148,7 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, claimEpuRoute)
+      val request = FakeRequest(GET, entryDetailsRoute)
 
       val result = route(application, request).value
 
@@ -151,7 +164,7 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, claimEpuRoute)
+        FakeRequest(POST, entryDetailsRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
