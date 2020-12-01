@@ -17,22 +17,22 @@
 package views
 
 import controllers.routes
-import forms.HowManyEntriesFormProvider
+import forms.IndirectRepresentativeFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.{StringViewBehaviours, ViewBehaviours}
-import views.html.HowManyEntriesView
+import views.behaviours.YesNoViewBehaviours
+import views.html.IndirectRepresentativeView
 
-class HowManyEntriesViewSpec extends ViewBehaviours {
+class IndirectRepresentativeViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "howManyEntries"
+  val messageKeyPrefix = "indirectRepresentative"
 
-  val form = new HowManyEntriesFormProvider()()
+  val form = new IndirectRepresentativeFormProvider()()
 
-  "HowManyEntriesView view" must {
+  "IndirectRepresentative view" must {
 
-    val view = viewFor[HowManyEntriesView](Some(emptyUserAnswers))
+    val view = viewFor[IndirectRepresentativeView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -41,5 +41,6 @@ class HowManyEntriesViewSpec extends ViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndirectRepresentativeController.onSubmit(NormalMode).url)
   }
 }

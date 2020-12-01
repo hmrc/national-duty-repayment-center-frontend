@@ -18,15 +18,15 @@
 @import models.Mode
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+        main_template: MainTemplate,
+        formHelper: FormWithCSRF
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("customsDutyPaid.title")}"
-    ) {
+) {
 
     @formHelper(action = CustomsDutyPaidController.onSubmit(mode), 'autoComplete -> "off") {
 
@@ -35,9 +35,10 @@
         @components.error_summary(form.errors)
 
         @components.input_text(
-          field = form("value"),
-          label = messages("customsDutyPaid.heading"),
-          headingIsLabel = true
+            field = form("value"),
+            label = messages("customsDutyPaid.heading"),
+            hint = Some(messages("customsDutyPaid.checkYourAnswersLabel.hint")),
+            headingIsLabel = true
         )
 
         @components.submit_button()

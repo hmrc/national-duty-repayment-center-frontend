@@ -230,3 +230,8 @@ GET        /changeContactByEmail                  controllers.ContactByEmailCont
 POST       /changeContactByEmail                  controllers.ContactByEmailController.onSubmit(mode: Mode = CheckMode)
 
 GET         /proofOfAuthority                       controllers.ProofOfAuthorityController.onPageLoad()
+
+GET        /indirectRepresentative                        controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = NormalMode)
+POST       /indirectRepresentative                        controllers.IndirectRepresentativeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIndirectRepresentative                  controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIndirectRepresentative                  controllers.IndirectRepresentativeController.onSubmit(mode: Mode = CheckMode)

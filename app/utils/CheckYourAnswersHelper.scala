@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def indirectRepresentative: Option[AnswerRow] = userAnswers.get(IndirectRepresentativePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("indirectRepresentative.checkYourAnswersLabel")),
+        yesOrNo(x),
+        Some(routes.IndirectRepresentativeController.onPageLoad(CheckMode).url)
+      )
+  }
+
   def contactByEmail: Option[AnswerRow] = userAnswers.get(ContactByEmailPage) map {
     x =>
       AnswerRow(

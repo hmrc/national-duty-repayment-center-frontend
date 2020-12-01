@@ -1,43 +1,59 @@
+/*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package controllers
 
 import base.SpecBase
-import forms.HowManyEntriesFormProvider
+import forms.IndirectRepresentativeFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.HowManyEntriesPage
+import pages.IndirectRepresentativePage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.HowManyEntriesView
+import views.html.IndirectRepresentativeView
 
 import scala.concurrent.Future
 
-class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
+class IndirectRepresentativeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new HowManyEntriesFormProvider()
+  val formProvider = new IndirectRepresentativeFormProvider()
   val form = formProvider()
 
-  lazy val howManyEntriesRoute = routes.HowManyEntriesController.onPageLoad(NormalMode).url
+  lazy val indirectRepresentativeRoute = routes.IndirectRepresentativeController.onPageLoad(NormalMode).url
 
-  "HowManyEntries Controller" must {
+  "IndirectRepresentative Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, howManyEntriesRoute)
+      val request = FakeRequest(GET, indirectRepresentativeRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[HowManyEntriesView]
+      val view = application.injector.instanceOf[IndirectRepresentativeView]
 
       status(result) mustEqual OK
 
@@ -49,20 +65,20 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(HowManyEntriesPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IndirectRepresentativePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, howManyEntriesRoute)
+      val request = FakeRequest(GET, indirectRepresentativeRoute)
 
-      val view = application.injector.instanceOf[HowManyEntriesView]
+      val view = application.injector.instanceOf[IndirectRepresentativeView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -82,12 +98,13 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, howManyEntriesRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, indirectRepresentativeRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -98,12 +115,12 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, howManyEntriesRoute)
+        FakeRequest(POST, indirectRepresentativeRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[HowManyEntriesView]
+      val view = application.injector.instanceOf[IndirectRepresentativeView]
 
       val result = route(application, request).value
 
@@ -119,7 +136,7 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, howManyEntriesRoute)
+      val request = FakeRequest(GET, indirectRepresentativeRoute)
 
       val result = route(application, request).value
 
@@ -135,8 +152,8 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, howManyEntriesRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, indirectRepresentativeRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

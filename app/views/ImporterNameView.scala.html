@@ -18,15 +18,15 @@
 @import models.Mode
 
 @this(
-        main_template: MainTemplate,
-        formHelper: FormWithCSRF
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("importerName.title")}"
-) {
+    ) {
 
     @formHelper(action = ImporterNameController.onSubmit(mode), 'autoComplete -> "off") {
 
@@ -34,15 +34,8 @@
 
         @components.error_summary(form.errors)
 
-        <fieldset class="govuk-fieldset">
-
-            <legend>
-                <h1 class="heading-large mt-0 mb-3">
-                @messages("importerName.heading")
-                </h1>
-            </legend>
-
         @components.input_text(
+
             field = form("value"),
             label = messages("importerName.firstName.label"),
             headingIsLabel = false
@@ -53,6 +46,12 @@
             label = messages("importerName.lastName.label"),
             headingIsLabel = false
         )
+
+          field = form("value"),
+          label = messages("importerName.heading"),
+          headingIsLabel = true
+        )
+
         @components.submit_button()
     }
 }

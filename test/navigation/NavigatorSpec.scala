@@ -34,6 +34,36 @@ class NavigatorSpec extends SpecBase {
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad()
       }
+
+      "go to IndirectRepresentative after WhomToPay page when the claimant is representative and has selected representative to be paid" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(WhomToPayPage, WhomToPay.Representative).success.value
+
+        navigator.nextPage(WhomToPayPage, NormalMode, answers)
+          .mustBe(routes.IndirectRepresentativeController.onPageLoad(NormalMode))
+      }
+
+      "go to BankDetails page after WhomToPay page when the claimant is representative and has selected importer to be paid" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(WhomToPayPage, WhomToPay.Importer).success.value
+
+        navigator.nextPage(WhomToPayPage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+      }
+
+      "go to BankDetails page after IndirectRepresentative page when the claimant is representative and has selected yes" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(IndirectRepresentativePage, true).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+      }
     }
 
     "in Check mode" must {

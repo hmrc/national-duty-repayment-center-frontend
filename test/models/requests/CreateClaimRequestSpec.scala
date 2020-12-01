@@ -110,7 +110,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "EPU" -> "777",
             "EntryNumber" -> "123456A",
             "EntryDate" -> "20200101",
-            "ClaimReason" -> "06",
+            "ClaimReason" -> "05",
             "ClaimDescription" -> "this is a claim description",
             "DateReceived" -> "20200805",
             "ClaimDate" -> "20200805",
