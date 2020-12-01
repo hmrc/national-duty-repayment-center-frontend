@@ -125,9 +125,11 @@ class ImporterAddressController @Inject()(
 
   private def extractSearchTerms(formData: Option[Map[String, Seq[String]]]): Option[PostcodeLookup] = for {
     form           <- formData
-    postcode       <- form.get("address-postcode").flatMap(_.headOption)
-    propertyNumber = form.get("address-propertyNumber").flatMap(_.headOption)
-  } yield PostcodeLookup(postcode, propertyNumber)
+    postcode       <- {
+      println("XXXX extractSearchTerms XXX" + form)
+      form.get("PostalCode").flatMap(_.headOption)
+    }
+  } yield PostcodeLookup(postcode)
 
   def addressSelectOnLoad(mode: Mode): Action[AnyContent] = (identify  andThen getData andThen requireData) { _ =>
     Redirect(routes.ImporterAddressController.onPageLoad(mode))
@@ -135,7 +137,9 @@ class ImporterAddressController @Inject()(
 
   def addressSelectSubmit(mode: Mode): Action[AnyContent] = (identify  andThen getData andThen requireData).async {
     implicit request =>
+      println("XXXXX REQUEST BODY 1 XXXXXX" + request.body)
       extractSearchTerms(request.body.asFormUrlEncoded).map { searchTerms =>
+        println("XXXXX REQUEST BODY 2 XXXXXX" + request.body)
         selectionForm.bindFromRequest().fold(
           formWithErrors =>
             doPostcodeLookup(searchTerms, mode, formWithErrors),

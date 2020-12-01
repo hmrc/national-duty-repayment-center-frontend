@@ -18,6 +18,8 @@
 @import controllers.routes._
 @import models.Mode
 
+@import play.api.libs.json.JsObject
+
 @this(
         main_template: MainTemplate,
         formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
@@ -25,12 +27,12 @@
         link: components.link
 )
 
-@(form: Form[_], search: PostcodeLookup, addresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("importerAddressConfirmation.title")
 ) {
-@formHelper(action = routes.ImporterAddressController.enteredAddressSubmit()) {
+@formHelper(action = routes.ImporterAddressController.addressSelectSubmit()) {
     @components.back_link()
 <div class="form-group">
     <h1 class="form-label">
@@ -52,7 +54,7 @@
         @govukSelect(Select(
             id = "field-id",
             name = "field-name",
-            items = addresses
+            items = candidateAddresses
         ))
     </div>
 
