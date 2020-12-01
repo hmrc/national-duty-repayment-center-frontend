@@ -404,3 +404,8 @@ contactByEmail.01 = Yes
 contactByEmail.02 = No
 contactByEmail.checkYourAnswersLabel = ContactByEmail
 contactByEmail.error.required = Select contactByEmail
+
+proofOfAuthority.title = Upload your proof of authority
+proofOfAuthority.heading = Upload your proof of authority
+proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
+proofOfAuthority.paragraph2 = Upload a file

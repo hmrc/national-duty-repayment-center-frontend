@@ -228,3 +228,5 @@ GET        /contactByEmail                        controllers.ContactByEmailCont
 POST       /contactByEmail                        controllers.ContactByEmailController.onSubmit(mode: Mode = NormalMode)
 GET        /changeContactByEmail                  controllers.ContactByEmailController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeContactByEmail                  controllers.ContactByEmailController.onSubmit(mode: Mode = CheckMode)
+
+GET         /proofOfAuthority                       controllers.ProofOfAuthorityController.onPageLoad()
