@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 
-class DateBehaviours extends FieldBehaviours {
+trait DateBehaviours extends FieldBehaviours {
 
   def dateField(form: Form[_], key: String, validData: Gen[LocalDate]): Unit = {
 

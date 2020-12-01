@@ -38,7 +38,7 @@
             @components.heading(messages("entryDetails.heading"))
         </div>
 
-        <div id="entry-details-hint" class="govuk-hint" style="margin-top:-1em; margin-bottom:2em;">
+        <div id="entry-details-hint" class="form-hint" style="margin-top:-1em; margin-bottom:2em;">
             @messages("entryDetails.hint")
         </div>
 
@@ -55,18 +55,19 @@
 
         @components.input_text(
             field = form("value"),
-            label = messages("entryDetails.entryNo.heading"),
+            label = messages("entryDetails.entryNumber.heading"),
             labelClass = Some("heading-large extra-heading-margin"),
             inputClass = Some("govuk-input--width-10"),
-            hint = Some(messages("entryDetails.entryNo.hint")),
+            hint = Some(messages("entryDetails.entryNumber.hint")),
             headingIsLabel = false
         )
 
         @components.input_date(
             field = form("value"),
             legend = messages("entryDetails.entryDate.heading"),
+            legendClass = Some("form-label bold heading-large extra-heading-margin"),
             hint = Some(messages("entryDetails.entryDate.hint")),
-            headingIsLegend = true
+            headingIsLegend = false
         )
 
         @components.submit_button()

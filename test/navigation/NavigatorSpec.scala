@@ -23,7 +23,6 @@ import models._
 
 class NavigatorSpec extends SpecBase {
 
-  private val emptyUserAnswers = UserAnswers("id")
   val navigator = new Navigator
 
   "Navigator" when {

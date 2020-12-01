@@ -28,7 +28,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.EntryDetailsPage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
@@ -43,7 +43,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new EntryDetailsFormProvider()
   val form = formProvider()
 
-  val validDateAnswer = LocalDate.now(ZoneOffset.UTC)
+  val validDateAnswer = LocalDate.parse("0900-01-01")
 
   lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad(NormalMode).url
 
@@ -112,7 +112,13 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, entryDetailsRoute)
-          .withFormUrlEncodedBody(("EPU", "123"), ("EntryNumber", "123456Q"), ("EntryDate", validDateAnswer.toString))
+          .withFormUrlEncodedBody(
+            ("EPU", "123"),
+            ("EntryNumber", "123456Q"),
+            ("value.day", validDateAnswer.getDayOfMonth.toString),
+            ("value.month", validDateAnswer.getMonthValue.toString),
+            ("value.year", validDateAnswer.getYear.toString)
+          )
 
       val result = route(application, request).value
 

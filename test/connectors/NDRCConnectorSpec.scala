@@ -33,7 +33,7 @@ import base.SpecBase
 import models.ClaimId
 import models.responses.ClientClaimSuccessResponse
 
-class RepaymentConnectorSpec extends SpecBase
+class NDRCConnectorSpec extends SpecBase
 
   with WireMockHelper
   with MustMatchers {
@@ -65,7 +65,9 @@ class RepaymentConnectorSpec extends SpecBase
           post(urlEqualTo(url))
             .willReturn(ok(responseBody))
         )
+
         val result = connector.submitClaim(createClaimRequest).futureValue
+
         result mustEqual ClientClaimSuccessResponse(ClaimId("1"))
       }
     }

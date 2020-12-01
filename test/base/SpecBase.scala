@@ -63,7 +63,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     Claimant = ClaimantType.Representative,
     ClaimType = NumberOfEntriesType.Multiple,
     NoOfEntries = Some(NoOfEntries("10")),
-    EntryDetails = entryDetails,
+    EntryDetails = EntryDetails(EPU = "123", EntryNumber = "123456Q", EntryDate = LocalDate.now()),
     ClaimReason = ClaimReasonType.Preference,
     ClaimDescription = ClaimDescription("this is a claim description"),
     DateReceived = LocalDate.of(2020,8,5),
@@ -92,13 +92,6 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     AgentBankDetails = Some(BankDetails("account name", "123456", "12345678")),
     ImporterBankDetails = Some(BankDetails("account name", "123456", "12345678"))
   )
-
-  val entryDetails = EntryDetails(
-    EPU = "123",
-    EntryNumber = "123456Q",
-    EntryDate = LocalDate.of(2020,8,5)
-  )
-
 
   val dutyTypeTaxList = Seq(
     DutyTypeTaxList(ClaimRepaymentType.Customs, Some("100.00"), Some("50.00"), Some("50.00")),
@@ -138,7 +131,11 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
         "Claimant" -> "02",
         "ClaimType" -> "02",
         "NoOfEntries" -> "10",
-        "EPU" -> "777",
+        "EntryDetails" -> Json.obj(
+          "EPU" -> "account name",
+          "EntryNumber" -> "123456",
+          "EntryDate" -> "2020-08-05"
+        ),
         "EntryNumber" -> "123456A",
         "EntryDate" -> "20200101",
         "ClaimReason" -> "06",

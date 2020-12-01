@@ -34,7 +34,7 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
           .verifying(firstError(
             maxLength(7, "entryDetails.entryNumber.error.length")
           )),
-        "EntryDate" -> localDate(
+        "value" -> localDate(
           invalidKey     = "entryDetails.claimEntryDate.error.invalid",
           allRequiredKey = "entryDetails.claimEntryDate.error.required.all",
           twoRequiredKey = "entryDetails.claimEntryDate.error.required.two",
