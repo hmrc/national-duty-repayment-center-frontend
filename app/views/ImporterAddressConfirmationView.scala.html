@@ -25,12 +25,12 @@
         link: components.link
 )
 
-@(search: PostcodeLookup, addresses: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], search: PostcodeLookup, addresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("importerAddressConfirmation.title")
 ) {
-
+@formHelper(action = routes.ImporterAddressController.enteredAddressSubmit()) {
     @components.back_link()
 <div class="form-group">
     <h1 class="form-label">
@@ -67,4 +67,5 @@
     </div>
 
     @components.submit_button()
+}
 }

@@ -229,3 +229,4 @@ GET        /changeContactByEmail                  controllers.ContactByEmailCont
 POST       /changeContactByEmail                  controllers.ContactByEmailController.onSubmit(mode: Mode = CheckMode)
 
 GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
+GET        /importerAddressConfirmation               controllers.ImporterAddressController.enteredAddressSubmit(mode: Mode = NormalMode)

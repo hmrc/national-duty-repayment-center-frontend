@@ -18,11 +18,12 @@ package controllers
 
 import connectors.AddressLookupConnector
 import controllers.actions._
+import controllers.ImporterAddressConfirmationController
 import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
 import javax.inject.Inject
 import models.{Address, Mode, PostcodeLookup}
 import navigation.Navigator
-import pages.{ImporterAddressPage, ImporterPostcodePage}
+import pages.{ImporterAddressPage, ImporterPostcodePage, PhoneNumberPage}
 import org.slf4j.LoggerFactory
 import play.api.data.Form
 import play.api.libs.json.{JsObject, Json}
@@ -108,9 +109,9 @@ class ImporterAddressController @Inject()(
             value = Some(Json.toJson(a).toString())))
 
         if (form.hasErrors) {
-          BadRequest(addressConfirmationView(lookup, selectionItems))
+          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode))
         } else {
-          Ok(addressConfirmationView(lookup, selectionItems))
+          Ok(addressConfirmationView(form, lookup, selectionItems, mode))
         }
     }
   }
