@@ -21,6 +21,9 @@ lazy val root = (project in file("."))
     TwirlKeys.templateImports ++= Seq(
       "play.twirl.api.HtmlFormat",
       "play.twirl.api.HtmlFormat._",
+      "uk.gov.hmrc.govukfrontend.views.html.components._",
+      "uk.gov.hmrc.govukfrontend.views.html.helpers._",
+      "uk.gov.hmrc.hmrcfrontend.views.html.components._",
       "uk.gov.hmrc.play.views.html.helpers._",
       "uk.gov.hmrc.play.views.html.layouts._",
       "views.ViewUtils._",
@@ -36,6 +39,9 @@ lazy val root = (project in file("."))
     ScoverageKeys.coverageHighlighting := true,
     scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
+    libraryDependencies += "uk.gov.hmrc" %% "play-frontend-govuk" % "x.y.z-play-26",
+    libraryDependencies += "org.webjars.bower" % "bootstrap-sass" % "3.3.6",
+    libraryDependencies += "org.webjars.bower" % "compass-mixins" % "0.12.7",
     retrieveManaged := true,
     evictionWarningOptions in update :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
@@ -46,7 +52,15 @@ lazy val root = (project in file("."))
     // concatenate js
     Concat.groups := Seq(
       "javascripts/nationaldutyrepaymentcenterfrontend-app.js" ->
-        group(Seq("javascripts/show-hide-content.js", "javascripts/nationaldutyrepaymentcenterfrontend.js"))
+        group(Seq("javascripts/show-hide-content.js",
+          "javascripts/nationaldutyrepaymentcenterfrontend.js",
+          "lib/govuk-frontend/govuk/all.js",
+          "lib/hmrc-frontend/hmrc/all.js",
+          "javascripts/vendor/jquery.min.js",
+          "javascripts/app.js",
+          "javascripts/autocomplete.js",
+          "javascripts/components/file-upload.js"
+        ))
     ),
     // prevent removal of unused code which generates warning errors due to use of third-party libs
     uglifyCompressOptions := Seq("unused=false", "dead_code=false"),
