@@ -34,10 +34,13 @@
 @import models.{Mode, ClaimantType}
 @import uk.gov.hmrc.play.views.html._
 @import views.ViewUtils._
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => MyFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    formHelper: MyFormWithCSRF,
+    inputRadio: views.html.components.inputRadio
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -52,12 +55,26 @@
 
         @components.error_summary(form.errors)
 
-        @components.input_radio(
-            field = form("value"),
-            legend = messages("claimantType.heading"),
-            headingIsLegend = true,
-            inputs = ClaimantType.options.toSeq
+    @inputRadio(
+        form = form,
+        idPrefix = "value",
+        name = "value",
+        items = Seq(
+        RadioItem(
+            value = Some("Yes"),
+            content = Text(messages("claimantType.01")),
+            checked = form("value").value.contains("Yes")
+        ),
+        RadioItem(
+            value = Some("No"),
+            content = Text(messages(s"claimantType.02")),
+            checked = form("value").value.contains("No")
         )
+    ),
+    inline = false,
+    legendAsHeading = true,
+    legend = Some(messages("claimantType.heading"))
+    )
 
         @components.submit_button()
     }

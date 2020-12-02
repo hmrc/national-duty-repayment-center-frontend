@@ -16,10 +16,14 @@
 
 @import controllers.routes._
 @import models.{Mode, AdditionalFileUpload}
+@import views.ViewUtils._
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => MyFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    formHelper: MyFormWithCSRF,
+    inputRadio: views.html.components.inputRadio
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -34,12 +38,27 @@
 
         @components.error_summary(form.errors)
 
-        @components.input_radio(
-            field = form("value"),
-            legend = messages("additionalFileUpload.heading"),
-            headingIsLegend = true,
-            inputs = AdditionalFileUpload.options.toSeq
-        )
+
+    @inputRadio(
+        form = form,
+        idPrefix = "value",
+        name = "value",
+        items = Seq(
+            RadioItem(
+            value = Some("Yes"),
+            content = Text(messages("contactByEmail.01")),
+            checked = form("value").value.contains("Yes")
+        ),
+        RadioItem(
+            value = Some("No"),
+            content = Text(messages(s"contactByEmail.02")),
+            checked = form("value").value.contains("No")
+       )
+    ),
+    inline = false,
+    legendAsHeading = true,
+    legend = Some(messages("additionalFileUpload.heading"))
+    )
 
         @components.submit_button()
     }

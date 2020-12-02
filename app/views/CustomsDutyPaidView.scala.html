@@ -16,10 +16,12 @@
 
 @import controllers.routes._
 @import models.Mode
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => MyFormWithCSRF}
 
 @this(
         main_template: MainTemplate,
-        formHelper: FormWithCSRF
+        formHelper: MyFormWithCSRF
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
