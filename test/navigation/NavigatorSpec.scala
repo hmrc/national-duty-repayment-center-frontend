@@ -64,6 +64,17 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
+
+      "go to EntryDetails page after ArticleType page " in {
+        navigator.nextPage(ArticleTypePage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
+      }
+
+      "go to ClaimReasonType page after EntryDetails page " in {
+        navigator.nextPage(EntryDetailsPage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.ClaimReasonTypeController.onPageLoad(NormalMode))
+      }
+
     }
 
     "in Check mode" must {

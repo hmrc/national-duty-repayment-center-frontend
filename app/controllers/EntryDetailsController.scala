@@ -17,37 +17,37 @@
 package controllers
 
 import controllers.actions._
-import forms.ClaimEntryDateFormProvider
+import forms.EntryDetailsFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.ClaimEntryDatePage
+import pages.EntryDetailsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.ClaimEntryDateView
+import views.html.EntryDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimEntryDateController @Inject()(
+class EntryDetailsController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: ClaimEntryDateFormProvider,
+                                        formProvider: EntryDetailsFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: ClaimEntryDateView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                        view: EntryDetailsView
+                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ClaimEntryDatePage) match {
+      val preparedForm = request.userAnswers.get(EntryDetailsPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class ClaimEntryDateController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimEntryDatePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimEntryDatePage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(EntryDetailsPage, mode, updatedAnswers))
       )
   }
 }
