@@ -14,17 +14,17 @@
  * limitations under the License.
  *@
 
-@this(
-    main_template: MainTemplate
-)
+@import viewmodels.AnswerSection
+@import views.html._
 
-@()(implicit request: Request[_], messages: Messages)
+@(answerSection: AnswerSection)(implicit messages: Messages)
 
-@main_template(
-    title = messages("index.title")
-    ) {
-
-    @components.legacy.heading("index.heading")
-
-    <p>@messages("index.guidance")</p>
+@if(answerSection.headingKey.isDefined){
+    <h2 class="heading-large mt-0 mb-3">@messages(answerSection.headingKey.get)</h2>
 }
+
+<dl class="govuk-summary-list">
+    @for(row <- answerSection.rows){
+        @components.legacy.answer_row(row)
+    }
+</dl>

@@ -17,12 +17,12 @@
 @import controllers.routes._
 @import models.Mode
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => MyFormWithCSRF}
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: MyFormWithCSRF,
-    link: components.link
+    formHelper: PlayFormWithCSRF,
+    link: components.legacy.link
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -33,17 +33,17 @@
 
     @formHelper(action = AgentImporterAddressController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @components.legacy.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
         <div class="mb-30">
-            @components.heading(messages("agentImporterAddress.heading"))
+            @components.legacy.heading(messages("agentImporterAddress.heading"))
         </div>
 
         <p class="mb-05 mt-0">@messages("importerAddress.postCode")</p>
 
-        @components.input_text(
+        @components.legacy.input_text(
           field = form("value"),
           label = messages("agentImporterAddress.heading"),
           labelClass = Some("visually-hidden"),
@@ -53,6 +53,6 @@
 
         <p>@link("agentImporterManualAddress", messages("importerAddress.manual"))</p>
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }
