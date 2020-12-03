@@ -14,11 +14,11 @@
  * limitations under the License.
  *@
 
-@(
-messageKey: String = "",
-inputType: String = "button"
-)(implicit messages: Messages)
+@this(govukButton: GovukButton)
 
-<div class="section">
-    <input type="@inputType" class="button" value="@messages(messageKey)" />
-</div>
+@(msg: String)(implicit messages: Messages)
+
+@govukButton(Button(
+content = Text(messages(msg)),
+preventDoubleClick = true
+))

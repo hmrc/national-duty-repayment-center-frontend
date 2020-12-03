@@ -1,4 +1,4 @@
-@import "lib/govuk-frontend/govuk/all";
+// TODO once we finish migrating to govuk-frontend, we should be able to delete everything from partials/. We might need to check first if there's any code that we need to keep.
 
 .govuk-panel {
     -webkit-font-smoothing: antialiased;

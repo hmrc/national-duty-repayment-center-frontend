@@ -39,9 +39,6 @@ lazy val root = (project in file("."))
     ScoverageKeys.coverageHighlighting := true,
     scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
-    libraryDependencies += "uk.gov.hmrc" %% "play-frontend-govuk" % "x.y.z-play-26",
-    libraryDependencies += "org.webjars.bower" % "bootstrap-sass" % "3.3.6",
-    libraryDependencies += "org.webjars.bower" % "compass-mixins" % "0.12.7",
     retrieveManaged := true,
     evictionWarningOptions in update :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),

@@ -22,14 +22,14 @@
     main_template: MainTemplate,
     formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
     govukSelect: GovukSelect,
-    link: components.link
+    link: components.legacy.link
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
 @main_template(title = messages("agentImporterAddressConfirmation.title")) {
 
-        @components.back_link()
+        @components.legacy.back_link()
 <div class="form-group">
 
     <h1 class="form-label">
@@ -72,5 +72,5 @@
             </span>
         </div>
 
-    @components.submit_button()
+    @components.legacy.submit_button()
 }

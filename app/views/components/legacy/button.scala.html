@@ -14,17 +14,11 @@
  * limitations under the License.
  *@
 
-@this(
-    main_template: MainTemplate
-)
+@(
+messageKey: String = "",
+inputType: String = "button"
+)(implicit messages: Messages)
 
-@()(implicit request: Request[_], messages: Messages)
-
-@main_template(
-    title = messages("index.title")
-    ) {
-
-    @components.legacy.heading("index.heading")
-
-    <p>@messages("index.guidance")</p>
-}
+<div class="section">
+    <input type="@inputType" class="button" value="@messages(messageKey)" />
+</div>
