@@ -52,7 +52,7 @@ class CheckYourAnswersController @Inject()(
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
 
-      println("sey "+checkYourAnswersHelper.importerAddress)
+      println("sey "+request.userAnswers.data)
 
       val sections = Seq(AnswerSection(None, Seq()))
 

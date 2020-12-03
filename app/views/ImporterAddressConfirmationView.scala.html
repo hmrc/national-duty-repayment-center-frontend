@@ -34,16 +34,19 @@
 ) {
 @formHelper(action = routes.ImporterAddressController.addressSelectSubmit()) {
     @components.back_link()
+
+    @components.error_summary(form.errors)
 <div class="form-group">
     <h1 class="form-label">
-        <label class="heading-large mt-0 mb-3" for="field-id">
+        <label class="heading-large mt-0 mb-3" for="value">
             @messages("importerAddressConfirmation.heading")
         </label>
     </h1>
 
     <h2 class="heading-medium pr-bottom-margin">@messages("importerAddress.postCode")</h2>
 
-    <p class="mt-0">
+    <p class="mt-0 mb-1">
+        <h2 class="heading-small pr-bottom-margin">@search.postcode</h2>
         @link("importerAddress", messages("importerAddressConfirmation.link1"))
     </p>
 
@@ -59,6 +62,7 @@
     </div>
 
 </div>
+<input type="hidden" name="address-postcode" value="@search.postcode" />
     <p class="mt-0">@link("importerManualAddress", messages("importerAddressConfirmation.link2"))</p>
 
     <div>

@@ -27,7 +27,7 @@ class PostcodeFormProvider @Inject() extends Mappings {
   def apply(): Form[PostcodeLookup] =
     Form(
       mapping(
-        "value" -> text("postcode.error.required")
+        "postCode" -> text("postcode.error.required")
       )(PostcodeLookup.apply)(PostcodeLookup.unapply)
     )
 }

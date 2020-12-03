@@ -113,10 +113,10 @@ class AddressLookupConnectorSpec
             val connector = app.injector.instanceOf[AddressLookupConnector]
 
             server.stubFor(
-              get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(ok(happyJson))
+              get(urlEqualTo("/v1/uk/addresses?postcode=AA11ZZ")).willReturn(ok(happyJson))
             )
 
-            val result = connector.addressLookup(PostcodeLookup("AA11ZZ", None)).futureValue
+            val result = connector.addressLookup(PostcodeLookup("AA11ZZ")).futureValue
 
             val expectedAddress = LookedUpAddress(Seq("line 1", "line 2"), "ABC Town", Some("ABC County"), "ZZ99 1AA")
             result mustBe Right(AddressLookupResponseModel(Seq(
@@ -140,10 +140,10 @@ class AddressLookupConnectorSpec
 
             val invalidJson = """{"foo" : "bar"}"""
             server.stubFor(
-              get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(ok(invalidJson))
+              get(urlEqualTo("/v1/uk/addresses?postcode=AA11ZZ")).willReturn(ok(invalidJson))
             )
 
-            val result = connector.addressLookup(PostcodeLookup("AA11ZZ", None)).futureValue
+            val result = connector.addressLookup(PostcodeLookup("AA11ZZ")).futureValue
 
             result mustBe Left(InvalidJson)
           }
@@ -160,10 +160,10 @@ class AddressLookupConnectorSpec
             val connector = app.injector.instanceOf[AddressLookupConnector]
 
             server.stubFor(
-              get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(serverError())
+              get(urlEqualTo("/v1/uk/addresses?postcode=AA11ZZ")).willReturn(serverError())
             )
 
-            val result = connector.addressLookup(PostcodeLookup("AA11ZZ", None)).futureValue
+            val result = connector.addressLookup(PostcodeLookup("AA11ZZ")).futureValue
 
             result mustBe Left(UnexpectedResponseStatus(500, "Unexpected response, status 500 returned"))
           }

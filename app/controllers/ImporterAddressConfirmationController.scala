@@ -29,17 +29,7 @@ import scala.concurrent.ExecutionContext
 
 class ImporterAddressConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: ImporterAddressConfirmationView,
-                                       search: PostcodeLookup,
-                                       addresses: Seq[SelectItem]
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  /*def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      Ok(view(search, addresses))
-  }*/
 }

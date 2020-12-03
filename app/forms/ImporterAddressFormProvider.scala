@@ -66,6 +66,6 @@ class ImporterAddressFormProvider @Inject() extends Mappings {
           .verifying(firstError(
             regexp(Validation.postcodeRegex, "importerAddress.postalCode.error.invalid")
           )))
-    )(Address.apply)(importerAddress => Some((importerAddress.AddressLine1, importerAddress.AddressLine2, importerAddress.City, importerAddress.Region, importerAddress.CountryCode, importerAddress.PostalCode)))
+    )(Address.apply)(importerAddress => Some((importerAddress.AddressLine1, importerAddress.AddressLine2, importerAddress.City, importerAddress.Region, importerAddress.CountryCode, importerAddress.postCode)))
   )
 }
