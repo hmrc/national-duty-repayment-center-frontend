@@ -32,11 +32,8 @@
 
 package pages
 
-import play.api.libs.json.JsPath
 
 case object ProofOfAuthorityPage extends Page {
-
- // override def path: JsPath = JsPath \ toString
 
   override def toString: String = "proofOfAuthority"
 }

@@ -18,26 +18,15 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import javax.swing.text.View
 import pages._
 import models._
-import org.jsoup.nodes.{Document, Element}
 import views.behaviours.ViewBehaviours
-import views.html.ProofOfAuthorityView
 
-import scala.reflect.ClassTag
 
 class NavigatorSpec extends SpecBase with ViewBehaviours {
 
   val navigator = new Navigator
-  //  def instanceOf[T <: AnyRef](implicit classTag: ClassTag[T]): T = injector.instanceOf[T]
-  //
-  //  private val page: ProofOfAuthorityView = instanceOf[ProofOfAuthorityView]
-  //
-  //  private def createView(mode: Mode = NormalMode)(
-  //  ): ProofOfAuthorityView = page
 
-  val view = ProofOfAuthorityPage
 
   "Navigator" when {
 
@@ -69,21 +58,21 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
 
-      "go to BankDetails page after IndirectRepresentative page when the claimant is representative and has selected yes" in {
+      "go to ProofOfAuthority page after IndirectRepresentative page when the claimant is representative and has selected yes" in {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
             .set(IndirectRepresentativePage, true).success.value
 
         navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
-          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+          .mustBe(routes.ProofOfAuthorityController.onPageLoad())
       }
 
       "go to BankDetails page after proofOfAuthority page once the representative has uploaded their proof of authority" in {
 
-        print("sssss" + view)
-
-        view.getElementById("govuk-link") mustBe (routes.BankDetailsController.onPageLoad(NormalMode))
+        val answers = emptyUserAnswers
+        navigator.nextPage(ProofOfAuthorityPage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
 
       }
     }
