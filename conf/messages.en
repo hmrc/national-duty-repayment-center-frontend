@@ -104,7 +104,7 @@ howManyEntries.error.length = HowManyEntries must be 2 characters or less
 entryDetails.title = Entry Details
 entryDetails.heading = Entry Details
 entryDetails.hint = These can be found on C88 and E2 documents
-entryDetails.claimEpu.heading = Enter the entry processing unit (EPU)
+entryDetails.claimEpu.heading = Entry processing unit (EPU)
 entryDetails.claimEpu.hint = This is 3 numbers, for example ''123''
 entryDetails.claimEpu.error.required = Enter the entry processing unit (EPU)
 entryDetails.claimEpu.error.length = EPU must be 3 characters or less
@@ -120,7 +120,7 @@ entryDetails.claimEntryDate.error.required = The entry date must include {0}
 entryDetails.claimEntryDate.error.invalid = Enter a real entry date
 
 
-claimEpu.checkYourAnswersLabel = Enter the entry processing unit (EPU)
+claimEpu.checkYourAnswersLabel = Entry processing unit (EPU)
 claimEntryNumber.checkYourAnswersLabel = What is the entry number?
 claimEntryDate.checkYourAnswersLabel = What was the entry date?
 
