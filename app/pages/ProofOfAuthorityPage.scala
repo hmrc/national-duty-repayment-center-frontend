@@ -34,9 +34,9 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object ProofOfAuthorityPage extends QuestionPage[String] {
+case object ProofOfAuthorityPage extends Page {
 
-  override def path: JsPath = JsPath \ toString
+ // override def path: JsPath = JsPath \ toString
 
   override def toString: String = "proofOfAuthority"
 }

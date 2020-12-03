@@ -73,7 +73,7 @@ class Navigator @Inject()() {
   }
 
   private def indirectRepresentativeRoute(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
-    case Some(true)  => routes.BankDetailsController.onPageLoad(NormalMode)
+    case Some(true)  => routes.ProofOfAuthorityController.onPageLoad()
     case Some(false) => ???
     case None        => routes.SessionExpiredController.onPageLoad()
   }

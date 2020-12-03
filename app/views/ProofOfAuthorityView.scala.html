@@ -36,9 +36,10 @@
     <p class="mt-0">@messages("proofOfAuthority.paragraph2")</p>
 
 
-    <div>
-
+    <div class="section">
+        <a id = "govuk-link" class="button" role = "button" href="@routes.BankDetailsController.onPageLoad(NormalMode)">
+        @messages("site.continue")
+        </a>
     </div>
 
-    @components.submit_button()
 }

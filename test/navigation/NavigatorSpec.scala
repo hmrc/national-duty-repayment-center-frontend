@@ -18,12 +18,26 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
+import javax.swing.text.View
 import pages._
 import models._
+import org.jsoup.nodes.{Document, Element}
+import views.behaviours.ViewBehaviours
+import views.html.ProofOfAuthorityView
 
-class NavigatorSpec extends SpecBase {
+import scala.reflect.ClassTag
+
+class NavigatorSpec extends SpecBase with ViewBehaviours {
 
   val navigator = new Navigator
+  //  def instanceOf[T <: AnyRef](implicit classTag: ClassTag[T]): T = injector.instanceOf[T]
+  //
+  //  private val page: ProofOfAuthorityView = instanceOf[ProofOfAuthorityView]
+  //
+  //  private def createView(mode: Mode = NormalMode)(
+  //  ): ProofOfAuthorityView = page
+
+  val view = ProofOfAuthorityPage
 
   "Navigator" when {
 
@@ -64,7 +78,16 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
+
+      "go to BankDetails page after proofOfAuthority page once the representative has uploaded their proof of authority" in {
+
+        print("sssss" + view)
+
+        view.getElementById("govuk-link") mustBe (routes.BankDetailsController.onPageLoad(NormalMode))
+
+      }
     }
+
 
     "in Check mode" must {
 
