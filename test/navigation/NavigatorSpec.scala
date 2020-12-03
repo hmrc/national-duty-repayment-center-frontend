@@ -58,21 +58,33 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
 
-      "go to ProofOfAuthority page after IndirectRepresentative page when the claimant is representative and has selected yes" in {
+      "go to BankDetails page after IndirectRepresentative page when the claimant is representative and has selected yes" in {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
             .set(IndirectRepresentativePage, true).success.value
 
         navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
-          .mustBe(routes.ProofOfAuthorityController.onPageLoad())
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
 
-      "go to BankDetails page after proofOfAuthority page once the representative has uploaded their proof of authority" in {
+      "go to proofOfAuthority page after after IndirectRepresentative page when the claimant is representative and has selected no" in {
 
-        val answers = emptyUserAnswers
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(IndirectRepresentativePage, false).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
+          .mustBe(routes.ProofOfAuthorityController.onPageLoad)
+      }
+
+      "go to CheckYourAnswers page after the claimant page once the representative has uploaded their proof of authority" in {
+
+        val answers =
+          emptyUserAnswers
         navigator.nextPage(ProofOfAuthorityPage, NormalMode, answers)
-          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+          .mustBe(routes.IndexController.onPageLoad)
 
       }
     }
