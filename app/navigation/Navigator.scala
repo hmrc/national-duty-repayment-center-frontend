@@ -30,10 +30,8 @@ class Navigator @Inject()() {
     case NumberOfEntriesTypePage  => howManyEntries
     case HowManyEntriesPage  => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
     case CustomsRegulationTypePage => _ => routes.ArticleTypeController.onPageLoad(NormalMode)
-    case ArticleTypePage => _ => routes.ClaimEpuController.onPageLoad(NormalMode)
-    case ClaimEpuPage => _ => routes.ClaimEntryNumberController.onPageLoad(NormalMode)
-    case ClaimEntryNumberPage => _ => routes.ClaimEntryDateController.onPageLoad(NormalMode)
-    case ClaimEntryDatePage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
+    case ArticleTypePage => _ => routes.EntryDetailsController.onPageLoad(NormalMode)
+    case EntryDetailsPage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes. WhatAreTheGoodsController.onPageLoad(NormalMode)
     case WhatAreTheGoodsPage => _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)

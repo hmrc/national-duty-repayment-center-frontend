@@ -16,20 +16,20 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
+import java.time.LocalDate
+import forms.behaviours.{DateBehaviours, StringFieldBehaviours}
 import play.api.data.FormError
 
-class ClaimEntryNumberFormProviderSpec extends StringFieldBehaviours {
+class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehaviours {
 
-  val requiredKey = "claimEntryNumber.error.required"
-  val lengthKey = "claimEntryNumber.error.length"
-  val maxLength = 7
+  val form = new EntryDetailsFormProvider()()
 
-  val form = new ClaimEntryNumberFormProvider()()
+  ".EPU" must {
 
-  ".value" must {
-
-    val fieldName = "value"
+    val fieldName = "EPU"
+    val requiredKey = "entryDetails.claimEpu.error.required"
+    val lengthKey = "entryDetails.claimEpu.error.length"
+    val maxLength = 3
 
     behave like fieldThatBindsValidData(
       form,
@@ -50,4 +50,32 @@ class ClaimEntryNumberFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey)
     )
   }
+
+  ".EntryNumber" must {
+
+    val fieldName = "EntryNumber"
+    val requiredKey = "entryDetails.entryNumber.error.required"
+    val lengthKey = "entryDetails.entryNumber.error.length"
+    val maxLength = 7
+
+    behave like fieldThatBindsValidData(
+      form,
+      fieldName,
+      stringsWithMaxLength(maxLength)
+    )
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
+
 }

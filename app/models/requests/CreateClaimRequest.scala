@@ -41,9 +41,7 @@ object CreateClaimRequest {
       claimant <- userAnswers.get(ClaimantTypePage)
       claimType <- userAnswers.get(NumberOfEntriesTypePage)
       noOfEntries <- Some(userAnswers.get(HowManyEntriesPage))
-      epu <- userAnswers.get(ClaimEpuPage)
-      entryNumber <- userAnswers.get(ClaimEntryNumberPage)
-      entryDate <- userAnswers.get(ClaimEntryDatePage)
+      entryDetails <- userAnswers.get(EntryDetailsPage)
       claimReason <- userAnswers.get(ClaimReasonTypePage)
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage)
       payeeIndicator <- userAnswers.get(WhomToPayPage)
@@ -54,9 +52,7 @@ object CreateClaimRequest {
       claimant,
       claimType,
       noOfEntries,
-      epu,
-      entryNumber,
-      entryDate,
+      entryDetails,
       claimReason,
       claimDescription,
       LocalDate.now(),

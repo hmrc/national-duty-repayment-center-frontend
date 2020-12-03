@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import java.time.{LocalDate, ZoneOffset}
+import models.EntryDetails
+import pages.behaviours.PageBehaviours
 
-import forms.behaviours.DateBehaviours
-import play.api.data.FormError
 
-class ClaimEntryDateFormProviderSpec extends DateBehaviours {
+class EntryDetailsPageSpec extends PageBehaviours {
 
-  val form = new ClaimEntryDateFormProvider()()
+  "EntryDetailsPage" must {
 
-  ".value" should {
+    beRetrievable[EntryDetails](EntryDetailsPage)
 
-    val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
-    )
+    beSettable[EntryDetails](EntryDetailsPage)
 
-    behave like dateField(form, "value", validData)
-
-    behave like mandatoryDateField(form, "value", "claimEntryDate.error.required.all")
+    beRemovable[EntryDetails](EntryDetailsPage)
   }
 }
