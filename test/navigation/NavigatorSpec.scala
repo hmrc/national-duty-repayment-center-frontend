@@ -20,10 +20,13 @@ import base.SpecBase
 import controllers.routes
 import pages._
 import models._
+import views.behaviours.ViewBehaviours
 
-class NavigatorSpec extends SpecBase {
+
+class NavigatorSpec extends SpecBase with ViewBehaviours {
 
   val navigator = new Navigator
+
 
   "Navigator" when {
 
@@ -65,6 +68,35 @@ class NavigatorSpec extends SpecBase {
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
 
+      "go to proofOfAuthority page after after IndirectRepresentative page when the claimant is representative and has selected no" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(IndirectRepresentativePage, false).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
+          .mustBe(routes.ProofOfAuthorityController.onPageLoad)
+      }
+
+      "go to BankDetails page after the ProofOfAuthority page once the representative has uploaded their proof of authority" in {
+
+        val answers =
+          emptyUserAnswers
+        navigator.nextPage(ProofOfAuthorityPage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+
+      }
+
+      "go to CheckYourAnswers page after the bank details has been entered " in {
+
+        val answers =
+          emptyUserAnswers
+        navigator.nextPage(BankDetailsPage, NormalMode, answers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad)
+
+      }
+
       "go to EntryDetails page after ArticleType page " in {
         navigator.nextPage(ArticleTypePage, NormalMode, emptyUserAnswers)
           .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
@@ -76,6 +108,7 @@ class NavigatorSpec extends SpecBase {
       }
 
     }
+
 
     "in Check mode" must {
 

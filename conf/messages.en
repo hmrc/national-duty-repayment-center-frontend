@@ -411,3 +411,8 @@ indirectRepresentative.title = Are you an indirect representative of the importe
 indirectRepresentative.heading = Are you an indirect representative of the importer?
 indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?
 indirectRepresentative.error.required = Select yes if are you an indirect representative of the importer
+
+proofOfAuthority.title = Upload your proof of authority
+proofOfAuthority.heading = Upload your proof of authority
+proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
+proofOfAuthority.paragraph2 = Upload a file

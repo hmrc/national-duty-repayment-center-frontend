@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package forms
+package views
 
-import javax.inject.Inject
+import views.behaviours.ViewBehaviours
+import views.html.ProofOfAuthorityView
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import play.api.data.Forms.set
-import models.EvidenceSupportingDocs
+class ProofOfAuthorityViewSpec extends ViewBehaviours {
 
-class EvidenceSupportingDocsFormProvider @Inject() extends Mappings {
+  "ProofOfAuthorityView" must {
 
-  def apply(): Form[Set[EvidenceSupportingDocs]] =
-    Form(
-      "value" -> set(enumerable[EvidenceSupportingDocs]("evidenceSupportingDocs.error.required"))
-        .verifying(nonEmptySet("evidenceSupportingDocs.error.required"))
-    )
+    val view = viewFor[ProofOfAuthorityView](Some(emptyUserAnswers))
+
+    val applyView = view.apply()(fakeRequest, messages)
+
+    behave like normalPage(applyView, "proofOfAuthority")
+
+    behave like pageWithBackLink(applyView)
+  }
+
 }
