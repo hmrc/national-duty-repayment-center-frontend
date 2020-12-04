@@ -403,3 +403,6 @@ contactByEmail.01 = Yes
 contactByEmail.02 = No
 contactByEmail.checkYourAnswersLabel = ContactByEmail
 contactByEmail.error.required = Select contactByEmail
+
+postcode.error.noneFound = No addresses were found that match this postcode
+addressFound.error = Select the address or enter the address manually

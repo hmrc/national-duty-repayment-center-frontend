@@ -126,10 +126,6 @@ class ImporterAddressController @Inject()(
     postcode       <- form.get("address-postcode").flatMap(_.headOption)
   } yield PostcodeLookup(postcode)
 
-  def addressSelectOnLoad(mode: Mode): Action[AnyContent] = (identify  andThen getData andThen requireData) { _ =>
-    Redirect(routes.ImporterAddressController.onPageLoad(mode))
-  }
-
   def addressSelectSubmit(mode: Mode): Action[AnyContent] = (identify  andThen getData andThen requireData).async {
     implicit request =>
 
@@ -161,21 +157,6 @@ class ImporterAddressController @Inject()(
       }
 
       Ok(view(preparedForm, mode))
-  }
-
-  def enteredAddressSubmit(mode: Mode): Action[AnyContent] = (identify  andThen getData andThen requireData).async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ImporterAddressPage, mode, updatedAnswers))
-      )
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
