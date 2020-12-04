@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -33,8 +32,7 @@ class EvidenceSupportingDocsController @Inject()(
                                                   requireData: DataRequiredAction,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: EvidenceSupportingDocsView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {

@@ -21,8 +21,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EvidenceSupportingDocsView
 
-import scala.concurrent.Future
-
 class EvidenceSupportingDocsControllerSpec extends SpecBase {
 
   "EvidenceSupportingDocs Controller" must {
