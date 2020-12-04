@@ -79,12 +79,21 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ProofOfAuthorityController.onPageLoad)
       }
 
-      "go to CheckYourAnswers page after the claimant page once the representative has uploaded their proof of authority" in {
+      "go to BankDetails page after the ProofOfAuthority page once the representative has uploaded their proof of authority" in {
 
         val answers =
           emptyUserAnswers
         navigator.nextPage(ProofOfAuthorityPage, NormalMode, answers)
-          .mustBe(routes.IndexController.onPageLoad)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+
+      }
+
+      "go to CheckYourAnswers page after the bank details has been entered " in {
+
+        val answers =
+          emptyUserAnswers
+        navigator.nextPage(BankDetailsPage, NormalMode, answers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad)
 
       }
     }

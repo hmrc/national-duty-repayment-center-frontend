@@ -63,6 +63,7 @@ class Navigator @Inject()() {
     case AdditionalFileUploadPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
+    case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
