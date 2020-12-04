@@ -1,0 +1,75 @@
+@*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.routes._
+@import models.Mode
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
+)
+
+@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)} ${messages("entryDetails.title")}"
+    ) {
+
+    @formHelper(action = EntryDetailsController.onSubmit(mode), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        <div class="mb-30">
+            @components.heading(messages("entryDetails.heading"))
+        </div>
+
+        <div id="entry-details-hint" class="form-hint" style="margin-top:-1em; margin-bottom:2em;">
+            @messages("entryDetails.hint")
+        </div>
+
+
+
+        @components.input_text(
+          field = form("EPU"),
+          label = messages("entryDetails.claimEpu.heading"),
+          labelClass = Some("heading-large extra-heading-margin"),
+          inputClass = Some("govuk-input--width-3"),
+          hint = Some(messages("entryDetails.claimEpu.hint")),
+          headingIsLabel = false
+        )
+
+        @components.input_text(
+            field = form("EntryNumber"),
+            label = messages("entryDetails.entryNumber.heading"),
+            labelClass = Some("heading-large extra-heading-margin"),
+            inputClass = Some("govuk-input--width-10"),
+            hint = Some(messages("entryDetails.entryNumber.hint")),
+            headingIsLabel = false
+        )
+
+        @components.input_date(
+            field = form("value"),
+            legend = messages("entryDetails.entryDate.heading"),
+            legendClass = Some("form-label bold heading-large extra-heading-margin"),
+            hint = Some(messages("entryDetails.entryDate.hint")),
+            headingIsLegend = false
+        )
+
+        @components.submit_button()
+    }
+}

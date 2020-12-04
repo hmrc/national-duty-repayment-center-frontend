@@ -16,26 +16,22 @@
 
 package views
 
-import java.time.LocalDate
-
-import forms.ClaimEntryDateFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.EntryDetailsFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
-import views.html.ClaimEntryDateView
+import views.behaviours.ViewBehaviours
+import views.html.EntryDetailsView
 
-class ClaimEntryDateViewSpec extends QuestionViewBehaviours[LocalDate] {
+class EntryDetailsViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "claimEntryDate"
+  val messageKeyPrefix = "entryDetails"
 
-  val form = new ClaimEntryDateFormProvider()()
+  val form = new EntryDetailsFormProvider()()
 
-  "ClaimEntryDateView view" must {
+  "EntryDetailsView view" must {
 
-    val application = applicationBuilder(userAnswers = Some(UserAnswers(userAnswersId))).build()
-
-    val view = application.injector.instanceOf[ClaimEntryDateView]
+    val view = viewFor[EntryDetailsView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
