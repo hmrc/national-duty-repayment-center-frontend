@@ -185,7 +185,7 @@ GET        /changeImporterAddress                  controllers.ImporterAddressCo
 POST       /changeImporterAddress                  controllers.ImporterAddressController.onSubmit(mode: Mode = CheckMode)
 
 GET        /agentImporterAddress                        controllers.AgentImporterAddressController.onPageLoad(mode: Mode = NormalMode)
-POST       /agentImporterAddress                        controllers.AgentImporterAddressController.onSubmit(mode: Mode = NormalMode)
+POST       /agentImporterAddress                        controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
 GET        /changeAgentImporterAddress                  controllers.AgentImporterAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentImporterAddress                  controllers.AgentImporterAddressController.onSubmit(mode: Mode = CheckMode)
 
@@ -207,14 +207,7 @@ POST       /bankDetails                        controllers.BankDetailsController
 GET        /changeBankDetails                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeBankDetails                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
-
-
-GET        /agentImporterAddressConfirmation                       controllers.AgentImporterAddressConfirmationController.onPageLoad()
-
 GET        /repaymentAmountSummary                       controllers.RepaymentAmountSummaryController.onPageLoad()
-
-GET        /agentImporterAddressConfirmation            controllers.AgentImporterAddressConfirmationController.onPageLoad()
-
 
 GET        /fileUpload                       controllers.FileUploadController.onPageLoad()
 
@@ -230,3 +223,6 @@ POST       /changeContactByEmail                  controllers.ContactByEmailCont
 
 GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-importer-address               controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)
+
+GET         /enter-agent-importer-address         controllers.AgentImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
+POST        /enter-agent-importer-address         controllers.AgentImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)

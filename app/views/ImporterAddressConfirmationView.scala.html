@@ -62,15 +62,8 @@
     </div>
 
 </div>
-<input type="hidden" name="address-postcode" value="@search.postcode" />
+    <input type="hidden" name="address-postcode" value="@search.postcode" />
     <p class="mt-0">@link("importerManualAddress", messages("importerAddressConfirmation.link2"))</p>
-
-    <div>
-            <span>
-                <a class="govuk-link" href="@routes.PhoneNumberController.onPageLoad(NormalMode)"/>
-
-            </span>
-    </div>
 
     @components.submit_button()
 }
