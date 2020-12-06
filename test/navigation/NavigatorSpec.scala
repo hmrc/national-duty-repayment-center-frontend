@@ -20,10 +20,13 @@ import base.SpecBase
 import controllers.routes
 import pages._
 import models._
+import views.behaviours.ViewBehaviours
 
-class NavigatorSpec extends SpecBase {
+
+class NavigatorSpec extends SpecBase with ViewBehaviours {
 
   val navigator = new Navigator
+
 
   "Navigator" when {
 
@@ -34,7 +37,78 @@ class NavigatorSpec extends SpecBase {
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad()
       }
+
+      "go to IndirectRepresentative after WhomToPay page when the claimant is representative and has selected representative to be paid" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(WhomToPayPage, WhomToPay.Representative).success.value
+
+        navigator.nextPage(WhomToPayPage, NormalMode, answers)
+          .mustBe(routes.IndirectRepresentativeController.onPageLoad(NormalMode))
+      }
+
+      "go to BankDetails page after WhomToPay page when the claimant is representative and has selected importer to be paid" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(WhomToPayPage, WhomToPay.Importer).success.value
+
+        navigator.nextPage(WhomToPayPage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+      }
+
+      "go to BankDetails page after IndirectRepresentative page when the claimant is representative and has selected yes" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(IndirectRepresentativePage, true).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+      }
+
+      "go to proofOfAuthority page after after IndirectRepresentative page when the claimant is representative and has selected no" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(IndirectRepresentativePage, false).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
+          .mustBe(routes.ProofOfAuthorityController.onPageLoad)
+      }
+
+      "go to BankDetails page after the ProofOfAuthority page once the representative has uploaded their proof of authority" in {
+
+        val answers =
+          emptyUserAnswers
+        navigator.nextPage(ProofOfAuthorityPage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+
+      }
+
+      "go to CheckYourAnswers page after the bank details has been entered " in {
+
+        val answers =
+          emptyUserAnswers
+        navigator.nextPage(BankDetailsPage, NormalMode, answers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad)
+
+      }
+
+      "go to EntryDetails page after ArticleType page " in {
+        navigator.nextPage(ArticleTypePage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
+      }
+
+      "go to ClaimReasonType page after EntryDetails page " in {
+        navigator.nextPage(EntryDetailsPage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.ClaimReasonTypeController.onPageLoad(NormalMode))
+      }
+
     }
+
 
     "in Check mode" must {
 

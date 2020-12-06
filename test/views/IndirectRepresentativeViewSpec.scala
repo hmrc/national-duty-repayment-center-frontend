@@ -16,26 +16,23 @@
 
 package views
 
-import java.time.LocalDate
-
-import forms.ClaimEntryDateFormProvider
-import models.{NormalMode, UserAnswers}
+import controllers.routes
+import forms.IndirectRepresentativeFormProvider
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
-import views.html.ClaimEntryDateView
+import views.behaviours.YesNoViewBehaviours
+import views.html.IndirectRepresentativeView
 
-class ClaimEntryDateViewSpec extends QuestionViewBehaviours[LocalDate] {
+class IndirectRepresentativeViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "claimEntryDate"
+  val messageKeyPrefix = "indirectRepresentative"
 
-  val form = new ClaimEntryDateFormProvider()()
+  val form = new IndirectRepresentativeFormProvider()()
 
-  "ClaimEntryDateView view" must {
+  "IndirectRepresentative view" must {
 
-    val application = applicationBuilder(userAnswers = Some(UserAnswers(userAnswersId))).build()
-
-    val view = application.injector.instanceOf[ClaimEntryDateView]
+    val view = viewFor[IndirectRepresentativeView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)
@@ -43,5 +40,7 @@ class ClaimEntryDateViewSpec extends QuestionViewBehaviours[LocalDate] {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
+
+    behave like yesNoPage(form, applyView, messageKeyPrefix, routes.IndirectRepresentativeController.onSubmit(NormalMode).url)
   }
 }

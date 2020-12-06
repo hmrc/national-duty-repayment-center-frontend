@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-package forms
+package views
 
-import java.time.{LocalDate, ZoneOffset}
+import views.behaviours.ViewBehaviours
+import views.html.ProofOfAuthorityView
 
-import forms.behaviours.DateBehaviours
-import play.api.data.FormError
+class ProofOfAuthorityViewSpec extends ViewBehaviours {
 
-class ClaimEntryDateFormProviderSpec extends DateBehaviours {
+  "ProofOfAuthorityView" must {
 
-  val form = new ClaimEntryDateFormProvider()()
+    val view = viewFor[ProofOfAuthorityView](Some(emptyUserAnswers))
 
-  ".value" should {
+    val applyView = view.apply()(fakeRequest, messages)
 
-    val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
-    )
+    behave like normalPage(applyView, "proofOfAuthority")
 
-    behave like dateField(form, "value", validData)
-
-    behave like mandatoryDateField(form, "value", "claimEntryDate.error.required.all")
+    behave like pageWithBackLink(applyView)
   }
+
 }

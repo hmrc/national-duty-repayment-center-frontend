@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.EPU
-import play.api.libs.json.JsPath
+import java.time.LocalDate
 
-case object ClaimEpuPage extends QuestionPage[EPU] {
+import play.api.libs.json.{Json, OFormat}
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "claimEpu"
+final case class EntryDetails(
+                              EPU: String,
+                              EntryNumber: String,
+                              EntryDate: LocalDate) {
 }
+
+object EntryDetails {
+  implicit val format: OFormat[EntryDetails] = Json.format[EntryDetails]
+}
+

@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryIndirectRepresentativePage: Arbitrary[IndirectRepresentativePage.type] =
+    Arbitrary(IndirectRepresentativePage)
+
   implicit lazy val arbitraryContactByEmailPage: Arbitrary[ContactByEmailPage.type] =
     Arbitrary(ContactByEmailPage)
 
@@ -69,14 +72,11 @@ trait PageGenerators {
   implicit lazy val arbitraryEnterAgentEORIPage: Arbitrary[EnterAgentEORIPage.type] =
     Arbitrary(EnterAgentEORIPage)
 
-
   implicit lazy val arbitraryWhomToPayPage: Arbitrary[WhomToPayPage.type] =
     Arbitrary(WhomToPayPage)
 
   implicit lazy val arbitraryRepaymentTypePage: Arbitrary[RepaymentTypePage.type] =
     Arbitrary(RepaymentTypePage)
-
-
 
   implicit lazy val arbitraryAgentNameImporterPage: Arbitrary[AgentNameImporterPage.type] =
     Arbitrary(AgentNameImporterPage)
@@ -86,7 +86,6 @@ trait PageGenerators {
 
   implicit lazy val arbitraryEmailAddressPage: Arbitrary[EmailAddressPage.type] =
     Arbitrary(EmailAddressPage)
-
 
   implicit lazy val arbitraryContactTypePage: Arbitrary[ContactTypePage.type] =
     Arbitrary(ContactTypePage)
@@ -109,14 +108,8 @@ trait PageGenerators {
   implicit lazy val arbitraryClaimReasonTypePage: Arbitrary[ClaimReasonTypePage.type] =
     Arbitrary(ClaimReasonTypePage)
 
-  implicit lazy val arbitraryClaimEntryDatePage: Arbitrary[ClaimEntryDatePage.type] =
-    Arbitrary(ClaimEntryDatePage)
-
-  implicit lazy val arbitraryClaimEntryNumberPage: Arbitrary[ClaimEntryNumberPage.type] =
-    Arbitrary(ClaimEntryNumberPage)
-
-  implicit lazy val arbitraryClaimEpuPage: Arbitrary[ClaimEpuPage.type] =
-    Arbitrary(ClaimEpuPage)
+  implicit lazy val arbitraryEntryDetailsPage: Arbitrary[EntryDetailsPage.type] =
+    Arbitrary(EntryDetailsPage)
 
   implicit lazy val arbitraryHowManyEntriesPage: Arbitrary[HowManyEntriesPage.type] =
     Arbitrary(HowManyEntriesPage)

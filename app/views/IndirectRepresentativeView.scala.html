@@ -25,21 +25,23 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("claimEpu.title")}"
+    title = s"${errorPrefix(form)} ${messages("indirectRepresentative.title")}"
     ) {
 
-    @formHelper(action = ClaimEpuController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = IndirectRepresentativeController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.input_text(
-          field = form("value"),
-          label = messages("claimEpu.heading"),
-          labelClass = Some("heading-large extra-heading-margin"),
-          inputClass = Some("govuk-input--width-3"),
-          headingIsLabel = true
+        @components.heading(messages("indirectRepresentative.heading"))
+
+        @components.input_yes_no(
+            field = form("value"),
+            legend = messages("indirectRepresentative.heading"),
+            label = Some(messages("indirectRepresentative.heading")),
+            labelClass = Some("visually-hidden"),
+            headingIsLegend = true
         )
 
         @components.submit_button()

@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
+import play.api.libs.json.JsPath
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import play.api.data.Forms.set
-import models.EvidenceSupportingDocs
+case object IndirectRepresentativePage extends QuestionPage[Boolean] {
 
-class EvidenceSupportingDocsFormProvider @Inject() extends Mappings {
+  override def path: JsPath = JsPath \ toString
 
-  def apply(): Form[Set[EvidenceSupportingDocs]] =
-    Form(
-      "value" -> set(enumerable[EvidenceSupportingDocs]("evidenceSupportingDocs.error.required"))
-        .verifying(nonEmptySet("evidenceSupportingDocs.error.required"))
-    )
+  override def toString: String = "indirectRepresentative"
 }

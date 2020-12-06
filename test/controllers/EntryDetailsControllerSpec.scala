@@ -19,55 +19,56 @@ package controllers
 import java.time.{LocalDate, ZoneOffset}
 
 import base.SpecBase
-import forms.ClaimEntryDateFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.EntryDetailsFormProvider
+import models.{EPU, EntryDetails, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
-import pages.ClaimEntryDatePage
+import org.scalatestplus.mockito.MockitoSugar
+import pages.EntryDetailsPage
 import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
+import play.api.libs.json.{JsString, Json}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ClaimEntryDateView
+import views.html.EntryDetailsView
 
 import scala.concurrent.Future
 
-class ClaimEntryDateControllerSpec extends SpecBase with MockitoSugar {
-
-  val formProvider = new ClaimEntryDateFormProvider()
-  private def form = formProvider()
+class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val formProvider = new EntryDetailsFormProvider()
+  val form = formProvider()
 
-  lazy val claimEntryDateRoute = routes.ClaimEntryDateController.onPageLoad(NormalMode).url
+  val validDateAnswer = LocalDate.parse("0900-01-01")
 
-  override val emptyUserAnswers = UserAnswers(userAnswersId)
+  lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad(NormalMode).url
 
-  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, claimEntryDateRoute)
-
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, claimEntryDateRoute)
-      .withFormUrlEncodedBody(
-        "value.day"   -> validAnswer.getDayOfMonth.toString,
-        "value.month" -> validAnswer.getMonthValue.toString,
-        "value.year"  -> validAnswer.getYear.toString
+  private val userAnswers = UserAnswers(
+    userAnswersId,
+    Json.obj(
+      EntryDetailsPage.toString -> Json.obj(
+        "EPU"   -> "123",
+        "EntryNumber"      -> "123456Q",
+        "EntryDate" -> validDateAnswer
       )
+    )
+  )
 
-  "ClaimEntryDate Controller" must {
+  "EntryDetails Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val result = route(application, getRequest).value
+      val request = FakeRequest(GET, entryDetailsRoute)
 
-      val view = application.injector.instanceOf[ClaimEntryDateView]
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[EntryDetailsView]
 
       status(result) mustEqual OK
 
@@ -79,18 +80,18 @@ class ClaimEntryDateControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimEntryDatePage, validAnswer).success.value
-
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val view = application.injector.instanceOf[ClaimEntryDateView]
+      val request = FakeRequest(GET, entryDetailsRoute)
 
-      val result = route(application, getRequest).value
+      val view = application.injector.instanceOf[EntryDetailsView]
+
+      val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode)(getRequest, messages).toString
+        view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -109,10 +110,19 @@ class ClaimEntryDateControllerSpec extends SpecBase with MockitoSugar {
           )
           .build()
 
-      val result = route(application, postRequest).value
+      val request =
+        FakeRequest(POST, entryDetailsRoute)
+          .withFormUrlEncodedBody(
+            ("EPU", "123"),
+            ("EntryNumber", "123456Q"),
+            ("value.day", validDateAnswer.getDayOfMonth.toString),
+            ("value.month", validDateAnswer.getMonthValue.toString),
+            ("value.year", validDateAnswer.getYear.toString)
+          )
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -123,12 +133,12 @@ class ClaimEntryDateControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, claimEntryDateRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        FakeRequest(POST, entryDetailsRoute)
+          .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+      val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[ClaimEntryDateView]
+      val view = application.injector.instanceOf[EntryDetailsView]
 
       val result = route(application, request).value
 
@@ -144,9 +154,12 @@ class ClaimEntryDateControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val result = route(application, getRequest).value
+      val request = FakeRequest(GET, entryDetailsRoute)
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -156,7 +169,11 @@ class ClaimEntryDateControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val result = route(application, postRequest).value
+      val request =
+        FakeRequest(POST, entryDetailsRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 

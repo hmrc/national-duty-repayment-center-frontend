@@ -16,18 +16,18 @@
 
 package pages
 
-import models.EPU
+import models.EntryDetails
 import pages.behaviours.PageBehaviours
 
 
-class ClaimEpuPageSpec extends PageBehaviours {
+class EntryDetailsPageSpec extends PageBehaviours {
 
-  "ClaimEpuPage" must {
+  "EntryDetailsPage" must {
 
-    beRetrievable[EPU](ClaimEpuPage)
+    beRetrievable[EntryDetails](EntryDetailsPage)
 
-    beSettable[EPU](ClaimEpuPage)
+    beSettable[EntryDetails](EntryDetailsPage)
 
-    beRemovable[EPU](ClaimEpuPage)
+    beRemovable[EntryDetails](EntryDetailsPage)
   }
 }

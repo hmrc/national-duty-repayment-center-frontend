@@ -36,9 +36,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         Claimant = ClaimantType.Representative,
         ClaimType = NumberOfEntriesType.Multiple,
         NoOfEntries = Some(NoOfEntries("10")),
-        EPU = EPU("777"),
-        EntryNumber = EntryNumber("123456A"),
-        EntryDate = LocalDate.of(2020,1,1),
+        EntryDetails = EntryDetails(EPU = "123", EntryNumber = "123456Q", EntryDate = LocalDate.of(2020, 8, 5)),
         ClaimReason = ClaimReasonType.Preference,
         ClaimDescription = ClaimDescription("this is a claim description"),
         DateReceived = LocalDate.of(2020,8,5),
@@ -67,7 +65,6 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         AgentBankDetails = Some(BankDetails("account name", "123456", "12345678")),
         ImporterBankDetails = Some(BankDetails("account name", "123456", "12345678"))
       )
-
 
       val dutyTypeTaxList = Seq(
         DutyTypeTaxList(ClaimRepaymentType.Customs, Some("100.00"), Some("50.00"), Some("50.00")),
@@ -107,9 +104,11 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "Claimant" -> "02",
             "ClaimType" -> "02",
             "NoOfEntries" -> "10",
-            "EPU" -> "777",
-            "EntryNumber" -> "123456A",
-            "EntryDate" -> "20200101",
+            "EntryDetails" -> Json.obj(
+              "EPU" -> "123",
+              "EntryNumber" -> "123456Q",
+              "EntryDate" -> "2020-08-05"
+            ),
             "ClaimReason" -> "05",
             "ClaimDescription" -> "this is a claim description",
             "DateReceived" -> "20200805",

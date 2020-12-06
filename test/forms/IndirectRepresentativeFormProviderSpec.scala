@@ -16,32 +16,24 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
+import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class ClaimEpuFormProviderSpec extends StringFieldBehaviours {
+class IndirectRepresentativeFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "claimEpu.error.required"
-  val lengthKey = "claimEpu.error.length"
-  val maxLength = 3
+  val requiredKey = "indirectRepresentative.error.required"
+  val invalidKey = "error.boolean"
 
-  val form = new ClaimEpuFormProvider()()
+  val form = new IndirectRepresentativeFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
 
-    behave like fieldThatBindsValidData(
+    behave like booleanField(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      invalidError = FormError(fieldName, invalidKey)
     )
 
     behave like mandatoryField(

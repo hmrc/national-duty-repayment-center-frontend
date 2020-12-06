@@ -17,43 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.ClaimEpuFormProvider
-import models.{EPU, NormalMode, UserAnswers}
+import forms.IndirectRepresentativeFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ClaimEpuPage
+import pages.IndirectRepresentativePage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ClaimEpuView
+import views.html.IndirectRepresentativeView
 
 import scala.concurrent.Future
 
-class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
+class IndirectRepresentativeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ClaimEpuFormProvider()
+  val formProvider = new IndirectRepresentativeFormProvider()
   val form = formProvider()
 
-  lazy val claimEpuRoute = routes.ClaimEpuController.onPageLoad(NormalMode).url
+  lazy val indirectRepresentativeRoute = routes.IndirectRepresentativeController.onPageLoad(NormalMode).url
 
-  "ClaimEpu Controller" must {
+  "IndirectRepresentative Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, claimEpuRoute)
+      val request = FakeRequest(GET, indirectRepresentativeRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ClaimEpuView]
+      val view = application.injector.instanceOf[IndirectRepresentativeView]
 
       status(result) mustEqual OK
 
@@ -65,20 +65,20 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimEpuPage, EPU("123")).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IndirectRepresentativePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, claimEpuRoute)
+      val request = FakeRequest(GET, indirectRepresentativeRoute)
 
-      val view = application.injector.instanceOf[ClaimEpuView]
+      val view = application.injector.instanceOf[IndirectRepresentativeView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(EPU("123")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -98,12 +98,13 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, claimEpuRoute)
-          .withFormUrlEncodedBody(("value", "789"))
+        FakeRequest(POST, indirectRepresentativeRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -114,12 +115,12 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, claimEpuRoute)
+        FakeRequest(POST, indirectRepresentativeRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[ClaimEpuView]
+      val view = application.injector.instanceOf[IndirectRepresentativeView]
 
       val result = route(application, request).value
 
@@ -135,7 +136,7 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, claimEpuRoute)
+      val request = FakeRequest(GET, indirectRepresentativeRoute)
 
       val result = route(application, request).value
 
@@ -151,8 +152,8 @@ class ClaimEpuControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, claimEpuRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, indirectRepresentativeRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

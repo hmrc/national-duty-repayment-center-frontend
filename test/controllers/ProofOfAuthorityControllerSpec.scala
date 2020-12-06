@@ -19,26 +19,26 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.EvidenceSupportingDocsView
+import views.html.{EvidenceSupportingDocsView, ProofOfAuthorityView}
 
-class EvidenceSupportingDocsControllerSpec extends SpecBase {
+class ProofOfAuthorityControllerSpec extends SpecBase {
 
-  "EvidenceSupportingDocs Controller" must {
+  "ProofOfAuthority Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.EvidenceSupportingDocsController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.ProofOfAuthorityController.onPageLoad().url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[EvidenceSupportingDocsView]
+      val view = application.injector.instanceOf[ProofOfAuthorityView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(emptyUserAnswers)(fakeRequest, messages).toString
+        view()(fakeRequest, messages).toString
 
       application.stop()
     }

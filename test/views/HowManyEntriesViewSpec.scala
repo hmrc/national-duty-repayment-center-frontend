@@ -16,11 +16,12 @@
 
 package views
 
+import controllers.routes
 import forms.HowManyEntriesFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.ViewBehaviours
+import views.behaviours.{StringViewBehaviours, ViewBehaviours}
 import views.html.HowManyEntriesView
 
 class HowManyEntriesViewSpec extends ViewBehaviours {
@@ -39,5 +40,6 @@ class HowManyEntriesViewSpec extends ViewBehaviours {
     behave like normalPage(applyView(form), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
+
   }
 }

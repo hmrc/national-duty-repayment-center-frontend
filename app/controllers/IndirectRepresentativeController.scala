@@ -17,37 +17,37 @@
 package controllers
 
 import controllers.actions._
-import forms.ClaimEntryDateFormProvider
+import forms.IndirectRepresentativeFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.ClaimEntryDatePage
+import pages.IndirectRepresentativePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.ClaimEntryDateView
+import views.html.IndirectRepresentativeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimEntryDateController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ClaimEntryDateFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ClaimEntryDateView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class IndirectRepresentativeController @Inject()(
+                                         override val messagesApi: MessagesApi,
+                                         sessionRepository: SessionRepository,
+                                         navigator: Navigator,
+                                         identify: IdentifierAction,
+                                         getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction,
+                                         formProvider: IndirectRepresentativeFormProvider,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: IndirectRepresentativeView
+                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ClaimEntryDatePage) match {
+      val preparedForm = request.userAnswers.get(IndirectRepresentativePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class ClaimEntryDateController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimEntryDatePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IndirectRepresentativePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimEntryDatePage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(IndirectRepresentativePage, mode, updatedAnswers))
       )
   }
 }

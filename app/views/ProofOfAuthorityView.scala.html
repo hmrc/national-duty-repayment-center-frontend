@@ -18,28 +18,28 @@
 @import models.Mode
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+        main_template: MainTemplate
+
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("claimEntryNumber.title")}"
-    ) {
+@main_template(title = messages("proofOfAuthority.title")) {
 
-    @formHelper(action = ClaimEntryNumberController.onSubmit(mode), 'autoComplete -> "off") {
+    @components.back_link()
 
-        @components.back_link()
 
-        @components.error_summary(form.errors)
+    <h1 class="heading-large mt-0 mb-3">@messages("proofOfAuthority.heading")</h1>
 
-        @components.input_text(
-          field = form("value"),
-          label = messages("claimEntryNumber.heading"),
-          headingIsLabel = true
-        )
+    <p class="mt-0">@messages("proofOfAuthority.paragraph1")</p>
 
-        @components.submit_button()
-    }
+    <p class="mt-0">@messages("proofOfAuthority.paragraph2")</p>
+
+
+    <div class="section">
+        <a id = "govuk-link" class="button" role = "button" href="@routes.BankDetailsController.onPageLoad(NormalMode)">
+        @messages("site.continue")
+        </a>
+    </div>
+
 }

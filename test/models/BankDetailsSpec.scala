@@ -30,7 +30,6 @@ class BankDetailsSpec extends WordSpec with MustMatchers with Generators with Sc
       val bnkDtls = stringsWithMaxLength(40)
       forAll(bnkDtls) {
         bankDetails =>
-
           Json.toJson(bankDetails) mustEqual JsString(bankDetails)
       }
 

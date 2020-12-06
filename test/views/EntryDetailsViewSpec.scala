@@ -16,22 +16,22 @@
 
 package views
 
-import forms.ClaimEpuFormProvider
+import forms.EntryDetailsFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
-import views.html.ClaimEpuView
+import views.html.EntryDetailsView
 
-class ClaimEpuViewSpec extends ViewBehaviours {
+class EntryDetailsViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "claimEpu"
+  val messageKeyPrefix = "entryDetails"
 
-  val form = new ClaimEpuFormProvider()()
+  val form = new EntryDetailsFormProvider()()
 
-  "ClaimEpuView view" must {
+  "EntryDetailsView view" must {
 
-    val view = viewFor[ClaimEpuView](Some(emptyUserAnswers))
+    val view = viewFor[EntryDetailsView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode)(fakeRequest, messages)

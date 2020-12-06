@@ -101,26 +101,29 @@ howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
 howManyEntries.error.required = Enter how many entries are you claiming for?
 howManyEntries.error.length = HowManyEntries must be 2 characters or less
 
-claimEpu.title = Enter the entry processing unit (EPU)
-claimEpu.heading = Enter the entry processing unit (EPU)
-claimEpu.checkYourAnswersLabel = Enter the entry processing unit (EPU)
-claimEpu.error.required = Enter the entry processing unit (EPU)
-claimEpu.error.length = EPU must be 3 characters or less
+entryDetails.title = Entry Details
+entryDetails.heading = Entry Details
+entryDetails.hint = These can be found on C88 and E2 documents
+entryDetails.claimEpu.heading = Entry processing unit (EPU)
+entryDetails.claimEpu.hint = This is 3 numbers, for example ''123''
+entryDetails.claimEpu.error.required = Enter the entry processing unit (EPU)
+entryDetails.claimEpu.error.length = EPU must be 3 characters or less
+entryDetails.entryNumber.heading = Entry number
+entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example ''123456Q''
+entryDetails.entryNumber.error.required = Enter the entry number
+entryDetails.entryNumber.error.length = Entry number must be 7 characters or less
+entryDetails.entryDate.heading = Entry Date
+entryDetails.entryDate.hint = For example, 25 3 2019
+entryDetails.claimEntryDate.error.required.all = Enter the entry date
+entryDetails.claimEntryDate.error.required.two = The entry date must include {0} and {1}
+entryDetails.claimEntryDate.error.required = The entry date must include {0}
+entryDetails.claimEntryDate.error.invalid = Enter a real entry date
 
-claimEntryNumber.title = What is the entry number?
-claimEntryNumber.heading = What is the entry number?
+
+claimEpu.checkYourAnswersLabel = Entry processing unit (EPU)
 claimEntryNumber.checkYourAnswersLabel = What is the entry number?
-claimEntryNumber.error.required = Enter the entry number
-claimEntryNumber.error.length = Entry number must be 7 characters or less
-
-claimEntryDate.title = What was the entry date?
-claimEntryDate.heading = What was the entry date?
-claimEntryDate.hint = For example, 27 3 2007
 claimEntryDate.checkYourAnswersLabel = What was the entry date?
-claimEntryDate.error.required.all = Enter the entry date
-claimEntryDate.error.required.two = The entry date must include {0} and {1}
-claimEntryDate.error.required = The entry date must include {0}
-claimEntryDate.error.invalid = Enter a real entry date
+
 
 claimReasonType.title = What does your application relate to?
 claimReasonType.heading = What does your application relate to?
@@ -407,3 +410,13 @@ contactByEmail.error.required = Select contactByEmail
 postcode.error.noneFound = No addresses were found that match this postcode
 addressFound.error = Select the address or enter the address manually
 postcode.error.required = Enter Postcode
+
+indirectRepresentative.title = Are you an indirect representative of the importer?
+indirectRepresentative.heading = Are you an indirect representative of the importer?
+indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?
+indirectRepresentative.error.required = Select yes if are you an indirect representative of the importer
+
+proofOfAuthority.title = Upload your proof of authority
+proofOfAuthority.heading = Upload your proof of authority
+proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
+proofOfAuthority.paragraph2 = Upload a file

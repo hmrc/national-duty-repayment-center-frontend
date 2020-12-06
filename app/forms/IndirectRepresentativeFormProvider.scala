@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import java.time.LocalDate
+import javax.inject.Inject
 
-import org.scalacheck.Arbitrary
-import pages.behaviours.PageBehaviours
+import forms.mappings.Mappings
+import play.api.data.Form
 
-class ClaimEntryDatePageSpec extends PageBehaviours {
+class IndirectRepresentativeFormProvider @Inject() extends Mappings {
 
-  "ClaimEntryDatePage" must {
-
-    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
-      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
-    }
-
-    beRetrievable[LocalDate](ClaimEntryDatePage)
-
-    beSettable[LocalDate](ClaimEntryDatePage)
-
-    beRemovable[LocalDate](ClaimEntryDatePage)
-  }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("indirectRepresentative.error.required")
+    )
 }

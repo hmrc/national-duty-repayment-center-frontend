@@ -17,29 +17,29 @@
 package controllers
 
 import controllers.actions._
-import forms.ClaimEpuFormProvider
+import forms.EntryDetailsFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.ClaimEpuPage
+import pages.EntryDetailsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.ClaimEpuView
+import views.html.EntryDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimEpuController @Inject()(
+class EntryDetailsController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
-                                        formProvider: ClaimEpuFormProvider,
+                                        formProvider: EntryDetailsFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: ClaimEpuView
+                                        view: EntryDetailsView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -47,7 +47,7 @@ class ClaimEpuController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ClaimEpuPage) match {
+      val preparedForm = request.userAnswers.get(EntryDetailsPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class ClaimEpuController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimEpuPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimEpuPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(EntryDetailsPage, mode, updatedAnswers))
       )
   }
 }

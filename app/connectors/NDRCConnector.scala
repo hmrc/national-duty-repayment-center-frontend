@@ -38,6 +38,5 @@ class NDRCConnector @Inject()(
 
   def submitClaim(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
     httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](s"$baseUrl/national-duty-repayment-center/create-case", request)
-
 }
 

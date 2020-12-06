@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import models.EPU
-import play.api.data.Form
+import models.EntryDetails
+import play.api.libs.json.JsPath
 
-class ClaimEpuFormProvider @Inject() extends Mappings {
+case object EntryDetailsPage extends QuestionPage[EntryDetails] {
 
-  def apply(): Form[EPU] =
-    Form(
-      "value" -> text("claimEpu.error.required")
-        .verifying(maxLength(3, "claimEpu.error.length")).transform[EPU](EPU.apply, _.value)
-    )
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "entryDetails"
 }

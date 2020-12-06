@@ -120,14 +120,16 @@ trait ModelGenerators {
       self.stringsWithMaxLength(17).map(EORI.apply)
     }
 
-  implicit lazy val arbitraryEPU: Arbitrary[EPU] =
+  implicit lazy val arbitraryEntryDetails: Arbitrary[EntryDetails] =
     Arbitrary {
-      self.stringsWithMinAndMaxLength(3,3).map(EPU.apply)
-    }
-
-  implicit lazy val arbitraryEntryNumber: Arbitrary[EntryNumber] =
-    Arbitrary {
-      self.stringsWithMinAndMaxLength(7,7).map(EntryNumber.apply)
+      for {
+        epu <- arbitrary[String]
+        entryNumber <- arbitrary[String]
+        entryDate <- datesBetween(LocalDate.now, LocalDate.now.plusYears(10))
+      } yield EntryDetails(epu,
+        entryNumber,
+        entryDate
+      )
     }
 
   implicit lazy val arbitraryUserName: Arbitrary[UserName] =

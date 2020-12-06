@@ -23,7 +23,17 @@ import pages._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators {
+
   self: Generators =>
+
+  implicit lazy val arbitraryIndirectRepresentativeUserAnswersEntry: Arbitrary[(IndirectRepresentativePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[IndirectRepresentativePage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryContactByEmailUserAnswersEntry: Arbitrary[(ContactByEmailPage.type, JsValue)] =
     Arbitrary {
       for {
@@ -107,7 +117,7 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitrarycustomsDutyPaidUserAnswersEntry: Arbitrary[(CustomsDutyPaidPage.type, JsValue)] =
+  implicit lazy val arbitraryCustomsDutyPaidUserAnswersEntry: Arbitrary[(CustomsDutyPaidPage.type, JsValue)] =
     Arbitrary {
       for {
         page  <- arbitrary[CustomsDutyPaidPage.type]
@@ -254,26 +264,11 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryClaimEntryDateUserAnswersEntry: Arbitrary[(ClaimEntryDatePage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[ClaimEntryDatePage.type]
-        value <- arbitrary[Int].map(Json.toJson(_))
-      } yield (page, value)
-    }
 
-  implicit lazy val arbitraryClaimEntryNumberUserAnswersEntry: Arbitrary[(ClaimEntryNumberPage.type, JsValue)] =
+  implicit lazy val arbitraryEntryDetailsUserAnswersEntry: Arbitrary[(EntryDetailsPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[ClaimEntryNumberPage.type]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryClaimEpuUserAnswersEntry: Arbitrary[(ClaimEpuPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[ClaimEpuPage.type]
+        page  <- arbitrary[EntryDetailsPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }

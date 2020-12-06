@@ -16,18 +16,16 @@
 
 package pages
 
-import models.EntryNumber
 import pages.behaviours.PageBehaviours
 
+class IndirectRepresentativePageSpec extends PageBehaviours {
 
-class ClaimEntryNumberPageSpec extends PageBehaviours {
+  "IndirectRepresentativePage" must {
 
-  "ClaimEntryNumberPage" must {
+    beRetrievable[Boolean](IndirectRepresentativePage)
 
-    beRetrievable[EntryNumber](ClaimEntryNumberPage)
+    beSettable[Boolean](IndirectRepresentativePage)
 
-    beSettable[EntryNumber](ClaimEntryNumberPage)
-
-    beRemovable[EntryNumber](ClaimEntryNumberPage)
+    beRemovable[Boolean](IndirectRepresentativePage)
   }
 }
