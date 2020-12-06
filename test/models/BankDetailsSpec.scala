@@ -32,7 +32,6 @@ class BankDetailsSpec extends WordSpec with MustMatchers with Generators with Sc
         bankDetails =>
 
           Json.toJson(bankDetails) mustEqual JsString(bankDetails)
-          println(bnkDtls)
       }
 
     }
