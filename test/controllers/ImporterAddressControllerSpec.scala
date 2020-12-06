@@ -87,7 +87,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm.fill(PostcodeLookup("")), NormalMode)(request, messages).toString
+          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode)(request, messages).toString
       }
     }
 

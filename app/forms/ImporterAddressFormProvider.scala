@@ -61,7 +61,7 @@ class ImporterAddressFormProvider @Inject() extends Mappings {
             maxLength(maxCCLength, "importerAddress.countryCode.error.length"),
             regexp(Validation.safeInputPattern,"importerAddress.countryCode.error.invalid")
           )),
-      "PostalCode" ->
+      "postCode" ->
         optional(Forms.text
           .verifying(firstError(
             regexp(Validation.postcodeRegex, "importerAddress.postalCode.error.invalid")

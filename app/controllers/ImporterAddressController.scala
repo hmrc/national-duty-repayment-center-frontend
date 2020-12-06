@@ -63,10 +63,10 @@ class ImporterAddressController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ImporterAddressPage) match {
+      val preparedForm = request.userAnswers.get(ImporterPostcodePage) match {
         case None => postcodeForm
         case Some(value) =>
-          postcodeForm.fill(PostcodeLookup(value.postCode.get))
+          postcodeForm.fill(PostcodeLookup(value))
       }
 
       Future.successful(Ok(view(preparedForm, mode)))

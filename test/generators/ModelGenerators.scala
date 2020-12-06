@@ -142,13 +142,13 @@ trait ModelGenerators {
       city <- self.stringsWithMaxLength(64)
       region <- self.stringsWithMaxLength(64)
       countryCode <- Gen.pick(2, 'A' to 'Z')
-      postalCode <- Gen.option(arbitrary[String])
+      postCode <- Gen.option(arbitrary[String])
     } yield Address(addressLine1,
       addressLine2,
       city,
       region,
       countryCode.mkString,
-      postalCode
+      postCode
     )
   }
 
