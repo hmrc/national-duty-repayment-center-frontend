@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package forms
+package models.results
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import models.PostcodeLookup
-import play.api.data.Forms.{optional, _}
-import play.api.data.{Form, Forms}
+sealed trait ConnectorErrorResult {
+  val body: String
+}
 
-class PostcodeFormProvider @Inject() extends Mappings {
+case object InvalidJson extends ConnectorErrorResult {
+  override val body: String = "Invalid JSON received"
+}
 
-  def apply(): Form[PostcodeLookup] =
-    Form(
-      mapping(
-        "postCode" -> text("postcode.error.required")
-      )(PostcodeLookup.apply)(PostcodeLookup.unapply)
-    )
+case object NotFound extends ConnectorErrorResult {
+  override val body: String = "Not found"
+}
+
+case class UnexpectedResponseStatus(status: Int, body: String) extends ConnectorErrorResult
+
+case class UnexpectedException(message: String) extends ConnectorErrorResult {
+  override val body: String = message
 }

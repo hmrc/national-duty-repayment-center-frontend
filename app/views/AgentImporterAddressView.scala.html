@@ -29,7 +29,7 @@
     title = s"${errorPrefix(form)} ${messages("agentImporterAddress.title")}"
     ) {
 
-    @formHelper(action = AgentImporterAddressController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = AgentImporterAddressController.postcodeSubmit()) {
 
         @components.back_link()
 
@@ -42,7 +42,7 @@
         <p class="mb-05 mt-0">@messages("importerAddress.postCode")</p>
 
         @components.input_text(
-          field = form("value"),
+          field = form("postCode"),
           label = messages("agentImporterAddress.heading"),
           labelClass = Some("visually-hidden"),
           headingIsLabel = false,

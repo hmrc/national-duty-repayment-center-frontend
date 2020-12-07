@@ -25,7 +25,7 @@ class AddressSelectionFormProvider extends Mappings {
 
   def apply(): Form[JsObject] = Form(
     mapping (
-      "value" -> text("addressFound.error")
+      "field-name" -> text("addressFound.error")
     )(s => Json.parse(s).as[JsObject])((js:JsObject) => Some(js.toString))
   )
 }

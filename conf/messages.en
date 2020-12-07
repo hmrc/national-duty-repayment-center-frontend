@@ -407,6 +407,10 @@ contactByEmail.02 = No
 contactByEmail.checkYourAnswersLabel = ContactByEmail
 contactByEmail.error.required = Select contactByEmail
 
+postcode.error.noneFound = No addresses were found that match this postcode
+addressFound.error = Select the address or enter the address manually
+postcode.error.required = Enter Postcode
+
 indirectRepresentative.title = Are you an indirect representative of the importer?
 indirectRepresentative.heading = Are you an indirect representative of the importer?
 indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?

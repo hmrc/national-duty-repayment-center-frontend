@@ -17,85 +17,102 @@
 package controllers
 
 import base.SpecBase
-import forms.ImporterAddressFormProvider
-import models.{Address, NormalMode, UserAnswers}
+import connectors.AddressLookupConnector
+import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
+import models.responses.{AddressLookupResponseModel, Location, LookedUpAddress, LookedUpAddressWrapper, Uprn}
+import models.results.UnexpectedResponseStatus
+import models.{Address, NormalMode, PostcodeLookup, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ImporterAddressPage
+import pages.{ImporterAddressPage, ImporterPostcodePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, Call}
+import play.api.test.CSRFTokenHelper._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ImporterAddressView
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
+import views.html.{ImporterAddressConfirmationView, ImporterAddressView}
 
 import scala.concurrent.Future
 
 class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
+  private lazy val importerAddressPostcodeRoute = routes.ImporterAddressController.onPageLoad(NormalMode).url
+  private lazy val importerAddressSelectRoute = routes.ImporterAddressController.addressSelectSubmit.url
+  private val postcodeForm = (new PostcodeFormProvider) ()
+  private val addressForm = (new ImporterAddressFormProvider) ()
+  private val selectionForm = (new AddressSelectionFormProvider) ()
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/national-duty-repayment-center/enter-importer-address")
 
-  val formProvider = new ImporterAddressFormProvider()
-  val form = formProvider()
+  def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] = {
+    FakeRequest(method, path)
+      .withCSRFToken
+      .asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
+  }
 
-  lazy val importerAddressRoute = routes.ImporterAddressController.onPageLoad(NormalMode).url
-
-  val userAnswers: UserAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      ImporterAddressPage.toString -> Json.obj(
-        "AddressLine1" -> "line 1",
-        "AddressLine2" -> "line 2",
-        "City" -> "city",
-        "Region" -> "region",
-        "CountryCode" -> "GB",
-        "PostalCode" -> "AA1 1AA"
-      )
-    )
-  )
-
-  "ImporterAddress Controller" must {
-
-    "return OK and the correct view for a GET" in {
+  "ImporterAddressController" must {
+    "return OK and the correct view for a GET on the postcode page" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      running(application) {
+        val request = buildRequest(GET, importerAddressPostcodeRoute)
 
-      val request = FakeRequest(GET, importerAddressRoute)
+        val result = route(application, request).value
 
-      val result = route(application, request).value
+        val view = application.injector.instanceOf[ImporterAddressView]
 
-      val view = application.injector.instanceOf[ImporterAddressView]
+        status(result) mustEqual OK
 
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
+        contentAsString(result) mustEqual
+          view(postcodeForm, NormalMode)(request, messages).toString
+      }
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "populate the view correctly on a GET when the postcode question has previously been answered" in {
+      val userAnswers = UserAnswers(userAnswersId).set(ImporterPostcodePage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, importerAddressRoute)
+      running(application) {
+        val request = buildRequest(GET, importerAddressPostcodeRoute)
 
-      val view = application.injector.instanceOf[ImporterAddressView]
+        val view = application.injector.instanceOf[ImporterAddressView]
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      status(result) mustEqual OK
+        status(result) mustEqual OK
 
-      contentAsString(result) mustEqual
-        view(form.fill(Address("line 1", Some("line 2"), "city", "region", "GB", Some("AA1 1AA"))), NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
+        contentAsString(result) mustEqual
+          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode)(request, messages).toString
+      }
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "return a Bad Request and errors when invalid data is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      running(application) {
+
+        val request = buildRequest(POST, importerAddressPostcodeRoute)
+          .withFormUrlEncodedBody(("foo", "bar"))
+
+        val boundForm = postcodeForm.bind(Map("value" -> "12345678901234567890"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        val expectedView = application.injector.instanceOf[ImporterAddressView]
+
+        contentAsString(result) mustEqual
+          expectedView(boundForm, NormalMode)(request, messages).toString
+      }
+    }
+
+    "redirect to the next page when an address has been selected" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
@@ -109,71 +126,121 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
           )
           .build()
 
-      val request =
-        FakeRequest(POST, importerAddressRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+      running(application) {
+        val request = buildRequest(POST, importerAddressSelectRoute)
+          .withFormUrlEncodedBody(
+            "field-name" -> """{"line1":"Line1","town":"TOWN","postCode":"AA1 1AA"}"""
+          )
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      //TODO add these tests once we have integrated with address lookup
-      //status(result) mustEqual SEE_OTHER
-      //redirectLocation(result).value mustEqual onwardRoute.url
-
-      application.stop()
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
+      "return a Bad Request and errors on the manual address entry page when invalid address data is submitted for selection" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val mockSessionRepository = mock[SessionRepository]
 
-      val request =
-        FakeRequest(POST, importerAddressRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-      val boundForm = form.bind(Map("value" -> ""))
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers))
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[SessionRepository].toInstance(mockSessionRepository)
+            )
+            .build()
 
-      val view = application.injector.instanceOf[ImporterAddressView]
+        running(application) {
+          val request = buildRequest(POST, importerAddressSelectRoute)
+            .withFormUrlEncodedBody(
+              "field-name" -> """{}""",
+              "address-postcode" -> "AA1 1AA"
+            )
 
-      val result = route(application, request).value
+          val result = route(application, request).value
 
-      status(result) mustEqual BAD_REQUEST
+          status(result) mustEqual BAD_REQUEST
+          val expectedView = application.injector.instanceOf[ImporterAddressView]
+          val boundForm = addressForm.bind(Map.empty[String, String])
+          contentAsString(result) mustEqual
+            expectedView(boundForm, NormalMode)(request, messages).toString
+        }
+      }
 
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+      "return a Bad Request and errors when nothing is selected" in {
+        val addressLookupConnector = mock[AddressLookupConnector]
+        val mockSessionRepository = mock[SessionRepository]
 
-      application.stop()
+        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+        val addresses = Seq(
+          LookedUpAddressWrapper("1", Uprn(1234567890L), LookedUpAddress(Seq("Line1"), "TOWN", None, "AA1 1AA"), "LA", Some(Location(0, 0)))
+        )
+
+        when(addressLookupConnector.addressLookup(any())(any()))
+          .thenReturn(Future.successful(Right(AddressLookupResponseModel(addresses))))
+
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers))
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[SessionRepository].toInstance(mockSessionRepository),
+              bind[AddressLookupConnector].toInstance(addressLookupConnector)
+            )
+            .build()
+
+        running(application) {
+          val request = buildRequest(POST, importerAddressSelectRoute)
+            .withFormUrlEncodedBody("address-postcode" -> "AA1 1AA")
+
+          val result = route(application, request).value
+
+          status(result) mustEqual BAD_REQUEST
+
+          val expectedView = application.injector.instanceOf[ImporterAddressConfirmationView]
+          val expectedForm = selectionForm.withError("field-name", "Select the address or enter the address manually")
+          val expectedSelectItems = Seq(
+            SelectItem(
+              text = "Line1  TOWN ",
+              value = Some("""{"AddressLine1":"Line1","City":"TOWN","Region":"","CountryCode":"GB","postCode":"AA1 1AA"}"""))
+          )
+
+          contentAsString(result) mustEqual
+            expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode)(request, messages).toString
+        }
+      }
+
+      "redirect to Session Expired for a GET if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        running(application) {
+          val request = buildRequest(GET, importerAddressPostcodeRoute)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+        }
+      }
+
+      "redirect to Session Expired for a POST if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        running(application) {
+          val request = buildRequest(POST, importerAddressPostcodeRoute)
+            .withFormUrlEncodedBody("value" -> "answer")
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+        }
+      }
     }
-
-    "redirect to Session Expired for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request = FakeRequest(GET, importerAddressRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request =
-        FakeRequest(POST, importerAddressRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-  }
 }

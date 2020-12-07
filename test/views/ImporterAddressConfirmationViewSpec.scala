@@ -16,16 +16,30 @@
 
 package views
 
+import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider}
+import models.{NormalMode, PostcodeLookup}
+import play.api.data.Form
+import play.api.libs.json.{JsObject, Json}
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.behaviours.ViewBehaviours
 import views.html.ImporterAddressConfirmationView
 
 class ImporterAddressConfirmationViewSpec extends ViewBehaviours {
 
+  val form = new AddressSelectionFormProvider().apply()
+
+  val lookup = new PostcodeLookup("ZZZZZZZ")
+  val addresses = Seq(
+    SelectItem(
+      text = "Line1, TOWN, AA1 1AA",
+      value = Some("""{"line1":"Line1","town":"TOWN","postCode":"AA1 1AA"}"""))
+  )
+
   "ImporterAddressConfirmation view" must {
 
     val view = viewFor[ImporterAddressConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply(form, lookup, addresses, NormalMode)(fakeRequest, messages)
 
     behave like normalPage(applyView, "importerAddressConfirmation")
 

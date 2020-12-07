@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package views
+package models
 
-import views.behaviours.ViewBehaviours
-import views.html.AgentImporterAddressConfirmationView
+import play.api.libs.json.Format
 
-class AgentImporterAddressConfirmationViewSpec extends ViewBehaviours {
+final case class InternalId(value: String)
 
-  "AgentImporterAddressConfirmation view" must {
-
-    val view = viewFor[AgentImporterAddressConfirmationView](Some(emptyUserAnswers))
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "agentImporterAddressConfirmation")
-
-    behave like pageWithBackLink(applyView)
-  }
+object InternalId {
+  implicit val formal: Format[InternalId] = JsonFormatUtils.stringFormat(InternalId.apply)(_.value)
 }

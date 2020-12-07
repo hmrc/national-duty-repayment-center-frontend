@@ -16,6 +16,6 @@
 
 package models
 
-final case class PostcodeLookup(postcode: String, houseNumber: Option[String]) {
+final case class PostcodeLookup(postcode: String) {
   val postCodeTrimmed: String = postcode.replaceAll(" ", "")
 }

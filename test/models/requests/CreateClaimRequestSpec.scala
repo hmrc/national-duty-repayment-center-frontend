@@ -50,7 +50,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         City = "city",
         Region = "region",
         CountryCode = "GB",
-        PostalCode = Some("ZZ111ZZ")
+        postCode = Some("ZZ111ZZ")
       )
 
       val userDetails = UserDetails(VATNumber = Some(VRN("123456789")),
@@ -120,7 +120,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "City" -> "city",
             "Region" -> "region",
             "CountryCode" -> "GB",
-            "PostalCode" -> "ZZ111ZZ"
+            "postCode" -> "ZZ111ZZ"
             ),
             "TelephoneNumber" -> "12345678",
             "EmailAddress" -> "example@example.com"
@@ -135,7 +135,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
               "City" -> "city",
               "Region" -> "region",
               "CountryCode" -> "GB",
-              "PostalCode" -> "ZZ111ZZ"
+              "postCode" -> "ZZ111ZZ"
             ),
             "TelephoneNumber" -> "12345678",
             "EmailAddress" -> "example@example.com"

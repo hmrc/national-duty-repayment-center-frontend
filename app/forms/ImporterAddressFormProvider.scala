@@ -61,11 +61,11 @@ class ImporterAddressFormProvider @Inject() extends Mappings {
             maxLength(maxCCLength, "importerAddress.countryCode.error.length"),
             regexp(Validation.safeInputPattern,"importerAddress.countryCode.error.invalid")
           )),
-      "PostalCode" ->
+      "postCode" ->
         optional(Forms.text
           .verifying(firstError(
             regexp(Validation.postcodeRegex, "importerAddress.postalCode.error.invalid")
           )))
-    )(Address.apply)(importerAddress => Some((importerAddress.AddressLine1, importerAddress.AddressLine2, importerAddress.City, importerAddress.Region, importerAddress.CountryCode, importerAddress.PostalCode)))
+    )(Address.apply)(importerAddress => Some((importerAddress.AddressLine1, importerAddress.AddressLine2, importerAddress.City, importerAddress.Region, importerAddress.CountryCode, importerAddress.postCode)))
   )
 }
