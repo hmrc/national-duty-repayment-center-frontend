@@ -16,11 +16,10 @@
 
 package models
 
+import play.api.data.Form
 import play.api.i18n.Messages
-import play.api.libs.json._
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-import viewmodels.RadioOption
 
 sealed trait ClaimantType
 
@@ -33,17 +32,12 @@ object ClaimantType extends Enumerable.Implicits {
     Importer, Representative
   )
 
-//  val options: Seq[RadioOption] = values.map {
-//    value =>
-//      RadioOption("claimantType", value.toString)
-//  }
-
-  val options: Seq[RadioItem] = values.map {
+  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
       RadioItem(
         value = Some(value.toString),
-        content = Text("Test"), //TODO messages("claimantType" + value)
-        checked = false //TODO
+        content = Text(messages(s"claimantType.${value.toString}")),
+        checked = form("value").value.contains(value.toString)
       )
   }
 
