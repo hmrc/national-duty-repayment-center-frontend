@@ -24,9 +24,6 @@ import pages._
 import play.api.libs.json.{Json, OFormat}
 
 final case class CreateClaimRequest(
-                                     AcknowledgementReference: AcknowledgementReference,
-                                     ApplicationType: ApplicationType,
-                                     OriginatingSystem: OriginatingSystem,
                                      Content: Content
                                    )
 
@@ -154,9 +151,6 @@ object CreateClaimRequest {
     for {
       content <- getContent(userAnswers)
     } yield CreateClaimRequest(
-      AcknowledgementReference("123456"),
-      ApplicationType("NDRC"),
-      OriginatingSystem("Digital"),
       content
     )
   }

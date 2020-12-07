@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package models
+package views
 
-import play.api.libs.json.Format
+import views.behaviours.ViewBehaviours
+import views.html.ProofOfAuthorityView
 
-case class ApplicationType(value: String)
+class ProofOfAuthorityViewSpec extends ViewBehaviours {
 
-object ApplicationType {
-  implicit val format: Format[ApplicationType] =
-    JsonFormatUtils.stringFormat(ApplicationType.apply)(_.value)
+  "ProofOfAuthorityView" must {
+
+    val view = viewFor[ProofOfAuthorityView](Some(emptyUserAnswers))
+
+    val applyView = view.apply()(fakeRequest, messages)
+
+    behave like normalPage(applyView, "proofOfAuthority")
+
+    behave like pageWithBackLink(applyView)
+  }
+
 }

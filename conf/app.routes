@@ -223,3 +223,5 @@ GET        /indirectRepresentative                        controllers.IndirectRe
 POST       /indirectRepresentative                        controllers.IndirectRepresentativeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIndirectRepresentative                  controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIndirectRepresentative                  controllers.IndirectRepresentativeController.onSubmit(mode: Mode = CheckMode)
+
+GET         /proofOfAuthority                       controllers.ProofOfAuthorityController.onPageLoad()

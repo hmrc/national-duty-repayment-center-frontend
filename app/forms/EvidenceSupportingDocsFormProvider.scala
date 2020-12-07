@@ -27,6 +27,7 @@ class EvidenceSupportingDocsFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Set[EvidenceSupportingDocs]] =
     Form(
-      "value" -> set(enumerable[EvidenceSupportingDocs]("evidenceSupportingDocs.error.required")).verifying(nonEmptySet("evidenceSupportingDocs.error.required"))
+      "value" -> set(enumerable[EvidenceSupportingDocs]("evidenceSupportingDocs.error.required"))
+        .verifying(nonEmptySet("evidenceSupportingDocs.error.required"))
     )
 }

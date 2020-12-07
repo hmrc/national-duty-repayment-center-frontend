@@ -81,9 +81,6 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       val dutyTypeTaxDetails = DutyTypeTaxDetails(dutyTypeTaxList)
 
       val createClaimRequest = CreateClaimRequest(
-        AcknowledgementReference("123456"),
-        ApplicationType("NDRC"),
-        OriginatingSystem("Digital"),
         Content(claimDetails,
           AgentDetails = Some(userDetails),
           ImporterDetails = userDetails,
@@ -93,9 +90,6 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         )
 
       val json = Json.obj(
-        "AcknowledgementReference" -> "123456",
-        "ApplicationType" -> "NDRC",
-        "OriginatingSystem" -> "Digital",
         "Content" -> Json.obj(
           "ClaimDetails" -> Json.obj(
             "FormType" -> "01",

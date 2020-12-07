@@ -61,6 +61,7 @@ class Navigator @Inject()() {
     case AdditionalFileUploadPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
+    case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
@@ -72,7 +73,7 @@ class Navigator @Inject()() {
 
   private def indirectRepresentativeRoute(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
     case Some(true)  => routes.BankDetailsController.onPageLoad(NormalMode)
-    case Some(false) => ???
+    case Some(false) => routes.ProofOfAuthorityController.onPageLoad()
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
@@ -93,10 +94,10 @@ class Navigator @Inject()() {
 
   private def getRepaymentMethodType(answers: UserAnswers): Call =
     (answers.get(RepaymentTypePage), answers.get(ClaimantTypePage)) match {
-    case (Some(RepaymentType.BACS),Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
-    case (Some(RepaymentType.BACS), Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
-    case _ => routes.CheckYourAnswersController.onPageLoad
-  }
+      case (Some(RepaymentType.BACS),Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
+      case (Some(RepaymentType.BACS), Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
+      case _ => routes.CheckYourAnswersController.onPageLoad
+    }
 
   private def howManyEntries(answers: UserAnswers): Call = answers.get(NumberOfEntriesTypePage) match {
     case Some(NumberOfEntriesType.Single)  => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
@@ -105,9 +106,9 @@ class Navigator @Inject()() {
   }
 
   private def getClaimRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
-      case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs))  => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
-      case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat)) => routes.VATPaidController.onPageLoad(NormalMode)
-      case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs))  => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat)) => routes.VATPaidController.onPageLoad(NormalMode)
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
   }
 
   private def getVATRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
