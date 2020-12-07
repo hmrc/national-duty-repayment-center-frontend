@@ -16,36 +16,47 @@
 
 @import controllers.routes._
 @import models.{Mode, NumberOfEntriesType}
-@import uk.gov.hmrc.play.views.html._
 @import views.ViewUtils._
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
-
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("numberOfEntriesType.title")}"
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("claimantType.title")}"),
+    backLink = Some("#")
     ) {
 
-    @formHelper(action = NumberOfEntriesTypeController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.legacy.back_link()
+    @forms.formWithCSRF(action = NumberOfEntriesTypeController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.legacy.error_summary(form.errors)
 
-        @components.legacy.input_radio(
-            field = form("value"),
-            legend = messages("numberOfEntriesType.heading"),
-            headingIsLegend = true,
-            inputs = NumberOfEntriesType.options.toSeq
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = Seq(
+                RadioItem(
+                    value = Some("One"),
+                    content = Text(messages("numberOfEntriesType.01")),
+                    checked = form("value").value.contains("One")
+                ),
+                RadioItem(
+                    value = Some("More"),
+                    content = Text(messages(s"numberOfEntriesType.02")),
+                    hint = Some(Hint(content = Text(messages("numberOfEntriesType.02.hint")))),
+                    checked = form("value").value.contains("More")
+                )
+            ),
+            inline = false,
+            legend = Some("numberOfEntriesType.heading"),
+            hint = None
         )
 
-        @components.legacy.submit_button()
+        @html.button("site.continue")
     }
 }
