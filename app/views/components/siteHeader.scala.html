@@ -14,17 +14,18 @@
  * limitations under the License.
  *@
 
-@import viewmodels.AnswerSection
-@import views.html._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.header.Header
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukHeader
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.header.HeaderNavigation
 
-@(answerSection: AnswerSection)(implicit messages: Messages)
+@this(govukHeader: GovukHeader)
 
-@if(answerSection.headingKey.isDefined){
-    <h2 class="heading-large mt-0 mb-3">@messages(answerSection.headingKey.get)</h2>
-}
+@(showSignOut: Boolean = true)(implicit messages: Messages)
 
-<dl class="govuk-summary-list">
-    @for(row <- answerSection.rows){
-        @components.answer_row(row)
-    }
-</dl>
+@govukHeader(Header(
+    homepageUrl = None, //TODO
+    serviceName = Some(messages("site.service_name")),
+    serviceUrl = None, //TODO
+    containerClasses = Some("govuk-width-container"),
+    navigation = None //TODO
+))

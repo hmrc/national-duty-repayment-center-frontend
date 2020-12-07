@@ -17,11 +17,11 @@
 @import controllers.routes._
 @import models.{Mode, ContactByEmail}
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => MyFormWithCSRF}
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: MyFormWithCSRF
+    formHelper: PlayFormWithCSRF
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -32,17 +32,17 @@
 
     @formHelper(action = ContactByEmailController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @components.legacy.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
-        @components.input_radio(
+        @components.legacy.input_radio(
             field = form("value"),
             legend = messages("contactByEmail.heading"),
             headingIsLegend = true,
             inputs = ContactByEmail.options.toSeq
         )
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }

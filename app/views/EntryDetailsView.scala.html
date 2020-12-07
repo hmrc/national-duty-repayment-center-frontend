@@ -17,11 +17,11 @@
 @import controllers.routes._
 @import models.Mode
 @import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => MyFormWithCSRF}
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: MyFormWithCSRF
+    formHelper: PlayFormWithCSRF
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -32,12 +32,12 @@
 
     @formHelper(action = EntryDetailsController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @components.legacy.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
         <div class="mb-30">
-            @components.heading(messages("entryDetails.heading"))
+            @components.legacy.heading(messages("entryDetails.heading"))
         </div>
 
         <div id="entry-details-hint" class="form-hint" style="margin-top:-1em; margin-bottom:2em;">
@@ -46,7 +46,7 @@
 
 
 
-        @components.input_text(
+        @components.legacy.input_text(
           field = form("EPU"),
           label = messages("entryDetails.claimEpu.heading"),
           labelClass = Some("heading-large extra-heading-margin"),
@@ -55,7 +55,7 @@
           headingIsLabel = false
         )
 
-        @components.input_text(
+        @components.legacy.input_text(
             field = form("EntryNumber"),
             label = messages("entryDetails.entryNumber.heading"),
             labelClass = Some("heading-large extra-heading-margin"),
@@ -64,7 +64,7 @@
             headingIsLabel = false
         )
 
-        @components.input_date(
+        @components.legacy.input_date(
             field = form("value"),
             legend = messages("entryDetails.entryDate.heading"),
             legendClass = Some("form-label bold heading-large extra-heading-margin"),
@@ -72,6 +72,6 @@
             headingIsLegend = false
         )
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }
