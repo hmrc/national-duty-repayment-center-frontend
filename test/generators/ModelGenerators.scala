@@ -164,21 +164,6 @@ trait ModelGenerators {
 
   lazy val dutyAmount: Gen[String] = Gen.listOfN(14, Gen.numStr).map(_.mkString)
 
-  implicit lazy val arbitraryAcknowledgementReference: Arbitrary[AcknowledgementReference] =
-    Arbitrary {
-      self.stringsWithMaxLength(32).map(AcknowledgementReference.apply)
-    }
-
-  implicit lazy val arbitraryOriginatingSystem: Arbitrary[OriginatingSystem] =
-    Arbitrary {
-      self.stringsWithMaxLength(32).map(OriginatingSystem.apply)
-    }
-
-  implicit lazy val arbitraryApplicationType: Arbitrary[ApplicationType] =
-    Arbitrary {
-      self.stringsWithMaxLength(32).map(ApplicationType.apply)
-    }
-
   implicit lazy val arbitrarySortCode: Arbitrary[SortCode] =
     Arbitrary {
       Gen.listOfN(6, Gen.numStr).map(_.mkString).map(SortCode.apply)
@@ -299,9 +284,6 @@ trait ModelGenerators {
 
   implicit val arbitraryCreateClaimRequest: Arbitrary[CreateClaimRequest] = Arbitrary {
     for {
-      acknowledgementReference <- arbitrary[AcknowledgementReference]
-      originatingSystem <- arbitrary[OriginatingSystem]
-      applicationType <- arbitrary[ApplicationType]
       claimDetails <- arbitrary[ClaimDetails]
       agentDetails <- arbitrary[UserDetails]
       importerDetails <- arbitrary[UserDetails]
@@ -310,9 +292,6 @@ trait ModelGenerators {
       documentList <- arbitrary[DocumentList]
     } yield
       CreateClaimRequest(
-        acknowledgementReference = acknowledgementReference,
-        applicationType = applicationType,
-        originatingSystem = originatingSystem,
         Content(claimDetails,Some(agentDetails),importerDetails,Some(bankDetails), dutyTypeTaxDetails,Seq(documentList))
       )
   }
