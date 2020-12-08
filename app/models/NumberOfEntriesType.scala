@@ -18,6 +18,7 @@ package models
 
 import play.api.data.Form
 import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.Aliases.Hint
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
@@ -37,7 +38,12 @@ object NumberOfEntriesType extends Enumerable.Implicits {
       RadioItem(
         value = Some(value.toString),
         content = Text(messages(s"numberOfEntriesType.${value.toString}")),
-        checked = form("value").value.contains(value.toString)
+        checked = form("value").value.contains(value.toString),
+        hint = Some(Hint(
+          content = if(value.toString.equals("02"))
+            Text(messages("numberOfEntriesType.02.hint"))
+            else Text("")
+        ))
       )
   }
 

@@ -39,19 +39,7 @@
             form = form,
             idPrefix = "value",
             name = "value",
-            items = Seq(
-                RadioItem(
-                    value = Some("One"),
-                    content = Text(messages("numberOfEntriesType.01")),
-                    checked = form("value").value.contains("One")
-                ),
-                RadioItem(
-                    value = Some("More"),
-                    content = Text(messages(s"numberOfEntriesType.02")),
-                    hint = Some(Hint(content = Text(messages("numberOfEntriesType.02.hint")))),
-                    checked = form("value").value.contains("More")
-                )
-            ),
+            items = NumberOfEntriesType.options(form),
             inline = false,
             legend = Some("numberOfEntriesType.heading"),
             hint = None
