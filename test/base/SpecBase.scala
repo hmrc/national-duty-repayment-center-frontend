@@ -77,7 +77,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     City = "city",
     Region = "region",
     CountryCode = "GB",
-    PostalCode = Some("ZZ111ZZ")
+    postCode = Some("ZZ111ZZ")
   )
 
   val userDetails = UserDetails(VATNumber = Some(VRN("123456789")),
@@ -149,7 +149,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
           "City" -> "city",
           "Region" -> "region",
           "CountryCode" -> "GB",
-          "PostalCode" -> "ZZ111ZZ"
+          "postCode" -> "ZZ111ZZ"
         )
       ),
       "ImporterDetails" -> Json.obj(
@@ -162,7 +162,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
           "City" -> "city",
           "Region" -> "region",
           "CountryCode" -> "GB",
-          "PostalCode" -> "ZZ111ZZ"
+          "postCode" -> "ZZ111ZZ"
         )
       ),
       "BankDetails" -> Json.obj(

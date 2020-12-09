@@ -46,7 +46,6 @@ class Navigator @Inject()() {
     case ImporterEoriPage => getEORIPage
     case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)
     case ImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
-    case ImporterAddressPage => _ => routes.ImporterAddressConfirmationController.onPageLoad
     case ImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
     case ImporterHasEoriPage => getEORIConfirmation
     case IsVatRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
@@ -56,7 +55,6 @@ class Navigator @Inject()() {
     case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad
     case EnterAgentEORIPage => _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
     case AgentNameImporterPage => _ => routes.AgentImporterAddressController.onPageLoad(NormalMode)
-    case AgentImporterAddressPage => _ => routes.AgentImporterAddressConfirmationController.onPageLoad
     case AgentImporterManualAddressPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
     case AdditionalFileUploadPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
     case WhomToPayPage => whomToPayRoute

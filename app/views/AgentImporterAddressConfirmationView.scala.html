@@ -18,6 +18,8 @@
 @import controllers.routes._
 @import models.Mode
 
+@import play.api.libs.json.JsObject
+
 @this(
     main_template: MainTemplate,
     formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
@@ -25,11 +27,15 @@
     link: components.legacy.link
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(title = messages("agentImporterAddressConfirmation.title")) {
 
+@formHelper(action = routes.AgentImporterAddressController.addressSelectSubmit()) {
+
         @components.legacy.back_link()
+
+        @components.legacy.error_summary(form.errors)
 <div class="form-group">
 
     <h1 class="form-label">
@@ -42,7 +48,10 @@
         @messages("importerAddress.postCode")
     </h2>
 
-    <p class="mt-0">@link("agentImporterAddress", messages("importerAddressConfirmation.link1"))</p>
+    <p class="mt-0 inline">
+        <label class="bold">@search.postcode</label>&nbsp;
+        @link("agentImporterAddress", messages("importerAddressConfirmation.link1"))
+    </p>
 
     <h2 class="heading-medium pr-bottom-margin">
         @messages("importerAddressConfirmation.address")
@@ -52,25 +61,15 @@
         @govukSelect(Select(
             id = "field-id",
             name = "field-name",
-                items = Seq(
-                SelectItem(
-                value = Some("published"),
-                text = "HMRC Longbenton"
-                )
-            )
+            items = candidateAddresses
         ))
 
     </div>
 
 </div>
+    <input type="hidden" name="address-postcode" value="@search.postcode" />
     <p class="mt-0">@link("agentImporterManualAddress", messages("importerAddressConfirmation.link2"))</p>
 
-        <div>
-            <span>
-                <a class="govuk-link" href="@routes.ImporterHasEoriController.onPageLoad(NormalMode)"/>
-
-            </span>
-        </div>
-
     @components.legacy.submit_button()
+}
 }

@@ -16,14 +16,17 @@
 
 package utils
 
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 
 trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
   this: Suite =>
 
-  protected val server: WireMockServer = new WireMockServer(wireMockConfig().dynamicPort())
+  val wiremockStubPort = 11111
+  val wiremockstubHost = "localhost"
+
+  val server: WireMockServer = new WireMockServer(wireMockConfig().port(wiremockStubPort))
 
   override def beforeAll(): Unit = {
     server.start()

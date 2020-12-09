@@ -16,12 +16,10 @@
 
 @import controllers.routes._
 @import models.Mode
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF,
+    formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
     link: components.legacy.link
 )
 
@@ -31,7 +29,7 @@
     title = s"${errorPrefix(form)} ${messages("agentImporterAddress.title")}"
     ) {
 
-    @formHelper(action = AgentImporterAddressController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = AgentImporterAddressController.postcodeSubmit()) {
 
         @components.legacy.back_link()
 
@@ -44,7 +42,7 @@
         <p class="mb-05 mt-0">@messages("importerAddress.postCode")</p>
 
         @components.legacy.input_text(
-          field = form("value"),
+          field = form("postCode"),
           label = messages("agentImporterAddress.heading"),
           labelClass = Some("visually-hidden"),
           headingIsLabel = false,

@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package forms
+package models
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import models.PostcodeLookup
-import play.api.data.Forms.{optional, _}
-import play.api.data.{Form, Forms}
+import play.api.libs.json.Format
 
-class PostcodeFormProvider @Inject() extends Mappings {
+final case class InternalId(value: String)
 
-  def apply(): Form[PostcodeLookup] =
-    Form(
-      mapping(
-        "postCode" -> text("postcode.error.required")
-      )(PostcodeLookup.apply)(PostcodeLookup.unapply)
-    )
+object InternalId {
+  implicit val formal: Format[InternalId] = JsonFormatUtils.stringFormat(InternalId.apply)(_.value)
 }

@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,21 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package forms
+@(errors: Seq[FormError])(implicit messages: Messages)
+@if(errors.nonEmpty) {
+    <div class="error-summary error-summary--show" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import models.PostcodeLookup
-import play.api.data.Forms.{optional, _}
-import play.api.data.{Form, Forms}
+        <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+        @messages("error.summary.title")
+        </h2>
 
-class PostcodeFormProvider @Inject() extends Mappings {
+        <ul role="list" class="error-summary-list">
+            @for(error <- errors) {
+                <li><a href="#@{error.key}">@messages(error.message, error.args:_*)</a></li>
+            }
+        </ul>
 
-  def apply(): Form[PostcodeLookup] =
-    Form(
-      mapping(
-        "postCode" -> text("postcode.error.required")
-      )(PostcodeLookup.apply)(PostcodeLookup.unapply)
-    )
+    </div>
 }

@@ -16,6 +16,7 @@
 
 package models
 
+import models.responses.LookedUpAddressWrapper
 import play.api.libs.json.{Json, OFormat}
 
 final case class Address(
@@ -24,15 +25,15 @@ final case class Address(
                           City:String,
                           Region:String,
                           CountryCode:String,
-                          PostalCode:Option[String]
+                          postCode:Option[String]
                         ){
   val inlineText: String = List(
     AddressLine1,
-    Some(AddressLine2),
+    AddressLine2,
     City,
     Region,
     CountryCode,
-    Some(PostalCode)
+    postCode
   ).collect { case Some(x) => x }.mkString(", ")
 }
 
@@ -40,11 +41,12 @@ object Address {
 
   implicit val format: OFormat[Address] = Json.format[Address]
 
-//  def fromLookupResponse(candidate: LookedUpAddressWrapper): Address = Address(
-//    candidate.address.lines.headOption.getOrElse(""),
-//    candidate.address.lines.lift(1),
-//    candidate.address.town,
-//    candidate.address.county,
-//    candidate.address.postcode
-//  )
+  def fromLookupResponse(candidate: LookedUpAddressWrapper): Address = Address(
+    candidate.address.lines.headOption.getOrElse(""),
+    candidate.address.lines.lift(1),
+    candidate.address.town,
+    if (candidate.address.county == None) "" else candidate.address.county.get,
+    "GB",
+    Some(candidate.address.postcode)
+  )
 }
