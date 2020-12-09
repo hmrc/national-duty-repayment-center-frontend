@@ -46,7 +46,7 @@
     <h2 class="heading-medium pr-bottom-margin">@messages("importerAddress.postCode")</h2>
 
     <p class="mt-0 inline">
-        <label class="bold">@search.postcode</label>&nbsp;
+        <label class="bold">@search.postcode.replaceAll(" ", "")</label>&nbsp;
         @link("importerAddress", messages("importerAddressConfirmation.link1"))
     </p>
 
