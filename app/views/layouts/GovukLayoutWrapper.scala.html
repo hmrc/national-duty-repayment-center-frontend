@@ -15,6 +15,7 @@
  *@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import views.components.FooterLinks
 
 @this(
         govukLayout: GovukLayout,
@@ -63,6 +64,7 @@ None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messag
   headBlock = Some(head),
   headerBlock = Some(siteHeader(timeout)),
   beforeContentBlock = Some(beforeContentBlock),
+  footerItems = FooterLinks.items,
   bodyEndBlock = None,
   scriptsBlock = Some(scripts)
 )(content)
