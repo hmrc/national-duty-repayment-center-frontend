@@ -99,7 +99,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, claimantTypeRoute)
-          .withFormUrlEncodedBody(("value", ClaimantType.options.head.value))
+          .withFormUrlEncodedBody(("value", ClaimantType.options(form).head.value.get))
 
       val result = route(application, request).value
 

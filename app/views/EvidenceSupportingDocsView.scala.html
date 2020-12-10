@@ -28,7 +28,7 @@
 
 @main_template(title = messages("evidenceSupportingDocs.title")) {
 
-        @components.back_link()
+        @components.legacy.back_link()
 
 
         <h1 class="heading-large mt-0 mb-3">@messages("evidenceSupportingDocs.heading")</h1>
@@ -37,7 +37,7 @@
 
         <p class="mt-0">@messages("evidenceSupportingDocs.paragraph2")</p>
 
-        @components.list_items(
+        @components.legacy.list_items(
             messages("evidenceSupportingDocs.bullet1"),
             messages("evidenceSupportingDocs.bullet2"),
             messages("evidenceSupportingDocs.bullet3"),
@@ -59,6 +59,6 @@
             </span>
         </div>
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 

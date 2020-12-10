@@ -99,7 +99,7 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, customsRegulationTypeRoute)
-          .withFormUrlEncodedBody(("value", CustomsRegulationType.options.head.value))
+          .withFormUrlEncodedBody(("value", CustomsRegulationType.options(form).head.value.get))
 
       val result = route(application, request).value
 

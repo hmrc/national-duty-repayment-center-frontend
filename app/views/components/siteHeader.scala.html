@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package views
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.header.Header
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukHeader
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.header.HeaderNavigation
 
-import views.behaviours.ViewBehaviours
-import views.html.ProofOfAuthorityView
+@this(govukHeader: GovukHeader)
 
-class ProofOfAuthorityViewSpec extends ViewBehaviours {
+@(showSignOut: Boolean = true)(implicit messages: Messages)
 
-  "ProofOfAuthorityView" must {
-
-    val view = viewFor[ProofOfAuthorityView](Some(emptyUserAnswers))
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "proofOfAuthority")
-
-    behave like pageWithBackLink(applyView)
-  }
-
-}
+@govukHeader(Header(
+    homepageUrl = None, //TODO
+    serviceName = Some(messages("site.service_name")),
+    serviceUrl = None, //TODO
+    containerClasses = Some("govuk-width-container"),
+    navigation = None //TODO
+))

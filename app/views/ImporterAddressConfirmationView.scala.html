@@ -24,7 +24,7 @@
         main_template: MainTemplate,
         formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
         govukSelect: GovukSelect,
-        link: components.link
+        link: components.legacy.link
 )
 
 @(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -33,7 +33,7 @@
     title = messages("importerAddressConfirmation.title")
 ) {
 @formHelper(action = routes.ImporterAddressController.addressSelectSubmit()) {
-    @components.back_link()
+    @components.legacy.back_link()
 
     @components.error_summary(form.errors)
 <div class="form-group">
@@ -46,7 +46,7 @@
     <h2 class="heading-medium pr-bottom-margin">@messages("importerAddress.postCode")</h2>
 
     <p class="mt-0 inline">
-        <label class="bold">@search.postcode</label>&nbsp;
+        <label class="bold">@search.postcode.replaceAll(" ", "")</label>&nbsp;
         @link("importerAddress", messages("importerAddressConfirmation.link1"))
     </p>
 
@@ -65,6 +65,6 @@
     <input type="hidden" name="address-postcode" value="@search.postcode" />
     <p class="mt-0">@link("importerManualAddress", messages("importerAddressConfirmation.link2"))</p>
 
-    @components.submit_button()
+    @components.legacy.submit_button()
 }
 }

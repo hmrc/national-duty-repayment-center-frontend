@@ -99,7 +99,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, numberOfEntriesTypeRoute)
-          .withFormUrlEncodedBody(("value", NumberOfEntriesType.options.head.value))
+          .withFormUrlEncodedBody(("value", NumberOfEntriesType.options(form).head.value.get))
 
       val result = route(application, request).value
 

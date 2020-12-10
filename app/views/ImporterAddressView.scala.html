@@ -19,8 +19,8 @@
 
 @this(
         main_template: MainTemplate,
-        formHelper: FormWithCSRF,
-        link: components.link
+        formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
+        link: components.legacy.link
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -31,17 +31,17 @@
 
         @formHelper(action = ImporterAddressController.postcodeSubmit()) {
 
-            @components.back_link()
+            @components.legacy.back_link()
 
-            @components.error_summary(form.errors)
+            @components.legacy.error_summary(form.errors)
 
             <div class="mb-30">
-                @components.heading(messages("importerAddress.heading"))
+                @components.legacy.heading(messages("importerAddress.heading"))
             </div>
 
             <p class="mb-05 mt-0">@messages("importerAddress.postCode")</p>
 
-            @components.input_text(
+            @components.legacy.input_text(
                 field = form("postCode"),
                 label = messages("importerAddress.heading"),
                 labelClass = Some("visually-hidden"),
@@ -51,6 +51,6 @@
 
             <p>@link("importerManualAddress", messages("importerAddress.manual"))</p>
 
-            @components.find_address_button()
+            @components.legacy.find_address_button()
         }
     }

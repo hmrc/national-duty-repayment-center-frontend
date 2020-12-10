@@ -16,10 +16,12 @@
 
 @import controllers.routes._
 @import models.Mode
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    formHelper: PlayFormWithCSRF
 )
 
 
@@ -38,9 +40,9 @@
 
     @formHelper(action = ImporterManualAddressController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @components.legacy.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
 <fieldset class="govuk-fieldset">
 
@@ -52,21 +54,21 @@
 
         @pageHint
 
-        @components.input_text(
+        @components.legacy.input_text(
             field = form("value"),
             label = messages("importerManualAddress.addressLine1.heading"),
             labelClass = Some("mb-05 bold-4"),
             headingIsLabel = false
         )
 
-        @components.input_text(
+        @components.legacy.input_text(
             field = form("addressLine2"),
             label = messages("importerManualAddress.addressLine1.heading"),
             labelClass = Some("visually-hidden"),
             headingIsLabel = false
         )
 
-        @components.input_text(
+        @components.legacy.input_text(
             field = form("city"),
             label = messages("importerManualAddress.city.heading"),
             labelClass = Some("mb-05 bold-4"),
@@ -74,7 +76,7 @@
             headingIsLabel = false
         )
 
-        @components.input_text(
+        @components.legacy.input_text(
             field = form("county"),
             label = messages("importerManualAddress.county.heading"),
             labelClass = Some("mb-05 bold-4"),
@@ -82,7 +84,7 @@
             headingIsLabel = false
         )
 
-        @components.input_text(
+        @components.legacy.input_text(
             field = form("postcode"),
             label = messages("importerAddress.hint"),
             labelClass = Some("mb-05 bold-4"),
@@ -91,6 +93,6 @@
         )
 
 </fieldset>
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }

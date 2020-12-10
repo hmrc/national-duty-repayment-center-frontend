@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package views
+package views.components
 
-import views.behaviours.ViewBehaviours
-import views.html.EvidenceSupportingDocsView
+import javax.inject.{Inject, Singleton}
 
-class EvidenceSupportingDocsViewSpec extends ViewBehaviours {
-
-  "EvidenceSupportingDocsView" must {
-
-    val view = viewFor[EvidenceSupportingDocsView](Some(emptyUserAnswers))
-
-    val applyView = view.apply(emptyUserAnswers)(fakeRequest, messages)
-
-    behave like normalPage(applyView, "evidenceSupportingDocs")
-
-    behave like pageWithBackLink(applyView)
-  }
-
-}
+@Singleton
+class html @Inject() (
+//  val h1: views.html.components.h1,
+//  val h2: views.html.components.h2,
+//  val h3: views.html.components.h3,
+//  val p: views.html.components.p,
+//  val strong: views.html.components.strong,
+//  val a: views.html.components.link,
+//  val ul: views.html.components.bullets,
+//  val ol: views.html.components.orderedList,
+  val button: views.html.components.button
+)

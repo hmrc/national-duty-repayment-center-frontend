@@ -14,17 +14,8 @@
  * limitations under the License.
  *@
 
-@import viewmodels.AnswerSection
-@import views.html._
+@()(implicit messages: Messages)
 
-@(answerSection: AnswerSection)(implicit messages: Messages)
-
-@if(answerSection.headingKey.isDefined){
-    <h2 class="heading-large mt-0 mb-3">@messages(answerSection.headingKey.get)</h2>
-}
-
-<dl class="govuk-summary-list">
-    @for(row <- answerSection.rows){
-        @components.answer_row(row)
-    }
-</dl>
+<div class="section">
+    <button id="submit" class="button">@messages("site.continue")</button>
+</div>
