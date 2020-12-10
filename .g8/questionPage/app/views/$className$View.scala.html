@@ -16,7 +16,7 @@
 
         @components.back_link()
         
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
         @components.heading("$className;format="decap"$.heading")
 
@@ -30,6 +30,6 @@
             label = messages("$className;format="decap"$.$field2Name$")
         )
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }
