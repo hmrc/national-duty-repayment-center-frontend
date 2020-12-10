@@ -16,10 +16,12 @@
 
 @import controllers.routes._
 @import models.Mode
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    formHelper: PlayFormWithCSRF
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -30,11 +32,11 @@
 
     @formHelper(action = ReasonForOverpaymentController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @components.legacy.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
-        @components.input_textarea(
+        @components.legacy.input_textarea(
           field = form("value"),
           label = messages("reasonForOverpayment.heading"),
           headingIsLabel = true,
@@ -42,6 +44,6 @@
           charCount = 750
         )
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }

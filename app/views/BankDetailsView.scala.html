@@ -16,10 +16,12 @@
 
 @import controllers.routes._
 @import models.Mode
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    formHelper: PlayFormWithCSRF
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -30,13 +32,13 @@
 
     @formHelper(action = BankDetailsController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "novalidate") {
 
-        @components.back_link()
+        @components.legacy.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
         <h1 class="heading-large mt-0 mb-3">@messages("bankDetails.heading")</h1>
     <div id="bank-details">
-        @components.input_text(
+        @components.legacy.input_text(
           field = form("AccountName"),
           label = messages("bankDetails.name.heading"),
           labelClass = Some("bold-4"),
@@ -44,7 +46,7 @@
           hint = Some(messages("bankDetails.name.hint"))
         )
 
-        @components.bank_details(
+        @components.legacy.bank_details(
             field = form("SortCode"),
             label = messages("bankDetails.sortCode.heading"),
             labelClass = Some("bold-4"),
@@ -53,7 +55,7 @@
             hint = Some(messages("bankDetails.sortCode.hint"))
         )
 
-        @components.bank_details(
+        @components.legacy.bank_details(
             field = form("AccountNumber"),
             label = messages("bankDetails.accountNumber.heading"),
             labelClass = Some("bold-4"),
@@ -62,7 +64,7 @@
             hint = Some(messages("bankDetails.accountNumber.hint"))
         )
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     </div>
     }
 }

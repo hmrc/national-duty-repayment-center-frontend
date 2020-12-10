@@ -16,34 +16,35 @@
 
 @import controllers.routes._
 @import models.{Mode, NumberOfEntriesType}
-@import uk.gov.hmrc.play.views.html._
 @import views.ViewUtils._
 
-
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("numberOfEntriesType.title")}"
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("claimantType.title")}"),
+    backLink = Some("#")
     ) {
 
-    @formHelper(action = NumberOfEntriesTypeController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = NumberOfEntriesTypeController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @components.legacy.error_summary(form.errors)
 
-        @components.error_summary(form.errors)
-
-        @components.input_radio(
-            field = form("value"),
-            legend = messages("numberOfEntriesType.heading"),
-            headingIsLegend = true,
-            inputs = NumberOfEntriesType.options.toSeq
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = NumberOfEntriesType.options(form),
+            inline = false,
+            legend = Some("numberOfEntriesType.heading"),
+            hint = None
         )
 
-        @components.submit_button()
+        @html.button("site.continue")
     }
 }

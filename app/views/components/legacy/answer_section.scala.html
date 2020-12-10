@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package views
+@import viewmodels.AnswerSection
+@import views.html._
 
-import views.behaviours.ViewBehaviours
-import views.html.SessionExpiredView
+@(answerSection: AnswerSection)(implicit messages: Messages)
 
-class SessionExpiredViewSpec extends ViewBehaviours {
-
-  "Session Expired view" must {
-
-    val application = applicationBuilder().build()
-
-    val view = application.injector.instanceOf[SessionExpiredView]
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "session_expired", "guidance")
-  }
+@if(answerSection.headingKey.isDefined){
+    <h2 class="heading-large mt-0 mb-3">@messages(answerSection.headingKey.get)</h2>
 }
+
+<dl class="govuk-summary-list">
+    @for(row <- answerSection.rows){
+        @components.legacy.answer_row(row)
+    }
+</dl>

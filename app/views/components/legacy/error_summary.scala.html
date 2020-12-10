@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,21 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package views
+@(errors: Seq[FormError])(implicit messages: Messages)
+@if(errors.nonEmpty) {
+    <div class="error-summary error-summary--show" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
 
-import views.behaviours.ViewBehaviours
-import views.html.ConfirmationView
+        <h2 class="heading-medium error-summary-heading" id="error-summary-heading">
+        @messages("error.summary.title")
+        </h2>
 
-class confirmationViewSpec extends ViewBehaviours {
+        <ul role="list" class="error-summary-list">
+            @for(error <- errors) {
+                <li><a href="#@{error.key}">@messages(error.message, error.args:_*)</a></li>
+            }
+        </ul>
 
-  "confirmation view" must {
-
-    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "confirmation")
-  }
+    </div>
 }

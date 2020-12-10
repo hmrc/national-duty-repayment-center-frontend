@@ -15,13 +15,12 @@
  *@
 
 @import play.twirl.api.HtmlFormat
-@import views.html.components.language_selection
+@import views.html.components.legacy.language_selection
 @import views.html.layouts.GovUkTemplate
 
 @this(
     header_nav: HeaderNav,
     head: Head,
-    footer: Footer,
     serviceInfo: ServiceInfo,
     main_content_header: MainContentHeader,
     footer_links: FooterLinks,
@@ -46,7 +45,7 @@
       linkElem = None,
       headScripts = None)
     <meta name="format-detection" content="telephone=no" />
-    <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/nationaldutyrepaymentcenterfrontend-app.css")' />
+    <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/application.css")' />
 }
 
 @headerNavLinks = {}

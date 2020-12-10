@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package views
+@(
+messageKey: String = "",
+inputType: String = "button"
+)(implicit messages: Messages)
 
-import views.behaviours.ViewBehaviours
-import views.html.FileUploadView
-
-class FileUploadViewSpec extends ViewBehaviours {
-
-  "FileUpload view" must {
-
-    val view = viewFor[FileUploadView](Some(emptyUserAnswers))
-
-    val applyView = view.apply()(fakeRequest, messages)
-
-    behave like normalPage(applyView, "fileUpload")
-
-    behave like pageWithBackLink(applyView)
-  }
-}
+<div class="section">
+    <input type="@inputType" class="button" value="@messages(messageKey)" />
+</div>
