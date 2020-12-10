@@ -23,6 +23,8 @@
         govukBackLink: GovukBackLink,
         siteHeader: components.siteHeader,
         link: components.legacy.link,
+        reportAProblemLink: ReportAProblemLink,
+        appConfig: config.FrontendAppConfig
 )
 
 @(pageTitle: Option[String] = None, timeout: Boolean = true, js: Option[Html] = None, backLink: Option[String] =
@@ -46,17 +48,17 @@ None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messag
 }
 
 @beforeContentBlock = {
-
-@if(backLink.isDefined) {
-  @govukBackLink(BackLink(href = backLink.get, content = Text(messages("site.back")), attributes = Map("id" -> "back-link")))
-}
+  @if(backLink.isDefined) {
+    @govukBackLink(BackLink(href = backLink.get, content = Text(messages("site.back")), attributes = Map("id" -> "back-link")))
+  }
 }
 
 @content = {
   <div class="govuk-!-margin-bottom-6">
-  @contentBlock
+    @contentBlock
   </div>
 
+  @{reportAProblemLink(appConfig.reportAProblemPartialUrl, appConfig.reportAProblemNonJSUrl)}
 }
 
 @govukLayout(
