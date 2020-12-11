@@ -30,6 +30,11 @@ session_expired.heading = For your security, we signed you out
 session_expired.guidance = We saved your answers.
 session_expired.button = Sign in
 
+timeout.title = For your security, we will sign you out 
+timeout.message = For your security, we will sign you out in $
+timeout.keepAlive = Stay signed in
+timeout.signOut = Sign out
+
 site.back = Back
 site.delete = Remove
 site.edit = Change
