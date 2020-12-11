@@ -45,12 +45,12 @@
         name = "value",
         items = Seq(
             RadioItem(
-            value = Some("Yes"),
+            value = Some("01"),
             content = Text(messages("contactByEmail.01")),
             checked = form("value").value.contains("Yes")
         ),
         RadioItem(
-            value = Some("No"),
+            value = Some("02"),
             content = Text(messages(s"contactByEmail.02")),
             checked = form("value").value.contains("No")
        )
