@@ -53,7 +53,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         postCode = Some("ZZ111ZZ")
       )
 
-      val userDetails = UserDetails(VATNumber = Some(VRN("123456789")),
+      val userDetails = UserDetails(
         EORI = EORI("GB123456789123456"),
         Name = UserName("Joe Bloggs"),
         Address = address,
@@ -111,7 +111,6 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "PaymentMethod" -> "01",
             ),
           "AgentDetails" -> Json.obj(
-          "VATNumber" -> "123456789",
           "EORI" -> "GB123456789123456",
           "Name" -> "Joe Bloggs",
           "Address" -> Json.obj(
@@ -126,7 +125,6 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "EmailAddress" -> "example@example.com"
           ),
           "ImporterDetails" -> Json.obj(
-            "VATNumber" -> "123456789",
             "EORI" -> "GB123456789123456",
             "Name" -> "Joe Bloggs",
             "Address" -> Json.obj(

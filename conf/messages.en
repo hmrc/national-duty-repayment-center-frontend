@@ -100,7 +100,7 @@ howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
 howManyEntries.error.required = Enter how many entries are you claiming for?
-howManyEntries.error.length = HowManyEntries must be 2 characters or less
+howManyEntries.error.length = HowManyEntries must be 6 characters or less
 
 entryDetails.title = Entry Details
 entryDetails.heading = Entry Details

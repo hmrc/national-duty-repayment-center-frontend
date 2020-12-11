@@ -26,6 +26,6 @@ class HowManyEntriesFormProvider @Inject() extends Mappings {
   def apply(): Form[NoOfEntries] =
     Form(
       "value" -> text("howManyEntries.error.required")
-        .verifying(maxLength(2, "howManyEntries.error.length")).transform[NoOfEntries](NoOfEntries.apply, _.value)
+        .verifying(maxLength(6, "howManyEntries.error.length")).transform[NoOfEntries](NoOfEntries.apply, _.value)
     )
 }

@@ -65,7 +65,6 @@ object CreateClaimRequest {
       telephone <- userAnswers.get(PhoneNumberPage)
       email <-userAnswers.get(EmailAddressPage)
     } yield UserDetails(
-      None,
       eori,
       name,
       address,
@@ -81,7 +80,6 @@ object CreateClaimRequest {
       telephone <- userAnswers.get(PhoneNumberPage)
       email <-userAnswers.get(EmailAddressPage)
     } yield UserDetails(
-      None,
       eori,
       name,
       address,
