@@ -59,6 +59,8 @@ class CheckYourAnswersController @Inject()(
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+
+      println("XXXXXXXXXXXX onsubmit()")
       for {
         claimId                 <- claimService.submitClaim(request.userAnswers)
         //updatedClaimId          <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, value = claimId))
