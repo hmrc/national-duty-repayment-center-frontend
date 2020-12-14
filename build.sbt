@@ -55,7 +55,7 @@ lazy val root = (project in file("."))
         group(Seq(
           "javascripts/show-hide-content.js",
           "javascripts/nationaldutyrepaymentcenterfrontend.js",
-          "javascripts/timeoutDialog.js"
+          "javascripts/application.js"
         ))
     ),
     // prevent removal of unused code which generates warning errors due to use of third-party libs

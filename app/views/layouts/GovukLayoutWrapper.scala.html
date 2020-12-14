@@ -39,8 +39,7 @@ None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messag
     timeout = Some(appConfig.timeout),
     countdown = Some(appConfig.countdown),
     keepAliveUrl = Some("?continue=true"),
-    signOutUrl = Some("?lang=English"),
-    timeoutUrl = Some("timeout.title"),
+    signOutUrl = Some(routes.SessionExpiredController.onPageLoad.url),
     language = Some(messages.lang.code)
 ))
 
