@@ -129,7 +129,6 @@ class AgentImporterAddressFormProviderSpec extends StringFieldBehaviours {
   ".Region" must {
 
     val fieldName = "Region"
-    val requiredKey = "agentImporterAddress.region.error.required"
     val lengthKey = "agentImporterAddress.region.error.length"
     val invalidKey = "agentImporterAddress.region.error.invalid"
     val maxLength = 64
@@ -152,12 +151,6 @@ class AgentImporterAddressFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       maxLength = maxLength,
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
     )
   }
 

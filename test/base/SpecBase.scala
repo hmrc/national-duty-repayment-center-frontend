@@ -75,7 +75,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   val address = Address(AddressLine1 = "line 1",
     AddressLine2 = Some("line 2"),
     City = "city",
-    Region = "region",
+    Region = Some("region"),
     CountryCode = "GB",
     postCode = Some("ZZ111ZZ")
   )

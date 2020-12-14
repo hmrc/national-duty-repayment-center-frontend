@@ -48,7 +48,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       val address = Address(AddressLine1 = "line 1",
         AddressLine2 = Some("line 2"),
         City = "city",
-        Region = "region",
+        Region = Some("region"),
         CountryCode = "GB",
         postCode = Some("ZZ111ZZ")
       )

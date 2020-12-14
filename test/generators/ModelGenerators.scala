@@ -148,7 +148,7 @@ trait ModelGenerators {
     } yield Address(addressLine1,
       addressLine2,
       city,
-      region,
+      Some(region),
       countryCode.mkString,
       postCode
     )
