@@ -58,7 +58,9 @@ None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messag
     @contentBlock
   </div>
 
-  @{reportAProblemLink(appConfig.reportAProblemPartialUrl, appConfig.reportAProblemNonJSUrl)}
+  @{
+    reportAProblemLink(appConfig.reportAProblemPartialUrl, appConfig.reportAProblemNonJSUrl)
+    }
 }
 
 @govukLayout(
