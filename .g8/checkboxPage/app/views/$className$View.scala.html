@@ -16,7 +16,7 @@
 
         @components.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
         @components.input_checkboxes(
             field = form("value"),
@@ -25,6 +25,6 @@
             inputs = $className$.options
         )
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }

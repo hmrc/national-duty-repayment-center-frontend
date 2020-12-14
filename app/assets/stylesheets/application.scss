@@ -1,5 +1,7 @@
 $govuk-assets-path: "/national-duty-repayment-center/assets/lib/govuk-frontend/govuk/assets/";
 @import "lib/govuk-frontend/govuk/all";
+$hmrc-assets-path: "/send-documents-for-customs-check/assets/lib/hmrc-frontend/hmrc/";
+@import "lib/hmrc-frontend/hmrc/all";
 
 @import 'partials/_variables';
 @import 'partials/_base';

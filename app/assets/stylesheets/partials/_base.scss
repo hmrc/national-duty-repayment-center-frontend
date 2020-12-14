@@ -5,9 +5,8 @@ as service does not implement native date inputs
 ====================================
 */
 .touchevents .date-of-birth {
-  display:block;
+  display: block;
 }
-
 
 
 /*
@@ -17,14 +16,14 @@ https://github.com/hmrc/assets-frontend/issues/727
 ====================================
 */
 .visually-hidden {
-position: absolute;
-overflow: hidden;
-clip: rect(0 0 0 0);
-height: 1px;
-width: 1px;
-margin: -1px;
-padding: 0;
-border: 0;
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
 }
 
 /*
@@ -37,5 +36,12 @@ Welsh/English language selector
 }
 
 .mt-0 {
-    margin-top: 0px;
+  margin-top: 0px;
+}
+
+.hidden,
+.js-enabled .js-hidden,
+.js .js-hidden {
+  display: none;
+  visibility: hidden;
 }
