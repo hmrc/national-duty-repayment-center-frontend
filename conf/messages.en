@@ -27,7 +27,7 @@ index.guidance = Welcome to your new frontend. Please see the README file for a 
 
 session_expired.title = For your security, we signed you out
 session_expired.heading = For your security, we signed you out
-session_expired.guidance = We saved your answers.
+session_expired.guidance = We did not save your answers.
 session_expired.button = Sign in
 
 timeout.title = For your security, we will sign you out 
