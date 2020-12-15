@@ -27,8 +27,13 @@
         appConfig: config.FrontendAppConfig
 )
 
-@(pageTitle: Option[String] = None, timeout: Boolean = true, js: Option[Html] = None, backLink: Option[String] =
-None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(
+bodyClasses: Option[String] = None,
+pageTitle: Option[String] = None,
+timeout: Boolean = true,
+js: Option[Html] = None,
+backLink: Option[String] =None,
+refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @head = {
   <meta name="format-detection" content="telephone=no">
@@ -43,8 +48,7 @@ None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messag
 
 @scripts = {
   <script src='@controllers.routes.Assets.versioned("lib/govuk-frontend/govuk/all.js")'></script>
-  <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
-  <script type="text/javascript" src='@controllers.routes.Assets.versioned("javascripts/researchBanner.js")'></script>
+  <script src='@controllers.routes.Assets.versioned("javascripts/show-hide-content.js")'></script>
 }
 
 @beforeContentBlock = {

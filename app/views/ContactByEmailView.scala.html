@@ -16,33 +16,64 @@
 
 @import controllers.routes._
 @import models.{Mode, ContactByEmail}
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
+@import components.p
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+govukLayout: views.html.layouts.GovukLayoutWrapper,
+forms: views.components.forms,
+html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("contactByEmail.title")}"
-    ) {
+@conditionalContent = {
+@components.legacy.back_link()
+}
 
-    @formHelper(action = ContactByEmailController.onSubmit(mode), 'autoComplete -> "off") {
+@govukLayout(
+pageTitle = Some(s"${errorPrefix(form)} ${messages("contactByEmail.title")}"),
+backLink = Some("#")
+) {
 
-        @components.legacy.back_link()
+    @forms.formWithCSRF(action = ContactByEmailController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
         @components.legacy.error_summary(form.errors)
 
-        @components.legacy.input_radio(
-            field = form("value"),
-            legend = messages("contactByEmail.heading"),
-            headingIsLegend = true,
-            inputs = ContactByEmail.options.toSeq
+        <!--@forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = ContactByEmail.options(form),
+            inline = false,
+            legendAsHeading = true,
+            legend = Some(messages("contactByEmail.heading")),
+            hint = Some(Html(messages("contactByEmail.hintText"))),
+        )-->
+
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = Seq(
+            RadioItem(
+                value = Some("yes"),
+                content = Text(messages("contactByEmail.01")),
+                checked = form("value").value.contains("yes"),
+                conditionalHtml = Some(conditionalContent)
+            ),
+            RadioItem(
+                value = Some("no"),
+                content = Text(messages("contactByEmail.02")),
+                checked = form("value").value.contains("no")
+            )
+            ),
+            legendAsHeading = true,
+            legend = Some(messages("contactByEmail.heading")),
+            hint = Some(Html(messages("contactByEmail.hintText")))
         )
 
-        @components.legacy.submit_button()
+
+        @html.button("site.continue")
     }
 }
