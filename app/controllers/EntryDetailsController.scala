@@ -47,10 +47,6 @@ class EntryDetailsController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      if(request.userAnswers.get(CustomsRegulationTypePage) == Some(CustomsRegulationType.UnionsCustomsCodeRegulation)) {
-        sessionRepository.set(request.userAnswers.set(ArticleTypePage, ArticleType.Schedule).get)
-      }
-
       val preparedForm = request.userAnswers.get(EntryDetailsPage) match {
         case None => form
         case Some(value) => form.fill(value)

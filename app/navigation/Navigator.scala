@@ -64,7 +64,7 @@ class Navigator @Inject()() {
   }
 
   private def getEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
-    case Some(CustomsRegulationType.UKCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
+    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
     case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
   }
 
