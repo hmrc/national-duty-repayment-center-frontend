@@ -47,8 +47,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @scripts = {
-  <script src='@controllers.routes.Assets.versioned("lib/govuk-frontend/govuk/all.js")'></script>
-  <script src='@controllers.routes.Assets.versioned("javascripts/show-hide-content.js")'></script>
+  <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
 }
 
 @beforeContentBlock = {
