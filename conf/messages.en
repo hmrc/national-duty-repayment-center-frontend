@@ -25,9 +25,15 @@ index.title = National Duty Repayment Centre
 index.heading = National Duty Repayment Centre
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
 
-session_expired.title = For your security, this service has been reset
-session_expired.heading = For your security, this service has been reset
-session_expired.guidance = The details you have given have been deleted because you did not continue the service for 15 minutes.
+session_expired.title = For your security, we signed you out
+session_expired.heading = For your security, we signed you out
+session_expired.guidance = We did not save your answers.
+session_expired.button = Sign in
+
+timeout.title = For your security, we will sign you out 
+timeout.message = For your security, we will sign you out in $
+timeout.keepAlive = Stay signed in
+timeout.signOut = Sign out
 
 site.back = Back
 site.delete = Remove

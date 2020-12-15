@@ -15,6 +15,7 @@
  *@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.hmrcfrontend.views.html.components._
 @import views.components.FooterLinks
 
 @this(
@@ -23,6 +24,7 @@
         govukBackLink: GovukBackLink,
         siteHeader: components.siteHeader,
         link: components.legacy.link,
+        hmrcTimeoutDialog : HmrcTimeoutDialog,
         reportAProblemLink: ReportAProblemLink,
         appConfig: config.FrontendAppConfig
 )
@@ -34,6 +36,14 @@ None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messag
   <meta name="format-detection" content="telephone=no">
     <!--[if lte IE 8]><link href="@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")" rel="stylesheet" type="text/css" /><![endif]-->
     <!--[if gt IE 8]><!-->
+@hmrcTimeoutDialog(TimeoutDialog(
+    timeout = Some(appConfig.timeout),
+    countdown = Some(appConfig.countdown),
+    keepAliveUrl = Some("?continue=true"),
+    signOutUrl = Some(routes.SessionExpiredController.onPageLoad.url),
+    language = Some(messages.lang.code)
+))
+
   <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="screen" rel="stylesheet"
   type="text/css" />
     <!--<![endif]-->
@@ -42,8 +52,9 @@ None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messag
 }
 
 @scripts = {
-  <script src='@controllers.routes.Assets.versioned("lib/govuk-frontend/govuk/all.js")'></script>
-  <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
+    <script src='@routes.Assets.versioned("lib/govuk-frontend/govuk/all.js")'></script>
+    <script src='@routes.Assets.versioned("lib/hmrc-frontend/hmrc/all.js")'></script>
+    <script src='@routes.Assets.versioned("javascripts/application.js")'></script>
   <script type="text/javascript" src='@controllers.routes.Assets.versioned("javascripts/researchBanner.js")'></script>
 }
 

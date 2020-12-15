@@ -56,11 +56,16 @@ class Navigator @Inject()() {
     case EnterAgentEORIPage => _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
     case AgentNameImporterPage => _ => routes.AgentImporterAddressController.onPageLoad(NormalMode)
     case AgentImporterManualAddressPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
-    case AdditionalFileUploadPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
+    case AdditionalFileUploadPage =>  additionalFileUploadRoute
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def additionalFileUploadRoute(answers: UserAnswers): Call = answers.get(AdditionalFileUploadPage) match {
+    case Some(AdditionalFileUpload.Yes) => routes.FileUploadController.onPageLoad
+    case Some(AdditionalFileUpload.No) => routes.ImporterHasEoriController.onPageLoad(NormalMode)
   }
 
   private def whomToPayRoute(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
