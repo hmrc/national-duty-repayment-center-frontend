@@ -28,7 +28,16 @@ html: views.components.html
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @conditionalContent = {
-@components.legacy.back_link()
+    @forms.inputText(
+        form = form,
+        id = "contact-by-email",
+        name = "contact-by-email",
+        label = "contactByEmail.yes",
+        inputType = "email",
+        isPageHeading = false,
+        isInFieldset = false,
+        attributes = Map("autocomplete" -> "email")
+    )
 }
 
 @govukLayout(
@@ -40,30 +49,19 @@ backLink = Some("#")
 
         @components.legacy.error_summary(form.errors)
 
-        <!--@forms.inputRadio(
-            form = form,
-            idPrefix = "value",
-            name = "value",
-            items = ContactByEmail.options(form),
-            inline = false,
-            legendAsHeading = true,
-            legend = Some(messages("contactByEmail.heading")),
-            hint = Some(Html(messages("contactByEmail.hintText"))),
-        )-->
-
         @forms.inputRadio(
             form = form,
             idPrefix = "value",
             name = "value",
             items = Seq(
             RadioItem(
-                value = Some("yes"),
+                value = Some("01"),
                 content = Text(messages("contactByEmail.01")),
                 checked = form("value").value.contains("yes"),
                 conditionalHtml = Some(conditionalContent)
             ),
             RadioItem(
-                value = Some("no"),
+                value = Some("02"),
                 content = Text(messages("contactByEmail.02")),
                 checked = form("value").value.contains("no")
             )
@@ -72,7 +70,6 @@ backLink = Some("#")
             legend = Some(messages("contactByEmail.heading")),
             hint = Some(Html(messages("contactByEmail.hintText")))
         )
-
 
         @html.button("site.continue")
     }

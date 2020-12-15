@@ -25,11 +25,11 @@ sealed trait ContactByEmail
 
 object ContactByEmail extends Enumerable.Implicits {
 
-  case object Importer extends WithName("01") with ContactByEmail
-  case object Representative extends WithName("02") with ContactByEmail
+  case object Yes extends WithName("01") with ContactByEmail
+  case object No extends WithName("02") with ContactByEmail
 
   val values: Seq[ContactByEmail] = Seq(
-    Importer, Representative
+    Yes, No
   )
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {

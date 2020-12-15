@@ -99,7 +99,7 @@ class ContactByEmailControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, contactByEmailRoute)
-          .withFormUrlEncodedBody(("value", ContactByEmail.options.head.value))
+          .withFormUrlEncodedBody(("value", ContactByEmail.options(form).head.value.get))
 
       val result = route(application, request).value
 

@@ -1,8 +1,5 @@
 $(document).ready(function() {
 
-     window.GOVUKFrontend.initAll();
-     window.HMRCFrontend.initAll();
-
   // =====================================================
   // Initialise show-hide-content
   // Toggles additional content based on radio/checkbox input state
