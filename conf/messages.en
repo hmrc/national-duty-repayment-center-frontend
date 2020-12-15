@@ -47,6 +47,12 @@ find.address = Find address
 site.service_name = National Duty Repayment Centre
 site.textarea.char_limit = (Limit is {0} characters)
 
+footer.cookies = Cookies
+footer.privacy = Privacy policy
+footer.termsConditions = Terms and conditions
+footer.govukHelp = Help using GOV.UK
+footer.accessibilityStatement = Accessibility statement
+
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
