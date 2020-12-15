@@ -19,6 +19,7 @@ package models
 import play.api.libs.json.{Json, OFormat}
 
 final case class UserDetails(
+                             isVATRegistered: Boolean,
                              EORI: EORI,
                              Name: UserName,
                              Address: Address,

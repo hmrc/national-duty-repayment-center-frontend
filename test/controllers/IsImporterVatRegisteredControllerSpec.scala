@@ -65,7 +65,7 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsImporterVatRegisteredPage, IsImporterVatRegistered.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsImporterVatRegisteredPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(IsImporterVatRegistered.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -99,7 +99,7 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, isImporterVatRegisteredRoute)
-          .withFormUrlEncodedBody(("value", IsImporterVatRegistered.options.head.value))
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

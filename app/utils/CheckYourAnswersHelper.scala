@@ -167,7 +167,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("isImporterVatRegistered.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"isImporterVatRegistered.$x")),
+        yesOrNo(x),
         Some(routes.IsImporterVatRegisteredController.onPageLoad(CheckMode).url)
       )
   }

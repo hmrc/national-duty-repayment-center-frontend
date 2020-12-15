@@ -16,24 +16,24 @@
 
 package forms
 
-import forms.behaviours.OptionFieldBehaviours
-import models.IsImporterVatRegistered
+import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class IsImporterVatRegisteredFormProviderSpec extends OptionFieldBehaviours {
+class IsImporterVatRegisteredFormProviderSpec extends BooleanFieldBehaviours {
+
+  val requiredKey = "isImporterVatRegistered.error.required"
+  val invalidKey = "error.boolean"
 
   val form = new IsImporterVatRegisteredFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
-    val requiredKey = "isImporterVatRegistered.error.required"
 
-    behave like optionsField[IsImporterVatRegistered](
+    behave like booleanField(
       form,
       fieldName,
-      validValues  = IsImporterVatRegistered.values,
-      invalidError = FormError(fieldName, "error.invalid")
+      invalidError = FormError(fieldName, invalidKey)
     )
 
     behave like mandatoryField(

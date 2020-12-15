@@ -81,6 +81,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   )
 
   val userDetails = UserDetails(
+    isVATRegistered = true,
     EORI = EORI("GB123456789123456"),
     Name = UserName("Joe Bloggs"),
     Address = address,
