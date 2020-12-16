@@ -22,7 +22,7 @@
         @messages("error.summary.title")
         </h2>
 
-        <ul role="list" class="error-summary-list">
+        <ul role="list" class="govuk-list govuk-error-summary__list">
             @for(error <- errors) {
                 <li><a href="#@{error.key}">@messages(error.message, error.args:_*)</a></li>
             }

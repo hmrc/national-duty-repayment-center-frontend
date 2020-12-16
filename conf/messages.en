@@ -419,6 +419,8 @@ contactByEmail.01 = Yes
 contactByEmail.02 = No
 contactByEmail.checkYourAnswersLabel = ContactByEmail
 contactByEmail.error.required = Select contactByEmail
+contactByEmail.hintText = We will use this to contact you about this application. If you select 'No' we will only contact you by post and telephone.
+contactByEmail.yes = Email address
 
 postcode.error.noneFound = No addresses were found that match this postcode
 addressFound.error = Select the address or enter the address manually
