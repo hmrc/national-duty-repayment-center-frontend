@@ -27,4 +27,11 @@
     @components.legacy.heading("session_expired.heading")
 
     <p>@messages("session_expired.guidance")</p>
+
+
+    <div class="section">
+        <a id = "govuk-link" class="button" role = "button" href="@routes.BankDetailsController.onPageLoad(NormalMode)">
+        @messages("session_expired.button")
+        </a>
+    </div>
 }
