@@ -18,7 +18,7 @@ package models.requests
 
 import java.time.LocalDate
 
-import models.WhomToPay.{Importer, Representative}
+import models.WhomToPay.Importer
 import models._
 import pages._
 import play.api.libs.json.{Json, OFormat}
@@ -31,6 +31,7 @@ object CreateClaimRequest {
   implicit val formats: OFormat[CreateClaimRequest] = Json.format[CreateClaimRequest]
 
   def buildValidClaimRequest(userAnswers: UserAnswers): Option[CreateClaimRequest] = {
+
 
     def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
       customRegulationType <- userAnswers.get(CustomsRegulationTypePage)
@@ -63,7 +64,7 @@ object CreateClaimRequest {
       name <- userAnswers.get(AgentNameImporterPage)
       address <- userAnswers.get(AgentImporterAddressPage)
       telephone <- userAnswers.get(PhoneNumberPage)
-      email <-userAnswers.get(EmailAddressPage)
+      email <- userAnswers.get(EmailAddressPage)
     } yield UserDetails(
       None,
       eori,
@@ -75,55 +76,130 @@ object CreateClaimRequest {
 
     //TODO: Business decision to never send the VRN. API schema should be changed to reflect this so we can change the UserDetails model
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
-      eori <- userAnswers.get(ImporterEoriPage)
       name <- userAnswers.get(ImporterNamePage)
       address <- userAnswers.get(ImporterAddressPage)
-      telephone <- userAnswers.get(PhoneNumberPage)
-      email <-userAnswers.get(EmailAddressPage)
-    } yield UserDetails(
-      None,
-      eori,
-      name,
-      address,
-      Some(telephone),
-      Some(email)
-    )
+    } yield {
+      print("XXXXXXX getImporterUserDetails")
+      val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
+      val email = "test email" //TODO need to get email from ContactByEmailPage
+      val telephone = userAnswers.get(PhoneNumberPage)
+      UserDetails(
+        None,
+        eori,
+        name,
+        address,
+        telephone,
+        Some(email)
+      )
+    }
 
     def getBankDetails(userAnswers: UserAnswers): Option[AllBankDetails] = userAnswers.get(RepaymentTypePage) match {
       case Some(RepaymentType.BACS) =>
         for {
           bankDetails <- userAnswers.get(BankDetailsPage)
-        } yield userAnswers.get(WhomToPayPage) match {
-          case Some(Importer) => AllBankDetails(ImporterBankDetails = Some(bankDetails), AgentBankDetails = None)
-          case Some(Representative) => AllBankDetails(ImporterBankDetails = None, AgentBankDetails = Some(bankDetails))
+        } yield (userAnswers.get(ClaimantTypePage), userAnswers.get(WhomToPayPage)) match {
+          case (Some(models.ClaimantType.Importer), None) | (Some(models.ClaimantType.Representative), Some(Importer)) =>
+            println("XXXXXXXX getBankDetails");
+            AllBankDetails(ImporterBankDetails = Some(bankDetails), AgentBankDetails = None)
+          case _ =>
+            print("XXXXXXX getBankDetails 2")
+            AllBankDetails(ImporterBankDetails = None, AgentBankDetails = Some(bankDetails))
         }
       case _ => None
     }
 
     def cleanseBankDetails(bankDetails: BankDetails): BankDetails = bankDetails.copy(
-        SortCode      = bankDetails.sortCodeTrimmed,
-        AccountNumber = bankDetails.accountNumberPadded
+      SortCode = bankDetails.sortCodeTrimmed,
+      AccountNumber = bankDetails.accountNumberPadded
     )
 
-    def getTypeTaxDetails(userAnswers: UserAnswers): Option[DutyTypeTaxDetails] = for {
-      customsDutyPaid <- userAnswers.get(CustomsDutyPaidPage)
-      customsDutyDue <- userAnswers.get(CustomsDutyDueToHMRCPage)
-      vatPaid <- userAnswers.get(VATPaidPage)
-      vatDue <- userAnswers.get(VATDueToHMRCPage)
-      otherDutiesPaid <- userAnswers.get(OtherDutiesPaidPage)
-      otherDutiesDue <- userAnswers.get(OtherDutiesDueToHMRCPage)
-    } yield {
-      val dutyClaimAmount: String = (customsDutyPaid.toDouble - customsDutyDue.toDouble).toString
-      val vatClaimAmount: String = (vatPaid.toDouble - vatDue.toDouble).toString
-      val otherDutiesClaimAmount: String = (otherDutiesPaid.toDouble - otherDutiesDue.toDouble).toString
-      DutyTypeTaxDetails(
+    /*def getCustomsValues(userAnswers: UserAnswers): DutyTypeTaxList = {
+
+      val selectedDuties: Option[Set[ClaimRepaymentType]] = userAnswers.get(ClaimRepaymentTypePage)
+
+      val getCustomsDutyPaid: Option[String] = selectedDuties.contains("01") match {
+        case true => userAnswers.get(CustomsDutyPaidPage)
+        case _ => Some("0.0")
+      }
+
+      val getCustomsDutyDue: Option[String] = selectedDuties.contains("01") match {
+        case true => userAnswers.get(CustomsDutyDueToHMRCPage)
+        case _ => Some("0.0")
+      }
+
+      DutyTypeTaxList(ClaimRepaymentType.Customs, getCustomsDutyPaid.getOrElse("0.0"),getCustomsDutyDue.getOrElse("0.0"),"0")
+    }*/
+
+    /*def getVatValues(userAnswers: UserAnswers): DutyTypeTaxList = {
+
+      val selectedDuties: Option[Set[ClaimRepaymentType]] = userAnswers.get(ClaimRepaymentTypePage)
+
+      val getVatPaid: Option[String] = selectedDuties.contains("02") match {
+        case true => userAnswers.get(VATDueToHMRCPage)
+        case _ => Some("0.0")
+      }
+
+      val getVatDue: Option[String] = selectedDuties.contains("02") match {
+        case true => userAnswers.get(VATPaidPage)
+        case _ => Some("0.0")
+      }
+
+      DutyTypeTaxList(ClaimRepaymentType.Customs, getVatPaid.getOrElse("0.0"),getVatDue.getOrElse("0.0"),"0")
+    }*/
+
+    /*def getDutyTypeTaxDetails(answers: UserAnswers): Seq[DutyTypeTaxList] = {
+      Seq(getCustomsValues(answers) :: getVatValues(answers) :: Nil)
+    }*/
+
+
+    //val selectedDuties: Option[Set[ClaimRepaymentType]] = userAnswers.get(ClaimRepaymentTypePage)
+
+
+
+
+
+      /*val getVatPaid: Option[String] = selectedDuties.contains(Set("02")) match {
+        case true => userAnswers.get(VATPaidPage)
+        case _ => Some("0.0")
+      }
+
+      val getVatDue: Option[String] = selectedDuties.contains(Set("02")) match {
+        case true => userAnswers.get(VATDueToHMRCPage)
+        case _ => Some("0.0")
+      }
+
+      val getOtherDutiesPaid: Option[String] = selectedDuties.contains(Set("03")) match {
+        case true => userAnswers.get(OtherDutiesPaidPage)
+        case _ => Some("0.0")
+      }
+
+      val getOtherDutiesDue: Option[String] = selectedDuties.contains(Set("03")) match {
+        case true => userAnswers.get(OtherDutiesDueToHMRCPage)
+        case _ => Some("0.0")
+      }*/
+
+      /*for {
+        customsDutyPaid <- getCustomsDutyPaid
+        customsDutyDue <- getCustomsDutyDue
+        vatPaid <- getVatPaid
+        vatDue <- getVatDue
+        otherDutiesPaid <- getOtherDutiesPaid
+        otherDutiesDue <- getOtherDutiesDue
+        //dutyClaimAmount <- Some(customsDutyPaid.toDouble) - customsDutyDue.toDouble
+        //vatClaimAmount <- (vatPaid.toDouble - vatDue.toDouble).toString
+        //otherDutiesClaimAmount <- (otherDutiesPaid.toDouble - otherDutiesDue.toDouble).toString
+      } yield {
         Seq(
-          DutyTypeTaxList(ClaimRepaymentType.Customs, Some(customsDutyPaid), Some(customsDutyDue), Some(dutyClaimAmount)),
-          DutyTypeTaxList(ClaimRepaymentType.Vat, Some(vatPaid),Some(vatDue), Some(vatClaimAmount)),
-          DutyTypeTaxList(ClaimRepaymentType.Other, Some(otherDutiesPaid),Some(otherDutiesDue), Some(otherDutiesClaimAmount))
+          DutyTypeTaxList(ClaimRepaymentType.Customs, customsDutyPaid.toString, customsDutyDue.toString, "0"),
+          DutyTypeTaxList(ClaimRepaymentType.Vat, vatPaid.toString, vatDue.toString, "0"),
+          DutyTypeTaxList(ClaimRepaymentType.Other, otherDutiesPaid.toString, otherDutiesDue.toString, "0")
         )
-      )
-    }
+      }*/
+
+
+      /*def getTypeTaxDetails(userAnswers: UserAnswers): DutyTypeTaxDetails = {
+        DutyTypeTaxDetails(getDutyTypeTaxList(userAnswers))
+      }*/
 
     def getDocumentList(): DocumentList = {
       DocumentList(EvidenceSupportingDocs.Other, None)
@@ -131,15 +207,22 @@ object CreateClaimRequest {
 
     def getContent(userAnswers: UserAnswers): Option[Content] = for {
       claimDetails <- getClaimDetails(userAnswers)
-      agentDetails <- getAgentUserDetails(userAnswers)
       importerDetails <- getImporterUserDetails(userAnswers)
       bankDetails <- getBankDetails(userAnswers)
-      dutyTypeTaxDetails <- getTypeTaxDetails(userAnswers)
     } yield {
-      val documentList = getDocumentList()
+      println("XXXXXXXX ClaimRepaymentTypePage" + userAnswers.get(ClaimRepaymentTypePage))
+      val documentList: DocumentList = getDocumentList()
+      val agentDetails: Option[UserDetails] = userAnswers.get(ClaimantTypePage) match {
+        case Some(models.ClaimantType.Importer) => None
+        case _ => getAgentUserDetails(userAnswers)
+      }
+
+      val dutyTypeTaxDetails = DutyTypeTaxDetails(Seq(DutyTypeTaxList(ClaimRepaymentType.Customs, "0.0", "0.0", "0.0") ))
+      //val dutyTypeTaxDetails =  getTypeTaxDetails(userAnswers)
+
       Content(
         claimDetails,
-        Some(agentDetails),
+        agentDetails,
         importerDetails,
         Some(bankDetails),
         dutyTypeTaxDetails,
