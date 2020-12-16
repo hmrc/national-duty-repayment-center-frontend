@@ -16,7 +16,7 @@
 
         @components.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
         @components.input_text(
           field = form("value"),
@@ -24,6 +24,6 @@
           headingIsLabel = true
         )
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }
