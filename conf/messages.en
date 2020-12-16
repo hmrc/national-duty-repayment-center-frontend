@@ -87,8 +87,8 @@ importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
 customsRegulationType.title = What was the acceptance date for all entries?
 customsRegulationType.heading = What was the acceptance date for all entries?
-customsRegulationType.01 = From 1 January 2021
-customsRegulationType.02 = On or before 31 December 2020
+customsRegulationType.01 = On or before 31 December 2020
+customsRegulationType.02 = From 1 January 2021
 customsRegulationType.checkYourAnswersLabel = What was the acceptance date for all entries?
 customsRegulationType.error.required = Select the entry acceptance date for all entries
 
@@ -112,7 +112,7 @@ howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
 howManyEntries.error.required = Enter how many entries are you claiming for?
-howManyEntries.error.length = HowManyEntries must be 2 characters or less
+howManyEntries.error.length = HowManyEntries must be 6 characters or less
 
 entryDetails.title = Entry Details
 entryDetails.heading = Entry Details

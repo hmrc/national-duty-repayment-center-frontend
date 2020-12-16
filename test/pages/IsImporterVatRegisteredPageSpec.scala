@@ -23,10 +23,10 @@ class IsImporterVatRegisteredSpec extends PageBehaviours {
 
   "IsImporterVatRegisteredPage" must {
 
-    beRetrievable[IsImporterVatRegistered](IsImporterVatRegisteredPage)
+    beRetrievable[Boolean](IsImporterVatRegisteredPage)
 
-    beSettable[IsImporterVatRegistered](IsImporterVatRegisteredPage)
+    beSettable[Boolean](IsImporterVatRegisteredPage)
 
-    beRemovable[IsImporterVatRegistered](IsImporterVatRegisteredPage)
+    beRemovable[Boolean](IsImporterVatRegisteredPage)
   }
 }

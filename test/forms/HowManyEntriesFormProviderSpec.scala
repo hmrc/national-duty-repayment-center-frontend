@@ -23,7 +23,7 @@ class HowManyEntriesFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "howManyEntries.error.required"
   val lengthKey = "howManyEntries.error.length"
-  val maxLength = 2
+  val maxLength = 6
 
   val form = new HowManyEntriesFormProvider()()
 

@@ -19,7 +19,7 @@ package pages
 import models.IsImporterVatRegistered
 import play.api.libs.json.JsPath
 
-case object IsImporterVatRegisteredPage extends QuestionPage[IsImporterVatRegistered] {
+case object IsImporterVatRegisteredPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 

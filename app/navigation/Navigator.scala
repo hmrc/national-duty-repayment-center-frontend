@@ -29,7 +29,7 @@ class Navigator @Inject()() {
     case ClaimantTypePage => _ => routes.NumberOfEntriesTypeController.onPageLoad(NormalMode)
     case NumberOfEntriesTypePage  => howManyEntries
     case HowManyEntriesPage  => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
-    case CustomsRegulationTypePage => _ => routes.ArticleTypeController.onPageLoad(NormalMode)
+    case CustomsRegulationTypePage => getEntryDetails
     case ArticleTypePage => _ => routes.EntryDetailsController.onPageLoad(NormalMode)
     case EntryDetailsPage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
@@ -61,6 +61,11 @@ class Navigator @Inject()() {
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def getEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
+    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
+    case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
   }
 
   private def additionalFileUploadRoute(answers: UserAnswers): Call = answers.get(AdditionalFileUploadPage) match {

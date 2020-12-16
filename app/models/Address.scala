@@ -23,7 +23,7 @@ final case class Address(
                           AddressLine1:String,
                           AddressLine2:Option[String],
                           City:String,
-                          Region:String,
+                          Region:Option[String],
                           CountryCode:String,
                           postCode:Option[String]
                         ){
@@ -45,7 +45,7 @@ object Address {
     candidate.address.lines.headOption.getOrElse(""),
     candidate.address.lines.lift(1),
     candidate.address.town,
-    if (candidate.address.county == None) "" else candidate.address.county.get,
+    candidate.address.county,
     "GB",
     Some(candidate.address.postcode)
   )
