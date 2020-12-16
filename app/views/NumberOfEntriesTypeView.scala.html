@@ -33,7 +33,7 @@
 
     @forms.formWithCSRF(action = NumberOfEntriesTypeController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.legacy.error_summary(form.errors)
+        @components.error_summary(form.errors)
 
         @forms.inputRadio(
             form = form,
