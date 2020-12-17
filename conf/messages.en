@@ -259,17 +259,18 @@ isImporterVatRegistered.02 = No
 isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
 isImporterVatRegistered.error.required = Select whether the importer is VAT registered?
 
-vATPaid.title = How much VAT did you pay?
-vATPaid.heading = How much VAT did you pay?
-vATPaid.checkYourAnswersLabel = How much VAT did you pay?
-vATPaid.error.required = Enter VAT you paid?
+vATPaid.title = How much VAT was paid?
+vATPaid.heading = How much VAT was paid?
+vATPaid.checkYourAnswersLabel = How much VAT was paid?
+vATPaid.error.required = Enter VAT was paid?
 vATPaid.error.length = VAT paid must be 14 characters or less
+vATPaid.hint = This should be the total amount of overpayment for all entries
 
-vATDueToHMRC.title = How much VAT was due to HMRC?
-vATDueToHMRC.heading = How much VAT was due to HMRC?
-vATDueToHMRC.checkYourAnswersLabel = How much VAT was due to HMRC?
-vATDueToHMRC.error.required = Enter VAT Due to HMRC
-vATDueToHMRC.error.length = VAT due must be 14 characters or less
+vATDueToHMRC.title = How much VAT should have been paid to HMRC?
+vATDueToHMRC.heading = How much VAT should have been paid to HMRC?
+vATDueToHMRC.checkYourAnswersLabel = How much VAT should have been paid to HMRC?
+vATDueToHMRC.error.required = Enter VAT should have been paid to HMRC
+vATDueToHMRC.error.length = VAT should have been paid to HMRC must be 14 characters or less
 
 customsDutyPaid.title = How much Customs Duty was paid?
 customsDutyPaid.heading = How much Customs Duty was paid?

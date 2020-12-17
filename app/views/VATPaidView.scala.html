@@ -16,6 +16,9 @@
 
 @import controllers.routes._
 @import models.Mode
+@import models.NumberOfEntriesType
+@import models.UserAnswers
+@import pages.NumberOfEntriesTypePage
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
@@ -24,7 +27,7 @@
     formHelper: PlayFormWithCSRF
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, userAnswers: UserAnswers)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("vATPaid.title")}"
@@ -39,7 +42,11 @@
         @components.legacy.input_text(
           field = form("value"),
           label = messages("vATPaid.heading"),
-          headingIsLabel = true
+          headingIsLabel = true,
+          hint = userAnswers.get(NumberOfEntriesTypePage) match {
+                    case Some(NumberOfEntriesType.Multiple) => Some(messages("vATPaid.hint"))
+                    case _ => None
+                }
         )
         @components.legacy.submit_button()
     }
