@@ -290,11 +290,11 @@ otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
 otherDutiesPaid.error.required = Enter Other Duties Paid
 otherDutiesPaid.error.length = Other Duties Paid must be 14 characters or less
 
-otherDutiesDueToHMRC.title = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.heading = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.checkYourAnswersLabel = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.error.required = Enter Other Duties Due to HMRC
-otherDutiesDueToHMRC.error.length = Other Duties Due to HMRC must be 14 characters or less
+otherDutiesDueToHMRC.title = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.heading = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.checkYourAnswersLabel = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.error.required = Enter Other Duties should have been paid to HMRC
+otherDutiesDueToHMRC.error.length = Other Duties should have been paid to HMRC must be 14 characters or less
 
 importerAddress.title = What is your address?
 importerAddress.heading = What is your address?
