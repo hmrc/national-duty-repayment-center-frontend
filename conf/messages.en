@@ -241,6 +241,7 @@ repaymentType.error.required = Select repayment method
 
 enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
+enterAgentEORI.hint = "The first 2 letters are the country code, like 'GB'. This is followed by 12 numbers, like GB123456123456."
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
 enterAgentEORI.error.required = Enter Agent EORI Number
 enterAgentEORI.error.length = Agent EORI number must be 17 characters or less
