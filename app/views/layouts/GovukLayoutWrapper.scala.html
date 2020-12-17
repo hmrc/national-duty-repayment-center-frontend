@@ -59,7 +59,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @scripts = {
-  <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
+  <script src='@controllers.routes.Assets.versioned("javascripts/application.js")'></script>
 }
 
 @beforeContentBlock = {
