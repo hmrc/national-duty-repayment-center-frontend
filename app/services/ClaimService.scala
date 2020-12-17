@@ -35,6 +35,7 @@ class ClaimService @Inject()(
 
   def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[ClaimId] = {
     val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
+    println("XXXXXXXXXXX submitClaim maybeRegistrationRequest " + maybeRegistrationRequest)
 
     maybeRegistrationRequest match {
       case Some(value) =>
