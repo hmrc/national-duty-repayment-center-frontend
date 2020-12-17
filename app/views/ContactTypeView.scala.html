@@ -16,34 +16,35 @@
 
 @import controllers.routes._
 @import models.{Mode, ContactType}
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("contactType.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("contactType.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = ContactTypeController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = ContactTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        @components.legacy.input_radio(
-            field = form("value"),
-            legend = messages("contactType.heading"),
-            headingIsLegend = true,
-            hint = Some(messages("contactType.hint")),
-            inputs = ContactType.options.toSeq
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = ContactType.options(form),
+            inline = false,
+            legendAsHeading = true,
+            legend = Some(messages("contactType.heading"))
         )
 
-        @components.legacy.submit_button()
+        @html.button("site.continue")
     }
 }
