@@ -18,8 +18,8 @@ package models
 
 import play.api.data.Form
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
+import viewmodels.RadioOptionHelper
 
 sealed trait ClaimReasonType
 
@@ -36,32 +36,27 @@ object ClaimReasonType extends Enumerable.Implicits {
   case object Value extends WithName("09") with ClaimReasonType
   case object Other extends WithName("10") with ClaimReasonType
 
-  val insertDividerAfter: ClaimReasonType = Value
-
   val values: Seq[ClaimReasonType] = Seq(
-    CommodityCodeChange, CurrencyChanges, Cpuchange, CustomsSpecialProcedures, Preference, Retroactivequota,
-    ReturnOfUnwantedGoods, ReturnedGoodsRelief, Value, Other
+    CommodityCodeChange,
+    CurrencyChanges,
+    Cpuchange,
+    CustomsSpecialProcedures,
+    Preference,
+    Retroactivequota,
+    ReturnOfUnwantedGoods,
+    ReturnedGoodsRelief,
+    Value,
+    Other
   )
 
-  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
-    value =>
-      RadioItem(
-        value = Some(value.toString),
-        content = Text(messages(s"claimReasonType.${value.toString}")),
-        checked = form("value").value.contains(value.toString)
-      )
-  }
+  private val insertDividerAfter: ClaimReasonType = Value
+  private val radioOptionHelper = new RadioOptionHelper(values)
 
-  private def getDivider(implicit messages: Messages): RadioItem = RadioItem(
-    divider = Some(messages("claimReasonType.or"))
+  def optionsWithDivider(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = radioOptionHelper.optionsWithDivider(
+    form,
+    messages("claimReasonType.or"),
+    insertDividerAfter
   )
-
-  def optionsWithDivider(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
-    val dividerPosition = values.indexOf(insertDividerAfter) + 1
-    val optionsList = options(form)
-
-    optionsList.take(dividerPosition) ++ Seq(getDivider) ++ optionsList.drop(dividerPosition)
-  }
 
   implicit val enumerable: Enumerable[ClaimReasonType] =
     Enumerable(values.map(v => v.toString -> v): _*)
