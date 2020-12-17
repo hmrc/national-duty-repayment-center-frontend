@@ -150,6 +150,7 @@ claimReasonType.07 = Return of unwanted goods
 claimReasonType.08 = Returned goods relief
 claimReasonType.09 = Value
 claimReasonType.10 = Other
+claimReasonType.or = or
 claimReasonType.checkYourAnswersLabel = What does your application relate to?
 claimReasonType.error.required = Select what does your application relates to
 
