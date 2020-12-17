@@ -36,6 +36,8 @@ object ClaimReasonType extends Enumerable.Implicits {
   case object Value extends WithName("09") with ClaimReasonType
   case object Other extends WithName("10") with ClaimReasonType
 
+  val insertDividerAfter: ClaimReasonType = Value
+
   val values: Seq[ClaimReasonType] = Seq(
     CommodityCodeChange, CurrencyChanges, Cpuchange, CustomsSpecialProcedures, Preference, Retroactivequota,
     ReturnOfUnwantedGoods, ReturnedGoodsRelief, Value, Other
@@ -48,6 +50,17 @@ object ClaimReasonType extends Enumerable.Implicits {
         content = Text(messages(s"claimReasonType.${value.toString}")),
         checked = form("value").value.contains(value.toString)
       )
+  }
+
+  private def getDivider(implicit messages: Messages): RadioItem = RadioItem(
+    divider = Some(messages("claimReasonType.or"))
+  )
+
+  def optionsWithDivider(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
+    val dividerPosition = values.indexOf(insertDividerAfter) + 1
+    val optionsList = options(form)
+
+    optionsList.take(dividerPosition) ++ Seq(getDivider) ++ optionsList.drop(dividerPosition)
   }
 
   implicit val enumerable: Enumerable[ClaimReasonType] =
