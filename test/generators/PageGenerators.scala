@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryBulkFileUploadPage: Arbitrary[BulkFileUploadPage.type] =
+    Arbitrary(BulkFileUploadPage)
+
   implicit lazy val arbitraryIndirectRepresentativePage: Arbitrary[IndirectRepresentativePage.type] =
     Arbitrary(IndirectRepresentativePage)
 
