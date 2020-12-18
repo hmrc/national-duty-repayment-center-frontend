@@ -29,7 +29,6 @@
 
         @components.legacy.back_link()
 
-
     @components.legacy.heading("bulkFileUpload.heading")
 
     <p >@messages("bulkFileUpload.paragraph1")</p>
@@ -42,7 +41,13 @@
             messages("bulkFileUpload.05")
         )
 
+    <p>@messages("fileUpload.title")</p>
 
-        @components.legacy.submit_button()
-    }
+    <div>
+        <span>
+            <a class="govuk-link" href="articleType"/>
+        </span>
+    </div>
+    @components.legacy.submit_button()
+}
 

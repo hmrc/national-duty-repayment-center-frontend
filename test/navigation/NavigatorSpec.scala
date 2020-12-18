@@ -88,6 +88,15 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
       }
 
+      "go to BulkFileUploadController page after the ProofOfAuthority page once the representative has uploaded their proof of authority" in {
+
+        val answers =
+          emptyUserAnswers
+        navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
+          .mustBe(routes.BulkFileUploadController.onPageLoad)
+
+      }
+
       "go to CheckYourAnswers page after the bank details has been entered " in {
 
         val answers =
