@@ -7,10 +7,10 @@ class BulkFileUploadPageSpec extends PageBehaviours {
 
   "BulkFileUploadPage" must {
 
-    beRetrievable[Set[BulkFileUpload]](BulkFileUploadPage)
+    beRetrievable[BulkFileUpload](BulkFileUploadPage)
 
-    beSettable[Set[BulkFileUpload]](BulkFileUploadPage)
+    beSettable[BulkFileUpload](BulkFileUploadPage)
 
-    beRemovable[Set[BulkFileUpload]](BulkFileUploadPage)
+    beRemovable[BulkFileUpload](BulkFileUploadPage)
   }
 }

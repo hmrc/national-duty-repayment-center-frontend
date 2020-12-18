@@ -32,7 +32,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
-        Html(x.map(value => HtmlFormat.escape(messages(s"bulkFileUpload.$value")).toString).mkString(",<br>")),
+        HtmlFormat.escape(messages(s"bulkFileUpload.$x")),
         Some(routes.BulkFileUploadController.onPageLoad().url)
       )
   }
