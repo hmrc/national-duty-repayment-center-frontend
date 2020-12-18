@@ -97,6 +97,8 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
       }
 
+
+
       "go to CheckYourAnswers page after the bank details has been entered " in {
 
         val answers =
