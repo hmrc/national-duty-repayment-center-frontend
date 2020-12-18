@@ -99,7 +99,7 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, claimReasonTypeRoute)
-          .withFormUrlEncodedBody(("value", ClaimReasonType.options.head.value))
+          .withFormUrlEncodedBody(("value", ClaimReasonType.optionsWithDivider(form).head.value.get))
 
       val result = route(application, request).value
 
