@@ -47,57 +47,6 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-
-
-    "redirect to the next page when valid data is submitted" in {
-
-      val mockSessionRepository = mock[SessionRepository]
-
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
-
-      val request =
-        FakeRequest(POST, bulkFileUploadRoute)
-          .withFormUrlEncodedBody(("value[0]", BulkFileUpload.values.head.toString))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual onwardRoute.url
-
-      application.stop()
-    }
-
-    "return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request =
-        FakeRequest(POST, bulkFileUploadRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
-
-      val boundForm = form.bind(Map("value" -> "invalid value"))
-
-      val view = application.injector.instanceOf[BulkFileUploadView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual BAD_REQUEST
-
-      contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
     "redirect to Session Expired for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
@@ -107,23 +56,6 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "redirect to Session Expired for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      val request =
-        FakeRequest(POST, bulkFileUploadRoute)
-          .withFormUrlEncodedBody(("value[0]", BulkFileUpload.values.head.toString))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
