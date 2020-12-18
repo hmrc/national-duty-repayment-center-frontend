@@ -438,3 +438,14 @@ proofOfAuthority.title = Upload your proof of authority
 proofOfAuthority.heading = Upload your proof of authority
 proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
 proofOfAuthority.paragraph2 = Upload a file
+
+bulkFileUpload.title = Upload the multiple entries spreadsheet
+bulkFileUpload.heading = Upload the multiple entries spreadsheet
+bulkFileUpload.paragraph1 = For each entry in the spreadsheet, you must provide:
+bulkFileUpload.01 = the entry processing unit (EPU), entry number and entry date
+bulkFileUpload.02 = all item numbers
+bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
+bulkFileUpload.04 = the amount that was paid to HMRC
+bulkFileUpload.05 = the amount that should have been paid to HMRC
+bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
+bulkFileUpload.error.required = Select files

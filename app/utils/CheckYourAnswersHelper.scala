@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def bulkFileUpload: Option[AnswerRow] = userAnswers.get(BulkFileUploadPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"bulkFileUpload.$x")),
+        Some(routes.BulkFileUploadController.onPageLoad().url)
+      )
+  }
+
   def indirectRepresentative: Option[AnswerRow] = userAnswers.get(IndirectRepresentativePage) map {
     x =>
       AnswerRow(
