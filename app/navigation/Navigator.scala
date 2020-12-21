@@ -61,6 +61,7 @@ class Navigator @Inject()() {
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case BulkFileUploadPage => getBulkEntryDetails
+    case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
