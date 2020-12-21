@@ -1,4 +1,8 @@
 # microservice specific routes
+->         /govuk-frontend                          govuk.Routes
+->         /hmrc-frontend                           hmrcfrontend.Routes
+
+GET        /assets/*file                        controllers.Assets.versioned(path = "/public", file: Asset)
 
 GET        /                                            controllers.IndexController.onPageLoad
 
@@ -32,11 +36,6 @@ GET        /isVatRegistered                        controllers.IsVatRegisteredCo
 POST       /isVatRegistered                        controllers.IsVatRegisteredController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIsVatRegistered                  controllers.IsVatRegisteredController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIsVatRegistered                  controllers.IsVatRegisteredController.onSubmit(mode: Mode = CheckMode)
-
-GET        /importerClaimantVrn                        controllers.ImporterClaimantVrnController.onPageLoad(mode: Mode = NormalMode)
-POST       /importerClaimantVrn                        controllers.ImporterClaimantVrnController.onSubmit(mode: Mode = NormalMode)
-GET        /changeImporterClaimantVrn                  controllers.ImporterClaimantVrnController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeImporterClaimantVrn                  controllers.ImporterClaimantVrnController.onSubmit(mode: Mode = CheckMode)
 
 GET        /customsRegulationType                        controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
 POST       /customsRegulationType                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
@@ -223,3 +222,5 @@ GET        /changeIndirectRepresentative                  controllers.IndirectRe
 POST       /changeIndirectRepresentative                  controllers.IndirectRepresentativeController.onSubmit(mode: Mode = CheckMode)
 
 GET         /proofOfAuthority                       controllers.ProofOfAuthorityController.onPageLoad()
+
+GET        /bulkFileUpload                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)

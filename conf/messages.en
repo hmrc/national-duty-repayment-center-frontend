@@ -25,9 +25,15 @@ index.title = National Duty Repayment Centre
 index.heading = National Duty Repayment Centre
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
 
-session_expired.title = For your security, this service has been reset
-session_expired.heading = For your security, this service has been reset
-session_expired.guidance = The details you have given have been deleted because you did not continue the service for 15 minutes.
+session_expired.title = For your security, we signed you out
+session_expired.heading = For your security, we signed you out
+session_expired.guidance = We did not save your answers.
+session_expired.button = Sign in
+
+timeout.title = For your security, we will sign you out 
+timeout.message = For your security, we will sign you out in $
+timeout.keepAlive = Stay signed in
+timeout.signOut = Sign out
 
 site.back = Back
 site.delete = Remove
@@ -40,6 +46,12 @@ site.continue = Continue
 find.address = Find address
 site.service_name = National Duty Repayment Centre
 site.textarea.char_limit = (Limit is {0} characters)
+
+footer.cookies = Cookies
+footer.privacy = Privacy policy
+footer.termsConditions = Terms and conditions
+footer.govukHelp = Help using GOV.UK
+footer.accessibilityStatement = Accessibility statement
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
@@ -75,8 +87,8 @@ importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
 customsRegulationType.title = What was the acceptance date for all entries?
 customsRegulationType.heading = What was the acceptance date for all entries?
-customsRegulationType.01 = From 1 January 2021
-customsRegulationType.02 = On or before 31 December 2020
+customsRegulationType.01 = On or before 31 December 2020
+customsRegulationType.02 = From 1 January 2021
 customsRegulationType.checkYourAnswersLabel = What was the acceptance date for all entries?
 customsRegulationType.error.required = Select the entry acceptance date for all entries
 
@@ -100,7 +112,7 @@ howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
 howManyEntries.error.required = Enter how many entries are you claiming for?
-howManyEntries.error.length = HowManyEntries must be 2 characters or less
+howManyEntries.error.length = HowManyEntries must be 6 characters or less
 
 entryDetails.title = Entry Details
 entryDetails.heading = Entry Details
@@ -138,6 +150,7 @@ claimReasonType.07 = Return of unwanted goods
 claimReasonType.08 = Returned goods relief
 claimReasonType.09 = Value
 claimReasonType.10 = Other
+claimReasonType.or = or
 claimReasonType.checkYourAnswersLabel = What does your application relate to?
 claimReasonType.error.required = Select what does your application relates to
 
@@ -179,10 +192,10 @@ evidenceSupportingDocs.bullet8 = substitute entry
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
 
-agentNameImporter.title = What is the importer's name?
-agentNameImporter.heading = What is the importer's name?
+agentNameImporter.title = What is the importer''s name?
+agentNameImporter.heading = What is the importer''s name?
 agentNameImporter.checkYourAnswersLabel = What is the importer's name?
-agentNameImporter.error.required = Enter importer's name
+agentNameImporter.error.required = Enter importer''s name
 agentNameImporter.error.length = Importer's name must be 512 characters or less
 
 contactType.title = How should we contact you?
@@ -229,6 +242,7 @@ repaymentType.error.required = Select repayment method
 
 enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
+enterAgentEORI.hint = The first 2 letters are the country code, like ''GB''. This is followed by 12 numbers, like GB123456123456.
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
 enterAgentEORI.error.required = Enter Agent EORI Number
 enterAgentEORI.error.length = Agent EORI number must be 17 characters or less
@@ -247,17 +261,18 @@ isImporterVatRegistered.02 = No
 isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
 isImporterVatRegistered.error.required = Select whether the importer is VAT registered?
 
-vATPaid.title = How much VAT did you pay?
-vATPaid.heading = How much VAT did you pay?
-vATPaid.checkYourAnswersLabel = How much VAT did you pay?
-vATPaid.error.required = Enter VAT you paid?
+vATPaid.title = How much VAT was paid?
+vATPaid.heading = How much VAT was paid?
+vATPaid.checkYourAnswersLabel = How much VAT was paid?
+vATPaid.error.required = Enter VAT was paid?
 vATPaid.error.length = VAT paid must be 14 characters or less
+vATPaid.hint = This should be the total amount of overpayment for all entries
 
-vATDueToHMRC.title = How much VAT was due to HMRC?
-vATDueToHMRC.heading = How much VAT was due to HMRC?
-vATDueToHMRC.checkYourAnswersLabel = How much VAT was due to HMRC?
-vATDueToHMRC.error.required = Enter VAT Due to HMRC
-vATDueToHMRC.error.length = VAT due must be 14 characters or less
+vATDueToHMRC.title = How much VAT should have been paid to HMRC?
+vATDueToHMRC.heading = How much VAT should have been paid to HMRC?
+vATDueToHMRC.checkYourAnswersLabel = How much VAT should have been paid to HMRC?
+vATDueToHMRC.error.required = Enter VAT should have been paid to HMRC
+vATDueToHMRC.error.length = VAT should have been paid to HMRC must be 14 characters or less
 
 customsDutyPaid.title = How much Customs Duty was paid?
 customsDutyPaid.heading = How much Customs Duty was paid?
@@ -266,11 +281,11 @@ customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of 
 customsDutyPaid.error.required = Enter How much Customs Duty you paid
 customsDutyPaid.error.length = Customs Duty paid must be 14 characters or less
 
-customsDutyDueToHMRC.title = How much Customs Duty was due to HMRC?
-customsDutyDueToHMRC.heading = How much Customs Duty was due to HMRC?
-customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty was due to HMRC?
-customsDutyDueToHMRC.error.required = Enter Customs Duty Due To HMRC
-customsDutyDueToHMRC.error.length = Customs Duty Due To HMRC must be 14 characters or less
+customsDutyDueToHMRC.title = How much Customs Duty should have been paid to HMRC?
+customsDutyDueToHMRC.heading = How much Customs Duty should have been paid to HMRC?
+customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty should have been paid to HMRC?
+customsDutyDueToHMRC.error.required = Enter Customs Duty should have been paid to To HMRC
+customsDutyDueToHMRC.error.length = Customs Duty should have been paid to HMRC must be 14 characters or less
 
 otherDutiesPaid.title = How much was paid in other duties?
 otherDutiesPaid.heading = How much was paid in other duties?
@@ -278,11 +293,11 @@ otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
 otherDutiesPaid.error.required = Enter Other Duties Paid
 otherDutiesPaid.error.length = Other Duties Paid must be 14 characters or less
 
-otherDutiesDueToHMRC.title = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.heading = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.checkYourAnswersLabel = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.error.required = Enter Other Duties Due to HMRC
-otherDutiesDueToHMRC.error.length = Other Duties Due to HMRC must be 14 characters or less
+otherDutiesDueToHMRC.title = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.heading = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.checkYourAnswersLabel = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.error.required = Enter Other Duties should have been paid to HMRC
+otherDutiesDueToHMRC.error.length = Other Duties should have been paid to HMRC must be 14 characters or less
 
 importerAddress.title = What is your address?
 importerAddress.heading = What is your address?
@@ -295,29 +310,29 @@ importerAddress.line1.error.length = Address line 1 must be 128 characters or le
 importerAddress.line1.error.invalid = Address line 1 includes 1 or more characters that cannot be used
 importerAddress.line2.error.length = Address line 2 must be 128 characters or less
 importerAddress.line2.error.invalid = Address line 2 includes 1 or more characters that cannot be used
-importerAddress.city.error.required = Enter Importer's city
+importerAddress.city.error.required = Enter Importer''s city
 importerAddress.city.error.length = City must be 64 characters or less
 importerAddress.city.error.invalid = City includes 1 or more characters that cannot be used
-importerAddress.region.error.required = Enter Importer's region
+importerAddress.region.error.required = Enter Importer''s region
 importerAddress.region.error.length = Region must be 64 characters or less
 importerAddress.region.error.invalid = Region includes 1 or more characters that cannot be used
-importerAddress.countryCode.error.required = Enter Importer's country code
+importerAddress.countryCode.error.required = Enter Importer''s country code
 importerAddress.countryCode.error.length = Country code must be 64 characters or less
 importerAddress.countryCode.error.invalid = Country code includes 1 or more characters that cannot be used
 importerAddress.postalCode.error.invalid = Enter a real postcode
 
-agentImporterAddress.title = What is the importer's address?
-agentImporterAddress.heading = What is the importer's address?
+agentImporterAddress.title = What is the importer''s address?
+agentImporterAddress.heading = What is the importer''s address?
 agentImporterAddress.checkYourAnswersLabel = What is the importer's address?
-agentImporterAddress.line1.error.required = Enter Importer's address line 1
+agentImporterAddress.line1.error.required = Enter Importer''s address line 1
 agentImporterAddress.line1.error.length = Address line 1 must be 128 characters or less
 agentImporterAddress.line1.error.invalid = Address line 1 includes 1 or more characters that cannot be used
 agentImporterAddress.line2.error.length = Address line 2 must be 128 characters or less
 agentImporterAddress.line2.error.invalid = Address line 2 includes 1 or more characters that cannot be used
-agentImporterAddress.city.error.required = Enter Importer's city
+agentImporterAddress.city.error.required = Enter Importer''s city
 agentImporterAddress.city.error.length = City must be 64 characters or less
 agentImporterAddress.city.error.invalid = City includes 1 or more characters that cannot be used
-agentImporterAddress.region.error.required = Enter Importer's region
+agentImporterAddress.region.error.required = Enter Importer''s region
 agentImporterAddress.region.error.length = Region must be 64 characters or less
 agentImporterAddress.region.error.invalid = Region includes 1 or more characters that cannot be used
 agentImporterAddress.countryCode.error.required = Enter Importer's country code
@@ -408,6 +423,8 @@ contactByEmail.01 = Yes
 contactByEmail.02 = No
 contactByEmail.checkYourAnswersLabel = ContactByEmail
 contactByEmail.error.required = Select contactByEmail
+contactByEmail.hintText = We will use this to contact you about this application. If you select ''No'' we will only contact you by post and telephone.
+contactByEmail.yes = Email address
 
 postcode.error.noneFound = No addresses were found that match this postcode
 addressFound.error = Select the address or enter the address manually
@@ -422,3 +439,14 @@ proofOfAuthority.title = Upload your proof of authority
 proofOfAuthority.heading = Upload your proof of authority
 proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
 proofOfAuthority.paragraph2 = Upload a file
+
+bulkFileUpload.title = Upload the multiple entries spreadsheet
+bulkFileUpload.heading = Upload the multiple entries spreadsheet
+bulkFileUpload.paragraph1 = For each entry in the spreadsheet, you must provide:
+bulkFileUpload.01 = the entry processing unit (EPU), entry number and entry date
+bulkFileUpload.02 = all item numbers
+bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
+bulkFileUpload.04 = the amount that was paid to HMRC
+bulkFileUpload.05 = the amount that should have been paid to HMRC
+bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
+bulkFileUpload.error.required = Select files

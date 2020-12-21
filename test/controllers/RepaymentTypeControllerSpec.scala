@@ -99,7 +99,7 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, repaymentTypeRoute)
-          .withFormUrlEncodedBody(("value", RepaymentType.options.head.value))
+          .withFormUrlEncodedBody(("value", RepaymentType.options(form).head.value.get))
 
       val result = route(application, request).value
 

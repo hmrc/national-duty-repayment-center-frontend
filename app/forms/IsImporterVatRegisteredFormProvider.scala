@@ -24,8 +24,8 @@ import models.IsImporterVatRegistered
 
 class IsImporterVatRegisteredFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[IsImporterVatRegistered] =
+  def apply(): Form[Boolean] =
     Form(
-      "value" -> enumerable[IsImporterVatRegistered]("isImporterVatRegistered.error.required")
+      "value" -> boolean("isImporterVatRegistered.error.required")
     )
 }

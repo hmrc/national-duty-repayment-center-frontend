@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def bulkFileUpload: Option[AnswerRow] = userAnswers.get(BulkFileUploadPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"bulkFileUpload.$x")),
+        Some(routes.BulkFileUploadController.onPageLoad().url)
+      )
+  }
+
   def indirectRepresentative: Option[AnswerRow] = userAnswers.get(IndirectRepresentativePage) map {
     x =>
       AnswerRow(
@@ -167,7 +176,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("isImporterVatRegistered.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"isImporterVatRegistered.$x")),
+        yesOrNo(x),
         Some(routes.IsImporterVatRegisteredController.onPageLoad(CheckMode).url)
       )
   }
@@ -333,15 +342,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("customsRegulationType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"customsRegulationType.$x")),
         Some(routes.CustomsRegulationTypeController.onPageLoad(CheckMode).url)
-      )
-  }
-
-  def importerClaimantVrn: Option[AnswerRow] = userAnswers.get(ImporterClaimantVrnPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("importerClaimantVrn.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.ImporterClaimantVrnController.onPageLoad(CheckMode).url)
       )
   }
 

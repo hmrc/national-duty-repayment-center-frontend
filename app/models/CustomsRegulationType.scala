@@ -29,7 +29,7 @@ object CustomsRegulationType extends Enumerable.Implicits {
   case object UKCustomsCodeRegulation extends WithName("02") with CustomsRegulationType
 
   val values: Seq[CustomsRegulationType] = Seq(
-    UnionsCustomsCodeRegulation, UKCustomsCodeRegulation
+    UKCustomsCodeRegulation, UnionsCustomsCodeRegulation
   )
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {

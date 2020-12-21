@@ -23,7 +23,7 @@ class html @Inject() (
 //  val h1: views.html.components.h1,
 //  val h2: views.html.components.h2,
 //  val h3: views.html.components.h3,
-//  val p: views.html.components.p,
+ val p: views.html.components.p,
 //  val strong: views.html.components.strong,
 //  val a: views.html.components.link,
 //  val ul: views.html.components.bullets,

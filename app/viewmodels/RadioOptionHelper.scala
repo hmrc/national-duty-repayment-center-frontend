@@ -14,33 +14,31 @@
  * limitations under the License.
  */
 
-package models
+package viewmodels
 
 import play.api.data.Form
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
-sealed trait ContactByEmail
-
-object ContactByEmail extends Enumerable.Implicits {
-
-  case object Yes extends WithName("01") with ContactByEmail
-  case object No extends WithName("02") with ContactByEmail
-
-  val values: Seq[ContactByEmail] = Seq(
-    Yes, No
-  )
-
+class RadioOptionHelper (values: Seq[Any]) {
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
       RadioItem(
         value = Some(value.toString),
-        content = Text(messages(s"contactByEmail.${value.toString}")),
+        content = Text(messages(s"claimReasonType.${value.toString}")),
         checked = form("value").value.contains(value.toString)
       )
   }
 
-  implicit val enumerable: Enumerable[ContactByEmail] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+  def optionsWithDivider(form: Form[_], dividerMessage: String, insertDividerAfter: Any)(implicit messages: Messages): Seq[RadioItem] = {
+    val dividerPosition = values.indexOf(insertDividerAfter) + 1
+    val optionsList = options(form)
+
+    val divider = RadioItem(
+      divider = Some(dividerMessage)
+    )
+
+    optionsList.take(dividerPosition) ++ Seq(divider) ++ optionsList.drop(dividerPosition)
+  }
 }

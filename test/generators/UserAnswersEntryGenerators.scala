@@ -26,6 +26,14 @@ trait UserAnswersEntryGenerators extends PageGenerators {
 
   self: Generators =>
 
+  implicit lazy val arbitraryBulkFileUploadUserAnswersEntry: Arbitrary[(BulkFileUploadPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[BulkFileUploadPage.type]
+        value <- arbitrary[BulkFileUpload].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryIndirectRepresentativeUserAnswersEntry: Arbitrary[(IndirectRepresentativePage.type, JsValue)] =
     Arbitrary {
       for {
@@ -302,14 +310,6 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       for {
         page  <- arbitrary[CustomsRegulationTypePage.type]
         value <- arbitrary[CustomsRegulationType].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryImporterClaimantVrnUserAnswersEntry: Arbitrary[(ImporterClaimantVrnPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[ImporterClaimantVrnPage.type]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
 

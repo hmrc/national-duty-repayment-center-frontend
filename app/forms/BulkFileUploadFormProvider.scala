@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package forms
 
-import play.api.libs.json.Format
+import javax.inject.Inject
 
-case class VRN(value: String)
+import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.data.Forms.set
+import models.BulkFileUpload
 
-object VRN {
-  implicit val format: Format[VRN] =
-    JsonFormatUtils.stringFormat(VRN.apply)(_.value)
+class BulkFileUploadFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Set[BulkFileUpload]] =
+    Form(
+      "value" -> set(enumerable[BulkFileUpload]("bulkFileUpload.error.required")).verifying(nonEmptySet("bulkFileUpload.error.required"))
+    )
 }

@@ -16,33 +16,35 @@
 
 @import controllers.routes._
 @import models.{Mode, WhomToPay}
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("whomToPay.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("whomToPay.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = WhomToPayController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = WhomToPayController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        @components.legacy.input_radio(
-            field = form("value"),
-            legend = messages("whomToPay.heading"),
-            headingIsLegend = true,
-            inputs = WhomToPay.options.toSeq
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = WhomToPay.options(form),
+            inline = false,
+            legendAsHeading = true,
+            legend = Some(messages("whomToPay.heading"))
         )
 
-        @components.legacy.submit_button()
+        @html.button("site.continue")
     }
 }

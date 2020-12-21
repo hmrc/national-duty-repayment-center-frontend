@@ -16,8 +16,10 @@
 
 package models
 
-import play.api.libs.json._
-import viewmodels.RadioOption
+import play.api.data.Form
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
 sealed trait ArticleType
 
@@ -26,14 +28,19 @@ object ArticleType extends Enumerable.Implicits {
   case object OverPaymentOfDutyOrVAT extends WithName("117") with ArticleType
   case object ErrorByCustoms extends WithName("119") with ArticleType
   case object ExceptionalCircumstances extends WithName("120") with ArticleType
+  case object Schedule extends WithName("990") with ArticleType
 
   val values: Seq[ArticleType] = Seq(
     OverPaymentOfDutyOrVAT, ErrorByCustoms, ExceptionalCircumstances
   )
 
-  val options: Seq[RadioOption] = values.map {
+  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
-      RadioOption("articleType", value.toString)
+      RadioItem(
+        value = Some(value.toString),
+        content = Text(messages(s"articleType.${value.toString}")),
+        checked = form("value").value.contains(value.toString)
+      )
   }
 
   implicit val enumerable: Enumerable[ArticleType] =

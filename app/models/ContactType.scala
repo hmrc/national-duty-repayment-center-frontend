@@ -16,8 +16,10 @@
 
 package models
 
-import play.api.libs.json._
-import viewmodels.RadioOption
+import play.api.data.Form
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
 sealed trait ContactType
 
@@ -30,9 +32,13 @@ object ContactType extends Enumerable.Implicits {
     Email, Phone
   )
 
-  val options: Seq[RadioOption] = values.map {
+  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
-      RadioOption("contactType", value.toString)
+      RadioItem(
+        value = Some(value.toString),
+        content = Text(messages(s"contactType.${value.toString}")),
+        checked = form("value").value.contains(value.toString)
+      )
   }
 
   implicit val enumerable: Enumerable[ContactType] =

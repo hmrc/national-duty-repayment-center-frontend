@@ -99,7 +99,7 @@ class ArticleTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, articleTypeRoute)
-          .withFormUrlEncodedBody(("value", ArticleType.options.head.value))
+          .withFormUrlEncodedBody(("value", ArticleType.options(form).head.value.get))
 
       val result = route(application, request).value
 

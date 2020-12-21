@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
+import models.BulkFileUpload
+import play.api.libs.json.JsPath
 
-import forms.mappings.Mappings
-import play.api.data.Form
+case object BulkFileUploadPage extends QuestionPage[BulkFileUpload] {
 
-class ImporterClaimantVrnFormProvider @Inject() extends Mappings {
+  override def path: JsPath = JsPath \ toString
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("importerClaimantVrn.error.required")
-        .verifying(maxLength(9, "importerClaimantVrn.error.length"))
-    )
+  override def toString: String = "bulkFileUpload"
 }

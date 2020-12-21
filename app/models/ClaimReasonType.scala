@@ -16,8 +16,10 @@
 
 package models
 
-import play.api.libs.json._
-import viewmodels.RadioOption
+import play.api.data.Form
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
+import viewmodels.RadioOptionHelper
 
 sealed trait ClaimReasonType
 
@@ -35,14 +37,26 @@ object ClaimReasonType extends Enumerable.Implicits {
   case object Other extends WithName("10") with ClaimReasonType
 
   val values: Seq[ClaimReasonType] = Seq(
-    CommodityCodeChange, CurrencyChanges, Cpuchange, CustomsSpecialProcedures, Preference, Retroactivequota,
-    ReturnOfUnwantedGoods, ReturnedGoodsRelief, Value, Other
+    CommodityCodeChange,
+    CurrencyChanges,
+    Cpuchange,
+    CustomsSpecialProcedures,
+    Preference,
+    Retroactivequota,
+    ReturnOfUnwantedGoods,
+    ReturnedGoodsRelief,
+    Value,
+    Other
   )
 
-  val options: Seq[RadioOption] = values.map {
-    value =>
-      RadioOption("claimReasonType", value.toString)
-  }
+  private val insertDividerAfter: ClaimReasonType = Value
+  private val radioOptionHelper = new RadioOptionHelper(values)
+
+  def optionsWithDivider(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = radioOptionHelper.optionsWithDivider(
+    form,
+    messages("claimReasonType.or"),
+    insertDividerAfter
+  )
 
   implicit val enumerable: Enumerable[ClaimReasonType] =
     Enumerable(values.map(v => v.toString -> v): _*)

@@ -15,6 +15,9 @@
  *@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.hmrcfrontend.views.html.components._
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcTrackingConsentSnippet
+@import views.components.FooterLinks
 
 @this(
         govukLayout: GovukLayout,
@@ -22,40 +25,55 @@
         govukBackLink: GovukBackLink,
         siteHeader: components.siteHeader,
         link: components.legacy.link,
+        hmrcTimeoutDialog : HmrcTimeoutDialog,
+        reportAProblemLink: ReportAProblemLink,
+        appConfig: config.FrontendAppConfig,
+        hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet
 )
 
-@(pageTitle: Option[String] = None, timeout: Boolean = true, js: Option[Html] = None, backLink: Option[String] =
-None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(
+bodyClasses: Option[String] = None,
+pageTitle: Option[String] = None,
+timeout: Boolean = true,
+js: Option[Html] = None,
+backLink: Option[String] =None,
+refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @head = {
   <meta name="format-detection" content="telephone=no">
+@hmrcTrackingConsentSnippet()
     <!--[if lte IE 8]><link href="@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")" rel="stylesheet" type="text/css" /><![endif]-->
     <!--[if gt IE 8]><!-->
+@hmrcTimeoutDialog(TimeoutDialog(
+    timeout = Some(appConfig.timeout),
+    countdown = Some(appConfig.countdown),
+    keepAliveUrl = Some("?continue=true"),
+    signOutUrl = Some(routes.SessionExpiredController.onPageLoad.url),
+    language = Some(messages.lang.code)
+))
+
   <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="screen" rel="stylesheet"
   type="text/css" />
     <!--<![endif]-->
-  <link rel="stylesheet" href='@controllers.routes.Assets.versioned("stylesheets/print.css")' type="text/css"
-  media="print" />
+  <link rel="stylesheet" href='@controllers.routes.Assets.versioned("stylesheets/print.css")' type="text/css" media="print" />
 }
 
 @scripts = {
-  <script src='@controllers.routes.Assets.versioned("lib/govuk-frontend/govuk/all.js")'></script>
   <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
-  <script type="text/javascript" src='@controllers.routes.Assets.versioned("javascripts/researchBanner.js")'></script>
 }
 
 @beforeContentBlock = {
-
-@if(backLink.isDefined) {
-  @govukBackLink(BackLink(href = backLink.get, content = Text(messages("site.back")), attributes = Map("id" -> "back-link")))
-}
+  @if(backLink.isDefined) {
+    @govukBackLink(BackLink(href = backLink.get, content = Text(messages("site.back")), attributes = Map("id" -> "back-link")))
+  }
 }
 
 @content = {
   <div class="govuk-!-margin-bottom-6">
-  @contentBlock
+    @contentBlock
   </div>
 
+  @{reportAProblemLink(appConfig.reportAProblemPartialUrl, appConfig.reportAProblemNonJSUrl)}
 }
 
 @govukLayout(
@@ -63,6 +81,7 @@ None, refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messag
   headBlock = Some(head),
   headerBlock = Some(siteHeader(timeout)),
   beforeContentBlock = Some(beforeContentBlock),
+  footerItems = FooterLinks.items,
   bodyEndBlock = None,
   scriptsBlock = Some(scripts)
 )(content)

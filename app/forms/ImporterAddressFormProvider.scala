@@ -50,11 +50,11 @@ class ImporterAddressFormProvider @Inject() extends Mappings {
             regexp(Validation.safeInputPattern,"importerAddress.city.error.invalid")
           )),
       "Region" ->
-        text("importerAddress.region.error.required")
+        optional(Forms.text
           .verifying(firstError(
             maxLength(maxRegionLength, "importerAddress.region.error.length"),
             regexp(Validation.safeInputPattern,"importerAddress.region.error.invalid")
-          )),
+          ))),
       "CountryCode" ->
         text("importerAddress.countryCode.error.required")
           .verifying(firstError(

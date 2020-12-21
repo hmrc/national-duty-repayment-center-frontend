@@ -18,7 +18,7 @@ package models.requests
 
 import java.time.LocalDate
 
-import models.WhomToPay.Importer
+import models.WhomToPay.{Importer, Representative}
 import models._
 import pages._
 import play.api.libs.json.{Json, OFormat}
@@ -31,7 +31,6 @@ object CreateClaimRequest {
   implicit val formats: OFormat[CreateClaimRequest] = Json.format[CreateClaimRequest]
 
   def buildValidClaimRequest(userAnswers: UserAnswers): Option[CreateClaimRequest] = {
-
 
     def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
       customRegulationType <- userAnswers.get(CustomsRegulationTypePage)
@@ -60,13 +59,14 @@ object CreateClaimRequest {
 
     //TODO: Business decision to never send the VRN. API schema should be changed to replect this so we can change the UserDetails model
     def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
+      isVATRegistered <- userAnswers.get(IsImporterVatRegisteredPage)
       eori <- userAnswers.get(EnterAgentEORIPage)
       name <- userAnswers.get(AgentNameImporterPage)
       address <- userAnswers.get(AgentImporterAddressPage)
       telephone <- userAnswers.get(PhoneNumberPage)
       email <- userAnswers.get(EmailAddressPage)
     } yield UserDetails(
-      None,
+      isVATRegistered,
       eori,
       name,
       address,
@@ -76,6 +76,8 @@ object CreateClaimRequest {
 
     //TODO: Business decision to never send the VRN. API schema should be changed to reflect this so we can change the UserDetails model
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
+      isVATRegistered <- userAnswers.get(IsVatRegisteredPage)
+      eori <- userAnswers.get(ImporterEoriPage)
       name <- userAnswers.get(ImporterNamePage)
       address <- userAnswers.get(ImporterAddressPage)
     } yield {
@@ -83,7 +85,7 @@ object CreateClaimRequest {
       val email = "test email" //TODO need to get email from ContactByEmailPage
       val telephone = userAnswers.get(PhoneNumberPage)
       UserDetails(
-        None,
+        isVATRegistered,
         eori,
         name,
         address,
@@ -126,8 +128,6 @@ object CreateClaimRequest {
 
       val CustomsDutyPaidAsDouble = getCustomsDutyPaid.getOrElse("0.0").toDouble
       val CustomsDutyDueAsDouble = getCustomsDutyDue.getOrElse("0.0").toDouble
-
-      println("ZZZZZZZZZZ " + (CustomsDutyPaidAsDouble - CustomsDutyDueAsDouble))
 
       val CustomsDutyOwedAsString = (CustomsDutyPaidAsDouble - CustomsDutyDueAsDouble).toString
 

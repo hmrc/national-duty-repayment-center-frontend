@@ -75,12 +75,13 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   val address = Address(AddressLine1 = "line 1",
     AddressLine2 = Some("line 2"),
     City = "city",
-    Region = "region",
+    Region = Some("region"),
     CountryCode = "GB",
     postCode = Some("ZZ111ZZ")
   )
 
-  val userDetails = UserDetails(VATNumber = Some(VRN("123456789")),
+  val userDetails = UserDetails(
+    isVATRegistered = true,
     EORI = EORI("GB123456789123456"),
     Name = UserName("Joe Bloggs"),
     Address = address,

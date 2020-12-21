@@ -16,17 +16,17 @@
 
 package pages
 
+import models.BulkFileUpload
 import pages.behaviours.PageBehaviours
 
+class BulkFileUploadPageSpec extends PageBehaviours {
 
-class ImporterClaimantVrnPageSpec extends PageBehaviours {
+  "BulkFileUploadPage" must {
 
-  "ImporterClaimantVrnPage" must {
+    beRetrievable[BulkFileUpload](BulkFileUploadPage)
 
-    beRetrievable[String](ImporterClaimantVrnPage)
+    beSettable[BulkFileUpload](BulkFileUploadPage)
 
-    beSettable[String](ImporterClaimantVrnPage)
-
-    beRemovable[String](ImporterClaimantVrnPage)
+    beRemovable[BulkFileUpload](BulkFileUploadPage)
   }
 }

@@ -24,6 +24,7 @@
         legendAsHeading: Boolean = true,
         hint: Option[Html] = None,
         legendClasses: String = "govuk-fieldset__legend--l",
+        contentHtml : Option[Html] = None,
         inline: Boolean = false
 )(implicit messages: Messages)
 
@@ -38,6 +39,7 @@
         classes = legendClasses
         ))
     )),
+
     hint = hint.map { hint => Hint(
         content = HtmlContent(hint)
     )},

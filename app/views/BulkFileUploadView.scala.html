@@ -14,6 +14,9 @@
  * limitations under the License.
  *@
 
+@import controllers.routes._
+@import models.{Mode, BulkFileUpload}
+
 @this(
     main_template: MainTemplate
 )
@@ -21,17 +24,30 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("session_expired.title")
-    ) {
+    title = messages("bulkFileUpload.title")
+    ){
 
-    @components.legacy.heading("session_expired.heading")
+        @components.legacy.back_link()
 
-    <p>@messages("session_expired.guidance")</p>
+    @components.legacy.heading("bulkFileUpload.heading")
 
+    <p >@messages("bulkFileUpload.paragraph1")</p>
 
-    <div class="section">
-        <a id = "govuk-link" class="button" role = "button" href="@routes.BankDetailsController.onPageLoad(NormalMode)">
-        @messages("session_expired.button")
-        </a>
+    @components.legacy.list_items(
+            messages("bulkFileUpload.01"),
+            messages("bulkFileUpload.02"),
+            messages("bulkFileUpload.03"),
+            messages("bulkFileUpload.04"),
+            messages("bulkFileUpload.05")
+        )
+
+    <p>@messages("fileUpload.title")</p>
+
+    <div>
+        <span>
+            <a class="govuk-link" href="articleType"/>
+        </span>
     </div>
+    @components.legacy.submit_button()
 }
+

@@ -16,38 +16,30 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
+import forms.behaviours.CheckboxFieldBehaviours
+import models.BulkFileUpload
 import play.api.data.FormError
 
-class ImporterClaimantVrnFormProviderSpec extends StringFieldBehaviours {
+class BulkFileUploadFormProviderSpec extends CheckboxFieldBehaviours {
 
-  val requiredKey = "importerClaimantVrn.error.required"
-  val lengthKey = "importerClaimantVrn.error.length"
-  val maxLength = 9
-
-  val form = new ImporterClaimantVrnFormProvider()()
+  val form = new BulkFileUploadFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
+    val requiredKey = "bulkFileUpload.error.required"
 
-    behave like fieldThatBindsValidData(
+    behave like checkboxField[BulkFileUpload](
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      validValues  = BulkFileUpload.values,
+      invalidError = FormError(s"$fieldName[0]", "error.invalid")
     )
 
-    behave like fieldWithMaxLength(
+    behave like mandatoryCheckboxField(
       form,
       fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      requiredKey
     )
   }
 }

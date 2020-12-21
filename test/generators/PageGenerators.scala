@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryBulkFileUploadPage: Arbitrary[BulkFileUploadPage.type] =
+    Arbitrary(BulkFileUploadPage)
+
   implicit lazy val arbitraryIndirectRepresentativePage: Arbitrary[IndirectRepresentativePage.type] =
     Arbitrary(IndirectRepresentativePage)
 
@@ -122,9 +125,6 @@ trait PageGenerators {
 
   implicit lazy val arbitraryCustomsRegulationTypePage: Arbitrary[CustomsRegulationTypePage.type] =
     Arbitrary(CustomsRegulationTypePage)
-
-  implicit lazy val arbitraryImporterClaimantVrnPage: Arbitrary[ImporterClaimantVrnPage.type] =
-    Arbitrary(ImporterClaimantVrnPage)
 
   implicit lazy val arbitraryIsVatRegisteredPage: Arbitrary[IsVatRegisteredPage.type] =
     Arbitrary(IsVatRegisteredPage)

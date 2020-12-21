@@ -13,7 +13,7 @@
 
         @components.back_link()
 
-        @components.error_summary(form.errors)
+        @components.legacy.error_summary(form.errors)
 
         @components.input_date(
             field = form("value"),
@@ -21,6 +21,6 @@
             headingIsLegend = true
         )
 
-        @components.submit_button()
+        @components.legacy.submit_button()
     }
 }

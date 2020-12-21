@@ -25,6 +25,10 @@ import org.scalacheck.{Arbitrary, Gen}
 trait ModelGenerators {
 
   self: Generators =>
+  implicit lazy val arbitraryBulkFileUpload: Arbitrary[BulkFileUpload] =
+    Arbitrary {
+      Gen.oneOf(BulkFileUpload.values.toSeq)
+    }
 
   //telephoneNumber <- Gen.option(Gen.listOfN(11, Gen.numStr).map(_.mkString))
   //emailAddress <- Gen.option(self.stringsWithMaxLength(85))
@@ -148,7 +152,7 @@ trait ModelGenerators {
     } yield Address(addressLine1,
       addressLine2,
       city,
-      region,
+      Some(region),
       countryCode.mkString,
       postCode
     )
