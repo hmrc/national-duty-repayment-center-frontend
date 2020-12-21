@@ -30,5 +30,5 @@ class forms @Inject() (
 //  val inputCheckboxes: views.html.components.inputCheckboxes,
   val inputRadio: views.html.components.inputRadio,
 //  val inputTime: views.html.components.inputTime,
-//  val textarea: views.html.components.textarea
+  val textarea: views.html.components.textarea
 )
