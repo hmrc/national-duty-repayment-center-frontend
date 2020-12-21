@@ -224,3 +224,4 @@ POST       /changeIndirectRepresentative                  controllers.IndirectRe
 GET         /proofOfAuthority                       controllers.ProofOfAuthorityController.onPageLoad()
 
 GET        /bulkFileUpload                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
+POST       /bulkFileUpload                        controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
