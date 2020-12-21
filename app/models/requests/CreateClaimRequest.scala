@@ -77,7 +77,6 @@ object CreateClaimRequest {
     //TODO: Business decision to never send the VRN. API schema should be changed to reflect this so we can change the UserDetails model
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
       isVATRegistered <- userAnswers.get(IsVatRegisteredPage)
-      eori <- userAnswers.get(ImporterEoriPage)
       name <- userAnswers.get(ImporterNamePage)
       address <- userAnswers.get(ImporterAddressPage)
     } yield {
