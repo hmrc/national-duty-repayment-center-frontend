@@ -150,6 +150,7 @@ claimReasonType.07 = Return of unwanted goods
 claimReasonType.08 = Returned goods relief
 claimReasonType.09 = Value
 claimReasonType.10 = Other
+claimReasonType.or = or
 claimReasonType.checkYourAnswersLabel = What does your application relate to?
 claimReasonType.error.required = Select what does your application relates to
 
@@ -241,6 +242,7 @@ repaymentType.error.required = Select repayment method
 
 enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
+enterAgentEORI.hint = "The first 2 letters are the country code, like 'GB'. This is followed by 12 numbers, like GB123456123456."
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
 enterAgentEORI.error.required = Enter Agent EORI Number
 enterAgentEORI.error.length = Agent EORI number must be 17 characters or less
@@ -259,17 +261,18 @@ isImporterVatRegistered.02 = No
 isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
 isImporterVatRegistered.error.required = Select whether the importer is VAT registered?
 
-vATPaid.title = How much VAT did you pay?
-vATPaid.heading = How much VAT did you pay?
-vATPaid.checkYourAnswersLabel = How much VAT did you pay?
-vATPaid.error.required = Enter VAT you paid?
+vATPaid.title = How much VAT was paid?
+vATPaid.heading = How much VAT was paid?
+vATPaid.checkYourAnswersLabel = How much VAT was paid?
+vATPaid.error.required = Enter VAT was paid?
 vATPaid.error.length = VAT paid must be 14 characters or less
+vATPaid.hint = This should be the total amount of overpayment for all entries
 
-vATDueToHMRC.title = How much VAT was due to HMRC?
-vATDueToHMRC.heading = How much VAT was due to HMRC?
-vATDueToHMRC.checkYourAnswersLabel = How much VAT was due to HMRC?
-vATDueToHMRC.error.required = Enter VAT Due to HMRC
-vATDueToHMRC.error.length = VAT due must be 14 characters or less
+vATDueToHMRC.title = How much VAT should have been paid to HMRC?
+vATDueToHMRC.heading = How much VAT should have been paid to HMRC?
+vATDueToHMRC.checkYourAnswersLabel = How much VAT should have been paid to HMRC?
+vATDueToHMRC.error.required = Enter VAT should have been paid to HMRC
+vATDueToHMRC.error.length = VAT should have been paid to HMRC must be 14 characters or less
 
 customsDutyPaid.title = How much Customs Duty was paid?
 customsDutyPaid.heading = How much Customs Duty was paid?
@@ -278,11 +281,11 @@ customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of 
 customsDutyPaid.error.required = Enter How much Customs Duty you paid
 customsDutyPaid.error.length = Customs Duty paid must be 14 characters or less
 
-customsDutyDueToHMRC.title = How much Customs Duty was due to HMRC?
-customsDutyDueToHMRC.heading = How much Customs Duty was due to HMRC?
-customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty was due to HMRC?
-customsDutyDueToHMRC.error.required = Enter Customs Duty Due To HMRC
-customsDutyDueToHMRC.error.length = Customs Duty Due To HMRC must be 14 characters or less
+customsDutyDueToHMRC.title = How much Customs Duty should have been paid to HMRC?
+customsDutyDueToHMRC.heading = How much Customs Duty should have been paid to HMRC?
+customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty should have been paid to HMRC?
+customsDutyDueToHMRC.error.required = Enter Customs Duty should have been paid to To HMRC
+customsDutyDueToHMRC.error.length = Customs Duty should have been paid to HMRC must be 14 characters or less
 
 otherDutiesPaid.title = How much was paid in other duties?
 otherDutiesPaid.heading = How much was paid in other duties?
@@ -290,11 +293,11 @@ otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
 otherDutiesPaid.error.required = Enter Other Duties Paid
 otherDutiesPaid.error.length = Other Duties Paid must be 14 characters or less
 
-otherDutiesDueToHMRC.title = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.heading = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.checkYourAnswersLabel = How much was due in other duties to HMRC?
-otherDutiesDueToHMRC.error.required = Enter Other Duties Due to HMRC
-otherDutiesDueToHMRC.error.length = Other Duties Due to HMRC must be 14 characters or less
+otherDutiesDueToHMRC.title = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.heading = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.checkYourAnswersLabel = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.error.required = Enter Other Duties should have been paid to HMRC
+otherDutiesDueToHMRC.error.length = Other Duties should have been paid to HMRC must be 14 characters or less
 
 importerAddress.title = What is your address?
 importerAddress.heading = What is your address?
@@ -435,3 +438,14 @@ proofOfAuthority.title = Upload your proof of authority
 proofOfAuthority.heading = Upload your proof of authority
 proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
 proofOfAuthority.paragraph2 = Upload a file
+
+bulkFileUpload.title = Upload the multiple entries spreadsheet
+bulkFileUpload.heading = Upload the multiple entries spreadsheet
+bulkFileUpload.paragraph1 = For each entry in the spreadsheet, you must provide:
+bulkFileUpload.01 = the entry processing unit (EPU), entry number and entry date
+bulkFileUpload.02 = all item numbers
+bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
+bulkFileUpload.04 = the amount that was paid to HMRC
+bulkFileUpload.05 = the amount that should have been paid to HMRC
+bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
+bulkFileUpload.error.required = Select files
