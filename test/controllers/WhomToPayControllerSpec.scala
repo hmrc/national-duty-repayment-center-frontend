@@ -99,7 +99,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, whomToPayRoute)
-          .withFormUrlEncodedBody(("value", WhomToPay.options.head.value))
+          .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
 
       val result = route(application, request).value
 
