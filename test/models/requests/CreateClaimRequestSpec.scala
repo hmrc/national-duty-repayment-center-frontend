@@ -101,7 +101,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "EntryDetails" -> Json.obj(
               "EPU" -> "123",
               "EntryNumber" -> "123456Q",
-              "EntryDate" -> "2020-08-05"
+              "EntryDate" -> "20200805"
             ),
             "ClaimReason" -> "05",
             "ClaimDescription" -> "this is a claim description",

@@ -16,11 +16,14 @@
 
 package models.responses
 
-import models.ClaimId
+
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
 final case class ClientClaimSuccessResponse(
-                                             claimID: ClaimId
+                                             correlationId: String,
+                                             error: Option[ApiError] = None,
+                                             result: Option[String] = None
                                            )
 
 

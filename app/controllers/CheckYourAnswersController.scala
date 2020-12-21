@@ -59,13 +59,11 @@ class CheckYourAnswersController @Inject()(
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
-      println("XXXXXXXXXXXX onsubmit()")
       for {
         claimId                 <- claimService.submitClaim(request.userAnswers)
-        //updatedClaimId          <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, value = claimId))
-        //updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
-        //_                       <- sessionRepository.set(updatedClaimDate)
+        updatedClaimId          <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
+        updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
+        _                       <- sessionRepository.set(updatedClaimDate)
       } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }

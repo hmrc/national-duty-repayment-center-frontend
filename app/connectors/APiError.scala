@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package queries
+package uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses
 
-import models.ClaimId
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-object ClaimIdQuery extends Gettable[String] with Settable[String] {
-  def path: JsPath = JsPath \ "claimId"
+case class ApiError(
+                     errorCode: String,
+                     errorMessage: Option[String] = None
+                   )
+
+object ApiError {
+  implicit val formats: Format[ApiError] = Json.format[ApiError]
 }

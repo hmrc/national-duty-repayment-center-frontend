@@ -19,15 +19,21 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import queries.ClaimIdQuery
 import views.html.ConfirmationView
 
 class confirmationControllerSpec extends SpecBase {
 
   "confirmation Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET when claimId can be retrieved from user answers" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val claimId = "1"
+
+      val answers = emptyUserAnswers
+        .set(ClaimIdQuery, claimId).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
 
@@ -38,9 +44,23 @@ class confirmationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(claimId)(fakeRequest, messages).toString
 
       application.stop()
+    }
+
+    "return INTERNAL_SERVER_ERROR for a GET when claimId cannot be retrieved from user answers" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+      }
     }
   }
 }

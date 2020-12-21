@@ -124,8 +124,10 @@ object CreateClaimRequest {
         case _ => Some("0.0")
       }
 
-      val CustomsDutyPaidAsDouble = getCustomsDutyPaid.toString.toDouble
-      val CustomsDutyDueAsDouble = getCustomsDutyDue.toString.toDouble
+      val CustomsDutyPaidAsDouble = getCustomsDutyPaid.getOrElse("0.0").toDouble
+      val CustomsDutyDueAsDouble = getCustomsDutyDue.getOrElse("0.0").toDouble
+
+      println("ZZZZZZZZZZ " + (CustomsDutyPaidAsDouble - CustomsDutyDueAsDouble))
 
       val CustomsDutyOwedAsString = (CustomsDutyPaidAsDouble - CustomsDutyDueAsDouble).toString
 
@@ -146,12 +148,12 @@ object CreateClaimRequest {
         case _ => Some("0.0")
       }
 
-      val VatPaidAsDouble = getVatPaid.toString.toDouble
-      val VatDueAsDouble = getVatDue.toString.toDouble
+      val VatPaidAsDouble = getVatPaid.getOrElse("0.0").toDouble
+      val VatDueAsDouble = getVatDue.getOrElse("0.0").toDouble
 
       val VatOwedAsString = (VatPaidAsDouble - VatDueAsDouble).toString
 
-      DutyTypeTaxList(ClaimRepaymentType.Customs, getVatPaid.getOrElse("0.0"), getVatDue.getOrElse("0.0"), VatOwedAsString)
+      DutyTypeTaxList(ClaimRepaymentType.Vat, getVatPaid.getOrElse("0.0"), getVatDue.getOrElse("0.0"), VatOwedAsString)
     }
 
     def getOtherDutyValues(userAnswers: UserAnswers): DutyTypeTaxList = {
@@ -168,12 +170,12 @@ object CreateClaimRequest {
         case _ => Some("0.0")
       }
 
-      val OtherDutyPaidAsDouble = getOtherDutyPaid.toString.toDouble
-      val OtherDutyDueAsDouble = getOtherDutyDue.toString.toDouble
+      val OtherDutyPaidAsDouble = getOtherDutyPaid.getOrElse("0.0").toDouble
+      val OtherDutyDueAsDouble = getOtherDutyDue.getOrElse("0.0").toDouble
 
       val OtherDutyOwedAsString = (OtherDutyPaidAsDouble - OtherDutyDueAsDouble).toString
 
-      DutyTypeTaxList(ClaimRepaymentType.Customs, getOtherDutyPaid.getOrElse("0.0"), getOtherDutyDue.getOrElse("0.0"), OtherDutyOwedAsString)
+      DutyTypeTaxList(ClaimRepaymentType.Other, getOtherDutyPaid.getOrElse("0.0"), getOtherDutyDue.getOrElse("0.0"), OtherDutyOwedAsString)
     }
 
     def getDutyTypeTaxDetails(answers: UserAnswers): Seq[DutyTypeTaxList] = {

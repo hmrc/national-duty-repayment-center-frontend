@@ -336,8 +336,9 @@ importerManualAddress.error.required = Enter your business address
 importerManualAddress.hint = We will use this to send letters about this application.
 importerManualAddress.error.length = Your Manual Address must be 128 characters or less
 
-confirmation.title = Application complete
-confirmation.heading = Application complete
+confirmation.title = Information sent
+confirmation.heading = Information sent
+confirmation.referenceNumber = Your Reference Number
 confirmation.whatHappensNext.heading = What happens next
 confirmation.whatHappensNext.p1 = We’ve sent your application to the NDRC team.
 confirmation.whatHappensNext.p2 = They will contact you either to confirm your registration, or to ask for more information.

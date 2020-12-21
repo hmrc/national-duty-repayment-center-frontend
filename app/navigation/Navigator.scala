@@ -60,6 +60,7 @@ class Navigator @Inject()() {
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
+    case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
