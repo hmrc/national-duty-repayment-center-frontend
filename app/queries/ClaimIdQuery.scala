@@ -19,6 +19,6 @@ package queries
 import models.ClaimId
 import play.api.libs.json.JsPath
 
-object ClaimIdQuery extends Gettable[ClaimId] with Settable[ClaimId] {
+object ClaimIdQuery extends Gettable[String] with Settable[String] {
   def path: JsPath = JsPath \ "claimId"
 }
