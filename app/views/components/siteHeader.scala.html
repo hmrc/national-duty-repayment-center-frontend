@@ -18,14 +18,17 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components.GovukHeader
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.header.HeaderNavigation
 
-@this(govukHeader: GovukHeader)
+@this(
+    govukHeader: GovukHeader,
+    govukBackLink: GovukBackLink
+)
 
 @(showSignOut: Boolean = true)(implicit messages: Messages)
 
 @govukHeader(Header(
-    homepageUrl = None, //TODO
+    homepageUrl = Some("https://www.gov.uk/"),
     serviceName = Some(messages("site.service_name")),
-    serviceUrl = None, //TODO
+    serviceUrl = None,
     containerClasses = Some("govuk-width-container"),
     navigation = None //TODO
 ))
