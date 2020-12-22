@@ -19,35 +19,40 @@
 @import models.NumberOfEntriesType
 @import models.UserAnswers
 @import pages.NumberOfEntriesTypePage
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode, userAnswers: UserAnswers)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("vATPaid.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("vATPaid.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = VATPaidController.onSubmit(mode), 'autoComplete -> "off") {
+@forms.formWithCSRF(action = VATPaidController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        @components.legacy.input_text(
-          field = form("value"),
-          label = messages("vATPaid.heading"),
-          headingIsLabel = true,
-          hint = userAnswers.get(NumberOfEntriesTypePage) match {
-                    case Some(NumberOfEntriesType.Multiple) => Some(messages("vATPaid.hint"))
-                    case _ => None
-                }
+        @forms.inputText(
+            form = form,
+            id = "value",
+            name = "value",
+            inputType = "number",
+            label = "vATPaid.heading",
+            isPageHeading = true,
+            isInFieldset = false,
+            attributes = Map("autocomplete" -> "off"),
+            hint = userAnswers.get(NumberOfEntriesTypePage) match {
+                case Some(NumberOfEntriesType.Multiple) => Some(messages("vATPaid.hint"))
+                case _ => None
+            }
         )
-        @components.legacy.submit_button()
+
+        @html.button("site.continue")
     }
 }
