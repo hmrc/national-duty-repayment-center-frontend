@@ -65,14 +65,8 @@ class CustomsRegulationTypeController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
-            updatedAnswersWithArticleType <- {
-              updatedAnswers.get(CustomsRegulationTypePage) match {
-                case Some(CustomsRegulationType.UKCustomsCodeRegulation) => Future.fromTry(updatedAnswers.set(ArticleTypePage, ArticleType.Schedule))
-                case _ => Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
-              }
-            }
-            _              <- sessionRepository.set(updatedAnswersWithArticleType)
-          } yield Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, updatedAnswersWithArticleType))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, updatedAnswers))
       )
   }
 }

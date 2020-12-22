@@ -32,9 +32,16 @@ object CreateClaimRequest {
 
   def buildValidClaimRequest(userAnswers: UserAnswers): Option[CreateClaimRequest] = {
 
+    def getArticleType(userAnswers: UserAnswers): Option[ArticleType] = {
+      userAnswers.get(CustomsRegulationTypePage) match {
+        case Some(CustomsRegulationType.UKCustomsCodeRegulation) => Some(ArticleType.Schedule)
+        case _ => Some(userAnswers.get(ArticleTypePage).get)
+      }
+    }
+
     def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
       customRegulationType <- userAnswers.get(CustomsRegulationTypePage)
-      claimedUnderArticle <- userAnswers.get(ArticleTypePage)
+      claimedUnderArticle <- getArticleType(userAnswers)
       claimant <- userAnswers.get(ClaimantTypePage)
       claimType <- userAnswers.get(NumberOfEntriesTypePage)
       noOfEntries <- Some(userAnswers.get(HowManyEntriesPage))
