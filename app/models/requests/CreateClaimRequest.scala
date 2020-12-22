@@ -62,7 +62,9 @@ object CreateClaimRequest {
       LocalDate.now(),
       LocalDate.now(),
       payeeIndicator,
-      paymentMethod)
+      paymentMethod,
+      "NA"
+    )
 
     def getAgentIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsImporterVatRegisteredPage) match {
       case Some(true) => Some("true")
