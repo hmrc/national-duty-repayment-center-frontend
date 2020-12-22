@@ -19,9 +19,10 @@ package controllers
 import controllers.actions._
 import forms.RepaymentTypeFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.ClaimantType.Importer
+import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.RepaymentTypePage
+import pages.{ClaimantTypePage, RepaymentTypePage, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -31,16 +32,16 @@ import views.html.RepaymentTypeView
 import scala.concurrent.{ExecutionContext, Future}
 
 class RepaymentTypeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: RepaymentTypeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: RepaymentTypeView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                         override val messagesApi: MessagesApi,
+                                         sessionRepository: SessionRepository,
+                                         navigator: Navigator,
+                                         identify: IdentifierAction,
+                                         getData: DataRetrievalAction,
+                                         requireData: DataRequiredAction,
+                                         formProvider: RepaymentTypeFormProvider,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: RepaymentTypeView
+                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -64,9 +65,16 @@ class RepaymentTypeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(RepaymentTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(RepaymentTypePage, mode, updatedAnswers))
+            updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.set(RepaymentTypePage, value))
+            updatesAnswersWithWhomToPay <- {
+              request.userAnswers.get(ClaimantTypePage) match {
+                case Some(Importer) => Future.fromTry(updatedAnswers.set(WhomToPayPage, models.WhomToPay.Importer))
+                case _ => Future.successful(updatedAnswers)
+              }
+            }
+            _ <- sessionRepository.set(updatesAnswersWithWhomToPay)
+
+          } yield Redirect(navigator.nextPage(RepaymentTypePage, mode, updatesAnswersWithWhomToPay))
       )
   }
 }

@@ -47,17 +47,18 @@ class NDRCConnectorSpec extends SpecBase
       )
       .build()
 
-  "SubmitRepayment" must {
+  "SubmitClaim" must {
 
-    "must return a repayment when the server responds with OK" in {
+    "must return a result when the server responds with OK" in {
       val app = application
 
       running(app) {
 
-        val url = s"/national-duty-repayment-center/create-case"
+        val url = s"/create-case"
         val responseBody =
           s"""{
-             |  "claimID": "1"
+             |  "correlationId": "111",
+             |  "result": "1"
              |}
              |""".stripMargin
         val connector = app.injector.instanceOf[NDRCConnector]
@@ -68,14 +69,14 @@ class NDRCConnectorSpec extends SpecBase
 
         val result = connector.submitClaim(createClaimRequest).futureValue
 
-        result mustEqual ClientClaimSuccessResponse(ClaimId("1"))
+        result mustEqual ClientClaimSuccessResponse(correlationId = "111", result = Some("1"))
       }
     }
 
     "must return None if the backend can't find a registration with case ID" in {
 
       val app = application
-      val url = s"/national-duty-repayment-center/create-case"
+      val url = s"/create-case"
 
       running(app) {
         val connector = app.injector.instanceOf[NDRCConnector]

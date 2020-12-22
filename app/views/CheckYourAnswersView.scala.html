@@ -19,30 +19,23 @@
 @import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("checkYourAnswers.title")
-    ) {
+@govukLayout(
+pageTitle = Some("Title"),
+backLink = Some("#")
+) {
 
-    @components.legacy.heading("checkYourAnswers.heading")</h1>
+@forms.formWithCSRF(action = CheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
 
-    <p>@messages("checkYourAnswers.guidance")</p>
 
-    @for(section <- answerSections){
-        @{
-            section match {
-                case a: AnswerSection => components.legacy.answer_section(a)
-                case r: RepeaterAnswerSection => components.legacy.repeater_answer_section(r)
-            }
-        }
-    }
 
-    @formHelper(action = CheckYourAnswersController.onSubmit()) {
-        @components.legacy.button("site.confirmAndSend")
-    }
+@html.button("site.continue")
 }
+}
+

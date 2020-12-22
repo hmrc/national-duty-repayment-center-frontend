@@ -99,7 +99,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, agentImporterHasEORIRoute)
-          .withFormUrlEncodedBody(("value", AgentImporterHasEORI.options.head.value))
+          .withFormUrlEncodedBody(("value", AgentImporterHasEORI.options(form).head.value.get))
 
       val result = route(application, request).value
 

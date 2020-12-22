@@ -33,7 +33,7 @@ class ClaimService @Inject()(
                             ) {
 
 
-  def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[ClaimId] = {
+  def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
     val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
 
     maybeRegistrationRequest match {
@@ -42,7 +42,7 @@ class ClaimService @Inject()(
           claimId: ClientClaimSuccessResponse <- nDRCConnector.submitClaim(value)
         } yield {
           //val _ = auditService.audit(buildAuditModel(value, registration, request))
-          claimId.claimID
+          claimId.result.get
         }
       case None =>
         Logger.error("Unsuccessful claim submission, did not contain sufficient UserAnswers data to construct CreateClaimRequest")

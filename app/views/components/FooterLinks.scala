@@ -24,7 +24,7 @@ object FooterLinks {
 
   val cookies = "/help/cookies"
   val privacy = "/help/privacy"
-  val termsConditions = "/help/terms-conditions"
+  val termsConditions = "/help/terms-and-conditions"
   val govukHelp = "https://www.gov.uk/help"
 
   def cookieLink(implicit messages: Messages) =
