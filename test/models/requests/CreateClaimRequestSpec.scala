@@ -39,8 +39,8 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         EntryDetails = EntryDetails(EPU = "123", EntryNumber = "123456Q", EntryDate = LocalDate.of(2020, 8, 5)),
         ClaimReason = ClaimReasonType.Preference,
         ClaimDescription = ClaimDescription("this is a claim description"),
-        DateReceived = LocalDate.of(2020,8,5),
-        ClaimDate = LocalDate.of(2020,8,5),
+        DateReceived = LocalDate.of(2020, 8, 5),
+        ClaimDate = LocalDate.of(2020, 8, 5),
         PayeeIndicator = WhomToPay.Importer,
         PaymentMethod = RepaymentType.BACS,
       )
@@ -88,7 +88,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
           BankDetails = Some(bankDetails),
           DutyTypeTaxDetails = dutyTypeTaxDetails,
           DocumentList = documentList)
-        )
+      )
 
       val json = Json.obj(
         "Content" -> Json.obj(
@@ -110,18 +110,18 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "ClaimDate" -> "20200805",
             "PayeeIndicator" -> "01",
             "PaymentMethod" -> "01",
-            ),
+          ),
           "AgentDetails" -> Json.obj(
             "isVATRegistered" -> "true",
-          "EORI" -> "GB123456789123456",
-          "Name" -> "Joe Bloggs",
-          "Address" -> Json.obj(
-            "AddressLine1" -> "line 1",
-            "AddressLine2" -> "line 2",
-            "City" -> "city",
-            "Region" -> "region",
-            "CountryCode" -> "GB",
-            "postCode" -> "ZZ111ZZ"
+            "EORI" -> "GB123456789123456",
+            "Name" -> "Joe Bloggs",
+            "Address" -> Json.obj(
+              "AddressLine1" -> "line 1",
+              "AddressLine2" -> "line 2",
+              "City" -> "city",
+              "Region" -> "region",
+              "CountryCode" -> "GB",
+              "postCode" -> "ZZ111ZZ"
             ),
             "TelephoneNumber" -> "12345678",
             "EmailAddress" -> "example@example.com"
@@ -143,9 +143,9 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
           ),
           "BankDetails" -> Json.obj(
             "ImporterBankDetails" -> Json.obj(
-            "AccountName" -> "account name",
-            "SortCode" -> "123456",
-            "AccountNumber" -> "12345678"
+              "AccountName" -> "account name",
+              "SortCode" -> "123456",
+              "AccountNumber" -> "12345678"
             ),
             "AgentBankDetails" -> Json.obj(
               "AccountName" -> "account name",
@@ -154,41 +154,41 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             )
           ),
           "DutyTypeTaxDetails" -> Json.obj(
-          "DutyTypeTaxList" -> Json.arr(
-            Json.obj(
-              "Type" -> "01",
-              "PaidAmount" -> "100.00",
-              "DueAmount" -> "50.00",
-              "ClaimAmount" -> "50.00"
-            ),
-            Json.obj(
-              "Type" -> "02",
-              "PaidAmount" -> "100.00",
-              "DueAmount" -> "50.00",
-              "ClaimAmount" -> "50.00"
-            ),
+            "DutyTypeTaxList" -> Json.arr(
+              Json.obj(
+                "Type" -> "01",
+                "PaidAmount" -> "100.00",
+                "DueAmount" -> "50.00",
+                "ClaimAmount" -> "50.00"
+              ),
+              Json.obj(
+                "Type" -> "02",
+                "PaidAmount" -> "100.00",
+                "DueAmount" -> "50.00",
+                "ClaimAmount" -> "50.00"
+              ),
+              Json.obj(
+                "Type" -> "03",
+                "PaidAmount" -> "100.00",
+                "DueAmount" -> "50.00",
+                "ClaimAmount" -> "50.00"
+              )
+            )
+          ),
+          "DocumentList" -> Json.arr(
             Json.obj(
               "Type" -> "03",
-              "PaidAmount" -> "100.00",
-              "DueAmount" -> "50.00",
-              "ClaimAmount" -> "50.00"
+              "Description" -> "this is a copy of c88"
+            ),
+            Json.obj(
+              "Type" -> "01",
+              "Description" -> "this is an invoice"
+            ),
+            Json.obj(
+              "Type" -> "04",
+              "Description" -> "this is a packing list"
             )
           )
-        ),
-        "DocumentList" -> Json.arr(
-          Json.obj(
-            "Type" -> "03",
-            "Description" -> "this is a copy of c88"
-          ),
-          Json.obj(
-            "Type" -> "01",
-            "Description" -> "this is an invoice"
-          ),
-          Json.obj(
-            "Type" -> "04",
-            "Description" -> "this is a packing list"
-          )
-        )
         )
       )
 

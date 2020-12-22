@@ -16,7 +16,6 @@
 
 package models
 
-import play.api.libs.json._
 import viewmodels.RadioOption
 
 sealed trait AdditionalFileUpload
@@ -24,6 +23,7 @@ sealed trait AdditionalFileUpload
 object AdditionalFileUpload extends Enumerable.Implicits {
 
   case object Yes extends WithName("01") with AdditionalFileUpload
+
   case object No extends WithName("02") with AdditionalFileUpload
 
   val values: Seq[AdditionalFileUpload] = Seq(

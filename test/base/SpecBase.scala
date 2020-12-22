@@ -66,8 +66,8 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     EntryDetails = EntryDetails(EPU = "123", EntryNumber = "123456Q", EntryDate = LocalDate.now()),
     ClaimReason = ClaimReasonType.Preference,
     ClaimDescription = ClaimDescription("this is a claim description"),
-    DateReceived = LocalDate.of(2020,8,5),
-    ClaimDate = LocalDate.of(2020,8,5),
+    DateReceived = LocalDate.of(2020, 8, 5),
+    ClaimDate = LocalDate.of(2020, 8, 5),
     PayeeIndicator = WhomToPay.Importer,
     PaymentMethod = RepaymentType.BACS,
   )

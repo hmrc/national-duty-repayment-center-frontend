@@ -19,7 +19,6 @@ package controllers
 import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
 import javax.inject.Inject
-import models.CustomsRegulationType.UKCustomsCodeRegulation
 import models.{ArticleType, CustomsRegulationType, Mode}
 import navigation.Navigator
 import pages.{ArticleTypePage, CustomsRegulationTypePage}

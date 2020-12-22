@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.EntryDetailsFormProvider
 import javax.inject.Inject
-import models.{ArticleType, CustomsRegulationType, Mode}
+import models.Mode
 import navigation.Navigator
-import pages.{ArticleTypePage, CustomsRegulationTypePage, EntryDetailsPage}
+import pages.EntryDetailsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
