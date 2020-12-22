@@ -63,7 +63,7 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(NumberOfEntriesTypePage.type, JsValue)] ::
     arbitrary[(ArticleTypePage.type, JsValue)] ::
     arbitrary[(CustomsRegulationTypePage.type, JsValue)] ::
-    arbitrary[(IsVatRegisteredPage.type, JsValue)] ::
+    arbitrary[(IsVATRegisteredPage.type, JsValue)] ::
     arbitrary[(ImporterEoriPage.type, JsValue)] ::
     arbitrary[(ImporterHasEoriPage.type, JsValue)] ::
     arbitrary[(ClaimantTypePage.type, JsValue)] ::

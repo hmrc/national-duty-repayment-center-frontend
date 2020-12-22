@@ -313,10 +313,10 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryIsVatRegisteredUserAnswersEntry: Arbitrary[(IsVatRegisteredPage.type, JsValue)] =
+  implicit lazy val arbitraryIsVATRegisteredUserAnswersEntry: Arbitrary[(IsVATRegisteredPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[IsVatRegisteredPage.type]
+        page  <- arbitrary[IsVATRegisteredPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

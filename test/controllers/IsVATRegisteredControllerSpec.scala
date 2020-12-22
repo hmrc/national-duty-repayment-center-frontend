@@ -17,33 +17,33 @@
 package controllers
 
 import base.SpecBase
-import forms.IsVatRegisteredFormProvider
+import forms.IsVATRegisteredFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.IsVatRegisteredPage
+import pages.IsVATRegisteredPage
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.IsVatRegisteredView
+import views.html.IsVATRegisteredView
 
 import scala.concurrent.Future
 
-class IsVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
+class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new IsVatRegisteredFormProvider()
+  val formProvider = new IsVATRegisteredFormProvider()
   val form = formProvider()
 
-  lazy val isVatRegisteredRoute = routes.IsVatRegisteredController.onPageLoad(NormalMode).url
+  lazy val isVatRegisteredRoute = routes.IsVATRegisteredController.onPageLoad(NormalMode).url
 
-  "IsVatRegistered Controller" must {
+  "IsVATRegistered Controller" must {
 
     "return OK and the correct view for a GET" in {
 
@@ -53,7 +53,7 @@ class IsVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[IsVatRegisteredView]
+      val view = application.injector.instanceOf[IsVATRegisteredView]
 
       status(result) mustEqual OK
 
@@ -65,13 +65,13 @@ class IsVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsVatRegisteredPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsVATRegisteredPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, isVatRegisteredRoute)
 
-      val view = application.injector.instanceOf[IsVatRegisteredView]
+      val view = application.injector.instanceOf[IsVATRegisteredView]
 
       val result = route(application, request).value
 
@@ -120,7 +120,7 @@ class IsVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[IsVatRegisteredView]
+      val view = application.injector.instanceOf[IsVATRegisteredView]
 
       val result = route(application, request).value
 

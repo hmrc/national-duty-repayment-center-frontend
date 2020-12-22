@@ -345,12 +345,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def isVatRegistered: Option[AnswerRow] = userAnswers.get(IsVatRegisteredPage) map {
+  def isVATRegistered: Option[AnswerRow] = userAnswers.get(IsVATRegisteredPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("isVatRegistered.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages("isVATRegistered.checkYourAnswersLabel")),
         yesOrNo(x),
-        Some(routes.IsVatRegisteredController.onPageLoad(CheckMode).url)
+        Some(routes.IsVATRegisteredController.onPageLoad(CheckMode).url)
       )
   }
 

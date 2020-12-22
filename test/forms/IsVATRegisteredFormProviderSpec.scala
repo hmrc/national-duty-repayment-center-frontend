@@ -19,12 +19,12 @@ package forms
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class IsVatRegisteredFormProviderSpec extends BooleanFieldBehaviours {
+class IsVATRegisteredFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "isVatRegistered.error.required"
+  val requiredKey = "isVATRegistered.error.required"
   val invalidKey = "error.boolean"
 
-  val form = new IsVatRegisteredFormProvider()()
+  val form = new IsVATRegisteredFormProvider()()
 
   ".value" must {
 

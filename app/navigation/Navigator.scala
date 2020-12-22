@@ -48,7 +48,7 @@ class Navigator @Inject()() {
     case ImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
     case ImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
     case ImporterHasEoriPage => getEORIConfirmation
-    case IsVatRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
+    case IsVATRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
     case PhoneNumberPage => _ => routes.ContactByEmailController.onPageLoad(NormalMode)
     case ContactByEmailPage => _ => routes.RepaymentTypeController.onPageLoad(NormalMode)
     case RepaymentTypePage => getRepaymentMethodType
@@ -104,7 +104,7 @@ class Navigator @Inject()() {
 
   private def getEORIPage(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
     case Some(ClaimantType.Representative)  => routes.ImporterNameController.onPageLoad(NormalMode)
-    case _ => routes.IsVatRegisteredController.onPageLoad(NormalMode)
+    case _ => routes.IsVATRegisteredController.onPageLoad(NormalMode)
   }
 
   private def getAgentEORIStatus(answers: UserAnswers): Call = answers.get(AgentImporterHasEORIPage) match {
@@ -114,7 +114,7 @@ class Navigator @Inject()() {
 
   private def getEORIConfirmation(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
     case Some(true)  => routes.ImporterEoriController.onPageLoad(NormalMode)
-    case _ => routes.IsVatRegisteredController.onPageLoad(NormalMode)
+    case _ => routes.IsVATRegisteredController.onPageLoad(NormalMode)
   }
 
   private def getRepaymentMethodType(answers: UserAnswers): Call =

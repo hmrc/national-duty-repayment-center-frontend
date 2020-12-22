@@ -27,21 +27,21 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("isVatRegistered.title")}"
+    title = s"${errorPrefix(form)} ${messages("isVATRegistered.title")}"
     ) {
 
-    @formHelper(action = IsVatRegisteredController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = IsVATRegisteredController.onSubmit(mode), 'autoComplete -> "off") {
 
         @components.legacy.back_link()
 
         @components.legacy.error_summary(form.errors)
 
-        @components.legacy.heading(messages("isVatRegistered.heading"))
+        @components.legacy.heading(messages("isVATRegistered.heading"))
 
         @components.legacy.input_yes_no(
             field = form("value"),
-            legend = messages("isVatRegistered.heading"),
-            label = Some(messages("isVatRegistered.heading")),
+            legend = messages("isVATRegistered.heading"),
+            label = Some(messages("isVATRegistered.heading")),
             labelClass = Some("visually-hidden"),
             headingIsLegend = true
         )
