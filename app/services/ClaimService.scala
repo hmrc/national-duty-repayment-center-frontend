@@ -49,5 +49,22 @@ class ClaimService @Inject()(
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct CreateClaimRequest")
     }
   }
+
+  def amendClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
+    val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
+
+    maybeRegistrationRequest match {
+      case Some(value) =>
+        for {
+          claimId: ClientClaimSuccessResponse <- nDRCConnector.submitClaim(value)
+        } yield {
+          //val _ = auditService.audit(buildAuditModel(value, registration, request))
+          claimId.result.get
+        }
+      case None =>
+        Logger.error("Unsuccessful claim submission, did not contain sufficient UserAnswers data to construct CreateClaimRequest")
+        throw new RuntimeException("UserAnswers did not contain sufficient data to construct CreateClaimRequest")
+    }
+  }
 }
 
