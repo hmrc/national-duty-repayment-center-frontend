@@ -21,10 +21,10 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class IsVatRegisteredFormProvider @Inject() extends Mappings {
+class IsVATRegisteredFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("isVatRegistered.error.required")
+      "value" -> boolean("isVATRegistered.error.required")
     )
 }

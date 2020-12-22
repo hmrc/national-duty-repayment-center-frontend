@@ -74,10 +74,10 @@ importerEori.checkYourAnswersLabel = What is your EORI number?
 importerEori.error.required = Enter your EORI number
 importerEori.error.length = EORI number must be 17 characters or less
 
-isVatRegistered.title = Are you VAT registered?
-isVatRegistered.heading = Are you VAT registered?
-isVatRegistered.checkYourAnswersLabel = Are you VAT registered?
-isVatRegistered.error.required = Select yes if you are VAT registered
+isVATRegistered.title = Are you VAT registered?
+isVATRegistered.heading = Are you VAT registered?
+isVATRegistered.checkYourAnswersLabel = Are you VAT registered?
+isVATRegistered.error.required = Select yes if you are VAT registered
 
 importerClaimantVrn.title = What is your VRN number?
 importerClaimantVrn.heading = What is your VRN number?

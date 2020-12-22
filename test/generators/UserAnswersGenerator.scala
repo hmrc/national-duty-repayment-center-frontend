@@ -28,46 +28,46 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(BulkFileUploadPage.type, JsValue)] ::
-    arbitrary[(IndirectRepresentativePage.type, JsValue)] ::
-    arbitrary[(HowManyEntriesPage.type, JsValue)] ::
-    arbitrary[(ContactByEmailPage.type, JsValue)] ::
-    arbitrary[(AdditionalFileUploadPage.type, JsValue)] ::
-    arbitrary[(BankDetailsPage.type, JsValue)] ::
-    arbitrary[(AgentImporterManualAddressPage.type, JsValue)] ::
-    arbitrary[(ImporterManualAddressPage.type, JsValue)] ::
-    arbitrary[(AgentImporterAddressPage.type, JsValue)] ::
-    arbitrary[(ImporterAddressPage.type, JsValue)] ::
-    arbitrary[(OtherDutiesDueToHMRCPage.type, JsValue)] ::
-    arbitrary[(OtherDutiesPaidPage.type, JsValue)] ::
-    arbitrary[(CustomsDutyDueToHMRCPage.type, JsValue)] ::
-    arbitrary[(CustomsDutyPaidPage.type, JsValue)] ::
-    arbitrary[(VATDueToHMRCPage.type, JsValue)] ::
-    arbitrary[(VATPaidPage.type, JsValue)] ::
-    arbitrary[(AgentImporterHasEORIPage.type, JsValue)] ::
-    arbitrary[(IsImporterVatRegisteredPage.type, JsValue)] ::
-    arbitrary[(EnterAgentEORIPage.type, JsValue)] ::
-    arbitrary[(WhomToPayPage.type, JsValue)] ::
-    arbitrary[(RepaymentTypePage.type, JsValue)] ::
-    arbitrary[(AgentNameImporterPage.type, JsValue)] ::
-    arbitrary[(PhoneNumberPage.type, JsValue)] ::
-    arbitrary[(EmailAddressPage.type, JsValue)] ::
-    arbitrary[(ContactTypePage.type, JsValue)] ::
-    arbitrary[(ImporterNamePage.type, JsValue)] ::
-    arbitrary[(EvidenceSupportingDocsPage.type, JsValue)] ::
-    arbitrary[(ClaimRepaymentTypePage.type, JsValue)] ::
-    arbitrary[(ReasonForOverpaymentPage.type, JsValue)] ::
-    arbitrary[(WhatAreTheGoodsPage.type, JsValue)] ::
-    arbitrary[(ClaimReasonTypePage.type, JsValue)] ::
-    arbitrary[(EntryDetailsPage.type, JsValue)] ::
-    arbitrary[(HowManyEntriesPage.type, JsValue)] ::
-    arbitrary[(NumberOfEntriesTypePage.type, JsValue)] ::
-    arbitrary[(ArticleTypePage.type, JsValue)] ::
-    arbitrary[(CustomsRegulationTypePage.type, JsValue)] ::
-    arbitrary[(IsVatRegisteredPage.type, JsValue)] ::
-    arbitrary[(ImporterEoriPage.type, JsValue)] ::
-    arbitrary[(ImporterHasEoriPage.type, JsValue)] ::
-    arbitrary[(ClaimantTypePage.type, JsValue)] ::
-    Nil
+      arbitrary[(IndirectRepresentativePage.type, JsValue)] ::
+      arbitrary[(HowManyEntriesPage.type, JsValue)] ::
+      arbitrary[(ContactByEmailPage.type, JsValue)] ::
+      arbitrary[(AdditionalFileUploadPage.type, JsValue)] ::
+      arbitrary[(BankDetailsPage.type, JsValue)] ::
+      arbitrary[(AgentImporterManualAddressPage.type, JsValue)] ::
+      arbitrary[(ImporterManualAddressPage.type, JsValue)] ::
+      arbitrary[(AgentImporterAddressPage.type, JsValue)] ::
+      arbitrary[(ImporterAddressPage.type, JsValue)] ::
+      arbitrary[(OtherDutiesDueToHMRCPage.type, JsValue)] ::
+      arbitrary[(OtherDutiesPaidPage.type, JsValue)] ::
+      arbitrary[(CustomsDutyDueToHMRCPage.type, JsValue)] ::
+      arbitrary[(CustomsDutyPaidPage.type, JsValue)] ::
+      arbitrary[(VATDueToHMRCPage.type, JsValue)] ::
+      arbitrary[(VATPaidPage.type, JsValue)] ::
+      arbitrary[(AgentImporterHasEORIPage.type, JsValue)] ::
+      arbitrary[(IsImporterVatRegisteredPage.type, JsValue)] ::
+      arbitrary[(EnterAgentEORIPage.type, JsValue)] ::
+      arbitrary[(WhomToPayPage.type, JsValue)] ::
+      arbitrary[(RepaymentTypePage.type, JsValue)] ::
+      arbitrary[(AgentNameImporterPage.type, JsValue)] ::
+      arbitrary[(PhoneNumberPage.type, JsValue)] ::
+      arbitrary[(EmailAddressPage.type, JsValue)] ::
+      arbitrary[(ContactTypePage.type, JsValue)] ::
+      arbitrary[(ImporterNamePage.type, JsValue)] ::
+      arbitrary[(EvidenceSupportingDocsPage.type, JsValue)] ::
+      arbitrary[(ClaimRepaymentTypePage.type, JsValue)] ::
+      arbitrary[(ReasonForOverpaymentPage.type, JsValue)] ::
+      arbitrary[(WhatAreTheGoodsPage.type, JsValue)] ::
+      arbitrary[(ClaimReasonTypePage.type, JsValue)] ::
+      arbitrary[(EntryDetailsPage.type, JsValue)] ::
+      arbitrary[(HowManyEntriesPage.type, JsValue)] ::
+      arbitrary[(NumberOfEntriesTypePage.type, JsValue)] ::
+      arbitrary[(ArticleTypePage.type, JsValue)] ::
+      arbitrary[(CustomsRegulationTypePage.type, JsValue)] ::
+      arbitrary[(IsVATRegisteredPage.type, JsValue)] ::
+      arbitrary[(ImporterEoriPage.type, JsValue)] ::
+      arbitrary[(ImporterHasEoriPage.type, JsValue)] ::
+      arbitrary[(ClaimantTypePage.type, JsValue)] ::
+      Nil
 
   implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] = {
 
@@ -75,12 +75,12 @@ trait UserAnswersGenerator extends TryValues {
 
     Arbitrary {
       for {
-        id      <- nonEmptyString
-        data    <- generators match {
+        id <- nonEmptyString
+        data <- generators match {
           case Nil => Gen.const(Map[QuestionPage[_], JsValue]())
-          case _   => Gen.mapOf(oneOf(generators))
+          case _ => Gen.mapOf(oneOf(generators))
         }
-      } yield UserAnswers (
+      } yield UserAnswers(
         id = id,
         data = data.foldLeft(Json.obj()) {
           case (obj, (path, value)) =>

@@ -18,14 +18,14 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
-class IsVatRegisteredPageSpec extends PageBehaviours {
+class IsVATRegisteredPageSpec extends PageBehaviours {
 
-  "IsVatRegisteredPage" must {
+  "IsVATRegisteredPage" must {
 
-    beRetrievable[Boolean](IsVatRegisteredPage)
+    beRetrievable[Boolean](IsVATRegisteredPage)
 
-    beSettable[Boolean](IsVatRegisteredPage)
+    beSettable[Boolean](IsVATRegisteredPage)
 
-    beRemovable[Boolean](IsVatRegisteredPage)
+    beRemovable[Boolean](IsVATRegisteredPage)
   }
 }

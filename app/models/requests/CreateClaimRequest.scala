@@ -57,9 +57,14 @@ object CreateClaimRequest {
       payeeIndicator,
       paymentMethod)
 
-    //TODO: Business decision to never send the VRN. API schema should be changed to replect this so we can change the UserDetails model
+    def getAgentIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsImporterVatRegisteredPage) match {
+      case Some(true) => Some("true")
+      case Some(false) => Some("false")
+      case _ => None
+    }
+
     def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
-      isVATRegistered <- userAnswers.get(IsImporterVatRegisteredPage)
+      isVATRegistered <- getAgentIsVATRegistered(userAnswers)
       eori <- userAnswers.get(EnterAgentEORIPage)
       name <- userAnswers.get(AgentNameImporterPage)
       address <- userAnswers.get(AgentImporterAddressPage)
@@ -74,9 +79,14 @@ object CreateClaimRequest {
       Some(email)
     )
 
-    //TODO: Business decision to never send the VRN. API schema should be changed to reflect this so we can change the UserDetails model
+    def getImporterIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsVATRegisteredPage) match {
+      case Some(true) => Some("true")
+      case Some(false) => Some("false")
+      case _ => None
+    }
+
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
-      isVATRegistered <- userAnswers.get(IsVatRegisteredPage)
+      isVATRegistered <- getImporterIsVATRegistered(userAnswers)
       name <- userAnswers.get(ImporterNamePage)
       address <- userAnswers.get(ImporterAddressPage)
     } yield {

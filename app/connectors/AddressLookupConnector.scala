@@ -21,14 +21,11 @@ import connectors.httpparsers.AddressLookupHttpParser
 import connectors.httpparsers.AddressLookupHttpParser.AddressLookupResponse
 import javax.inject.Inject
 import models.PostcodeLookup
-import models.requests.IdentifierRequest
 import play.api.http.HeaderNames
-import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
 
 class AddressLookupConnector @Inject()(httpClient: HttpClient)
                                       (implicit appConfig: FrontendAppConfig,

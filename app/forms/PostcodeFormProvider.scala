@@ -19,7 +19,7 @@ package forms
 import forms.mappings.Mappings
 import javax.inject.Inject
 import models.PostcodeLookup
-import play.api.data.Forms.{optional, _}
+import play.api.data.Forms._
 import play.api.data.{Form, Forms}
 
 class PostcodeFormProvider @Inject() extends Mappings {

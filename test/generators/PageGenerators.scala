@@ -126,8 +126,8 @@ trait PageGenerators {
   implicit lazy val arbitraryCustomsRegulationTypePage: Arbitrary[CustomsRegulationTypePage.type] =
     Arbitrary(CustomsRegulationTypePage)
 
-  implicit lazy val arbitraryIsVatRegisteredPage: Arbitrary[IsVatRegisteredPage.type] =
-    Arbitrary(IsVatRegisteredPage)
+  implicit lazy val arbitraryIsVATRegisteredPage: Arbitrary[IsVATRegisteredPage.type] =
+    Arbitrary(IsVATRegisteredPage)
 
   implicit lazy val arbitraryImporterEoriPage: Arbitrary[ImporterEoriPage.type] =
     Arbitrary(ImporterEoriPage)

@@ -17,29 +17,29 @@
 package controllers
 
 import controllers.actions._
-import forms.IsVatRegisteredFormProvider
+import forms.IsVATRegisteredFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.IsVatRegisteredPage
+import pages.IsVATRegisteredPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.IsVatRegisteredView
+import views.html.IsVATRegisteredView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IsVatRegisteredController @Inject()(
+class IsVATRegisteredController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
                                          navigator: Navigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
-                                         formProvider: IsVatRegisteredFormProvider,
+                                         formProvider: IsVATRegisteredFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: IsVatRegisteredView
+                                         view: IsVATRegisteredView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -47,7 +47,7 @@ class IsVatRegisteredController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(IsVatRegisteredPage) match {
+      val preparedForm = request.userAnswers.get(IsVATRegisteredPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class IsVatRegisteredController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsVatRegisteredPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IsVATRegisteredPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsVatRegisteredPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(IsVATRegisteredPage, mode, updatedAnswers))
       )
   }
 }
