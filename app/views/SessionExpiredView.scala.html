@@ -17,8 +17,7 @@
 @import config.FrontendAppConfig
 
 @this(
-    main_template: MainTemplate,
-    appConfig:FrontendAppConfig
+    main_template: MainTemplate
 )
 
 @()(implicit request: Request[_], messages: Messages)
@@ -33,7 +32,7 @@
 
 
     <div class="section">
-        <a id = "govuk-link" class="button" role = "button" href="claimantType">
+        <a id = "govuk-link" class="button" role = "button" href="@routes.ClaimantTypeController.onPageLoad(NormalMode)">
         @messages("session_expired.button")
         </a>
     </div>
