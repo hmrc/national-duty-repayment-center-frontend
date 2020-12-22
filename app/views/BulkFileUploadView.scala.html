@@ -18,7 +18,8 @@
 @import models.{Mode, BulkFileUpload}
 
 @this(
-    main_template: MainTemplate
+    main_template: MainTemplate,
+    forms: views.components.forms
 )
 
 @()(implicit request: Request[_], messages: Messages)
@@ -27,6 +28,7 @@
     title = messages("bulkFileUpload.title")
     ){
 
+@forms.formWithCSRF(action = BulkFileUploadController.onSubmit(), 'autoComplete -> "off") {
         @components.legacy.back_link()
 
     @components.legacy.heading("bulkFileUpload.heading")
@@ -43,11 +45,7 @@
 
     <p>@messages("fileUpload.title")</p>
 
-    <div>
-        <span>
-            <a class="govuk-link" href="articleType"/>
-        </span>
-    </div>
     @components.legacy.submit_button()
+}
 }
 

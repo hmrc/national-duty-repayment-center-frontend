@@ -60,9 +60,15 @@ class Navigator @Inject()() {
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
+    case BulkFileUploadPage => getBulkEntryDetails
+    case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
+  private def getBulkEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
+    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
+    case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
+  }
 
   private def getEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
     case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => {
@@ -78,8 +84,6 @@ class Navigator @Inject()() {
         routes.BulkFileUploadController.onPageLoad
     }
   }
-
-
 
   private def additionalFileUploadRoute(answers: UserAnswers): Call = answers.get(AdditionalFileUploadPage) match {
     case Some(AdditionalFileUpload.Yes) => routes.FileUploadController.onPageLoad

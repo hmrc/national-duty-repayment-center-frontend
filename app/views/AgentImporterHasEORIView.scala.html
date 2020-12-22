@@ -16,35 +16,36 @@
 
 @import controllers.routes._
 @import models.{Mode, AgentImporterHasEORI}
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("agentImporterHasEORI.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("agentImporterHasEORI.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = AgentImporterHasEORIController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = AgentImporterHasEORIController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        <div class="inline">
-        @components.legacy.input_radio(
-            field = form("value"),
-            legend = messages("agentImporterHasEORI.heading"),
-            headingIsLegend = true,
-            inputs = AgentImporterHasEORI.options.toSeq
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = AgentImporterHasEORI.options(form),
+            inline = true,
+            legendAsHeading = true,
+            legend = Some(messages("agentImporterHasEORI.heading"))
         )
 
-        @components.legacy.submit_button()
-        </div>
+        @html.button("site.continue")
+
     }
 }

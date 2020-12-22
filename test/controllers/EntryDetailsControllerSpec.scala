@@ -43,7 +43,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new EntryDetailsFormProvider()
   val form = formProvider()
 
-  val validDateAnswer = LocalDate.parse("0900-01-01")
+  val validDateAnswer: LocalDate = LocalDate.parse("0900-01-01")
 
   lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad(NormalMode).url
 
@@ -53,7 +53,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       EntryDetailsPage.toString -> Json.obj(
         "EPU"   -> "123",
         "EntryNumber"      -> "123456Q",
-        "EntryDate" -> validDateAnswer
+        "EntryDate" -> "09000101"
       )
     )
   )

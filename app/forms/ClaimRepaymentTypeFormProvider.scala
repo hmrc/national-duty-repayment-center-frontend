@@ -27,6 +27,7 @@ class ClaimRepaymentTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Set[ClaimRepaymentType]] =
     Form(
-      "value" -> set(enumerable[ClaimRepaymentType]("claimRepaymentType.error.required")).verifying(nonEmptySet("claimRepaymentType.error.required"))
+      "value" -> set(enumerable[ClaimRepaymentType]("claimRepaymentType.error.required"))
+        .verifying(nonEmptySet("claimRepaymentType.error.required"))
     )
 }

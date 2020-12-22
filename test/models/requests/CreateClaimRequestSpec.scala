@@ -68,9 +68,9 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       )
 
       val dutyTypeTaxList = Seq(
-        DutyTypeTaxList(ClaimRepaymentType.Customs, Some("100.00"), Some("50.00"), Some("50.00")),
-        DutyTypeTaxList(ClaimRepaymentType.Vat, Some("100.00"), Some("50.00"), Some("50.00")),
-        DutyTypeTaxList(ClaimRepaymentType.Other, Some("100.00"), Some("50.00"), Some("50.00"))
+        DutyTypeTaxList(ClaimRepaymentType.Customs, "100.00", "50.00", "50.00"),
+        DutyTypeTaxList(ClaimRepaymentType.Vat, "100.00", "50.00", "50.00"),
+        DutyTypeTaxList(ClaimRepaymentType.Other, "100.00", "50.00", "50.00")
       )
 
       val documentList = Seq(
@@ -102,7 +102,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "EntryDetails" -> Json.obj(
               "EPU" -> "123",
               "EntryNumber" -> "123456Q",
-              "EntryDate" -> "2020-08-05"
+              "EntryDate" -> "20200805"
             ),
             "ClaimReason" -> "05",
             "ClaimDescription" -> "this is a claim description",

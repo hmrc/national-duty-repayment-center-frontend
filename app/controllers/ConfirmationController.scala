@@ -18,8 +18,10 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import org.slf4j.LoggerFactory
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import queries.ClaimIdQuery
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ConfirmationView
 
@@ -34,8 +36,17 @@ class ConfirmationController @Inject()(
                                        view: ConfirmationView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
+
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view())
+      val successfulResult = for {
+        id <- request.userAnswers.get(ClaimIdQuery)
+      } yield Ok(view(id))
+
+      successfulResult getOrElse {
+        logger.warn("Could not find the registrationId or registrationDate in user answers")
+        InternalServerError
+      }
   }
 }

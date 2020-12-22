@@ -17,11 +17,10 @@
 package controllers
 
 import controllers.actions._
-import forms.BulkFileUploadFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{ArticleType, CustomsRegulationType, Mode}
 import navigation.Navigator
-import pages.BulkFileUploadPage
+import pages.{ArticleTypePage, BulkFileUploadPage, CustomsRegulationTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -35,6 +34,8 @@ class BulkFileUploadController @Inject()(
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,
+                                        sessionRepository: SessionRepository,
+                                        navigator: Navigator,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: BulkFileUploadView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -44,5 +45,21 @@ class BulkFileUploadController @Inject()(
     implicit request =>
 
       Ok(view())
+  }
+
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+        val value = request.userAnswers.get(CustomsRegulationTypePage).get
+
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
+            updatedAnswersWithArticleType <- {
+              updatedAnswers.get(CustomsRegulationTypePage) match {
+                case Some(CustomsRegulationType.UKCustomsCodeRegulation) => Future.fromTry(updatedAnswers.set(ArticleTypePage, ArticleType.Schedule))
+                case _ => Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
+              }
+            }
+            _              <- sessionRepository.set(updatedAnswersWithArticleType)
+          } yield Redirect(navigator.nextPage(BulkFileUploadPage, mode, updatedAnswersWithArticleType))
   }
 }

@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses
 
-import models.BulkFileUpload
-import pages.behaviours.PageBehaviours
+import play.api.libs.json.{Format, Json}
 
-class BulkFileUploadPageSpec extends PageBehaviours {
+case class ApiError(
+                     errorCode: String,
+                     errorMessage: Option[String] = None
+                   )
 
-  "BulkFileUploadPage" must {
-
-    beRetrievable[BulkFileUpload](BulkFileUploadPage)
-
-    beSettable[BulkFileUpload](BulkFileUploadPage)
-
-    beRemovable[BulkFileUpload](BulkFileUploadPage)
-  }
+object ApiError {
+  implicit val formats: Format[ApiError] = Json.format[ApiError]
 }

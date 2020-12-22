@@ -37,6 +37,6 @@ class NDRCConnector @Inject()(
   private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center")
 
   def submitClaim(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
-    httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](s"$baseUrl/national-duty-repayment-center/create-case", request)
+    httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](s"$baseUrl/create-case", request)
 }
 
