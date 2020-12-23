@@ -18,34 +18,35 @@
 @import models.{Mode, BulkFileUpload}
 
 @this(
-    main_template: MainTemplate,
-    forms: views.components.forms
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("bulkFileUpload.title")
-    ){
+@govukLayout(
+    pageTitle= Some("bulkFileUpload.title"),
+    backLink = Some("#")
+) {
 
-@forms.formWithCSRF(action = BulkFileUploadController.onSubmit(), 'autoComplete -> "off") {
-        @components.legacy.back_link()
+    @forms.formWithCSRF(action = BulkFileUploadController.onSubmit(), args = 'novalidate -> "novalidate") {
 
-    @components.legacy.heading("bulkFileUpload.heading")
+        @html.h1(messages("bulkFileUpload.heading"))
 
-    <p >@messages("bulkFileUpload.paragraph1")</p>
+        @html.p{ @messages("bulkFileUpload.paragraph1") }
 
-    @components.legacy.list_items(
-            messages("bulkFileUpload.01"),
-            messages("bulkFileUpload.02"),
-            messages("bulkFileUpload.03"),
-            messages("bulkFileUpload.04"),
-            messages("bulkFileUpload.05")
-        )
+        @html.ul(
+                messages("bulkFileUpload.01"),
+                messages("bulkFileUpload.02"),
+                messages("bulkFileUpload.03"),
+                messages("bulkFileUpload.04"),
+                messages("bulkFileUpload.05")
+            )
 
-    <p>@messages("fileUpload.title")</p>
+        @html.p{@messages("fileUpload.title")}
 
-    @components.legacy.submit_button()
-}
+        @html.button("site.continue")
+    }
 }
 
