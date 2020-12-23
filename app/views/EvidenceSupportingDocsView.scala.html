@@ -18,26 +18,28 @@
 @import models.Mode
 @import models.ClaimantType
 @import pages.ClaimantTypePage
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate
-
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(answers: UserAnswers)(implicit request: Request[_], messages: Messages)
 
-@main_template(title = messages("evidenceSupportingDocs.title")) {
+@govukLayout(
+    pageTitle= Some("evidenceSupportingDocs.title"),
+    backLink = Some("#")
+) {
 
-        @components.legacy.back_link()
+        @html.h1(messages("evidenceSupportingDocs.heading"))
 
+        @html.p{ @messages("evidenceSupportingDocs.paragraph1") }
 
-        <h1 class="heading-large mt-0 mb-3">@messages("evidenceSupportingDocs.heading")</h1>
+        @html.p{ @messages("evidenceSupportingDocs.paragraph2") }
 
-        <p class="mt-0">@messages("evidenceSupportingDocs.paragraph1")</p>
-
-        <p class="mt-0">@messages("evidenceSupportingDocs.paragraph2")</p>
-
-        @components.legacy.list_items(
+        @html.ul(
             messages("evidenceSupportingDocs.bullet1"),
             messages("evidenceSupportingDocs.bullet2"),
             messages("evidenceSupportingDocs.bullet3"),
@@ -59,6 +61,6 @@
             </span>
         </div>
 
-        @components.legacy.submit_button()
+        @html.button("site.continue")
     }
 

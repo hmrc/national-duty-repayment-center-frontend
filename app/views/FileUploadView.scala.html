@@ -15,18 +15,19 @@
  *@
 
 @this(
-    main_template: MainTemplate
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("fileUpload.title")
-    ) {
+@govukLayout(
+    pageTitle= Some("fileUpload.title"),
+    backLink = Some("#")
+) {
 
-    @components.legacy.back_link()
-
-    @components.legacy.heading("fileUpload.heading")
+    @html.h1(messages("fileUpload.heading"))
 
         <div>
             <span>
@@ -34,6 +35,5 @@
             </span>
         </div>
 
-
-    @components.legacy.submit_button()
+    @html.button("site.continue")
 }

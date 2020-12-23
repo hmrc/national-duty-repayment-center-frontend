@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package views.components
+@this()
 
-import javax.inject.{Inject, Singleton}
+@(
+link: String,
+messageKey: String,
+useButtonStyle: Boolean = false,
+id: Option[String] = None,
+isExternal: Boolean = false
+)(implicit messages: Messages)
 
-@Singleton
-class html @Inject() (
-  val h1: views.html.components.h1,
-//  val h2: views.html.components.h2,
-//  val h3: views.html.components.h3,
- val p: views.html.components.p,
-//  val strong: views.html.components.strong,
-  val a: views.html.components.link,
-  val ul: views.html.components.bullets,
-//  val ol: views.html.components.orderedList,
-  val button: views.html.components.button
-)
+@classes = @{
+if (useButtonStyle) "govuk-button" else "govuk-link"
+}
+
+<a href="@link" class="@classes" @id.map(x => s"id=$x") @if(isExternal) { target="_blank" }>@messages(messageKey)@if(isExternal)(" " + messages("site.opensInNewWindowOrTab"))</a>
