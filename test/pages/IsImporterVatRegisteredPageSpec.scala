@@ -16,7 +16,6 @@
 
 package pages
 
-import models.IsImporterVatRegistered
 import pages.behaviours.PageBehaviours
 
 class IsImporterVatRegisteredSpec extends PageBehaviours {

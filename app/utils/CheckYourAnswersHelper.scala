@@ -86,7 +86,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerManualAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.toString),
         Some(routes.ImporterManualAddressController.onPageLoad(CheckMode).url)
       )
   }
