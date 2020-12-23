@@ -16,6 +16,7 @@
 
 package pages
 
+import models.Address
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class ImporterManualAddressPageSpec extends PageBehaviours {
 
   "ImporterManualAddressPage" must {
 
-    beRetrievable[String](ImporterManualAddressPage)
+    beRetrievable[Address](ImporterManualAddressPage)
 
-    beSettable[String](ImporterManualAddressPage)
+    beSettable[Address](ImporterManualAddressPage)
 
-    beRemovable[String](ImporterManualAddressPage)
+    beRemovable[Address](ImporterManualAddressPage)
   }
 }

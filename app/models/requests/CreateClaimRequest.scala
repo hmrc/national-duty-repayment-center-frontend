@@ -94,10 +94,15 @@ object CreateClaimRequest {
       case _ => None
     }
 
+    def getImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(ImporterAddressPage) match {
+      case Some(_) => userAnswers.get(ImporterAddressPage)
+      case _ => userAnswers.get(ImporterManualAddressPage)
+    }
+
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
       isVATRegistered <- getImporterIsVATRegistered(userAnswers)
       name <- userAnswers.get(ImporterNamePage)
-      address <- userAnswers.get(ImporterAddressPage)
+      address <- getImporterAddress(userAnswers)
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
       val email = "test email" //TODO need to get email from ContactByEmailPage
