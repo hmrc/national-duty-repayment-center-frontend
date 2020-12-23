@@ -16,33 +16,37 @@
 
 @import controllers.routes._
 @import models.Mode
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("emailAddress.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("emailAddress.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = EmailAddressController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = EmailAddressController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        @components.legacy.input_text(
-          field = form("value"),
-          label = messages("emailAddress.heading"),
-          headingIsLabel = true,
-          hint = Some(messages("emailAddress.hint"))
+        @forms.inputText(
+            form = form,
+            id = "value",
+            name = "value",
+            inputType = "email",
+            label = "emailAddress.heading",
+            isPageHeading = true,
+            isInFieldset = false,
+            attributes = Map("autocomplete" -> "off"),
+            hint = Some(messages("emailAddress.hint"))
         )
 
-        @components.legacy.submit_button()
+        @html.button("site.continue")
     }
 }
