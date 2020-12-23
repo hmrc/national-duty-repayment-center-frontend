@@ -22,7 +22,7 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.NormalMode
 import navigation.Navigator
-import pages.CheckYourAnswersPage
+import pages.{CheckYourAnswersPage, ReferenceNumberPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -60,7 +60,13 @@ class CheckYourAnswersController @Inject()(
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
-        claimId                 <- claimService.submitClaim(request.userAnswers)
+        claimId                 <- {
+          if(request.userAnswers.get(ReferenceNumberPage).isEmpty) {
+            claimService.submitClaim(request.userAnswers)
+          } else {
+            claimService.submitAmendClaim(request.userAnswers)
+          }
+        }
         updatedClaimId          <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
         _                       <- sessionRepository.set(updatedClaimDate)

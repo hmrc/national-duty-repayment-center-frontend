@@ -21,7 +21,7 @@ import pages.{FurtherInformationPage, ReferenceNumberPage}
 import play.api.libs.json.{Json, OFormat}
 
 final case class AmendClaimRequest(
-                                     Content: Content
+                                     Content: AmendContent
                                    )
 
 object AmendClaimRequest {
@@ -36,6 +36,20 @@ object AmendClaimRequest {
       referenceNumber,
       furtherInformation
      )
+
+    def getContent(userAnswers: UserAnswers): Option[AmendContent] = for {
+      claimDetails <- getAmendClaimDetails(userAnswers)
+    } yield {
+      AmendContent(
+        claimDetails
+      )
+    }
+
+    for {
+      content <- getContent(userAnswers)
+    } yield AmendClaimRequest(
+      content
+    )
   }
 }
 

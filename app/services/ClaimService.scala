@@ -19,7 +19,7 @@ package services
 import connectors.NDRCConnector
 import javax.inject.Inject
 import models.{ClaimId, UserAnswers}
-import models.requests.{CreateClaimRequest, DataRequest}
+import models.requests.{AmendClaimRequest, CreateClaimRequest, DataRequest}
 import models.responses.ClientClaimSuccessResponse
 import uk.gov.hmrc.http.HeaderCarrier
 import play.api.Logger
@@ -50,20 +50,20 @@ class ClaimService @Inject()(
     }
   }
 
-  def amendClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
-    val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
+  def submitAmendClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
+    val maybeAmendRequest: Option[AmendClaimRequest] = AmendClaimRequest.buildValidAmendRequest(userAnswers)
 
-    maybeRegistrationRequest match {
+    maybeAmendRequest match {
       case Some(value) =>
         for {
-          claimId: ClientClaimSuccessResponse <- nDRCConnector.submitClaim(value)
+          claimId: ClientClaimSuccessResponse <- nDRCConnector.submitAmendClaim(value)
         } yield {
           //val _ = auditService.audit(buildAuditModel(value, registration, request))
           claimId.result.get
         }
       case None =>
-        Logger.error("Unsuccessful claim submission, did not contain sufficient UserAnswers data to construct CreateClaimRequest")
-        throw new RuntimeException("UserAnswers did not contain sufficient data to construct CreateClaimRequest")
+        Logger.error("Unsuccessful claim amend submission, did not contain sufficient UserAnswers data to construct AmendClaimRequest")
+        throw new RuntimeException("UserAnswers did not contain sufficient data to construct AmendClaimRequest")
     }
   }
 }
