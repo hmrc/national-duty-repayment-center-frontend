@@ -29,19 +29,13 @@ object AmendClaimRequest {
 
   def buildValidAmendRequest(userAnswers: UserAnswers): Option[AmendClaimRequest] = {
 
-    def getAmendClaimDetails(userAnswers: UserAnswers): Option[AmendClaimDetails] = for {
+    def getContent(userAnswers: UserAnswers): Option[AmendContent] = for {
       referenceNumber <- userAnswers.get(ReferenceNumberPage)
       furtherInformation <- userAnswers.get(FurtherInformationPage)
-    } yield AmendClaimDetails(
-      referenceNumber,
-      furtherInformation
-     )
-
-    def getContent(userAnswers: UserAnswers): Option[AmendContent] = for {
-      claimDetails <- getAmendClaimDetails(userAnswers)
     } yield {
       AmendContent(
-        claimDetails
+        referenceNumber,
+        furtherInformation
       )
     }
 

@@ -27,22 +27,16 @@ class AmendClaimRequestSpec extends SpecBase with MustMatchers with MockitoSugar
   "AmendClaimRequest" must {
     "serialise and deserialise to / from a claim period" in {
 
-      val amendClaimDetails = AmendClaimDetails(
-        CaseID = "Risk-2507",
-        Description = "update request for Risk-2507"
-      )
-
       val amendClaimRequest = AmendClaimRequest(
-        AmendContent(amendClaimDetails)
+        AmendContent(CaseID = "Risk-2507",
+          Description = "update request for Risk-2507")
       )
 
       val json = Json.obj(
         "Content" -> Json.obj(
-          "AmendClaimDetails" -> Json.obj(
             "CaseID" -> "Risk-2507",
             "Description" -> "update request for Risk-2507"
           )
-        )
       )
 
       Json.toJson(amendClaimRequest) mustEqual json
