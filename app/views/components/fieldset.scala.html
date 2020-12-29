@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package views.components
+@this(govukFieldset: GovukFieldset)
 
-import javax.inject.{Inject, Singleton}
+@(legend: String, asHeading: Boolean = true)(content: Html)(implicit messages: Messages)
 
-@Singleton
-class html @Inject() (
-  val h1: views.html.components.h1,
-  val h2: views.html.components.h2,
-//  val h3: views.html.components.h3,
- val p: views.html.components.p,
-//  val strong: views.html.components.strong,
-  val a: views.html.components.link,
-  val ul: views.html.components.bullets,
-//  val ol: views.html.components.orderedList,
-  val button: views.html.components.button
-)
+@govukFieldset(Fieldset(
+legend = Some(Legend(
+content = Text(messages(legend)),
+classes = if(asHeading) "govuk-fieldset__legend--l" else "",
+isPageHeading = asHeading
+)),
+html = content
+))

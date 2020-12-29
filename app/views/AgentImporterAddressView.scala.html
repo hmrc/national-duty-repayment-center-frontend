@@ -16,41 +16,42 @@
 
 @import controllers.routes._
 @import models.Mode
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
-    link: components.legacy.link
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("agentImporterAddress.title")}"
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("agentImporterAddress.title")}"),
+    backLink = Some("#")
+) {
+
+    @forms.formWithCSRF(action = AgentImporterAddressController.postcodeSubmit()) {
+
+        @components.error_summary(form.errors)
+
+    @forms.fieldset(
+        legend = messages("agentImporterAddress.heading")
     ) {
+           @forms.inputText(
+                form = form,
+                id = "postCode",
+                name = "postCode",
+                inputType = "text",
+                classes = Some("govuk-input--width-10"),
+                label = "importerAddress.postCode",
+                isPageHeading = false,
+                isInFieldset = false,
+                attributes = Map("autocomplete" -> "off")
+            )
+        }
+            <p>@html.a("agentImporterManualAddress", messages("importerAddress.manual"))</p>
 
-    @formHelper(action = AgentImporterAddressController.postcodeSubmit()) {
-
-        @components.legacy.back_link()
-
-        @components.legacy.error_summary(form.errors)
-
-        <div class="mb-30">
-            @components.legacy.heading(messages("agentImporterAddress.heading"))
-        </div>
-
-        <p class="mb-05 mt-0">@messages("importerAddress.postCode")</p>
-
-        @components.legacy.input_text(
-          field = form("postCode"),
-          label = messages("agentImporterAddress.heading"),
-          labelClass = Some("visually-hidden"),
-          headingIsLabel = false,
-          inputClass = Some("govuk-input--width-10 mb-15")
-        )
-
-        <p>@link("agentImporterManualAddress", messages("importerAddress.manual"))</p>
-
-        @components.legacy.submit_button()
+            @html.button("site.continue")
     }
 }

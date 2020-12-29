@@ -21,11 +21,11 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class forms @Inject() (
   val formWithCSRF: uk.gov.hmrc.govukfrontend.views.html.helpers.formWithCSRF,
-//  val fieldset: views.html.components.fieldset,
+  val fieldset: views.html.components.fieldset,
 //  val errorSummary: views.html.components.errorSummary,
     val inputText: views.html.components.inputText,
-//  val inputNumber: views.html.components.inputNumber,
-//  val inputHidden: views.html.components.inputHidden,
+  val inputNumber: views.html.components.inputNumber,
+  val inputHidden: views.html.components.inputHidden,
 //  val inputDate: views.html.components.inputDate,
 //  val inputCheckboxes: views.html.components.inputCheckboxes,
   val inputRadio: views.html.components.inputRadio,
