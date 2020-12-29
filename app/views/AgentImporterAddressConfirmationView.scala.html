@@ -14,62 +14,55 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
 @import controllers.routes._
 @import models.Mode
+@import views.ViewUtils._
 
 @import play.api.libs.json.JsObject
 
 @this(
-    main_template: MainTemplate,
-    formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF,
-    govukSelect: GovukSelect,
-    link: components.legacy.link
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+govukSelect: GovukSelect,
+    html: views.components.html
 )
 
 @(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(title = messages("agentImporterAddressConfirmation.title")) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("agentImporterAddressConfirmation.title")}"),
+    backLink = Some("#")
+) {
 
-@formHelper(action = routes.AgentImporterAddressController.addressSelectSubmit()) {
+    @forms.formWithCSRF(action = routes.AgentImporterAddressController.addressSelectSubmit()) {
 
-        @components.legacy.back_link()
+       @components.error_summary(form.errors)
+            <div class="form-group">
 
-        @components.legacy.error_summary(form.errors)
-<div class="form-group">
+                @html.h1(messages("agentImporterAddressConfirmation.heading"))
 
-    <h1 class="form-label">
-        <label class="heading-large mt-0 mb-3" for="field-id">
-            @messages("agentImporterAddressConfirmation.heading")
-        </label>
-    </h1>
+                @html.h2("importerAddress.postCode", classes = "govuk-heading-m pr-bottom-margin")
 
-    <h2 class="heading-medium pr-bottom-margin">
-        @messages("importerAddress.postCode")
-    </h2>
+                <p class="inline">
+                    <strong>@search.postcode.replaceAll(" ", "")</strong>&nbsp;
+                    @html.a("agentImporterAddress", messages("importerAddressConfirmation.link1"))
+                </p>
+                <h2 class="govuk-heading-m pt-0">
+                    <label for="field-id">@messages("importerAddressConfirmation.address")</label>
+                </h2>
 
-    <p class="mt-0 inline">
-        <label class="bold">@search.postcode.replaceAll(" ", "")</label>&nbsp;
-        @link("agentImporterAddress", messages("importerAddressConfirmation.link1"))
-    </p>
+                <div class="form-control-wrapper">
+                    @govukSelect(Select(
+                        id = "field-id",
+                        name = "field-name",
+                        items = candidateAddresses
+                    ))
+                </div>
+            </div>
 
-    <h2 class="heading-medium pr-bottom-margin">
-        @messages("importerAddressConfirmation.address")
-    </h2>
+            <input type="hidden" name="address-postcode" value="@search.postcode" />
+            <p>@html.a("agentImporterManualAddress", messages("importerAddressConfirmation.link2"))</p>
 
-    <div class="form-control-wrapper">
-        @govukSelect(Select(
-            id = "field-id",
-            name = "field-name",
-            items = candidateAddresses
-        ))
-
-    </div>
-
-</div>
-    <input type="hidden" name="address-postcode" value="@search.postcode" />
-    <p class="mt-0">@link("agentImporterManualAddress", messages("importerAddressConfirmation.link2"))</p>
-
-    @components.legacy.submit_button()
-}
+        @html.button("site.continue")
+    }
 }
