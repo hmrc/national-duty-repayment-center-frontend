@@ -26,7 +26,7 @@ class forms @Inject() (
     val inputText: views.html.components.inputText,
   val inputNumber: views.html.components.inputNumber,
   val inputHidden: views.html.components.inputHidden,
-//  val inputDate: views.html.components.inputDate,
+  val inputDate: views.html.components.inputDate,
 //  val inputCheckboxes: views.html.components.inputCheckboxes,
   val inputRadio: views.html.components.inputRadio,
 //  val inputTime: views.html.components.inputTime,
