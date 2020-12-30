@@ -16,62 +16,73 @@
 
 @import controllers.routes._
 @import models.Mode
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
+@import java.time.LocalDate
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("entryDetails.title")}"
-    ) {
+@pageHint = {
+<div class="govuk-hint mb-30">
+    @messages("entryDetails.hint")
+</div>
+}
 
-    @formHelper(action = EntryDetailsController.onSubmit(mode), 'autoComplete -> "off") {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("entryDetails.title")}"),
+    backLink = Some("#")
+) {
 
-        @components.legacy.back_link()
+    @forms.formWithCSRF(action = EntryDetailsController.onSubmit(mode), 'autoComplete -> "off") {
 
-        @components.legacy.error_summary(form.errors)
+        @components.error_summary(form.errors)
 
-        <div class="mb-30">
-            @components.legacy.heading(messages("entryDetails.heading"))
-        </div>
+        @forms.fieldset(
+            legend = messages("entryDetails.heading")
+        ) {
+            @pageHint
 
-        <div id="entry-details-hint" class="form-hint" style="margin-top:-1em; margin-bottom:2em;">
-            @messages("entryDetails.hint")
-        </div>
+           @forms.inputText(
+              form = form,
+              id = "EPU",
+              name = "EPU",
+              label = "entryDetails.claimEpu.heading",
+              labelMedium = true,
+              isPageHeading = false,
+              isInFieldset = true,
+              classes = Some("govuk-input--width-3"),
+              hint = Some(messages("entryDetails.claimEpu.hint")),
+          )
 
+          @forms.inputText(
+             form = form,
+             id = "EntryNumber",
+             name = "EntryNumber",
+             label = "entryDetails.entryNumber.heading",
+             labelMedium = true,
+             isPageHeading = false,
+             isInFieldset = true,
+             classes = Some("govuk-input--width-10"),
+             hint = Some(messages("entryDetails.entryNumber.hint")),
+          )
 
-
-        @components.legacy.input_text(
-          field = form("EPU"),
-          label = messages("entryDetails.claimEpu.heading"),
-          labelClass = Some("heading-large extra-heading-margin"),
-          inputClass = Some("govuk-input--width-3"),
-          hint = Some(messages("entryDetails.claimEpu.hint")),
-          headingIsLabel = false
-        )
-
-        @components.legacy.input_text(
-            field = form("EntryNumber"),
-            label = messages("entryDetails.entryNumber.heading"),
-            labelClass = Some("heading-large extra-heading-margin"),
-            inputClass = Some("govuk-input--width-10"),
-            hint = Some(messages("entryDetails.entryNumber.hint")),
-            headingIsLabel = false
-        )
-
-        @components.legacy.input_date(
-            field = form("value"),
-            legend = messages("entryDetails.entryDate.heading"),
-            legendClass = Some("form-label bold heading-large extra-heading-margin"),
-            hint = Some(messages("entryDetails.entryDate.hint")),
-            headingIsLegend = false
-        )
-
-        @components.legacy.submit_button()
+          @forms.inputDate(
+              form = form,
+                id = "value",
+                legendContent = "entryDetails.entryDate.heading",
+                legendClasses = "govuk-fieldset__legend--m",
+                legendAsPageHeading = false,
+                hintText = Some(messages("entryDetails.entryDate.hint")),
+                attributesDay = Map("aria-label" -> "Day of arrival date"),
+                attributesMonth = Map("aria-label" -> "Month of arrival date"),
+                attributesYear = Map("aria-label" -> "Year of arrival date")
+          )
+        }
+        @html.button("site.continue")
     }
 }
