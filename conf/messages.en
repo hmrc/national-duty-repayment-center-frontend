@@ -344,6 +344,7 @@ agentImporterAddress.postalCode.error.invalid = Enter a real postcode
 importerManualAddress.title = Enter your business address
 importerManualAddress.heading = Enter your business address
 importerManualAddress.addressLine1.heading = Building and street
+importerManualAddress.addressLine2.heading = Building and street Address line 2
 importerManualAddress.city.heading = Town or city
 importerManualAddress.county.heading = County
 importerManualAddress.checkYourAnswersLabel = Enter your business address

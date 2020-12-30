@@ -21,6 +21,7 @@
     id: String,
     name: String,
     label: String,
+    labelHidden: Boolean = false,
     isPageHeading: Boolean,
     headingMessageArgs: Seq[String] = Seq(),
     hint: Option[String] = None,
@@ -32,6 +33,7 @@
     attributes: Map[String, String] = Map.empty
 )(implicit messages: Messages)
 
+
 @govukInput(Input(
     id,
     name,
@@ -39,7 +41,7 @@
     label = Label(
         content = Text(messages(label, headingMessageArgs: _*)),
         isPageHeading = isPageHeading,
-        classes = if(isInFieldset) "" else if(isPageHeading) "govuk-label--l" else "govuk-label"
+        classes = if(isPageHeading) "govuk-label--l" else if (labelHidden) "govuk-visually-hidden" else ""
     ),
     hint = hint.map(hintHtml => Hint(
         content = HtmlContent(hintHtml)

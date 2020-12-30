@@ -23,7 +23,7 @@
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
     forms: views.components.forms,
-govukSelect: GovukSelect,
+    govukSelect: GovukSelect,
     html: views.components.html
 )
 
@@ -47,7 +47,7 @@ govukSelect: GovukSelect,
                     <strong>@search.postcode.replaceAll(" ", "")</strong>&nbsp;
                     @html.a("agentImporterAddress", messages("importerAddressConfirmation.link1"))
                 </p>
-                <h2 class="govuk-heading-m pt-0">
+                <h2 class="govuk-heading-m pt-0 pr-bottom-margin">
                     <label for="field-id">@messages("importerAddressConfirmation.address")</label>
                 </h2>
 
