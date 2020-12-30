@@ -16,91 +16,92 @@
 
 @import controllers.routes._
 @import models.Mode
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
-
-
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@pageHint = {
-    <p class="paragraph-bottom mt-0">
-        @messages("importerManualAddress.hint")
-    </p>
-}
+@govukLayout(
+    pageTitle= Some("importerManualAddress.title"),
+    backLink = Some("#")
+) {
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("importerManualAddress.title")}"
+    @forms.formWithCSRF(action = ImporterManualAddressController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+
+    @components.error_summary(form.errors)
+
+    @forms.fieldset(
+        legend = messages("importerManualAddress.heading")
     ) {
 
-    @formHelper(action = ImporterManualAddressController.onSubmit(mode), 'autoComplete -> "off") {
+    @html.p {
+        @messages("importerManualAddress.hint")
+    }
 
-        @components.legacy.back_link()
-
-        @components.legacy.error_summary(form.errors)
-
-<fieldset class="govuk-fieldset">
-
-    <legend>
-        <h1 class="heading-large mt-0 mb-3">
-            @messages("importerManualAddress.heading")
-        </h1>
-    </legend>
-
-        @pageHint
-
-        @components.legacy.input_text(
-            field = form("AddressLine1"),
-            label = messages("importerManualAddress.addressLine1.heading"),
-            labelClass = Some("mb-05 bold-4"),
-            headingIsLabel = false
+        @forms.inputText(
+            form = form,
+            id = "AddressLine1",
+            name = "AddressLine1",
+            inputType = "text",
+            label = "importerManualAddress.addressLine1.heading",
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
         )
 
-        @components.legacy.input_text(
-            field = form("AddressLine2"),
-            label = messages("importerManualAddress.addressLine1.heading"),
-            labelClass = Some("visually-hidden"),
-            headingIsLabel = false
+        @forms.inputText(
+            form = form,
+            id = "addressLine2",
+            name = "addressLine2",
+            inputType = "text",
+            label = "importerManualAddress.addressLine2.heading",
+            labelHidden = true,
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
         )
 
-        @components.legacy.input_text(
-            field = form("City"),
-            label = messages("importerManualAddress.city.heading"),
-            labelClass = Some("mb-05 bold-4"),
-            inputClass = Some("city column-two-thirds"),
-            headingIsLabel = false
+        @forms.inputText(
+            form = form,
+            id = "City",
+            name = "City",
+            inputType = "text",
+            label = "importerManualAddress.city.heading",
+            classes = Some("govuk-!-width-two-thirds"),
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
         )
 
-        @components.legacy.input_text(
-            field = form("Region"),
-            label = messages("importerManualAddress.county.heading"),
-            labelClass = Some("mb-05 bold-4"),
-            inputClass = Some("city column-two-thirds"),
-            headingIsLabel = false
+        @forms.inputText(
+            form = form,
+            id = "county",
+            name = "county",
+            inputType = "text",
+            label = "importerManualAddress.county.heading",
+            classes = Some("govuk-!-width-two-thirds"),
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
         )
 
-        @components.legacy.input_text(
-            field = form("CountryCode"),
-            label = messages("importerManualAddress.county.heading"),
-            labelClass = Some("mb-05 bold-4"),
-            inputClass = Some("city column-two-thirds"),
-            headingIsLabel = false
+        @forms.inputText(
+            form = form,
+            id = "postcode",
+            name = "postcode",
+            inputType = "text",
+            label = "importerAddress.postCode",
+            classes = Some("govuk-input--width-10"),
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
         )
-
-        @components.legacy.input_text(
-            field = form("postcode"),
-            label = messages("importerAddress.hint"),
-            labelClass = Some("mb-05 bold-4"),
-            inputClass = Some("govuk-input--width-10"),
-            headingIsLabel = false
-        )
-
-</fieldset>
-        @components.legacy.submit_button()
+    }
+        @html.button("site.continue")
     }
 }
