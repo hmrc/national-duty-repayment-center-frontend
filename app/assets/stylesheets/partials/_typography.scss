@@ -103,3 +103,7 @@ p.font-xsmall{
         margin-bottom: 50px;
     }
 }
+/* added extra bottom margin for the fieldset header according to project requirement */
+.govuk-fieldset__legend--l {
+    margin-bottom: 30px;
+}

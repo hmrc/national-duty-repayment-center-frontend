@@ -16,55 +16,67 @@
 
 @import controllers.routes._
 @import models.Mode
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("bankDetails.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("bankDetails.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = BankDetailsController.onSubmit(mode), 'autoComplete -> "off", 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = BankDetailsController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
+        @forms.fieldset(
+            legend = "bankDetails.heading"
+        ) {
 
-        <h1 class="heading-large mt-0 mb-3">@messages("bankDetails.heading")</h1>
-    <div id="bank-details">
-        @components.legacy.input_text(
-          field = form("AccountName"),
-          label = messages("bankDetails.name.heading"),
-          labelClass = Some("bold-4"),
-          headingIsLabel = false,
-          hint = Some(messages("bankDetails.name.hint"))
-        )
+            @forms.inputText(
+                form = form,
+                id = "AccountName",
+                name = "AccountName",
+                inputType = "text",
+                label = "bankDetails.name.heading",
+                hint = Some(messages("bankDetails.name.hint")),
+                isPageHeading = false,
+                isInFieldset = true,
+                attributes = Map("autocomplete" -> "off")
+            )
 
-        @components.legacy.bank_details(
-            field = form("SortCode"),
-            label = messages("bankDetails.sortCode.heading"),
-            labelClass = Some("bold-4"),
-            inputClass = Some("govuk-input--width-5"),
-            headingIsLabel = false,
-            hint = Some(messages("bankDetails.sortCode.hint"))
-        )
+            @forms.inputText(
+                form = form,
+                id = "SortCode",
+                name = "SortCode",
+                inputType = "number",
+                label = "bankDetails.sortCode.heading",
+                hint = Some(messages("bankDetails.sortCode.hint")),
+                classes = Some("govuk-input--width-5"),
+                isPageHeading = false,
+                isInFieldset = true,
+                attributes = Map("autocomplete" -> "off")
+            )
 
-        @components.legacy.bank_details(
-            field = form("AccountNumber"),
-            label = messages("bankDetails.accountNumber.heading"),
-            labelClass = Some("bold-4"),
-            inputClass = Some("govuk-input--width-10"),
-            headingIsLabel = false,
-            hint = Some(messages("bankDetails.accountNumber.hint"))
-        )
-
-        @components.legacy.submit_button()
-    </div>
+            @forms.inputText(
+                form = form,
+                id = "AccountNumber",
+                name = "AccountNumber",
+                inputType = "number",
+                label = "bankDetails.accountNumber.heading",
+                hint = Some(messages("bankDetails.accountNumber.hint")),
+                classes = Some("govuk-input--width-10"),
+                isPageHeading = false,
+                isInFieldset = true,
+                attributes = Map("autocomplete" -> "off")
+            )
+        }
+        @html.button("site.continue")
     }
 }
