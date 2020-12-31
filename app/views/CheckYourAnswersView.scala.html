@@ -14,9 +14,10 @@
  * limitations under the License.
  *@
 
+@import controllers.routes._
+@import models.Mode
+@import views.ViewUtils._
 @import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -27,15 +28,15 @@
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-pageTitle = Some("Title"),
-backLink = Some("#")
+ pageTitle = Some("Title"),
+ backLink = Some("#")
 ) {
 
-@forms.formWithCSRF(action = CheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
+   @forms.formWithCSRF(action = CheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
 
 
 
-@html.button("site.continue")
-}
+   @html.button("site.continue")
+  }
 }
 
