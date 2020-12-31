@@ -17,29 +17,26 @@
 @import controllers.routes._
 @import models.{Mode, AdditionalFileUpload}
 @import views.ViewUtils._
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF,
-    inputRadio: views.html.components.inputRadio
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("additionalFileUpload.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("additionalFileUpload.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = AdditionalFileUploadController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = AdditionalFileUploadController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
-
-        @components.legacy.error_summary(form.errors)
+        @components.error_summary(form.errors)
 
 
-    @inputRadio(
+    @forms.inputRadio(
         form = form,
         idPrefix = "value",
         name = "value",
@@ -55,11 +52,11 @@
             checked = form("value").value.contains("No")
        )
     ),
-    inline = false,
-    legendAsHeading = true,
-    legend = Some(messages("additionalFileUpload.heading"))
+        inline = true,
+        legendAsHeading = true,
+        legend = Some(messages("additionalFileUpload.heading"))
     )
 
-        @components.legacy.submit_button()
+    @html.button("site.continue")
     }
 }
