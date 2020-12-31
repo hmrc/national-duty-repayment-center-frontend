@@ -38,14 +38,14 @@
     backLink = Some("#")
 ) {
 
-    @forms.formWithCSRF(action = EntryDetailsController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = EntryDetailsController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 
         @forms.fieldset(
             legend = messages("entryDetails.heading")
         ) {
-            @pageHint
+           @pageHint
 
            @forms.inputText(
               form = form,
@@ -57,6 +57,7 @@
               isInFieldset = true,
               classes = Some("govuk-input--width-3"),
               hint = Some(messages("entryDetails.claimEpu.hint")),
+              attributes = Map("autocomplete" -> "off")
           )
 
           @forms.inputText(
@@ -69,6 +70,7 @@
              isInFieldset = true,
              classes = Some("govuk-input--width-10"),
              hint = Some(messages("entryDetails.entryNumber.hint")),
+             attributes = Map("autocomplete" -> "off")
           )
 
           @forms.inputDate(
