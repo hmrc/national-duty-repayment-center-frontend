@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ class forms @Inject() (
   val inputDate: views.html.components.inputDate,
   val inputCheckboxes: views.html.components.inputCheckboxes,
   val inputRadio: views.html.components.inputRadio,
+  val yesNoRadio: views.html.components.yesNoRadio,
 //  val inputTime: views.html.components.inputTime,
   val textarea: views.html.components.textarea
 )

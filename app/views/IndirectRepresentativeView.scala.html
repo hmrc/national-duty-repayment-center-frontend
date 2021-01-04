@@ -1,5 +1,5 @@
 @*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,36 +16,32 @@
 
 @import controllers.routes._
 @import models.Mode
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("indirectRepresentative.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("indirectRepresentative.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = IndirectRepresentativeController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = IndirectRepresentativeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        @components.legacy.heading(messages("indirectRepresentative.heading"))
-
-        @components.legacy.input_yes_no(
-            field = form("value"),
-            legend = messages("indirectRepresentative.heading"),
-            label = Some(messages("indirectRepresentative.heading")),
-            labelClass = Some("visually-hidden"),
-            headingIsLegend = true
+        @forms.yesNoRadio(
+            form,
+            "indirectRepresentative.heading",
+            isPageHeading = true
         )
 
-        @components.legacy.submit_button()
+        @html.button("site.continue")
+
     }
 }
