@@ -26,6 +26,7 @@ class ReferenceNumberFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("referenceNumber.error.required")
+        .verifying(minLength(2, "referenceNumber.error.length"))
         .verifying(maxLength(64, "referenceNumber.error.length"))
     )
 }
