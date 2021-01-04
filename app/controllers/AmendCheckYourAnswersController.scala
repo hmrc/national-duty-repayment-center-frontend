@@ -20,10 +20,9 @@ import java.time.LocalDate
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{ClaimId, NormalMode}
 import models.NormalMode
 import navigation.Navigator
-import pages.CheckYourAnswersPage
+import pages.{CheckYourAnswersPage, ReferenceNumberPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -32,11 +31,11 @@ import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import viewmodels.AnswerSection
-import views.html.CheckYourAnswersView
+import views.html.{AmendCheckYourAnswersView, CheckYourAnswersView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckYourAnswersController @Inject()(
+class AmendCheckYourAnswersController @Inject()(
                                             override val messagesApi: MessagesApi,
                                             identify: IdentifierAction,
                                             getData: DataRetrievalAction,
@@ -45,7 +44,7 @@ class CheckYourAnswersController @Inject()(
                                             claimService: ClaimService,
                                             navigator: Navigator,
                                             val controllerComponents: MessagesControllerComponents,
-                                            view: CheckYourAnswersView
+                                            view: AmendCheckYourAnswersView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -61,11 +60,10 @@ class CheckYourAnswersController @Inject()(
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
-        claimId                 <- claimService.submitClaim(request.userAnswers)
+        claimId                 <- claimService.submitAmendClaim(request.userAnswers)
         updatedClaimId          <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
         _                       <- sessionRepository.set(updatedClaimDate)
       } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }
-

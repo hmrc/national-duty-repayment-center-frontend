@@ -235,3 +235,6 @@ GET        /furtherInformation                        controllers.FurtherInforma
 POST       /furtherInformation                        controllers.FurtherInformationController.onSubmit(mode: Mode = NormalMode)
 GET        /changeFurtherInformation                  controllers.FurtherInformationController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeFurtherInformation                  controllers.FurtherInformationController.onSubmit(mode: Mode = CheckMode)
+
+GET        /amend-check-your-answers                controllers.AmendCheckYourAnswersController.onPageLoad
+POST       /amend-check-your-answers                controllers.AmendCheckYourAnswersController.onSubmit

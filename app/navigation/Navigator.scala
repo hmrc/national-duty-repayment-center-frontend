@@ -63,7 +63,7 @@ class Navigator @Inject()() {
     case BulkFileUploadPage => getBulkEntryDetails
     case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case ReferenceNumberPage => _ => routes.FurtherInformationController.onPageLoad(NormalMode)
-    case FurtherInformationPage => _ => routes.CheckYourAnswersController.onPageLoad()
+    case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad()
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
