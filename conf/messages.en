@@ -317,7 +317,7 @@ importerAddress.region.error.required = Enter Importer''s region
 importerAddress.region.error.length = Region must be 64 characters or less
 importerAddress.region.error.invalid = Region includes 1 or more characters that cannot be used
 importerAddress.countryCode.error.required = Enter Importer''s country code
-importerAddress.countryCode.error.length = Country code must be 64 characters or less
+importerAddress.countryCode.error.length = Country code must be 2 characters or less
 importerAddress.countryCode.error.invalid = Country code includes 1 or more characters that cannot be used
 importerAddress.postalCode.error.invalid = Enter a real postcode
 
@@ -347,6 +347,7 @@ importerManualAddress.addressLine1.heading = Building and street
 importerManualAddress.addressLine2.heading = Building and street Address line 2
 importerManualAddress.city.heading = Town or city
 importerManualAddress.county.heading = County
+importerManualAddress.country.heading = Country
 importerManualAddress.checkYourAnswersLabel = Enter your business address
 importerManualAddress.error.required = Enter your business address
 importerManualAddress.hint = We will use this to send letters about this application.
