@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,20 +27,8 @@ class AmendClaimRequestSpec extends SpecBase with MustMatchers with MockitoSugar
   "AmendClaimRequest" must {
     "serialise and deserialise to / from a claim period" in {
 
-      val amendClaimRequest = AmendClaimRequest(
-        AmendContent(CaseID = "Risk-2507",
-          Description = "update request for Risk-2507")
-      )
-
-      val json = Json.obj(
-        "Content" -> Json.obj(
-            "CaseID" -> "Risk-2507",
-            "Description" -> "update request for Risk-2507"
-          )
-      )
-
-      Json.toJson(amendClaimRequest) mustEqual json
-      json.validate[AmendClaimRequest] mustEqual JsSuccess(amendClaimRequest)
+      Json.toJson(amendClaimRequest) mustEqual amendJson
+      amendJson.validate[AmendClaimRequest] mustEqual JsSuccess(amendClaimRequest)
     }
   }
 }

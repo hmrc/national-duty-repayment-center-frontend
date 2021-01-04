@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,5 +89,46 @@ class NDRCConnectorSpec extends SpecBase
     }
   }
 
+  "SubmitAmendClaim" must {
+
+    "must return a result when the server responds with OK" in {
+      val app = application
+
+      running(app) {
+
+        val url = s"/amend-case"
+        val responseBody =
+          s"""{
+             |  "correlationId": "111",
+             |  "result": "1"
+             |}
+             |""".stripMargin
+        val connector = app.injector.instanceOf[NDRCConnector]
+        server.stubFor(
+          post(urlEqualTo(url))
+            .willReturn(ok(responseBody))
+        )
+
+        val result = connector.submitAmendClaim(amendClaimRequest).futureValue
+
+        result mustEqual ClientClaimSuccessResponse(correlationId = "111", result = Some("1"))
+      }
+    }
+
+    "must return None if the backend can't find a registration with case ID" in {
+
+      val app = application
+      val url = s"/amend-case"
+
+      running(app) {
+        val connector = app.injector.instanceOf[NDRCConnector]
+
+        server.stubFor(post(urlEqualTo(url)).willReturn(notFound()))
+
+        val result = connector.submitAmendClaim(amendClaimRequest).value
+        result mustBe None
+      }
+    }
+  }
 
 }
