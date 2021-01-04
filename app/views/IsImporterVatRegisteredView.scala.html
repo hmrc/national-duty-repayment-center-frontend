@@ -1,5 +1,5 @@
 @*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,36 +18,31 @@
 @import models.{Mode, IsImporterVatRegistered}
 @import uk.gov.hmrc.play.views.html._
 @import views.ViewUtils._
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("isImporterVatRegistered.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("isImporterVatRegistered.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = IsImporterVatRegisteredController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = IsImporterVatRegisteredController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        @components.legacy.heading(messages("isImporterVatRegistered.heading"))
-
-        @components.legacy.input_yes_no(
-            field = form("value"),
-            legend = messages("isImporterVatRegistered.heading"),
-            label = Some(messages("isImporterVatRegistered.heading")),
-            labelClass = Some("visually-hidden"),
-            headingIsLegend = true
+        @forms.yesNoRadio(
+            form,
+            "isImporterVatRegistered.heading",
+            isPageHeading = true
         )
 
-        @components.legacy.submit_button()
+        @html.button("site.continue")
+
     }
 }
