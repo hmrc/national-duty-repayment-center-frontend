@@ -16,35 +16,32 @@
 
 @import models.Mode
 @import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
-
 @import summary.customsDuty_section
+
 @this(
-        main_template: MainTemplate
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
+
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
-    @main_template(
-        title = messages("repaymentAmountSummary.title")
-    ) {
+@govukLayout(
+    pageTitle = Some(messages("repaymentAmountSummary.title")),
+    backLink = Some("#")
+) {
 
-        @components.legacy.back_link()
-
-        @components.legacy.heading("repaymentAmountSummary.heading")
+        @html.h1("repaymentAmountSummary.heading", classes = "govuk-heading-xl")
 
         @for(section <- answerSections) {
             @{
                 section match {
-                    case a: AnswerSection => components.legacy.answer_section(a)
-                    case r: RepeaterAnswerSection => components.legacy.repeater_answer_section(r)
+                    case a: AnswerSection => components.answer_section(a)
+                    case r: RepeaterAnswerSection => components.repeater_answer_section(r)
                 }
             }
         }
-        <div>
-            <span>
-                <a class="govuk-link" href="@routes.EvidenceSupportingDocsController.onPageLoad()"/>
 
-            </span>
-        </div>
+        @components.button_link()
 
-        @components.legacy.submit_button()
     }
