@@ -56,8 +56,8 @@
 
         @forms.inputText(
             form = form,
-            id = "addressLine2",
-            name = "addressLine2",
+            id = "AddressLine2",
+            name = "AddressLine2",
             inputType = "text",
             label = "importerManualAddress.addressLine2.heading",
             labelHidden = true,
@@ -80,10 +80,22 @@
 
         @forms.inputText(
             form = form,
-            id = "county",
-            name = "county",
+            id = "Region",
+            name = "Region",
             inputType = "text",
             label = "importerManualAddress.county.heading",
+            classes = Some("govuk-!-width-two-thirds"),
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
+        )
+
+        @forms.inputText(
+            form = form,
+            id = "CountryCode",
+            name = "CountryCode",
+            inputType = "text",
+            label = "importerManualAddress.country.heading",
             classes = Some("govuk-!-width-two-thirds"),
             isPageHeading = false,
             isInFieldset = true,
