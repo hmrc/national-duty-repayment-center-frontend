@@ -62,7 +62,7 @@ class ClaimService @Inject()(
           claimId.result.get
         }
       case None =>
-        Logger.error("Unsuccessful claim amend submission, did not contain sufficient UserAnswers data to construct AmendClaimRequest")
+        Logger.error("Unsuccessful amend claim submission, did not contain sufficient UserAnswers data to construct AmendClaimRequest")
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct AmendClaimRequest")
     }
   }
