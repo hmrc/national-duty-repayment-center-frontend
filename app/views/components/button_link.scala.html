@@ -14,10 +14,12 @@
  * limitations under the License.
  *@
 
+@()(implicit request: Request[_], messages: Messages)
+
 <div>
     <span>
         <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" href="@routes.EvidenceSupportingDocsController.onPageLoad()">
-        Continue
+            @messages("site.continue")
         </a>
     </span>
 </div>

@@ -18,28 +18,30 @@
 @import models.Mode
 
 @this(
-        main_template: MainTemplate
-
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(title = messages("proofOfAuthority.title")) {
+@govukLayout(
+    pageTitle = Some(messages("proofOfAuthority.title")),
+    backLink = Some("#")
+) {
 
-    @components.legacy.back_link()
+    @html.h1(messages("proofOfAuthority.heading"))
 
+    @html.p{ @messages("proofOfAuthority.paragraph1") }
 
-    <h1 class="heading-large mt-0 mb-3">@messages("proofOfAuthority.heading")</h1>
-
-    <p class="mt-0">@messages("proofOfAuthority.paragraph1")</p>
-
-    <p class="mt-0">@messages("proofOfAuthority.paragraph2")</p>
-
+    @html.p{ @messages("proofOfAuthority.paragraph2") }
 
     <div class="section">
-        <a id = "govuk-link" class="button" role = "button" href="@routes.BankDetailsController.onPageLoad(NormalMode)">
-        @messages("site.continue")
-        </a>
+        <span>
+            <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" href="@routes.BankDetailsController.onPageLoad(NormalMode)">
+                @messages("site.continue")
+            </a>
+        </span>
     </div>
 
 }
