@@ -46,7 +46,7 @@
 
     @forms.formWithCSRF(action = ContactByEmailController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.error_summary(form.errors)
+        @components.error_summary(form.errors)
 
         @forms.inputRadio(
             form = form,
