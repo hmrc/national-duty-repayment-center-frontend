@@ -16,34 +16,33 @@
 
 @import controllers.routes.ClaimRepaymentTypeController
 @import models.{Mode, ClaimRepaymentType}
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[Set[ClaimRepaymentType]], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("claimRepaymentType.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("claimRepaymentType.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = ClaimRepaymentTypeController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = ClaimRepaymentTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        @components.legacy.input_checkboxes(
-            field = form("value"),
+        @forms.inputCheckboxes(
+            form = form,
+            legendAsHeading = true,
             legend = messages("claimRepaymentType.heading"),
-            hint = Some(messages("claimRepaymentType.hint")),
-            headingIsLegend = true,
-            inputs = ClaimRepaymentType.options
+            items = ClaimRepaymentType.options(form),
+            hint = Some(Html(messages("claimRepaymentType.hint")))
         )
 
-        @components.legacy.submit_button()
+        @html.button("site.continue")
     }
 }

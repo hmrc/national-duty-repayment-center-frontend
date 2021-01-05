@@ -16,7 +16,10 @@
 
 package models
 
-import viewmodels.RadioOption
+import play.api.data.Form
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
 
 sealed trait ClaimRepaymentType
 
@@ -32,9 +35,13 @@ object ClaimRepaymentType extends Enumerable.Implicits {
     Other
   )
 
-  val options: Seq[RadioOption] = values.map {
+  def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {
     value =>
-      RadioOption("claimRepaymentType", value.toString)
+      CheckboxItem(
+        value = value.toString,
+        content = Text(messages(s"claimRepaymentType.${value.toString}")),
+        checked = form("value").value.contains(value.toString)
+      )
   }
 
   implicit val enumerable: Enumerable[ClaimRepaymentType] =
