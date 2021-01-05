@@ -31,8 +31,10 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
+import org.scalatestplus.mockito.MockitoSugar
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience {
+
+trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience  with MockitoSugar{
 
   val userAnswersId = "id"
 
@@ -41,6 +43,8 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   def injector: Injector = app.injector
 
   def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+
+  val mockAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
 
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 

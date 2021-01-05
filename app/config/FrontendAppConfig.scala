@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
   lazy val appName: String         = configuration.get[String]("appName")
   lazy val timeout: Int = configuration.get[Int]("timeout.timeout")
   lazy val countdown: Int = configuration.get[Int]("timeout.countdown")
-
+  lazy val signOutUrl: String = configuration.get[String]("urls.logout")
 
   lazy val authUrl: String = configuration.get[Service]("auth").baseUrl
   lazy val loginUrl: String = configuration.get[String]("urls.login")

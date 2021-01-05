@@ -1,5 +1,5 @@
 @*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
     timeout = Some(appConfig.timeout),
     countdown = Some(appConfig.countdown),
     keepAliveUrl = Some("?continue=true"),
-    signOutUrl = Some(routes.SessionExpiredController.onPageLoad.url),
+    signOutUrl = Some(routes.SignOutController.signOut().url),
     language = Some(messages.lang.code)
 ))
 

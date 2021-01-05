@@ -225,3 +225,5 @@ GET         /proofOfAuthority                       controllers.ProofOfAuthority
 
 GET        /bulkFileUpload                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
 POST       /bulkFileUpload                        controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
+
+GET        /signout                                controllers.SignOutController.signOut
