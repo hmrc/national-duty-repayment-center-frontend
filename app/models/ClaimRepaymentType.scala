@@ -38,6 +38,8 @@ object ClaimRepaymentType extends Enumerable.Implicits {
   def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {
     value =>
       CheckboxItem(
+        name = Some("value[]"),
+        id = Some(value.toString),
         value = value.toString,
         content = Text(messages(s"claimRepaymentType.${value.toString}")),
         checked = form("value").value.contains(value.toString)
