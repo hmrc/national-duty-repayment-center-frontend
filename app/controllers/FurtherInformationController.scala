@@ -31,16 +31,16 @@ import views.html.FurtherInformationView
 import scala.concurrent.{ExecutionContext, Future}
 
 class FurtherInformationController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: FurtherInformationFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: FurtherInformationView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                              override val messagesApi: MessagesApi,
+                                              sessionRepository: SessionRepository,
+                                              navigator: Navigator,
+                                              identify: IdentifierAction,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              formProvider: FurtherInformationFormProvider,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: FurtherInformationView
+                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -65,7 +65,7 @@ class FurtherInformationController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(FurtherInformationPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(FurtherInformationPage, mode, updatedAnswers))
       )
   }

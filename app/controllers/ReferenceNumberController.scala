@@ -31,16 +31,16 @@ import views.html.ReferenceNumberView
 import scala.concurrent.{ExecutionContext, Future}
 
 class ReferenceNumberController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ReferenceNumberFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ReferenceNumberView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                           override val messagesApi: MessagesApi,
+                                           sessionRepository: SessionRepository,
+                                           navigator: Navigator,
+                                           identify: IdentifierAction,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
+                                           formProvider: ReferenceNumberFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: ReferenceNumberView
+                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -65,7 +65,7 @@ class ReferenceNumberController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReferenceNumberPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ReferenceNumberPage, mode, updatedAnswers))
       )
   }

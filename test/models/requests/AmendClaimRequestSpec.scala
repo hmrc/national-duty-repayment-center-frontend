@@ -17,7 +17,6 @@
 package models.requests
 
 import base.SpecBase
-import models._
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}

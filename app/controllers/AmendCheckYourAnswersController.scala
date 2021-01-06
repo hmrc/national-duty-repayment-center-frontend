@@ -31,21 +31,21 @@ import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import viewmodels.AnswerSection
-import views.html.{AmendCheckYourAnswersView, CheckYourAnswersView}
+import views.html.AmendCheckYourAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AmendCheckYourAnswersController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            sessionRepository: SessionRepository,
-                                            claimService: ClaimService,
-                                            navigator: Navigator,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: AmendCheckYourAnswersView
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                 override val messagesApi: MessagesApi,
+                                                 identify: IdentifierAction,
+                                                 getData: DataRetrievalAction,
+                                                 requireData: DataRequiredAction,
+                                                 sessionRepository: SessionRepository,
+                                                 claimService: ClaimService,
+                                                 navigator: Navigator,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: AmendCheckYourAnswersView
+                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -60,10 +60,10 @@ class AmendCheckYourAnswersController @Inject()(
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
-        claimId                 <- claimService.submitAmendClaim(request.userAnswers)
-        updatedClaimId          <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
+        claimId <- claimService.submitAmendClaim(request.userAnswers)
+        updatedClaimId <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
-        _                       <- sessionRepository.set(updatedClaimDate)
+        _ <- sessionRepository.set(updatedClaimDate)
       } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }

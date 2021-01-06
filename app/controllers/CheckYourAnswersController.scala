@@ -20,7 +20,6 @@ import java.time.LocalDate
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{ClaimId, NormalMode}
 import models.NormalMode
 import navigation.Navigator
 import pages.CheckYourAnswersPage
@@ -61,10 +60,10 @@ class CheckYourAnswersController @Inject()(
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
-        claimId                 <- claimService.submitClaim(request.userAnswers)
-        updatedClaimId          <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
+        claimId <- claimService.submitClaim(request.userAnswers)
+        updatedClaimId <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
-        _                       <- sessionRepository.set(updatedClaimDate)
+        _ <- sessionRepository.set(updatedClaimDate)
       } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }
