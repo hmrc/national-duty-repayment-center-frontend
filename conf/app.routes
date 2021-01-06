@@ -226,6 +226,8 @@ GET         /proofOfAuthority                       controllers.ProofOfAuthority
 GET        /bulkFileUpload                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
 POST       /bulkFileUpload                        controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
 
+GET        /signout                                controllers.SignOutController.signOut
+
 GET        /referenceNumber                        controllers.ReferenceNumberController.onPageLoad(mode: Mode = NormalMode)
 POST       /referenceNumber                        controllers.ReferenceNumberController.onSubmit(mode: Mode = NormalMode)
 GET        /changeReferenceNumber                  controllers.ReferenceNumberController.onPageLoad(mode: Mode = CheckMode)
@@ -238,3 +240,4 @@ POST       /changeFurtherInformation                  controllers.FurtherInforma
 
 GET        /amend-check-your-answers                controllers.AmendCheckYourAnswersController.onPageLoad
 POST       /amend-check-your-answers                controllers.AmendCheckYourAnswersController.onSubmit
+
