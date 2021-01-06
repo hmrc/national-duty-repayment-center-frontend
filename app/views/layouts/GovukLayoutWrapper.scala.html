@@ -47,7 +47,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 @hmrcTimeoutDialog(TimeoutDialog(
     timeout = Some(appConfig.timeout),
     countdown = Some(appConfig.countdown),
-    keepAliveUrl = Some("?continue=true"),
+    keepAliveUrl = Some(routes.ClaimantTypeController.onPageLoad(NormalMode).url),
     signOutUrl = Some(routes.SignOutController.signOut().url),
     language = Some(messages.lang.code)
 ))
