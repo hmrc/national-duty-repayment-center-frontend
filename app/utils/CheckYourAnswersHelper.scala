@@ -28,6 +28,24 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def furtherInformation: Option[AnswerRow] = userAnswers.get(FurtherInformationPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("furtherInformation.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        Some(routes.FurtherInformationController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def referenceNumber: Option[AnswerRow] = userAnswers.get(ReferenceNumberPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("referenceNumber.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        Some(routes.ReferenceNumberController.onPageLoad(CheckMode).url)
+      )
+  }
+
   def bulkFileUpload: Option[AnswerRow] = userAnswers.get(BulkFileUploadPage) map {
     x =>
       AnswerRow(

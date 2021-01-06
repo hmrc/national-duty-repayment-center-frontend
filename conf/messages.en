@@ -452,3 +452,17 @@ bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
 bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
 bulkFileUpload.error.required = Select files
+
+referenceNumber.title = What is the reference number?
+referenceNumber.heading = What is the reference number?
+referenceNumber.checkYourAnswersLabel = What is the reference number?
+referenceNumber.error.required = Enter Reference Number
+referenceNumber.error.length = Reference Number must be 64 characters or less
+referenceNumber.hintText = For example, NDRC1173434
+
+furtherInformation.title = Give us further information
+furtherInformation.heading = Give us further information
+furtherInformation.checkYourAnswersLabel = Give us further information
+furtherInformation.error.required = Enter Further Information
+furtherInformation.error.length = FurtherInformation must be 1500 characters or less
+furtherInformation.hintText = Send the information that HMRC has asked for.

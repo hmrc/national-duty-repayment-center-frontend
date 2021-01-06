@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import config.FrontendAppConfig
 import controllers.actions._
-import models.requests.CreateClaimRequest
+import models.requests.{AmendClaimRequest, CreateClaimRequest}
 import models._
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -116,6 +116,18 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
       BankDetails = Some(bankDetails),
       DutyTypeTaxDetails = dutyTypeTaxDetails,
       DocumentList = documentList)
+  )
+
+  val amendClaimRequest = AmendClaimRequest(
+    AmendContent(CaseID = "Risk-2507",
+      Description = "update request for Risk-2507")
+  )
+
+  val amendJson = Json.obj(
+    "Content" -> Json.obj(
+      "CaseID" -> "Risk-2507",
+      "Description" -> "update request for Risk-2507"
+    )
   )
 
   val json = Json.obj(

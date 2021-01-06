@@ -18,7 +18,7 @@ package connectors
 
 import com.google.inject.Inject
 import config.Service
-import models.requests.CreateClaimRequest
+import models.requests.{AmendClaimRequest, CreateClaimRequest}
 import models.responses.ClientClaimSuccessResponse
 import uk.gov.hmrc.http._
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -38,5 +38,8 @@ class NDRCConnector @Inject()(
 
   def submitClaim(request: CreateClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
     httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](s"$baseUrl/create-case", request)
+
+  def submitAmendClaim(request: AmendClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
+    httpClient.POST[AmendClaimRequest, ClientClaimSuccessResponse](s"$baseUrl/amend-case", request)
 }
 
