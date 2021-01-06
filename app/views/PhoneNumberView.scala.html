@@ -19,9 +19,9 @@
 @import views.ViewUtils._
 
 @this(
-govukLayout: views.html.layouts.GovukLayoutWrapper,
-forms: views.components.forms,
-html: views.components.html
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)

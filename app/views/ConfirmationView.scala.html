@@ -17,24 +17,26 @@
 @import uk.gov.hmrc.play.views.html._
 
 @this(
-    main_template: MainTemplate
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    html: views.components.html
 )
 
 @(claimId: String)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("confirmation.title")
-    ) {
+@govukLayout(
+    pageTitle = Some(messages("confirmation.title")),
+) {
 
     <div class="govuk-panel govuk-panel--confirmation">
-        <h1 class="heading-xlarge mt-0 mb-0">@messages("confirmation.heading")</h1>
+        @html.h1(messages("confirmation.heading"))
         <div class="govuk-panel__body">
             @messages("confirmation.referenceNumber")<br><strong> @claimId.toString </strong>
         </div>
     </div>
 
-    <h2 class="heading-medium">@messages("confirmation.whatHappensNext.heading")</h2>
+    @html.h2("confirmation.whatHappensNext.heading", classes = "govuk-heading-m")
 
-    <p class="govuk-body">@messages("confirmation.whatHappensNext.p1")</p>
-    <p class="govuk-body">@messages("confirmation.whatHappensNext.p2")</p>
+    @html.p{ @messages("confirmation.whatHappensNext.p1") }
+    @html.p{ @messages("confirmation.whatHappensNext.p2") }
+
 }
