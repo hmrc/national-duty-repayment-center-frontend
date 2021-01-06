@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,12 @@ import org.scalacheck.Arbitrary
 import pages._
 
 trait PageGenerators {
+
+  implicit lazy val arbitraryFurtherInformationPage: Arbitrary[FurtherInformationPage.type] =
+    Arbitrary(FurtherInformationPage)
+
+  implicit lazy val arbitraryReferenceNumberPage: Arbitrary[ReferenceNumberPage.type] =
+    Arbitrary(ReferenceNumberPage)
 
   implicit lazy val arbitraryBulkFileUploadPage: Arbitrary[BulkFileUploadPage.type] =
     Arbitrary(BulkFileUploadPage)
