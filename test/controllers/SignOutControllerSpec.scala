@@ -29,7 +29,7 @@ class SignOutControllerSpec extends SpecBase with MockitoSugar {
 
   "SignOut Controller"  must  {
 
-    "redirect to feedback survey page" in {
+    "Sign in using Government Gateway page" in {
 
       when(mockAppConfig.signOutUrl).thenReturn(frontendAppConfig.signOutUrl)
       val result = route(application, FakeRequest(GET, signOutRoute)).value
