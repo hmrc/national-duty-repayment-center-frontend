@@ -39,6 +39,20 @@ object CreateClaimRequest {
       }
     }
 
+    def getPayeeIndicator(userAnswers: UserAnswers): Option[WhomToPay] = {
+      userAnswers.get(ClaimantTypePage) match {
+        case Some(ClaimantType.Importer) => Some(WhomToPay.Importer)
+        case _ => userAnswers.get(WhomToPayPage)
+      }
+    }
+
+    def getPaymentMethod(userAnswers: UserAnswers): Option[RepaymentType] = {
+      userAnswers.get(NumberOfEntriesTypePage) match {
+        case Some(NumberOfEntriesType.Multiple) => Some(RepaymentType.BACS)
+        case _ => userAnswers.get(RepaymentTypePage)
+      }
+    }
+
     def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
       customRegulationType <- userAnswers.get(CustomsRegulationTypePage)
       claimedUnderArticle <- getArticleType(userAnswers)
@@ -48,8 +62,8 @@ object CreateClaimRequest {
       entryDetails <- userAnswers.get(EntryDetailsPage)
       claimReason <- userAnswers.get(ClaimReasonTypePage)
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage)
-      payeeIndicator <- userAnswers.get(WhomToPayPage)
-      paymentMethod <- userAnswers.get(RepaymentTypePage)
+      payeeIndicator <- getPayeeIndicator(userAnswers)
+      paymentMethod <- getPaymentMethod(userAnswers)
     } yield ClaimDetails(FormType("01"),
       customRegulationType,
       claimedUnderArticle,
@@ -117,12 +131,12 @@ object CreateClaimRequest {
       )
     }
 
-    def getBankDetails(userAnswers: UserAnswers): Option[AllBankDetails] = userAnswers.get(RepaymentTypePage) match {
+    def getBankDetails(userAnswers: UserAnswers): Option[AllBankDetails] = getPaymentMethod(userAnswers) match {
       case Some(RepaymentType.BACS) =>
         for {
           bankDetails <- userAnswers.get(BankDetailsPage)
-        } yield (userAnswers.get(ClaimantTypePage), userAnswers.get(WhomToPayPage)) match {
-          case (Some(models.ClaimantType.Importer), None) | (Some(models.ClaimantType.Representative), Some(Importer)) =>
+        } yield (userAnswers.get(ClaimantTypePage), getPayeeIndicator(userAnswers)) match {
+          case (Some(ClaimantType.Importer), _) | (Some(ClaimantType.Representative), Some(Importer)) =>
             AllBankDetails(ImporterBankDetails = Some(bankDetails), AgentBankDetails = None)
           case _ =>
             AllBankDetails(ImporterBankDetails = None, AgentBankDetails = Some(bankDetails))
