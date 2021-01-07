@@ -50,7 +50,7 @@ class Navigator @Inject()() {
     case ImporterHasEoriPage => getEORIConfirmation
     case IsVATRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
     case PhoneNumberPage => _ => routes.ContactByEmailController.onPageLoad(NormalMode)
-    case ContactByEmailPage => _ => routes.RepaymentTypeController.onPageLoad(NormalMode)
+    case ContactByEmailPage => getRepaymentType
     case RepaymentTypePage => getRepaymentMethodType
     case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad
     case EnterAgentEORIPage => _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
@@ -65,6 +65,11 @@ class Navigator @Inject()() {
     case ReferenceNumberPage => _ => routes.FurtherInformationController.onPageLoad(NormalMode)
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad()
     case _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def getRepaymentType(answers: UserAnswers): Call = answers.get(NumberOfEntriesTypePage) match {
+    case Some(NumberOfEntriesType.Single)  => routes.RepaymentTypeController.onPageLoad(NormalMode)
+    case Some(NumberOfEntriesType.Multiple) => routes.BankDetailsController.onPageLoad(NormalMode)
   }
 
   private def getBulkEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {

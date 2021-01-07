@@ -53,6 +53,12 @@
         <div>
             <span>
                 <a class="govuk-link" href="@routes.FileUploadController.onPageLoad()"/>
+                @{
+                answers.get(ClaimantTypePage) match {
+                        case Some(ClaimantType.Importer) => <a class="govuk-link" href="fileUpload"/>
+                        case Some(ClaimantType.Representative) => <a class="govuk-link" href="fileUpload"/>
+                        case _ => <a class="govuk-link" href="/"/>
+                }}
             </span>
         </div>
 
