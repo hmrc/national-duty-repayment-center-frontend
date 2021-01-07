@@ -38,7 +38,7 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(emptyUserAnswers)(fakeRequest, messages).toString
+        view()(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
+@import controllers._
 @import models.Mode
 @import models.ClaimantType
 @import pages.ClaimantTypePage
@@ -26,7 +26,7 @@
     html: views.components.html
 )
 
-@(answers: UserAnswers)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle= Some("evidenceSupportingDocs.title"),
@@ -52,12 +52,7 @@
 
         <div>
             <span>
-                @{
-                answers.get(ClaimantTypePage) match {
-                        case Some(ClaimantType.Importer) => <a class="govuk-link" href="fileUpload"/>
-                        case Some(ClaimantType.Representative) => <a class="govuk-link" href="agentImporterHasEORI"/>
-                        case _ => <a class="govuk-link" href="/"/>
-                }}
+                <a class="govuk-link" href="@routes.FileUploadController.onPageLoad()"/>
             </span>
         </div>
 
