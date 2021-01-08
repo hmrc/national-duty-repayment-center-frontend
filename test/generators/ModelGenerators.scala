@@ -25,6 +25,12 @@ import org.scalacheck.{Arbitrary, Gen}
 trait ModelGenerators {
 
   self: Generators =>
+
+  implicit lazy val arbitraryAmendCaseResponseType: Arbitrary[AmendCaseResponseType] =
+    Arbitrary {
+      Gen.oneOf(AmendCaseResponseType.values.toSeq)
+    }
+
   implicit lazy val arbitraryBulkFileUpload: Arbitrary[BulkFileUpload] =
     Arbitrary {
       Gen.oneOf(BulkFileUpload.values.toSeq)

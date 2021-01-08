@@ -466,3 +466,11 @@ furtherInformation.checkYourAnswersLabel = Give us further information
 furtherInformation.error.required = Enter Further Information
 furtherInformation.error.length = FurtherInformation must be 1500 characters or less
 furtherInformation.hintText = Send the information that HMRC has asked for.
+
+amendCaseResponseType.title = What do you need to do?
+amendCaseResponseType.heading = What do you need to do?
+amendCaseResponseType.supportingDocuments = Send more supporting documents
+amendCaseResponseType.furtherInformation = Give us further information in writing
+amendCaseResponseType.checkYourAnswersLabel = What do you need to do?
+amendCaseResponseType.error.required = Select Response Type
+amendCaseResponseType.hintText = Select all that apply.

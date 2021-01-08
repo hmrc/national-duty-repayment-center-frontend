@@ -241,3 +241,8 @@ POST       /changeFurtherInformation                  controllers.FurtherInforma
 GET        /amend-check-your-answers                controllers.AmendCheckYourAnswersController.onPageLoad
 POST       /amend-check-your-answers                controllers.AmendCheckYourAnswersController.onSubmit
 
+
+GET        /amendCaseResponseType                        controllers.AmendCaseResponseTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /amendCaseResponseType                        controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAmendCaseResponseType                  controllers.AmendCaseResponseTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAmendCaseResponseType                  controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = CheckMode)
