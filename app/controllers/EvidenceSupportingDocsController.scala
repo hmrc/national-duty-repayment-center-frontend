@@ -37,7 +37,7 @@ class EvidenceSupportingDocsController @Inject()(
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(request.userAnswers))
+      Ok(view())
   }
 
 }
