@@ -21,38 +21,38 @@
 @import views.ViewUtils._
 
 @this(
-    govukLayout: views.html.layouts.GovukLayoutWrapper,
-    forms: views.components.forms,
-    html: views.components.html
+        govukLayout: views.html.layouts.GovukLayoutWrapper,
+        forms: views.components.forms,
+        html: views.components.html
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle= Some("evidenceSupportingDocs.title"),
+    pageTitle = Some("evidenceSupportingDocs.title"),
     backLink = Some("#")
 ) {
 
-        @html.h1(messages("evidenceSupportingDocs.heading"))
+    @html.h1(messages("evidenceSupportingDocs.heading"))
 
-        @html.p{ @messages("evidenceSupportingDocs.paragraph1") }
-
-        @html.p{ @messages("evidenceSupportingDocs.paragraph2") }
-
-        @html.ul(
-            messages("evidenceSupportingDocs.bullet1"),
-            messages("evidenceSupportingDocs.bullet2"),
-            messages("evidenceSupportingDocs.bullet3"),
-            messages("evidenceSupportingDocs.bullet4"),
-            messages("evidenceSupportingDocs.bullet5"),
-            messages("evidenceSupportingDocs.bullet6"),
-            messages("evidenceSupportingDocs.bullet7"),
-            messages("evidenceSupportingDocs.bullet8")
-        )
-
-                <a class="govuk-link" href="@routes.FileUploadController.onPageLoad()"/>
-
-
-        @html.button("site.continue")
+    @html.p {
+        @messages("evidenceSupportingDocs.paragraph1")
     }
 
+    @html.p {
+        @messages("evidenceSupportingDocs.paragraph2")
+    }
+
+    @html.ul(
+        messages("evidenceSupportingDocs.bullet1"),
+        messages("evidenceSupportingDocs.bullet2"),
+        messages("evidenceSupportingDocs.bullet3"),
+        messages("evidenceSupportingDocs.bullet4"),
+        messages("evidenceSupportingDocs.bullet5"),
+        messages("evidenceSupportingDocs.bullet6"),
+        messages("evidenceSupportingDocs.bullet7"),
+        messages("evidenceSupportingDocs.bullet8")
+    )
+
+    @html.a(routes.FileUploadController.onPageLoad().url, messages("site.continue"), useButtonStyle = true)
+}

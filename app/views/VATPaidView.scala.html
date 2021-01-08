@@ -42,10 +42,10 @@
             form = form,
             id = "value",
             name = "value",
-            inputType = "number",
             label = "vATPaid.heading",
             isPageHeading = true,
             isInFieldset = false,
+            classes = Some("govuk-input--width-10"),
             attributes = Map("autocomplete" -> "off"),
             hint = userAnswers.get(NumberOfEntriesTypePage) match {
                 case Some(NumberOfEntriesType.Multiple) => Some(messages("vATPaid.hint"))

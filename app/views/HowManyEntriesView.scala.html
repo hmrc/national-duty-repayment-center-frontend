@@ -39,12 +39,15 @@
             form = form,
             id = "value",
             name = "value",
-            inputType = "number",
             classes = Some("govuk-input--width-10"),
             label = "howManyEntries.heading",
             isPageHeading = true,
             isInFieldset = false,
-            attributes = Map("autocomplete" -> "off")
+            attributes = Map(
+                "autocomplete" -> "off",
+                "inputmode" -> "numeric",
+                "pattern" -> "[0-9]*"
+            )
         )
 
         @html.button("site.continue")
