@@ -94,7 +94,12 @@ class Navigator @Inject()() {
 
   private def additionalFileUploadRoute(answers: UserAnswers): Call = answers.get(AdditionalFileUploadPage) match {
     case Some(AdditionalFileUpload.Yes) => routes.FileUploadController.onPageLoad
-    case Some(AdditionalFileUpload.No) => routes.ImporterHasEoriController.onPageLoad(NormalMode)
+    case Some(AdditionalFileUpload.No) => {
+      if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
+        routes.ImporterHasEoriController.onPageLoad(NormalMode)
+      else
+        routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
+    }
   }
 
   private def whomToPayRoute(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
@@ -121,7 +126,12 @@ class Navigator @Inject()() {
 
   private def getEORIConfirmation(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
     case Some(true)  => routes.ImporterEoriController.onPageLoad(NormalMode)
-    case _ => routes.IsVATRegisteredController.onPageLoad(NormalMode)
+    case _ => {
+      if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
+        routes.IsVATRegisteredController.onPageLoad(NormalMode)
+      else
+        routes.ImporterNameController.onPageLoad(NormalMode)
+    }
   }
 
   private def getRepaymentMethodType(answers: UserAnswers): Call =

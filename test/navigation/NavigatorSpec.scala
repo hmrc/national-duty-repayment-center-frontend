@@ -119,6 +119,71 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ClaimReasonTypeController.onPageLoad(NormalMode))
       }
 
+      "go to BankDetails page after ContactByEmailPage page when Importers/Representative multiple entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+        navigator.nextPage(ContactByEmailPage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+      }
+
+      "go to RepaymentType page after ContactByEmailPage page when Importers/Representative single entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(NumberOfEntriesTypePage, NumberOfEntriesType.Single).success.value
+        navigator.nextPage(ContactByEmailPage, NormalMode, answers)
+          .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
+      }
+
+      "go to AgentImporterHasEORI page after additionalFileUpload page when Representative single/multiple entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value.
+            set(AdditionalFileUploadPage, AdditionalFileUpload.No).success.value
+        navigator.nextPage(AdditionalFileUploadPage, NormalMode, answers)
+          .mustBe(routes.AgentImporterHasEORIController.onPageLoad(NormalMode))
+      }
+
+      "go to EnterAgentEORI page after agentImporterHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(AgentImporterHasEORIPage, AgentImporterHasEORI.Yes).success.value
+        navigator.nextPage(AgentImporterHasEORIPage, NormalMode, answers)
+          .mustBe(routes.EnterAgentEORIController.onPageLoad(NormalMode))
+      }
+
+      "go to IsImporterVatRegistered page after agentImporterHasEORI with No page when Representative single/multiple entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(AgentImporterHasEORIPage, AgentImporterHasEORI.No).success.value
+        navigator.nextPage(AgentImporterHasEORIPage, NormalMode, answers)
+          .mustBe(routes.IsImporterVatRegisteredController.onPageLoad(NormalMode))
+      }
+
+      "go to ImporterHasEori page after importerAddressConfirmation page when Representative single/multiple entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(AgentImporterManualAddressPage, NormalMode, answers)
+          .mustBe(routes.ImporterHasEoriController.onPageLoad(NormalMode))
+      }
+
+      "go to ImporterEori page after importerHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(ImporterHasEoriPage, true).success.value
+        navigator.nextPage(ImporterHasEoriPage, NormalMode, answers)
+          .mustBe(routes.ImporterEoriController.onPageLoad(NormalMode))
+      }
+
+      "go to ImporterName page after importerHasEORI with No page when Representative single/multiple entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(ImporterHasEoriPage, false).success.value
+        navigator.nextPage(ImporterHasEoriPage, NormalMode, answers)
+          .mustBe(routes.ImporterNameController.onPageLoad(NormalMode))
+      }
     }
 
 
