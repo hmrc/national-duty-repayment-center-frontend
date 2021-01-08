@@ -67,10 +67,12 @@ class Navigator @Inject()() {
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
-  private def getRepaymentType(answers: UserAnswers): Call = answers.get(NumberOfEntriesTypePage) match {
-    case Some(NumberOfEntriesType.Single)  => routes.RepaymentTypeController.onPageLoad(NormalMode)
-    case Some(NumberOfEntriesType.Multiple) => routes.BankDetailsController.onPageLoad(NormalMode)
-  }
+  private def getRepaymentType(answers: UserAnswers): Call =
+    (answers.get(NumberOfEntriesTypePage), answers.get(ClaimantTypePage)) match {
+      case (Some(NumberOfEntriesType.Single),Some(ClaimantType.Importer))  => routes.RepaymentTypeController.onPageLoad(NormalMode)
+      case (Some(NumberOfEntriesType.Multiple),Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
+      case  _  => routes.RepaymentTypeController.onPageLoad(NormalMode)
+    }
 
   private def getBulkEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
     case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)

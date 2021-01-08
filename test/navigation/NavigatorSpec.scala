@@ -119,12 +119,13 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ClaimReasonTypeController.onPageLoad(NormalMode))
       }
 
-      "go to BankDetails page after ContactByEmailPage page when Importers/Representative multiple entry journeys selected " in {
+      "go to WhomToPay page after ContactByEmailPage page when the Representative's multiple entry journeys is selected " in {
         val answers =
           emptyUserAnswers
-            .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+            .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value.
+            set(ClaimantTypePage, ClaimantType.Representative).success.value
         navigator.nextPage(ContactByEmailPage, NormalMode, answers)
-          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+          .mustBe(routes.WhomToPayController.onPageLoad(NormalMode))
       }
 
       "go to RepaymentType page after ContactByEmailPage page when Importers/Representative single entry journeys selected " in {
