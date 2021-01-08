@@ -51,21 +51,23 @@
               form = form,
               id = "EPU",
               name = "EPU",
-              inputType = "number",
               label = "entryDetails.claimEpu.heading",
               labelMedium = true,
               isPageHeading = false,
               isInFieldset = true,
               classes = Some("govuk-input--width-3"),
               hint = Some(messages("entryDetails.claimEpu.hint")),
-              attributes = Map("autocomplete" -> "off")
+              attributes = Map(
+                  "autocomplete" -> "off",
+                  "inputmode" -> "numeric",
+                  "pattern" -> "[0-9]*"
+              )
           )
 
           @forms.inputText(
              form = form,
              id = "EntryNumber",
              name = "EntryNumber",
-             inputType = "text",
              label = "entryDetails.entryNumber.heading",
              labelMedium = true,
              isPageHeading = false,

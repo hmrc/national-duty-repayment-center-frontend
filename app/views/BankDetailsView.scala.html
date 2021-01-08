@@ -43,7 +43,6 @@
                 form = form,
                 id = "AccountName",
                 name = "AccountName",
-                inputType = "text",
                 label = "bankDetails.name.heading",
                 hint = Some(messages("bankDetails.name.hint")),
                 isPageHeading = false,
@@ -55,26 +54,32 @@
                 form = form,
                 id = "SortCode",
                 name = "SortCode",
-                inputType = "number",
                 label = "bankDetails.sortCode.heading",
                 hint = Some(messages("bankDetails.sortCode.hint")),
                 classes = Some("govuk-input--width-5"),
                 isPageHeading = false,
                 isInFieldset = true,
-                attributes = Map("autocomplete" -> "off")
+                attributes = Map(
+                    "autocomplete" -> "off",
+                    "inputmode" -> "numeric",
+                    "pattern" -> "[0-9]*"
+                )
             )
 
             @forms.inputText(
                 form = form,
                 id = "AccountNumber",
                 name = "AccountNumber",
-                inputType = "number",
                 label = "bankDetails.accountNumber.heading",
                 hint = Some(messages("bankDetails.accountNumber.hint")),
                 classes = Some("govuk-input--width-10"),
                 isPageHeading = false,
                 isInFieldset = true,
-                attributes = Map("autocomplete" -> "off")
+                attributes = Map(
+                    "autocomplete" -> "off",
+                    "inputmode" -> "numeric",
+                    "pattern" -> "[0-9]*"
+                )
             )
         }
         @html.button("site.continue")
