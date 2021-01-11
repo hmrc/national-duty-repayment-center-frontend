@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def amendCaseSendInformation: Option[AnswerRow] = userAnswers.get(AmendCaseSendInformationPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("amendCaseSendInformation.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        Some(routes.AmendCaseSendInformationController.onPageLoad(CheckMode).url)
+      )
+  }
+
   def amendCaseResponseType: Option[AnswerRow] = userAnswers.get(AmendCaseResponseTypePage) map {
     x =>
       AnswerRow(
