@@ -113,29 +113,6 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       application.stop()
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).
-        success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request =
-        FakeRequest(POST, amendCaseSendInformationRoute)
-          .withFormUrlEncodedBody(("value", ""))
-
-      val view = application.injector.instanceOf[AmendCaseSendInformationView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual BAD_REQUEST
-
-      contentAsString(result) mustEqual
-        view(NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
     "redirect to Session Expired for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
