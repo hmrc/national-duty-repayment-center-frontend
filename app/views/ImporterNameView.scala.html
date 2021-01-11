@@ -35,17 +35,32 @@
 
         @components.error_summary(form.errors)
 
-        @forms.inputText(
-            form = form,
-            id = "value",
-            name = "value",
-            inputType = "text",
-            label = "importerName.heading",
-            isPageHeading = true,
-            isInFieldset = false,
-            attributes = Map("autocomplete" -> "off")
-        )
+        @forms.fieldset(
+            legend = messages("importerName.heading")
+        ) {
+            @forms.inputText(
+                form = form,
+                id = "value",
+                name = "value",
+                inputType = "text",
+                label = "importerName.firstName",
+                isPageHeading = false,
+                isInFieldset = false,
+                attributes = Map("autocomplete" -> "off")
+            )
 
-        @html.button("site.continue")
+            @forms.inputText(
+                form = form,
+                id = "lastName",
+                name = "lastName",
+                inputType = "text",
+                label = "importerName.lastName",
+                isPageHeading = false,
+                isInFieldset = false,
+                attributes = Map("autocomplete" -> "off")
+            )
+
+            @html.button("site.continue")
+        }
     }
 }

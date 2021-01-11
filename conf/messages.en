@@ -206,8 +206,11 @@ contactType.checkYourAnswersLabel = How should we contact you?
 contactType.error.required = Select Contact Type
 contactType.hint = We will only use these details if we need more information to complete your application.
 
-importerName.title = Enter your name
-importerName.heading = Enter your name
+importerName.title = What is your name?
+importerName.heading = What is your name?
+importerName.firstName = First Name
+importerName.lastName = Last Name
+
 importerName.checkYourAnswersLabel = Enter your name
 importerName.error.required = Enter your name
 importerName.error.length = Your name must be 512 characters or less
