@@ -493,3 +493,26 @@ amendCaseResponseType.furtherInformation = Give us further information in writin
 amendCaseResponseType.checkYourAnswersLabel = What do you need to do?
 amendCaseResponseType.error.required = Select Response Type
 amendCaseResponseType.hintText = Select all that apply.
+
+amendCaseSendInformation.title = amendCaseSendInformation
+amendCaseSendInformation.heading = amendCaseSendInformation
+amendCaseSendInformation.checkYourAnswersLabel = amendCaseSendInformation
+amendCaseSendInformation.error.required = Enter amendCaseSendInformation
+amendCaseSendInformation.error.length = AmendCaseSendInformation must be 1000 characters or less
+
+amendCaseSendInformation.title = Upload a file
+amendCaseSendInformation.heading = Upload a file
+amendCaseSendInformation.paragraph1 = You can upload as many files as you need to.
+amendCaseSendInformation.paragraph2 = You can only upload one file at a time.
+amendCaseSendInformation.subheading = Suggested supporting documents
+amendCaseSendInformation.paragraph3 = Send us any supporting documents you have. This could include:
+amendCaseSendInformation.01 = airway bill
+amendCaseSendInformation.02 = bill of lading
+amendCaseSendInformation.03 = C88
+amendCaseSendInformation.04 = E2
+amendCaseSendInformation.05 = invoice
+amendCaseSendInformation.06 = packing list
+amendCaseSendInformation.07 = proof of origin
+amendCaseSendInformation.08 = substitute entry
+amendCaseSendInformation.checkYourAnswersLabel = Upload a file
+amendCaseSendInformation.error.required = Select files

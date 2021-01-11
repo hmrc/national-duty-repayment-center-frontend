@@ -63,10 +63,19 @@ class Navigator @Inject()() {
     case BulkFileUploadPage => getBulkEntryDetails
     case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case ReferenceNumberPage => _ => routes.AmendCaseResponseTypeController.onPageLoad(NormalMode)
-    case AmendCaseResponseTypePage => _ => routes.FurtherInformationController.onPageLoad(NormalMode)
-    case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad()
+    case AmendCaseResponseTypePage => getAmendCaseResponseType
+    case AmendCaseSendInformationPage => _ => routes.FurtherInformationController.onPageLoad(NormalMode)
+    case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
     case _ => _ => routes.IndexController.onPageLoad()
   }
+
+  private def getAmendCaseResponseType(answers: UserAnswers): Call =
+    answers.get(AmendCaseResponseTypePage) match {
+      case x if (answers.get(AmendCaseResponseTypePage).get.contains
+                      (AmendCaseResponseType.Supportingdocuments))
+               => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
+      case  _  => routes.FurtherInformationController.onPageLoad(NormalMode)
+    }
 
   private def getRepaymentType(answers: UserAnswers): Call =
     (answers.get(NumberOfEntriesTypePage), answers.get(ClaimantTypePage)) match {
