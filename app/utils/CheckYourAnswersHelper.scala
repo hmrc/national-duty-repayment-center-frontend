@@ -104,7 +104,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterManualAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.toString),
         Some(routes.AgentImporterManualAddressController.onPageLoad(CheckMode).url)
       )
   }
