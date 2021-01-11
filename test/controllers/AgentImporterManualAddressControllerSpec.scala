@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.AgentImporterManualAddressFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{Address, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -65,7 +65,10 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterManualAddressPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        AgentImporterManualAddressPage,
+        Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
+      ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +81,9 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(
+          Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
+        ), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -99,7 +104,14 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
       val request =
         FakeRequest(POST, agentImporterManualAddressRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(
+            ("AddressLine1", "line 1"),
+            ("AddressLine2", "line 2"),
+            ("City", "postal City"),
+            ("Region", "region"),
+            ("CountryCode", "GB"),
+            ("postCode", "AA1 1AA")
+          )
 
       val result = route(application, request).value
 

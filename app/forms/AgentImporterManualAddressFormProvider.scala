@@ -17,15 +17,55 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
-import play.api.data.Form
+import models.Address
+import play.api.data.{Form, Forms}
+import play.api.data.Forms.{mapping, optional}
 
 class AgentImporterManualAddressFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("agentImporterManualAddress.error.required")
-        .verifying(maxLength(128, "agentImporterManualAddress.error.length"))
-    )
+  private val maxLineLength = 128
+  private val maxCityLength = 64
+  private val maxRegionLength = 64
+  private val maxCCLength = 2
+
+  def apply(): Form[Address] = Form(
+    mapping(
+      "AddressLine1" ->
+        text("agentImporterManualAddress.line1.error.required")
+          .verifying(firstError(
+            maxLength(maxLineLength, "agentImporterManualAddress.line1.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterManualAddress.line1.error.invalid")
+          )),
+      "AddressLine2" ->
+        optional(Forms.text
+          .verifying(firstError(
+            maxLength(maxLineLength, "agentImporterManualAddress.line2.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterManualAddress.line2.error.invalid")
+          ))),
+      "City" ->
+        text("agentImporterManualAddress.city.error.required")
+          .verifying(firstError(
+            maxLength(maxCityLength, "agentImporterManualAddress.city.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterManualAddress.city.error.invalid")
+          )),
+      "Region" ->
+        optional(Forms.text
+          .verifying(firstError(
+            maxLength(maxRegionLength, "agentImporterManualAddress.region.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterManualAddress.region.error.invalid")
+          ))),
+      "CountryCode" ->
+        text("agentImporterManualAddress.countryCode.error.required")
+          .verifying(firstError(
+            maxLength(maxCCLength, "agentImporterManualAddress.countryCode.error.length"),
+            regexp(Validation.safeInputPattern,"agentImporterManualAddress.countryCode.error.invalid")
+          )),
+      "postCode" ->
+        optional(Forms.text
+          .verifying(firstError(
+            regexp(Validation.postcodeRegex, "agentImporterManualAddress.postalCode.error.invalid")
+          )))
+    )(Address.apply)(agentImporterManualAddress => Some((agentImporterManualAddress.AddressLine1, agentImporterManualAddress.AddressLine2, agentImporterManualAddress.City, agentImporterManualAddress.Region, agentImporterManualAddress.CountryCode, agentImporterManualAddress.postCode)))
+  )
 }
