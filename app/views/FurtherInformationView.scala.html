@@ -16,33 +16,48 @@
 
 @import controllers.routes._
 @import models.Mode
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("furtherInformation.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)} ${messages("furtherInformation.title")}"),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = FurtherInformationController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = FurtherInformationController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
+        <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="1500">
 
-        @components.legacy.input_textarea(
-            field = form("value"),
-            label = messages("furtherInformation.heading"),
-            headingIsLabel = true,
-            hint = Some(messages("furtherInformation.hintText")),
-            charCount = 1500
-        )
+            @forms.textarea(
+                form = form,
+                id = "value",
+                name = "value",
+                label = "furtherInformation.heading",
+                isPageHeading = true,
+                isInFieldset = false,
+                classes = Some("govuk-js-character-count"),
+                hint = Some(Html(messages("furtherInformation.hintText"))),
+                rows = 6,
+                countMessageClasses = "",
+                spellcheck = None,
+                describedBy = Some("value-info")
+            )
 
-        @components.legacy.submit_button()
+            <div id="value-info" class="govuk-hint govuk-character-count__message" aria-live="polite">
+            </div>
+
+        </div>
+
+        @html.button("site.continue")
+
     }
 }

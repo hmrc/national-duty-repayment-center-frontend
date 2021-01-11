@@ -14,17 +14,21 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.play.views.html._
+
 @this(
-    main_template: MainTemplate
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    html: views.components.html
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("index.title")
-    ) {
+@govukLayout(
+    pageTitle = Some(messages("index.title")),
+) {
 
-    @components.legacy.heading("index.heading")
+    @html.h1(messages("index.heading"))
 
-    <p>@messages("index.guidance")</p>
+    @html.p{ @messages("index.guidance") }
+
 }

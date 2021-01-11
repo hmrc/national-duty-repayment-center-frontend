@@ -16,32 +16,36 @@
 
 @import controllers.routes._
 @import models.Mode
-@import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: PlayFormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("referenceNumber.title")}"
-    ) {
+@govukLayout(
+    pageTitle = Some(messages("referenceNumber.title")),
+    backLink = Some("#")
+) {
 
-    @formHelper(action = ReferenceNumberController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = ReferenceNumberController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.legacy.back_link()
+        @components.error_summary(form.errors)
 
-        @components.legacy.error_summary(form.errors)
-
-        @components.legacy.input_text(
-          field = form("value"),
-          label = messages("referenceNumber.heading"),
-          hint = Some(messages("referenceNumber.hintText")),
-          headingIsLabel = true
+        @forms.inputText(
+            form = form,
+            id = "value",
+            name = "value",
+            label = "referenceNumber.heading",
+            hint = Some(messages("referenceNumber.hintText")),
+            isPageHeading = true,
+            isInFieldset = false,
+            attributes = Map("autocomplete" -> "off")
         )
+        @html.button("site.continue")
 
-        @components.legacy.submit_button()
     }
 }
