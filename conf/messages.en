@@ -516,3 +516,8 @@ amendCaseSendInformation.07 = proof of origin
 amendCaseSendInformation.08 = substitute entry
 amendCaseSendInformation.checkYourAnswersLabel = Upload a file
 amendCaseSendInformation.error.required = Select files
+
+amendCaseUploadAnotherFile.title = amendCaseUploadAnotherFile
+amendCaseUploadAnotherFile.heading = amendCaseUploadAnotherFile
+amendCaseUploadAnotherFile.checkYourAnswersLabel = amendCaseUploadAnotherFile
+amendCaseUploadAnotherFile.error.required = Select yes if amendCaseUploadAnotherFile

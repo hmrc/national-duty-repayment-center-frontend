@@ -26,6 +26,14 @@ trait UserAnswersEntryGenerators extends PageGenerators {
 
   self: Generators =>
 
+  implicit lazy val arbitraryAmendCaseUploadAnotherFileUserAnswersEntry: Arbitrary[(AmendCaseUploadAnotherFilePage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[AmendCaseUploadAnotherFilePage.type]
+        value <- arbitrary[Boolean].map(Json.toJson(_))
+      } yield (page, value)
+    }
+
   implicit lazy val arbitraryAmendCaseSendInformationUserAnswersEntry: Arbitrary[(AmendCaseSendInformationPage.type, JsValue)] =
     Arbitrary {
       for {
