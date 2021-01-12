@@ -28,7 +28,7 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)} ${messages("isImporterVatRegistered.title")}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("isImporterVatRegistered.title"))}"),
     backLink = Some("#")
 ) {
 

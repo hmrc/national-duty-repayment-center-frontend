@@ -27,7 +27,7 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle= Some("importerManualAddress.title"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerManualAddress.title"))}"),
     backLink = Some("#")
 ) {
 

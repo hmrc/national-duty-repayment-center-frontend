@@ -24,7 +24,7 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(messages("index.title")),
+    pageTitle = Some(s"${titleNoForm(messages("index.title"))}")
 ) {
 
     @html.h1(messages("index.heading"))

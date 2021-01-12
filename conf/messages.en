@@ -1,4 +1,4 @@
-checkYourAnswers.title = Check Your Answers
+checkYourAnswers.title = Check your answers before sending your application
 checkYourAnswers.heading = Check Your Answers
 checkYourAnswers.guidance = Guidance for check your answers
 
@@ -46,6 +46,7 @@ site.continue = Continue
 find.address = Find address
 site.service_name = National Duty Repayment Centre
 site.textarea.char_limit = (Limit is {0} characters)
+site.govuk = GOV.UK
 
 footer.cookies = Cookies
 footer.privacy = Privacy policy

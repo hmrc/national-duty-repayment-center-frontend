@@ -27,8 +27,8 @@
 @(form: Form[Set[AmendCaseResponseType]], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-pageTitle = Some(s"${errorPrefix(form)} ${messages("amendCaseResponseType.title")}"),
-backLink = Some("#")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("amendCaseResponseType.title"))}"),
+    backLink = Some("#")
 ) {
 
 @forms.formWithCSRF(action = AmendCaseResponseTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {

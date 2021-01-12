@@ -18,8 +18,21 @@ package views
 
 import play.api.data.Form
 import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
 
 object ViewUtils {
+
+  def renderEmpref(empref: String): String = empref.replace("-", "/")
+
+  def title(form: Form[_], titleStr: String, section: Option[String] = None, titleMessageArgs: Seq[String] = Seq())
+           (implicit messages: Messages): String = {
+    titleNoForm(s"${errorPrefix(form)} ${messages(titleStr, titleMessageArgs:_*)}", section)
+  }
+
+
+  def titleNoForm(title: String, section: Option[String] = None, titleMessageArgs: Seq[String] = Seq())(implicit messages: Messages): String =
+    s"${messages(title, titleMessageArgs:_*)} - ${section.fold("")(messages(_) + " - ")}${messages("site.service_name")} - ${messages("site.govuk")}"
 
   def errorPrefix(form: Form[_])(implicit messages: Messages): String = {
     if (form.hasErrors || form.hasGlobalErrors) messages("error.browser.title.prefix") else ""

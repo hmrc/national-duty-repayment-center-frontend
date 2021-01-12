@@ -30,7 +30,7 @@
 @(form: Form[_], mode: Mode, userAnswers: UserAnswers)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)} ${messages("vATPaid.title")}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("vATPaid.title"))}"),
     backLink = Some("#")
 ) {
 

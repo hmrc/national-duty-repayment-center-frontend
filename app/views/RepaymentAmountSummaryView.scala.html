@@ -27,7 +27,7 @@
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(messages("repaymentAmountSummary.title")),
+    pageTitle = Some(s"${titleNoForm(messages("repaymentAmountSummary.title"))}"),
     backLink = Some("#")
 ) {
 
