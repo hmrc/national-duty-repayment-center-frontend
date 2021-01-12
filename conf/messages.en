@@ -437,7 +437,7 @@ additionalFileUpload.heading = You have uploaded x file
 additionalFileUpload.01 = Yes
 additionalFileUpload.02 = No
 additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
-additionalFileUpload.error.required = Select additionalFileUpload
+additionalFileUpload.error.required = Select Additional File to Upload
 
 contactByEmail.title = Can we contact you by email?
 contactByEmail.heading = Can we contact you by email?
@@ -517,3 +517,19 @@ amendCaseSendInformation.07 = proof of origin
 amendCaseSendInformation.08 = substitute entry
 amendCaseSendInformation.checkYourAnswersLabel = Upload a file
 amendCaseSendInformation.error.required = Select files
+
+amendCaseUploadAnotherFile.title = You have uploaded x file
+amendCaseUploadAnotherFile.heading = You have uploaded x file
+amendCaseUploadAnotherFile.01 = Yes
+amendCaseUploadAnotherFile.02 = No
+amendCaseUploadAnotherFile.checkYourAnswersLabel = Do you need to upload another file?
+amendCaseUploadAnotherFile.error.required = Select another file to upload
+
+amendCaseSendInformation.help.linkText = Help with file types
+amendCaseSendInformation.help.line1 = Each file must be 30MB or less.
+amendCaseSendInformation.help.line2 = Accepted file formats
+amendCaseSendInformation.help.fileFormat1= .doc
+amendCaseSendInformation.help.fileFormat2= .jpg
+amendCaseSendInformation.help.fileFormat3= .pdf
+amendCaseSendInformation.help.fileFormat4= .png
+amendCaseSendInformation.help.fileFormat5= .xls

@@ -17,42 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.ReferenceNumberFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.AmendCaseUploadAnotherFileFormProvider
+import models.{AmendCaseUploadAnotherFile, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ReferenceNumberPage
+import pages.AmendCaseUploadAnotherFilePage
 import play.api.inject.bind
+import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ReferenceNumberView
+import views.html.AmendCaseUploadAnotherFileView
 
 import scala.concurrent.Future
 
-class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
+class AmendCaseUploadAnotherFileControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ReferenceNumberFormProvider()
+  val formProvider = new AmendCaseUploadAnotherFileFormProvider()
   val form = formProvider()
 
-  lazy val referenceNumberRoute = routes.ReferenceNumberController.onPageLoad(NormalMode).url
+  lazy val amendCaseUploadAnotherFileRoute = routes.AmendCaseUploadAnotherFileController.onPageLoad(NormalMode).url
 
-  "ReferenceNumber Controller" must {
+  "AmendCaseUploadAnotherFile Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, referenceNumberRoute)
+      val request = FakeRequest(GET, amendCaseUploadAnotherFileRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ReferenceNumberView]
+      val view = application.injector.instanceOf[AmendCaseUploadAnotherFileView]
 
       status(result) mustEqual OK
 
@@ -64,20 +65,20 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReferenceNumberPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AmendCaseUploadAnotherFilePage, AmendCaseUploadAnotherFile.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, referenceNumberRoute)
+      val request = FakeRequest(GET, amendCaseUploadAnotherFileRoute)
 
-      val view = application.injector.instanceOf[ReferenceNumberView]
+      val view = application.injector.instanceOf[AmendCaseUploadAnotherFileView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(AmendCaseUploadAnotherFile.values.head), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -97,12 +98,13 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, referenceNumberRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, amendCaseUploadAnotherFileRoute)
+          .withFormUrlEncodedBody(("value", AmendCaseUploadAnotherFile.options(form).head.value.get))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -113,12 +115,12 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, referenceNumberRoute)
+        FakeRequest(POST, amendCaseUploadAnotherFileRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[ReferenceNumberView]
+      val view = application.injector.instanceOf[AmendCaseUploadAnotherFileView]
 
       val result = route(application, request).value
 
@@ -126,6 +128,38 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
       contentAsString(result) mustEqual
         view(boundForm, NormalMode)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to Session Expired for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request = FakeRequest(GET, amendCaseUploadAnotherFileRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to Session Expired for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request =
+        FakeRequest(POST, amendCaseUploadAnotherFileRoute)
+          .withFormUrlEncodedBody(("value", "true"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }

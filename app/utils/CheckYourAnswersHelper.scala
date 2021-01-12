@@ -28,6 +28,15 @@ import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  def amendCaseUploadAnotherFile: Option[AnswerRow] = userAnswers.get(AmendCaseUploadAnotherFilePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("amendCaseUploadAnotherFile.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"amendCaseUploadAnotherFile.$x")),
+        Some(routes.AmendCaseUploadAnotherFileController.onPageLoad(CheckMode).url)
+      )
+  }
+
   def amendCaseSendInformation: Option[AnswerRow] = userAnswers.get(AmendCaseSendInformationPage) map {
     x =>
       AnswerRow(

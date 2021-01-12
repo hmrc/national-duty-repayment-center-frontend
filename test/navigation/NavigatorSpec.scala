@@ -209,6 +209,11 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.AmendCaseSendInformationController.onPageLoad(NormalMode))
       }
 
+      "go to AmendCaseUploadAnotherFile page after SendInformationPage page " in {
+        navigator.nextPage(AmendCaseSendInformationPage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.AmendCaseUploadAnotherFileController.onPageLoad(NormalMode))
+      }
+
       "go to AmendCheckYourAnswers page after FurtherInformation page " in {
         navigator.nextPage(FurtherInformationPage, NormalMode, emptyUserAnswers)
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad)
