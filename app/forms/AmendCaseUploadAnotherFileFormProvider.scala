@@ -17,14 +17,14 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.AmendCaseUploadAnotherFile
 import play.api.data.Form
 
 class AmendCaseUploadAnotherFileFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(): Form[AmendCaseUploadAnotherFile] =
     Form(
-      "value" -> boolean("amendCaseUploadAnotherFile.error.required")
+      "value" -> enumerable[AmendCaseUploadAnotherFile]("amendCaseUploadAnotherFile.error.required")
     )
 }

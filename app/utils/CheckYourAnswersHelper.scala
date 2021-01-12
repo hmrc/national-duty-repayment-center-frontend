@@ -32,7 +32,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("amendCaseUploadAnotherFile.checkYourAnswersLabel")),
-        yesOrNo(x),
+        HtmlFormat.escape(messages(s"amendCaseUploadAnotherFile.$x")),
         Some(routes.AmendCaseUploadAnotherFileController.onPageLoad(CheckMode).url)
       )
   }

@@ -50,8 +50,10 @@ class AmendCaseSendInformationController @Inject()(
       val value = request.userAnswers.get(AmendCaseResponseTypePage).get
 
       value match {
-        case x if value.contains(AmendCaseResponseType.Furtherinformation)
+        case x if value.contains(AmendCaseResponseType.Supportingdocuments)
           =>  Redirect(navigator.nextPage(AmendCaseSendInformationPage, mode, request.userAnswers))
+        case x if value.contains(AmendCaseResponseType.Furtherinformation)
+        =>  Redirect(navigator.nextPage(AmendCaseSendInformationPage, mode, request.userAnswers))
         case _ => Redirect(navigator.nextPage(FurtherInformationPage, mode, request.userAnswers))
       }
   }

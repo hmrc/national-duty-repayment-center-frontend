@@ -16,9 +16,10 @@
 
 package pages
 
+import models.AmendCaseUploadAnotherFile
 import play.api.libs.json.JsPath
 
-case object AmendCaseUploadAnotherFilePage extends QuestionPage[Boolean] {
+case object AmendCaseUploadAnotherFilePage extends QuestionPage[AmendCaseUploadAnotherFile] {
 
   override def path: JsPath = JsPath \ toString
 

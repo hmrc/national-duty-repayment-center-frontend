@@ -15,21 +15,38 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
+@import models.{Mode, AmendCaseUploadAnotherFile}
+@import views.ViewUtils._
 
 @this(
-    main_template: MainTemplate,
-    formHelper: uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("amendCaseUploadAnotherFile.title")}"
-    ) {
+@govukLayout(
+pageTitle = Some(s"${errorPrefix(form)} ${messages("amendCaseUploadAnotherFile.title")}"),
+backLink = Some("#")
+) {
 
-    @formHelper(action = AmendCaseUploadAnotherFileController.onSubmit(mode), 'autoComplete -> "off") {
+@forms.formWithCSRF(action = AmendCaseUploadAnotherFileController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
+    @components.error_summary(form.errors)
 
+    @html.h1(messages("amendCaseUploadAnotherFile.heading"), classes = "govuk-heading-xl")
+
+    @html.h2(messages("amendCaseUploadAnotherFile.checkYourAnswersLabel"), classes = "govuk-heading-m")
+
+    @forms.inputRadio(
+        form = form,
+        idPrefix = "value",
+        name = "value",
+        items = AmendCaseUploadAnotherFile.options(form),
+        inline = true
+    )
+
+    @html.button("site.continue")
     }
 }
