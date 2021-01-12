@@ -17,22 +17,22 @@
 @import config.FrontendAppConfig
 
 @this(
-    main_template: MainTemplate
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    html: views.components.html
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("session_expired.title")
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${titleNoForm(messages("session_expired.title"))}"),
+) {
 
-    @components.legacy.heading("session_expired.heading")
+    @html.h1(messages("session_expired.heading"))
 
-    <p>@messages("session_expired.guidance")</p>
-
+    @html.p{ @messages("session_expired.guidance") }
 
     <div class="section">
-        <a id = "govuk-link" class="button" role = "button" href="@routes.ClaimantTypeController.onPageLoad(NormalMode)">
+        <a id = "govuk-link" class="govuk-button" role ="button" href="@routes.ClaimantTypeController.onPageLoad(NormalMode)">
         @messages("session_expired.button")
         </a>
     </div>

@@ -28,8 +28,8 @@
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
- pageTitle = Some("Title"),
- backLink = Some("#")
+    pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}"),
+    backLink = Some("#")
 ) {
 
    @forms.formWithCSRF(action = CheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {

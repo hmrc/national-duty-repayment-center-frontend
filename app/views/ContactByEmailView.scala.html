@@ -40,7 +40,7 @@
 }
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)} ${messages("contactByEmail.title")}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("contactByEmail.title"))}"),
     backLink = Some("#")
 ) {
 

@@ -17,6 +17,7 @@
 @import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
+@import views.ViewUtils._
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -27,8 +28,9 @@
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-pageTitle = Some("Title"),
-backLink = Some("#")
+ pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}"),
+
+ backLink = Some("#")
 ) {
 
 @forms.formWithCSRF(action = AmendCheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {

@@ -30,7 +30,7 @@
 @(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)} ${messages("importerAddressConfirmation.title")}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerAddressConfirmation.title"))}"),
     backLink = Some("#")
 ) {
 

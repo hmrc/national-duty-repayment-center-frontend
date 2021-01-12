@@ -14,15 +14,19 @@
  * limitations under the License.
  *@
 
+@import uk.gov.hmrc.play.views.html._
+
 @this(
-    main_template: MainTemplate
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    html: views.components.html
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("unauthorised.title")
-    ) {
+@govukLayout(
+    pageTitle = Some(s"${titleNoForm(messages("unauthorised.title"))}"),
+) {
 
-    @components.legacy.heading("unauthorised.heading")
+    @html.h1(messages("unauthorised.heading"))
+
 }

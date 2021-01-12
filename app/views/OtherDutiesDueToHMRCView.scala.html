@@ -27,7 +27,7 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)} ${messages("otherDutiesDueToHMRC.title")}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("otherDutiesDueToHMRC.title"))}"),
     backLink = Some("#")
 ) {
 

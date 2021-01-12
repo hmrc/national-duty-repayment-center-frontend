@@ -24,7 +24,7 @@
 @(claimId: String)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(messages("confirmation.title")),
+    pageTitle = Some(s"${titleNoForm(messages("confirmation.title"))}"),
 ) {
 
     <div class="govuk-panel govuk-panel--confirmation">

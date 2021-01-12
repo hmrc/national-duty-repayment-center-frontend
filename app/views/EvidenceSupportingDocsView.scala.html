@@ -29,7 +29,7 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some("evidenceSupportingDocs.title"),
+    pageTitle = Some(s"${titleNoForm(messages("evidenceSupportingDocs.title"))}"),
     backLink = Some("#")
 ) {
 
