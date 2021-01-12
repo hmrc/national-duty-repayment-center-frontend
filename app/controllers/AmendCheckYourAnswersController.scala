@@ -22,7 +22,7 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.NormalMode
 import navigation.Navigator
-import pages.{CheckYourAnswersPage, ReferenceNumberPage}
+import pages.{CheckYourAnswersPage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -59,6 +59,12 @@ class AmendCheckYourAnswersController @Inject()(
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+
+      if(checkYourAnswersHelper.furtherInformation.isEmpty) {
+        Future.fromTry(request.userAnswers.set(FurtherInformationPage, "Files Uploaded"))
+      }
+
       for {
         claimId <- claimService.submitAmendClaim(request.userAnswers)
         updatedClaimId <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
