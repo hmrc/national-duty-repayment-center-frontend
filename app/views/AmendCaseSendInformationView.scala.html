@@ -22,7 +22,8 @@
     forms: views.components.forms,
     html: views.components.html,
     details: views.html.components.details,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    govukFileUpload: GovukFileUpload
 )
 
 @(mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -33,6 +34,7 @@
 ) {
 
     @forms.formWithCSRF(action = AmendCaseSendInformationController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+
 
         @html.h1(messages("amendCaseSendInformation.heading"))
 
@@ -57,7 +59,7 @@
 
         @details(messages("amendCaseSendInformation.help.linkText")) {
             @html.p{ @messages("amendCaseSendInformation.help.line1") }
-            @html.h2("amendCaseSendInformation.help.line2", classes = "govuk-heading-m pr-bottom-margin")
+            @html.h2("amendCaseSendInformation.help.line2", classes = "govuk-heading-m")
             @html.ul(
             messages("amendCaseSendInformation.help.fileFormat1"),
             messages("amendCaseSendInformation.help.fileFormat2"),
@@ -67,15 +69,21 @@
             )
         }
 
-        <div class="govuk-form-group">
-            <label class="govuk-label" for="file-upload-1">
-                @messages("fileUpload.title")
-            </label>
-            <input class="govuk-file-upload" id="file-upload-1" name="file-upload-1" type="file">
-        </div>
-
-        <div class="file-upload__loading-container" aria-live="polite" role="region"></div>
-        
+        @govukFileUpload(FileUpload(
+            name = "file",
+            id = "upload-file",
+            value = Some(""),
+            describedBy = None,
+            label = Label(
+            content = Text(messages("fileUpload.title")),
+            isPageHeading = false,
+            classes = "govuk-label"
+        ),
+        hint = None,
+        formGroupClasses = "",
+        classes = ""
+        )
+        )
         @html.button("site.continue")
     }
 }
