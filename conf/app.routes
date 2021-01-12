@@ -246,3 +246,8 @@ GET        /amendCaseResponseType                        controllers.AmendCaseRe
 POST       /amendCaseResponseType                        controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAmendCaseResponseType                  controllers.AmendCaseResponseTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAmendCaseResponseType                  controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = CheckMode)
+
+GET        /amendCaseSendInformation                        controllers.AmendCaseSendInformationController.onPageLoad(mode: Mode = NormalMode)
+POST       /amendCaseSendInformation                        controllers.AmendCaseSendInformationController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAmendCaseSendInformation                  controllers.AmendCaseSendInformationController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAmendCaseSendInformation                  controllers.AmendCaseSendInformationController.onSubmit(mode: Mode = CheckMode)

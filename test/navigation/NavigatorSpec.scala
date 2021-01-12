@@ -185,6 +185,34 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         navigator.nextPage(ImporterHasEoriPage, NormalMode, answers)
           .mustBe(routes.ImporterNameController.onPageLoad(NormalMode))
       }
+
+      "go to AmendCaseResponseType page after ReferenceNumber page " in {
+        navigator.nextPage(ReferenceNumberPage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.AmendCaseResponseTypeController.onPageLoad(NormalMode))
+      }
+
+      "go to FurtherInformation page after ReferenceType page as Further Information " in {
+        val values: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.Furtherinformation)
+        val answers =
+          emptyUserAnswers
+            .set(AmendCaseResponseTypePage, values).success.value
+        navigator.nextPage(AmendCaseResponseTypePage, NormalMode, answers)
+          .mustBe(routes.FurtherInformationController.onPageLoad(NormalMode))
+      }
+
+      "go to SupportingDocuments page after ReferenceType page as Supporting documents " in {
+        val values: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.Supportingdocuments)
+        val answers =
+          emptyUserAnswers
+            .set(AmendCaseResponseTypePage, values).success.value
+        navigator.nextPage(AmendCaseResponseTypePage, NormalMode, answers)
+          .mustBe(routes.AmendCaseSendInformationController.onPageLoad(NormalMode))
+      }
+
+      "go to AmendCheckYourAnswers page after FurtherInformation page " in {
+        navigator.nextPage(FurtherInformationPage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.AmendCheckYourAnswersController.onPageLoad)
+      }
     }
 
 

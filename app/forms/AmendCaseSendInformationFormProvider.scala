@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import models.Address
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-case object AgentImporterManualAddressPage extends QuestionPage[Address] {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  override def path: JsPath = JsPath \ toString
+class AmendCaseSendInformationFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "agentImporterManualAddress"
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("amendCaseSendInformation.error.required")
+        .verifying(maxLength(1000, "amendCaseSendInformation.error.length"))
+    )
 }

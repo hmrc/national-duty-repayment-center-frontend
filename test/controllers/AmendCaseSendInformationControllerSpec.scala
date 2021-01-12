@@ -17,85 +17,84 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentImporterManualAddressFormProvider
-import models.{Address, NormalMode, UserAnswers}
+import forms.AmendCaseSendInformationFormProvider
+import models.{AmendCaseResponseType, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.AgentImporterManualAddressPage
+import pages.{AmendCaseResponseTypePage, AmendCaseSendInformationPage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.AgentImporterManualAddressView
+import views.html.AmendCaseSendInformationView
 
 import scala.concurrent.Future
 
-class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
+class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new AgentImporterManualAddressFormProvider()
+  val formProvider = new AmendCaseSendInformationFormProvider()
   val form = formProvider()
 
-  lazy val agentImporterManualAddressRoute = routes.AgentImporterManualAddressController.onPageLoad(NormalMode).url
+  lazy val amendCaseSendInformationRoute = routes.AmendCaseSendInformationController.onPageLoad(NormalMode).url
 
-  "AgentImporterManualAddress Controller" must {
+  "AmendCaseSendInformation Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, agentImporterManualAddressRoute)
+      val request = FakeRequest(GET, amendCaseSendInformationRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AgentImporterManualAddressView]
+      val view = application.injector.instanceOf[AmendCaseSendInformationView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(
-        AgentImporterManualAddressPage,
-        Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
-      ).success.value
+
+      val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).
+        success.value.set(AmendCaseSendInformationPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, agentImporterManualAddressRoute)
+      val request = FakeRequest(GET, amendCaseSendInformationRoute)
 
-      val view = application.injector.instanceOf[AgentImporterManualAddressView]
+      val view = application.injector.instanceOf[AmendCaseSendInformationView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(
-          Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
-        ), NormalMode)(fakeRequest, messages).toString
+        view(NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).
+        success.value
+
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -103,15 +102,8 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
           .build()
 
       val request =
-        FakeRequest(POST, agentImporterManualAddressRoute)
-          .withFormUrlEncodedBody(
-            ("AddressLine1", "line 1"),
-            ("AddressLine2", "line 2"),
-            ("City", "postal City"),
-            ("Region", "region"),
-            ("CountryCode", "GB"),
-            ("postCode", "AA1 1AA")
-          )
+        FakeRequest(POST, amendCaseSendInformationRoute)
+          .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value
 
@@ -121,33 +113,11 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       application.stop()
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request =
-        FakeRequest(POST, agentImporterManualAddressRoute)
-          .withFormUrlEncodedBody(("value", ""))
-
-      val boundForm = form.bind(Map("value" -> ""))
-
-      val view = application.injector.instanceOf[AgentImporterManualAddressView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual BAD_REQUEST
-
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
     "redirect to Session Expired for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, agentImporterManualAddressRoute)
+      val request = FakeRequest(GET, amendCaseSendInformationRoute)
 
       val result = route(application, request).value
 
@@ -163,7 +133,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, agentImporterManualAddressRoute)
+        FakeRequest(POST, amendCaseSendInformationRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value

@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryAmendCaseSendInformationPage: Arbitrary[AmendCaseSendInformationPage.type] =
+    Arbitrary(AmendCaseSendInformationPage)
+
   implicit lazy val arbitraryAmendCaseResponseTypePage: Arbitrary[AmendCaseResponseTypePage.type] =
     Arbitrary(AmendCaseResponseTypePage)
 

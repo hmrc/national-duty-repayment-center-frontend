@@ -16,12 +16,17 @@
 
 package pages
 
-import models.Address
-import play.api.libs.json.JsPath
+import pages.behaviours.PageBehaviours
 
-case object AgentImporterManualAddressPage extends QuestionPage[Address] {
 
-  override def path: JsPath = JsPath \ toString
+class AmendCaseSendInformationPageSpec extends PageBehaviours {
 
-  override def toString: String = "agentImporterManualAddress"
+  "AmendCaseSendInformationPage" must {
+
+    beRetrievable[String](AmendCaseSendInformationPage)
+
+    beSettable[String](AmendCaseSendInformationPage)
+
+    beRemovable[String](AmendCaseSendInformationPage)
+  }
 }
