@@ -521,3 +521,12 @@ amendCaseUploadAnotherFile.title = amendCaseUploadAnotherFile
 amendCaseUploadAnotherFile.heading = amendCaseUploadAnotherFile
 amendCaseUploadAnotherFile.checkYourAnswersLabel = amendCaseUploadAnotherFile
 amendCaseUploadAnotherFile.error.required = Select yes if amendCaseUploadAnotherFile
+
+amendCaseSendInformation.help.linkText = Help with file types
+amendCaseSendInformation.help.line1 = Each file must be 30MB or less.
+amendCaseSendInformation.help.line2 = Accepted file formats
+amendCaseSendInformation.help.fileFormat1= .doc
+amendCaseSendInformation.help.fileFormat2= .jpg
+amendCaseSendInformation.help.fileFormat3= .pdf
+amendCaseSendInformation.help.fileFormat4= .png
+amendCaseSendInformation.help.fileFormat5= .xls

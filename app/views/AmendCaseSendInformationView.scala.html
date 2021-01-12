@@ -20,7 +20,9 @@
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
     forms: views.components.forms,
-    html: views.components.html
+    html: views.components.html,
+    details: views.html.components.details,
+    govukButton: GovukButton
 )
 
 @(mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -52,8 +54,27 @@
             messages("amendCaseSendInformation.07"),
             messages("amendCaseSendInformation.08")
         )
-        
-        @html.p{@messages("fileUpload.title")}
+
+        @details(messages("amendCaseSendInformation.help.linkText")) {
+            @html.p{ @messages("amendCaseSendInformation.help.line1") }
+            @html.h2("amendCaseSendInformation.help.line2", classes = "govuk-heading-m pr-bottom-margin")
+            @html.ul(
+            messages("amendCaseSendInformation.help.fileFormat1"),
+            messages("amendCaseSendInformation.help.fileFormat2"),
+            messages("amendCaseSendInformation.help.fileFormat3"),
+            messages("amendCaseSendInformation.help.fileFormat4"),
+            messages("amendCaseSendInformation.help.fileFormat5")
+            )
+        }
+
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="file-upload-1">
+                @messages("fileUpload.title")
+            </label>
+            <input class="govuk-file-upload" id="file-upload-1" name="file-upload-1" type="file">
+        </div>
+
+        <div class="file-upload__loading-container" aria-live="polite" role="region"></div>
         
         @html.button("site.continue")
     }
