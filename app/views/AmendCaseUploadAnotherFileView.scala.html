@@ -15,7 +15,7 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, AdditionalFileUpload}
+@import models.{Mode, AmendCaseUploadAnotherFile}
 @import views.ViewUtils._
 
 @this(
@@ -27,34 +27,24 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("additionalFileUpload.title"))}"),
-    backLink = Some("#")
+pageTitle = Some(s"${errorPrefix(form)} ${messages("amendCaseUploadAnotherFile.title")}"),
+backLink = Some("#")
 ) {
 
-    @forms.formWithCSRF(action = AdditionalFileUploadController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+@forms.formWithCSRF(action = AmendCaseUploadAnotherFileController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
     @components.error_summary(form.errors)
 
+    @html.h1(messages("amendCaseUploadAnotherFile.heading"), classes = "govuk-heading-xl")
+
+    @html.h2(messages("amendCaseUploadAnotherFile.checkYourAnswersLabel"), classes = "govuk-heading-m")
 
     @forms.inputRadio(
         form = form,
         idPrefix = "value",
         name = "value",
-        items = Seq(
-            RadioItem(
-            value = Some("01"),
-            content = Text(messages("contactByEmail.01")),
-            checked = form("value").value.contains("Yes")
-        ),
-        RadioItem(
-            value = Some("02"),
-            content = Text(messages(s"contactByEmail.02")),
-            checked = form("value").value.contains("No")
-       )
-    ),
-        inline = true,
-        legendAsHeading = true,
-        legend = Some(messages("additionalFileUpload.heading"))
+        items = AmendCaseUploadAnotherFile.options(form),
+        inline = true
     )
 
     @html.button("site.continue")

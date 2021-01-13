@@ -64,9 +64,20 @@ class Navigator @Inject()() {
     case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case ReferenceNumberPage => _ => routes.AmendCaseResponseTypeController.onPageLoad(NormalMode)
     case AmendCaseResponseTypePage => getAmendCaseResponseType
-    case AmendCaseSendInformationPage => _ => routes.FurtherInformationController.onPageLoad(NormalMode)
+    case AmendCaseSendInformationPage => _ => routes.AmendCaseUploadAnotherFileController.onPageLoad(NormalMode)
+    case AmendCaseUploadAnotherFilePage => getAmendCaseUploadAnotherFile
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
     case _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def getAmendCaseUploadAnotherFile(answers: UserAnswers): Call = answers.get(AmendCaseUploadAnotherFilePage) match {
+    case Some(AmendCaseUploadAnotherFile.Yes)  => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
+    case Some(AmendCaseUploadAnotherFile.No) => {
+      if (answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Furtherinformation))
+        routes.FurtherInformationController.onPageLoad(NormalMode)
+      else
+      routes.AmendCheckYourAnswersController.onPageLoad
+    }
   }
 
   private def getAmendCaseResponseType(answers: UserAnswers): Call =

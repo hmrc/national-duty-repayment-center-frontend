@@ -251,3 +251,8 @@ GET        /amendCaseSendInformation                        controllers.AmendCas
 POST       /amendCaseSendInformation                        controllers.AmendCaseSendInformationController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAmendCaseSendInformation                  controllers.AmendCaseSendInformationController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAmendCaseSendInformation                  controllers.AmendCaseSendInformationController.onSubmit(mode: Mode = CheckMode)
+
+GET        /amendCaseUploadAnotherFile                        controllers.AmendCaseUploadAnotherFileController.onPageLoad(mode: Mode = NormalMode)
+POST       /amendCaseUploadAnotherFile                        controllers.AmendCaseUploadAnotherFileController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAmendCaseUploadAnotherFile                  controllers.AmendCaseUploadAnotherFileController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAmendCaseUploadAnotherFile                  controllers.AmendCaseUploadAnotherFileController.onSubmit(mode: Mode = CheckMode)
