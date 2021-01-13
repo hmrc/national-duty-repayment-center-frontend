@@ -73,17 +73,17 @@ class Navigator @Inject()() {
   private def getAmendCaseUploadAnotherFile(answers: UserAnswers): Call = answers.get(AmendCaseUploadAnotherFilePage) match {
     case Some(AmendCaseUploadAnotherFile.Yes)  => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
     case Some(AmendCaseUploadAnotherFile.No) => {
-      if (answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Furtherinformation))
-        routes.FurtherInformationController.onPageLoad(NormalMode)
-      else
-      routes.AmendCheckYourAnswersController.onPageLoad
+      answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Furtherinformation) match {
+        case true => routes.FurtherInformationController.onPageLoad(NormalMode)
+        case  _ => routes.AmendCheckYourAnswersController.onPageLoad
+      }
     }
   }
 
   private def getAmendCaseResponseType(answers: UserAnswers): Call =
     answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Supportingdocuments) match {
       case true => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
-      case  _  => routes.FurtherInformationController.onPageLoad(NormalMode)
+      case  _ => routes.FurtherInformationController.onPageLoad(NormalMode)
     }
 
   private def getRepaymentType(answers: UserAnswers): Call =
@@ -94,31 +94,31 @@ class Navigator @Inject()() {
 
   private def getBulkEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
     case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
-    case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
+    case _=> routes.EntryDetailsController.onPageLoad(NormalMode)
   }
 
   private def getEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
     case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => {
-      if (answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single))
-        routes.ArticleTypeController.onPageLoad(NormalMode)
-      else
-        routes.BulkFileUploadController.onPageLoad
+      answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single) match {
+        case true => routes.ArticleTypeController.onPageLoad (NormalMode)
+        case _=> routes.BulkFileUploadController.onPageLoad
+      }
     }
     case _ => {
-      if (answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single))
-        routes.EntryDetailsController.onPageLoad(NormalMode)
-      else
-        routes.BulkFileUploadController.onPageLoad
+      answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single) match {
+        case true => routes.EntryDetailsController.onPageLoad (NormalMode)
+        case _=> routes.BulkFileUploadController.onPageLoad
+      }
     }
   }
 
   private def additionalFileUploadRoute(answers: UserAnswers): Call = answers.get(AdditionalFileUploadPage) match {
     case Some(AdditionalFileUpload.Yes) => routes.FileUploadController.onPageLoad
     case Some(AdditionalFileUpload.No) => {
-      if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
-        routes.ImporterHasEoriController.onPageLoad(NormalMode)
-      else
-        routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
+      answers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
+        case true => routes.ImporterHasEoriController.onPageLoad(NormalMode)
+        case _ => routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
+      }
     }
   }
 
@@ -147,10 +147,10 @@ class Navigator @Inject()() {
   private def getEORIConfirmation(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
     case Some(true)  => routes.ImporterEoriController.onPageLoad(NormalMode)
     case _ => {
-      if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
-        routes.IsVATRegisteredController.onPageLoad(NormalMode)
-      else
-        routes.ImporterNameController.onPageLoad(NormalMode)
+      answers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
+        case true => routes.IsVATRegisteredController.onPageLoad(NormalMode)
+        case _ => routes.ImporterNameController.onPageLoad(NormalMode)
+      }
     }
   }
 
