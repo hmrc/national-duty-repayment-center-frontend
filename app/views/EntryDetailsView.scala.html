@@ -28,9 +28,9 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @pageHint = {
-<div class="govuk-hint mb-30">
+<p class="mb-30 paragraph-top">
     @messages("entryDetails.hint")
-</div>
+</p>
 }
 
 @govukLayout(

@@ -107,3 +107,7 @@ p.font-xsmall{
 .govuk-fieldset__legend--l {
     margin-bottom: 30px;
 }
+/* reduced top margin for the paragraph text according to project requirement */
+.paragraph-top {
+    margin-top: -1em;
+}
