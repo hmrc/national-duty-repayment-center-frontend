@@ -81,10 +81,8 @@ class Navigator @Inject()() {
   }
 
   private def getAmendCaseResponseType(answers: UserAnswers): Call =
-    answers.get(AmendCaseResponseTypePage) match {
-      case x if (answers.get(AmendCaseResponseTypePage).get.contains
-                      (AmendCaseResponseType.Supportingdocuments))
-               => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
+    answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Supportingdocuments) match {
+      case true => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
       case  _  => routes.FurtherInformationController.onPageLoad(NormalMode)
     }
 
