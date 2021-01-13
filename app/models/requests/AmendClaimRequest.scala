@@ -17,7 +17,7 @@
 package models.requests
 
 import models._
-import pages.{FurtherInformationPage, ReferenceNumberPage}
+import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.libs.json.{Json, OFormat}
 
 final case class AmendClaimRequest(
@@ -29,9 +29,15 @@ object AmendClaimRequest {
 
   def buildValidAmendRequest(userAnswers: UserAnswers): Option[AmendClaimRequest] = {
 
+    def getFurtherInformation(userAnswers: UserAnswers) : Option[String] =
+      userAnswers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Furtherinformation) match {
+        case true => userAnswers.get(FurtherInformationPage)
+        case _ => Some("Files Uploaded")
+    }
+
     def getContent(userAnswers: UserAnswers): Option[AmendContent] = for {
       referenceNumber <- userAnswers.get(ReferenceNumberPage)
-      furtherInformation <- userAnswers.get(FurtherInformationPage)
+      furtherInformation <- getFurtherInformation(userAnswers)
     } yield {
       AmendContent(
         referenceNumber,

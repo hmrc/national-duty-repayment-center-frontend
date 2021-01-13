@@ -59,11 +59,6 @@ class AmendCheckYourAnswersController @Inject()(
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-
-      if(checkYourAnswersHelper.furtherInformation.isEmpty) {
-        Future.fromTry(request.userAnswers.set(FurtherInformationPage, "Files Uploaded"))
-      }
 
       for {
         claimId <- claimService.submitAmendClaim(request.userAnswers)
