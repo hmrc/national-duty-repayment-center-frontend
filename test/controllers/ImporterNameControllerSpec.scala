@@ -99,7 +99,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, importerNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("firstName", "answer"))
 
       val result = route(application, request).value
 
@@ -115,9 +115,9 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, importerNameRoute)
-          .withFormUrlEncodedBody(("value", ""))
+          .withFormUrlEncodedBody(("firstName", ""))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("firstName" -> ""))
 
       val view = application.injector.instanceOf[ImporterNameView]
 
@@ -152,7 +152,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, importerNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("firstName", "answer"))
 
       val result = route(application, request).value
 
