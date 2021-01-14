@@ -107,9 +107,9 @@ object CreateClaimRequest {
       Some(email)
     )
 
-    def getImporterIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsImporterVatRegisteredPage) match {
-      case Some(true) => Some("true")
-      case Some(false) => Some("false")
+    def getIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsVATRegisteredPage) match {
+      case Some(IsVATRegistered.Yes) => Some("true")
+      case Some(IsVATRegistered.No) => Some("false")
       case _ => None
     }
 
@@ -119,7 +119,7 @@ object CreateClaimRequest {
     }
 
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
-      isVATRegistered <- getImporterIsVATRegistered(userAnswers)
+      isVATRegistered <- getIsVATRegistered(userAnswers)
       name <- userAnswers.get(ImporterNamePage)
       address <- getImporterAddress(userAnswers)
     } yield {

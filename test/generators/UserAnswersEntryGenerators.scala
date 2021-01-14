@@ -355,7 +355,7 @@ trait UserAnswersEntryGenerators extends PageGenerators {
     Arbitrary {
       for {
         page <- arbitrary[IsVATRegisteredPage.type]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
+        value <- arbitrary[IsVATRegistered].map(Json.toJson(_))
       } yield (page, value)
     }
 
