@@ -21,15 +21,15 @@ import play.api.data.FormError
 
 class ImporterNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "importerName.error.required"
+  val requiredKey = "importerName.error.required.firstName"
   val lengthKey = "importerName.error.length"
   val maxLength = 512
 
   val form = new ImporterNameFormProvider()()
 
-  ".value" must {
+  ".firstName" must {
 
-    val fieldName = "value"
+    val fieldName = "firstName"
 
     behave like fieldThatBindsValidData(
       form,
