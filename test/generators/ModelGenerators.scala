@@ -168,6 +168,11 @@ trait ModelGenerators {
     Arbitrary {
       self.stringsWithMaxLength(750).map(ClaimDescription.apply)
     }
+
+  implicit lazy val arbitraryIsVATRegistered: Arbitrary[IsVATRegistered] =
+    Arbitrary {
+      Gen.oneOf(IsVATRegistered.values)
+    }
 }
 
   /*self: Generators =>

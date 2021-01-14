@@ -16,16 +16,17 @@
 
 package pages
 
+import models.IsVATRegistered
 import pages.behaviours.PageBehaviours
 
 class IsVATRegisteredPageSpec extends PageBehaviours {
 
   "IsVATRegisteredPage" must {
 
-    beRetrievable[Boolean](IsVATRegisteredPage)
+    beRetrievable[IsVATRegistered](IsVATRegisteredPage)
 
-    beSettable[Boolean](IsVATRegisteredPage)
+    beSettable[IsVATRegistered](IsVATRegisteredPage)
 
-    beRemovable[Boolean](IsVATRegisteredPage)
+    beRemovable[IsVATRegistered](IsVATRegisteredPage)
   }
 }

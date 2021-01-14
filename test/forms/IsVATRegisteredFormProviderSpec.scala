@@ -16,23 +16,24 @@
 
 package forms
 
-import forms.behaviours.BooleanFieldBehaviours
+import forms.behaviours.{BooleanFieldBehaviours, OptionFieldBehaviours}
+import models.IsVATRegistered
 import play.api.data.FormError
 
-class IsVATRegisteredFormProviderSpec extends BooleanFieldBehaviours {
-
-  val requiredKey = "isVATRegistered.error.required"
-  val invalidKey = "error.boolean"
+class IsVATRegisteredFormProviderSpec extends OptionFieldBehaviours {
 
   val form = new IsVATRegisteredFormProvider()()
 
   ".value" must {
 
     val fieldName = "value"
+    val requiredKey = "isVATRegistered.error.required"
+    val invalidKey = "error.invalid"
 
-    behave like booleanField(
+    behave like optionsField[IsVATRegistered](
       form,
       fieldName,
+      validValues  = IsVATRegistered.values,
       invalidError = FormError(fieldName, invalidKey)
     )
 

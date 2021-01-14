@@ -77,6 +77,8 @@ importerEori.error.length = EORI number must be 17 characters or less
 
 isVATRegistered.title = Are you VAT registered?
 isVATRegistered.heading = Are you VAT registered?
+isVATRegistered.01 = Yes
+isVATRegistered.02 = No
 isVATRegistered.checkYourAnswersLabel = Are you VAT registered?
 isVATRegistered.error.required = Select yes if you are VAT registered
 

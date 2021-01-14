@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.IsVATRegisteredFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{IsVATRegistered, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -65,7 +65,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsVATRegisteredPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsVATRegisteredPage, IsVATRegistered.Yes).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(IsVATRegistered.Yes), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -99,7 +99,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, isVatRegisteredRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+          .withFormUrlEncodedBody(("value", IsVATRegistered.options(form).head.value.get))
 
       val result = route(application, request).value
 
