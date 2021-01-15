@@ -15,8 +15,7 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, ClaimantType, UserAnswers}
-@import pages.ClaimantTypePage
+@import models.Mode
 @import views.ViewUtils._
 
 @import play.api.libs.json.JsObject
@@ -28,7 +27,7 @@
     html: views.components.html
 )
 
-@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode, userAnswers: UserAnswers)(implicit request: Request[_], messages: Messages)
+@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerAddressConfirmation.title"))}"),
@@ -39,8 +38,8 @@
 
         @components.error_summary(form.errors)
     <div class="form-group">
-        @html.h1(userAnswers.get(ClaimantTypePage) match {
-        case Some(ClaimantType.Importer) => messages("importerAddressConfirmation.heading")
+        @html.h1(isImporterJourney match {
+        case true => messages("importerAddressConfirmation.heading")
         case _ => messages("agent.importerAddressConfirmation.heading")
         })
 
