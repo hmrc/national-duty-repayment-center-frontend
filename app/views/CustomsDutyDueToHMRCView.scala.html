@@ -24,11 +24,11 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("customsDutyDueToHMRC.title"))}"),
-    backLink = Some("#")
+    backLink = Some(backLink.url)
 ) {
 
     @forms.formWithCSRF(action = CustomsDutyDueToHMRCController.onSubmit(mode), args = 'novalidate -> "novalidate") {

@@ -23,7 +23,7 @@ import models.{ClaimantType, Mode, UserAnswers}
 import navigation.Navigator
 import pages.{ClaimantTypePage, ImporterManualAddressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ImporterManualAddressView
@@ -44,6 +44,10 @@ class ImporterManualAddressController @Inject()(
 
   val form = formProvider()
 
+  private def getBackLink(mode: Mode): Call = {
+    routes.ImporterAddressController.onPageLoad(mode)
+  }
+
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -52,7 +56,7 @@ class ImporterManualAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +64,7 @@ class ImporterManualAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))),
 
         value =>
           for {

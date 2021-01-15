@@ -18,6 +18,8 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import models.{ClaimRepaymentType, NormalMode}
+import pages.ClaimRepaymentTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -43,6 +45,13 @@ class RepaymentAmountSummaryController @Inject()(
         Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)
       ).flatten
 
-      Ok(view(sections))
+      val backLink = request.userAnswers.get(ClaimRepaymentTypePage) match {
+        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
+        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATDueToHMRCController.onPageLoad(NormalMode)
+        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
+        case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
+      }
+
+      Ok(view(sections, backLink))
   }
 }

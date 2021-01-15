@@ -23,7 +23,7 @@ import models.Mode
 import navigation.Navigator
 import pages.EntryDetailsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.EntryDetailsView
@@ -44,6 +44,10 @@ class EntryDetailsController @Inject()(
 
   val form = formProvider()
 
+  private def getBackLink(mode: Mode): Call = {
+    routes.CustomsRegulationTypeController.onPageLoad(mode)
+  }
+
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -52,7 +56,7 @@ class EntryDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +64,7 @@ class EntryDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
 
         value =>
           for {

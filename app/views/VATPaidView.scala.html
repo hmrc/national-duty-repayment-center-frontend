@@ -27,11 +27,11 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, userAnswers: UserAnswers)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, userAnswers: UserAnswers, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("vATPaid.title"))}"),
-    backLink = Some("#")
+    backLink = Some(backLink.url)
 ) {
 
 @forms.formWithCSRF(action = VATPaidController.onSubmit(mode), args = 'novalidate -> "novalidate") {

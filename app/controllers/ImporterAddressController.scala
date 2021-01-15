@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory
 import play.api.data.Form
 import play.api.libs.json.{JsObject, Json}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.http.HeaderCarrier
@@ -60,6 +60,10 @@ class ImporterAddressController @Inject()(
   private val selectionForm = addressSelectionFormProvider()
   val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
+  private def getBackLink(mode: Mode): Call = {
+    routes.ImporterNameController.onPageLoad(mode)
+  }
+
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
@@ -69,7 +73,7 @@ class ImporterAddressController @Inject()(
           postcodeForm.fill(PostcodeLookup(value))
       }
 
-      Future.successful(Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers))))
+      Future.successful(Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), getBackLink(mode))))
   }
 
   def postcodeSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -77,7 +81,7 @@ class ImporterAddressController @Inject()(
     implicit request =>
       postcodeForm.bindFromRequest.fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))),
         lookup => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterPostcodePage, lookup.postcode))
@@ -93,10 +97,10 @@ class ImporterAddressController @Inject()(
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
-        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney))
+        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney, getBackLink(mode)))
 
       case Right(candidates) if candidates.noOfHits == 0 =>
-        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney))
+        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney, getBackLink(mode)))
 
       case Right(candidates) =>
         val selectionItems = sorter.sort(candidates.candidateAddresses)
@@ -137,7 +141,7 @@ class ImporterAddressController @Inject()(
           js =>
             form.bind(js).fold(
               formWithErrors =>
-                Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
+                Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))),
               address =>
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, address))
@@ -161,7 +165,7 @@ class ImporterAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -169,7 +173,7 @@ class ImporterAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))),
 
         value =>
           for {

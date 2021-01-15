@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
 import javax.inject.Inject
-import models.{ArticleType, CustomsRegulationType, Mode}
+import models.{Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.{ArticleTypePage, CustomsRegulationTypePage}
+import pages.{CustomsRegulationTypePage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.CustomsRegulationTypeView
@@ -44,6 +44,13 @@ class CustomsRegulationTypeController @Inject()(
 
   val form = formProvider()
 
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+    userAnswers.get(NumberOfEntriesTypePage) match {
+      case _ if userAnswers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) => routes.HowManyEntriesController.onPageLoad(mode)
+      case _ => routes.NumberOfEntriesTypeController.onPageLoad(mode)
+    }
+  }
+
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -52,7 +59,7 @@ class CustomsRegulationTypeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +67,7 @@ class CustomsRegulationTypeController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {
