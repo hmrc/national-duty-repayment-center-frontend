@@ -68,7 +68,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm, NormalMode)(request, messages).toString
+          view(postcodeForm, NormalMode, emptyUserAnswers)(request, messages).toString
       }
     }
 
@@ -87,7 +87,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode)(request, messages).toString
+          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode, userAnswers)(request, messages).toString
       }
     }
 
@@ -108,7 +108,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedView = application.injector.instanceOf[ImporterAddressView]
 
         contentAsString(result) mustEqual
-          expectedView(boundForm, NormalMode)(request, messages).toString
+          expectedView(boundForm, NormalMode, emptyUserAnswers)(request, messages).toString
       }
     }
 
@@ -166,7 +166,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
           val expectedView = application.injector.instanceOf[ImporterAddressView]
           val boundForm = addressForm.bind(Map.empty[String, String])
           contentAsString(result) mustEqual
-            expectedView(boundForm, NormalMode)(request, messages).toString
+            expectedView(boundForm, NormalMode, emptyUserAnswers)(request, messages).toString
         }
       }
 
@@ -208,7 +208,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
           )
 
           contentAsString(result) mustEqual
-            expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode)(request, messages).toString
+            expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode, emptyUserAnswers)(request, messages).toString
         }
       }
 
