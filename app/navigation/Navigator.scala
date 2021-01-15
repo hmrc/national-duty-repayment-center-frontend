@@ -45,7 +45,7 @@ class Navigator @Inject()() {
     case AgentImporterHasEORIPage => getAgentEORIStatus
     case ImporterEoriPage => getEORIPage
     case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)
-    case ImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
+    case ImporterNamePage => getAddressPage
     case ImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
     case ImporterHasEoriPage => getEORIConfirmation
     case IsVATRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
@@ -68,6 +68,11 @@ class Navigator @Inject()() {
     case AmendCaseUploadAnotherFilePage => getAmendCaseUploadAnotherFile
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
     case _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def getAddressPage(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
+    case Some(ClaimantType.Representative)  => routes.AgentBusinessAddressController.onPageLoad(NormalMode)
+    case _ => routes.ImporterAddressController.onPageLoad(NormalMode)
   }
 
   private def getAmendCaseUploadAnotherFile(answers: UserAnswers): Call = answers.get(AmendCaseUploadAnotherFilePage) match {
@@ -179,8 +184,8 @@ class Navigator @Inject()() {
     case _ => routes.RepaymentAmountSummaryController.onPageLoad
   }
 
-  private def getOtherRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
-    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+  private def getOtherRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
+    case true => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
     case _ => routes.RepaymentAmountSummaryController.onPageLoad
   }
 

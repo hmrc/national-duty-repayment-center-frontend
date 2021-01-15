@@ -256,3 +256,11 @@ GET        /amendCaseUploadAnotherFile                        controllers.AmendC
 POST       /amendCaseUploadAnotherFile                        controllers.AmendCaseUploadAnotherFileController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAmendCaseUploadAnotherFile                  controllers.AmendCaseUploadAnotherFileController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAmendCaseUploadAnotherFile                  controllers.AmendCaseUploadAnotherFileController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agentBusinessAddress                        controllers.AgentBusinessAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /agentBusinessAddress                        controllers.AgentBusinessAddressController.postcodeSubmit(mode: Mode = NormalMode)
+GET        /changeAgentBusinessAddress                  controllers.AgentBusinessAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAgentBusinessAddress                  controllers.AgentBusinessAddressController.onSubmit(mode: Mode = CheckMode)
+
+GET         /enter-agent-business-address               controllers.AgentBusinessAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
+POST        /enter-agent-business-address               controllers.AgentBusinessAddressController.addressSelectSubmit(mode: Mode = NormalMode)

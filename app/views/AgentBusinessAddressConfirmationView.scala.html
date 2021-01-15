@@ -1,0 +1,68 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.routes._
+@import models.Mode
+@import views.ViewUtils._
+
+@import play.api.libs.json.JsObject
+
+@this(
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    govukSelect: GovukSelect,
+    html: views.components.html
+)
+
+@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
+
+@govukLayout(
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentBusinessAddressConfirmation.title"))}"),
+    backLink = Some("#")
+) {
+
+    @forms.formWithCSRF(action = routes.AgentBusinessAddressController.addressSelectSubmit()) {
+
+        @components.error_summary(form.errors)
+    <div class="form-group">
+        @html.h1(messages("agentBusinessAddressConfirmation.heading"))
+
+        @html.h2("agentBusinessAddress.postCode", classes = "govuk-heading-m pr-bottom-margin")
+
+        <p class="inline">
+            <strong>@search.postcode.replaceAll(" ", "")</strong>&nbsp;
+            @html.a("agentBusinessAddress", messages("agentBusinessAddressConfirmation.link1"))
+        </p>
+        <h2 class="govuk-heading-m pt-0 pr-bottom-margin">
+            <label for="field-id">@messages("agentBusinessAddressConfirmation.address")</label>
+        </h2>
+
+        <div class="form-control-wrapper">
+            @govukSelect(Select(
+            id = "field-id",
+            name = "field-name",
+            items = candidateAddresses
+            ))
+        </div>
+    </div>
+
+    <input type="hidden" name="address-postcode" value="@search.postcode" />
+    <p>@html.a("importerManualAddress", messages("agentBusinessAddressConfirmation.link2"))</p>
+
+    @html.button("site.continue")
+
+    }
+}
