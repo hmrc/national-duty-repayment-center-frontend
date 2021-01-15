@@ -259,7 +259,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.value),
+        HtmlFormat.escape(x.firstName.concat(x.lastName)),
         Some(routes.AgentNameImporterController.onPageLoad(CheckMode).url)
       )
   }
@@ -295,7 +295,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.value),
+        HtmlFormat.escape(x.firstName.concat(x.lastName)),
         Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
       )
   }

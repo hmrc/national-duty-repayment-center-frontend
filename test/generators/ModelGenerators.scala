@@ -144,7 +144,10 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryUserName: Arbitrary[UserName] =
     Arbitrary {
-      self.stringsWithMaxLength(512).map(UserName.apply)
+      for {
+        firstName <- self.stringsWithMaxLength(512)
+        lastName <- self.stringsWithMaxLength(512)
+      } yield UserName(firstName, lastName)
     }
 
   implicit val arbitraryAddress: Arbitrary[Address] = Arbitrary {

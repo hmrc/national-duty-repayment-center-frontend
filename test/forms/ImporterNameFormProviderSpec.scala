@@ -22,6 +22,7 @@ import play.api.data.FormError
 class ImporterNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "importerName.error.required.firstName"
+  val lastNameKey = "importerName.error.required.lastName"
   val lengthKey = "importerName.error.length"
   val maxLength = 512
 
@@ -48,6 +49,30 @@ class ImporterNameFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+  }
+
+  ".lastName" must {
+
+    val lastName = "lastName"
+
+    behave like fieldThatBindsValidData(
+      form,
+      lastName,
+      stringsWithMaxLength(maxLength)
+    )
+
+    behave like fieldWithMaxLength(
+      form,
+      lastName,
+      maxLength = maxLength,
+      lengthError = FormError(lastName, lengthKey, Seq(maxLength))
+    )
+
+    behave like mandatoryField(
+      form,
+      lastName,
+      requiredError = FormError(lastName, lastNameKey)
     )
   }
 }

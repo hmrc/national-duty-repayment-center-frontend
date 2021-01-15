@@ -48,17 +48,18 @@
                 attributes = Map("autocomplete" -> "off")
             )
 
+            @forms.inputText(
+                form = form,
+                id = "lastName",
+                name = "lastName",
+                inputType = "text",
+                label = "importerName.lastName",
+                isPageHeading = false,
+                isInFieldset = false,
+                attributes = Map("autocomplete" -> "off")
+            )
         }
-        @forms.inputText(
-            form = form,
-            id = "lastName",
-            name = "lastName",
-            inputType = "text",
-            label = "importerName.lastName",
-            isPageHeading = false,
-            isInFieldset = false,
-            attributes = Map("autocomplete" -> "off")
-        )
+
 
         @html.button("site.continue")
     }

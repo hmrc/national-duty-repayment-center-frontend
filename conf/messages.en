@@ -217,7 +217,9 @@ importerName.heading = What is your name
 importerName.checkYourAnswersLabel = Enter your name
 importerName.firstName = First Name
 importerName.lastName = Last Name
-importerName.error.required = Enter your name
+importerName.error.required.firstName = Enter your first name
+importerName.error.required.lastName = Enter your last name
+
 importerName.error.length = Your name must be 512 characters or less
 
 phoneNumber.title = Enter your phone number
