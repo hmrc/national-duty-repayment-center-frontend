@@ -52,6 +52,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
             .set(WhomToPayPage, WhomToPay.Importer).success.value
 
         navigator.nextPage(WhomToPayPage, NormalMode, answers)
@@ -217,6 +218,16 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to AmendCheckYourAnswers page after FurtherInformation page " in {
         navigator.nextPage(FurtherInformationPage, NormalMode, emptyUserAnswers)
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad)
+      }
+
+      "go to BankDetails page after ContactByEmail page when the claimant is importer and has selected multiple entries" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+            .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+
+        navigator.nextPage(ContactByEmailPage, NormalMode, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
     }
 
