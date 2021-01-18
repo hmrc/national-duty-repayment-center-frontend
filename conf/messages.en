@@ -93,7 +93,7 @@ customsRegulationType.heading = What was the acceptance date for all entries?
 customsRegulationType.01 = On or before 31 December 2020
 customsRegulationType.02 = From 1 January 2021
 customsRegulationType.checkYourAnswersLabel = What was the acceptance date for all entries?
-customsRegulationType.error.required = Select the entry acceptance date for all entries
+customsRegulationType.error.required = Select if the entry acceptance date was from 1 January 2021, or on or before 31 December 2020
 
 articleType.title = Why are you applying for this repayment?
 articleType.heading = Why are you applying for this repayment?
@@ -114,8 +114,8 @@ numberOfEntriesType.error.required = Select how many entries do you want to subm
 howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
-howManyEntries.error.required = Enter how many entries are you claiming for?
-howManyEntries.error.length = HowManyEntries must be 6 characters or less
+howManyEntries.error.required = Enter the number of entries you are claiming for
+howManyEntries.error.length = Number of entries must be between 2 and 999,999
 
 entryDetails.title = Entry details
 entryDetails.heading = Entry details
