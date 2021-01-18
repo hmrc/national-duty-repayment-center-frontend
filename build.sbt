@@ -1,3 +1,4 @@
+import JavaScriptBuild.{javaScriptDirectory, javaScriptSettings}
 import play.sbt.routes.RoutesKeys
 import sbt.Def
 import scoverage.ScoverageKeys
@@ -31,6 +32,8 @@ lazy val root = (project in file("."))
       "controllers.routes._"
     ),
     PlayKeys.playDefaultPort := 9000,
+    PlayKeys.playRunHooks += Webpack(javaScriptDirectory.value),
+    javaScriptSettings,
     ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;.*repositories.*;" +
       ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;" +
       ".*ControllerConfiguration;.*LanguageSwitchController",
@@ -60,7 +63,7 @@ lazy val root = (project in file("."))
           Seq(
             "lib/govuk-frontend/govuk/all.js",
             "lib/hmrc-frontend/hmrc/all.js",
-            "javascripts/index.js"
+            "build/application.min.js"
           )
         )
     ),

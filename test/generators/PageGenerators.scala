@@ -42,9 +42,6 @@ trait PageGenerators {
   implicit lazy val arbitraryIndirectRepresentativePage: Arbitrary[IndirectRepresentativePage.type] =
     Arbitrary(IndirectRepresentativePage)
 
-  implicit lazy val arbitraryAdditionalFileUploadPage: Arbitrary[AdditionalFileUploadPage.type] =
-    Arbitrary(AdditionalFileUploadPage)
-
   implicit lazy val arbitraryBankDetailsPage: Arbitrary[BankDetailsPage.type] =
     Arbitrary(BankDetailsPage)
 

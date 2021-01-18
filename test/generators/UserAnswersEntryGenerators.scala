@@ -82,15 +82,6 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryAdditionalFileUploadUserAnswersEntry: Arbitrary[(AdditionalFileUploadPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page <- arbitrary[AdditionalFileUploadPage.type]
-        value <- arbitrary[AdditionalFileUpload].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-
   implicit lazy val arbitraryBankDetailsUserAnswersEntry: Arbitrary[(BankDetailsPage.type, JsValue)] =
     Arbitrary {
       for {
