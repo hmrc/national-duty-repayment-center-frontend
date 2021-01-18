@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package pages
+package models.requests
 
-import models.AdditionalFileUpload
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Format, Json}
 
-case object AdditionalFileUploadPage extends QuestionPage[AdditionalFileUpload] {
+case class UploadRequest(href: String, fields: Map[String, String])
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "additionalFileUpload"
+object UploadRequest {
+  implicit val formats: Format[UploadRequest] =
+    Json.format[UploadRequest]
 }
