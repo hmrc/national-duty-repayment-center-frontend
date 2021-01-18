@@ -2,6 +2,8 @@ checkYourAnswers.title = Check your answers before sending your application
 checkYourAnswers.heading = Check Your Answers
 checkYourAnswers.guidance = Guidance for check your answers
 
+site.switchLanguage = Newid yr iaith ir Gymraeg
+
 date.day = Day
 date.month = Month
 date.year = Year

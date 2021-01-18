@@ -24,19 +24,20 @@
         govukPhaseBanner: GovukPhaseBanner,
         govukBackLink: GovukBackLink,
         siteHeader: components.siteHeader,
-        link: components.legacy.link,
+        link: components.link,
         hmrcTimeoutDialog : HmrcTimeoutDialog,
         reportAProblemLink: ReportAProblemLink,
         appConfig: config.FrontendAppConfig,
+        languageSelection: components.languageSelection,
         hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet
 )
 
 @(
-bodyClasses: Option[String] = None,
-pageTitle: Option[String] = None,
-timeout: Boolean = true,
-js: Option[Html] = None,
-backLink: Option[String] =None,
+    bodyClasses: Option[String] = None,
+    pageTitle: Option[String] = None,
+    timeout: Boolean = true,
+    js: Option[Html] = None,
+    backLink: Option[String] =None,
 refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @head = {
@@ -63,9 +64,15 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @beforeContentBlock = {
-  @if(backLink.isDefined) {
-    @govukBackLink(BackLink(href = backLink.get, content = Text(messages("site.back")), attributes = Map("id" -> "back-link")))
-  }
+
+    @languageSelection(
+        appConfig.languageMap,
+        appConfig.routeToSwitchLanguage
+    )
+
+    @if(backLink.isDefined) {
+        @govukBackLink(BackLink(href = backLink.get, content = Text(messages("site.back")), attributes = Map("id" -> "back-link")))
+    }
 }
 
 @content = {
