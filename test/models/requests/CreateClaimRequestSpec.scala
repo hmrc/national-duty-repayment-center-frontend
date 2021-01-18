@@ -55,7 +55,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       )
 
       val userDetails = UserDetails(
-        isVATRegistered = "true",
+        IsVATRegistered = "true",
         EORI = EORI("GB123456789123456"),
         Name = UserName( "Joe","Bloggs"),
         Address = address,
@@ -114,7 +114,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "DeclarantRefNumber" -> "NA"
           ),
           "AgentDetails" -> Json.obj(
-            "isVATRegistered" -> "true",
+            "IsVATRegistered" -> "true",
             "EORI" -> "GB123456789123456",
             "Name" -> Json.obj(
               "firstName" -> "Joe",
@@ -132,7 +132,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "EmailAddress" -> "example@example.com"
           ),
           "ImporterDetails" -> Json.obj(
-            "isVATRegistered" -> "true",
+            "IsVATRegistered" -> "true",
             "EORI" -> "GB123456789123456",
             "Name" -> Json.obj(
               "firstName" -> "Joe",
