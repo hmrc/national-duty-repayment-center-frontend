@@ -142,7 +142,7 @@ class AgentImporterAddressController @Inject()(
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, address))
                   _              <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(routes.ImporterHasEoriController.onPageLoad(mode))
+                } yield Redirect(routes.PhoneNumberController.onPageLoad(mode))
             )
         )
       }.getOrElse(Future.successful(Redirect(routes.AgentImporterAddressController.enteredAddressPageLoad())))

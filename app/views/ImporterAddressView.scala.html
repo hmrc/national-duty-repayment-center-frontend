@@ -24,7 +24,7 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerAddress.title"))}"),
@@ -36,7 +36,10 @@
             @components.error_summary(form.errors)
 
             @forms.fieldset(
-                legend = messages("importerAddress.heading")
+                legend = isImporterJourney match {
+                            case true => messages("importerAddress.heading")
+                            case _ => messages("agent.importerAddress.heading")
+                        }
             ) {
 
                 @forms.inputText(

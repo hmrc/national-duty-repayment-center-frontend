@@ -20,16 +20,16 @@ import connectors.AddressLookupConnector
 import controllers.actions._
 import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
 import javax.inject.Inject
-import models.{Address, Mode, PostcodeLookup}
+import models.{Address, ClaimantType, Mode, PostcodeLookup, UserAnswers}
 import navigation.Navigator
-import pages.{ImporterAddressPage, ImporterPostcodePage}
+import pages.{ClaimantTypePage, ImporterAddressPage, ImporterPostcodePage}
 import org.slf4j.LoggerFactory
 import play.api.data.Form
 import play.api.libs.json.{JsObject, Json}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.Aliases.{SelectItem}
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddressSorter
@@ -69,7 +69,7 @@ class ImporterAddressController @Inject()(
           postcodeForm.fill(PostcodeLookup(value))
       }
 
-      Future.successful(Ok(view(preparedForm, mode)))
+      Future.successful(Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers))))
   }
 
   def postcodeSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -77,26 +77,26 @@ class ImporterAddressController @Inject()(
     implicit request =>
       postcodeForm.bindFromRequest.fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
         lookup => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterPostcodePage, lookup.postcode))
             _              <- sessionRepository.set(updatedAnswers)
-            lookupResult   <- doPostcodeLookup(lookup, mode, selectionForm)
+            lookupResult   <- doPostcodeLookup(lookup, mode, selectionForm, isImporterJourney(request.userAnswers))
           } yield lookupResult
         }
       )
   }
 
-  private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject])(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
+  private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject], isImporterJourney: Boolean)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
 
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
-        BadRequest(view(buildLookupFailureError(lookup), mode))
+        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney))
 
       case Right(candidates) if candidates.noOfHits == 0 =>
-        BadRequest(view(buildLookupFailureError(lookup), mode))
+        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney))
 
       case Right(candidates) =>
         val selectionItems = sorter.sort(candidates.candidateAddresses)
@@ -111,9 +111,9 @@ class ImporterAddressController @Inject()(
           )
 
         if (form.hasErrors) {
-          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode))
+          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney))
         } else {
-          Ok(addressConfirmationView(form, lookup, selectionItems, mode))
+          Ok(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney))
         }
     }
   }
@@ -132,17 +132,22 @@ class ImporterAddressController @Inject()(
       extractSearchTerms(request.body.asFormUrlEncoded).map { searchTerms =>
         selectionForm.bindFromRequest().fold(
           formWithErrors =>
-            doPostcodeLookup(searchTerms, mode, formWithErrors),
+            doPostcodeLookup(searchTerms, mode, formWithErrors, isImporterJourney(request.userAnswers)),
 
           js =>
             form.bind(js).fold(
               formWithErrors =>
-                Future.successful(BadRequest(view(formWithErrors, mode))),
+                Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
               address =>
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, address))
                   _              <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(routes.PhoneNumberController.onPageLoad(mode))
+                } yield {
+                  request.userAnswers.get(ClaimantTypePage) match {
+                    case Some(ClaimantType.Importer) => Redirect(routes.PhoneNumberController.onPageLoad(mode))
+                    case _ => Redirect(routes.ImporterHasEoriController.onPageLoad(mode))
+                  }
+                }
             )
         )
       }.getOrElse(Future.successful(Redirect(routes.ImporterAddressController.enteredAddressPageLoad())))
@@ -156,7 +161,7 @@ class ImporterAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -164,7 +169,7 @@ class ImporterAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
 
         value =>
           for {
@@ -172,6 +177,13 @@ class ImporterAddressController @Inject()(
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ImporterAddressPage, mode, updatedAnswers))
       )
+  }
+
+  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
+    userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => true
+      case _ => false
+    }
   }
 
 }

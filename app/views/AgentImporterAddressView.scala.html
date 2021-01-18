@@ -38,6 +38,10 @@
     @forms.fieldset(
         legend = messages("agentImporterAddress.heading")
     ) {
+            @html.p {
+            @messages("agentImporterAddress.hint")
+            }
+
            @forms.inputText(
                 form = form,
                 id = "postCode",
