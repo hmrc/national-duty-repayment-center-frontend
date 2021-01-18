@@ -95,6 +95,7 @@ class Navigator @Inject()() {
   private def getRepaymentType(answers: UserAnswers): Call =
     (answers.get(NumberOfEntriesTypePage), answers.get(ClaimantTypePage)) match {
       case (Some(NumberOfEntriesType.Multiple),Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
+      case (Some(NumberOfEntriesType.Multiple),Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
       case  _  => routes.RepaymentTypeController.onPageLoad(NormalMode)
     }
 
