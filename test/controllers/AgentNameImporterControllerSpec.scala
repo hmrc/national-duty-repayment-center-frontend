@@ -39,6 +39,15 @@ class AgentNameImporterControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new AgentNameImporterFormProvider()
+  private val userAnswersDummy = UserAnswers(
+    userAnswersId,
+    Json.obj(
+      AgentNameImporterPage.toString -> Json.obj(
+        "firstName"   -> "Joe",
+        "lastName"      -> "Bloggs"
+      )
+    ))
+
   val form = formProvider()
 
   lazy val agentNameImporterRoute = routes.AgentNameImporterController.onPageLoad(NormalMode).url
@@ -65,9 +74,7 @@ class AgentNameImporterControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentNameImporterPage, UserName("answer")).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersDummy)).build()
 
       val request = FakeRequest(GET, agentNameImporterRoute)
 
@@ -78,7 +85,7 @@ class AgentNameImporterControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UserName("answer")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(UserName("Joe","Bloggs" )), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -99,7 +106,7 @@ class AgentNameImporterControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, agentNameImporterRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("firstName", "Joe"),("lastName", "Bloggs"))
 
       val result = route(application, request).value
 

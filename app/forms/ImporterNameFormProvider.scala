@@ -20,12 +20,22 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import models.UserName
 import play.api.data.Form
+import play.api.data.Forms._
 
 class ImporterNameFormProvider @Inject() extends Mappings {
 
   def apply(): Form[UserName] =
     Form(
-      "value" -> text("importerName.error.required")
-        .verifying(maxLength(512, "importerName.error.length")).transform[UserName](UserName.apply, _.value)
-    )
+        mapping (
+        "firstName" -> text("importerName.error.required.firstName")
+          .verifying(firstError(
+            maxLength(512,
+              "importerName.error.length")
+          )),
+        "lastName" -> text("importerName.error.required.lastName")
+          .verifying(firstError(
+            maxLength(512,
+              "importerName.error.length")
+          ))
+        )(UserName.apply)(UserName.unapply))
 }

@@ -110,7 +110,7 @@ object CreateClaimRequest {
     def getIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsVATRegisteredPage) match {
       case Some(IsVATRegistered.Yes) => Some("true")
       case Some(IsVATRegistered.No) => Some("false")
-      case _ => None
+      case _ => Some("false")
     }
 
     def getImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(ImporterAddressPage) match {
