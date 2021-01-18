@@ -40,6 +40,8 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new CustomsDutyPaidFormProvider()
   val form = formProvider()
 
+  private val validAnswer = BigDecimal(0)
+
   lazy val CustomsDutyPaidRoute = routes.CustomsDutyPaidController.onPageLoad(NormalMode).url
 
   "customsDutyPaid Controller" must {
@@ -64,7 +66,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CustomsDutyPaidPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(CustomsDutyPaidPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -77,7 +79,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -98,7 +100,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, CustomsDutyPaidRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", validAnswer.toString))
 
       val result = route(application, request).value
 

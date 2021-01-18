@@ -68,7 +68,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   def getSections(): Seq[AnswerSection] = {
 
     val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
-    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble
+    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).get.toDouble
     val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
     val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
     val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
@@ -90,7 +90,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   }
 
   def getTotalAmount(): Double = {
-    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble
+    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).get.toDouble
     val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
     val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
     val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble

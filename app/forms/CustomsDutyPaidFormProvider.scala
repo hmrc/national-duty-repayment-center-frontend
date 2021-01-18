@@ -16,16 +16,22 @@
 
 package forms
 
+import forms.Validation.monetaryPattern
 import javax.inject.Inject
-
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class CustomsDutyPaidFormProvider @Inject() extends Mappings {
+class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
 
-  def apply(): Form[String] =
+  def apply(): Form[BigDecimal] = {
+
     Form(
-      "value" -> text("customsDutyPaid.error.required")
-        .verifying(maxLength(14, "customsDutyPaid.error.length"))
+      "value" -> decimal("customsDutyPaid.error.required",
+        "customsDutyPaid.error.notANumber")
+        .verifying(regexp(monetaryPattern, "customsDutyPaid.error.decimalPlaces"))
+        .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
+        .verifying(minimumValue(BigDecimal(0.00), "customsDutyPaid.error.minimum"))
+        .verifying(maximumValue[BigDecimal](99999999999.99, "customsDutyPaid.error.length"))
     )
+}
 }

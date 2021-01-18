@@ -23,10 +23,10 @@ class customsDutyPaidPageSpec extends PageBehaviours {
 
   "customsDutyPaidPage" must {
 
-    beRetrievable[String](CustomsDutyPaidPage)
+    beRetrievable[BigDecimal](CustomsDutyPaidPage)
 
-    beSettable[String](CustomsDutyPaidPage)
+    beSettable[BigDecimal](CustomsDutyPaidPage)
 
-    beRemovable[String](CustomsDutyPaidPage)
+    beRemovable[BigDecimal](CustomsDutyPaidPage)
   }
 }
