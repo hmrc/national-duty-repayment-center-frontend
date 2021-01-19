@@ -25,8 +25,8 @@ sealed trait RepaymentType
 
 object RepaymentType extends Enumerable.Implicits {
 
-  case object BACS extends WithName("01") with RepaymentType
-  case object CMA extends WithName("02") with RepaymentType
+  case object CMA extends WithName("01") with RepaymentType
+  case object BACS extends WithName("02") with RepaymentType
 
   val values: Seq[RepaymentType] = Seq(
     BACS, CMA

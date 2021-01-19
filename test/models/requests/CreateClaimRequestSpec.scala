@@ -110,7 +110,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "DateReceived" -> "20200805",
             "ClaimDate" -> "20200805",
             "PayeeIndicator" -> "01",
-            "PaymentMethod" -> "01",
+            "PaymentMethod" -> "02",
             "DeclarantRefNumber" -> "NA"
           ),
           "AgentDetails" -> Json.obj(
