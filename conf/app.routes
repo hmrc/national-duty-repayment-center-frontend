@@ -37,10 +37,10 @@ POST       /isVatRegistered                        controllers.IsVATRegisteredCo
 GET        /changeIsVatRegistered                  controllers.IsVATRegisteredController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIsVatRegistered                  controllers.IsVATRegisteredController.onSubmit(mode: Mode = CheckMode)
 
-GET        /acceptance-date-all-entries                        controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
-POST       /acceptance-date-all-entries                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
-GET        /change-acceptance-date-all-entries                  controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-acceptance-date-all-entries                  controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = CheckMode)
+GET        /customsRegulationType                              controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /customsRegulationType                              controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /changecustomsRegulationType                        controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /changecustomsRegulationType                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = CheckMode)
 
 GET        /articleType                        controllers.ArticleTypeController.onPageLoad(mode: Mode = NormalMode)
 POST       /articleType                        controllers.ArticleTypeController.onSubmit(mode: Mode = NormalMode)
@@ -52,10 +52,10 @@ POST       /numberOfEntriesType                        controllers.NumberOfEntri
 GET        /changeNumberOfEntriesType                  controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeNumberOfEntriesType                  controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /number-of-entries                        controllers.HowManyEntriesController.onPageLoad(mode: Mode = NormalMode)
-POST       /number-of-entries                        controllers.HowManyEntriesController.onSubmit(mode: Mode = NormalMode)
-GET        /change-number-of-entries                controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-number-of-entries                controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)
+GET        /howManyEntries                            controllers.HowManyEntriesController.onPageLoad(mode: Mode = NormalMode)
+POST       /howManyEntries                            controllers.HowManyEntriesController.onSubmit(mode: Mode = NormalMode)
+GET        /changehowManyEntries                      controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
+POST       /changehowManyEntries                      controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)
 
 GET        /entryDetails                        controllers.EntryDetailsController.onPageLoad(mode: Mode = NormalMode)
 POST       /entryDetails                        controllers.EntryDetailsController.onSubmit(mode: Mode = NormalMode)
@@ -223,8 +223,8 @@ POST       /changeIndirectRepresentative                  controllers.IndirectRe
 
 GET         /proofOfAuthority                       controllers.ProofOfAuthorityController.onPageLoad()
 
-GET        /upload-multiple-entries                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
-POST       /upload-multiple-entries                        controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
+GET        /bulkFileUpload                           controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
+POST       /bulkFileUpload                           controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
 
 GET        /signout                                controllers.SignOutController.signOut
 

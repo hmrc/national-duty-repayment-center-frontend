@@ -40,7 +40,7 @@ class HowManyEntriesFormProviderSpec extends StringFieldBehaviours {
     behave like fieldWithMaxLength(
       form,
       fieldName,
-      maxLength = 999999,
+      maxLength = maxLength,
       lengthError = FormError(fieldName, lengthKey, Seq(Validation.numberOfEntries))
     )
 
@@ -49,5 +49,18 @@ class HowManyEntriesFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    "fail to bind entries with characters" in {
+      val result = form.bind(Map(fieldName -> "abcjf")).apply(fieldName)
+      val expectedError = FormError(fieldName, lengthKey, Seq(Validation.numberOfEntries))
+      result.errors shouldEqual Seq(expectedError)
+    }
+
+    "fail to bind a value" in {
+      val result = form.bind(Map(fieldName -> "")).apply(fieldName)
+      val expectedError = error(fieldName, requiredKey)
+
+      result.errors shouldEqual(expectedError)
+    }
   }
 }
