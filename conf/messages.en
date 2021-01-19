@@ -157,7 +157,7 @@ claimReasonType.09 = Value
 claimReasonType.10 = Other
 claimReasonType.or = or
 claimReasonType.checkYourAnswersLabel = What does your application relate to?
-claimReasonType.error.required = Select what does your application relates to
+claimReasonType.error.required = Select what your application relates to
 
 whatAreTheGoods.title = Tell us about the goods
 whatAreTheGoods.heading = Tell us about the goods
@@ -169,8 +169,8 @@ whatAreTheGoods.hint = Explain in detail what the goods are.
 reasonForOverpayment.title = Reason for overpayment
 reasonForOverpayment.heading = Reason for overpayment
 reasonForOverpayment.checkYourAnswersLabel = Reason for overpayment
-reasonForOverpayment.error.required = Enter a reason for overpayment
-reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or less
+reasonForOverpayment.error.required = Enter the reason for the overpayment
+reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or fewer
 reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
 
 claimRepaymentType.title = What was overpaid?
@@ -180,7 +180,7 @@ claimRepaymentType.01 = Customs Duty
 claimRepaymentType.02 = VAT
 claimRepaymentType.03 = Another type of duty
 claimRepaymentType.checkYourAnswersLabel = What was overpaid?
-claimRepaymentType.error.required = Select what was overpaid
+claimRepaymentType.error.required = Select what you want to reclaim
 
 evidenceSupportingDocs.title = Supporting documents
 evidenceSupportingDocs.heading = Supporting documents
@@ -290,8 +290,10 @@ customsDutyPaid.title = How much Customs Duty was paid?
 customsDutyPaid.heading = How much Customs Duty was paid?
 customsDutyPaid.checkYourAnswersLabel = How much Customs Duty was paid?
 customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of overpayment for all entries.
-customsDutyPaid.error.required = Enter How much Customs Duty you paid
-customsDutyPaid.error.length = Customs Duty paid must be 14 characters or less
+customsDutyPaid.error.required = Enter the amount of Customs Duty that was paid
+customsDutyPaid.error.notANumber = Amount of Customs Duty that was paid must be a number
+customsDutyPaid.error.length = Amount of Customs Duty paid must be 99999999999.99 or less
+customsDutyPaid.error.decimalPlaces = Amount of Customs Duty that should have been paid must include pence, like 123.45
 
 customsDutyDueToHMRC.title = How much Customs Duty should have been paid to HMRC?
 customsDutyDueToHMRC.heading = How much Customs Duty should have been paid to HMRC?

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.{ClaimRepaymentType, NormalMode, UserAnswers}
-import pages.ClaimRepaymentTypePage
+import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
@@ -52,7 +52,8 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
+            success.value.set(CustomsDutyPaidPage, "0").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
