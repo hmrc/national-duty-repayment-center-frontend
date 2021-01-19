@@ -53,7 +53,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
     "return OK and the correct view for a GET" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
-            success.value.set(CustomsDutyPaidPage, BigDecimal(0)).success.value
+            success.value.set(CustomsDutyPaidPage, "0").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

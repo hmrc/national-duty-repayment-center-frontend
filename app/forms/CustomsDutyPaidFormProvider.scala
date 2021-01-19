@@ -23,15 +23,18 @@ import play.api.data.Form
 
 class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
 
-  def apply(): Form[BigDecimal] = {
+  def apply(): Form[String] = {
 
     Form(
       "value" -> decimal("customsDutyPaid.error.required",
         "customsDutyPaid.error.notANumber")
         .verifying(regexp(monetaryPattern, "customsDutyPaid.error.decimalPlaces"))
         .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
-        .verifying(minimumValue(BigDecimal(0.00), "customsDutyPaid.error.minimum"))
         .verifying(maximumValue[BigDecimal](99999999999.99, "customsDutyPaid.error.length"))
+        .transform[String](
+          d => d.toString,
+          i => i.toDouble
+        )
     )
 }
 }

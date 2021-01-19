@@ -284,7 +284,6 @@ customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of 
 customsDutyPaid.error.required = Enter the amount of Customs Duty that was paid
 customsDutyPaid.error.notANumber = Amount of Customs Duty that was paid must be a number
 customsDutyPaid.error.length = Amount of Customs Duty paid must be 99999999999.99 or less
-customsDutyPaid.error.minimum = Amount of Customs Duty paid must be £0 or more
 customsDutyPaid.error.decimalPlaces = Amount of Customs Duty that should have been paid must include pence, like 123.45
 
 customsDutyDueToHMRC.title = How much Customs Duty should have been paid to HMRC?

@@ -29,7 +29,7 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours {
 
   val validDataGenerator = intsInRangeWithCommas(minimum.toInt, maximum.toInt)
 
-  val form: Form[BigDecimal] = new CustomsDutyPaidFormProvider()()
+  val form: Form[String] = new CustomsDutyPaidFormProvider()()
 
   ".value" must {
 
@@ -46,13 +46,6 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours {
       fieldName,
       nonNumericError  = FormError(fieldName, "customsDutyPaid.error.notANumber")
     )
-
-    "not bind decimal below 0.00" in {
-      val result = form.bind(Map(fieldName -> "-0.01"))(fieldName)
-      result.errors shouldEqual Seq(
-        FormError(fieldName, "customsDutyPaid.error.minimum", Seq(minimum))
-      )
-    }
 
     "not bind decimals with 3 decimal place" in {
       val result = form.bind(Map(fieldName -> "1.111"))(fieldName)

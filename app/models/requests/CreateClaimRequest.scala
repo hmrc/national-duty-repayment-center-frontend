@@ -159,7 +159,7 @@ object CreateClaimRequest {
       val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
 
       val getCustomsDutyPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
-        case true => Some(userAnswers.get(CustomsDutyPaidPage).toString)
+        case true => userAnswers.get(CustomsDutyPaidPage)
         case _ => Some("0.0")
       }
 
