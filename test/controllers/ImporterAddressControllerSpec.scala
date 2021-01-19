@@ -202,7 +202,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
           val expectedSelectItems = Seq(
             SelectItem(
               text = "Line1  TOWN ",
-              value = Some("""{"AddressLine1":"Line1","City":"TOWN","CountryCode":"GB","postCode":"AA1 1AA"}"""))
+              value = Some("""{"AddressLine1":"Line1","City":"TOWN","CountryCode":"GB","PostalCode":"AA1 1AA"}"""))
           )
 
           contentAsString(result) mustEqual
@@ -305,7 +305,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedSelectItems = Seq(
           SelectItem(
             text = "Line1  TOWN ",
-            value = Some("""{"AddressLine1":"Line1","City":"TOWN","CountryCode":"GB","postCode":"AA1 1AA"}"""))
+            value = Some("""{"AddressLine1":"Line1","City":"TOWN","CountryCode":"GB","PostalCode":"AA1 1AA"}"""))
         )
 
         contentAsString(result) mustEqual
@@ -347,7 +347,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedSelectItems = Seq(
           SelectItem(
             text = "Line1  TOWN ",
-            value = Some("""{"AddressLine1":"Line1","City":"TOWN","CountryCode":"GB","postCode":"AA1 1AA"}"""))
+            value = Some("""{"AddressLine1":"Line1","City":"TOWN","CountryCode":"GB","PostalCode":"AA1 1AA"}"""))
         )
 
         contentAsString(result) mustEqual

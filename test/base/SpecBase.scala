@@ -82,7 +82,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     City = "city",
     Region = Some("region"),
     CountryCode = "GB",
-    postCode = Some("ZZ111ZZ")
+    PostalCode = Some("ZZ111ZZ")
   )
 
   val userDetails = UserDetails(
@@ -167,7 +167,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
           "City" -> "city",
           "Region" -> "region",
           "CountryCode" -> "GB",
-          "postCode" -> "ZZ111ZZ"
+          "PostalCode" -> "ZZ111ZZ"
         )
       ),
       "ImporterDetails" -> Json.obj(
@@ -180,7 +180,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
           "City" -> "city",
           "Region" -> "region",
           "CountryCode" -> "GB",
-          "postCode" -> "ZZ111ZZ"
+          "PostalCode" -> "ZZ111ZZ"
         )
       ),
       "BankDetails" -> Json.obj(

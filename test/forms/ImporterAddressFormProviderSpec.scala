@@ -189,9 +189,9 @@ class ImporterAddressFormProviderSpec extends StringFieldBehaviours {
     )
   }
 
-  ".postCode" must {
+  ".PostalCode" must {
 
-    val fieldName = "postCode"
+    val fieldName = "PostalCode"
 
     behave like fieldThatBindsValidData(
       form,
