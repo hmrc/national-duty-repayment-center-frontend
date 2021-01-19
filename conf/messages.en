@@ -247,8 +247,8 @@ whomToPay.error.required = Select who is to be repaid
 
 repaymentType.title = Select repayment method
 repaymentType.heading = Select repayment method
-repaymentType.01 = BACS
-repaymentType.02 = Current month amendment (CMA)
+repaymentType.01 = Current month amendment (CMA)
+repaymentType.02 = BACS
 repaymentType.checkYourAnswersLabel = Select repayment method
 repaymentType.error.required = Select repayment method
 
