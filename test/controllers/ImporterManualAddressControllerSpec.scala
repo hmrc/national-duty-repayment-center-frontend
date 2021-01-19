@@ -25,7 +25,6 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ImporterManualAddressPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -105,8 +104,8 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
             ("City", "postal City"),
             ("Region", "region"),
             ("CountryCode", "GB"),
-            ("postCode", "AA1 1AA")
-            )
+            ("PostalCode", "AA1 1AA")
+          )
 
       val result = route(application, request).value
 

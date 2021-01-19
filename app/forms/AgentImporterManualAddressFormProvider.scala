@@ -61,11 +61,11 @@ class AgentImporterManualAddressFormProvider @Inject() extends Mappings {
             maxLength(maxCCLength, "agentImporterManualAddress.countryCode.error.length"),
             regexp(Validation.safeInputPattern,"agentImporterManualAddress.countryCode.error.invalid")
           )),
-      "postCode" ->
+      "PostalCode" ->
         optional(Forms.text
           .verifying(firstError(
             regexp(Validation.postcodeRegex, "agentImporterManualAddress.postalCode.error.invalid")
           )))
-    )(Address.apply)(agentImporterManualAddress => Some((agentImporterManualAddress.AddressLine1, agentImporterManualAddress.AddressLine2, agentImporterManualAddress.City, agentImporterManualAddress.Region, agentImporterManualAddress.CountryCode, agentImporterManualAddress.postCode)))
+    )(Address.apply)(agentImporterManualAddress => Some((agentImporterManualAddress.AddressLine1, agentImporterManualAddress.AddressLine2, agentImporterManualAddress.City, agentImporterManualAddress.Region, agentImporterManualAddress.CountryCode, agentImporterManualAddress.PostalCode)))
   )
 }

@@ -110,7 +110,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
             ("City", "postal City"),
             ("Region", "region"),
             ("CountryCode", "GB"),
-            ("postCode", "AA1 1AA")
+            ("PostalCode", "AA1 1AA")
           )
 
       val result = route(application, request).value
