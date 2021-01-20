@@ -69,11 +69,11 @@ claimantType.heading = Are you the importer or their representative?
 claimantType.01 = I am the importer
 claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
-claimantType.error.required = Select claimantType
+claimantType.error.required = Select if you are the importer or a representative of the importer
 
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
-importerEori.checkYourAnswersLabel = What is your EORI number?
+importerEori.checkYourAnswersLabel = What is your EORI numbere?
 importerEori.error.required = Enter your EORI number
 importerEori.error.length = EORI number must be 17 characters or less
 
@@ -90,12 +90,12 @@ importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
-customsRegulationType.title = What was the acceptance date for all entries?
-customsRegulationType.heading = What was the acceptance date for all entries?
+customsRegulationType.title = What was the entry acceptance date?
+customsRegulationType.heading = What was the entry acceptance date?
 customsRegulationType.01 = On or before 31 December 2020
 customsRegulationType.02 = From 1 January 2021
 customsRegulationType.checkYourAnswersLabel = What was the acceptance date for all entries?
-customsRegulationType.error.required = Select the entry acceptance date for all entries
+customsRegulationType.error.required = Select if the entry acceptance date was from 1 January 2021, or on or before 31 December 2020
 
 articleType.title = Why are you applying for this repayment?
 articleType.heading = Why are you applying for this repayment?
@@ -103,7 +103,7 @@ articleType.117 = Overpayment of duty or VAT (Article 117)
 articleType.119 = Error by customs (Article 119)
 articleType.120 = Exceptional circumstances (Article 120)
 articleType.checkYourAnswersLabel = Why are you applying for this repayment?
-articleType.error.required = Select why are you applying for this repayment
+articleType.error.required = Select the reason you are applying for this repayment
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
@@ -111,12 +111,12 @@ numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = More than one entry
 numberOfEntriesType.02.hint = Multiple entries must all be from the same importer.
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
-numberOfEntriesType.error.required = Select how many entries do you want to submit
+numberOfEntriesType.error.required = Select if you want to submit one entry or more than one entry
 
 howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
-howManyEntries.error.required = Select if the entry acceptance date was from 1 January 2021, or on or before 31 December 2020
+howManyEntries.error.required = Select if you want to submit one entry or more than one entry
 howManyEntries.error.length = Number of entries must be between 2 and 999,999
 
 entryDetails.title = Entry details
@@ -124,18 +124,18 @@ entryDetails.heading = Entry details
 entryDetails.hint = These can be found on C88 and E2 documents
 entryDetails.claimEpu.heading = Entry processing unit (EPU)
 entryDetails.claimEpu.hint = This is 3 numbers, for example ''123''
-entryDetails.claimEpu.error.required = Enter the entry processing unit (EPU)
-entryDetails.claimEpu.error.length = EPU must be 3 characters or less
+entryDetails.claimEpu.error.required = Enter the entry processing unit (EPU) number
+entryDetails.claimEpu.error.length = Enter the entry processing unit (EPU) number in the correct format
 entryDetails.entryNumber.heading = Entry number
 entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example ''123456Q''
 entryDetails.entryNumber.error.required = Enter the entry number
-entryDetails.entryNumber.error.length = Entry number must be 7 characters or less
+entryDetails.entryNumber.error.length = Enter the entry number in the correct format
 entryDetails.entryDate.heading = Entry date
 entryDetails.entryDate.hint = For example, 25 3 2019
 entryDetails.claimEntryDate.error.required.all = Enter the entry date
 entryDetails.claimEntryDate.error.required.two = The entry date must include {0} and {1}
 entryDetails.claimEntryDate.error.required = The entry date must include {0}
-entryDetails.claimEntryDate.error.invalid = Enter a real entry date
+entryDetails.claimEntryDate.error.invalid = Enter the entry date in the correct format
 
 
 claimEpu.checkYourAnswersLabel = Entry processing unit (EPU)

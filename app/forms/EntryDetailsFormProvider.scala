@@ -21,19 +21,21 @@ import forms.mappings.Mappings
 import models.EntryDetails
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.i18n.Messages
 
 class EntryDetailsFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[EntryDetails] = Form(
+  def apply()(implicit messages: Messages): Form[EntryDetails] = Form(
       mapping(
         "EPU" -> text("entryDetails.claimEpu.error.required")
-          .verifying(firstError(
-            maxLength(3, "entryDetails.claimEpu.error.length")
-          )),
+          .verifying(
+            regexp(Validation.epu, "entryDetails.claimEpu.error.length")
+          ),
         "EntryNumber" -> text("entryDetails.entryNumber.error.required")
-          .verifying(firstError(
-            maxLength(7, "entryDetails.entryNumber.error.length")
-          )),
+          .verifying(regexp(
+            Validation.epuEntryNumber,"entryDetails.entryNumber.error.length")
+          ),
+
         "value" -> localDate(
           invalidKey     = "entryDetails.claimEntryDate.error.invalid",
           allRequiredKey = "entryDetails.claimEntryDate.error.required.all",

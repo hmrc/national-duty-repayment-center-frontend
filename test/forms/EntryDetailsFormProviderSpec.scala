@@ -34,14 +34,14 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      Validation.epu
     )
 
     behave like fieldWithMaxLength(
       form,
       fieldName,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      lengthError = FormError(fieldName, lengthKey, Seq(Validation.epu))
     )
 
     behave like mandatoryField(
@@ -68,7 +68,7 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
       form,
       fieldName,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      lengthError = FormError(fieldName, lengthKey, Seq(Validation.epuEntryNumber))
     )
 
     behave like mandatoryField(
@@ -76,6 +76,26 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+  }
+
+
+  "fail to bind entries that are not 3 digits" in {
+    val fieldName = "EPU"
+    val lengthKey = "entryDetails.claimEpu.error.length"
+
+    val result = form.bind(Map(fieldName -> "1234")).apply(fieldName)
+    val expectedError = FormError(fieldName, lengthKey, Seq(Validation.epu))
+    result.errors shouldEqual Seq(expectedError)
+  }
+
+
+  "fail to bind entries that do not contain 6 digits and a letter" in {
+    val fieldName = "EntryNumber"
+    val lengthKey = "entryDetails.entryNumber.error.length"
+
+    val result = form.bind(Map(fieldName -> "12345678AQ")).apply(fieldName)
+    val expectedError = FormError(fieldName, lengthKey, Seq(Validation.epuEntryNumber))
+    result.errors shouldEqual Seq(expectedError)
   }
 
 }
