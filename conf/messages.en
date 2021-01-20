@@ -62,7 +62,7 @@ unauthorised.heading = You can’t access this service with this account
 importerHasEori.title = Do you have an EORI number?
 importerHasEori.heading = Do you have an EORI number?
 importerHasEori.checkYourAnswersLabel = Do you have an EORI number?
-importerHasEori.error.required = Select yes if you have an EORI numer
+importerHasEori.error.required = Select yes if you have an EORI number
 
 claimantType.title = Are you the importer or their representative?
 claimantType.heading = Are you the importer or their representative?
@@ -74,8 +74,8 @@ claimantType.error.required = Select claimantType
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
 importerEori.checkYourAnswersLabel = What is your EORI number?
-importerEori.error.required = Enter your EORI number
-importerEori.error.length = EORI number must be 17 characters or less
+importerEori.error.required = Enter your EORI number in the correct format
+importerEori.error.length = Enter your EORI number in the correct format
 
 isVATRegistered.title = Are you VAT registered?
 isVATRegistered.heading = Are you VAT registered?
@@ -459,7 +459,7 @@ additionalFileUpload.heading = You have uploaded x file
 additionalFileUpload.01 = Yes
 additionalFileUpload.02 = No
 additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
-additionalFileUpload.error.required = Select Additional File to Upload
+additionalFileUpload.error.required = Select yes if you need to upload another file
 
 contactByEmail.title = Can we contact you by email?
 contactByEmail.heading = Can we contact you by email?

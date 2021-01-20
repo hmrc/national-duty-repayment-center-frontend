@@ -23,7 +23,7 @@ class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "importerEori.error.required"
   val lengthKey = "importerEori.error.length"
-  val maxLength = 17
+  val maxLength = 14
 
   val form = new ImporterEoriFormProvider()()
 
@@ -35,13 +35,6 @@ class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       stringsWithMaxLength(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
     behave like mandatoryField(
