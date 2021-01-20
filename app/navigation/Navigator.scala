@@ -46,7 +46,7 @@ class Navigator @Inject()() {
     case ImporterEoriPage => getEORIPage
     case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)
     case ImporterNamePage => getImporterName
-    case ImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
+    case ImporterManualAddressPage => getImporterManualAddress
     case ImporterHasEoriPage => getEORIConfirmation
     case IsVATRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
     case PhoneNumberPage => _ => routes.ContactByEmailController.onPageLoad(NormalMode)
@@ -55,7 +55,7 @@ class Navigator @Inject()() {
     case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad
     case EnterAgentEORIPage => _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
     case AgentNameImporterPage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
-    case AgentImporterManualAddressPage => _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
+    case AgentImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
     case AdditionalFileUploadPage =>  additionalFileUploadRoute
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
@@ -70,11 +70,15 @@ class Navigator @Inject()() {
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
+  private def getImporterManualAddress(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
+    case Some(ClaimantType.Importer)  => routes.PhoneNumberController.onPageLoad(NormalMode)
+    case _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
+  }
+
   private def getImporterName(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
     case Some(ClaimantType.Representative)  => routes.AgentImporterAddressController.onPageLoad(NormalMode)
     case _ => routes.ImporterAddressController.onPageLoad(NormalMode)
   }
-
 
   private def getAmendCaseUploadAnotherFile(answers: UserAnswers): Call = answers.get(AmendCaseUploadAnotherFilePage) match {
     case Some(AmendCaseUploadAnotherFile.Yes)  => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
