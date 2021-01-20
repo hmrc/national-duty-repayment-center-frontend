@@ -57,7 +57,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -77,7 +77,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))), NormalMode, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -132,7 +132,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, false)(fakeRequest, messages).toString
 
       application.stop()
     }

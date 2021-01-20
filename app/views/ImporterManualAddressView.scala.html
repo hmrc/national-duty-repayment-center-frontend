@@ -24,10 +24,13 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerManualAddress.title"))}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
+                                                case true => messages("importerYourAddress.title")
+                                                case _ => messages("importerManualAddress.title")
+                                                })}"),
     backLink = Some("#")
 ) {
 
@@ -36,12 +39,18 @@
     @components.error_summary(form.errors)
 
     @forms.fieldset(
-        legend = messages("importerManualAddress.heading")
+        legend = isImporterJourney match {
+                    case true => messages("importerYourAddress.heading")
+                    case _ => messages("importerManualAddress.heading")
+                 }
     ) {
 
-    @html.p {
-        @messages("importerManualAddress.hint")
-    }
+            @html.p {
+                     @messages(isImporterJourney match {
+                                case true =>"importerManualAddress.hint"
+                                case _ => ""
+                    })
+            }
 
         @forms.inputText(
             form = form,
