@@ -27,11 +27,11 @@
     html: views.components.html
 )
 
-@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterAddressConfirmation.title"))}"),
-    backLink = Some("#")
+    backLink = Some(backLink.url)
 ) {
 
     @forms.formWithCSRF(action = routes.AgentImporterAddressController.addressSelectSubmit()) {

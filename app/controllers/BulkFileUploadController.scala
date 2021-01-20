@@ -22,7 +22,7 @@ import models.{ArticleType, CustomsRegulationType, Mode}
 import navigation.Navigator
 import pages.{ArticleTypePage, BulkFileUploadPage, CustomsRegulationTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.BulkFileUploadView
@@ -40,11 +40,14 @@ class BulkFileUploadController @Inject()(
                                         view: BulkFileUploadView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def getBackLink(mode: Mode): Call = {
+    routes.CustomsRegulationTypeController.onPageLoad(mode)
+  }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      Ok(view())
+      Ok(view(getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {

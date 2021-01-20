@@ -31,10 +31,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.ContactByEmailView
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 
 import scala.concurrent.Future
 
 class ContactByEmailControllerSpec extends SpecBase with MockitoSugar {
+
+  val backLink = routes.PhoneNumberController.onPageLoad(NormalMode)
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -58,7 +61,7 @@ class ContactByEmailControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +81,7 @@ class ContactByEmailControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ContactByEmail.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(ContactByEmail.values.head), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +130,7 @@ class ContactByEmailControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

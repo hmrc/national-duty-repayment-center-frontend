@@ -56,13 +56,18 @@ class ImporterAddressController @Inject()(
                                           extends FrontendBaseController with I18nSupport {
 
   private val form = formProvider()
-  private val postcodeForm = postcodeFormProvider()
-  private val selectionForm = addressSelectionFormProvider()
-  val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
   private def getBackLink(mode: Mode): Call = {
     routes.ImporterNameController.onPageLoad(mode)
   }
+
+  private def getImporterAdddressBackLink(mode: Mode): Call = {
+    routes.ImporterAddressController.onPageLoad(mode)
+  }
+
+  private val postcodeForm = postcodeFormProvider()
+  private val selectionForm = addressSelectionFormProvider()
+  val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
@@ -115,9 +120,9 @@ class ImporterAddressController @Inject()(
           )
 
         if (form.hasErrors) {
-          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney))
+          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, getImporterAdddressBackLink(mode), isImporterJourney))
         } else {
-          Ok(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney))
+          Ok(addressConfirmationView(form, lookup, selectionItems, mode, getImporterAdddressBackLink(mode), isImporterJourney))
         }
     }
   }
