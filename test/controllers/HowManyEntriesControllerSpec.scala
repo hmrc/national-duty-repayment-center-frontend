@@ -36,6 +36,8 @@ import scala.concurrent.Future
 
 class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
 
+  val backLink = routes.NumberOfEntriesTypeController.onPageLoad(NormalMode)
+
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new HowManyEntriesFormProvider()
@@ -58,7 +60,7 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +80,7 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(NoOfEntries("answer")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(NoOfEntries("answer")), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -126,7 +128,7 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
