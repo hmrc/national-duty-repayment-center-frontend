@@ -21,11 +21,10 @@ import forms.mappings.Mappings
 import models.EntryDetails
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.Messages
 
 class EntryDetailsFormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[EntryDetails] = Form(
+  def apply(): Form[EntryDetails] = Form(
       mapping(
         "EPU" -> text("entryDetails.claimEpu.error.required")
           .verifying(
