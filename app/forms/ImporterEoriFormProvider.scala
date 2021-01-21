@@ -27,7 +27,6 @@ class ImporterEoriFormProvider @Inject() extends Mappings {
     Form(
       "value" -> text("importerEori.error.required")
         .verifying(firstError(
-          maxLength(17, "importerEori.error.length"),
           regexp(Validation.eoriPattern.toString, "importerEori.error.length")
         ))
         .transform[EORI](EORI.apply, _.value)
