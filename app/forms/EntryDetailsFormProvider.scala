@@ -16,6 +16,8 @@
 
 package forms
 
+import java.time.LocalDate
+import formats.Format
 import javax.inject.Inject
 import forms.mappings.Mappings
 import models.EntryDetails
@@ -24,7 +26,12 @@ import play.api.data.Forms._
 
 class EntryDetailsFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[EntryDetails] = Form(
+  def apply(): Form[EntryDetails] = {
+
+    val limitDate = LocalDate.now.minusDays(1)
+    val minDateLimit = LocalDate.parse("1900-01-01")
+
+    Form(
       mapping(
         "EPU" -> text("entryDetails.claimEpu.error.required")
           .verifying(
@@ -35,12 +42,15 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
             Validation.epuEntryNumber,"entryDetails.entryNumber.error.length")
           ),
 
-        "value" -> localDate(
+        "EntryDate" -> localDate(
           invalidKey     = "entryDetails.claimEntryDate.error.invalid",
           allRequiredKey = "entryDetails.claimEntryDate.error.required.all",
           twoRequiredKey = "entryDetails.claimEntryDate.error.required.two",
           requiredKey    = "entryDetails.claimEntryDate.error.required"
-        )
+        ).verifying(maxDate(limitDate, "entryDetails.claimEntryDate.error.invalid", Format.formattedDate(limitDate)))
+          .verifying(minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid", Format.formattedDate(minDateLimit)))
+
       )(EntryDetails.apply)(EntryDetails.unapply)
     )
+  }
 }

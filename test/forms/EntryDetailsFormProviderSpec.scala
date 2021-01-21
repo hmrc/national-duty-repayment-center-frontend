@@ -17,6 +17,8 @@
 package forms
 
 import java.time.LocalDate
+
+import formats.Format
 import forms.behaviours.{DateBehaviours, StringFieldBehaviours}
 import play.api.data.FormError
 
@@ -50,6 +52,38 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
       requiredError = FormError(fieldName, requiredKey)
     )
   }
+
+  ".value" must  {
+    val fieldName = "EntryDate"
+    val date = LocalDate.now.minusDays(1)
+
+    val validData = datesBetween(
+      min = LocalDate.of(1900, 1, 1),
+      max = LocalDate.now.minusDays(1)
+    )
+
+    behave like dateField(form, fieldName, validData)
+
+    behave like dateFieldWithMax(
+      form,
+      fieldName,
+      LocalDate.now.minusDays(1),
+      FormError(fieldName, "entryDetails.claimEntryDate.error.invalid", Seq(Format.formattedDate(date)))
+    )
+
+    behave like mandatoryDateField(form, "value", "entryDetails.claimEntryDate.error.required.all")
+
+    val invalidMinYear = LocalDate.parse("0900-01-01")
+
+    behave like dateFieldWithMin(
+      form,
+      fieldName,
+      invalidMinYear,
+      FormError(fieldName, "entryDetails.claimEntryDate.error.invalid", Seq(Format.formattedDate(invalidMinYear)))
+    )
+  }
+
+
 
   ".EntryNumber" must {
 
@@ -97,5 +131,8 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
     val expectedError = FormError(fieldName, lengthKey, Seq(Validation.epuEntryNumber))
     result.errors shouldEqual Seq(expectedError)
   }
+
+
+
 
 }
