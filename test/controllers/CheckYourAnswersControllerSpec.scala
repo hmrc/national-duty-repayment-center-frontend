@@ -17,12 +17,15 @@
 package controllers
 
 import base.SpecBase
+import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AnswerSection
 import views.html.CheckYourAnswersView
 
 class CheckYourAnswersControllerSpec extends SpecBase {
+
+  val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
 
   "Check Your Answers Controller" must {
 
@@ -39,7 +42,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(Seq(AnswerSection(None, Seq())))(fakeRequest, messages).toString
+        view(Seq(AnswerSection(None, Seq())), backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

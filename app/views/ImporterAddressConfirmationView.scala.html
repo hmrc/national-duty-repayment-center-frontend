@@ -27,7 +27,7 @@
     html: views.components.html
 )
 
-@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode, backLink: Call, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode, isImporterJourney: Boolean, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerAddressConfirmation.title"))}"),

@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.BankDetailsFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{ClaimantType, Mode, UserAnswers, WhomToPay}
 import navigation.Navigator
-import pages.BankDetailsPage
+import pages.{BankDetailsPage, ClaimantTypePage, IndirectRepresentativePage, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,8 +44,15 @@ class BankDetailsController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.RepaymentTypeController.onPageLoad(mode)
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+    val isRepresentative = userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative)
+
+    userAnswers.get(BankDetailsPage) match {
+      case _ if isRepresentative && userAnswers.get(WhomToPayPage).contains(WhomToPay.Importer) => routes.WhomToPayController.onPageLoad(mode)
+      case _ if isRepresentative && userAnswers.get(IndirectRepresentativePage).contains(true) => routes.IndirectRepresentativeController.onPageLoad(mode)
+      case _ if isRepresentative && userAnswers.get(IndirectRepresentativePage).contains(false) => routes.ProofOfAuthorityController.onPageLoad()
+      case _ => routes.RepaymentTypeController.onPageLoad(mode)
+    }
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -56,7 +63,7 @@ class BankDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,7 +71,7 @@ class BankDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {

@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.EntryDetailsFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{CustomsRegulationType, Mode, UserAnswers}
 import navigation.Navigator
-import pages.EntryDetailsPage
+import pages.{CustomsRegulationTypePage, EntryDetailsPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,8 +44,11 @@ class EntryDetailsController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.CustomsRegulationTypeController.onPageLoad(mode)
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+    userAnswers.get(CustomsRegulationTypePage) match {
+      case _ if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.CustomsRegulationTypeController.onPageLoad(mode)
+      case _ => routes.ArticleTypeController.onPageLoad(mode)
+    }
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -56,7 +59,7 @@ class EntryDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,7 +67,7 @@ class EntryDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {

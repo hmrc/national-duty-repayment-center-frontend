@@ -38,8 +38,6 @@ import scala.concurrent.Future
 
 class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
-
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new EntryDetailsFormProvider()
@@ -48,6 +46,9 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
   val validDateAnswer: LocalDate = LocalDate.parse("0900-01-01")
 
   lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad(NormalMode).url
+
+  val backLink = routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
+  val articleBackLink = routes.ArticleTypeController.onPageLoad(NormalMode)
 
   private val userAnswers = UserAnswers(
     userAnswersId,
@@ -75,7 +76,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode, articleBackLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -93,7 +94,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode, articleBackLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -147,7 +148,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, articleBackLink)(fakeRequest, messages).toString
 
       application.stop()
     }

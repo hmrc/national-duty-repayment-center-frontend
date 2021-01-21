@@ -27,7 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AmendCaseSendInformationView
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class AmendCaseSendInformationController @Inject()(
                                         override val messagesApi: MessagesApi,

@@ -35,7 +35,7 @@ import scala.concurrent.Future
 
 class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.PhoneNumberController.onPageLoad(NormalMode)
+  val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
   def onwardRoute = Call("GET", "/foo")
 

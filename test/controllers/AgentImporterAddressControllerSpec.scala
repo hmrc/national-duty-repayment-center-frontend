@@ -170,7 +170,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedView = application.injector.instanceOf[AgentImporterAddressView]
         val boundForm = addressForm.bind(Map.empty[String, String])
         contentAsString(result) mustEqual
-          expectedView(boundForm, NormalMode, backLinkAgentAddress)(request, messages).toString
+          expectedView(boundForm, NormalMode, backLink)(request, messages).toString
       }
     }
 

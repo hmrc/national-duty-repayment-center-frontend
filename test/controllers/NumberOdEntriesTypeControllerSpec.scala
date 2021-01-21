@@ -60,7 +60,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

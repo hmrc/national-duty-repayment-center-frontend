@@ -120,9 +120,9 @@ class ImporterAddressController @Inject()(
           )
 
         if (form.hasErrors) {
-          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, getImporterAdddressBackLink(mode), isImporterJourney))
+          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney, getImporterAdddressBackLink(mode)))
         } else {
-          Ok(addressConfirmationView(form, lookup, selectionItems, mode, getImporterAdddressBackLink(mode), isImporterJourney))
+          Ok(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney, getImporterAdddressBackLink(mode)))
         }
     }
   }

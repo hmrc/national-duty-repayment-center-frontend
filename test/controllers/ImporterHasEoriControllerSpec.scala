@@ -36,14 +36,14 @@ import scala.concurrent.Future
 
 class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.AdditionalFileUploadController.onPageLoad(NormalMode)
-
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ImporterHasEoriFormProvider()
   val form = formProvider()
 
   lazy val importerHasEoriRoute = routes.ImporterHasEoriController.onPageLoad(NormalMode).url
+
+  val backLink = routes.AdditionalFileUploadController.onPageLoad(NormalMode)
 
   "ImporterHasEori Controller" must {
 

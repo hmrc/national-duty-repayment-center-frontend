@@ -25,7 +25,6 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.EnterAgentEORIPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -43,6 +42,8 @@ class EnterAgentEORIControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val enterAgentEORIRoute = routes.EnterAgentEORIController.onPageLoad(NormalMode).url
 
+  val backLink = routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
+
   "EnterAgentEORI Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -58,7 +59,7 @@ class EnterAgentEORIControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +79,7 @@ class EnterAgentEORIControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(EORI("answer")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(EORI("answer")), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -126,7 +127,7 @@ class EnterAgentEORIControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

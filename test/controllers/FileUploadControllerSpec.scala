@@ -35,10 +35,12 @@ class FileUploadControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[FileUploadView]
 
+      val backLink = routes.EvidenceSupportingDocsController.onPageLoad()
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
