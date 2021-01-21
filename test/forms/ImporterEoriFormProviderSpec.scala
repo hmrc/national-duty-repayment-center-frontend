@@ -17,6 +17,7 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import org.scalacheck.Gen
 import play.api.data.FormError
 
 class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
@@ -31,17 +32,16 @@ class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "value"
 
+    val validData = for {
+      firstChars <- Gen.listOfN(2, "GB").map(_.mkString)
+      numDigits   <- Gen.choose(1, 12)
+    } yield s"$firstChars$numDigits"
+
+
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      validData
     )
 
     behave like mandatoryField(
@@ -49,5 +49,12 @@ class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    "bind values with eori expression" in {
+
+      val result = form.bind(Map("value" -> "GB123456123456")).apply(fieldName)
+      result.value.get shouldBe "GB123456123456"
+      result.errors shouldBe List.empty
+    }
   }
 }

@@ -29,7 +29,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
   def answersViewModel = Seq(
     AnswerSection(Some("Customs Duty"), Seq(
-      AnswerRow(Html("Customs Duty paid"), Html("£0.0"), Some("/national-duty-repayment-center/changecustomsDutyPaid")),
+      AnswerRow(Html("Customs Duty paid"), Html("£0.0"), Some("/national-duty-repayment-center/change-customs-duty-paid")),
       AnswerRow(Html("Customs Duty that was due"), Html("£0.0"), Some("/national-duty-repayment-center/changeCustomsDutyDueToHMRC")),
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),

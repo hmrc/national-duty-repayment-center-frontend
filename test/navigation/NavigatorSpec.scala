@@ -137,7 +137,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
       }
 
-      "go to AgentImporterHasEORI page after additionalFileUpload page when Representative single/multiple entry journeys selected " in {
+      "go to AgentImporterHasEORI page after file-uploaded page when Representative single/multiple entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value.
