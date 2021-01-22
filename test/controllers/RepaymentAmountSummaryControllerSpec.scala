@@ -29,18 +29,48 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
   def answersViewModel = Seq(
     AnswerSection(Some("Customs Duty"), Seq(
-      AnswerRow(Html("Customs Duty paid"), Html("£0.0"), Some("/national-duty-repayment-center/change-customs-duty-paid")),
-      AnswerRow(Html("Customs Duty that was due"), Html("£0.0"), Some("/national-duty-repayment-center/changeCustomsDutyDueToHMRC")),
+      AnswerRow(Html(
+        "Customs Duty paid"),
+        Html("£0.0"),
+        Some("/national-duty-repayment-center/change-customs-duty-paid"),
+        Some("customs-duty-paid")
+      ),
+      AnswerRow(
+        Html("Customs Duty that was due"),
+        Html("£0.0"),
+        Some("/national-duty-repayment-center/changeCustomsDutyDueToHMRC"),
+        Some("customs-duty-due")
+      ),
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),
     AnswerSection(Some("VAT"), Seq(
-      AnswerRow(Html("VAT paid"), Html("£0.0"), Some("/national-duty-repayment-center/change-import-vat-paid")),
-      AnswerRow(Html("VAT that was due"), Html("£0.0"), Some("/national-duty-repayment-center/changeVATDueToHMRC")),
+      AnswerRow(
+        Html("VAT paid"),
+        Html("£0.0"),
+        Some("/national-duty-repayment-center/change-import-vat-paid"),
+        Some("vat-paid")
+      ),
+      AnswerRow(
+        Html("VAT that was due"),
+        Html("£0.0"),
+        Some("/national-duty-repayment-center/changeVATDueToHMRC"),
+        Some("vat-due")
+      ),
       AnswerRow(Html("Total VAT repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),
     AnswerSection(Some("Other duties"), Seq(
-      AnswerRow(Html("Other duties paid"), Html("£0.0"), Some("/national-duty-repayment-center/change-other-duties-paid")),
-      AnswerRow(Html("Other duties that were due"), Html("£0.0"), Some("/national-duty-repayment-center/changeOtherDutiesDueToHMRC")),
+      AnswerRow(
+        Html("Other duties paid"),
+        Html("£0.0"),
+        Some("/national-duty-repayment-center/change-other-duties-paid"),
+        Some("other-duties-paid")
+      ),
+      AnswerRow(
+        Html("Other duties that were due"),
+        Html("£0.0"),
+        Some("/national-duty-repayment-center/changeOtherDutiesDueToHMRC"),
+        Some("other-duties-due")
+      ),
       AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),
     AnswerSection(Some("Total"), Seq(
@@ -53,7 +83,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
     "return OK and the correct view for a GET" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
-            success.value.set(CustomsDutyPaidPage, "0").success.value
+        success.value.set(CustomsDutyPaidPage, "0").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
