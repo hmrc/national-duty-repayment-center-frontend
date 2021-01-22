@@ -64,7 +64,11 @@
                     attributes = Map("autocomplete" -> "off")
                     )
             }
-                <p>@html.a("importerManualAddress", messages("importerAddress.manual"))</p>
+                <p>@html.a(
+                    link = "importerManualAddress",
+                    messageKey = messages("importerAddress.manual"),
+                    id = Some("enter-address-manually")
+                    )</p>
 
                 @html.button("site.continue")
     }
