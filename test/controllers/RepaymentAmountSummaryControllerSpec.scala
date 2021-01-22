@@ -34,12 +34,12 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),
     AnswerSection(Some("VAT"), Seq(
-      AnswerRow(Html("VAT paid"), Html("£0.0"), Some("/national-duty-repayment-center/changeVATPaid")),
+      AnswerRow(Html("VAT paid"), Html("£0.0"), Some("/national-duty-repayment-center/change-import-vat-paid")),
       AnswerRow(Html("VAT that was due"), Html("£0.0"), Some("/national-duty-repayment-center/changeVATDueToHMRC")),
       AnswerRow(Html("Total VAT repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),
     AnswerSection(Some("Other duties"), Seq(
-      AnswerRow(Html("Other duties paid"), Html("£0.0"), Some("/national-duty-repayment-center/changeOtherDutiesPaid")),
+      AnswerRow(Html("Other duties paid"), Html("£0.0"), Some("/national-duty-repayment-center/change-other-duties-paid")),
       AnswerRow(Html("Other duties that were due"), Html("£0.0"), Some("/national-duty-repayment-center/changeOtherDutiesDueToHMRC")),
       AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.0</span>"))
     )),

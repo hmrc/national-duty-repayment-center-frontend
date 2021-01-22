@@ -138,10 +138,10 @@ GET        /changeIsImporterVatRegistered                  controllers.IsImporte
 POST       /changeIsImporterVatRegistered                  controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = CheckMode)
 
 
-GET        /vatPaid                        controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
-POST       /vatPaid                        controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
-GET        /changeVATPaid                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeVATPaid                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
+GET        /import-vat-paid                      controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /import-vat-paid                        controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /change-import-vat-paid                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-import-vat-paid                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
 
 GET        /vatDueToHMRC                        controllers.VATDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
 POST       /vatDueToHMRC                        controllers.VATDueToHMRCController.onSubmit(mode: Mode = NormalMode)
@@ -158,10 +158,10 @@ POST       /customsDutyDueToHMRC                        controllers.CustomsDutyD
 GET        /changeCustomsDutyDueToHMRC                  controllers.CustomsDutyDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCustomsDutyDueToHMRC                  controllers.CustomsDutyDueToHMRCController.onSubmit(mode: Mode = CheckMode)
 
-GET        /otherDutiesPaid                        controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
-POST       /otherDutiesPaid                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
-GET        /changeOtherDutiesPaid                  controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeOtherDutiesPaid                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
+GET        /other-duties-paid                        controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /other-duties-paid                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /change-other-duties-paid                  controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-other-duties-paid                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
 
 GET        /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
 POST       /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = NormalMode)

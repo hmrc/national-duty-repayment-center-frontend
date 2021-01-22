@@ -276,9 +276,11 @@ isImporterVatRegistered.error.required = Select whether the importer is VAT regi
 vATPaid.title = How much VAT was paid?
 vATPaid.heading = How much VAT was paid?
 vATPaid.checkYourAnswersLabel = How much VAT was paid?
-vATPaid.error.required = Enter VAT was paid?
-vATPaid.error.length = VAT paid must be 14 characters or less
 vATPaid.hint = This should be the total amount of overpayment for all entries
+vATPaid.error.required = Enter the amount of import VAT that was paid
+vATPaid.error.notANumber = Amount of import VAT that was paid must be a number
+vATPaid.error.length = Amount of Customs Duty that was due to HMRC must be 99999999999.99 or less
+vATPaid.error.decimalPlaces = Amount of Customs Duty that should have been paid must include pence, like 123.45
 
 vATDueToHMRC.title = How much VAT should have been paid to HMRC?
 vATDueToHMRC.heading = How much VAT should have been paid to HMRC?
@@ -304,8 +306,11 @@ customsDutyDueToHMRC.error.length = Customs Duty should have been paid to HMRC m
 otherDutiesPaid.title = How much was paid in other duties?
 otherDutiesPaid.heading = How much was paid in other duties?
 otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
-otherDutiesPaid.error.required = Enter Other Duties Paid
-otherDutiesPaid.error.length = Other Duties Paid must be 14 characters or less
+otherDutiesPaid.error.required = Enter the amount of other duties that were due to HMRC
+otherDutiesPaid.error.notANumber = not a number entered
+otherDutiesPaid.error.length = Amount of other duties that were due to HMRC must be 99999999999.99 or less
+otherDutiesPaid.error.decimalPlaces = Amount of other duties that were paid must include pence, like 123.45
+
 
 otherDutiesDueToHMRC.title = How much should have been paid in other duties to HMRC?
 otherDutiesDueToHMRC.heading = How much should have been paid in other duties to HMRC?

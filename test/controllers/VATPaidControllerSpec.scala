@@ -65,7 +65,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(VATPaidPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(VATPaidPage, "0").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, emptyUserAnswers)(fakeRequest, messages).toString
+        view(form.fill("0"), NormalMode, emptyUserAnswers)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -99,7 +99,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, vATPaidRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "0"))
 
       val result = route(application, request).value
 
