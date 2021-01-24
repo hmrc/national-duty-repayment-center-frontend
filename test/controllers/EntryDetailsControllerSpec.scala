@@ -117,9 +117,9 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
           .withFormUrlEncodedBody(
             ("EPU", "123"),
             ("EntryNumber", "123456Q"),
-            ("EntryNumber.day", dateAnswer.getDayOfMonth.toString),
-            ("EntryNumber.month", dateAnswer.getMonthValue.toString),
-            ("EntryNumber.year", dateAnswer.getYear.toString)
+            ("EntryDate.day", dateAnswer.getDayOfMonth.toString),
+            ("EntryDate.month", dateAnswer.getMonthValue.toString),
+            ("EntryDate.year", dateAnswer.getYear.toString)
           )
 
       val result = route(application, request).value
