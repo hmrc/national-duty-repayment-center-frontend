@@ -19,12 +19,13 @@ package forms.behaviours
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+import models.EntryDetails
 import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 
 trait DateBehaviours extends FieldBehaviours {
 
-  def dateField(form: Form[_], key: String, validData: Gen[LocalDate]): Unit = {
+  def dateField(form: Form[EntryDetails], key: String, validData: Gen[LocalDate]): Unit = {
 
     "bind valid data" in {
 

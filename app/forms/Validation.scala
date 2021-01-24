@@ -26,4 +26,8 @@ object Validation {
   val safeInputPattern              = """^[A-Za-z0-9À-ÿ \!\)\(.,_/’'"&-]+$"""
   val postcodeRegex                 = """^[ ]*[A-Za-z][ ]*[A-Za-z]{0,1}[ ]*[0-9][ ]*[0-9A-Za-z]{0,1}[ ]*[0-9][ ]*[A-Za-z][ ]*[A-Za-z][ ]*$"""
   val monetaryPattern: String = """^-?(\d*(\.\d{1,2})?)$"""
+  val numberOfEntries               = "^([2-9]|[0-9]{2,6})$"
+  val epu                           = "^[0-9][0-9][0-9]$"
+  val epuEntryNumber                = "^([0-9]{6}[a-z|A-Z])$"
+
 }
