@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.ImporterManualAddressFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{ClaimantType, Mode, UserAnswers}
 import navigation.Navigator
-import pages.ImporterManualAddressPage
+import pages.{ClaimantTypePage, ImporterManualAddressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -52,7 +52,7 @@ class ImporterManualAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +60,7 @@ class ImporterManualAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
 
         value =>
           for {
@@ -68,5 +68,12 @@ class ImporterManualAddressController @Inject()(
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ImporterManualAddressPage, mode, updatedAnswers))
       )
+  }
+
+  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
+    userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => true
+      case _ => false
+    }
   }
 }

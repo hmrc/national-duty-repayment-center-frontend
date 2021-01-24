@@ -99,7 +99,7 @@ class ImporterEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, importerEoriRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "GB123456123456"))
 
       val result = route(application, request).value
 

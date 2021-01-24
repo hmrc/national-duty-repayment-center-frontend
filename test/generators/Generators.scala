@@ -170,4 +170,18 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     secondPartDigit      <- Gen.numChar
     secondPartChars      <- Gen.listOfN(2, Gen.alphaChar)
   } yield s"${leadingChars.mkString}${firstPartDigits.mkString}$separator${secondPartDigit.toString}${secondPartChars.mkString}"
+
+  val to2dp: BigDecimal => BigDecimal = _.setScale(2, BigDecimal.RoundingMode.HALF_UP)
+
+  def decimalsBelowValue(value: BigDecimal): Gen[BigDecimal] = {
+    arbitrary[BigDecimal] suchThat (_ < value)
+  }.map(to2dp)
+
+  def decimalsAboveValue(value: BigDecimal): Gen[BigDecimal] = {
+    arbitrary[BigDecimal] suchThat (_ > value)
+  }.map(to2dp)
+
+  def decimalsOutsideRange(min: BigDecimal, max: BigDecimal): Gen[BigDecimal] = {
+    arbitrary[BigDecimal] suchThat (x => x < min - 1 || x > max + 1)
+  }.map(to2dp)
 }

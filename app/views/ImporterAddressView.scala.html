@@ -27,7 +27,10 @@
 @(form: Form[_], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerAddress.title"))}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
+                                                            case true => messages("importerAddress.title")
+                                                            case _ => messages("agent.importerAddress.title")
+                                                            })}"),
     backLink = Some("#")
 ) {
 
@@ -42,6 +45,13 @@
                         }
             ) {
 
+                @html.p {
+                    @messages(isImporterJourney match {
+                        case true =>"importerAddress.hint"
+                        case _ => ""
+                        })
+                }
+
                 @forms.inputText(
                     form = form,
                     id = "postCode",
@@ -54,7 +64,11 @@
                     attributes = Map("autocomplete" -> "off")
                     )
             }
-                <p>@html.a("importerManualAddress", messages("importerAddress.manual"))</p>
+                <p>@html.a(
+                    link = "importerManualAddress",
+                    messageKey = messages("importerAddress.manual"),
+                    id = Some("enter-address-manually")
+                    )</p>
 
                 @html.button("site.continue")
     }

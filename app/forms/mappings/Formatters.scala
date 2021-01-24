@@ -19,6 +19,7 @@ package forms.mappings
 import play.api.data.FormError
 import play.api.data.format.Formatter
 import models.Enumerable
+import scala.util.{Failure, Success, Try}
 
 import scala.util.control.Exception.nonFatalCatch
 
@@ -91,5 +92,26 @@ trait Formatters {
 
       override def unbind(key: String, value: A): Map[String, String] =
         baseFormatter.unbind(key, value.toString)
+    }
+
+  private[mappings] def decimalFormatter(requiredKey: String, nonNumericKey: String): Formatter[String] =
+    new Formatter[String] {
+
+      private val baseFormatter = stringFormatter(requiredKey)
+
+      override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
+        baseFormatter.bind(key, data)
+          .right.map(_.replace(",", ""))
+          .right.map(_.replace("£", ""))
+          .right.flatMap {
+          s =>
+            Try(s.toDouble) match {
+              case Success(_) => Right(s)
+              case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
+            }
+        }
+
+      override def unbind(key: String, value: String): Map[String, String] =
+        baseFormatter.unbind(key, value)
     }
 }

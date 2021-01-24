@@ -137,7 +137,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
       }
 
-      "go to AgentImporterHasEORI page after additionalFileUpload page when Representative single/multiple entry journeys selected " in {
+      "go to AgentImporterHasEORI page after file-uploaded page when Representative single/multiple entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value.
@@ -162,13 +162,13 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.IsImporterVatRegisteredController.onPageLoad(NormalMode))
       }
 
-      "go to ImporterHasEori page after importerAddressConfirmation page when Representative single/multiple entry journeys selected " in {
+      "go to PhoneNumber page after importerAddressConfirmation page when Representative single/multiple entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
         navigator.nextPage(AgentImporterManualAddressPage, NormalMode, answers)
-          .mustBe(routes.ImporterHasEoriController.onPageLoad(NormalMode))
+          .mustBe(routes.PhoneNumberController.onPageLoad(NormalMode))
       }
 
       "go to ImporterEori page after importerHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
@@ -228,6 +228,24 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
         navigator.nextPage(ContactByEmailPage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
+      }
+
+      "go to PhoneNumber page after ImporterManualAddress page when the claimant is importer" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+
+        navigator.nextPage(ImporterManualAddressPage, NormalMode, answers)
+          .mustBe(routes.PhoneNumberController.onPageLoad(NormalMode))
+      }
+
+      "go to ImporterHasEori page after ImporterManualAddress page when the claimant is representative" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(ImporterManualAddressPage, NormalMode, answers)
+          .mustBe(routes.ImporterHasEoriController.onPageLoad(NormalMode))
       }
     }
 
