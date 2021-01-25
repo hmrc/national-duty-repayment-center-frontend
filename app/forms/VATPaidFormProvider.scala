@@ -16,8 +16,8 @@
 
 package forms
 
+import forms.Validation.monetaryPattern
 import javax.inject.Inject
-
 import forms.mappings.Mappings
 import play.api.data.Form
 
@@ -25,7 +25,14 @@ class VATPaidFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("vATPaid.error.required")
-        .verifying(maxLength(14, "vATPaid.error.length"))
+      "value" -> decimal("vATPaid.error.required",
+        "vATPaid.error.notANumber")
+        .verifying(regexp(monetaryPattern, "vATPaid.error.decimalPlaces"))
+        .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
+        .verifying(maximumValue[BigDecimal](99999999999.99, "vATPaid.error.length"))
+        .transform[String](
+          d => d.toString,
+          i => i.toDouble
+        )
     )
 }
