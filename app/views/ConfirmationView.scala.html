@@ -28,7 +28,7 @@
 ) {
 
     <div class="govuk-panel govuk-panel--confirmation">
-        @html.h1(messages("confirmation.heading"))
+        @html.h1("confirmation.heading", classes="govuk-panel__title")
         <div class="govuk-panel__body">
             @messages("confirmation.referenceNumber")<br><strong> @claimId.toString </strong>
         </div>
