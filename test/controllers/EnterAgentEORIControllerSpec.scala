@@ -42,8 +42,6 @@ class EnterAgentEORIControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val enterAgentEORIRoute = routes.EnterAgentEORIController.onPageLoad(NormalMode).url
 
-  val backLink = routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
-
   "EnterAgentEORI Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -55,6 +53,8 @@ class EnterAgentEORIControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[EnterAgentEORIView]
+
+      val backLink = routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -75,6 +75,8 @@ class EnterAgentEORIControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[EnterAgentEORIView]
 
       val result = route(application, request).value
+
+      val backLink = routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -123,6 +125,8 @@ class EnterAgentEORIControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[EnterAgentEORIView]
 
       val result = route(application, request).value
+
+      val backLink = routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 

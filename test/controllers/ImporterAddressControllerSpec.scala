@@ -43,8 +43,6 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
   private val postcodeForm = (new PostcodeFormProvider) ()
   private val addressForm = (new ImporterAddressFormProvider) ()
   private val selectionForm = (new AddressSelectionFormProvider) ()
-  private val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
-  private val importerAddressBackLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
   def onwardRoute: Call = Call("GET", "/national-duty-repayment-center/enter-importer-address")
 
@@ -65,6 +63,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
         val view = application.injector.instanceOf[ImporterAddressView]
 
+        val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
@@ -84,6 +84,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
+        val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
@@ -102,6 +104,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val boundForm = postcodeForm.bind(Map("value" -> "12345678901234567890"))
 
         val result = route(application, request).value
+
+        val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
 
         status(result) mustEqual BAD_REQUEST
 
@@ -162,6 +166,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
           val result = route(application, request).value
 
+          val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
           status(result) mustEqual BAD_REQUEST
           val expectedView = application.injector.instanceOf[ImporterAddressView]
           val boundForm = addressForm.bind(Map.empty[String, String])
@@ -196,6 +202,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
             .withFormUrlEncodedBody("address-postcode" -> "AA1 1AA")
 
           val result = route(application, request).value
+
+          val importerAddressBackLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
           status(result) mustEqual BAD_REQUEST
 
@@ -253,6 +261,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
           val view = application.injector.instanceOf[ImporterAddressView]
 
+          val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
           contentAsString(result) mustEqual
             view(postcodeForm, NormalMode, false, backLink)(request, messages).toString
         }
@@ -267,6 +277,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
             val result = route(application, request).value
 
             val view = application.injector.instanceOf[ImporterAddressView]
+
+            val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
 
             contentAsString(result) mustEqual
               view(postcodeForm, NormalMode, true, backLink)(request, messages).toString
@@ -302,6 +314,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[ImporterAddressConfirmationView]
+
+        val importerAddressBackLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
         val expectedForm = selectionForm.withError("field-name", "Select the address or enter the address manually")
         val expectedSelectItems = Seq(
@@ -344,6 +358,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[ImporterAddressConfirmationView]
+
+        val importerAddressBackLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
         val expectedForm = selectionForm.withError("field-name", "Select the address or enter the address manually")
         val expectedSelectItems = Seq(

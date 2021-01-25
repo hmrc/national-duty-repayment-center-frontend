@@ -35,8 +35,6 @@ import scala.concurrent.Future
 
 class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
-
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ImporterManualAddressFormProvider()
@@ -55,6 +53,8 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[ImporterManualAddressView]
+
+      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -75,6 +75,8 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[ImporterManualAddressView]
 
       val result = route(application, request).value
+
+      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -130,6 +132,8 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[ImporterManualAddressView]
 
       val result = route(application, request).value
+
+      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 
