@@ -26,8 +26,9 @@ classes: Option[String] = None
 <div class="form-group">
     <details
             @if(open){ open}
-            @if(id.isDefined){ id="@{id.get}"}
-            class="govuk-details @if(classes){@classes}">
+            id="details-id"
+            class="govuk-details @if(classes){@classes}"
+            data-module="govuk-details">
         <summary class="govuk-details__summary">
         <span class="govuk-details__summary-text">
         @summaryText
