@@ -35,7 +35,7 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
       mapping(
         "EPU" -> text("entryDetails.claimEpu.error.required")
           .verifying(
-            regexp(Validation.epu, "entryDetails.claimEpu.error.length")
+            regexp(Validation.epu, "entryDetails.claimEpu.error.valid")
           ),
         "EntryNumber" -> text("entryDetails.entryNumber.error.required")
           .verifying(regexp(
