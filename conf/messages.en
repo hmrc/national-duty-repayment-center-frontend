@@ -256,22 +256,22 @@ enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
 enterAgentEORI.hint = The first 2 letters are the country code, like ''GB''. This is followed by 12 numbers, like GB123456123456.
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
-enterAgentEORI.error.required = Enter Agent EORI Number
-enterAgentEORI.error.length = Agent EORI number must be 17 characters or less
+enterAgentEORI.error.required = Enter the importer's EORI number in the correct format
+enterAgentEORI.error.length = Enter the importer's EORI number in the correct format
 
 agentImporterHasEORI.title = Does the importer have an EORI number?
 agentImporterHasEORI.heading = Does the importer have an EORI number?
 agentImporterHasEORI.01 = Yes
 agentImporterHasEORI.02 = No
 agentImporterHasEORI.checkYourAnswersLabel = Does the importer have an EORI number?
-agentImporterHasEORI.error.required = Select importer has an EORI number or not
+agentImporterHasEORI.error.required = Select yes if the importer has an EORI number
 
 isImporterVatRegistered.title = Is the importer VAT registered?
 isImporterVatRegistered.heading = Is the importer VAT registered?
 isImporterVatRegistered.01 = Yes
 isImporterVatRegistered.02 = No
 isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
-isImporterVatRegistered.error.required = Select whether the importer is VAT registered?
+isImporterVatRegistered.error.required = Select yes if the importer is VAT registered
 
 vATPaid.title = How much VAT was paid?
 vATPaid.heading = How much VAT was paid?
@@ -475,10 +475,10 @@ contactByEmail.error.required = Select contactByEmail
 contactByEmail.hintText = We will use this to contact you about this application. If you select ''No'' we will only contact you by post and telephone.
 contactByEmail.yes = Email address
 
-postcode.error.noneFound = No addresses were found that match this postcode
+postcode.error.noneFound = Postcode cannot be found
 addressFound.error = Select the address or enter the address manually
-postcode.error.required = Enter Postcode
-
+postcode.error.required = Enter a UK postcode
+postcode.error.length = Enter a postcode, like AA1 1AA
 indirectRepresentative.title = Are you an indirect representative of the importer?
 indirectRepresentative.heading = Are you an indirect representative of the importer?
 indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?

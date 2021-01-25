@@ -18,13 +18,13 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import models.EORI
+import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 
 class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "enterAgentEORI.error.required"
   val lengthKey = "enterAgentEORI.error.length"
-  val maxLength = 17
 
   val form: Form[EORI] = new EnterAgentEORIFormProvider()()
 
@@ -32,23 +32,29 @@ class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "value"
 
+    val validData = for {
+      firstChars <- Gen.listOfN(2, "GB").map(_.mkString)
+      numDigits   <- Gen.choose(1, 12)
+    } yield s"$firstChars$numDigits"
+
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      validData
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
 
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    "bind values with eori expression" in {
+
+      val result = form.bind(Map("value" -> "GB123456123456")).apply(fieldName)
+      result.value.get shouldBe "GB123456123456"
+      result.errors shouldBe List.empty
+    }
   }
 }
