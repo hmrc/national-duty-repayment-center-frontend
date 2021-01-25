@@ -23,7 +23,7 @@ class HowManyEntriesFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "howManyEntries.error.required"
   val lengthKey = "howManyEntries.error.length"
-  val maxLength = 6
+  val maxLength = 999999
 
   val form = new HowManyEntriesFormProvider()()
 
@@ -34,14 +34,14 @@ class HowManyEntriesFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      Validation.numberOfEntries
     )
 
     behave like fieldWithMaxLength(
       form,
       fieldName,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      lengthError = FormError(fieldName, lengthKey, Seq(Validation.numberOfEntries))
     )
 
     behave like mandatoryField(
@@ -49,5 +49,18 @@ class HowManyEntriesFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    "fail to bind entries with characters" in {
+      val result = form.bind(Map(fieldName -> "abcjf")).apply(fieldName)
+      val expectedError = FormError(fieldName, lengthKey, Seq(Validation.numberOfEntries))
+      result.errors shouldEqual Seq(expectedError)
+    }
+
+    "fail to bind a value" in {
+      val result = form.bind(Map(fieldName -> "")).apply(fieldName)
+      val expectedError = error(fieldName, requiredKey)
+
+      result.errors shouldEqual(expectedError)
+    }
   }
 }

@@ -98,6 +98,8 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to the next page when valid data is submitted" in {
 
+      val dateAnswer: LocalDate = LocalDate.parse("2020-01-01")
+
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
@@ -115,9 +117,9 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
           .withFormUrlEncodedBody(
             ("EPU", "123"),
             ("EntryNumber", "123456Q"),
-            ("value.day", validDateAnswer.getDayOfMonth.toString),
-            ("value.month", validDateAnswer.getMonthValue.toString),
-            ("value.year", validDateAnswer.getYear.toString)
+            ("EntryDate.day", dateAnswer.getDayOfMonth.toString),
+            ("EntryDate.month", dateAnswer.getMonthValue.toString),
+            ("EntryDate.year", dateAnswer.getYear.toString)
           )
 
       val result = route(application, request).value
