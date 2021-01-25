@@ -73,7 +73,7 @@ claimantType.error.required = Select if you are the importer or a representative
 
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
-importerEori.checkYourAnswersLabel = What is your EORI numbere?
+importerEori.checkYourAnswersLabel = What is your EORI number?
 importerEori.error.required = Enter your EORI number
 importerEori.error.length = EORI number must be 17 characters or less
 
@@ -103,7 +103,7 @@ articleType.117 = Overpayment of duty or VAT (Article 117)
 articleType.119 = Error by customs (Article 119)
 articleType.120 = Exceptional circumstances (Article 120)
 articleType.checkYourAnswersLabel = Why are you applying for this repayment?
-articleType.error.required = Select the reason you are applying for this repaymen
+articleType.error.required = Select the reason you are applying for this repayment
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
