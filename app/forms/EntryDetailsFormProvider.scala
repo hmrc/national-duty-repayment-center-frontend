@@ -39,7 +39,7 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
           ),
         "EntryNumber" -> text("entryDetails.entryNumber.error.required")
           .verifying(regexp(
-            Validation.epuEntryNumber,"entryDetails.entryNumber.error.length")
+            Validation.epuEntryNumber,"entryDetails.entryNumber.error.valid")
           ),
 
         "EntryDate" -> localDate(
