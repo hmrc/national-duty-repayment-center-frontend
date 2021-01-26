@@ -17,44 +17,39 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
-import models.EORI
-import org.scalacheck.Gen
-import play.api.data.{Form, FormError}
+import play.api.data.FormError
 
-class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
+class PostcodeFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "enterAgentEORI.error.required"
-  val lengthKey = "enterAgentEORI.error.valid"
+  val requiredKey = "postcode.error.required"
+  val lengthKey = "postcode.error.length"
 
-  val form: Form[EORI] = new EnterAgentEORIFormProvider()()
+  val minLength = 6
+  val maxLength = 9
+
+  val form = new PostcodeFormProvider()()
 
   ".value" must {
 
-    val fieldName = "value"
-
-    val validData = for {
-      firstChars <- Gen.listOfN(2, "GB").map(_.mkString)
-      numDigits   <- Gen.choose(1, 12)
-    } yield s"$firstChars$numDigits"
+    val fieldName = "postCode"
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      validData
+      stringsWithMinAndMaxLength(minLength,maxLength)
     )
 
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    )
 
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
-
-    "bind values with eori expression" in {
-
-      val result = form.bind(Map("value" -> "GB123456123456")).apply(fieldName)
-      result.value.get shouldBe "GB123456123456"
-      result.errors shouldBe List.empty
-    }
   }
 }
