@@ -306,7 +306,7 @@ otherDutiesPaid.title = How much was paid in other duties?
 otherDutiesPaid.heading = How much was paid in other duties?
 otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
 otherDutiesPaid.error.required = Enter the amount of other duties that were due to HMRC
-otherDutiesPaid.error.notANumber = not a number entered
+otherDutiesPaid.error.notANumber = Amount of other duties that were paid must be a number
 otherDutiesPaid.error.length = Amount of other duties that were due to HMRC must be 99999999999.99 or less
 otherDutiesPaid.error.decimalPlaces = Amount of other duties that were paid must include pence, like 123.45
 
