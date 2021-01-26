@@ -22,12 +22,12 @@ import models.{AmendCaseResponseType, Mode}
 import navigation.Navigator
 import pages.{AmendCaseResponseTypePage, AmendCaseSendInformationPage, FurtherInformationPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AmendCaseSendInformationView
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class AmendCaseSendInformationController @Inject()(
                                         override val messagesApi: MessagesApi,
@@ -40,9 +40,13 @@ class AmendCaseSendInformationController @Inject()(
                                         view: AmendCaseSendInformationView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def getBackLink(mode: Mode): Call = {
+    routes.AmendCaseResponseTypeController.onPageLoad(mode)
+  }
+
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(mode))
+      Ok(view(mode, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {

@@ -36,6 +36,8 @@ import scala.concurrent.Future
 
 class AmendCaseUploadAnotherFileControllerSpec extends SpecBase with MockitoSugar {
 
+  val backLink = routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
+
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new AmendCaseUploadAnotherFileFormProvider()
@@ -58,7 +60,7 @@ class AmendCaseUploadAnotherFileControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +80,7 @@ class AmendCaseUploadAnotherFileControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AmendCaseUploadAnotherFile.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(AmendCaseUploadAnotherFile.values.head), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +129,7 @@ class AmendCaseUploadAnotherFileControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

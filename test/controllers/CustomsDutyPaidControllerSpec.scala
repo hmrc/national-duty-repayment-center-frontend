@@ -35,6 +35,8 @@ import scala.concurrent.Future
 
 class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
+  val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
+
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new CustomsDutyPaidFormProvider()
@@ -57,7 +59,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -77,7 +79,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("0"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("0"), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -125,7 +127,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

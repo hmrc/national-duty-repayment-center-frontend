@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.OtherDutiesPaidFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{ClaimRepaymentType, Mode, UserAnswers}
 import navigation.Navigator
-import pages.OtherDutiesPaidPage
+import pages.{ClaimRepaymentTypePage, OtherDutiesPaidPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.OtherDutiesPaidView
@@ -44,6 +44,14 @@ class OtherDutiesPaidController @Inject()(
 
   val form = formProvider()
 
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+    userAnswers.get(ClaimRepaymentTypePage) match {
+      case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATDueToHMRCController.onPageLoad(mode)
+      case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyDueToHMRCController.onPageLoad(mode)
+      case _ => routes.ClaimRepaymentTypeController.onPageLoad(mode)
+    }
+  }
+
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -52,7 +60,7 @@ class OtherDutiesPaidController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +68,7 @@ class OtherDutiesPaidController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {

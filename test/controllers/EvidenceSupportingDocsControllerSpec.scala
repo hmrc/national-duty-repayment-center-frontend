@@ -35,10 +35,12 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[EvidenceSupportingDocsView]
 
+      val backLink = routes.RepaymentAmountSummaryController.onPageLoad()
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

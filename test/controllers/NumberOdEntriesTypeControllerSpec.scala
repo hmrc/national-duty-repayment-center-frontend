@@ -36,6 +36,8 @@ import scala.concurrent.Future
 
 class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
+  val backLink = routes.ClaimantTypeController.onPageLoad(NormalMode)
+
   def onwardRoute = Call("GET", "/foo")
 
   lazy val numberOfEntriesTypeRoute = routes.NumberOfEntriesTypeController.onPageLoad(NormalMode).url
@@ -58,7 +60,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +80,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(NumberOfEntriesType.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(NumberOfEntriesType.values.head), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +129,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

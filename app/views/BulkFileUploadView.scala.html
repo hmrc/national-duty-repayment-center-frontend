@@ -23,11 +23,11 @@
     html: views.components.html
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("bulkFileUpload.title"))}"),
-    backLink = Some("#")
+    backLink = Some(backLink.url)
 ) {
 
     @forms.formWithCSRF(action = BulkFileUploadController.onSubmit(), args = 'novalidate -> "novalidate") {

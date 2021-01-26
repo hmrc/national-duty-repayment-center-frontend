@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.IsVATRegisteredFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.IsVATRegisteredPage
+import pages.{ImporterHasEoriPage, IsVATRegisteredPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IsVATRegisteredView
@@ -44,6 +44,13 @@ class IsVATRegisteredController @Inject()(
 
   val form = formProvider()
 
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+    userAnswers.get(ImporterHasEoriPage) match {
+      case Some(true) => routes.ImporterEoriController.onPageLoad(mode)
+      case _ => routes.ImporterHasEoriController.onPageLoad(mode)
+    }
+  }
+
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -52,7 +59,7 @@ class IsVATRegisteredController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +67,7 @@ class IsVATRegisteredController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {

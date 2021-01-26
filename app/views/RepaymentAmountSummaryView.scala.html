@@ -24,11 +24,11 @@
     html: views.components.html
 )
 
-@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("repaymentAmountSummary.title"))}"),
-    backLink = Some("#")
+    backLink = Some(backLink.url)
 ) {
 
         @html.h1("repaymentAmountSummary.heading", classes = "govuk-heading-xl")

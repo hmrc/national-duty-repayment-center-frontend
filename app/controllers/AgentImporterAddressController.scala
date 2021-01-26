@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory
 import play.api.data.Form
 import play.api.libs.json.{JsObject, Json}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.{SelectItem}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -56,6 +56,15 @@ class AgentImporterAddressController @Inject()(
   extends FrontendBaseController with I18nSupport {
 
   private val form = formProvider()
+
+  private def getBackLink(mode: Mode): Call = {
+    routes.AgentNameImporterController.onPageLoad(mode)
+  }
+
+  private def getAgentAdddressBackLink(mode: Mode): Call = {
+    routes.AgentImporterAddressController.onPageLoad(mode)
+  }
+
   private val postcodeForm = postcodeFormProvider()
   private val selectionForm = addressSelectionFormProvider()
   val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
@@ -69,7 +78,7 @@ class AgentImporterAddressController @Inject()(
           postcodeForm.fill(PostcodeLookup(value))
       }
 
-      Future.successful(Ok(view(preparedForm, mode)))
+      Future.successful(Ok(view(preparedForm, mode, getBackLink(mode))))
   }
 
   def postcodeSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -77,7 +86,7 @@ class AgentImporterAddressController @Inject()(
     implicit request =>
       postcodeForm.bindFromRequest.fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
         lookup => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterPostcodePage, lookup.postcode))
@@ -93,10 +102,10 @@ class AgentImporterAddressController @Inject()(
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
-        BadRequest(view(buildLookupFailureError(lookup), mode))
+        BadRequest(view(buildLookupFailureError(lookup), mode, getBackLink(mode)))
 
       case Right(candidates) if candidates.noOfHits == 0 =>
-        BadRequest(view(buildLookupFailureError(lookup), mode))
+        BadRequest(view(buildLookupFailureError(lookup), mode, getBackLink(mode)))
 
       case Right(candidates) =>
         val selectionItems = sorter.sort(candidates.candidateAddresses)
@@ -111,9 +120,9 @@ class AgentImporterAddressController @Inject()(
           )
 
         if (form.hasErrors) {
-          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode))
+          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, getAgentAdddressBackLink(mode)))
         } else {
-          Ok(addressConfirmationView(form, lookup, selectionItems, mode))
+          Ok(addressConfirmationView(form, lookup, selectionItems, mode, getAgentAdddressBackLink(mode)))
         }
     }
   }
@@ -137,7 +146,7 @@ class AgentImporterAddressController @Inject()(
           js =>
             form.bind(js).fold(
               formWithErrors =>
-                Future.successful(BadRequest(view(formWithErrors, mode))),
+                Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
               address =>
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, address))
@@ -156,7 +165,7 @@ class AgentImporterAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -164,7 +173,7 @@ class AgentImporterAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
 
         value =>
           for {

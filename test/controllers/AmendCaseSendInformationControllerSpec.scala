@@ -35,6 +35,8 @@ import scala.concurrent.Future
 
 class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar {
 
+  val backLink = routes.AmendCaseResponseTypeController.onPageLoad(NormalMode)
+
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new AmendCaseSendInformationFormProvider()
@@ -57,7 +59,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(NormalMode)(fakeRequest, messages).toString
+        view(NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -79,7 +81,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(NormalMode)(fakeRequest, messages).toString
+        view(NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

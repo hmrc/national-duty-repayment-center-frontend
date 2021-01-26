@@ -24,7 +24,7 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @conditionalContent = {
     @forms.inputText(
@@ -41,7 +41,7 @@
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("contactByEmail.title"))}"),
-    backLink = Some("#")
+    backLink = Some(backLink.url)
 ) {
 
     @forms.formWithCSRF(action = ContactByEmailController.onSubmit(mode), args = 'novalidate -> "novalidate") {
