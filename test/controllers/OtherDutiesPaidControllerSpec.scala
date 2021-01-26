@@ -105,7 +105,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, otherDutiesPaidRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "0"))
 
       val result = route(application, request).value
 

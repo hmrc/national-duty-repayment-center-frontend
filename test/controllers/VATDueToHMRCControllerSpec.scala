@@ -35,8 +35,6 @@ import scala.concurrent.Future
 
 class VATDueToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.VATPaidController.onPageLoad(NormalMode)
-
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new VATDueToHMRCFormProvider()
@@ -55,6 +53,8 @@ class VATDueToHMRCControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[VATDueToHMRCView]
+
+      val backLink = routes.VATPaidController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -75,6 +75,8 @@ class VATDueToHMRCControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[VATDueToHMRCView]
 
       val result = route(application, request).value
+
+      val backLink = routes.VATPaidController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -123,6 +125,8 @@ class VATDueToHMRCControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[VATDueToHMRCView]
 
       val result = route(application, request).value
+
+      val backLink = routes.VATPaidController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 
