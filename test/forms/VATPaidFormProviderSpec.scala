@@ -16,16 +16,20 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
-import play.api.data.FormError
+import forms.behaviours.DecimalFieldBehaviours
+import play.api.data.{Form, FormError}
 
-class VATPaidFormProviderSpec extends StringFieldBehaviours {
+class VATPaidFormProviderSpec extends DecimalFieldBehaviours {
 
   val requiredKey = "vATPaid.error.required"
-  val lengthKey = "vATPaid.error.length"
+  val lengthKey = "vATPaid.error.notANumber"
   val maxLength = 14
+  val minimum = 0.00
+  var maximum = 99999999999.99
 
-  val form = new VATPaidFormProvider()()
+  val validDataGenerator = intsInRangeWithCommas(minimum.toInt, maximum.toInt)
+
+  val form: Form[String] = new VATPaidFormProvider()()
 
   ".value" must {
 
@@ -34,15 +38,21 @@ class VATPaidFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      validDataGenerator
     )
 
-    behave like fieldWithMaxLength(
+    behave like decimalField(
       form,
       fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      nonNumericError  = FormError(fieldName, "vATPaid.error.notANumber")
     )
+
+    "not bind decimals with 3 decimal place" in {
+      val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
+      result.errors shouldEqual Seq(
+        FormError(fieldName, "vATPaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+      )
+    }
 
     behave like mandatoryField(
       form,

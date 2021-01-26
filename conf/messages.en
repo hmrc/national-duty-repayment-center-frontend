@@ -69,13 +69,13 @@ claimantType.heading = Are you the importer or their representative?
 claimantType.01 = I am the importer
 claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
-claimantType.error.required = Select claimantType
+claimantType.error.required = Select if you are the importer or a representative of the importer
 
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
 importerEori.checkYourAnswersLabel = What is your EORI number?
-importerEori.error.required = Enter your EORI number in the correct format
-importerEori.error.length = Enter your EORI number in the correct format
+importerEori.error.required = Enter your EORI number
+importerEori.error.length = EORI number must be 17 characters or less
 
 isVATRegistered.title = Are you VAT registered?
 isVATRegistered.heading = Are you VAT registered?
@@ -90,12 +90,12 @@ importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
 importerClaimantVrn.error.required = Enter your VRN number
 importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
-customsRegulationType.title = What was the acceptance date for all entries?
-customsRegulationType.heading = What was the acceptance date for all entries?
+customsRegulationType.title = What was the entry acceptance date?
+customsRegulationType.heading = What was the entry acceptance date?
 customsRegulationType.01 = On or before 31 December 2020
 customsRegulationType.02 = From 1 January 2021
 customsRegulationType.checkYourAnswersLabel = What was the acceptance date for all entries?
-customsRegulationType.error.required = Select the entry acceptance date for all entries
+customsRegulationType.error.required = Select if the entry acceptance date was from 1 January 2021, or on or before 31 December 2020
 
 articleType.title = Why are you applying for this repayment?
 articleType.heading = Why are you applying for this repayment?
@@ -103,7 +103,7 @@ articleType.117 = Overpayment of duty or VAT (Article 117)
 articleType.119 = Error by customs (Article 119)
 articleType.120 = Exceptional circumstances (Article 120)
 articleType.checkYourAnswersLabel = Why are you applying for this repayment?
-articleType.error.required = Select why are you applying for this repayment
+articleType.error.required = Select the reason you are applying for this repayment
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
@@ -111,31 +111,30 @@ numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = More than one entry
 numberOfEntriesType.02.hint = Multiple entries must all be from the same importer.
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
-numberOfEntriesType.error.required = Select how many entries do you want to submit
+numberOfEntriesType.error.required = Select if you want to submit one entry or more than one entry
 
 howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
-howManyEntries.error.required = Enter how many entries are you claiming for?
-howManyEntries.error.length = HowManyEntries must be 6 characters or less
+howManyEntries.error.required = Select if you want to submit one entry or more than one entry
+howManyEntries.error.length = Number of entries must be between 2 and 999,999
 
 entryDetails.title = Entry details
 entryDetails.heading = Entry details
 entryDetails.hint = These can be found on C88 and E2 documents
 entryDetails.claimEpu.heading = Entry processing unit (EPU)
 entryDetails.claimEpu.hint = This is 3 numbers, for example ''123''
-entryDetails.claimEpu.error.required = Enter the entry processing unit (EPU)
-entryDetails.claimEpu.error.length = EPU must be 3 characters or less
+entryDetails.claimEpu.error.required = Enter the entry processing unit (EPU) number
+entryDetails.claimEpu.error.valid = Enter the entry processing unit (EPU) number in the correct format
 entryDetails.entryNumber.heading = Entry number
 entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example ''123456Q''
 entryDetails.entryNumber.error.required = Enter the entry number
-entryDetails.entryNumber.error.length = Entry number must be 7 characters or less
+entryDetails.entryNumber.error.valid = Enter the entry number in the correct format
 entryDetails.entryDate.heading = Entry date
 entryDetails.entryDate.hint = For example, 25 3 2019
 entryDetails.claimEntryDate.error.required.all = Enter the entry date
-entryDetails.claimEntryDate.error.required.two = The entry date must include {0} and {1}
-entryDetails.claimEntryDate.error.required = The entry date must include {0}
-entryDetails.claimEntryDate.error.invalid = Enter a real entry date
+entryDetails.claimEntryDate.error.required = Enter the entry date in the correct format
+entryDetails.claimEntryDate.error.invalid = Enter the entry date in the correct format
 
 
 claimEpu.checkYourAnswersLabel = Entry processing unit (EPU)
@@ -276,9 +275,11 @@ isImporterVatRegistered.error.required = Select whether the importer is VAT regi
 vATPaid.title = How much VAT was paid?
 vATPaid.heading = How much VAT was paid?
 vATPaid.checkYourAnswersLabel = How much VAT was paid?
-vATPaid.error.required = Enter VAT was paid?
-vATPaid.error.length = VAT paid must be 14 characters or less
 vATPaid.hint = This should be the total amount of overpayment for all entries
+vATPaid.error.required = Enter the amount of import VAT that was paid
+vATPaid.error.notANumber = Amount of import VAT that was paid must be a number
+vATPaid.error.length = Amount of Customs Duty that was due to HMRC must be 99999999999.99 or less
+vATPaid.error.decimalPlaces = Amount of Customs Duty that should have been paid must include pence, like 123.45
 
 vATDueToHMRC.title = How much VAT should have been paid to HMRC?
 vATDueToHMRC.heading = How much VAT should have been paid to HMRC?
@@ -304,8 +305,11 @@ customsDutyDueToHMRC.error.length = Customs Duty should have been paid to HMRC m
 otherDutiesPaid.title = How much was paid in other duties?
 otherDutiesPaid.heading = How much was paid in other duties?
 otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
-otherDutiesPaid.error.required = Enter Other Duties Paid
-otherDutiesPaid.error.length = Other Duties Paid must be 14 characters or less
+otherDutiesPaid.error.required = Enter the amount of other duties that were due to HMRC
+otherDutiesPaid.error.notANumber = not a number entered
+otherDutiesPaid.error.length = Amount of other duties that were due to HMRC must be 99999999999.99 or less
+otherDutiesPaid.error.decimalPlaces = Amount of other duties that were paid must include pence, like 123.45
+
 
 otherDutiesDueToHMRC.title = How much should have been paid in other duties to HMRC?
 otherDutiesDueToHMRC.heading = How much should have been paid in other duties to HMRC?

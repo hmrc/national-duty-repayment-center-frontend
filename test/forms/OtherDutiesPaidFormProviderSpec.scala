@@ -16,16 +16,20 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
-import play.api.data.FormError
+import forms.behaviours.DecimalFieldBehaviours
+import play.api.data.{Form, FormError}
 
-class OtherDutiesPaidFormProviderSpec extends StringFieldBehaviours {
+class OtherDutiesPaidFormProviderSpec extends DecimalFieldBehaviours {
 
   val requiredKey = "otherDutiesPaid.error.required"
-  val lengthKey = "otherDutiesPaid.error.length"
+  val lengthKey = "otherDutiesPaid.error.notANumber"
   val maxLength = 14
+  val minimum = 0.00
+  var maximum = 99999999999.99
 
-  val form = new OtherDutiesPaidFormProvider()()
+  val validDataGenerator = intsInRangeWithCommas(minimum.toInt, maximum.toInt)
+
+  val form: Form[String] = new OtherDutiesPaidFormProvider()()
 
   ".value" must {
 
@@ -34,15 +38,21 @@ class OtherDutiesPaidFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      validDataGenerator
     )
 
-    behave like fieldWithMaxLength(
+    behave like decimalField(
       form,
       fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      nonNumericError  = FormError(fieldName, "otherDutiesPaid.error.notANumber")
     )
+
+    "not bind decimals with 3 decimal place" in {
+      val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
+      result.errors shouldEqual Seq(
+        FormError(fieldName, "otherDutiesPaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+      )
+    }
 
     behave like mandatoryField(
       form,

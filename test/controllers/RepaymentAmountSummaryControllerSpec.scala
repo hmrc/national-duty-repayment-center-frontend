@@ -47,7 +47,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("VAT paid"),
         Html("£0.0"),
-        Some("/national-duty-repayment-center/changeVATPaid"),
+        Some("/national-duty-repayment-center/change-import-vat-paid"),
         Some("vat-paid")
       ),
       AnswerRow(
@@ -62,7 +62,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Other duties paid"),
         Html("£0.0"),
-        Some("/national-duty-repayment-center/changeOtherDutiesPaid"),
+        Some("/national-duty-repayment-center/change-other-duties-paid"),
         Some("other-duties-paid")
       ),
       AnswerRow(

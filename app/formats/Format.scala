@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package forms
+package formats
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import models.NoOfEntries
-import play.api.data.Form
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-class HowManyEntriesFormProvider @Inject() extends Mappings {
+object Format {
 
-  def apply(): Form[NoOfEntries] =
-    Form(
-      "value" -> text("howManyEntries.error.required")
-        .verifying(
-          regexp(Validation.numberOfEntries, "howManyEntries.error.length"))
-        .transform[NoOfEntries](NoOfEntries.apply, _.value)
-    )
+  val dateFormatter: DateTimeFormatter       = DateTimeFormatter.ofPattern("d MMMM yyyy")
+  def formattedDate(date: LocalDate): String = date.format(dateFormatter)
 }
