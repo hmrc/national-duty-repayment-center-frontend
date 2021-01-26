@@ -27,7 +27,7 @@ class EnterAgentEORIFormProvider @Inject() extends Mappings {
     Form(
       "value" -> text("enterAgentEORI.error.required")
         .verifying(firstError(
-          regexp(Validation.eoriPattern.toString, "enterAgentEORI.error.length")
+          regexp(Validation.eoriPattern.toString, "enterAgentEORI.error.valid")
         ))
         .transform[EORI](EORI.apply, _.value)
     )
