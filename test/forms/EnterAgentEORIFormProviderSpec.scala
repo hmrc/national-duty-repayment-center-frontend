@@ -24,7 +24,7 @@ import play.api.data.{Form, FormError}
 class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "enterAgentEORI.error.required"
-  val lengthKey = "enterAgentEORI.error.length"
+  val lengthKey = "enterAgentEORI.error.valid"
 
   val form: Form[EORI] = new EnterAgentEORIFormProvider()()
 
