@@ -22,8 +22,7 @@ import play.api.data.FormError
 
 class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "importerEori.error.required"
-  val lengthKey = "importerEori.error.length"
+  val invalidKey = "importerEori.error.invalid"
   val maxLength = 17
 
   val form = new ImporterEoriFormProvider()()
@@ -47,7 +46,7 @@ class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      requiredError = FormError(fieldName, invalidKey)
     )
 
     "bind values with eori expression" in {

@@ -74,8 +74,7 @@ claimantType.error.required = Select if you are the importer or a representative
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
 importerEori.checkYourAnswersLabel = What is your EORI number?
-importerEori.error.required = Enter your EORI number in the correct format
-importerEori.error.length = Enter your EORI number in the correct format
+importerEori.error.invalid = Enter your EORI number in the correct format
 
 isVATRegistered.title = Are you VAT registered?
 isVATRegistered.heading = Are you VAT registered?
