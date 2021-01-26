@@ -257,7 +257,7 @@ enterAgentEORI.heading = What is the importer''s EORI number?
 enterAgentEORI.hint = The first 2 letters are the country code, like ''GB''. This is followed by 12 numbers, like GB123456123456.
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
 enterAgentEORI.error.required = Enter the importer's EORI number in the correct format
-enterAgentEORI.error.length = Enter the importer's EORI number in the correct format
+enterAgentEORI.error.valid = Enter the importer's EORI number in the correct format
 
 agentImporterHasEORI.title = Does the importer have an EORI number?
 agentImporterHasEORI.heading = Does the importer have an EORI number?
