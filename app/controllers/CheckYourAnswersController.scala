@@ -48,8 +48,8 @@ class CheckYourAnswersController @Inject()(
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(RepaymentTypePage) match {
-      case _ if userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) => routes.BankDetailsController.onPageLoad(mode)
+    userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) match {
+      case true=> routes.BankDetailsController.onPageLoad(mode)
       case _ => routes.RepaymentTypeController.onPageLoad(mode)
     }
   }

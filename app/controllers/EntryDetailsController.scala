@@ -45,8 +45,8 @@ class EntryDetailsController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(CustomsRegulationTypePage) match {
-      case _ if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.CustomsRegulationTypeController.onPageLoad(mode)
+    userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) match {
+      case true=> routes.CustomsRegulationTypeController.onPageLoad(mode)
       case _ => routes.ArticleTypeController.onPageLoad(mode)
     }
   }

@@ -45,8 +45,8 @@ class CustomsRegulationTypeController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(NumberOfEntriesTypePage) match {
-      case _ if userAnswers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) => routes.HowManyEntriesController.onPageLoad(mode)
+    userAnswers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match {
+      case true=> routes.HowManyEntriesController.onPageLoad(mode)
       case _ => routes.NumberOfEntriesTypeController.onPageLoad(mode)
     }
   }

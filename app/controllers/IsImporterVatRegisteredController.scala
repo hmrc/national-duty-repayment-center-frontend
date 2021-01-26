@@ -45,8 +45,8 @@ class IsImporterVatRegisteredController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(AgentImporterHasEORIPage) match {
-      case Some(AgentImporterHasEORI.Yes) => routes.EnterAgentEORIController.onPageLoad(mode)
+    userAnswers.get(AgentImporterHasEORIPage).contains(AgentImporterHasEORI.Yes) match {
+      case true=> routes.EnterAgentEORIController.onPageLoad(mode)
       case _ => routes.AgentImporterHasEORIController.onPageLoad(mode)
     }
   }
