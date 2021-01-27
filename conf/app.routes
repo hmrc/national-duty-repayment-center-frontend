@@ -97,8 +97,8 @@ POST       /changeContactType                  controllers.ContactTypeController
 
 GET        /agentNameImporter                        controllers.AgentNameImporterController.onPageLoad(mode: Mode = NormalMode)
 POST       /agentNameImporter                        controllers.AgentNameImporterController.onSubmit(mode: Mode = NormalMode)
-GET        /changeAgentNameImporter                  controllers.AgentNameImporterController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeAgentNameImporter                  controllers.AgentNameImporterController.onSubmit(mode: Mode = CheckMode)
+GET        /change-contact-by-email                  controllers.AgentNameImporterController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact-by-email                  controllers.AgentNameImporterController.onSubmit(mode: Mode = CheckMode)
 
 
 GET        /phoneNumber                        controllers.PhoneNumberController.onPageLoad(mode: Mode = NormalMode)
@@ -106,8 +106,8 @@ POST       /phoneNumber                        controllers.PhoneNumberController
 GET        /changePhoneNumber                  controllers.PhoneNumberController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePhoneNumber                  controllers.PhoneNumberController.onSubmit(mode: Mode = CheckMode)
 
-GET        /emailAddress                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
-POST       /emailAddress                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /contact-by-email                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /contact-by-email                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
 GET        /changeEmailAddress                  controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeEmailAddress                  controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
 
