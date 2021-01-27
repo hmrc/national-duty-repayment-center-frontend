@@ -26,7 +26,7 @@ class EmailAddressFormProvider @Inject() extends Mappings {
     Form(
       "email" -> emailAddressMapping(
         "emailAddress.error.length",
-        "emailAddress.error.valid",
+        "emailAddress.error.invalid",
         "emailAddress.error.required",
         "emailAddress.error.selection.required"
       ))

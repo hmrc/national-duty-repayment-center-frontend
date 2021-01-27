@@ -24,7 +24,7 @@ class EmailAddressFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "emailAddress.error.required"
   val lengthKey = "emailAddress.error.length"
-  val invalidKey = "emailAddress.error.valid"
+  val invalidKey = "emailAddress.error.invalid"
   val maxLength = 85
 
   val form = new EmailAddressFormProvider()()
