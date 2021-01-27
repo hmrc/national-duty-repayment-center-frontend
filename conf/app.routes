@@ -205,10 +205,10 @@ POST       /file-uploaded                        controllers.AdditionalFileUploa
 GET        /change-file-uploaded                  controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-file-uploaded                  controllers.AdditionalFileUploadController.onSubmit(mode: Mode = CheckMode)
 
-GET        /contact-by-email                        controllers.ContactByEmailController.onPageLoad(mode: Mode = NormalMode)
-POST       /contact-by-email                        controllers.ContactByEmailController.onSubmit(mode: Mode = NormalMode)
-GET        /change-contact-by-email                  controllers.ContactByEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-contact-by-email                  controllers.ContactByEmailController.onSubmit(mode: Mode = CheckMode)
+GET        /contact-by-email                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /contact-by-email                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /change-contact-by-email                  controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact-by-email                  controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
 
 GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-importer-address               controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)

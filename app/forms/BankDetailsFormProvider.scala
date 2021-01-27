@@ -27,7 +27,6 @@ class BankDetailsFormProvider @Inject() extends Mappings with TrimWhitespace {
   def apply(): Form[BankDetails] = Form(
     mapping(
       "AccountName" -> text("bankDetails.name.error.required")
-        .transform[String](trimWhitespace, value => value)
         .verifying(firstError(
           maxLength(40, "bankDetails.name.error.length"),
           regexp(Validation.safeInputPattern, "bankDetails.name.error.invalid")
