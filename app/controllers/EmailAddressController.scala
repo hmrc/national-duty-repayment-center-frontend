@@ -63,19 +63,10 @@ class EmailAddressController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
-          //if (request.userAnswers.get(EmailAddressPage).isDefined) {
-          //   println("DEFINED")
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value.get))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value.getOrElse("")))
             _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
-        // } else {
-        //  println("NOT DEFINED")
-        //  for {
-        //    updatedAnswers <- Future.fromTry(request.userAnswers.remove(EmailAddressPage))
-        //    _ <- sessionRepository.set(updatedAnswers)
-        // } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
-        // }
       )
   }
 }
