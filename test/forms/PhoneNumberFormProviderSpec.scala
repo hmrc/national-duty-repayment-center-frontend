@@ -23,6 +23,7 @@ class PhoneNumberFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "phoneNumber.error.required"
   val lengthKey = "phoneNumber.error.length"
+  val invalidKey = "phoneNumber.error.invalid"
   val maxLength = 11
 
   val form = new PhoneNumberFormProvider()()
@@ -49,5 +50,18 @@ class PhoneNumberFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    "bind values with correct phone number format" in {
+      val result = form.bind(Map("value" -> "07486236608")).apply(fieldName)
+      result.value.get shouldBe "07486236608"
+      result.errors shouldBe List.empty
+    }
+
+    "bind values with wrong phone number format" in {
+      val result = form.bind(Map("value" -> "S7486236608")).apply(fieldName)
+      result.errors shouldEqual Seq(
+        FormError(fieldName, invalidKey, List(forms.Validation.phoneNumberPattern))
+      )
+    }
   }
 }
