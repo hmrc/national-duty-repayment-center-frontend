@@ -20,11 +20,11 @@ import java.time.LocalDate
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.NormalMode
+import models.{Mode, NormalMode, RepaymentType, UserAnswers}
 import navigation.Navigator
-import pages.CheckYourAnswersPage
+import pages.{CheckYourAnswersPage, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
 import repositories.SessionRepository
 import services.ClaimService
@@ -47,6 +47,13 @@ class CheckYourAnswersController @Inject()(
                                             view: CheckYourAnswersView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+    userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) match {
+      case true=> routes.BankDetailsController.onPageLoad(mode)
+      case _ => routes.RepaymentTypeController.onPageLoad(mode)
+    }
+  }
+
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -54,7 +61,7 @@ class CheckYourAnswersController @Inject()(
 
       val sections = Seq(AnswerSection(None, Seq()))
 
-      Ok(view(sections))
+      Ok(view(sections, getBackLink(NormalMode, request.userAnswers)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {

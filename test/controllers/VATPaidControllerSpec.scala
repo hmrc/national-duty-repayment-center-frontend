@@ -18,12 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.VATPaidFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{ClaimRepaymentType, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.VATPaidPage
+import pages.{ClaimRepaymentTypePage, VATPaidPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
@@ -40,6 +40,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new VATPaidFormProvider()
   val form = formProvider()
+  val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
 
   lazy val vATPaidRoute = routes.VATPaidController.onPageLoad(NormalMode).url
 
@@ -47,7 +48,9 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, vATPaidRoute)
 
@@ -55,17 +58,20 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[VATPaidView]
 
+      val vatBackLink = routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, emptyUserAnswers)(fakeRequest, messages).toString
+        view(form, NormalMode, userAnswers, vatBackLink)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(VATPaidPage, "0").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet)
+        .success.value.set(VATPaidPage, "0").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -75,10 +81,12 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
+      val vatBackLink = routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("0"), NormalMode, emptyUserAnswers)(fakeRequest, messages).toString
+        view(form.fill("0"), NormalMode, userAnswers, vatBackLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -111,7 +119,9 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, vATPaidRoute)
@@ -123,10 +133,12 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
+      val vatBackLink = routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
+
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, emptyUserAnswers)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, userAnswers, vatBackLink)(fakeRequest, messages).toString
 
       application.stop()
     }

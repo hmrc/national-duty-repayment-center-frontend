@@ -36,6 +36,8 @@ import scala.concurrent.Future
 
 class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
+  val backLink = routes.IsVATRegisteredController.onPageLoad(NormalMode)
+
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ImporterNameFormProvider()
@@ -66,7 +68,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -84,7 +86,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UserName("Joe", "Bloggs")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(UserName("Joe", "Bloggs")), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -132,7 +134,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

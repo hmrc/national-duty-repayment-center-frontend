@@ -42,6 +42,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new WhomToPayFormProvider()
   val form = formProvider()
+  val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
 
   "WhomToPay Controller" must {
 
@@ -58,7 +59,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +79,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(WhomToPay.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(WhomToPay.values.head), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +128,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

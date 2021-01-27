@@ -85,6 +85,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
         success.value.set(CustomsDutyPaidPage, "0").success.value
 
+      val backLink = userAnswers.get(ClaimRepaymentTypePage) match {
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATDueToHMRCController.onPageLoad(NormalMode)
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
+        case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
+      }
+
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, routes.RepaymentAmountSummaryController.onPageLoad().url)
@@ -96,7 +103,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(answersViewModel)(fakeRequest, messages).toString
+        view(answersViewModel, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

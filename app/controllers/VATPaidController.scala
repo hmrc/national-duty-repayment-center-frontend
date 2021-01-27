@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.VATPaidFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{ClaimRepaymentType, Mode, UserAnswers}
 import navigation.Navigator
-import pages.VATPaidPage
+import pages.{ClaimRepaymentTypePage, VATPaidPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.VATPaidView
@@ -44,6 +44,13 @@ class VATPaidController @Inject()(
 
   val form = formProvider()
 
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+    userAnswers.get(ClaimRepaymentTypePage) match {
+      case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyDueToHMRCController.onPageLoad(mode)
+      case _ => routes.ClaimRepaymentTypeController.onPageLoad(mode)
+    }
+  }
+
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -52,7 +59,7 @@ class VATPaidController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, request.userAnswers))
+      Ok(view(preparedForm, mode, request.userAnswers, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +67,7 @@ class VATPaidController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.userAnswers))),
+          Future.successful(BadRequest(view(formWithErrors, mode, request.userAnswers, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {

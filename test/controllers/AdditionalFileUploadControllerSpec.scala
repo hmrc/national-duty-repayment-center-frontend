@@ -36,6 +36,8 @@ import scala.concurrent.Future
 
 class AdditionalFileUploadControllerSpec extends SpecBase with MockitoSugar {
 
+  val backLink = routes.FileUploadController.onPageLoad()
+
   def onwardRoute = Call("GET", "/foo")
 
   lazy val additionalFileUploadRoute = routes.AdditionalFileUploadController.onPageLoad(NormalMode).url
@@ -58,7 +60,7 @@ class AdditionalFileUploadControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +80,7 @@ class AdditionalFileUploadControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AdditionalFileUpload.values.head), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(AdditionalFileUpload.values.head), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +129,7 @@ class AdditionalFileUploadControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

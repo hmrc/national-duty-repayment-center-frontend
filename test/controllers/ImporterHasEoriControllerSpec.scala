@@ -43,6 +43,8 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val importerHasEoriRoute = routes.ImporterHasEoriController.onPageLoad(NormalMode).url
 
+  val backLink = routes.AdditionalFileUploadController.onPageLoad(NormalMode)
+
   "ImporterHasEori Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -58,7 +60,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -78,7 +80,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,7 +129,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

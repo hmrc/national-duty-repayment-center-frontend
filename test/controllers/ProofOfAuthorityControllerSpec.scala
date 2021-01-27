@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.{EvidenceSupportingDocsView, ProofOfAuthorityView}
@@ -35,10 +36,12 @@ class ProofOfAuthorityControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[ProofOfAuthorityView]
 
+      val backLink = routes.IndirectRepresentativeController.onPageLoad(NormalMode)
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -24,10 +24,15 @@ import play.api.data.{Form, Forms}
 
 class PostcodeFormProvider @Inject() extends Mappings {
 
+  val postalCodeMinLength = 6
+  val postalCodeMaxLength = 9
+
   def apply(): Form[PostcodeLookup] =
     Form(
       mapping(
         "postCode" -> text("postcode.error.required")
+          .verifying(minLength(postalCodeMinLength, "postcode.error.length"))
+          .verifying(maxLength(postalCodeMaxLength, "postcode.error.length"))
       )(PostcodeLookup.apply)(PostcodeLookup.unapply)
     )
 }

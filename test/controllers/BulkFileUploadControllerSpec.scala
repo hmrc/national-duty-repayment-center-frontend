@@ -36,6 +36,8 @@ import scala.concurrent.Future
 
 class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
 
+  val backLink = routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
+
   def onwardRoute = Call("GET", "/foo")
 
   lazy val bulkFileUploadRoute = routes.BulkFileUploadController.onPageLoad().url
@@ -58,7 +60,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view(backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

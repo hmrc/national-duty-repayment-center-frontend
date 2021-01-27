@@ -63,10 +63,12 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
         val view = application.injector.instanceOf[ImporterAddressView]
 
+        val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm, NormalMode, false)(request, messages).toString
+          view(postcodeForm, NormalMode, false, backLink)(request, messages).toString
       }
     }
 
@@ -82,10 +84,12 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
+        val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode, false)(request, messages).toString
+          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode, false, backLink)(request, messages).toString
       }
     }
 
@@ -101,12 +105,14 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
+        val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
         status(result) mustEqual BAD_REQUEST
 
         val expectedView = application.injector.instanceOf[ImporterAddressView]
 
         contentAsString(result) mustEqual
-          expectedView(boundForm, NormalMode, false)(request, messages).toString
+          expectedView(boundForm, NormalMode, false, backLink)(request, messages).toString
       }
     }
 
@@ -160,11 +166,13 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
           val result = route(application, request).value
 
+          val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
           status(result) mustEqual BAD_REQUEST
           val expectedView = application.injector.instanceOf[ImporterAddressView]
           val boundForm = addressForm.bind(Map.empty[String, String])
           contentAsString(result) mustEqual
-            expectedView(boundForm, NormalMode, false)(request, messages).toString
+            expectedView(boundForm, NormalMode, false, backLink)(request, messages).toString
         }
       }
 
@@ -195,6 +203,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
           val result = route(application, request).value
 
+          val importerAddressBackLink = routes.ImporterAddressController.onPageLoad(NormalMode)
+
           status(result) mustEqual BAD_REQUEST
 
           val expectedView = application.injector.instanceOf[ImporterAddressConfirmationView]
@@ -206,7 +216,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
           )
 
           contentAsString(result) mustEqual
-            expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode, false)(request, messages).toString
+            expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode, false, importerAddressBackLink)(request, messages).toString
         }
       }
 
@@ -251,8 +261,10 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
           val view = application.injector.instanceOf[ImporterAddressView]
 
+          val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
           contentAsString(result) mustEqual
-            view(postcodeForm, NormalMode, false)(request, messages).toString
+            view(postcodeForm, NormalMode, false, backLink)(request, messages).toString
         }
       }
 
@@ -266,8 +278,10 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
             val view = application.injector.instanceOf[ImporterAddressView]
 
+            val backLink = routes.ImporterNameController.onPageLoad(NormalMode)
+
             contentAsString(result) mustEqual
-              view(postcodeForm, NormalMode, true)(request, messages).toString
+              view(postcodeForm, NormalMode, true, backLink)(request, messages).toString
           }
         }
 
@@ -301,6 +315,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
         val view = application.injector.instanceOf[ImporterAddressConfirmationView]
 
+        val importerAddressBackLink = routes.ImporterAddressController.onPageLoad(NormalMode)
+
         val expectedForm = selectionForm.withError("field-name", "Select the address or enter the address manually")
         val expectedSelectItems = Seq(
           SelectItem(
@@ -309,7 +325,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         )
 
         contentAsString(result) mustEqual
-          view(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode, false)(request, messages).toString
+          view(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode, false, importerAddressBackLink)(request, messages).toString
       }
     }
 
@@ -343,6 +359,8 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
         val view = application.injector.instanceOf[ImporterAddressConfirmationView]
 
+        val importerAddressBackLink = routes.ImporterAddressController.onPageLoad(NormalMode)
+
         val expectedForm = selectionForm.withError("field-name", "Select the address or enter the address manually")
         val expectedSelectItems = Seq(
           SelectItem(
@@ -351,7 +369,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         )
 
         contentAsString(result) mustEqual
-          view(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode, true)(request, messages).toString
+          view(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode, true, importerAddressBackLink)(request, messages).toString
       }
     }
     }

@@ -74,8 +74,7 @@ claimantType.error.required = Select if you are the importer or a representative
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
 importerEori.checkYourAnswersLabel = What is your EORI number?
-importerEori.error.required = Enter your EORI number
-importerEori.error.length = EORI number must be 17 characters or less
+importerEori.error.invalid = Enter your EORI number in the correct format
 
 isVATRegistered.title = Are you VAT registered?
 isVATRegistered.heading = Are you VAT registered?
@@ -116,7 +115,7 @@ numberOfEntriesType.error.required = Select if you want to submit one entry or m
 howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
-howManyEntries.error.required = Select if you want to submit one entry or more than one entry
+howManyEntries.error.required = Enter the number of entries you are claiming for
 howManyEntries.error.length = Number of entries must be between 2 and 999,999
 
 entryDetails.title = Entry details
@@ -257,22 +256,22 @@ enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
 enterAgentEORI.hint = The first 2 letters are the country code, like ''GB''. This is followed by 12 numbers, like GB123456123456.
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
-enterAgentEORI.error.required = Enter Agent EORI Number
-enterAgentEORI.error.length = Agent EORI number must be 17 characters or less
+enterAgentEORI.error.required = Enter the importer's EORI number in the correct format
+enterAgentEORI.error.valid = Enter the importer's EORI number in the correct format
 
 agentImporterHasEORI.title = Does the importer have an EORI number?
 agentImporterHasEORI.heading = Does the importer have an EORI number?
 agentImporterHasEORI.01 = Yes
 agentImporterHasEORI.02 = No
 agentImporterHasEORI.checkYourAnswersLabel = Does the importer have an EORI number?
-agentImporterHasEORI.error.required = Select importer has an EORI number or not
+agentImporterHasEORI.error.required = Select yes if the importer has an EORI number
 
 isImporterVatRegistered.title = Is the importer VAT registered?
 isImporterVatRegistered.heading = Is the importer VAT registered?
 isImporterVatRegistered.01 = Yes
 isImporterVatRegistered.02 = No
 isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
-isImporterVatRegistered.error.required = Select whether the importer is VAT registered?
+isImporterVatRegistered.error.required = Select yes if the importer is VAT registered
 
 vATPaid.title = How much VAT was paid?
 vATPaid.heading = How much VAT was paid?
@@ -308,7 +307,7 @@ otherDutiesPaid.title = How much was paid in other duties?
 otherDutiesPaid.heading = How much was paid in other duties?
 otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
 otherDutiesPaid.error.required = Enter the amount of other duties that were due to HMRC
-otherDutiesPaid.error.notANumber = not a number entered
+otherDutiesPaid.error.notANumber = Amount of other duties that were paid must be a number
 otherDutiesPaid.error.length = Amount of other duties that were due to HMRC must be 99999999999.99 or less
 otherDutiesPaid.error.decimalPlaces = Amount of other duties that were paid must include pence, like 123.45
 
@@ -476,10 +475,10 @@ contactByEmail.error.required = Select contactByEmail
 contactByEmail.hintText = We will use this to contact you about this application. If you select ''No'' we will only contact you by post and telephone.
 contactByEmail.yes = Email address
 
-postcode.error.noneFound = No addresses were found that match this postcode
+postcode.error.noneFound = Postcode cannot be found
 addressFound.error = Select the address or enter the address manually
-postcode.error.required = Enter Postcode
-
+postcode.error.required = Enter a UK postcode
+postcode.error.length = Enter a postcode, like AA1 1AA
 indirectRepresentative.title = Are you an indirect representative of the importer?
 indirectRepresentative.heading = Are you an indirect representative of the importer?
 indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?
@@ -499,7 +498,7 @@ bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
 bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
 bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
-bulkFileUpload.error.required = Select files
+bulkFileUpload.error.required = Upload a file to support your application
 
 referenceNumber.title = What is the reference number?
 referenceNumber.heading = What is the reference number?
