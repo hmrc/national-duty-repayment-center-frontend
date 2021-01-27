@@ -46,7 +46,7 @@ class RepaymentTypeController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode): Call = {
-    routes.ContactByEmailController.onPageLoad(mode)
+    routes.EmailAddressController.onPageLoad(mode)
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {

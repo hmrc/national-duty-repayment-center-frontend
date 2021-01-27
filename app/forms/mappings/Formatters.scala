@@ -125,16 +125,17 @@ trait Formatters {
 
     def bind(data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
 
-      val emailAddress: Option[String] = data.get(emailFieldName)
-      val useEmail = data.get("value").getOrElse("No selection")
+      val emailAddress = data.get(emailFieldName)
+      val useEmail = data.get("value")
 
       val maxLengthEmailAddress = 85
 
       (emailAddress, useEmail) match {
-        case (Some(""), "01") => Left(Seq(FormError(emailFieldName, keyRequired)))
-        case (_, "No selection") => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
-        case (Some(email), "01") if email.length > 0 && email.length > maxLengthEmailAddress => Left(Seq(FormError(emailFieldName, keyLength)))
-        case (Some(email), "01") if !email.matches(Validation.emailRegex) => Left(Seq(FormError(emailFieldName, keyInvalid)))
+        case (None, Some("01")) => Left(Seq(FormError(emailFieldName, keyRequired)))
+        case (_, None) => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
+        case (Some(email), Some("01")) if email.length > 0 && email.length > maxLengthEmailAddress => Left(Seq(FormError(emailFieldName, keyLength)))
+        case (Some(email), Some("01")) if !email.matches(Validation.emailRegex) => Left(Seq(FormError(emailFieldName, keyInvalid)))
+        case (Some(email), Some("01")) => Right(Some(email))
         case _ => Right(None)
       }
 

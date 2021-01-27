@@ -40,7 +40,7 @@ class EmailAddressController @Inject()(
                                         formProvider: EmailAddressFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: EmailAddressView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -63,17 +63,19 @@ class EmailAddressController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
-          if (request.userAnswers.get(EmailAddressPage).isDefined) {
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value.get))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
-          } else {
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.remove(EmailAddressPage))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
-          }
+          //if (request.userAnswers.get(EmailAddressPage).isDefined) {
+          //   println("DEFINED")
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value.get))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
+        // } else {
+        //  println("NOT DEFINED")
+        //  for {
+        //    updatedAnswers <- Future.fromTry(request.userAnswers.remove(EmailAddressPage))
+        //    _ <- sessionRepository.set(updatedAnswers)
+        // } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
+        // }
       )
   }
 }
