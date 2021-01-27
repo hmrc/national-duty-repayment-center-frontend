@@ -65,7 +65,7 @@ class EmailAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(EmailAddressPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(EmailAddressPage, "test@test.com").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class EmailAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(Some("test@test.com")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -99,7 +99,7 @@ class EmailAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, emailAddressRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("email", "test@test.com"),("value", "01"))
 
       val result = route(application, request).value
 
@@ -115,9 +115,9 @@ class EmailAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, emailAddressRoute)
-          .withFormUrlEncodedBody(("value", ""))
+          .withFormUrlEncodedBody(("email", ""))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("email" -> ""))
 
       val view = application.injector.instanceOf[EmailAddressView]
 
@@ -152,7 +152,7 @@ class EmailAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, emailAddressRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("email", "test@test.com"))
 
       val result = route(application, request).value
 

@@ -36,7 +36,7 @@ import scala.concurrent.Future
 
 class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.ContactByEmailController.onPageLoad(NormalMode)
+  val backLink = routes.EmailAddressController.onPageLoad(NormalMode)
 
   def onwardRoute = Call("GET", "/foo")
 

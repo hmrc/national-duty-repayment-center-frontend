@@ -20,14 +20,15 @@ import scala.util.matching.Regex
 
 object Validation {
 
-  val accountNumberPattern: Regex   = "^[ -]*(?:\\d[ -]*){6,8}$".r.anchored
-  val sortCodePattern: Regex        = "^[ -]*(?:\\d[ -]*){6,6}$".r.anchored
+  val accountNumberPattern: Regex = "^[ -]*(?:\\d[ -]*){6,8}$".r.anchored
+  val sortCodePattern: Regex = "^[ -]*(?:\\d[ -]*){6,6}$".r.anchored
   val eoriPattern: Regex = "((?:[Gg][Bb])\\d{15})|((?:[Gg][Bb])\\d{12})".r.anchored
-  val safeInputPattern              = """^[A-Za-z0-9À-ÿ \!\)\(.,_/’'"&-]+$"""
-  val postcodeRegex                 = """^[ ]*[A-Za-z][ ]*[A-Za-z]{0,1}[ ]*[0-9][ ]*[0-9A-Za-z]{0,1}[ ]*[0-9][ ]*[A-Za-z][ ]*[A-Za-z][ ]*$"""
+  val safeInputPattern = """^[A-Za-z0-9À-ÿ \!\)\(.,_/’'"&-]+$"""
+  val postcodeRegex = """^[ ]*[A-Za-z][ ]*[A-Za-z]{0,1}[ ]*[0-9][ ]*[0-9A-Za-z]{0,1}[ ]*[0-9][ ]*[A-Za-z][ ]*[A-Za-z][ ]*$"""
   val monetaryPattern: String = """^-?(\d*(\.\d{1,2})?)$"""
-  val numberOfEntries               = "^([2-9]|[0-9]{2,6})$"
-  val epu                           = "^[0-9][0-9][0-9]$"
-  val epuEntryNumber                = "^([0-9]{6}[a-z|A-Z])$"
+  val numberOfEntries = "^([2-9]|[0-9]{2,6})$"
+  val epu = "^[0-9][0-9][0-9]$"
+  val epuEntryNumber = "^([0-9]{6}[a-z|A-Z])$"
+  val emailRegex = """^[a-zA-Z0-9\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,85}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,85}[a-zA-Z0-9])?)*$"""
 
 }

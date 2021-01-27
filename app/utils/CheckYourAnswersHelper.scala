@@ -91,15 +91,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def contactByEmail: Option[AnswerRow] = userAnswers.get(ContactByEmailPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"contactByEmail.$x")),
-        Some(routes.ContactByEmailController.onPageLoad(CheckMode).url)
-      )
-  }
-
   def additionalFileUpload: Option[AnswerRow] = userAnswers.get(AdditionalFileUploadPage) map {
     x =>
       AnswerRow(

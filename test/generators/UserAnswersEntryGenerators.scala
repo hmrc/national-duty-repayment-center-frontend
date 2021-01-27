@@ -82,13 +82,6 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryContactByEmailUserAnswersEntry: Arbitrary[(ContactByEmailPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page <- arbitrary[ContactByEmailPage.type]
-        value <- arbitrary[ContactByEmail].map(Json.toJson(_))
-      } yield (page, value)
-    }
   implicit lazy val arbitraryAdditionalFileUploadUserAnswersEntry: Arbitrary[(AdditionalFileUploadPage.type, JsValue)] =
     Arbitrary {
       for {

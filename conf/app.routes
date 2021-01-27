@@ -106,10 +106,10 @@ POST       /phoneNumber                        controllers.PhoneNumberController
 GET        /changePhoneNumber                  controllers.PhoneNumberController.onPageLoad(mode: Mode = CheckMode)
 POST       /changePhoneNumber                  controllers.PhoneNumberController.onSubmit(mode: Mode = CheckMode)
 
-GET        /emailAddress                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
-POST       /emailAddress                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
-GET        /changeEmailAddress                  controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeEmailAddress                  controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
+GET        /contact-by-email                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /contact-by-email                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /change-contact-by-email                 controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact-by-email                 controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
 
 
 GET        /whomToPay                        controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
@@ -204,11 +204,6 @@ GET        /file-uploaded                        controllers.AdditionalFileUploa
 POST       /file-uploaded                        controllers.AdditionalFileUploadController.onSubmit(mode: Mode = NormalMode)
 GET        /change-file-uploaded                  controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-file-uploaded                  controllers.AdditionalFileUploadController.onSubmit(mode: Mode = CheckMode)
-
-GET        /contactByEmail                        controllers.ContactByEmailController.onPageLoad(mode: Mode = NormalMode)
-POST       /contactByEmail                        controllers.ContactByEmailController.onSubmit(mode: Mode = NormalMode)
-GET        /changeContactByEmail                  controllers.ContactByEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeContactByEmail                  controllers.ContactByEmailController.onSubmit(mode: Mode = CheckMode)
 
 GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-importer-address               controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)

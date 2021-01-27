@@ -34,4 +34,21 @@ trait StringFieldBehaviours extends FieldBehaviours {
       }
     }
   }
+
+  def fieldWithMaxLengthCombo(form: Form[_],
+                         fieldName1: String,
+                         fieldName2: String,
+                         fieldValue2: String,
+                         maxLength: Int,
+                         lengthError: FormError): Unit = {
+
+    s"not bind strings longer than $maxLength characters" in {
+
+      forAll(stringsLongerThan(maxLength) -> "longString") {
+        string =>
+          val result = form.bind(Map(fieldName1 -> string, fieldName2 -> fieldValue2)).apply(fieldName1)
+          result.errors shouldEqual Seq(lengthError)
+      }
+    }
+  }
 }
