@@ -112,10 +112,10 @@ GET        /changeEmailAddress                  controllers.EmailAddressControll
 POST       /changeEmailAddress                  controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
 
 
-GET        /whomToPay                        controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
-POST       /whomToPay                        controllers.WhomToPayController.onSubmit(mode: Mode = NormalMode)
-GET        /changeWhomToPay                  controllers.WhomToPayController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeWhomToPay                  controllers.WhomToPayController.onSubmit(mode: Mode = CheckMode)
+GET        /repaid                        controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
+POST       /repaid                        controllers.WhomToPayController.onSubmit(mode: Mode = NormalMode)
+GET        /change-repaid                  controllers.WhomToPayController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-repaid                  controllers.WhomToPayController.onSubmit(mode: Mode = CheckMode)
 
 GET        /repaymentType                        controllers.RepaymentTypeController.onPageLoad(mode: Mode = NormalMode)
 POST       /repaymentType                        controllers.RepaymentTypeController.onSubmit(mode: Mode = NormalMode)
@@ -216,12 +216,12 @@ POST        /enter-importer-address               controllers.ImporterAddressCon
 GET         /enter-agent-importer-address         controllers.AgentImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-agent-importer-address         controllers.AgentImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)
 
-GET        /indirectRepresentative                        controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = NormalMode)
-POST       /indirectRepresentative                        controllers.IndirectRepresentativeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIndirectRepresentative                  controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIndirectRepresentative                  controllers.IndirectRepresentativeController.onSubmit(mode: Mode = CheckMode)
+GET        /indirect-representative                        controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = NormalMode)
+POST       /indirect-representative                        controllers.IndirectRepresentativeController.onSubmit(mode: Mode = NormalMode)
+GET        /changeindirect-representative                  controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-indirect-representative                  controllers.IndirectRepresentativeController.onSubmit(mode: Mode = CheckMode)
 
-GET         /proofOfAuthority                       controllers.ProofOfAuthorityController.onPageLoad()
+GET         /upload-proof-of-authority                       controllers.ProofOfAuthorityController.onPageLoad()
 
 GET        /upload-multiple-entries                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
 POST       /upload-multiple-entries                         controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
