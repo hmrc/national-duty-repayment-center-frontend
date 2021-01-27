@@ -35,7 +35,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(BulkFileUploadPage.type, JsValue)] ::
       arbitrary[(IndirectRepresentativePage.type, JsValue)] ::
       arbitrary[(HowManyEntriesPage.type, JsValue)] ::
-      arbitrary[(ContactByEmailPage.type, JsValue)] ::
       arbitrary[(AdditionalFileUploadPage.type, JsValue)] ::
       arbitrary[(BankDetailsPage.type, JsValue)] ::
       arbitrary[(AgentImporterManualAddressPage.type, JsValue)] ::

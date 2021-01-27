@@ -40,7 +40,7 @@ class EmailAddressController @Inject()(
                                         formProvider: EmailAddressFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: EmailAddressView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -49,7 +49,7 @@ class EmailAddressController @Inject()(
 
       val preparedForm = request.userAnswers.get(EmailAddressPage) match {
         case None => form
-        case Some(value) => form.fill(value)
+        case Some(value) => form.fill(Some(value))
       }
 
       Ok(view(preparedForm, mode))
@@ -64,8 +64,8 @@ class EmailAddressController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value.getOrElse("")))
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
       )
   }

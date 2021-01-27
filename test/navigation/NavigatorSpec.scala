@@ -120,20 +120,20 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ClaimReasonTypeController.onPageLoad(NormalMode))
       }
 
-      "go to WhomToPay page after ContactByEmailPage page when the Representative's multiple entry journeys is selected " in {
+      "go to WhomToPay page after EmailAddressPage page when the Representative's multiple entry journeys is selected " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value.
             set(ClaimantTypePage, ClaimantType.Representative).success.value
-        navigator.nextPage(ContactByEmailPage, NormalMode, answers)
+        navigator.nextPage(EmailAddressPage, NormalMode, answers)
           .mustBe(routes.WhomToPayController.onPageLoad(NormalMode))
       }
 
-      "go to RepaymentType page after ContactByEmailPage page when Importers/Representative single entry journeys selected " in {
+      "go to RepaymentType page after EmailAddressPage page when Importers/Representative single entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, NumberOfEntriesType.Single).success.value
-        navigator.nextPage(ContactByEmailPage, NormalMode, answers)
+        navigator.nextPage(EmailAddressPage, NormalMode, answers)
           .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
       }
 
@@ -220,13 +220,13 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad)
       }
 
-      "go to BankDetails page after ContactByEmail page when the claimant is importer and has selected multiple entries" in {
+      "go to BankDetails page after EmailAddress page when the claimant is importer and has selected multiple entries" in {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
             .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
 
-        navigator.nextPage(ContactByEmailPage, NormalMode, answers)
+        navigator.nextPage(EmailAddressPage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
 

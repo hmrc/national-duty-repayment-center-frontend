@@ -115,7 +115,7 @@ numberOfEntriesType.error.required = Select if you want to submit one entry or m
 howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
-howManyEntries.error.required = Select if you want to submit one entry or more than one entry
+howManyEntries.error.required = Enter the number of entries you are claiming for
 howManyEntries.error.length = Number of entries must be between 2 and 999,999
 
 entryDetails.title = Entry details
@@ -234,7 +234,9 @@ emailAddress.title = What is your email address?
 emailAddress.heading = What is your email address?
 emailAddress.checkYourAnswersLabel = What is your email address?
 emailAddress.error.required = Enter Email Address
+emailAddress.error.selection.required = Select if we can contact you by email
 emailAddress.error.length = Email Address must be 85 characters or less
+emailAddress.error.valid = Enter an email address in the correct format, like name@example.com
 emailAddress.hint = Enter an email address in the correct format, like name@example.com.
 
 whomToPay.title = Who is to be repaid?
@@ -498,7 +500,7 @@ bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
 bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
 bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
-bulkFileUpload.error.required = Select files
+bulkFileUpload.error.required = Upload a file to support your application
 
 referenceNumber.title = What is the reference number?
 referenceNumber.heading = What is the reference number?

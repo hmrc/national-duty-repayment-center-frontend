@@ -37,10 +37,10 @@ POST       /vat-registered                        controllers.IsVATRegisteredCon
 GET        /change-vat-registered                  controllers.IsVATRegisteredController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-vat-registered                  controllers.IsVATRegisteredController.onSubmit(mode: Mode = CheckMode)
 
-GET        /acceptance-date                        controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
-POST       /acceptance-date                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
-GET        /change-acceptance-date                  controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-/acceptance-date                  controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = CheckMode)
+GET        /acceptance-date-all-entries                       controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /acceptance-date-all-entries                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /change-acceptance-date-all-entries                  controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-acceptance-date-all-entries                  controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = CheckMode)
 
 GET        /why-are-you-applying                        controllers.ArticleTypeController.onPageLoad(mode: Mode = NormalMode)
 POST       /why-are-you-applying                        controllers.ArticleTypeController.onSubmit(mode: Mode = NormalMode)
@@ -52,10 +52,10 @@ POST       /how-many-entries-submitting                        controllers.Numbe
 GET        /change-how-many-entries-submitting                  controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-how-many-entries-submitting                 controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /how-many-entries-claiming                        controllers.HowManyEntriesController.onPageLoad(mode: Mode = NormalMode)
-POST       /how-many-entries-claiming                        controllers.HowManyEntriesController.onSubmit(mode: Mode = NormalMode)
-GET        /change-how-many-entries-claiming                  controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-/how-many-entries-claiming                  controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)
+GET        /number-of-entries                        controllers.HowManyEntriesController.onPageLoad(mode: Mode = NormalMode)
+POST       /number-of-entries                        controllers.HowManyEntriesController.onSubmit(mode: Mode = NormalMode)
+GET        /change-number-of-entries                  controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-number-of-entries                  controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)
 
 GET        /oldest-entry-date                        controllers.EntryDetailsController.onPageLoad(mode: Mode = NormalMode)
 POST       /oldest-entry-date                        controllers.EntryDetailsController.onSubmit(mode: Mode = NormalMode)
@@ -106,10 +106,10 @@ POST       /enter-phone-number                        controllers.PhoneNumberCon
 GET        /change-enter-phone-number                  controllers.PhoneNumberController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-enter-phone-number                  controllers.PhoneNumberController.onSubmit(mode: Mode = CheckMode)
 
-GET        /emailAddress                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
-POST       /emailAddress                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
-GET        /changeEmailAddress                  controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeEmailAddress                  controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
+GET        /contact-by-email                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
+POST       /contact-by-email                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
+GET        /change-contact-by-email                 controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact-by-email                 controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
 
 
 GET        /whomToPay                        controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
@@ -223,8 +223,8 @@ POST       /changeIndirectRepresentative                  controllers.IndirectRe
 
 GET         /proofOfAuthority                       controllers.ProofOfAuthorityController.onPageLoad()
 
-GET        /bulkFileUpload                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
-POST       /bulkFileUpload                        controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
+GET        /upload-multiple-entries                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
+POST       /upload-multiple-entries                         controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
 
 GET        /signout                                controllers.SignOutController.signOut
 

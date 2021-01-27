@@ -17,37 +17,42 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import org.scalacheck.Gen
 import play.api.data.FormError
 
 class EmailAddressFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "emailAddress.error.required"
   val lengthKey = "emailAddress.error.length"
+  val invalidKey = "emailAddress.error.valid"
   val maxLength = 85
 
   val form = new EmailAddressFormProvider()()
 
-  ".value" must {
+  ".email" must {
 
-    val fieldName = "value"
+    val fieldName = "email"
+    val fieldName2 = "value"
+    val fieldValueYes = "01"
+
+    val basicEmail            = Gen.const("foo@example.com")
+    val emailWithSpecialChars = Gen.const("aBcD.!#$%&'*+/=?^_`{|}~-123@foo-bar.example.com")
+    val validData             = Gen.oneOf(basicEmail, emailWithSpecialChars)
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      validData
     )
 
-    behave like fieldWithMaxLength(
+    behave like fieldWithMaxLengthCombo(
       form,
       fieldName,
+      fieldName2,
+      fieldValueYes,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      lengthError = FormError(fieldName, lengthKey)
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
   }
 }

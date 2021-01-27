@@ -26,6 +26,19 @@
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
+@conditionalContent = {
+    @forms.inputText(
+        form = form,
+        id = "email",
+        name = "email",
+        label = "emailAddress.heading",
+        inputType = "email",
+        isPageHeading = false,
+        isInFieldset = false,
+        attributes = Map("autocomplete" -> "email")
+    )
+}
+
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("emailAddress.title"))}"),
     backLink = Some("#")
@@ -35,16 +48,26 @@
 
         @components.error_summary(form.errors)
 
-        @forms.inputText(
+        @forms.inputRadio(
             form = form,
-            id = "value",
+            idPrefix = "value",
             name = "value",
-            inputType = "email",
-            label = "emailAddress.heading",
-            isPageHeading = true,
-            isInFieldset = false,
-            attributes = Map("autocomplete" -> "off"),
-            hint = Some(messages("emailAddress.hint"))
+            items = Seq(
+                RadioItem(
+                    value = Some("01"),
+                    content = Text(messages("contactByEmail.01")),
+                    checked = form("value").value.contains("yes"),
+                    conditionalHtml = Some(conditionalContent)
+                ),
+                RadioItem(
+                    value = Some("02"),
+                    content = Text(messages("contactByEmail.02")),
+                    checked = form("value").value.contains("no")
+                )
+            ),
+            legendAsHeading = true,
+            legend = Some(messages("contactByEmail.heading")),
+            hint = Some(Html(messages("contactByEmail.hintText")))
         )
 
         @html.button("site.continue")
