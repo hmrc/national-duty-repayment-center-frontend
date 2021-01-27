@@ -234,7 +234,9 @@ emailAddress.title = What is your email address?
 emailAddress.heading = What is your email address?
 emailAddress.checkYourAnswersLabel = What is your email address?
 emailAddress.error.required = Enter Email Address
+emailAddress.error.selection.required = Select if we can contact you by email
 emailAddress.error.length = Email Address must be 85 characters or less
+emailAddress.error.valid = Enter an email address in the correct format, like name@example.com
 emailAddress.hint = Enter an email address in the correct format, like name@example.com.
 
 whomToPay.title = Who is to be repaid?

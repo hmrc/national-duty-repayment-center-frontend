@@ -124,7 +124,7 @@ object CreateClaimRequest {
       address <- getImporterAddress(userAnswers)
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
-      val email = "test email" //TODO need to get email from ContactByEmailPage
+      val email = userAnswers.get(EmailAddressPage)
       val telephone = userAnswers.get(PhoneNumberPage)
       UserDetails(
         isVATRegistered,
@@ -132,7 +132,7 @@ object CreateClaimRequest {
         name,
         address,
         telephone,
-        Some(email)
+        email
       )
     }
 

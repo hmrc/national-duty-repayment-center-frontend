@@ -17,15 +17,17 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
 import play.api.data.Form
 
 class EmailAddressFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[Option[String]] =
     Form(
-      "value" -> text("emailAddress.error.required")
-        .verifying(maxLength(85, "emailAddress.error.length"))
-    )
+      "email" -> emailAddressMapping(
+        "emailAddress.error.length",
+        "emailAddress.error.valid",
+        "emailAddress.error.required",
+        "emailAddress.error.selection.required"
+      ))
 }

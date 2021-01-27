@@ -27,9 +27,11 @@ class EmailAddressFormProviderSpec extends StringFieldBehaviours {
 
   val form = new EmailAddressFormProvider()()
 
-  ".value" must {
+  ".email" must {
 
-    val fieldName = "value"
+    val fieldName = "email"
+    val fieldName2 = "value"
+    val fieldValueYes = "01"
 
     behave like fieldThatBindsValidData(
       form,
@@ -37,17 +39,14 @@ class EmailAddressFormProviderSpec extends StringFieldBehaviours {
       stringsWithMaxLength(maxLength)
     )
 
-    behave like fieldWithMaxLength(
+    behave like fieldWithMaxLengthCombo(
       form,
       fieldName,
+      fieldName2,
+      fieldValueYes,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      lengthError = FormError(fieldName, lengthKey)
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
   }
 }

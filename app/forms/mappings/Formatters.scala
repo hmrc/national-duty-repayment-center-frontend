@@ -16,11 +16,10 @@
 
 package forms.mappings
 
-import play.api.data.FormError
 import play.api.data.format.Formatter
 import models.Enumerable
 import scala.util.{Failure, Success, Try}
-
+import play.api.data.{FormError, Mapping}
 import scala.util.control.Exception.nonFatalCatch
 
 trait Formatters {
@@ -114,4 +113,37 @@ trait Formatters {
       override def unbind(key: String, value: String): Map[String, String] =
         baseFormatter.unbind(key, value)
     }
+
+  def emailAddressMapping(keyLength: String, keyInvalid: String, keyRequired: String, keySelectionRequired: String): Mapping[Option[String]] = {
+
+    val emailFieldName = "email"
+    val selectionFieldName = "value"
+    val emailRegex = """^[a-zA-Z0-9\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,85}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,85}[a-zA-Z0-9])?)*$"""
+
+
+    def bind(data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
+
+      val emailAddress: Option[String] = data.get(emailFieldName)
+      val useEmail = data.get("value").getOrElse("No selection")
+
+      val maxLengthEmailAddress = 85
+
+      (emailAddress, useEmail) match {
+        case (Some(""), "01") => Left(Seq(FormError(emailFieldName, keyRequired)))
+        case (_, "No selection") => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
+        case (Some(email), "01") if email.length > 0 && email.length > maxLengthEmailAddress => Left(Seq(FormError(emailFieldName, keyLength)))
+        case (Some(email), "01") if !email.matches(emailRegex) => Left(Seq(FormError(emailFieldName, keyInvalid)))
+        case _ => Right(None)
+      }
+
+    }
+
+    def unbind(value: Option[String]): Map[String, String] = {
+      Map(emailFieldName -> value.getOrElse(""))
+    }
+
+    new CustomBindMapping(emailFieldName, bind, unbind)
+
+  }
+
 }

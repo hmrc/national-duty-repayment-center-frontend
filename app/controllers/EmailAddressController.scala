@@ -49,7 +49,7 @@ class EmailAddressController @Inject()(
 
       val preparedForm = request.userAnswers.get(EmailAddressPage) match {
         case None => form
-        case Some(value) => form.fill(value)
+        case Some(value) => form.fill(Some(value))
       }
 
       Ok(view(preparedForm, mode))
@@ -63,10 +63,17 @@ class EmailAddressController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
+          if (request.userAnswers.get(EmailAddressPage).isDefined) {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(EmailAddressPage, value.get))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
+          } else {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.remove(EmailAddressPage))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(EmailAddressPage, mode, updatedAnswers))
+          }
       )
   }
 }
