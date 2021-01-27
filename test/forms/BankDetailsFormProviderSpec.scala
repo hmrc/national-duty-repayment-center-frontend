@@ -170,5 +170,21 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
       val expectedError = FormError(fieldName, invalidKey, Seq(Validation.accountNumberPattern.toString))
       result.errors shouldEqual Seq(expectedError)
     }
+
+    "not bind strings with less than 6 digit" in {
+      val result = form.bind(Map(fieldName -> "12 34   5")).apply(fieldName)
+
+      result.errors shouldEqual Seq(
+        FormError(fieldName, lengthKey, Seq(minLength))
+      )
+    }
+
+    "not bind strings with more than 8 digit" in {
+      val result = form.bind(Map(fieldName -> "12 34 56 789")).apply(fieldName)
+
+      result.errors shouldEqual Seq(
+        FormError(fieldName, lengthKey, Seq(maxLength))
+      )
+    }
   }
 }
