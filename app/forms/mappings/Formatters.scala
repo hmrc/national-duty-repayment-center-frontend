@@ -16,10 +16,13 @@
 
 package forms.mappings
 
+import forms.Validation
 import play.api.data.format.Formatter
 import models.Enumerable
+
 import scala.util.{Failure, Success, Try}
 import play.api.data.{FormError, Mapping}
+
 import scala.util.control.Exception.nonFatalCatch
 
 trait Formatters {
@@ -118,7 +121,6 @@ trait Formatters {
 
     val emailFieldName = "email"
     val selectionFieldName = "value"
-    val emailRegex = """^[a-zA-Z0-9\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,85}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,85}[a-zA-Z0-9])?)*$"""
 
 
     def bind(data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
@@ -132,7 +134,7 @@ trait Formatters {
         case (Some(""), "01") => Left(Seq(FormError(emailFieldName, keyRequired)))
         case (_, "No selection") => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
         case (Some(email), "01") if email.length > 0 && email.length > maxLengthEmailAddress => Left(Seq(FormError(emailFieldName, keyLength)))
-        case (Some(email), "01") if !email.matches(emailRegex) => Left(Seq(FormError(emailFieldName, keyInvalid)))
+        case (Some(email), "01") if !email.matches(Validation.emailRegex) => Left(Seq(FormError(emailFieldName, keyInvalid)))
         case _ => Right(None)
       }
 
