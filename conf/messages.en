@@ -243,7 +243,7 @@ whomToPay.heading = Who is to be repaid?
 whomToPay.01 = Importer
 whomToPay.02 = Representative
 whomToPay.checkYourAnswersLabel = Who is to be repaid?
-whomToPay.error.required = Select who is to be repaid
+whomToPay.error.required = Select if you want to send the repayment to the importer or the representative
 
 repaymentType.title = Select repayment method
 repaymentType.heading = Select repayment method
@@ -482,12 +482,13 @@ postcode.error.length = Enter a postcode, like AA1 1AA
 indirectRepresentative.title = Are you an indirect representative of the importer?
 indirectRepresentative.heading = Are you an indirect representative of the importer?
 indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?
-indirectRepresentative.error.required = Select yes if are you an indirect representative of the importer
+indirectRepresentative.error.required = Select if you are an indirect representative of the importer
 
-proofOfAuthority.title = Upload your proof of authority
-proofOfAuthority.heading = Upload your proof of authority
+proofOfAuthority.title = Upload proof of authority
+proofOfAuthority.heading = Upload proof of authority
 proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
 proofOfAuthority.paragraph2 = Upload a file
+proofOfAuthority.error.required = Upload proof of authority
 
 bulkFileUpload.title = Upload the multiple entries spreadsheet
 bulkFileUpload.heading = Upload the multiple entries spreadsheet
