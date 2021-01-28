@@ -35,8 +35,6 @@ import scala.concurrent.Future
 
 class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
-
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new PhoneNumberFormProvider()
@@ -55,6 +53,8 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[PhoneNumberView]
+
+      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -75,6 +75,8 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[PhoneNumberView]
 
       val result = route(application, request).value
+
+      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -100,7 +102,7 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, phoneNumberRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "07486236608"))
 
       val result = route(application, request).value
 
@@ -123,6 +125,8 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[PhoneNumberView]
 
       val result = route(application, request).value
+
+      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 

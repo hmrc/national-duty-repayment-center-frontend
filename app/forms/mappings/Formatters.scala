@@ -131,7 +131,7 @@ trait Formatters {
       val maxLengthEmailAddress = 85
 
       (emailAddress, useEmail) match {
-        case (None, Some("01")) => Left(Seq(FormError(emailFieldName, keyRequired)))
+        case (Some(""), Some("01")) => Left(Seq(FormError(emailFieldName, keyRequired)))
         case (_, None) => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
         case (Some(email), Some("01")) if email.length > 0 && email.length > maxLengthEmailAddress => Left(Seq(FormError(emailFieldName, keyLength)))
         case (Some(email), Some("01")) if !email.matches(Validation.emailRegex) => Left(Seq(FormError(emailFieldName, keyInvalid)))

@@ -101,10 +101,10 @@ GET        /changeAgentNameImporter                  controllers.AgentNameImport
 POST       /changeAgentNameImporter                  controllers.AgentNameImporterController.onSubmit(mode: Mode = CheckMode)
 
 
-GET        /phoneNumber                        controllers.PhoneNumberController.onPageLoad(mode: Mode = NormalMode)
-POST       /phoneNumber                        controllers.PhoneNumberController.onSubmit(mode: Mode = NormalMode)
-GET        /changePhoneNumber                  controllers.PhoneNumberController.onPageLoad(mode: Mode = CheckMode)
-POST       /changePhoneNumber                  controllers.PhoneNumberController.onSubmit(mode: Mode = CheckMode)
+GET        /enter-phone-number                        controllers.PhoneNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /enter-phone-number                        controllers.PhoneNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /change-enter-phone-number                  controllers.PhoneNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-enter-phone-number                  controllers.PhoneNumberController.onSubmit(mode: Mode = CheckMode)
 
 GET        /contact-by-email                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
 POST       /contact-by-email                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
@@ -117,10 +117,10 @@ POST       /repaid                        controllers.WhomToPayController.onSubm
 GET        /change-repaid                  controllers.WhomToPayController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-repaid                  controllers.WhomToPayController.onSubmit(mode: Mode = CheckMode)
 
-GET        /repaymentType                        controllers.RepaymentTypeController.onPageLoad(mode: Mode = NormalMode)
-POST       /repaymentType                        controllers.RepaymentTypeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeRepaymentType                  controllers.RepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeRepaymentType                  controllers.RepaymentTypeController.onSubmit(mode: Mode = CheckMode)
+GET        /select-repayment-method                        controllers.RepaymentTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /select-repayment-method                        controllers.RepaymentTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /change-select-repayment-method                  controllers.RepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-select-repayment-method                  controllers.RepaymentTypeController.onSubmit(mode: Mode = CheckMode)
 
 GET        /enter-importer-eori-number                        controllers.EnterAgentEORIController.onPageLoad(mode: Mode = NormalMode)
 POST       /enter-importer-eori-number                        controllers.EnterAgentEORIController.onSubmit(mode: Mode = NormalMode)
@@ -191,10 +191,10 @@ POST       /agentImporterManualAddress                        controllers.AgentI
 GET        /changeAgentImporterManualAddress                  controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentImporterManualAddress                  controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
 
-GET        /bankDetails                        controllers.BankDetailsController.onPageLoad(mode: Mode = NormalMode)
-POST       /bankDetails                        controllers.BankDetailsController.onSubmit(mode: Mode = NormalMode)
-GET        /changeBankDetails                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeBankDetails                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
+GET        /enter-bank-details                        controllers.BankDetailsController.onPageLoad(mode: Mode = NormalMode)
+POST       /enter-bank-details                        controllers.BankDetailsController.onSubmit(mode: Mode = NormalMode)
+GET        /change-enter-bank-details                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-enter-bank-details                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
 GET        /repaymentAmountSummary                       controllers.RepaymentAmountSummaryController.onPageLoad()
 

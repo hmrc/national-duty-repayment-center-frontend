@@ -16,18 +16,6 @@
 
 package forms
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import play.api.data.Form
-
-class EmailAddressFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[Option[String]] =
-    Form(
-      "email" -> emailAddressMapping(
-        "emailAddress.error.length",
-        "emailAddress.error.invalid",
-        "emailAddress.error.required",
-        "emailAddress.error.selection.required"
-      ))
+trait TrimWhitespace {
+  def trimWhitespace(string: String): String = string.split("\\s+").mkString
 }

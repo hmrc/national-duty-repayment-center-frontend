@@ -17,15 +17,20 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class PhoneNumberFormProvider @Inject() extends Mappings {
+class PhoneNumberFormProvider @Inject() extends Mappings with TrimWhitespace {
 
   def apply(): Form[String] =
     Form(
       "value" -> text("phoneNumber.error.required")
-        .verifying(maxLength(11, "phoneNumber.error.length"))
+        .transform[String](trimWhitespace, value => value)
+        .verifying(firstError(
+          maxLength(11, "phoneNumber.error.length"),
+          regexp(Validation.phoneNumberPattern,"phoneNumber.error.invalid")
+        ))
     )
+
+
 }

@@ -132,7 +132,8 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
     val fieldName = "AccountNumber"
     val requiredKey = "bankDetails.accountNumber.error.required"
     val invalidKey = "bankDetails.accountNumber.error.invalid"
-    val minLength = 8
+    val lengthKey = "bankDetails.accountNumber.error.length"
+    val minLength = 6
     val maxLength = 8
 
     val validAccountNumberGen = for {
@@ -144,6 +145,13 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       validAccountNumberGen
+    )
+
+    behave like fieldWithMaxLength(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
     behave like mandatoryField(
@@ -165,14 +173,18 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
 
     "not bind strings with less than 6 digit" in {
       val result = form.bind(Map(fieldName -> "12 34   5")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.accountNumberPattern.toString))
-      result.errors shouldEqual Seq(expectedError)
+
+      result.errors shouldEqual Seq(
+        FormError(fieldName, lengthKey, Seq(minLength))
+      )
     }
 
     "not bind strings with more than 8 digit" in {
       val result = form.bind(Map(fieldName -> "12 34 56 789")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.accountNumberPattern.toString))
-      result.errors shouldEqual Seq(expectedError)
+
+      result.errors shouldEqual Seq(
+        FormError(fieldName, lengthKey, Seq(maxLength))
+      )
     }
   }
 }
