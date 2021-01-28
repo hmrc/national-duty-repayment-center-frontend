@@ -56,13 +56,13 @@
                 RadioItem(
                     value = Some("01"),
                     content = Text(messages("contactByEmail.01")),
-                    checked = form("value").value.contains("yes"),
+                    checked = form("value").value.contains("01"),
                     conditionalHtml = Some(conditionalContent)
                 ),
                 RadioItem(
                     value = Some("02"),
                     content = Text(messages("contactByEmail.02")),
-                    checked = form("value").value.contains("no")
+                    checked = form("value").value.contains("02")
                 )
             ),
             legendAsHeading = true,
