@@ -24,7 +24,7 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, backLink: Call, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("otherDutiesPaid.title"))}"),
@@ -42,6 +42,10 @@
             label = "otherDutiesPaid.heading",
             isPageHeading = true,
             isInFieldset = false,
+            hint =  isSingleEntry match {
+                    case true => Some(messages("otherDutiesPaid.single_entry.hint"))
+                    case _ => Some(messages("otherDutiesPaid.multiple_entry.hint"))
+            },
             classes = Some("govuk-input--width-10"),
             attributes = Map("autocomplete" -> "off")
         )
