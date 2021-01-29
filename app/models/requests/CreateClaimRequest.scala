@@ -129,8 +129,19 @@ object CreateClaimRequest {
       address <- getImporterAddress(userAnswers)
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
-      val email = getEmailAddress(userAnswers)
-      val telephone = userAnswers.get(PhoneNumberPage)
+      val email = {
+        userAnswers.get(ClaimantTypePage) match {
+          case Some(ClaimantType.Importer) => getEmailAddress(userAnswers)
+          case _ => None
+        }
+      }
+      val telephone = {
+        userAnswers.get(ClaimantTypePage) match {
+          case Some(ClaimantType.Importer) => userAnswers.get(PhoneNumberPage)
+          case _ => None
+        }
+
+      }
       UserDetails(
         isVATRegistered,
         eori,
