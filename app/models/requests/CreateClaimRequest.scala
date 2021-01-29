@@ -186,12 +186,12 @@ object CreateClaimRequest {
       val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
 
       val getVatPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Vat) match {
-        case true => userAnswers.get(VATDueToHMRCPage)
+        case true => userAnswers.get(VATPaidPage)
         case _ => Some("0.0")
       }
 
       val getVatDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Vat) match {
-        case true => userAnswers.get(VATPaidPage)
+        case true => userAnswers.get(VATDueToHMRCPage)
         case _ => Some("0.0")
       }
 
