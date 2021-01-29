@@ -62,7 +62,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, otherDutiesBackLink)(fakeRequest, messages).toString
+        view(form, NormalMode, otherDutiesBackLink, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -85,7 +85,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("0"), NormalMode, otherDutiesBackLink)(fakeRequest, messages).toString
+        view(form.fill("0"), NormalMode, otherDutiesBackLink, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -137,7 +137,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, otherDutiesBackLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, otherDutiesBackLink, false)(fakeRequest, messages).toString
 
       application.stop()
     }

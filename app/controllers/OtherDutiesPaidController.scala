@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.OtherDutiesPaidFormProvider
 import javax.inject.Inject
-import models.{ClaimRepaymentType, Mode, UserAnswers}
+import models.{ClaimRepaymentType, Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.{ClaimRepaymentTypePage, OtherDutiesPaidPage}
+import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, OtherDutiesPaidPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -60,7 +60,7 @@ class OtherDutiesPaidController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -68,7 +68,7 @@ class OtherDutiesPaidController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))),
 
         value =>
           for {
@@ -76,5 +76,12 @@ class OtherDutiesPaidController @Inject()(
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(OtherDutiesPaidPage, mode, updatedAnswers))
       )
+  }
+
+  def isSingleEntry(userAnswers: UserAnswers): Boolean = {
+    userAnswers.get(NumberOfEntriesTypePage) match {
+      case Some(NumberOfEntriesType.Single) => true
+      case _ => false
+    }
   }
 }
