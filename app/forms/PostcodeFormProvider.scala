@@ -22,7 +22,7 @@ import models.PostcodeLookup
 import play.api.data.Forms._
 import play.api.data.{Form, Forms}
 
-class PostcodeFormProvider @Inject() extends Mappings {
+class PostcodeFormProvider @Inject() extends Mappings with TrimWhitespace {
 
   val postalCodeMinLength = 6
   val postalCodeMaxLength = 9
@@ -31,6 +31,7 @@ class PostcodeFormProvider @Inject() extends Mappings {
     Form(
       mapping(
         "postCode" -> text("postcode.error.required")
+          .transform[String](trimWhitespace, value => value)
           .verifying(minLength(postalCodeMinLength, "postcode.error.length"))
           .verifying(maxLength(postalCodeMaxLength, "postcode.error.length"))
       )(PostcodeLookup.apply)(PostcodeLookup.unapply)
