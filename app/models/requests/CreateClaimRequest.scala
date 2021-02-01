@@ -24,7 +24,8 @@ import pages._
 import play.api.libs.json.{Json, OFormat}
 
 final case class CreateClaimRequest(
-                                     Content: Content
+                                     Content: Content,
+                                     uploadedFiles: Seq[UploadedFile]
                                    )
 
 object CreateClaimRequest {
@@ -280,7 +281,8 @@ object CreateClaimRequest {
     for {
       content <- getContent(userAnswers)
     } yield CreateClaimRequest(
-      content
+      content,
+      userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
     )
   }
 }

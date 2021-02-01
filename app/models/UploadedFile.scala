@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.AdditionalFileUpload
-import pages.behaviours.PageBehaviours
+import java.time.ZonedDateTime
+import play.api.libs.json.Format
+import play.api.libs.json.Json
 
-class AdditionalFileUploadSpec extends PageBehaviours {
+case class UploadedFile(
+                         upscanReference: String,
+                         downloadUrl: String,
+                         uploadTimestamp: ZonedDateTime,
+                         checksum: String,
+                         fileName: String,
+                         fileMimeType: String
+                       )
 
-  "AdditionalFileUploadPage" must {
-
-    beRetrievable[AdditionalFileUpload](AdditionalFileUploadPage)
-
-    beSettable[AdditionalFileUpload](AdditionalFileUploadPage)
-
-    beRemovable[AdditionalFileUpload](AdditionalFileUploadPage)
-  }
+object UploadedFile {
+  implicit val formats: Format[UploadedFile] = Json.format[UploadedFile]
 }
+

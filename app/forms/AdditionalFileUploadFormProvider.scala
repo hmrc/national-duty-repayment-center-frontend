@@ -16,16 +16,24 @@
 
 package forms
 
-import javax.inject.Inject
+import play.api.data.Forms.{mapping, optional, text}
+import play.api.data.validation._
+import play.api.data.{Form, Mapping}
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import models.AdditionalFileUpload
+class AdditionalFileUploadFormProvider {
+  def constraint[A](fieldName: String, errorType: String, predicate: A => Boolean): Constraint[A] =
+    Constraint[A](s"constraint.$fieldName.$errorType") { s =>
+      Option(s)
+        .filter(predicate)
+        .fold[ValidationResult](Invalid(ValidationError(s"error.$fieldName.$errorType")))(_ => Valid)
+    }
+  def booleanMapping(fieldName: String, trueValue: String, falseValue: String): Mapping[Boolean] =
+    optional(text)
+      .verifying(constraint[Option[String]](fieldName, "required", _.exists(s => s == trueValue || s == falseValue)))
+      .transform[Boolean](_.contains(trueValue), b => if (b) Some(trueValue) else Some(falseValue))
+  val uploadAnotherFileMapping: Mapping[Boolean] = booleanMapping("uploadAnotherFile", "yes", "no")
 
-class AdditionalFileUploadFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[AdditionalFileUpload] =
-    Form(
-      "value" -> enumerable[AdditionalFileUpload]("additionalFileUpload.error.required")
-    )
+  val UploadAnotherFileChoiceForm = Form[Boolean](
+    mapping("uploadAnotherFile" -> uploadAnotherFileMapping)(identity)(Option.apply)
+  )
 }

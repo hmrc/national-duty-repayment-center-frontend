@@ -15,19 +15,19 @@
  */
 
 package models
-
-import java.time.LocalDateTime
-
+import services.{FileUploadState, FileUploaded, WaitingForFileVerification}
 import pages._
 import play.api.libs.json._
 import queries.{Gettable, Settable}
 
+import java.time.LocalDateTime
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
                               id: String,
                               data: JsObject = Json.obj(),
-                              lastUpdated: LocalDateTime = LocalDateTime.now
+                              lastUpdated: LocalDateTime = LocalDateTime.now,
+                              fileUploadState: Option[FileUploadState] = None
                             ) {
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
@@ -67,16 +67,42 @@ final case class UserAnswers(
 }
 
 object UserAnswers {
+  import services.UploadFile
+  implicit def uploadReads: Reads[FileUploadState] = {
+    //TODO error cases
+    Reads {
+      case jsObject: JsObject if (jsObject \ "acknowledged").isDefined =>
+        FileUploaded.formatter.reads(jsObject)
+      case jsObject: JsObject if (jsObject \ "currentFileUpload").isDefined =>
+        WaitingForFileVerification.formatter.reads(jsObject)
+      case jsObject: JsObject  => services.UploadFile.formatter.reads(jsObject)
+    }
+  }
+
+  implicit def uploadWrites: Writes[FileUploadState] = {
+    //TODO error cases
+    new Writes[FileUploadState] {
+      override def writes(o: FileUploadState): JsValue =
+        o match {
+          case s: services.UploadFile =>
+            UploadFile.formatter.writes(s)
+          case s: services.WaitingForFileVerification =>
+            WaitingForFileVerification.formatter.writes(s)
+          case s: services.FileUploaded =>
+            FileUploaded.formatter.writes(s)
+        }
+    }
+  }
 
   implicit lazy val reads: Reads[UserAnswers] = {
 
     import play.api.libs.functional.syntax._
-
     (
       (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
-      (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead)
-    ) (UserAnswers.apply _)
+      (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead) and
+        (__ \ "state").readNullable[FileUploadState](uploadReads)
+      ) (UserAnswers.apply _)
   }
 
   implicit lazy val writes: OWrites[UserAnswers] = {
@@ -86,7 +112,8 @@ object UserAnswers {
     (
       (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
-      (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite)
+      (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite) and
+        (__ \ "state").writeNullable[FileUploadState](uploadWrites)
     ) (unlift(UserAnswers.unapply))
   }
 }
