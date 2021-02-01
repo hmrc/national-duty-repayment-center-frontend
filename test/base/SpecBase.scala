@@ -16,12 +16,15 @@
 
 package base
 
-import java.time.LocalDate
+import com.codahale.metrics.MetricRegistry
+import com.kenshoo.play.metrics.{Metrics, MetricsFilter, MetricsFilterImpl, MetricsImpl}
 
-import config.FrontendAppConfig
+import java.time.LocalDate
+import config.{CustomHttpClient, FrontendAppConfig}
 import controllers.actions._
 import models.requests.{AmendClaimRequest, CreateClaimRequest}
 import models._
+import org.mockito.Mockito.when
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatestplus.play.PlaySpec
@@ -32,9 +35,10 @@ import play.api.inject.{Injector, bind}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import org.scalatestplus.mockito.MockitoSugar
+import uk.gov.hmrc.http.{HttpGet, HttpPost}
 
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience  with MockitoSugar{
+trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience with MockitoSugar {
 
   val userAnswersId = "id"
 
@@ -43,6 +47,11 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   def injector: Injector = app.injector
 
   def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+
+  val metrics: Metrics = mock[Metrics]
+  val registry:MetricRegistry = metrics.defaultRegistry
+  val metricFilter = mock[MetricsFilterImpl]
+  when(metricFilter.registry).thenReturn(registry)
 
   val mockAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
 
@@ -54,10 +63,17 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
+      .configure(
+        "metrics.enabled" -> false,
+        "auditing.enabled" -> false,
+        "metrics.jvm" -> false
+      )
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
-        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
+        bind[DataRequiredAction].to[DataRequiredActionImpl],
+        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
+        bind[Metrics].to[MetricsImpl]
       )
 
   val claimDetails = ClaimDetails(
@@ -119,7 +135,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
       ImporterDetails = userDetails,
       BankDetails = Some(bankDetails),
       DutyTypeTaxDetails = dutyTypeTaxDetails,
-      DocumentList = documentList)
+      DocumentList = documentList), Nil
   )
 
   val amendClaimRequest = AmendClaimRequest(

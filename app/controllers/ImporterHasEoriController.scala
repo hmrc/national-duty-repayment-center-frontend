@@ -44,8 +44,9 @@ class ImporterHasEoriController @Inject()(
 
   val form = formProvider()
 
+  //TODO: make it conditional
   private def getBackLink(mode: Mode): Call = {
-    routes.AdditionalFileUploadController.onPageLoad(mode)
+    routes.FileUploadController.showFileUploaded()
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
