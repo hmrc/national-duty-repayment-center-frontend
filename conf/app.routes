@@ -172,6 +172,7 @@ GET         /select-importer-address                      controllers.ImporterAd
 POST        /select-importer-address                      controllers.ImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
 GET         /change-select-importer-address               controllers.ImporterAddressController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-select-importer-address               controllers.ImporterAddressController.onSubmit(mode: Mode = CheckMode)
+GET         /change-importer-address                      controllers.ImporterAddressController.postcodeBackLinkLoad(mode: Mode = NormalMode)
 
 GET         /your-business-address                        controllers.AgentImporterAddressController.onPageLoad(mode: Mode = NormalMode)
 POST        /your-business-address                        controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)

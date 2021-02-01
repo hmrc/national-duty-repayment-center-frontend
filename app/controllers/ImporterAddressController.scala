@@ -97,6 +97,12 @@ class ImporterAddressController @Inject()(
       )
   }
 
+  def postcodeBackLinkLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+
+    implicit request =>
+      doPostcodeLookup(PostcodeLookup(request.userAnswers.get(ImporterAddressPage).get.PostalCode.get), mode, selectionForm, isImporterJourney(request.userAnswers))
+  }
+
   private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject], isImporterJourney: Boolean)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
 
     addressLookupConnector.addressLookup(lookup) map {

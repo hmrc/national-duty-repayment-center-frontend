@@ -45,7 +45,7 @@ class PhoneNumberController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode): Call = {
-    routes.ImporterAddressController.onPageLoad(mode)
+    routes.ImporterAddressController.postcodeBackLinkLoad
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
