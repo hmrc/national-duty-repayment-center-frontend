@@ -25,6 +25,10 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  implicit class Improvements(s: Double) {
+    def format2d = "%02d".format(Double)
+  }
+
   def displayDuty(index: String, amount: Double, dutyType: String) : Option[AnswerRow] = {
     getAnswerRow(index, amount, dutyType)
   }
