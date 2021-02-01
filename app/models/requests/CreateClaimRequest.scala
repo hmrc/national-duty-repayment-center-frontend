@@ -99,7 +99,7 @@ object CreateClaimRequest {
     def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
       isVATRegistered <- getAgentIsVATRegistered(userAnswers)
       eori <- userAnswers.get(EnterAgentEORIPage)
-      name <- userAnswers.get(AgentNameImporterPage)
+      name <- userAnswers.get(ImporterNamePage)
       address <- getAgentImporterAddress(userAnswers)
       telephone <- userAnswers.get(PhoneNumberPage)
       email <- getEmailAddress(userAnswers)
@@ -123,9 +123,14 @@ object CreateClaimRequest {
       case _ => userAnswers.get(ImporterManualAddressPage)
     }
 
+    def getImporterName(userAnswers: UserAnswers): Option[UserName] = userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => userAnswers.get(ImporterNamePage)
+      case _ => userAnswers.get(AgentNameImporterPage)
+    }
+
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
       isVATRegistered <- getIsVATRegistered(userAnswers)
-      name <- userAnswers.get(ImporterNamePage)
+      name <- getImporterName(userAnswers)
       address <- getImporterAddress(userAnswers)
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
