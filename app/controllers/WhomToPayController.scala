@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.WhomToPayFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{ClaimantType, Mode, NoOfEntries, NumberOfEntriesType, UserAnswers, WhomToPay}
 import navigation.Navigator
-import pages.WhomToPayPage
+import pages.{ClaimantTypePage, EmailAddressPage, HowManyEntriesPage, NumberOfEntriesTypePage, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,8 +44,13 @@ class WhomToPayController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.RepaymentTypeController.onPageLoad(mode)
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+
+    userAnswers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match{
+      case true  => routes.EmailAddressController.onPageLoad(mode)
+      case false => routes.RepaymentTypeController.onPageLoad(mode)
+    }
+
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -56,7 +61,7 @@ class WhomToPayController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,7 +69,7 @@ class WhomToPayController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {
