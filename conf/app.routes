@@ -178,6 +178,7 @@ GET         /your-business-address                        controllers.AgentImpor
 POST        /your-business-address                        controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
 GET         /change-your-business-address                 controllers.AgentImporterAddressController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-your-business-address                 controllers.AgentImporterAddressController.onSubmit(mode: Mode = CheckMode)
+GET         /change-business-address                      controllers.AgentImporterAddressController.postcodeBackLinkLoad(mode: Mode = NormalMode)
 
 GET         /importerManualAddress                        controllers.ImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
 POST        /importerManualAddress                        controllers.ImporterManualAddressController.onSubmit(mode: Mode = NormalMode)

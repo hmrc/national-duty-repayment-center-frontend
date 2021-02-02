@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.ImporterHasEoriFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{ClaimantType, Mode, UserAnswers}
 import navigation.Navigator
-import pages.ImporterHasEoriPage
+import pages.{ClaimantTypePage, ImporterHasEoriPage, ImporterManualAddressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,9 +44,17 @@ class ImporterHasEoriController @Inject()(
 
   val form = formProvider()
 
-  //TODO: make it conditional
-  private def getBackLink(mode: Mode): Call = {
-    routes.FileUploadController.showFileUploaded()
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+
+    userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => routes.FileUploadController.showFileUploaded
+      case _ => {
+        userAnswers.get(ImporterManualAddressPage) match {
+          case None => routes.ImporterAddressController.postcodeBackLinkLoad
+          case Some(value) => routes.ImporterManualAddressController.onPageLoad(mode)
+        }
+      }
+    }
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -57,7 +65,7 @@ class ImporterHasEoriController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -65,7 +73,7 @@ class ImporterHasEoriController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {

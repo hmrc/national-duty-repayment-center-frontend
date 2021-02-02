@@ -22,7 +22,7 @@ import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider, Postcod
 import javax.inject.Inject
 import models.{Address, ClaimantType, Mode, PostcodeLookup, UserAnswers}
 import navigation.Navigator
-import pages.{ClaimantTypePage, ImporterAddressPage, ImporterPostcodePage}
+import pages.{ClaimantTypePage, ImporterAddressPage, ImporterManualAddressPage, ImporterPostcodePage}
 import org.slf4j.LoggerFactory
 import play.api.data.Form
 import play.api.libs.json.{JsObject, Json}
@@ -156,7 +156,8 @@ class ImporterAddressController @Inject()(
               address =>
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, address))
-                  _              <- sessionRepository.set(updatedAnswers)
+                  removeManualAddressAnswers <- Future.fromTry(updatedAnswers.remove(ImporterManualAddressPage))
+                  _              <- sessionRepository.set(removeManualAddressAnswers)
                 } yield {
                   request.userAnswers.get(ClaimantTypePage) match {
                     case Some(ClaimantType.Importer) => Redirect(routes.PhoneNumberController.onPageLoad(mode))

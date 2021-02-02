@@ -19,10 +19,11 @@ package controllers
 import controllers.actions._
 import forms.PhoneNumberFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{ClaimantType, Mode, UserAnswers}
 import navigation.Navigator
-import pages.PhoneNumberPage
+import pages.{AgentImporterManualAddressPage, ClaimantTypePage, ImporterAddressPage, ImporterManualAddressPage, ImporterPostcodePage, PhoneNumberPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.{JsString, Json}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -44,8 +45,22 @@ class PhoneNumberController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.ImporterAddressController.postcodeBackLinkLoad
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+
+    userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => {
+        userAnswers.get(ImporterManualAddressPage) match {
+          case None => routes.ImporterAddressController.postcodeBackLinkLoad
+          case Some(value) => routes.ImporterManualAddressController.onPageLoad(mode)
+        }
+      }
+      case _ => {
+        userAnswers.get(AgentImporterManualAddressPage) match {
+          case None => routes.AgentImporterAddressController.postcodeBackLinkLoad
+          case Some(value) => routes.AgentImporterManualAddressController.onPageLoad(mode)
+        }
+      }
+    }
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -56,7 +71,7 @@ class PhoneNumberController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,7 +79,7 @@ class PhoneNumberController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
 
         value =>
           for {

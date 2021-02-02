@@ -18,12 +18,13 @@ package controllers
 
 import base.SpecBase
 import forms.ImporterHasEoriFormProvider
+import models.ClaimantType.Importer
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ImporterHasEoriPage
+import pages.{ClaimantTypePage, ImporterHasEoriPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsBoolean, Json}
 import play.api.mvc.Call
@@ -43,19 +44,21 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val importerHasEoriRoute = routes.ImporterHasEoriController.onPageLoad(NormalMode).url
 
-  val backLink = routes.FileUploadController.showFileUploaded()
-
   "ImporterHasEori Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, importerHasEoriRoute)
 
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[ImporterHasEoriView]
+
+      val backLink = routes.FileUploadController.showFileUploaded
 
       status(result) mustEqual OK
 
@@ -67,7 +70,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterHasEoriPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value.set(ImporterHasEoriPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -76,6 +79,8 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[ImporterHasEoriView]
 
       val result = route(application, request).value
+
+      val backLink = routes.FileUploadController.showFileUploaded
 
       status(result) mustEqual OK
 
@@ -114,7 +119,9 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, importerHasEoriRoute)
@@ -125,6 +132,8 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[ImporterHasEoriView]
 
       val result = route(application, request).value
+
+      val backLink = routes.FileUploadController.showFileUploaded
 
       status(result) mustEqual BAD_REQUEST
 
