@@ -17,9 +17,9 @@
 package models.requests
 
 import java.time.LocalDate
+
 import models._
 import base.SpecBase
-import com.google.gson.JsonArray
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
@@ -88,7 +88,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
           ImporterDetails = userDetails,
           BankDetails = Some(bankDetails),
           DutyTypeTaxDetails = dutyTypeTaxDetails,
-          DocumentList = documentList), Nil
+          DocumentList = documentList)
       )
 
       val json = Json.obj(
@@ -197,8 +197,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
               "Description" -> "this is a packing list"
             )
           )
-        ),
-        "uploadedFiles" -> Array.empty[UploadedFile]
+        )
       )
 
       Json.toJson(createClaimRequest) mustEqual json

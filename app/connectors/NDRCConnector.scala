@@ -20,9 +20,9 @@ import com.google.inject.Inject
 import config.Service
 import models.requests.{AmendClaimRequest, CreateClaimRequest}
 import models.responses.ClientClaimSuccessResponse
-import play.api.Configuration
 import uk.gov.hmrc.http._
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import play.api.{Configuration, http}
 
 import scala.concurrent.{ExecutionContext, Future}
 

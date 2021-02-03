@@ -39,6 +39,12 @@ trait ModelGenerators {
   //telephoneNumber <- Gen.option(Gen.listOfN(11, Gen.numStr).map(_.mkString))
   //emailAddress <- Gen.option(self.stringsWithMaxLength(85))
 
+
+  implicit lazy val arbitraryAdditionalFileUpload: Arbitrary[AdditionalFileUpload] =
+    Arbitrary {
+      Gen.oneOf(AdditionalFileUpload.values.toSeq)
+    }
+
   implicit lazy val arbitraryAgentImporterHasEORI: Arbitrary[AgentImporterHasEORI] =
     Arbitrary {
       Gen.oneOf(AgentImporterHasEORI.values)

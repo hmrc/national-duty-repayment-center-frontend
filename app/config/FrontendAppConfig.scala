@@ -15,101 +15,43 @@
  */
 
 package config
-import com.google.inject.{ImplementedBy, Inject}
+
+import com.google.inject.{Inject, Singleton}
 import controllers.routes
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.Call
 
-import javax.inject.Singleton
-
-/*
- * Copyright 2021 HM Revenue & Customs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
-object FrontendAppConfig {
-
-  case class FileFormats(maxFileSizeMb: Int, approvedFileTypes: String, approvedFileExtensions: String)
-}
-
-@ImplementedBy(classOf[FrontendAppConfigImpl])
-trait FrontendAppConfig {
-
-  val appName: String
-  val contactHost: String
-  val contactFormServiceIdentifier: String
-  val analyticsToken: String
-  val analyticsHost: String
-  val reportAProblemPartialUrl: String
-  val reportAProblemNonJSUrl: String
-  val betaFeedbackUrl: String
-  val betaFeedbackUnauthenticatedUrl: String
-  val addressLookupServiceUrl: String
-  val timeout: Int
-  val countdown: Int
-  val authUrl: String
-  val loginUrl: String
-  val loginContinueUrl: String
-  val languageTranslationEnabled: Boolean
-  val signOutUrl: String
-  val fileFormats: config.FrontendAppConfig.FileFormats
-  val upscanInitiateBaseUrl: String
-  val baseExternalCallbackUrl: String
-  val baseInternalCallbackUrl: String
-  def languageMap: Map[String, Lang]
-  val routeToSwitchLanguage: String => Call
-
-}
 @Singleton
-class FrontendAppConfigImpl @Inject()(configuration: Configuration) extends FrontendAppConfig {
+class FrontendAppConfig @Inject() (configuration: Configuration) {
 
-  override val appName: String = configuration.get[String]("appName")
-  override val contactHost = configuration.get[String]("contact-frontend.host")
-  override val contactFormServiceIdentifier = "play26frontend"
-  override val analyticsToken: String = configuration.get[String](s"google-analytics.token")
-  override val analyticsHost: String = configuration.get[String](s"google-analytics.host")
-  override val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
-  override val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
-  override val betaFeedbackUrl = s"$contactHost/contact/beta-feedback"
-  override val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
-  override val addressLookupServiceUrl: String = configuration.get[Service]("microservice.services.address-lookup").baseUrl
-  override val timeout: Int = configuration.get[Int]("timeout.timeout")
-  override val countdown: Int = configuration.get[Int]("timeout.countdown")
-  override val authUrl: String = configuration.get[Service]("microservice.services.auth").baseUrl
-  override val loginUrl: String = configuration.get[String]("urls.login")
-  override val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
-  override val languageTranslationEnabled: Boolean =
+  private val contactHost = configuration.get[String]("contact-frontend.host")
+  private val contactFormServiceIdentifier = "play26frontend"
+
+  val analyticsToken: String = configuration.get[String](s"google-analytics.token")
+  val analyticsHost: String = configuration.get[String](s"google-analytics.host")
+  val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
+  val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
+  val betaFeedbackUrl = s"$contactHost/contact/beta-feedback"
+  val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
+  lazy val addressLookupServiceUrl: Service = configuration.get[Service]("microservice.services.address-lookup")
+  lazy val appName: String         = configuration.get[String]("appName")
+  lazy val timeout: Int = configuration.get[Int]("timeout.timeout")
+  lazy val countdown: Int = configuration.get[Int]("timeout.countdown")
+  lazy val signOutUrl: String = configuration.get[String]("urls.logout")
+
+  lazy val authUrl: String = configuration.get[Service]("auth").baseUrl
+  lazy val loginUrl: String = configuration.get[String]("urls.login")
+  lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
+
+  lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
-  override val signOutUrl: String = configuration.get[String]("urls.logout")
 
-  override val fileFormats: FrontendAppConfig.FileFormats = FrontendAppConfig.FileFormats(
-    maxFileSizeMb = configuration.get[Int]("file-formats.max-file-size-mb"),
-    approvedFileExtensions = configuration.get[String]("file-formats.approved-file-extensions"),
-    approvedFileTypes = configuration.get[String]("file-formats.approved-file-types")
-  )
-  override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
-  override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")
-  override val upscanInitiateBaseUrl: String = configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
-
-
-  override def languageMap: Map[String, Lang] = Map(
+  def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),
     "cymraeg" -> Lang("cy")
   )
 
-  override val routeToSwitchLanguage: String => Call =
+  def routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
 }

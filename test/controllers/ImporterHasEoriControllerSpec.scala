@@ -43,7 +43,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val importerHasEoriRoute = routes.ImporterHasEoriController.onPageLoad(NormalMode).url
 
-  val backLink = routes.FileUploadController.showFileUploaded()
+  val backLink = routes.AdditionalFileUploadController.onPageLoad(NormalMode)
 
   "ImporterHasEori Controller" must {
 
