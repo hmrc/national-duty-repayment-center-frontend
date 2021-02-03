@@ -55,7 +55,6 @@ class ImporterHasEoriController @Inject()(
         }
       }
     }
-  }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

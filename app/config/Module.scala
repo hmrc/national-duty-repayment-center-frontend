@@ -16,28 +16,13 @@
 
 package config
 
-import akka.actor.ActorSystem
-import com.google.inject.name.Named
-import com.google.inject.{AbstractModule, Inject, Singleton}
-import com.typesafe.config.Config
+import com.google.inject.AbstractModule
 import controllers.actions._
-import play.api.Configuration
-import play.api.libs.ws.WSClient
 import repositories.{DefaultSessionRepository, SessionRepository}
-import uk.gov.hmrc.http.hooks.HttpHook
-import uk.gov.hmrc.http.{HttpGet, HttpPost}
-import uk.gov.hmrc.play.audit.http.HttpAuditing
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.play.http.ws.WSHttp
-
-import scala.util.matching.Regex
 
 class Module extends AbstractModule {
 
   override def configure(): Unit = {
-    bind(classOf[HttpGet]).to(classOf[CustomHttpClient])
-    bind(classOf[HttpPost]).to(classOf[CustomHttpClient])
-    bind(classOf[FrontendAppConfig]).to(classOf[FrontendAppConfigImpl]).asEagerSingleton()
 
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
@@ -46,28 +31,5 @@ class Module extends AbstractModule {
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
 
     bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
-
   }
-}
-@Singleton
-class CustomHttpAuditing @Inject() (
-                                     val auditConnector: AuditConnector,
-                                     @Named("appName") val appName: String
-                                   ) extends HttpAuditing {
-
-  override val auditDisabledForPattern: Regex =
-    """.*?\/auth\/authorise$""".r
-
-}
-@Singleton
-class CustomHttpClient @Inject() (
-                                   config: Configuration,
-                                   val httpAuditing: CustomHttpAuditing,
-                                   override val wsClient: WSClient,
-                                   override protected val actorSystem: ActorSystem
-                                 ) extends uk.gov.hmrc.http.HttpClient with WSHttp {
-
-  override lazy val configuration: Option[Config] = Option(config.underlying)
-
-  override val hooks: Seq[HttpHook] = Seq(httpAuditing.AuditingHook)
 }

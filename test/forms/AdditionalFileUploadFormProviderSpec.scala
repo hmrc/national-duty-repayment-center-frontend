@@ -16,16 +16,30 @@
 
 package forms
 
-import javax.inject.Inject
-
-import forms.mappings.Mappings
-import play.api.data.Form
+import forms.behaviours.OptionFieldBehaviours
 import models.AdditionalFileUpload
+import play.api.data.FormError
 
-class AdditionalFileUploadFormProvider @Inject() extends Mappings {
+class AdditionalFileUploadFormProviderSpec extends OptionFieldBehaviours {
 
-  def apply(): Form[AdditionalFileUpload] =
-    Form(
-      "value" -> enumerable[AdditionalFileUpload]("additionalFileUpload.error.required")
+  val form = new AdditionalFileUploadFormProvider()()
+
+  ".value" must {
+
+    val fieldName = "value"
+    val requiredKey = "additionalFileUpload.error.required"
+
+    behave like optionsField[AdditionalFileUpload](
+      form,
+      fieldName,
+      validValues  = AdditionalFileUpload.values,
+      invalidError = FormError(fieldName, "error.invalid")
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }
