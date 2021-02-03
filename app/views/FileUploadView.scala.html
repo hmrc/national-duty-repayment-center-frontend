@@ -14,89 +14,26 @@
  * limitations under the License.
  *@
 
-@import models.requests.UploadRequest
-@import config.FrontendAppConfig
-@import views.UploadFileViewContext
-@import views.ViewHelpers.pageTitle
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
 @this(
-        govukLayout: views.html.layouts.GovukLayoutWrapper,
-        forms: views.components.forms,
-        html: views.components.html,
-        details: views.html.components.details,
-        govukFileUpload: GovukFileUpload,
-        govukButton: GovukButton,
-        appConfig: FrontendAppConfig,
-        context : UploadFileViewContext
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
-@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
 
-    @govukLayout(
-        pageTitle(if(fileUploads.isEmpty) "view.upload-file.first.title" else "view.upload-file.next.title", maybeUploadError.isDefined),
-        backLink = Some(backLink.url)
-    ) {
+@(backLink: Call)(implicit request: Request[_], messages: Messages)
 
-        @html.h2(messages(if(fileUploads.isEmpty) "view.upload-file.heading" else "view.upload-file.next.heading"), classes = "govuk-heading-l")
+@govukLayout(
+    pageTitle = Some(s"${titleNoForm(messages("fileUpload.title"))}"),
+    backLink = Some(backLink.url)
+) {
 
-        <form action="@uploadRequest.href" method="POST" enctype="multipart/form-data" class="js-form file-upload" novalidate
-        data-file-upload-redirect-success-url="@successAction.url"
-        data-file-upload-redirect-failure-url="@failureAction.url"
-        data-file-upload-check-status-url="@checkStatusAction.url"
-        data-file-upload-aria-live-message="@messages("view.upload-file.waiting")">
+    @html.h1(messages("fileUpload.heading"))
 
-            @maybeUploadError.map { fileUploadError =>
-                @forms.errorSummary(Seq(context.toFormError(fileUploadError)))
-            }
+        <div>
+            <span>
+                 <a class="govuk-link" href="file-uploaded"/>
+            </span>
+        </div>
 
-            @uploadRequest.fields.map { case (key, value) =>
-                @forms.inputHidden(key, value)
-            }
-
-            @html.p{ @messages("view.upload-file.line1") }
-            @html.p{ @messages("view.upload-file.line2") }
-
-            @html.h2(messages("view.upload-file.h2"), classes = "govuk-heading-l")
-
-
-                @html.p{ @messages("view.upload-file.help.line1") }
-                @html.ul(
-                    messages("view.upload-file.help.fileType1"),
-                    messages("view.upload-file.help.fileType2"),
-                    messages("view.upload-file.help.fileType3"),
-                    messages("view.upload-file.help.fileType4"),
-                    messages("view.upload-file.help.fileType5"),
-                    messages("view.upload-file.help.fileType6"),
-                    messages("view.upload-file.help.fileType7"),
-                    messages("view.upload-file.help.fileType8")
-                )
-                @html.p{ @messages("view.upload-file.help.line4") }
-
-            @govukFileUpload(FUpload(
-                name = "file",
-                id = "upload-file",
-                value = Some(""),
-                describedBy = None,
-                hint = None,
-                errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
-                formGroupClasses = "",
-                classes = "",
-                attributes = Map(
-                    "accept" -> appConfig.fileFormats.approvedFileExtensions,
-                    "data-msg-required" -> messages("error.file-upload.required"),
-                    "data-msg-filesize" -> messages("error.file-upload.invalid-size-large",appConfig.fileFormats.maxFileSizeMb),
-                    "data-msg-accept" -> messages("error.upload-file.other")
-                ))
-            )
-
-            <div>
-                @govukButton(Button(
-                    content = Text(messages("form.upload-file.submit")),
-                    preventDoubleClick = true,
-                    classes = "file-upload__submit"
-                ))
-                <div class="file-upload__spinner ccms-loader hidden"></div>
-            </div>
-
-            <div class="file-upload__loading-container" aria-live="polite" role="region"></div>
-        </form>
+    @html.button("site.continue")
 }

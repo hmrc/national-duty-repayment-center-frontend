@@ -32,7 +32,5 @@ class forms @Inject() (
   val yesNoRadio: views.html.components.yesNoRadio,
   val inputSelect: views.html.components.inputSelect,
 //  val inputTime: views.html.components.inputTime,
-  val textarea: views.html.components.textarea,
-  val errorSummary: views.html.components.errorSummary
-
-                      )
+  val textarea: views.html.components.textarea
+)
