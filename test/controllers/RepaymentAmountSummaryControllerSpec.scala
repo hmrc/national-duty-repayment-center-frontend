@@ -106,7 +106,6 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
 
-      //contentAsString(result) mustEqual
       view(answersViewModel, backLink)(fakeRequest, messages).toString
 
       application.stop()
