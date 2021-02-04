@@ -17,45 +17,45 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentImporterHasEORIFormProvider
-import models.{NormalMode, AgentImporterHasEORI, UserAnswers}
+import forms.AdditionalFileUploadFormProvider
+import models.{NormalMode, AdditionalFileUpload, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.AgentImporterHasEORIPage
+import pages.AdditionalFileUploadPage
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.AgentImporterHasEORIView
+import views.html.AdditionalFileUploadView
 
 import scala.concurrent.Future
 
-class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
+class AdditionalFileUploadControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.AdditionalFileUploadController.onPageLoad(NormalMode)
+  val backLink = routes.FileUploadController.onPageLoad()
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val agentImporterHasEORIRoute = routes.AgentImporterHasEORIController.onPageLoad(NormalMode).url
+  lazy val additionalFileUploadRoute = routes.AdditionalFileUploadController.onPageLoad(NormalMode).url
 
-  val formProvider = new AgentImporterHasEORIFormProvider()
+  val formProvider = new AdditionalFileUploadFormProvider()
   val form = formProvider()
 
-  "AgentImporterHasEORI Controller" must {
+  "AdditionalFileUpload Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, agentImporterHasEORIRoute)
+      val request = FakeRequest(GET, additionalFileUploadRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AgentImporterHasEORIView]
+      val view = application.injector.instanceOf[AdditionalFileUploadView]
 
       status(result) mustEqual OK
 
@@ -67,20 +67,20 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AdditionalFileUploadPage, AdditionalFileUpload.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, agentImporterHasEORIRoute)
+      val request = FakeRequest(GET, additionalFileUploadRoute)
 
-      val view = application.injector.instanceOf[AgentImporterHasEORIView]
+      val view = application.injector.instanceOf[AdditionalFileUploadView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AgentImporterHasEORI.values.head), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(AdditionalFileUpload.values.head), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -100,8 +100,8 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, agentImporterHasEORIRoute)
-          .withFormUrlEncodedBody(("value", AgentImporterHasEORI.options(form).head.value.get))
+        FakeRequest(POST, additionalFileUploadRoute)
+          .withFormUrlEncodedBody(("value", AdditionalFileUpload.options.head.value))
 
       val result = route(application, request).value
 
@@ -117,12 +117,12 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, agentImporterHasEORIRoute)
+        FakeRequest(POST, additionalFileUploadRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[AgentImporterHasEORIView]
+      val view = application.injector.instanceOf[AdditionalFileUploadView]
 
       val result = route(application, request).value
 
@@ -138,7 +138,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, agentImporterHasEORIRoute)
+      val request = FakeRequest(GET, additionalFileUploadRoute)
 
       val result = route(application, request).value
 
@@ -153,8 +153,8 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, agentImporterHasEORIRoute)
-          .withFormUrlEncodedBody(("value", AgentImporterHasEORI.values.head.toString))
+        FakeRequest(POST, additionalFileUploadRoute)
+          .withFormUrlEncodedBody(("value", AdditionalFileUpload.values.head.toString))
 
       val result = route(application, request).value
 

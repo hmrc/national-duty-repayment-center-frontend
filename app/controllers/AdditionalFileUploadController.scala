@@ -17,51 +17,46 @@
 package controllers
 
 import controllers.actions._
-import forms.WhomToPayFormProvider
+import forms.AdditionalFileUploadFormProvider
 import javax.inject.Inject
-import models.{ClaimantType, Mode, NoOfEntries, NumberOfEntriesType, UserAnswers, WhomToPay}
+import models.Mode
 import navigation.Navigator
-import pages.{ClaimantTypePage, EmailAddressPage, HowManyEntriesPage, NumberOfEntriesTypePage, WhomToPayPage}
+import pages.AdditionalFileUploadPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.WhomToPayView
+import views.html.AdditionalFileUploadView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhomToPayController @Inject()(
+class AdditionalFileUploadController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
-                                       formProvider: WhomToPayFormProvider,
+                                       formProvider: AdditionalFileUploadFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: WhomToPayView
+                                       view: AdditionalFileUploadView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-
-    userAnswers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match{
-      case true  => routes.EmailAddressController.onPageLoad(mode)
-      case false => routes.RepaymentTypeController.onPageLoad(mode)
-    }
-
+  private def getBackLink(mode: Mode): Call = {
+    routes.FileUploadController.onPageLoad()
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(WhomToPayPage) match {
+      val preparedForm = request.userAnswers.get(AdditionalFileUploadPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
+      Ok(view(preparedForm, mode, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -69,13 +64,13 @@ class WhomToPayController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AdditionalFileUploadPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhomToPayPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(AdditionalFileUploadPage, mode, updatedAnswers))
       )
   }
 }

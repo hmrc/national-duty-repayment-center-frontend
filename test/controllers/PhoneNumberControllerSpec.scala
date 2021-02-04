@@ -18,12 +18,13 @@ package controllers
 
 import base.SpecBase
 import forms.PhoneNumberFormProvider
+import models.ClaimantType.Importer
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.PhoneNumberPage
+import pages.{ClaimantTypePage, PhoneNumberPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -46,7 +47,9 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, phoneNumberRoute)
 
@@ -54,7 +57,7 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[PhoneNumberView]
 
-      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
+      val backLink = routes.ImporterAddressController.postcodeBackLinkLoad
 
       status(result) mustEqual OK
 
@@ -66,7 +69,7 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(PhoneNumberPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value.set(PhoneNumberPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -76,7 +79,7 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
+      val backLink = routes.ImporterAddressController.postcodeBackLinkLoad
 
       status(result) mustEqual OK
 
@@ -114,7 +117,9 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value.set(PhoneNumberPage, "answer").success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, phoneNumberRoute)
@@ -126,7 +131,7 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
+      val backLink = routes.ImporterAddressController.postcodeBackLinkLoad
 
       status(result) mustEqual BAD_REQUEST
 

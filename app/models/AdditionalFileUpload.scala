@@ -14,15 +14,27 @@
  * limitations under the License.
  */
 
-package connectors
+package models
 
-import scala.concurrent.{ExecutionContext, Future}
+import viewmodels.RadioOption
 
-trait HttpAPIMonitor extends AverageResponseTimer with HttpErrorRateMeter {
-  def monitor[T](serviceName: String)(function: => Future[T])(implicit ec: ExecutionContext): Future[T] =
-    super.countErrors(serviceName) {
-      super.timer(serviceName) {
-        function
-      }
-    }
+sealed trait AdditionalFileUpload
+
+object AdditionalFileUpload extends Enumerable.Implicits {
+
+  case object Yes extends WithName("01") with AdditionalFileUpload
+
+  case object No extends WithName("02") with AdditionalFileUpload
+
+  val values: Seq[AdditionalFileUpload] = Seq(
+    Yes, No
+  )
+
+  val options: Seq[RadioOption] = values.map {
+    value =>
+      RadioOption("additionalFileUpload", value.toString)
+  }
+
+  implicit val enumerable: Enumerable[AdditionalFileUpload] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

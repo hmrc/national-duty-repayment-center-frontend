@@ -91,6 +91,15 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
+  def additionalFileUpload: Option[AnswerRow] = userAnswers.get(AdditionalFileUploadPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("additionalFileUpload.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"additionalFileUpload.$x")),
+        Some(routes.AdditionalFileUploadController.onPageLoad(CheckMode).url)
+      )
+  }
+
   def bankDetails: Option[AnswerRow] = userAnswers.get(BankDetailsPage) map {
     x =>
       AnswerRow(

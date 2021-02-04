@@ -55,10 +55,12 @@ class EmailAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[EmailAddressView]
 
+      val backLink = routes.PhoneNumberController.onPageLoad(NormalMode)
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -75,10 +77,12 @@ class EmailAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
+      val backLink = routes.PhoneNumberController.onPageLoad(NormalMode)
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Some("test@test.com")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(Some("test@test.com")), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -123,10 +127,12 @@ class EmailAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
+      val backLink = routes.PhoneNumberController.onPageLoad(NormalMode)
+
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
