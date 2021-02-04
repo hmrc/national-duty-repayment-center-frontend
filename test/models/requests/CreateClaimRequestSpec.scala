@@ -25,9 +25,7 @@ import org.scalatest.{FreeSpec, MustMatchers}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
 
-class CreateClaimRequestSpec extends FreeSpec with MustMatchers with MockitoSugar {
-
-  val emptyUserAnswers: UserAnswers = UserAnswers(testInternalId)
+class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSugar {
 
   "CreateClaimRequest" must {
     "serialise and deserialise to / from a claim period" in {
@@ -207,8 +205,12 @@ class CreateClaimRequestSpec extends FreeSpec with MustMatchers with MockitoSuga
       json.validate[CreateClaimRequest] mustEqual JsSuccess(createClaimRequest)
     }
 
-    "returns a valid CreateClaimRequest for a userAnswers containing an agent Email Address" in {
-      val testUserAnswers = populateUserAnswersAgentWithEmail(emptyUserAnswers)
+    "returns a valid CreateClaimRequest for a userAnswers containing a Representative journey with an Email Address" in {
+      val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
+
+      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
+
+      result mustBe Some(testCreateClaimRequestRepresentativeWithEmail)
     }
   }
 }
