@@ -80,12 +80,6 @@ object CreateClaimRequest {
       "NA"
     )
 
-    def getAgentIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsImporterVatRegisteredPage) match {
-      case Some(true) => Some("true")
-      case Some(false) => Some("false")
-      case _ => None
-    }
-
     def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(AgentImporterAddressPage) match {
       case Some(_) => userAnswers.get(AgentImporterAddressPage)
       case _ => userAnswers.get(AgentImporterManualAddressPage)
@@ -97,20 +91,21 @@ object CreateClaimRequest {
     }
 
     def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
-      isVATRegistered <- getAgentIsVATRegistered(userAnswers)
-      eori <- userAnswers.get(EnterAgentEORIPage)
       name <- userAnswers.get(ImporterNamePage)
       address <- getAgentImporterAddress(userAnswers)
       telephone <- userAnswers.get(PhoneNumberPage)
-      email <- getEmailAddress(userAnswers)
-    } yield UserDetails(
-      isVATRegistered,
-      eori,
-      name,
-      address,
-      Some(telephone),
-      Some(email)
-    )
+    } yield {
+      val eori = userAnswers.get(EnterAgentEORIPage).getOrElse(EORI("GBPR"))
+      val email = getEmailAddress(userAnswers)
+      UserDetails(
+        "false",
+        eori,
+        name,
+        address,
+        Some(telephone),
+        email
+      )
+    }
 
     def getIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsVATRegisteredPage) match {
       case Some(IsVATRegistered.Yes) => Some("true")
