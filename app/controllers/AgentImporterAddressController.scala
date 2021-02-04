@@ -22,14 +22,14 @@ import forms.{AddressSelectionFormProvider, AgentImporterAddressFormProvider, Po
 import javax.inject.Inject
 import models.{Address, Mode, PostcodeLookup}
 import navigation.Navigator
-import pages.{AgentImporterAddressPage, AgentImporterPostcodePage}
+import pages.{AgentImporterAddressPage, AgentImporterManualAddressPage, AgentImporterPostcodePage}
 import org.slf4j.LoggerFactory
 import play.api.data.Form
 import play.api.libs.json.{JsObject, Json}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request, Result}
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.Aliases.{SelectItem}
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddressSorter
@@ -135,6 +135,12 @@ class AgentImporterAddressController @Inject()(
     postcode       <- form.get("address-postcode").flatMap(_.headOption)
   } yield PostcodeLookup(postcode)
 
+  def postcodeBackLinkLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+
+    implicit request =>
+      doPostcodeLookup(PostcodeLookup(request.userAnswers.get(AgentImporterAddressPage).get.PostalCode.get), mode, selectionForm)
+  }
+
   def addressSelectSubmit(mode: Mode): Action[AnyContent] = (identify  andThen getData andThen requireData).async {
     implicit request =>
 
@@ -150,7 +156,8 @@ class AgentImporterAddressController @Inject()(
               address =>
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, address))
-                  _              <- sessionRepository.set(updatedAnswers)
+                  removeManualAddressAnswers <- Future.fromTry(updatedAnswers.remove(AgentImporterManualAddressPage))
+                  _              <- sessionRepository.set(removeManualAddressAnswers)
                 } yield Redirect(routes.PhoneNumberController.onPageLoad(mode))
             )
         )
