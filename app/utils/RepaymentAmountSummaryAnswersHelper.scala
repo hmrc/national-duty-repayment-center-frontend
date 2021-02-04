@@ -25,6 +25,10 @@ import viewmodels.{AnswerRow, AnswerSection}
 
 class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
+  implicit class Improvements(s: Double) {
+    def format2d = "%.2f".format(s)
+  }
+
   def displayDuty(index: String, amount: Double, dutyType: String) : Option[AnswerRow] = {
     getAnswerRow(index, amount, dutyType)
   }
@@ -44,9 +48,9 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
     }
 
     def formattedAmount: String = index match {
-      case "2" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount) + "</span>"
-      case "0" if dutyType == "repaymentAmountSummary.total.amount" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount) + "</span>"
-      case _ => HtmlFormat.escape("£" + amount).toString()
+      case "2" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
+      case "0" if dutyType == "repaymentAmountSummary.total.amount" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
+      case _ => HtmlFormat.escape("£" + amount.format2d).toString()
     }
 
     x =>
