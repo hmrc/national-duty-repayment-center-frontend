@@ -33,3 +33,6 @@ bin
 /*.ipr
 /.classpath
 *.iws
+
+node_modules/
+app/assets/build/

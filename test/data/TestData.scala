@@ -123,7 +123,7 @@ object TestData {
     testImporterDetailsRepresentativeJourney,
     Some(AllBankDetails(Some(testBankDetails),None)),
     testDutyTypeTaxDetails,
-    testDocumentList)
+    testDocumentList), Nil
   )
 
 }

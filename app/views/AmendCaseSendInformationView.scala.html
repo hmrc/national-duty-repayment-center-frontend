@@ -16,6 +16,7 @@
 
 @import controllers.routes._
 @import models.Mode
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -69,7 +70,7 @@
             )
         }
 
-        @govukFileUpload(FileUpload(
+        @govukFileUpload(FUpload(
             name = "file",
             id = "upload-file",
             value = Some(""),
