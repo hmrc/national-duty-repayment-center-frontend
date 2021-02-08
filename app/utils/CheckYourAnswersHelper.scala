@@ -78,7 +78,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"bulkFileUpload.$x")),
-        Some(routes.BulkFileUploadController.onPageLoad().url)
+        Some(routes.BulkFileUploadController.showFileUpload.url)
       )
   }
 

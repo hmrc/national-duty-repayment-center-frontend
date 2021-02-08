@@ -95,7 +95,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation).success.value
         navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
-          .mustBe(routes.BulkFileUploadController.onPageLoad)
+          .mustBe(routes.BulkFileUploadController.showFileUpload)
 
       }
 

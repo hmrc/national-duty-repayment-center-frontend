@@ -111,13 +111,13 @@ class Navigator @Inject()() {
     case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => {
       answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single) match {
         case true => routes.ArticleTypeController.onPageLoad (NormalMode)
-        case _=> routes.BulkFileUploadController.onPageLoad
+        case _=> routes.BulkFileUploadController.showFileUpload
       }
     }
     case _ => {
       answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single) match {
         case true => routes.EntryDetailsController.onPageLoad (NormalMode)
-        case _=> routes.BulkFileUploadController.onPageLoad
+        case _=> routes.BulkFileUploadController.showFileUpload
       }
     }
   }

@@ -122,7 +122,6 @@ trait FileUploadService {
                   file.checksumOpt.contains(uploadDetails.checksum) && file.reference != notification.reference
                 ) match {
                 case Some(existingFileUpload: FileUpload.Accepted) => {
-                  println(s"changing state to Duplicate")
                   FileUpload.Duplicate(
                     orderNumber,
                     ref,
