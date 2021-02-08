@@ -252,9 +252,8 @@ repaymentType.01 = Current month amendment (CMA)
 repaymentType.02 = Bank transfer (Bacs)
 repaymentType.checkYourAnswersLabel = Select repayment method
 repaymentType.error.required = Select how you want to receive the repayment
-repaymentType..help.header = Help with CMA
-repaymentType.help.p1 = You must register your business for VAT with HMRC if its VAT taxable turnover is more than £85,000.
-repaymentType.help.p2 = You can register voluntarily if your turnover is less than £85,000, unless everything you sell is exempt
+repaymentType..help.header = What is a current month amendment?
+repaymentType.help.p1 = You can use a current month amendment if the overpayment was made using a duty deferment account.
 
 enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
