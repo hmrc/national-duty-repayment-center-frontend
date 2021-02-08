@@ -2,8 +2,6 @@ $govuk-assets-path: "/national-duty-repayment-center/assets/lib/govuk-frontend/g
 $hmrc-assets-path: "/national-duty-repayment-center/assets/lib/hmrc-frontend/hmrc/";
 @import "lib/hmrc-frontend/hmrc/all";
 @import "lib/govuk-frontend/govuk/all";
-$hmrc-assets-path: "/send-documents-for-customs-check/assets/lib/hmrc-frontend/hmrc/";
-@import "lib/hmrc-frontend/hmrc/all";
 
 @import 'partials/_variables';
 @import 'partials/_base';
@@ -23,3 +21,5 @@ $hmrc-assets-path: "/send-documents-for-customs-check/assets/lib/hmrc-frontend/h
 // WCGA 2.1
 @import 'partials/_palette';
 @import 'partials/_focus';
+
+@import 'partials/upload-loading';

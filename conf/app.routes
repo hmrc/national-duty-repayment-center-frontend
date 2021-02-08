@@ -200,13 +200,6 @@ POST       /change-enter-bank-details                  controllers.BankDetailsCo
 
 GET        /repaymentAmountSummary                       controllers.RepaymentAmountSummaryController.onPageLoad()
 
-GET        /fileUpload                       controllers.FileUploadController.onPageLoad()
-
-GET        /file-uploaded                        controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = NormalMode)
-POST       /file-uploaded                        controllers.AdditionalFileUploadController.onSubmit(mode: Mode = NormalMode)
-GET        /change-file-uploaded                  controllers.AdditionalFileUploadController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-file-uploaded                  controllers.AdditionalFileUploadController.onSubmit(mode: Mode = CheckMode)
-
 GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-importer-address               controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)
 
@@ -253,3 +246,14 @@ GET        /amendCaseUploadAnotherFile                        controllers.AmendC
 POST       /amendCaseUploadAnotherFile                        controllers.AmendCaseUploadAnotherFileController.onSubmit(mode: Mode = NormalMode)
 GET        /changeAmendCaseUploadAnotherFile                  controllers.AmendCaseUploadAnotherFileController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAmendCaseUploadAnotherFile                  controllers.AmendCaseUploadAnotherFileController.onSubmit(mode: Mode = CheckMode)
+
+# File uploads
+GET         /file-upload                                  controllers.FileUploadController.showFileUpload()
+GET         /file-uploaded                                controllers.FileUploadController.showFileUploaded()
+POST        /file-uploaded                                controllers.FileUploadController.submitUploadAnotherFileChoice()
+
+GET         /file-verification/:reference/status          controllers.FileUploadController.checkFileVerificationStatus(reference: String)
+POST        /ndrc/:id/callback-from-upscan                controllers.FileUploadController.callbackFromUpscan(id: String)
+GET         /file-verification                           controllers.FileUploadController.showWaitingForFileVerification
+GET         /file-rejected                                controllers.FileUploadController.markFileUploadAsRejected()
+GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String)
