@@ -249,9 +249,11 @@ whomToPay.error.required = Select if you want to send the repayment to the impor
 repaymentType.title = Select repayment method
 repaymentType.heading = Select repayment method
 repaymentType.01 = Current month amendment (CMA)
-repaymentType.02 = BACS
+repaymentType.02 = Bank transfer (Bacs)
 repaymentType.checkYourAnswersLabel = Select repayment method
 repaymentType.error.required = Select how you want to receive the repayment
+repaymentType..help.header = What is a current month amendment?
+repaymentType.help.paragraph = You can use a current month amendment if the overpayment was made using a duty deferment account.
 
 enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
