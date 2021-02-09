@@ -35,7 +35,7 @@ import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{FileUploadView, FileUploadedView, WaitingForFileVerificationView}
+import views.html.{FileUploadView, FileUploadedView}
 
 import java.time.LocalDateTime
 import javax.inject.{Inject, Named}
@@ -57,7 +57,6 @@ class FileUploadController @Inject()(
                                       fileUploadView: FileUploadView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
-
   final val COOKIE_JSENABLED = "jsenabled"
   final val controller = routes.FileUploadController
   val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm
@@ -67,7 +66,7 @@ class FileUploadController @Inject()(
 
   // GET /file-verification
   final val showWaitingForFileVerification = (identify andThen getData andThen requireData).async { implicit request =>
-    implicit val timeout = Timeout(10 seconds)
+    implicit val timeout = Timeout(30 seconds)
     sessionState(request.internalId).flatMap { ss =>
       ss.state match {
         case Some(s) =>
@@ -109,13 +108,24 @@ class FileUploadController @Inject()(
 
   //GET /file-upload
   val showFileUpload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val state = request.userAnswers.fileUploadState
-    for {
-      fileUploadState <- initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(state)
-      res <- updateSession(fileUploadState, Some(request.userAnswers))
-      if res
-    } yield renderState(fileUploadState)
-
+   sessionState(request.internalId).flatMap { ua =>
+      ua.userAnswers.flatMap(_.fileUploadState) match {
+        case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
+          for {
+            fs <-  initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
+            b <- updateSession(fs, ua.userAnswers)
+            if b
+          } yield renderState(s)
+        case _ => {
+          val state = request.userAnswers.fileUploadState
+          for {
+            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(state)
+            res <- updateSession(fileUploadState, Some(request.userAnswers))
+            if res
+          } yield renderState(fileUploadState)
+        }
+      }
+    }
   }
 
   //GET /file-uploaded
