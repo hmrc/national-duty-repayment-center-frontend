@@ -121,7 +121,7 @@ trait FileUploadService {
                 .find(file =>
                   file.checksumOpt.contains(uploadDetails.checksum) && file.reference != notification.reference
                 ) match {
-                case Some(existingFileUpload: FileUpload.Accepted) => {
+                case Some(existingFileUpload: FileUpload.Accepted) =>
                   FileUpload.Duplicate(
                     orderNumber,
                     ref,
@@ -129,7 +129,6 @@ trait FileUploadService {
                     existingFileName = existingFileUpload.fileName,
                     duplicateFileName = uploadDetails.fileName
                   )
-                }
                 case _ =>
                   FileUpload.Accepted(
                     orderNumber,
