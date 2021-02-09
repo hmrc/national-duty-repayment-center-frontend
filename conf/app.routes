@@ -213,8 +213,7 @@ POST       /change-indirect-representative                  controllers.Indirect
 
 GET         /upload-proof-of-authority                       controllers.ProofOfAuthorityController.onPageLoad()
 
-GET        /upload-multiple-entries                        controllers.BulkFileUploadController.onPageLoad(mode: Mode = NormalMode)
-POST       /upload-multiple-entries                         controllers.BulkFileUploadController.onSubmit(mode: Mode = NormalMode)
+GET        /upload-multiple-entries                        controllers.BulkFileUploadController.showFileUpload()
 
 GET        /signout                                controllers.SignOutController.signOut
 

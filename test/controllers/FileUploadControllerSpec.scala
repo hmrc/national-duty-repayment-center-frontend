@@ -21,7 +21,7 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiat
 import controllers.actions._
 import models.ClaimantType.Importer
 import models.requests.UploadRequest
-import models.{AgentImporterHasEORI, FileTransmissionFailed, FileUpload, FileUploads, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
+import models.{AgentImporterHasEORI, FileUpload, FileUploads, NormalMode, UpscanNotification, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -34,7 +34,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{GET, POST, contentAsString, defaultAwaitTimeout, redirectLocation, route, running, status, writeableOf_AnyContentAsEmpty, writeableOf_AnyContentAsFormUrlEncoded}
 import play.twirl.api.HtmlFormat
 import repositories.SessionRepository
-import services.{FileUploaded, UploadFile}
+import services.FileUploaded
 import uk.gov.hmrc.http.HeaderCarrier
 
 import java.time.ZonedDateTime

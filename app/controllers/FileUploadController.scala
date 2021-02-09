@@ -16,7 +16,7 @@
 
 package controllers
 
-import akka.actor.{ActorRef, ActorSystem}
+import akka.actor.ActorRef
 import akka.pattern.ask
 import akka.util.Timeout
 import config.FrontendAppConfig
@@ -34,7 +34,6 @@ import play.api.mvc._
 import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services._
-import uk.gov.hmrc.http.HttpVerbs.GET
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.{FileUploadView, FileUploadedView, WaitingForFileVerificationView}
 
@@ -51,7 +50,6 @@ class FileUploadController @Inject()(
                                       sessionRepository: SessionRepository,
                                       upscanInitiateConnector: UpscanInitiateConnector,
                                       val controllerComponents: MessagesControllerComponents,
-                                      waitingForFileVerificationView: WaitingForFileVerificationView,
                                       additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
                                       fileUploadedView: FileUploadedView,
                                       requireData: DataRequiredAction,
@@ -123,10 +121,7 @@ class FileUploadController @Inject()(
   //GET /file-uploaded
   def showFileUploaded: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     request.userAnswers.fileUploadState match {
-      case Some(s: FileUploadState) if (s.fileUploads.nonEmpty) => {
-        println("here 2")
-        renderState(s)
-      }
+      case Some(s: FileUploadState) if (s.fileUploads.nonEmpty) => renderState(s)
       case _ => Redirect(routes.FileUploadController.showFileUpload()) //TODO: For future stories this might need to be conditional
     }
   }
