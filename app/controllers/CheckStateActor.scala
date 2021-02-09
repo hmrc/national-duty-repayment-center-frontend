@@ -34,7 +34,6 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
 case class CheckState(id: String, exitTime: LocalDateTime,state: FileUploadState)
-case class CheckState2(id: String, exitTime: LocalDateTime, callbackUrl: Option[String] = None)
 
 class CheckStateActor @Inject()(sessionRepository: SessionRepository, appConfig: FrontendAppConfig)(implicit ec: ExecutionContext) extends Actor with FileUploadService {
   implicit val timeout = Timeout(30 seconds)
