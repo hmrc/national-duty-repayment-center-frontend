@@ -36,7 +36,7 @@
 }
 
 @govukLayout(
-    pageTitle(if(fileUploads.isSingle) "view.file-uploaded.singular.title" else "view.file-uploaded.plural.title", form, fileUploads.acceptedCount),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(if(fileUploads.isSingle)messages("view.file-uploaded.singular.title") else messages("view.file-uploaded.plural.title", fileUploads.acceptedCount))}"),
     backLink = Some(backLink.url)) {
 
     @forms.formWithCSRF(action = postAction, args = 'novalidate -> "novalidate") {
@@ -44,10 +44,8 @@
 
         @html.h1(
             messages(if(fileUploads.isSingle) "view.file-uploaded.singular.heading" else "view.file-uploaded.plural.heading", fileUploads.acceptedCount),
-            classes = "govuk-heading-l"
+            classes = "govuk-heading-xl"
         )
-
-        @html.h2(messages("view.file-uploaded.list.heading"), classes = "govuk-heading-m")
 
         @html.summaryList(context.summaryListOfFileUploads(fileUploads, removeFileCall))
 
