@@ -27,9 +27,6 @@
 <dl class="@toClasses("govuk-summary-list", classes)"@toAttributes(attributes)>
 @for(row <- rows) {
   <div class="@toClasses("govuk-summary-list__row", row.classes)">
-    <dt class="@toClasses("govuk-summary-list__key", row.key.classes)">
-    @row.key.content.asHtml
-    </dt>
     <dd class="@toClasses("govuk-summary-list__value", row.value.classes)">
     @row.value.content.asHtml
     </dd>

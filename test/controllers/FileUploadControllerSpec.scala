@@ -117,7 +117,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         val request = buildRequest(GET, fileUploadUrl)
         val result = route(application, request).value
         status(result) mustEqual 200
-        contentAsString(result) must include("You’ve uploaded 1 file")
+        contentAsString(result) must include("You have uploaded 1 file")
       }
       application.stop()
     }
@@ -353,5 +353,4 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
   def htmlEscapedPageTitleWithError(key: String): String =
     htmlEscapedMessage("error.browser.title.prefix") + " " + htmlEscapedPageTitle(key)
-
 }

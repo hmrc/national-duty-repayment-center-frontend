@@ -19,6 +19,8 @@
 @import views.UploadFileViewContext
 @import views.ViewHelpers.pageTitle
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
+@import views.ViewUtils._
+
 @this(
         govukLayout: views.html.layouts.GovukLayoutWrapper,
         forms: views.components.forms,
@@ -32,11 +34,11 @@
 @(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
 
     @govukLayout(
-        pageTitle(if(fileUploads.isEmpty) "view.upload-file.first.title" else "view.upload-file.next.title", maybeUploadError.isDefined),
+pageTitle = Some(s"${titleNoForm(if(fileUploads.isEmpty)messages("view.upload-file.title") else messages("view.upload-file.next.title", maybeUploadError.isDefined))}"),
         backLink = Some(backLink.url)
     ) {
 
-        @html.h2(messages(if(fileUploads.isEmpty) "view.upload-file.heading" else "view.upload-file.next.heading"), classes = "govuk-heading-l")
+        @html.h1(messages(if(fileUploads.isEmpty) "view.upload-file.heading" else "view.upload-file.next.heading"), classes = "govuk-heading-l")
 
         <form action="@uploadRequest.href" method="POST" enctype="multipart/form-data" class="js-form file-uploadzzz" novalidate
         data-file-upload-redirect-success-url="@successAction.url"
@@ -69,13 +71,16 @@
                     messages("view.upload-file.help.fileType7"),
                     messages("view.upload-file.help.fileType8")
                 )
-                @html.p{ @messages("view.upload-file.help.line4") }
 
             @govukFileUpload(FUpload(
                 name = "file",
-                id = "upload-file",
+                id = "file",
                 value = Some(""),
                 describedBy = None,
+                label = Label(
+                content = Text(messages("view.upload-file.help.line4")),
+                isPageHeading = false
+                ),
                 hint = None,
                 errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
                 formGroupClasses = "",
