@@ -171,27 +171,25 @@ reasonForOverpayment.error.required = Enter the reason for the overpayment
 reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or fewer
 reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
 
-claimRepaymentType.title = What was overpaid?
-claimRepaymentType.heading = What was overpaid?
+claimRepaymentType.title = What do you want to reclaim?
+claimRepaymentType.heading = What do you want to reclaim?
 claimRepaymentType.hint = Select all that apply.
 claimRepaymentType.01 = Customs Duty
 claimRepaymentType.02 = VAT
 claimRepaymentType.03 = Another type of duty
-claimRepaymentType.checkYourAnswersLabel = What was overpaid?
+claimRepaymentType.checkYourAnswersLabel = What do you want to reclaim?
 claimRepaymentType.error.required = Select what you want to reclaim
 
 evidenceSupportingDocs.title = Supporting documents
 evidenceSupportingDocs.heading = Supporting documents
-evidenceSupportingDocs.paragraph1 = You need to send us all supporting documents for this application.
-evidenceSupportingDocs.paragraph2 = This can include:
-evidenceSupportingDocs.bullet1 = airway bill
-evidenceSupportingDocs.bullet2 = bill of lading
-evidenceSupportingDocs.bullet3 = C88
-evidenceSupportingDocs.bullet4 = E2
-evidenceSupportingDocs.bullet5 = invoice
-evidenceSupportingDocs.bullet6 = packing list
-evidenceSupportingDocs.bullet7 = proof of origin
-evidenceSupportingDocs.bullet8 = substitute entry
+evidenceSupportingDocs.paragraph1 = You should send as many supporting documents for this application as possible.
+evidenceSupportingDocs.paragraph2 = Each file must be 30MB or less.
+
+evidenceSupportingDocs.bullet1 = .doc
+evidenceSupportingDocs.bullet2 = .jpg
+evidenceSupportingDocs.bullet3 = .pdf
+evidenceSupportingDocs.bullet4 = .png
+evidenceSupportingDocs.bullet5 = .xls
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
 
@@ -257,7 +255,7 @@ repaymentType.help.p1 = You can use a current month amendment if the overpayment
 
 enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
-enterAgentEORI.hint = The first 2 letters are the country code, like ''GB''. This is followed by 12 numbers, like GB123456123456.
+enterAgentEORI.hint = This is 2 letters, followed by either 12 or 15 numbers, like ‘GB123456789123’ or ‘GB123456789123000’.
 enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
 enterAgentEORI.error.required = Enter the importer's EORI number in the correct format
 enterAgentEORI.error.valid = Enter the importer's EORI number in the correct format
@@ -291,24 +289,24 @@ vATDueToHMRC.checkYourAnswersLabel = How much VAT should have been paid to HMRC?
 vATDueToHMRC.error.required = Enter VAT should have been paid to HMRC
 vATDueToHMRC.error.length = VAT should have been paid to HMRC must be 14 characters or less
 
-customsDutyPaid.title = How much Customs Duty was paid?
-customsDutyPaid.heading = How much Customs Duty was paid?
-customsDutyPaid.checkYourAnswersLabel = How much Customs Duty was paid?
+customsDutyPaid.title = How much Customs Duty was paid to HMRC?
+customsDutyPaid.heading = How much Customs Duty was paid to HMRC?
+customsDutyPaid.checkYourAnswersLabel = How much Customs Duty was paid to HMRC?
 customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of overpayment for all entries.
 customsDutyPaid.error.required = Enter the amount of Customs Duty that was paid
 customsDutyPaid.error.notANumber = Amount of Customs Duty that was paid must be a number
 customsDutyPaid.error.length = Amount of Customs Duty paid must be 99999999999.99 or less
 customsDutyPaid.error.decimalPlaces = Amount of Customs Duty that should have been paid must include pence, like 123.45
 
-customsDutyDueToHMRC.title = How much Customs Duty should have been paid to HMRC?
-customsDutyDueToHMRC.heading = How much Customs Duty should have been paid to HMRC?
-customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty should have been paid to HMRC?
+customsDutyDueToHMRC.title = How much Customs Duty should have been paid?
+customsDutyDueToHMRC.heading = How much Customs Duty should have been paid?
+customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty should have been paid?
 customsDutyDueToHMRC.error.required = Enter Customs Duty should have been paid to To HMRC
 customsDutyDueToHMRC.error.length = Customs Duty should have been paid to HMRC must be 14 characters or less
 
-otherDutiesPaid.title = How much was paid in other duties?
-otherDutiesPaid.heading = How much was paid in other duties?
-otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties?
+otherDutiesPaid.title = How much was paid in other duties to HMRC?
+otherDutiesPaid.heading = How much was paid in other duties to HMRC?
+otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties to HMRC?
 otherDutiesPaid.multiple_entry.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
 otherDutiesPaid.single_entry.hint = Do not include any agent fees.
 otherDutiesPaid.error.required = Enter the amount of other duties that were due to HMRC
@@ -317,9 +315,9 @@ otherDutiesPaid.error.length = Amount of other duties that were due to HMRC must
 otherDutiesPaid.error.decimalPlaces = Amount of other duties that were paid must include pence, like 123.45
 
 
-otherDutiesDueToHMRC.title = How much should have been paid in other duties to HMRC?
-otherDutiesDueToHMRC.heading = How much should have been paid in other duties to HMRC?
-otherDutiesDueToHMRC.checkYourAnswersLabel = How much should have been paid in other duties to HMRC?
+otherDutiesDueToHMRC.title = How much should have been paid in other duties?
+otherDutiesDueToHMRC.heading = How much should have been paid in other duties?
+otherDutiesDueToHMRC.checkYourAnswersLabel = How much should have been paid in other duties?
 otherDutiesDueToHMRC.error.required = Enter Other Duties should have been paid to HMRC
 otherDutiesDueToHMRC.error.length = Other Duties should have been paid to HMRC must be 14 characters or less
 
@@ -574,14 +572,14 @@ view.upload-file.line1 = You can upload as many files as you need to.
 view.upload-file.line2 = You can only upload one file at a time.
 view.upload-file.h2 =  Suggested supporting documents
 view.upload-file.help.line1 = Send us any supporting documents you have. This could include:
-view.upload-file.help.fileType1= airway bill
-view.upload-file.help.fileType2= bill of lading
-view.upload-file.help.fileType3= C88
-view.upload-file.help.fileType4= E2
-view.upload-file.help.fileType5=invoice
-view.upload-file.help.fileType6=packing list
+view.upload-file.help.fileType1=air waybill, which is in the cargo documents
+view.upload-file.help.fileType2=bill of lading, which is in a receipt of shipped goods
+view.upload-file.help.fileType3=C88, which authorises imports from the country of origin
+view.upload-file.help.fileType4=E2, which authorises imports from the country of origin
+view.upload-file.help.fileType5=invoice, which shows the value of the goods
+view.upload-file.help.fileType6=packing list, which shows packaging details in each shipment
 view.upload-file.help.fileType7=proof of origin
-view.upload-file.help.fileType8=substitute entry
+view.upload-file.help.fileType8=substitute entry, which is a form to declare a substitute where goods have been incorrectly declared
 view.upload-file.help.line4=Upload a file
 view.upload-file.waiting=Your document is being uploaded. You’ll be redirected once the file has been processed.
 form.upload-file.submit= Submit
