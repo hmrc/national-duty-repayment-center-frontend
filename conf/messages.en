@@ -568,7 +568,7 @@ amendCaseSendInformation.help.fileFormat3= .pdf
 amendCaseSendInformation.help.fileFormat4= .png
 amendCaseSendInformation.help.fileFormat5= .xls
 
-
+view.upload-file.title = Upload a file
 view.upload-file.heading = Upload a file
 view.upload-file.line1 = You can upload as many files as you need to.
 view.upload-file.line2 = You can only upload one file at a time.
@@ -593,7 +593,7 @@ site.file.remove = Remove
 view.file-uploaded.uploadAnotherFile.heading=Do you need to upload another file?
 form.file-uploaded.uploadAnotherFile.yes=Yes
 form.file-uploaded.uploadAnotherFile.no=No
-view.file-uploaded.singular.title=You have uploaded {0} file
+view.file-uploaded.singular.title=You have uploaded 1 file
 view.file-uploaded.singular.heading=You have uploaded {0} file
 view.upload-file.next.title=Upload another document
 view.upload-file.next.heading=Upload another document
