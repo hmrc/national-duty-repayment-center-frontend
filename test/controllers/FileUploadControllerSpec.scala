@@ -353,5 +353,4 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
   def htmlEscapedPageTitleWithError(key: String): String =
     htmlEscapedMessage("error.browser.title.prefix") + " " + htmlEscapedPageTitle(key)
-
 }
