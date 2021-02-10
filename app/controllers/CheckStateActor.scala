@@ -17,48 +17,41 @@
 package controllers
 
 import akka.actor.Actor
-import akka.pattern.{ask, pipe}
+import akka.pattern.pipe
 import akka.util.Timeout
-import config.FrontendAppConfig
-import models.FileUploadError
-import play.api.Logger.logger
-import play.api.mvc.Call
-import repositories.SessionRepository
-import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
-import uk.gov.hmrc.http.HttpVerbs.{GET, POST}
 
 import java.time.LocalDateTime
 import javax.inject.Inject
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
-case class CheckState(id: String, exitTime: LocalDateTime,state: FileUploadState)
+case object CallbackArrived
+case class StopWaiting(maxWaitTime: LocalDateTime)
 
-class CheckStateActor @Inject()(sessionRepository: SessionRepository, appConfig: FrontendAppConfig)(implicit ec: ExecutionContext) extends Actor with FileUploadService {
+
+class CheckStateActor @Inject()()(implicit ec: ExecutionContext) extends Actor {
   implicit val timeout = Timeout(30 seconds)
-  override def receive: Receive = {
-    case CheckState(id, exitTime, state) => {
-      logger.info(s"state $state")
-      if (LocalDateTime.now().isAfter(exitTime) || state.isInstanceOf[FileUploaded]) {
-        logger.info("exiting.........")
-        Future.successful(state).pipeTo(sender)
+  import akka.pattern.ask
+
+  def receive = active(false)
+
+  def active(completed: Boolean): Receive = {
+    case CallbackArrived => {
+      //println("Callback has arrived")
+      context become active(true)
+    }
+
+    case StopWaiting(maxWaitTime: LocalDateTime) => {
+
+      if (LocalDateTime.now().isAfter(maxWaitTime) || completed) {
+        //println(s"I am done.. you know $completed")
+        context.become(active(false))
+        Future.successful(completed).pipeTo(sender)
       }
       else {
-        logger.info("continue.........")
-        sessionRepository.get(id).flatMap(ss => ss.flatMap(_.fileUploadState) match {
-          case Some(s@FileUploaded(_, _)) => {
-            logger.info("found")
-            Future.successful(s)
-          }
-          case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) => {
-            if(s.maybeUploadError.nonEmpty) {
-              Future.successful(s)
-            } else
-            (self ? CheckState(id, exitTime, s))
-          }
-        }).pipeTo(sender)
+        context.become(active(false))
+        (self ? StopWaiting(maxWaitTime)).pipeTo(sender)
       }
-    }
+    }.pipeTo(sender)
   }
 }

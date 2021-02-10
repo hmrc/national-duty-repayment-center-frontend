@@ -174,6 +174,7 @@ trait FileUploadService {
         )
           .apply(currentUpload)
     }
+
   }
 
   final def removeFileUploadBy(reference: String)(
@@ -200,15 +201,15 @@ trait FileUploadService {
 
     case None => Future.successful(fallbackState)
 
-    case Some(initiatedFile: FileUpload.Initiated) =>
+    case Some(initiatedFile: FileUpload.Initiated) => {
       Future.successful(UploadFile(reference, uploadRequest, fileUploads))
+    }
 
-    case Some(postedFile: FileUpload.Posted) => ???
-
-    case Some(acceptedFile: FileUpload.Accepted) =>
+    case Some(acceptedFile: FileUpload.Accepted) => {
       Future.successful(FileUploaded(fileUploads))
+    }
 
-    case Some(failedFile: FileUpload.Failed) =>
+    case Some(failedFile: FileUpload.Failed) => {
 
       Future.successful(UploadFile(
         reference,
@@ -216,17 +217,20 @@ trait FileUploadService {
         fileUploads,
         Some(FileVerificationFailed(failedFile.details))
       ))
+    }
 
 
-    case Some(rejectedFile: FileUpload.Rejected) =>
+    case Some(rejectedFile: FileUpload.Rejected) => {
       Future.successful(UploadFile(
         reference,
         uploadRequest,
         fileUploads,
         Some(FileTransmissionFailed(rejectedFile.details))
       ))
+    }
 
-    case Some(duplicatedFile: FileUpload.Duplicate) =>
+    case Some(duplicatedFile: FileUpload.Duplicate) => {
+
       Future.successful(UploadFile(
         reference,
         uploadRequest,
@@ -239,6 +243,7 @@ trait FileUploadService {
           )
         )
       ))
+    }
   }
 
   final def submitedUploadAnotherFileChoice(

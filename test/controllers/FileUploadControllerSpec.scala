@@ -226,7 +226,6 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
       )
       val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadedState)))).build()
 
-
       val request = FakeRequest(POST, uploadAnotherFile)
         .withFormUrlEncodedBody(("uploadAnotherFile", "yes"))
 
