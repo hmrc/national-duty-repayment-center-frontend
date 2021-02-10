@@ -25,14 +25,14 @@ sealed trait ClaimReasonType
 
 object ClaimReasonType extends Enumerable.Implicits {
 
-  case object CommodityCodeChange extends WithName("01") with ClaimReasonType
-  case object CurrencyChanges extends WithName("02") with ClaimReasonType
-  case object Cpuchange extends WithName("03") with ClaimReasonType
-  case object CustomsSpecialProcedures extends WithName("04") with ClaimReasonType
-  case object Preference extends WithName("05") with ClaimReasonType
-  case object Retroactivequota extends WithName("06") with ClaimReasonType
-  case object ReturnOfUnwantedGoods extends WithName("07") with ClaimReasonType
-  case object ReturnedGoodsRelief extends WithName("08") with ClaimReasonType
+  case object Retroactivequota extends WithName("01") with ClaimReasonType
+  case object Cpuchange extends WithName("02") with ClaimReasonType
+  case object CurrencyChanges extends WithName("03") with ClaimReasonType
+  case object CommodityCodeChange extends WithName("04") with ClaimReasonType
+  case object CustomsSpecialProcedures extends WithName("05") with ClaimReasonType
+  case object Preference extends WithName("06") with ClaimReasonType
+  case object ReturnedGoodsRelief extends WithName("07") with ClaimReasonType
+  case object ReturnOfUnwantedGoods extends WithName("08") with ClaimReasonType
   case object Value extends WithName("09") with ClaimReasonType
   case object Other extends WithName("10") with ClaimReasonType
 
