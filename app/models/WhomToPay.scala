@@ -27,6 +27,7 @@ object WhomToPay extends Enumerable.Implicits {
 
   case object Importer extends WithName("01") with WhomToPay
   case object Representative extends WithName("02") with WhomToPay
+  case object CMA extends WithName("03") with WhomToPay
 
   val values: Seq[WhomToPay] = Seq(
     Importer, Representative

@@ -43,7 +43,10 @@ object CreateClaimRequest {
     def getPayeeIndicator(userAnswers: UserAnswers): Option[WhomToPay] = {
       userAnswers.get(ClaimantTypePage) match {
         case Some(ClaimantType.Importer) => Some(WhomToPay.Importer)
-        case _ => userAnswers.get(WhomToPayPage)
+        case _ => userAnswers.get(RepaymentTypePage) match {
+          case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
+          case _ => userAnswers.get(WhomToPayPage)
+        }
       }
     }
 
@@ -257,21 +260,20 @@ object CreateClaimRequest {
     def getContent(userAnswers: UserAnswers): Option[Content] = for {
       claimDetails <- getClaimDetails(userAnswers)
       importerDetails <- getImporterUserDetails(userAnswers)
-      bankDetails <- getBankDetails(userAnswers)
     } yield {
       val documentList: DocumentList = getDocumentList()
       val agentDetails: Option[UserDetails] = userAnswers.get(ClaimantTypePage) match {
         case Some(models.ClaimantType.Importer) => None
         case _ => getAgentUserDetails(userAnswers)
       }
-
+      val bankDetails: Option[AllBankDetails] = getBankDetails(userAnswers)
       val dutyTypeTaxDetails = getTypeTaxDetails(userAnswers)
 
       Content(
         claimDetails,
         agentDetails,
         importerDetails,
-        Some(bankDetails),
+        bankDetails,
         dutyTypeTaxDetails,
         Seq(documentList)
       )
