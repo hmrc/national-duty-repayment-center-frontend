@@ -20,15 +20,13 @@ import base.SpecBase
 import connectors.AddressLookupConnector
 import forms.{AddressSelectionFormProvider, AgentImporterAddressFormProvider, PostcodeFormProvider}
 import models.responses.{AddressLookupResponseModel, Location, LookedUpAddress, LookedUpAddressWrapper, Uprn}
-import models.results.UnexpectedResponseStatus
-import models.{Address, NormalMode, PostcodeLookup, UserAnswers}
+import models.{NormalMode, PostcodeLookup, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{AgentImporterAddressPage, AgentImporterPostcodePage}
+import pages.AgentImporterPostcodePage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.CSRFTokenHelper._
 import play.api.test.FakeRequest

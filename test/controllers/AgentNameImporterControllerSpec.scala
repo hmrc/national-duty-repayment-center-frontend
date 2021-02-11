@@ -25,7 +25,7 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AgentNameImporterPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -45,8 +45,8 @@ class AgentNameImporterControllerSpec extends SpecBase with MockitoSugar {
     userAnswersId,
     Json.obj(
       AgentNameImporterPage.toString -> Json.obj(
-        "firstName"   -> "Joe",
-        "lastName"      -> "Bloggs"
+        "firstName" -> "Joe",
+        "lastName" -> "Bloggs"
       )
     ))
 
@@ -87,7 +87,7 @@ class AgentNameImporterControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UserName("Joe","Bloggs" )), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(UserName("Joe", "Bloggs")), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -108,7 +108,7 @@ class AgentNameImporterControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, agentNameImporterRoute)
-          .withFormUrlEncodedBody(("firstName", "Joe"),("lastName", "Bloggs"))
+          .withFormUrlEncodedBody(("firstName", "Joe"), ("lastName", "Bloggs"))
 
       val result = route(application, request).value
 

@@ -18,7 +18,7 @@ package models.requests
 
 import java.time.LocalDate
 
-import models.WhomToPay.{Importer, Representative}
+import models.WhomToPay.Importer
 import models._
 import pages._
 import play.api.libs.json.{Json, OFormat}

@@ -163,12 +163,12 @@ object TestData {
 
   val testCreateClaimRequestRepresentativeWithEmail: CreateClaimRequest = CreateClaimRequest(
     Content(
-    testClaimDetails,
-    Some(testAgentDetails),
-    testImporterDetailsRepresentativeJourney,
-    Some(AllBankDetails(Some(testBankDetails),None)),
-    testDutyTypeTaxDetails,
-    testDocumentList), Nil
+      testClaimDetails,
+      Some(testAgentDetails),
+      testImporterDetailsRepresentativeJourney,
+      Some(AllBankDetails(Some(testBankDetails), None)),
+      testDutyTypeTaxDetails,
+      testDocumentList), Nil
   )
 
   val testCreateClaimRequestWithCMAPaymentMethod: CreateClaimRequest = CreateClaimRequest(
