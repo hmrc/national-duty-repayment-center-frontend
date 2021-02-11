@@ -17,13 +17,13 @@
 package controllers
 
 import java.time.LocalDateTime
-import akka.pattern.{AskTimeoutException, ask}
+
+import akka.pattern.ask
 import akka.actor.ActorRef
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
-
 import javax.inject.{Inject, Named}
 import models.{CustomsRegulationType, NormalMode, S3UploadError, UserAnswers}
 import pages.CustomsRegulationTypePage
@@ -61,32 +61,22 @@ class BulkFileUploadController @Inject()(
 
   // GET /file-verification
   final val showWaitingForFileVerification = (identify andThen getData andThen requireData).async { implicit request =>
-    implicit val timeout = Timeout(30 seconds)
+    implicit val timeout = Timeout(10 seconds)
     sessionState(request.internalId).flatMap { ss =>
       ss.state match {
         case Some(s) =>
-          (checkStateActor ? StopWaiting(LocalDateTime.now.plusSeconds(30))).mapTo[Boolean].recover {
-            case e: AskTimeoutException => {
-              //println("handling exception")
-              false
+          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
+            case s: FileUploaded => {
+              logger.info(s"File uploaded $s")
+              Future.successful(Redirect(getBulkEntryDetails(request.userAnswers)))
             }
-          }.mapTo[Boolean].flatMap {
-            case true => {
-              sessionRepository.get(request.internalId).flatMap(ss => ss.flatMap(_.fileUploadState) match {
-                case s: FileUploaded => {
-                  logger.info(s"File uploaded $s")
-                  Future.successful(Redirect(getBulkEntryDetails(request.userAnswers)))
-                }
-                case s: UploadFile => {
-                  logger.info(s"calling upload $s")
-                  Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
-                }
-                case _ => Future.successful(fileStateError)
-              })
+            case s: UploadFile => {
+              logger.info(s"calling upload $s")
+              Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
             }
-            case false => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
+            case _ => Future.successful(fileStateError)
           }
-        case None => Future.successful(fileStateError)
+        case _ => Future.successful(fileStateError)
       }
     }
   }
