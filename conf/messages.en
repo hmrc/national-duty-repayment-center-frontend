@@ -502,7 +502,7 @@ bulkFileUpload.02 = all item numbers
 bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
 bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
-bulkFileUpload.paragraph2 = The spreadsheet must 30MB or less, and in .csv format.
+bulkFileUpload.paragraph2 = The spreadsheet must be 30MB or less, and in .csv format.
 bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
 bulkFileUpload.error.required = Upload a file to support your application
 
