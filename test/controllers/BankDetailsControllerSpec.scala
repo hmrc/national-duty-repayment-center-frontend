@@ -25,7 +25,7 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.BankDetailsPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -49,8 +49,8 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
     userAnswersId,
     Json.obj(
       BankDetailsPage.toString -> Json.obj(
-        "AccountName"   -> "name",
-        "SortCode"      -> "123456",
+        "AccountName" -> "name",
+        "SortCode" -> "123456",
         "AccountNumber" -> "00123456"
       )
     )

@@ -19,10 +19,8 @@ package models.requests
 import java.time.LocalDate
 import models._
 import base.SpecBase
-import com.google.gson.JsonArray
-
 import data.TestData._
-import org.scalatest.{FreeSpec, MustMatchers}
+import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
 
@@ -213,6 +211,14 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
 
       result mustBe Some(testCreateClaimRequestRepresentativeWithEmail)
+    }
+
+    "returns a valid CreateClaimRequest for a userAnswers containing a CMA PaymentMethod" in {
+      val testUserAnswers = populateUserAnswersWithCMAPaymentMethod(emptyUserAnswers)
+
+      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
+
+      result mustBe Some(testCreateClaimRequestWithCMAPaymentMethod)
     }
   }
 }
