@@ -184,7 +184,7 @@ evidenceSupportingDocs.title = Supporting documents
 evidenceSupportingDocs.heading = Supporting documents
 evidenceSupportingDocs.paragraph1 = You should send as many supporting documents for this application as possible.
 evidenceSupportingDocs.paragraph2 = Each file must be 30MB or less.
-
+evidenceSupportingDocs.h2 = Accepted file formats
 evidenceSupportingDocs.bullet1 = .doc
 evidenceSupportingDocs.bullet2 = .jpg
 evidenceSupportingDocs.bullet3 = .pdf
@@ -226,7 +226,7 @@ phoneNumber.checkYourAnswersLabel = Enter your phone number
 phoneNumber.error.required = Enter your phone number
 phoneNumber.error.length = Phone number must be 11 numbers
 phoneNumber.error.invalid = Enter a phone number beginning with 0, like 07700 900 982 or 01632 960 001
-phoneNumber.hint = We will use this if we need to contact you for further information.
+phoneNumber.hint = Enter a UK landline or mobile number, like 07700 900 982 or 01632 960 001.
 
 emailAddress.title = What is your email address?
 emailAddress.heading = What is your email address?
@@ -274,35 +274,35 @@ isImporterVatRegistered.02 = No
 isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
 isImporterVatRegistered.error.required = Select yes if the importer is VAT registered
 
-vATPaid.title = How much VAT was paid?
-vATPaid.heading = How much VAT was paid?
-vATPaid.checkYourAnswersLabel = How much VAT was paid?
-vATPaid.hint = This should be the total amount of overpayment for all entries
-vATPaid.error.required = Enter the amount of import VAT that was paid
-vATPaid.error.notANumber = Amount of import VAT that was paid must be a number
-vATPaid.error.length = Amount of Customs Duty that was due to HMRC must be 99999999999.99 or less
-vATPaid.error.decimalPlaces = Amount of Customs Duty that should have been paid must include pence, like 123.45
+vATPaid.title = How much import VAT was paid to HMRC?
+vATPaid.heading = How much import VAT was paid to HMRC?
+vATPaid.checkYourAnswersLabel = How much import VAT was paid to HMRC?
+vATPaid.hint = This should be the total amount of overpayment for all entries 
+vATPaid.error.required = Enter the amount of import VAT that was paid to HMRC
+vATPaid.error.notANumber = Amount of import VAT that was paid to HMRC must be a number
+vATPaid.error.length = Amount of import VAT that was paid to HMRC must be 99999999999.99 or less
+vATPaid.error.decimalPlaces = Amount of import VAT that should have been paid to HMRC must include pence, like 123.45
 
-vATDueToHMRC.title = How much VAT should have been paid to HMRC?
-vATDueToHMRC.heading = How much VAT should have been paid to HMRC?
-vATDueToHMRC.checkYourAnswersLabel = How much VAT should have been paid to HMRC?
-vATDueToHMRC.error.required = Enter VAT should have been paid to HMRC
-vATDueToHMRC.error.length = VAT should have been paid to HMRC must be 14 characters or less
+vATDueToHMRC.title = How much import VAT should have been paid?
+vATDueToHMRC.heading = How much import VAT should have been paid?
+vATDueToHMRC.checkYourAnswersLabel = How much import VAT should have been paid?
+vATDueToHMRC.error.required = Enter import VAT should have been paid
+vATDueToHMRC.error.length = Import VAT should have been paid must be 14 characters or less
 
 customsDutyPaid.title = How much Customs Duty was paid to HMRC?
 customsDutyPaid.heading = How much Customs Duty was paid to HMRC?
 customsDutyPaid.checkYourAnswersLabel = How much Customs Duty was paid to HMRC?
 customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of overpayment for all entries.
-customsDutyPaid.error.required = Enter the amount of Customs Duty that was paid
-customsDutyPaid.error.notANumber = Amount of Customs Duty that was paid must be a number
-customsDutyPaid.error.length = Amount of Customs Duty paid must be 99999999999.99 or less
-customsDutyPaid.error.decimalPlaces = Amount of Customs Duty that should have been paid must include pence, like 123.45
+customsDutyPaid.error.required = Enter the amount of Customs Duty that was paid to HMRC
+customsDutyPaid.error.notANumber = Amount of Customs Duty that was paid to HMRC must be a number
+customsDutyPaid.error.length = Amount of Customs Duty paid to HMRC must be 99999999999.99 or less
+customsDutyPaid.error.decimalPlaces = Amount of Customs Duty that should have been paid to HMRC must include pence, like 123.45
 
 customsDutyDueToHMRC.title = How much Customs Duty should have been paid?
 customsDutyDueToHMRC.heading = How much Customs Duty should have been paid?
 customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty should have been paid?
-customsDutyDueToHMRC.error.required = Enter Customs Duty should have been paid to To HMRC
-customsDutyDueToHMRC.error.length = Customs Duty should have been paid to HMRC must be 14 characters or less
+customsDutyDueToHMRC.error.required = Enter Customs Duty should have been paid
+customsDutyDueToHMRC.error.length = Customs Duty should have been paid must be 14 characters or less
 
 otherDutiesPaid.title = How much was paid in other duties to HMRC?
 otherDutiesPaid.heading = How much was paid in other duties to HMRC?
@@ -310,16 +310,16 @@ otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties to HMR
 otherDutiesPaid.multiple_entry.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
 otherDutiesPaid.single_entry.hint = Do not include any agent fees.
 otherDutiesPaid.error.required = Enter the amount of other duties that were due to HMRC
-otherDutiesPaid.error.notANumber = Amount of other duties that were paid must be a number
-otherDutiesPaid.error.length = Amount of other duties that were due to HMRC must be 99999999999.99 or less
-otherDutiesPaid.error.decimalPlaces = Amount of other duties that were paid must include pence, like 123.45
+otherDutiesPaid.error.notANumber = Amount of other duties that were paid to HMRC must be a number
+otherDutiesPaid.error.length = Amount of other duties that were paid to HMRC must be 99999999999.99 or less
+otherDutiesPaid.error.decimalPlaces = Amount of other duties that were paid to HMRC must include pence, like 123.45
 
 
 otherDutiesDueToHMRC.title = How much should have been paid in other duties?
 otherDutiesDueToHMRC.heading = How much should have been paid in other duties?
 otherDutiesDueToHMRC.checkYourAnswersLabel = How much should have been paid in other duties?
-otherDutiesDueToHMRC.error.required = Enter Other Duties should have been paid to HMRC
-otherDutiesDueToHMRC.error.length = Other Duties should have been paid to HMRC must be 14 characters or less
+otherDutiesDueToHMRC.error.required = Enter Other Duties should have been paid
+otherDutiesDueToHMRC.error.length = Other Duties should have been paid must be 14 characters or less
 
 importerAddress.title = What is your address?
 importerAddress.heading = What is your address?
@@ -502,6 +502,7 @@ bulkFileUpload.02 = all item numbers
 bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
 bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
+bulkFileUpload.paragraph2 = The spreadsheet must be 30MB or less, and in .csv format.
 bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
 bulkFileUpload.error.required = Upload a file to support your application
 
