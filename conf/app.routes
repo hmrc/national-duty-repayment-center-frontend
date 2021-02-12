@@ -214,6 +214,8 @@ POST       /change-indirect-representative                  controllers.Indirect
 GET         /upload-proof-of-authority                       controllers.ProofOfAuthorityController.onPageLoad()
 
 GET        /upload-multiple-entries                        controllers.BulkFileUploadController.showFileUpload()
+GET        /bulk/file-verification                         controllers.BulkFileUploadController.showWaitingForFileVerification
+GET        /bulk/file-rejected                             controllers.BulkFileUploadController.markFileUploadAsRejected()
 
 GET        /signout                                controllers.SignOutController.signOut
 
