@@ -27,7 +27,6 @@ import controllers.actions._
 import javax.inject.{Inject, Named}
 import models.{CustomsRegulationType, NormalMode, S3UploadError, UserAnswers}
 import pages.CustomsRegulationTypePage
-import play.api.Logger.logger
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -53,10 +52,8 @@ class BulkFileUploadController @Inject()(
                                           view: BulkFileUploadView
                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
-  final val COOKIE_JSENABLED = "jsenabled"
   final val fileUploadController = routes.FileUploadController
   final val bulkFileUploadController = routes.BulkFileUploadController
-  type ConvertState = (FileUploadState) => Future[FileUploadState]
   case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
   val fileStateError = InternalServerError("Missing file upload state")
 
@@ -68,11 +65,9 @@ class BulkFileUploadController @Inject()(
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
             case s: FileUploaded => {
-              logger.info(s"File uploaded $s")
               Future.successful(Redirect(getBulkEntryDetails(Some(request.userAnswers))))
             }
             case s: UploadFile => {
-              logger.info(s"calling upload $s")
               Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
             }
             case _ => Future.successful(fileStateError)
@@ -134,22 +129,11 @@ class BulkFileUploadController @Inject()(
     else Future.successful(true)
   }
 
-  final def successRedirect(id: String)(implicit rh: RequestHeader) = appConfig.baseExternalCallbackUrl + (rh.cookies.get(COOKIE_JSENABLED) match {
-    case Some(_) => bulkFileUploadController.showWaitingForFileVerification
-    case None => bulkFileUploadController.showWaitingForFileVerification
-  })
-
-  final def errorRedirect(id: String)(implicit rh: RequestHeader) =
-    appConfig.baseExternalCallbackUrl + (rh.cookies.get(COOKIE_JSENABLED) match {
-      case Some(_) => bulkFileUploadController.markFileUploadAsRejected
-      case None => bulkFileUploadController.markFileUploadAsRejected
-    })
-
   final def upscanRequest(id: String)(implicit rh: RequestHeader): UpscanInitiateRequest = {
     UpscanInitiateRequest(
       callbackUrl = appConfig.baseInternalCallbackUrl + fileUploadController.callbackFromUpscan(id).url,
-      successRedirect = Some(successRedirect(id)),
-      errorRedirect = Some(errorRedirect(id)),
+      successRedirect = Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.showWaitingForFileVerification),
+      errorRedirect = Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.markFileUploadAsRejected),
       minimumFileSize = Some(1),
       maximumFileSize = Some(appConfig.fileFormats.maxFileSizeMb * 1024 * 1024),
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
