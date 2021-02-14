@@ -31,7 +31,9 @@ import utils.WireMockHelper
 import com.github.tomakehurst.wiremock.client.WireMock._
 import base.SpecBase
 import models.ClaimId
-import models.responses.ClientClaimSuccessResponse
+import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
+
+import java.time.LocalDateTime
 
 class NDRCConnectorSpec extends SpecBase
 
@@ -51,16 +53,19 @@ class NDRCConnectorSpec extends SpecBase
 
     "must return a result when the server responds with OK" in {
       val app = application
-
+      val generatedAt = LocalDateTime.now
       running(app) {
 
         val url = s"/create-case"
         val responseBody =
           s"""{
              |  "correlationId": "111",
-             |  "result": "1"
-             |}
-             |""".stripMargin
+             |  "result": {
+             |      "caseId": "1",
+             |      "generatedAt": "${generatedAt.toString}"
+             |  }
+             |}""".stripMargin
+
         val connector = app.injector.instanceOf[NDRCConnector]
         server.stubFor(
           post(urlEqualTo(url))
@@ -69,7 +74,7 @@ class NDRCConnectorSpec extends SpecBase
 
         val result = connector.submitClaim(createClaimRequest).futureValue
 
-        result mustEqual ClientClaimSuccessResponse(correlationId = "111", result = Some("1"))
+        result mustEqual ClientClaimSuccessResponse(correlationId = "111", result = Some(NDRCFileTransferResult("1", generatedAt)))
       }
     }
 
@@ -93,6 +98,7 @@ class NDRCConnectorSpec extends SpecBase
 
     "must return a result when the server responds with OK" in {
       val app = application
+      val generatedAt = LocalDateTime.now
 
       running(app) {
 
@@ -100,9 +106,11 @@ class NDRCConnectorSpec extends SpecBase
         val responseBody =
           s"""{
              |  "correlationId": "111",
-             |  "result": "1"
-             |}
-             |""".stripMargin
+             |  "result": {
+             |      "caseId": "1",
+             |      "generatedAt": "${generatedAt.toString}"
+             |  }
+             |}""".stripMargin
         val connector = app.injector.instanceOf[NDRCConnector]
         server.stubFor(
           post(urlEqualTo(url))
@@ -111,7 +119,7 @@ class NDRCConnectorSpec extends SpecBase
 
         val result = connector.submitAmendClaim(amendClaimRequest).futureValue
 
-        result mustEqual ClientClaimSuccessResponse(correlationId = "111", result = Some("1"))
+        result mustEqual ClientClaimSuccessResponse(correlationId = "111", result = Some(NDRCFileTransferResult("1", generatedAt)))
       }
     }
 
