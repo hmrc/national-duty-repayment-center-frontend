@@ -26,6 +26,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.CountryOptions
 import views.html.ImporterManualAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,7 +40,8 @@ class ImporterManualAddressController @Inject()(
                                         requireData: DataRequiredAction,
                                         formProvider: ImporterManualAddressFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: ImporterManualAddressView
+                                        view: ImporterManualAddressView,
+                                        val countryOptions: CountryOptions
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -56,7 +58,7 @@ class ImporterManualAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), countryOptions.options, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,7 +66,7 @@ class ImporterManualAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers),countryOptions.options, getBackLink(mode)))),
 
         value =>
           for {

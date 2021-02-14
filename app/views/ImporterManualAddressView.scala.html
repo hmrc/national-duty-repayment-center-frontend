@@ -21,10 +21,11 @@
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
     forms: views.components.forms,
-    html: views.components.html
+    html: views.components.html,
+    govukSelect: GovukSelect
 )
 
-@(form: Form[_], mode: Mode, isImporterJourney: Boolean, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isImporterJourney: Boolean, countryOptions: Seq[SelectItem], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
@@ -99,17 +100,15 @@
             attributes = Map("autocomplete" -> "off")
         )
 
-        @forms.inputText(
-            form = form,
-            id = "CountryCode",
-            name = "CountryCode",
-            inputType = "text",
-            label = "importerManualAddress.country.heading",
-            classes = Some("govuk-!-width-two-thirds"),
-            isPageHeading = false,
-            isInFieldset = true,
-            attributes = Map("autocomplete" -> "off")
-        )
+        <label class="govuk-label" for="CountryCode">@messages("importerManualAddress.country.heading")</label>
+
+        @govukSelect(Select(
+        id = "CountryCode",
+        name = "CountryCode",
+        items = countryOptions,
+        classes = "govuk-!-width-two-thirds",
+        attributes = Map("autocomplete" -> "on")
+        ))
 
         @forms.inputText(
             form = form,
