@@ -100,16 +100,18 @@
             attributes = Map("autocomplete" -> "off")
         )
 
+        <div class="govuk-!-width-two-thirds">
         @forms.inputSelect(
             form = form,
             id = "CountryCode",
             name = "CountryCode",
             items = countryOptions,
             label = "importerManualAddress.country.heading",
-            classes = Some("govuk-!-width-two-thirds"),
+            classes = Some("govuk-input govuk-!-width-two-thirds"),
             isPageHeading = false,
             attributes = Map("autocomplete" -> "on")
         )
+        </div>
 
         @forms.inputText(
             form = form,
