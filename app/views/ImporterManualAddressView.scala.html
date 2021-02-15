@@ -102,12 +102,14 @@
 
         <label class="govuk-label" for="CountryCode">@messages("importerManualAddress.country.heading")</label>
 
+
         @govukSelect(Select(
-        id = "CountryCode",
-        name = "CountryCode",
-        items = countryOptions,
-        classes = "govuk-!-width-two-thirds",
-        attributes = Map("autocomplete" -> "on")
+            id = "CountryCode",
+            name = "CountryCode",
+            items = countryOptions,
+            classes = "govuk-!-width-two-thirds",
+            formGroupClasses = "autocomplete-wrapper",
+            attributes = Map("autocomplete" -> "on")
         ))
 
         @forms.inputText(
@@ -125,3 +127,23 @@
         @html.button("site.continue")
     }
 }
+
+<script type="text/javascript">
+      openregisterLocationPicker({
+        additionalSynonyms: [
+          { name: 'Albion', code: 'country:GB' }
+        ],
+        defaultValue: '',
+        selectElement: document.getElementById('CountryCode'),
+        url: 'javascripts/autocomplete/location-autocomplete-graph.json'
+      })
+
+      openregisterLocationPicker({
+        additionalSynonyms: [
+          { name: 'Albion', code: 'country:GB' }
+        ],
+        defaultValue: 'country:GB',
+        selectElement: document.getElementById('preselected'),
+        url: 'javascripts/autocomplete/location-autocomplete-graph.json'
+      })
+    </script>
