@@ -27,7 +27,6 @@ import controllers.actions._
 import javax.inject.{Inject, Named}
 import models.{CustomsRegulationType, NormalMode, S3UploadError, UserAnswers}
 import pages.CustomsRegulationTypePage
-import play.api.Logger.logger
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -53,9 +52,8 @@ class BulkFileUploadController @Inject()(
                                           view: BulkFileUploadView
                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
-  final val COOKIE_JSENABLED = "jsenabled"
-  final val controller = routes.FileUploadController
-  type ConvertState = (FileUploadState) => Future[FileUploadState]
+  final val fileUploadController = routes.FileUploadController
+  final val bulkFileUploadController = routes.BulkFileUploadController
   case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
   val fileStateError = InternalServerError("Missing file upload state")
 
@@ -67,11 +65,9 @@ class BulkFileUploadController @Inject()(
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
             case s: FileUploaded => {
-              logger.info(s"File uploaded $s")
-              Future.successful(Redirect(getBulkEntryDetails(request.userAnswers)))
+              Future.successful(Redirect(getBulkEntryDetails(Some(request.userAnswers))))
             }
             case s: UploadFile => {
-              logger.info(s"calling upload $s")
               Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
             }
             case _ => Future.successful(fileStateError)
@@ -81,13 +77,25 @@ class BulkFileUploadController @Inject()(
     }
   }
 
-  //GET /file-upload
   val showFileUpload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    for {
-      fileUploadState <- initiateFileUpload(upscanRequest(request.internalId, request.userAnswers))(upscanInitiateConnector.initiate(_))(None)
-      res <- updateSession(fileUploadState, Some(request.userAnswers))
-      if (res)
-    } yield renderState(request.userAnswers,fileUploadState)
+    sessionState(request.internalId).flatMap { ua =>
+      ua.userAnswers.flatMap(_.fileUploadState) match {
+        case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
+          for {
+            fs <-  initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
+            b <- updateSession(fs, ua.userAnswers)
+            if b
+          } yield renderState(ua.userAnswers, s)
+        case _ => {
+          val state = request.userAnswers.fileUploadState
+          for {
+            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(state)
+            res <- updateSession(fileUploadState, Some(request.userAnswers))
+            if res
+          } yield renderState(ua.userAnswers, fileUploadState)
+        }
+      }
+    }
   }
 
   def sessionState(id: String): Future[SessionState] = {
@@ -96,35 +104,43 @@ class BulkFileUploadController @Inject()(
     } yield (SessionState(u.flatMap(_.fileUploadState), u))
   }
 
+  // GET /file-rejected
+  final def markFileUploadAsRejected: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+
+    UpscanUploadErrorForm.bindFromRequest().fold(
+      _ => Future.successful(BadRequest),
+      s3Error =>
+        sessionState(request.internalId).flatMap { ss =>
+          ss.state match {
+            case Some(s) => fileUploadWasRejected(s3Error)(s).flatMap { newState =>
+              updateSession(newState, ss.userAnswers).map { res =>
+                Redirect(routes.BulkFileUploadController.showFileUpload())
+              }
+            }
+            case None => Future.successful(InternalServerError("Missing file upload state"))
+          }
+        }
+    )
+  }
+
   private def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]) = {
     if (userAnswers.nonEmpty)
       sessionRepository.set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
     else Future.successful(true)
   }
 
-  final def successRedirect(id: String, userAnswers: UserAnswers)(implicit rh: RequestHeader) = appConfig.baseExternalCallbackUrl + (rh.cookies.get(COOKIE_JSENABLED) match {
-    case Some(_) => getBulkEntryDetails(userAnswers)
-    case None => controller.showWaitingForFileVerification
-  })
-
-  final def errorRedirect(id: String)(implicit rh: RequestHeader) =
-    appConfig.baseExternalCallbackUrl + (rh.cookies.get(COOKIE_JSENABLED) match {
-      case Some(_) => controller.markFileUploadAsRejected
-      case None => controller.markFileUploadAsRejected
-    })
-
-  final def upscanRequest(id: String, userAnswers: UserAnswers)(implicit rh: RequestHeader): UpscanInitiateRequest = {
+  final def upscanRequest(id: String)(implicit rh: RequestHeader): UpscanInitiateRequest = {
     UpscanInitiateRequest(
-      callbackUrl = appConfig.baseInternalCallbackUrl + controller.callbackFromUpscan(id).url,
-      successRedirect = Some(successRedirect(id, userAnswers)),
-      errorRedirect = Some(errorRedirect(id)),
+      callbackUrl = appConfig.baseInternalCallbackUrl + fileUploadController.callbackFromUpscan(id).url,
+      successRedirect = Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.showWaitingForFileVerification),
+      errorRedirect = Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.markFileUploadAsRejected),
       minimumFileSize = Some(1),
       maximumFileSize = Some(appConfig.fileFormats.maxFileSizeMb * 1024 * 1024),
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
     )
   }
 
-  final def renderState(userAnswers: UserAnswers, fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None)(implicit request: Request[_]): Result = {
+  final def renderState(userAnswers: Option[UserAnswers], fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None)(implicit request: Request[_]): Result = {
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
         Ok(
@@ -134,7 +150,7 @@ class BulkFileUploadController @Inject()(
             maybeUploadError,
             successAction = getBulkEntryDetails(userAnswers),
             failureAction = routes.BulkFileUploadController.showFileUpload,
-            checkStatusAction = controller.checkFileVerificationStatus(reference),
+            checkStatusAction = fileUploadController.checkFileVerificationStatus(reference),
             backLink = routes.CustomsRegulationTypeController.onPageLoad(NormalMode)) //TODO: for more than one entry the back link should be diff. Make this method conditional when we get there
         )
     }
@@ -157,7 +173,7 @@ class BulkFileUploadController @Inject()(
       "errorResource" -> optional(text)
     )(S3UploadError.apply)(S3UploadError.unapply)
   )
-  private def getBulkEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
+  private def getBulkEntryDetails(answers: Option[UserAnswers]): Call = answers.flatMap(_ .get(CustomsRegulationTypePage)) match {
     case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
     case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
   }
