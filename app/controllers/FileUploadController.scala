@@ -23,6 +23,8 @@ import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
 import forms.AdditionalFileUploadFormProvider
+import models.AmendCaseResponseType.Supportingdocuments
+import models.FileType.SupportingEvidence
 import models.{ClaimantType, FileVerificationStatus, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
 import pages.ClaimantTypePage
 import play.api.Logger.logger
@@ -30,7 +32,7 @@ import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
-import play.api.mvc._
+import play.api.mvc.{request, _}
 import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services._
@@ -71,14 +73,10 @@ class FileUploadController @Inject()(
       ss.state match {
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
-            case s: FileUploaded => {
-              logger.info(s"File uploaded $s")
-              Future.successful(Redirect(routes.FileUploadController.showFileUploaded()))
-            }
-            case s: UploadFile => {
-              logger.info(s"calling upload $s")
-              Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
-            }
+            case s: FileUploaded => Future.successful(Redirect(routes.FileUploadController.showFileUploaded()))
+
+            case s: UploadFile => Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
+
             case _ => Future.successful(fileStateError)
           }
         case _ => Future.successful(fileStateError)
@@ -116,14 +114,14 @@ class FileUploadController @Inject()(
       ua.userAnswers.flatMap(_.fileUploadState) match {
         case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
           for {
-            fs <-  initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
+            fs <-  initiateFileUpload(upscanRequest(request.internalId), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
             b <- updateSession(fs, ua.userAnswers)
             if b
           } yield renderState(s)
         case _ => {
           val state = request.userAnswers.fileUploadState
           for {
-            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(state)
+            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(state)
             res <- updateSession(fileUploadState, Some(request.userAnswers))
             if res
           } yield renderState(fileUploadState)
@@ -133,10 +131,13 @@ class FileUploadController @Inject()(
   }
 
   //GET /file-uploaded
-  def showFileUploaded: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers.fileUploadState match {
-      case Some(s: FileUploadState) if (s.fileUploads.nonEmpty) => renderState(s)
-      case _ => Redirect(routes.FileUploadController.showFileUpload()) //TODO: For future stories this might need to be conditional
+  def showFileUploaded: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    sessionState(request.internalId).flatMap { ua =>
+      ua.userAnswers.flatMap(_.fileUploadState) match {
+        case s@Some(FileUploaded(fileUploads, _)) => Future.successful(renderState(s.get))
+        case s => Future.successful(fileStateError)
+
+      }
     }
   }
 
@@ -155,7 +156,7 @@ class FileUploadController @Inject()(
           ss.state match {
             case Some(s) =>
               if (value)
-                submitedUploadAnotherFileChoice(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(s).flatMap {
+                submitedUploadAnotherFileChoice(upscanRequest(request.internalId),Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(s).flatMap {
                   newState => updateSession(newState, ss.userAnswers).map { _ => Redirect(routes.FileUploadController.showFileUpload())}
                 }
               else Future.successful(Redirect(additionalFileUploadRoute(request.userAnswers)))
@@ -186,11 +187,10 @@ class FileUploadController @Inject()(
 
   // POST /ndrc/:id/callback-from-upscan
   final def callbackFromUpscan(id: String) = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
-    implicit val timeout = Timeout(30 seconds)
 
     sessionState(id).flatMap { ss =>
       ss.state match {
-        case Some(s) => upscanCallbackArrived(request.body)(s).flatMap { newState =>
+        case Some(s) => upscanCallbackArrived(request.body, SupportingEvidence)(s).flatMap { newState =>
             updateSession(newState, ss.userAnswers).map { res =>
               acknowledgeFileUploadRedirect(newState)
             }
@@ -224,31 +224,16 @@ class FileUploadController @Inject()(
   }
 
   private def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]) = {
-    if (userAnswers.nonEmpty) {
-      //println(s"setting state $newState")
+    if (userAnswers.nonEmpty)
       sessionRepository.set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
-    }
      else Future.successful(true)
   }
-
-  final def successRedirect(id: String)(implicit rh: RequestHeader) = appConfig.baseExternalCallbackUrl + (rh.cookies.get(COOKIE_JSENABLED) match {
-    case Some(_) => controller.showWaitingForFileVerification
-    //TODO: THE ABOVE SHOULD BE CHANGED TO THIS: controller.asyncWaitingForFileVerification(id) once javascript works
-    case None => controller.showWaitingForFileVerification
-  })
-
-  final def errorRedirect(id: String)(implicit rh: RequestHeader) =
-    appConfig.baseExternalCallbackUrl + (rh.cookies.get(COOKIE_JSENABLED) match {
-      case Some(_) => controller.markFileUploadAsRejected
-      case None => controller.markFileUploadAsRejected
-    })
-
 
   final def upscanRequest(id: String)(implicit rh: RequestHeader): UpscanInitiateRequest = {
     UpscanInitiateRequest(
       callbackUrl = appConfig.baseInternalCallbackUrl + controller.callbackFromUpscan(id).url,
-      successRedirect = Some(successRedirect(id)),
-      errorRedirect = Some(errorRedirect(id)),
+      successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification),
+      errorRedirect = Some(appConfig.baseExternalCallbackUrl + controller.markFileUploadAsRejected),
       minimumFileSize = Some(1),
       maximumFileSize = Some(appConfig.fileFormats.maxFileSizeMb * 1024 * 1024),
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)

@@ -17,6 +17,7 @@
 package service
 
 import base.SpecBase
+import models.FileType.SupportingEvidence
 import models.requests.UploadRequest
 import models.{DuplicateFileUpload, FileTransmissionFailed, FileUpload, FileUploads, FileVerificationFailed, S3UploadError, UpscanFileFailed, UpscanFileReady, UpscanNotification}
 import org.scalatest.{MustMatchers, OptionValues}
@@ -55,7 +56,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
                 ZonedDateTime.parse("2018-04-24T09:30:00Z"),
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                 "test.pdf",
-                "application/pdf"
+                "application/pdf",
+                Some(SupportingEvidence)
               ),
               FileUpload.Failed(
                 4,
@@ -77,7 +79,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             ),
             FileUpload.Failed(
               4,
@@ -97,7 +100,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           fileMimeType = "application/pdf"
         )
       )
-      whenReady(service.upscanCallbackArrived(upscanReady)(currentState)) {
+      whenReady(service.upscanCallbackArrived(upscanReady, SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -124,7 +127,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
                 ZonedDateTime.parse("2018-04-24T09:30:00Z"),
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                 "test.pdf",
-                "application/pdf"
+                "application/pdf",
+                Some(SupportingEvidence)
               ),
               FileUpload.Failed(
                 4,
@@ -155,7 +159,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             ),
             FileUpload.Failed(
               4,
@@ -176,7 +181,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           failureReason = UpscanNotification.REJECTED,
           message = "some failure reason"
         )
-      ))(currentState)) {
+      ), SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -205,7 +210,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         )
@@ -220,7 +226,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           fileMimeType = "application/pdf"
         )
       )
-      whenReady(service.upscanCallbackArrived(upscanReady)(currentState)) {
+      whenReady(service.upscanCallbackArrived(upscanReady, SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -245,7 +251,9 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               ZonedDateTime.parse("2020-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test1.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
+
             )
           )
         )
@@ -267,7 +275,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               "foo-bar-ref-1",
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test1.pdf",
-              "test2.png"
+              "test2.png",
+              Some(SupportingEvidence)
             ),
             FileUpload.Accepted(
               2,
@@ -276,7 +285,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               ZonedDateTime.parse("2020-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test1.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         ),
@@ -298,7 +308,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           fileMimeType = "image/png"
         )
       )
-      whenReady(service.upscanCallbackArrived(ready)(currentState)) {
+      whenReady(service.upscanCallbackArrived(ready, SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -346,7 +356,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           failureReason = UpscanNotification.UNKNOWN,
           message = "e.g. This file has a virus"
         )
-      ))(currentState)) {
+      ), SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -448,7 +458,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           fileMimeType = "application/pdf"
         )
       )
-      whenReady(service.upscanCallbackArrived(upscanReady)(currentState)) {
+      whenReady(service.upscanCallbackArrived(upscanReady, SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -473,8 +483,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
                 ZonedDateTime.parse("2018-04-24T09:30:00Z"),
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                 "test.pdf",
-                "application/pdf"
-              )
+                "application/pdf",
+                Some(SupportingEvidence))
             )
           )
         )
@@ -488,7 +498,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         )
@@ -503,7 +514,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           fileMimeType = "application/pdf"
         )
       )
-      whenReady(service.upscanCallbackArrived(upscanReady)(currentState)) {
+      whenReady(service.upscanCallbackArrived(upscanReady, SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -532,7 +543,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         )
@@ -546,7 +558,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           fileName = "test.pdf",
           fileMimeType = "application/pdf"
         )
-      ))(currentState)) {
+      ), SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -597,7 +609,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           failureReason = UpscanNotification.QUARANTINE,
           message = "e.g. This file has a virus"
         )
-      ))(currentState)) {
+      ), SupportingEvidence)(currentState)) {
         newState => assert(newState == expectedState)
       }
     }
@@ -630,7 +642,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           fileMimeType = "application/pdf"
         )
       )
-      whenReady(service.upscanCallbackArrived(upscanReady)(state)) {
+      whenReady(service.upscanCallbackArrived(upscanReady, SupportingEvidence)(state)) {
         newState => assert(newState == state.copy(acknowledged = true))
       }
     }

@@ -15,6 +15,7 @@
  */
 
 package views
+import models.FileType.SupportingEvidence
 import models._
 import play.api.data.Form
 import play.api.i18n.Messages
@@ -60,7 +61,7 @@ class FileUploadedViewContext extends RadioItemsHelper with SummaryListRowHelper
       )
 
     SummaryList(
-      rows = fileUploads.files.collect { case a: FileUpload.Accepted => a }.zipWithIndex.map {
+      rows = fileUploads.files.collect { case a: FileUpload.Accepted if(a.fileType.contains(SupportingEvidence)) => a }.zipWithIndex.map {
         case (file, index) => fileUploadRow(file, index + 1)
       },
       classes = """govuk-summary-list govuk-!-margin-bottom-9"""

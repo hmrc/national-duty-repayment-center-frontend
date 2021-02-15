@@ -16,7 +16,9 @@
 
 package models
 
+import models.FileType.SupportingEvidence
 import play.api.libs.json.{Format, Json}
+
 import java.time.ZonedDateTime
 
 case class FileUploads(
@@ -29,7 +31,7 @@ case class FileUploads(
 
   def acceptedCount: Int =
     files
-      .count { case _: FileUpload.Accepted => true; case _ => false }
+      .count { case f: FileUpload.Accepted if(f.fileType.contains(SupportingEvidence)) => true; case _ => false }
 
   def toUploadedFiles: Seq[UploadedFile] =
     files.collect {
@@ -44,12 +46,22 @@ case class FileUploads(
 object FileUploads {
   implicit val formats: Format[FileUploads] = Json.format[FileUploads]
 }
+sealed trait FileType
+
+object FileType extends EnumerationFormats[FileType] {
+
+  case object Bulk extends FileType
+  case object SupportingEvidence extends FileType
+  val values = Set(Bulk, SupportingEvidence)
+}
 
 /** File upload status */
 sealed trait FileUpload {
   def orderNumber: Int
   def reference: String
   def checksumOpt: Option[String] = None
+  val fileType: Option[FileType]
+
 }
 
 object FileUpload extends SealedTraitFormats[FileUpload] {
@@ -62,32 +74,38 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
     * but the file itself has not been yet transmitted to S3 bucket.
     */
   case class Initiated(
-    orderNumber: Int,
-    reference: String
-  ) extends FileUpload
+                        orderNumber: Int,
+                        reference: String,
+                        fileType: Option[FileType] = None
+                      ) extends FileUpload
 
   /** Status when file transmission has been rejected by AWS S3. */
   case class Rejected(
-    orderNumber: Int,
-    reference: String,
-    details: S3UploadError
-  ) extends FileUpload
+                       orderNumber: Int,
+                       reference: String,
+                       details: S3UploadError,
+                       fileType: Option[FileType] = None
+                     ) extends FileUpload
 
   /** Status when the file has successfully arrived to AWS S3 for verification. */
   case class Posted(
-    orderNumber: Int,
-    reference: String
+
+                     orderNumber: Int,
+                     reference: String,
+                     fileType: Option[FileType] = None
   ) extends FileUpload
 
   /** Status when the file has been positively verified and is ready for further actions. */
   case class Accepted(
-    orderNumber: Int,
-    reference: String,
-    url: String,
-    uploadTimestamp: ZonedDateTime,
-    checksum: String,
-    fileName: String,
-    fileMimeType: String
+
+                       orderNumber: Int,
+                       reference: String,
+                       url: String,
+                       uploadTimestamp: ZonedDateTime,
+                       checksum: String,
+                       fileName: String,
+                       fileMimeType: String,
+                       fileType: Option[FileType] = None
   ) extends FileUpload {
 
     override def checksumOpt: Option[String] = Some(checksum)
@@ -95,27 +113,30 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
 
   /** Status when the file has failed verification and may not be used. */
   case class Failed(
-    orderNumber: Int,
-    reference: String,
-    details: UpscanNotification.FailureDetails
+                     orderNumber: Int,
+                     reference: String,
+                     details: UpscanNotification.FailureDetails,
+                     fileType: Option[FileType] = None
   ) extends FileUpload
 
   /** Status when the file is a duplicate of an existing upload. */
   case class Duplicate(
-    orderNumber: Int,
-    reference: String,
-    checksum: String,
-    existingFileName: String,
-    duplicateFileName: String
+                        orderNumber: Int,
+                        reference: String,
+                        checksum: String,
+                        existingFileName: String,
+                        duplicateFileName: String,
+                        fileType: Option[FileType] = None
   ) extends FileUpload
 
-  override val formats = Set(
-    Case[Initiated](Json.format[Initiated]),
-    Case[Rejected](Json.format[Rejected]),
-    Case[Posted](Json.format[Posted]),
-    Case[Accepted](Json.format[Accepted]),
-    Case[Failed](Json.format[Failed]),
-    Case[Duplicate](Json.format[Duplicate])
-  )
+  override val formats =
+    Set(
+      Case[Initiated](Json.format[Initiated]),
+      Case[Rejected](Json.format[Rejected]),
+      Case[Posted](Json.format[Posted]),
+      Case[Accepted](Json.format[Accepted]),
+      Case[Failed](Json.format[Failed]),
+      Case[Duplicate](Json.format[Duplicate])
+    )
 
 }
