@@ -17,14 +17,17 @@
 package services
 
 import connectors.NDRCConnector
+
 import javax.inject.Inject
 import models.{ClaimId, UserAnswers}
 import models.requests.{AmendClaimRequest, CreateClaimRequest, DataRequest}
 import models.responses.ClientClaimSuccessResponse
 import uk.gov.hmrc.http.HeaderCarrier
 import play.api.Logger
+import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
 import scala.concurrent.{ExecutionContext, Future}
+case class CaseAlreadyExists(msg: String) extends RuntimeException(msg)
 
 class ClaimService @Inject()(
                               nDRCConnector: NDRCConnector
@@ -38,12 +41,19 @@ class ClaimService @Inject()(
 
     maybeRegistrationRequest match {
       case Some(value) =>
-        for {
-          claimId: ClientClaimSuccessResponse <- nDRCConnector.submitClaim(value)
-        } yield {
-          //val _ = auditService.audit(buildAuditModel(value, registration, request))
-          claimId.result.get
-        }
+         nDRCConnector.submitClaim(value).map { clientClaimResponse =>
+        if (clientClaimResponse.result.map(_.caseId).nonEmpty)
+          clientClaimResponse.result.map(_.caseId).get
+        else
+          clientClaimResponse.error match {
+            case Some(ApiError("409", Some(caseReferenceId))) =>
+              throw CaseAlreadyExists(s"Case already exists $caseReferenceId")
+            case _ =>
+              val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
+                clientClaimResponse.error.map(_.errorMessage).getOrElse("")
+              throw new RuntimeException(message)
+          }
+    }
       case None =>
         Logger.error("Unsuccessful claim submission, did not contain sufficient UserAnswers data to construct CreateClaimRequest")
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct CreateClaimRequest")
@@ -55,11 +65,18 @@ class ClaimService @Inject()(
 
     maybeAmendRequest match {
       case Some(value) =>
-        for {
-          claimId: ClientClaimSuccessResponse <- nDRCConnector.submitAmendClaim(value)
-        } yield {
-          //val _ = auditService.audit(buildAuditModel(value, registration, request))
-          claimId.result.get
+        nDRCConnector.submitAmendClaim(value).map { clientClaimResponse =>
+          if (clientClaimResponse.result.map(_.caseId).nonEmpty)
+            clientClaimResponse.result.map(_.caseId).get
+          else
+            clientClaimResponse.error match {
+              case Some(ApiError("409", Some(caseReferenceId))) =>
+                throw new RuntimeException("Case already exists")
+              case _ =>
+                val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
+                  clientClaimResponse.error.map(_.errorMessage).getOrElse("")
+                throw new RuntimeException(message)
+            }
         }
       case None =>
         Logger.error("Unsuccessful amend claim submission, did not contain sufficient UserAnswers data to construct AmendClaimRequest")
@@ -67,4 +84,6 @@ class ClaimService @Inject()(
     }
   }
 }
+
+
 

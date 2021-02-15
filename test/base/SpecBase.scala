@@ -17,16 +17,15 @@
 package base
 
 import com.codahale.metrics.MetricRegistry
-import com.kenshoo.play.metrics.{Metrics, MetricsFilter, MetricsFilterImpl, MetricsImpl}
-
-import java.time.LocalDate
-import config.{CustomHttpClient, FrontendAppConfig}
+import com.kenshoo.play.metrics.{Metrics, MetricsFilterImpl, MetricsImpl}
+import config.FrontendAppConfig
 import controllers.actions._
-import models.requests.{AmendClaimRequest, CreateClaimRequest}
 import models._
+import models.requests.{AmendClaimRequest, CreateClaimRequest}
 import org.mockito.Mockito.when
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
@@ -34,8 +33,8 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.http.{HttpGet, HttpPost}
+
+import java.time.{LocalDate, ZoneId, ZonedDateTime}
 
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience with MockitoSugar {
@@ -129,13 +128,22 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   val dutyTypeTaxDetails = DutyTypeTaxDetails(dutyTypeTaxList)
 
+  val uploadedFiles = Seq(UploadedFile(
+    "ref-123",
+    downloadUrl = "/bucket/test1.jpeg",
+    uploadTimestamp = ZonedDateTime.of(2020, 10, 10, 10, 10, 10, 0, ZoneId.of("UTC")),
+    checksum = "f55a741917d512ab4c547ea97bdfdd8df72bed5fe51b6a248e0a5a0ae58061c8",
+    fileName = "test1.jpeg",
+    fileMimeType = "image/jpeg"
+  ))
+
   val createClaimRequest = CreateClaimRequest(
     Content(claimDetails,
       AgentDetails = Some(userDetails),
       ImporterDetails = userDetails,
       BankDetails = Some(bankDetails),
       DutyTypeTaxDetails = dutyTypeTaxDetails,
-      DocumentList = documentList), Nil
+      DocumentList = documentList), uploadedFiles
   )
 
   val amendClaimRequest = AmendClaimRequest(
