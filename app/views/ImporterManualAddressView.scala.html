@@ -100,17 +100,16 @@
             attributes = Map("autocomplete" -> "off")
         )
 
-        <label class="govuk-label" for="CountryCode">@messages("importerManualAddress.country.heading")</label>
-
-
-        @govukSelect(Select(
+        @forms.inputSelect(
+            form = form,
             id = "CountryCode",
             name = "CountryCode",
             items = countryOptions,
-            classes = "govuk-!-width-two-thirds",
-            formGroupClasses = "autocomplete-wrapper",
+            label = "importerManualAddress.country.heading",
+            classes = Some("govuk-!-width-two-thirds"),
+            isPageHeading = false,
             attributes = Map("autocomplete" -> "on")
-        ))
+        )
 
         @forms.inputText(
             form = form,
