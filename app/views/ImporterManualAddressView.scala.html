@@ -127,23 +127,13 @@
         @html.button("site.continue")
     }
 }
-
 <script type="text/javascript">
       openregisterLocationPicker({
         additionalSynonyms: [
-          { name: 'Albion', code: 'country:GB' }
+          { name: 'United Kingdom', code: 'country:GB' }
         ],
         defaultValue: '',
         selectElement: document.getElementById('CountryCode'),
-        url: 'javascripts/autocomplete/location-autocomplete-graph.json'
-      })
-
-      openregisterLocationPicker({
-        additionalSynonyms: [
-          { name: 'Albion', code: 'country:GB' }
-        ],
-        defaultValue: 'country:GB',
-        selectElement: document.getElementById('preselected'),
         url: 'javascripts/autocomplete/location-autocomplete-graph.json'
       })
     </script>
