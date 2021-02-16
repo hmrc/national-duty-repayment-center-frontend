@@ -25,6 +25,8 @@ import pages.{ClaimantTypePage, ImporterManualAddressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.Aliases
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CountryOptions
 import views.html.ImporterManualAddressView
@@ -53,12 +55,14 @@ class ImporterManualAddressController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ImporterManualAddressPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+      request.userAnswers.get(ImporterManualAddressPage) match {
+        case None => Ok(view(form, mode, isImporterJourney(request.userAnswers), countryOptions.options, getBackLink(mode)))
+        case Some(value) =>
+          val selectedItem = countryOptions.options.find(_.value == Some(value.CountryCode))
+          val options = if(selectedItem.isEmpty) countryOptions.options
+          else selectedItem.get.copy(selected = true) +: countryOptions.options.filterNot(_ == selectedItem.get)
+          Ok(view(form.fill(value), mode, isImporterJourney(request.userAnswers), options, getBackLink(mode)))
       }
-
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), countryOptions.options, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
