@@ -46,100 +46,90 @@
     }
     ) {
 
-    @html.p {
-        @messages(isImporterJourney match {
-        case true =>"importerManualAddress.hint"
-        case _ => ""
-        })
-    }
+        @html.p {
+            @messages(isImporterJourney match {
+            case true =>"importerManualAddress.hint"
+            case _ => ""
+            })
+        }
 
-    @forms.inputText(
-        form = form,
-        id = "AddressLine1",
-        name = "AddressLine1",
-        inputType = "text",
-        label = "importerManualAddress.addressLine1.heading",
-        isPageHeading = false,
-        isInFieldset = true,
-        attributes = Map("autocomplete" -> "off")
-    )
-
-    @forms.inputText(
-        form = form,
-        id = "AddressLine2",
-        name = "AddressLine2",
-        inputType = "text",
-        label = "importerManualAddress.addressLine2.heading",
-        labelHidden = true,
-        isPageHeading = false,
-        isInFieldset = true,
-        attributes = Map("autocomplete" -> "off")
-    )
-
-    @forms.inputText(
-        form = form,
-        id = "City",
-        name = "City",
-        inputType = "text",
-        label = "importerManualAddress.city.heading",
-        classes = Some("govuk-!-width-two-thirds"),
-        isPageHeading = false,
-        isInFieldset = true,
-        attributes = Map("autocomplete" -> "off")
-    )
-
-    @forms.inputText(
-        form = form,
-        id = "Region",
-        name = "Region",
-        inputType = "text",
-        label = "importerManualAddress.county.heading",
-        classes = Some("govuk-!-width-two-thirds"),
-        isPageHeading = false,
-        isInFieldset = true,
-        attributes = Map("autocomplete" -> "off")
-    )
-
-    @forms.inputText(
-        form = form,
-        id = "PostalCode",
-        name = "PostalCode",
-        inputType = "text",
-        label = "importerAddress.postCode",
-        classes = Some("govuk-input--width-10"),
-        isPageHeading = false,
-        isInFieldset = true,
-        attributes = Map("autocomplete" -> "off")
-    )
-
-    <div class="govuk-!-width-two-thirds">
-        @forms.inputSelect(
+        @forms.inputText(
             form = form,
-            id = "CountryCode",
-            name = "CountryCode",
-            items = countryOptions.map { item =>
-                item.copy(selected = form("CountryCode").value match {
-                case Some(previousValue) => item.value.contains(previousValue)
-                case None => item.value.contains("")
-                })
-            },
-            label = "importerManualAddress.country.heading",
-            classes = Some("govuk-!-width-two-thirds"),
+            id = "AddressLine1",
+            name = "AddressLine1",
+            inputType = "text",
+            label = "importerManualAddress.addressLine1.heading",
             isPageHeading = false,
+            isInFieldset = true,
             attributes = Map("autocomplete" -> "off")
         )
-    </div>
+
+        @forms.inputText(
+            form = form,
+            id = "AddressLine2",
+            name = "AddressLine2",
+            inputType = "text",
+            label = "importerManualAddress.addressLine2.heading",
+            labelHidden = true,
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
+        )
+
+        @forms.inputText(
+            form = form,
+            id = "City",
+            name = "City",
+            inputType = "text",
+            label = "importerManualAddress.city.heading",
+            classes = Some("govuk-!-width-two-thirds"),
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
+        )
+
+        @forms.inputText(
+            form = form,
+            id = "Region",
+            name = "Region",
+            inputType = "text",
+            label = "importerManualAddress.county.heading",
+            classes = Some("govuk-!-width-two-thirds"),
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
+        )
+
+        @forms.inputText(
+            form = form,
+            id = "PostalCode",
+            name = "PostalCode",
+            inputType = "text",
+            label = "importerAddress.postCode",
+            classes = Some("govuk-input--width-10"),
+            isPageHeading = false,
+            isInFieldset = true,
+            attributes = Map("autocomplete" -> "off")
+        )
+
+        <div class="govuk-!-width-two-thirds">
+            @forms.inputSelect(
+                form = form,
+                id = "CountryCode",
+                name = "CountryCode",
+                items = countryOptions.map { item =>
+                    item.copy(selected = form("CountryCode").value match {
+                    case Some(previousValue) => item.value.contains(previousValue)
+                    case None => item.value.contains("")
+                    })
+                },
+                label = "importerManualAddress.country.heading",
+                classes = Some("govuk-!-width-two-thirds"),
+                isPageHeading = false,
+                attributes = Map("autocomplete" -> "off")
+            )
+        </div>
+        }
+        @html.button("site.continue")
+    }
 }
-    @html.button("site.continue")
-}
-}
-<script type="text/javascript">
-      openregisterLocationPicker({
-        additionalSynonyms: [
-          { name: 'Albion', code: 'country:GB' }
-        ],
-        defaultValue: '',
-        selectElement: document.getElementById('CountryCode'),
-        url: 'javascripts/autocomplete/location-autocomplete-graph.json'
-      })
-</script>
