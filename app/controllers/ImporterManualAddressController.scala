@@ -25,8 +25,6 @@ import pages.{ClaimantTypePage, ImporterManualAddressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.Aliases
-import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CountryOptions
 import views.html.ImporterManualAddressView
@@ -34,17 +32,17 @@ import views.html.ImporterManualAddressView
 import scala.concurrent.{ExecutionContext, Future}
 
 class ImporterManualAddressController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ImporterManualAddressFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ImporterManualAddressView,
-                                        val countryOptions: CountryOptions
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                 override val messagesApi: MessagesApi,
+                                                 sessionRepository: SessionRepository,
+                                                 navigator: Navigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DataRetrievalAction,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: ImporterManualAddressFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: ImporterManualAddressView,
+                                                 val countryOptions: CountryOptions
+                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -55,19 +53,16 @@ class ImporterManualAddressController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      request.userAnswers.get(ImporterManualAddressPage) match {
-        case None => Ok(view(form, mode, isImporterJourney(request.userAnswers), countryOptions.options, getBackLink(mode)))
-        case Some(value) =>
-          val selectedItem = countryOptions.options.find(_.value == Some(value.CountryCode))
-          val options = if(selectedItem.isEmpty) countryOptions.options
-          else selectedItem.get.copy(selected = true) +: countryOptions.options.filterNot(_ == selectedItem.get)
-          Ok(view(form.fill(value), mode, isImporterJourney(request.userAnswers), options, getBackLink(mode)))
+      val preparedForm = request.userAnswers.get(ImporterManualAddressPage) match {
+        case None => form
+        case Some(value) => form.fill(value)
       }
+
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), countryOptions.options, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers),countryOptions.options, getBackLink(mode)))),

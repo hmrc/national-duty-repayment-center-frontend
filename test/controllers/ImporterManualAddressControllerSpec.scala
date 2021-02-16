@@ -29,7 +29,9 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.ImporterManualAddressView
+import utils.CountryOptions
 
 import scala.concurrent.Future
 
@@ -39,6 +41,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new ImporterManualAddressFormProvider()
   val form = formProvider()
+  val countryOptions: CountryOptions = new CountryOptions(Seq.empty[SelectItem])
 
   lazy val importerManualAddressRoute = routes.ImporterManualAddressController.onPageLoad(NormalMode).url
 
@@ -59,7 +62,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, false, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode, false, countryOptions.options, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -81,7 +84,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))), NormalMode, false, backLink)(fakeRequest, messages).toString
+        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))), NormalMode, false, countryOptions.options, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -138,7 +141,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, false, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, false, countryOptions.options, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -25,12 +25,13 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AgentImporterManualAddressPage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.AgentImporterManualAddressView
+import utils.CountryOptions
 
 import scala.concurrent.Future
 
@@ -42,6 +43,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
   val formProvider = new AgentImporterManualAddressFormProvider()
   val form = formProvider()
+  val countryOptions: CountryOptions = new CountryOptions(Seq.empty[SelectItem])
 
   lazy val agentImporterManualAddressRoute = routes.AgentImporterManualAddressController.onPageLoad(NormalMode).url
 
@@ -60,7 +62,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode, countryOptions.options, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -85,7 +87,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       contentAsString(result) mustEqual
         view(form.fill(
           Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
-        ), NormalMode, backLink)(fakeRequest, messages).toString
+        ), NormalMode, countryOptions.options, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -140,7 +142,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, countryOptions.options, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -21,10 +21,11 @@
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
     forms: views.components.forms,
-    html: views.components.html
+    html: views.components.html,
+    govukSelect: GovukSelect
 )
 
-@(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, countryOptions: Seq[SelectItem], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterManualAddress.title"))}"),
@@ -92,18 +93,6 @@
 
         @forms.inputText(
             form = form,
-            id = "CountryCode",
-            name = "CountryCode",
-            inputType = "text",
-            label = "importerManualAddress.country.heading",
-            classes = Some("govuk-!-width-two-thirds"),
-            isPageHeading = false,
-            isInFieldset = true,
-            attributes = Map("autocomplete" -> "off")
-        )
-
-        @forms.inputText(
-            form = form,
             id = "PostalCode",
             name = "PostalCode",
             inputType = "text",
@@ -113,7 +102,35 @@
             isInFieldset = true,
             attributes = Map("autocomplete" -> "off")
         )
+
+        <div class="govuk-!-width-two-thirds">
+            @forms.inputSelect(
+                form = form,
+                id = "CountryCode",
+                name = "CountryCode",
+                items = countryOptions.map { item =>
+                    item.copy(selected = form("CountryCode").value match {
+                    case Some(previousValue) => item.value.contains(previousValue)
+                    case None => item.value.contains("")
+                })
+                },
+                label = "importerManualAddress.country.heading",
+                classes = Some("govuk-!-width-two-thirds"),
+                isPageHeading = false,
+                attributes = Map("autocomplete" -> "off")
+            )
+        </div>
     }
         @html.button("site.continue")
     }
 }
+<script type="text/javascript">
+      openregisterLocationPicker({
+        additionalSynonyms: [
+          { name: 'Albion', code: 'country:GB' }
+        ],
+        defaultValue: '',
+        selectElement: document.getElementById('CountryCode'),
+        url: 'javascripts/autocomplete/location-autocomplete-graph.json'
+      })
+</script>
