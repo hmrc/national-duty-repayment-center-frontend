@@ -17,8 +17,11 @@
 package utils
 
 import base.SpecBase
+import com.kenshoo.play.metrics.{Metrics, MetricsImpl}
 import com.typesafe.config.ConfigException
 import config.FrontendAppConfig
+import controllers.actions.{DataRequiredAction, DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction, FakeIdentifierAction, IdentifierAction}
+import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
@@ -30,9 +33,13 @@ class CountryOptionsSpec extends SpecBase {
     "build correctly the SelectItems with country list and country code" in {
       val app =
         new GuiceApplicationBuilder()
-          .configure(Map(
-            "location.canonical.list" -> "country-canonical-list-test.json"
-          )).build()
+          .configure(
+            "location.canonical.list" -> "country-canonical-list-test.json",
+            "metrics.enabled" -> false,
+          )
+          .overrides(
+            bind[Metrics].to[MetricsImpl]
+          ).build()
 
       running(app) {
 
@@ -40,13 +47,15 @@ class CountryOptionsSpec extends SpecBase {
         countryOption.options mustEqual Seq(SelectItem(Some("GB"), "United Kingdom"),
           SelectItem(Some("AF"), "Afghanistan"))
       }
+      app.stop()
     }
 
     "throw the error if the country json does not exist" in {
       val builder = new GuiceApplicationBuilder()
-        .configure(Map(
-          "location.canonical.list" -> "country-canonical-test.json"
-        ))
+        .configure(
+          "location.canonical.list" -> "country-canonical-test.json",
+          "metrics.enabled" -> false,
+        )
 
       an[ConfigException.BadValue] shouldBe thrownBy {
         new CountryOptions(builder.environment, builder.injector.instanceOf[FrontendAppConfig])
