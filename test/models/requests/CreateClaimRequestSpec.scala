@@ -213,12 +213,28 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       result mustBe Some(testCreateClaimRequestRepresentativeWithEmail)
     }
 
-    "returns a valid CreateClaimRequest for a userAnswers containing a CMA PaymentMethod" in {
+    "returns a valid CreateClaimRequest for a userAnswers containing claimantType as Representative and Multiple Entries" in {
+      val testUserAnswers = populateUserAnswersWithRepresentativeAndMultipleEntries(emptyUserAnswers)
+
+      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
+
+      result mustBe Some(testCreateClaimRequestWithRepresentativeAndMultipleEntries)
+    }
+
+    "returns a valid CreateClaimRequest for a userAnswers containing claimantType as Representative and PaymentMethod as CMA" in {
       val testUserAnswers = populateUserAnswersWithCMAPaymentMethod(emptyUserAnswers)
 
       val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
 
       result mustBe Some(testCreateClaimRequestWithCMAPaymentMethod)
+    }
+
+    "returns a valid CreateClaimRequest for a userAnswers containing claimantType as Importer and PaymentMethod as CMA" in {
+      val testUserAnswers = populateUserAnswersWithCMAPaymentMethodAndClaimantImporter(emptyUserAnswers)
+
+      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
+
+      result mustBe Some(testCreateClaimRequestWithCMAPaymentMethodAndClaimantImporter)
     }
   }
 }
