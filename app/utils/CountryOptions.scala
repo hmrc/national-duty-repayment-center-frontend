@@ -24,8 +24,10 @@ import play.api.Environment
 import play.api.libs.json.Json
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 
+trait CountryDropDown
+
 @Singleton
-class CountryOptions(val options: Seq[SelectItem]) {
+class CountryOptions(val options: Seq[SelectItem]) extends CountryDropDown {
 
   @Inject()
   def this(environment: Environment, config: FrontendAppConfig) {

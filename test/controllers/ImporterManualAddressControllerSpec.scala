@@ -31,7 +31,7 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.ImporterManualAddressView
-import utils.CountryOptions
+import utils.{CountryOptions, FakeCountryOptions}
 
 import scala.concurrent.Future
 
@@ -49,7 +49,8 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).overrides(
+        bind[CountryOptions].to[FakeCountryOptions]).build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
 
