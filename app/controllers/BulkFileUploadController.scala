@@ -17,20 +17,22 @@
 package controllers
 
 import java.time.LocalDateTime
-
 import akka.pattern.ask
 import akka.actor.ActorRef
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
+import models.FileType.{Bulk, SupportingEvidence}
+
 import javax.inject.{Inject, Named}
-import models.{CustomsRegulationType, NormalMode, S3UploadError, UserAnswers}
+import models.{CustomsRegulationType, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
 import pages.CustomsRegulationTypePage
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request, RequestHeader, Result}
+import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -82,14 +84,14 @@ class BulkFileUploadController @Inject()(
       ua.userAnswers.flatMap(_.fileUploadState) match {
         case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
           for {
-            fs <-  initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
+            fs <-  initiateFileUpload(upscanRequest(request.internalId), Some(Bulk))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
             b <- updateSession(fs, ua.userAnswers)
             if b
           } yield renderState(ua.userAnswers, s)
         case _ => {
           val state = request.userAnswers.fileUploadState
           for {
-            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(state)
+            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId), Some(Bulk))(upscanInitiateConnector.initiate(_))(state)
             res <- updateSession(fileUploadState, Some(request.userAnswers))
             if res
           } yield renderState(ua.userAnswers, fileUploadState)
@@ -129,9 +131,33 @@ class BulkFileUploadController @Inject()(
     else Future.successful(true)
   }
 
+  // POST /bulk/:id/callback-from-upscan
+  final def callbackFromUpscan(id: String) = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
+
+    sessionState(id).flatMap { ss =>
+      ss.state match {
+        case Some(s) => upscanCallbackArrived(request.body, Bulk)(s).flatMap { newState =>
+          updateSession(newState, ss.userAnswers).map { res =>
+            acknowledgeFileUploadRedirect(newState)
+          }
+        }
+        case None => Future.successful(InternalServerError("Missing file upload state"))
+      }
+    }
+  }
+
+  private def acknowledgeFileUploadRedirect(state: FileUploadState)(
+    implicit request: Request[_]
+  ): Result =
+    (state match {
+      case _: FileUploaded => Created
+      case _ => NoContent
+    }).withHeaders(HeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN -> "*")
+
+
   final def upscanRequest(id: String)(implicit rh: RequestHeader): UpscanInitiateRequest = {
     UpscanInitiateRequest(
-      callbackUrl = appConfig.baseInternalCallbackUrl + fileUploadController.callbackFromUpscan(id).url,
+      callbackUrl = appConfig.baseInternalCallbackUrl + bulkFileUploadController.callbackFromUpscan(id).url,
       successRedirect = Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.showWaitingForFileVerification),
       errorRedirect = Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.markFileUploadAsRejected),
       minimumFileSize = Some(1),

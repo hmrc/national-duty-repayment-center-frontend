@@ -20,6 +20,7 @@ import com.kenshoo.play.metrics.{Metrics, MetricsImpl}
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
 import controllers.actions._
 import models.ClaimantType.Importer
+import models.FileType.{Bulk, SupportingEvidence}
 import models.requests.UploadRequest
 import models.{AgentImporterHasEORI, FileUpload, FileUploads, NormalMode, UpscanNotification, UserAnswers}
 import org.mockito.Matchers.any
@@ -77,6 +78,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
   "GET /file-upload" should {
     "show the upload first document page" in {
       val fileUploadUrl = routes.FileUploadController.showFileUpload().url
+
       val application =
         appBuilder(userAnswers = Some(emptyUserAnswers))
           .build()
@@ -92,6 +94,41 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
   "GET /file-uploaded" should {
     "show file uploaded page" in {
+      val fileUploadedUrl = routes.FileUploadController.showFileUploaded().url
+
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(SupportingEvidence)
+            )
+          )
+        ),
+        acknowledged = true
+      )
+      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value.copy(fileUploadState = Some(fileUploadedState))
+
+      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+
+      running(application) {
+        val sessionRepo = application.injector.instanceOf[SessionRepository]
+        sessionRepo.set(userAnswers)
+        val request = buildRequest(GET, fileUploadedUrl)
+        val result = route(application, request).value
+        status(result) mustEqual 200
+        contentAsString(result) must include("You have uploaded 1 file")
+      }
+      application.stop()
+    }
+
+    "show only Supporting evidence files uploaded page" in {
       val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
       val fileUploadUrl = routes.FileUploadController.showFileUploaded().url
 
@@ -105,7 +142,18 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(Bulk)
+            ),
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-2",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         ),
@@ -118,19 +166,6 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
         status(result) mustEqual 200
         contentAsString(result) must include("You have uploaded 1 file")
-      }
-      application.stop()
-    }
-    "show Supporting evidence page when no files are uploaded" in {
-      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
-      val fileUploadUrl = routes.FileUploadController.showFileUploaded().url
-
-      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = None))).build()
-
-      running(application) {
-        val request = buildRequest(GET, fileUploadUrl)
-        val result = route(application, request).value
-        redirectLocation(result) mustEqual Some(routes.FileUploadController.showFileUpload().url)
       }
       application.stop()
     }
