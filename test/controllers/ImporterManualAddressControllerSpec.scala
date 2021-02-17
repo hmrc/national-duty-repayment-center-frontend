@@ -20,6 +20,7 @@ import base.SpecBase
 import forms.ImporterManualAddressFormProvider
 import models.{Address, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.Matchers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -29,7 +30,9 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.ImporterManualAddressView
+import utils.{CountryOptions, FakeCountryOptions}
 
 import scala.concurrent.Future
 
@@ -46,7 +49,12 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockCountryOptions = mock[CountryOptions]
+
+      when(mockCountryOptions.options).thenReturn(FakeCountryOptions.fakeCountries)
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).
+        overrides(bind[CountryOptions].toInstance(mockCountryOptions)).build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
 
@@ -59,16 +67,21 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, false, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode, false, FakeCountryOptions.fakeCountries, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
+      val mockCountryOptions = mock[CountryOptions]
+
+      when(mockCountryOptions.options).thenReturn(FakeCountryOptions.fakeCountries)
+
       val userAnswers = UserAnswers(userAnswersId).set(ImporterManualAddressPage, Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).
+        overrides(bind[CountryOptions].toInstance(mockCountryOptions)).build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
 
@@ -81,7 +94,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))), NormalMode, false, backLink)(fakeRequest, messages).toString
+        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))), NormalMode, false, FakeCountryOptions.fakeCountries, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -121,7 +134,12 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockCountryOptions = mock[CountryOptions]
+
+      when(mockCountryOptions.options).thenReturn(FakeCountryOptions.fakeCountries)
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).
+        overrides(bind[CountryOptions].toInstance(mockCountryOptions)).build()
 
       val request =
         FakeRequest(POST, importerManualAddressRoute)
@@ -138,7 +156,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, false, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, false, FakeCountryOptions.fakeCountries, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

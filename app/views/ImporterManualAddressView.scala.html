@@ -21,18 +21,19 @@
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
     forms: views.components.forms,
-    html: views.components.html
+    html: views.components.html,
+    govukSelect: GovukSelect
 )
 
-@(form: Form[_], mode: Mode, isImporterJourney: Boolean, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isImporterJourney: Boolean, countryOptions: Seq[SelectItem], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
-                                                case true => messages("importerYourAddress.title")
-                                                case _ => messages("importerManualAddress.title")
-                                                })}"),
+    case true => messages("importerYourAddress.title")
+    case _ => messages("importerManualAddress.title")
+    })}"),
     backLink = Some(backLink.url)
-) {
+    ) {
 
     @forms.formWithCSRF(action = ImporterManualAddressController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
@@ -40,17 +41,17 @@
 
     @forms.fieldset(
         legend = isImporterJourney match {
-                    case true => messages("importerYourAddress.heading")
-                    case _ => messages("importerManualAddress.heading")
-                 }
+        case true => messages("importerYourAddress.heading")
+        case _ => messages("importerManualAddress.heading")
+    }
     ) {
 
-            @html.p {
-                     @messages(isImporterJourney match {
-                                case true =>"importerManualAddress.hint"
-                                case _ => ""
-                    })
-            }
+        @html.p {
+            @messages(isImporterJourney match {
+            case true =>"importerManualAddress.hint"
+            case _ => ""
+            })
+        }
 
         @forms.inputText(
             form = form,
@@ -101,18 +102,6 @@
 
         @forms.inputText(
             form = form,
-            id = "CountryCode",
-            name = "CountryCode",
-            inputType = "text",
-            label = "importerManualAddress.country.heading",
-            classes = Some("govuk-!-width-two-thirds"),
-            isPageHeading = false,
-            isInFieldset = true,
-            attributes = Map("autocomplete" -> "off")
-        )
-
-        @forms.inputText(
-            form = form,
             id = "PostalCode",
             name = "PostalCode",
             inputType = "text",
@@ -122,7 +111,25 @@
             isInFieldset = true,
             attributes = Map("autocomplete" -> "off")
         )
-    }
+
+        <div class="govuk-!-width-two-thirds">
+            @forms.inputSelect(
+                form = form,
+                id = "CountryCode",
+                name = "CountryCode",
+                items = countryOptions.map { item =>
+                    item.copy(selected = form("CountryCode").value match {
+                    case Some(previousValue) => item.value.contains(previousValue)
+                    case None => item.value.contains("")
+                    })
+                },
+                label = "importerManualAddress.country.heading",
+                classes = Some("govuk-!-width-two-thirds"),
+                isPageHeading = false,
+                attributes = Map("autocomplete" -> "off")
+            )
+        </div>
+        }
         @html.button("site.continue")
     }
 }

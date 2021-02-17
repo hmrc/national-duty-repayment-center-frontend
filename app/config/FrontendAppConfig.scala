@@ -71,7 +71,7 @@ trait FrontendAppConfig {
   val baseInternalCallbackUrl: String
   def languageMap: Map[String, Lang]
   val routeToSwitchLanguage: String => Call
-
+  val locationCanonicalList: String
 }
 @Singleton
 class FrontendAppConfigImpl @Inject()(configuration: Configuration) extends FrontendAppConfig {
@@ -103,7 +103,7 @@ class FrontendAppConfigImpl @Inject()(configuration: Configuration) extends Fron
   override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
   override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")
   override val upscanInitiateBaseUrl: String = configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
-
+  lazy val locationCanonicalList: String = loadConfig("location.canonical.list")
 
   override def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),
@@ -112,4 +112,7 @@ class FrontendAppConfigImpl @Inject()(configuration: Configuration) extends Fron
 
   override val routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
+
+  private def loadConfig(key: String): String = configuration.getOptional[String](key).getOrElse(throw new Exception
+  (s"Missing configuration key: $key"))
 }

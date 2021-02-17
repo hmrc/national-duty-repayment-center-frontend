@@ -29,13 +29,13 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.AgentImporterManualAddressView
+import utils.{CountryOptions, FakeCountryOptions}
 
 import scala.concurrent.Future
 
 class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
-
-  val backLink = routes.AgentImporterAddressController.onPageLoad(NormalMode)
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -48,7 +48,14 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val backLink = routes.AgentImporterAddressController.onPageLoad(NormalMode)
+
+      val mockCountryOptions = mock[CountryOptions]
+
+      when(mockCountryOptions.options).thenReturn(FakeCountryOptions.fakeCountries)
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).
+        overrides(bind[CountryOptions].toInstance(mockCountryOptions)).build()
 
       val request = FakeRequest(GET, agentImporterManualAddressRoute)
 
@@ -59,19 +66,26 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode, FakeCountryOptions.fakeCountries, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
+      val backLink = routes.AgentImporterAddressController.onPageLoad(NormalMode)
+
+      val mockCountryOptions = mock[CountryOptions]
+
+      when(mockCountryOptions.options).thenReturn(FakeCountryOptions.fakeCountries)
+
       val userAnswers = UserAnswers(userAnswersId).set(
         AgentImporterManualAddressPage,
         Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
       ).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).
+        overrides(bind[CountryOptions].toInstance(mockCountryOptions)).build()
 
       val request = FakeRequest(GET, agentImporterManualAddressRoute)
 
@@ -84,7 +98,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       contentAsString(result) mustEqual
         view(form.fill(
           Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
-        ), NormalMode, backLink)(fakeRequest, messages).toString
+        ), NormalMode, FakeCountryOptions.fakeCountries, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -124,7 +138,14 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val backLink = routes.AgentImporterAddressController.onPageLoad(NormalMode)
+
+      val mockCountryOptions = mock[CountryOptions]
+
+      when(mockCountryOptions.options).thenReturn(FakeCountryOptions.fakeCountries)
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).
+        overrides(bind[CountryOptions].toInstance(mockCountryOptions)).build()
 
       val request =
         FakeRequest(POST, agentImporterManualAddressRoute)
@@ -139,7 +160,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, FakeCountryOptions.fakeCountries, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
