@@ -24,7 +24,8 @@ import pages._
 
 object TestData {
 
-  val testClaimantType: ClaimantType = ClaimantType.Representative
+  val testClaimantTypeRepresentative: ClaimantType = ClaimantType.Representative
+  val testClaimantTypeImporter: ClaimantType = ClaimantType.Importer
   val testEntryDetails: EntryDetails = EntryDetails("123", "123456A", LocalDate.parse("2012-12-12"))
   val testClaimDescription: ClaimDescription = ClaimDescription("this is a claim description")
   val testClaimRepaymentType: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
@@ -48,8 +49,25 @@ object TestData {
     FormType("01"),
     CustomsRegulationType.UnionsCustomsCodeRegulation,
     ArticleType.ErrorByCustoms,
-    testClaimantType,
+    testClaimantTypeRepresentative,
     NumberOfEntriesType.Single,
+    None,
+    testEntryDetails,
+    ClaimReasonType.Cpuchange,
+    testClaimDescription,
+    LocalDate.now(),
+    LocalDate.now(),
+    testWhomToPay,
+    RepaymentType.BACS,
+    "NA"
+  )
+
+  val testClaimDetailsWithRepresentativeAndMultipleEntries: ClaimDetails = ClaimDetails(
+    FormType("01"),
+    CustomsRegulationType.UnionsCustomsCodeRegulation,
+    ArticleType.ErrorByCustoms,
+    testClaimantTypeRepresentative,
+    NumberOfEntriesType.Multiple,
     None,
     testEntryDetails,
     ClaimReasonType.Cpuchange,
@@ -65,7 +83,24 @@ object TestData {
     FormType("01"),
     CustomsRegulationType.UnionsCustomsCodeRegulation,
     ArticleType.ErrorByCustoms,
-    testClaimantType,
+    testClaimantTypeRepresentative,
+    NumberOfEntriesType.Single,
+    None,
+    testEntryDetails,
+    ClaimReasonType.Cpuchange,
+    testClaimDescription,
+    LocalDate.now(),
+    LocalDate.now(),
+    testWhomToPayCMA,
+    RepaymentType.CMA,
+    "NA"
+  )
+
+  val testClaimDetailsWithCMAAndImporter: ClaimDetails = ClaimDetails(
+    FormType("01"),
+    CustomsRegulationType.UnionsCustomsCodeRegulation,
+    ArticleType.ErrorByCustoms,
+    testClaimantTypeImporter,
     NumberOfEntriesType.Single,
     None,
     testEntryDetails,
@@ -96,6 +131,15 @@ object TestData {
     None
   )
 
+  val testImporterDetails: UserDetails = UserDetails(
+    "true",
+    testImporterEORI,
+    testImporterName,
+    testImporterManualAddress,
+    Some(testPhoneNumber),
+    Some(testEmailAddress)
+  )
+
   val testDutyTypeTaxDetails: DutyTypeTaxDetails = DutyTypeTaxDetails(
     Seq(
       DutyTypeTaxList(ClaimRepaymentType.Customs, "100.00", "50.00", "50.0"),
@@ -105,9 +149,37 @@ object TestData {
     )
   )
 
+  def populateUserAnswersWithRepresentativeAndMultipleEntries(userAnswers: UserAnswers): UserAnswers =
+    userAnswers
+      .set(ClaimantTypePage, testClaimantTypeRepresentative)
+      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple))
+      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
+      .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
+      .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
+      .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
+      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
+      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(AgentImporterHasEORIPage, testAgentImporterHasEORI))
+      .flatMap(_.set(EnterAgentEORIPage, testImporterEORI))
+      .flatMap(_.set(IsImporterVatRegisteredPage, true))
+      .flatMap(_.set(AgentNameImporterPage, testImporterName))
+      .flatMap(_.set(IsVATRegisteredPage, IsVATRegistered.Yes))
+      .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
+      .flatMap(_.set(ImporterHasEoriPage, true))
+      .flatMap(_.set(ImporterEoriPage, testAgentEORI))
+      .flatMap(_.set(ImporterNamePage, testAgentName))
+      .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
+      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
+      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(WhomToPayPage, testWhomToPay))
+      .flatMap(_.set(BankDetailsPage, testBankDetails))
+      .get
+
   def populateUserAnswersRepresentativeWithEmail(userAnswers: UserAnswers): UserAnswers =
     userAnswers
-      .set(ClaimantTypePage, testClaimantType)
+      .set(ClaimantTypePage, testClaimantTypeRepresentative)
       .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
@@ -136,7 +208,7 @@ object TestData {
 
   def populateUserAnswersWithCMAPaymentMethod(userAnswers: UserAnswers): UserAnswers =
     userAnswers
-      .set(ClaimantTypePage, testClaimantType)
+      .set(ClaimantTypePage, testClaimantTypeRepresentative)
       .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
@@ -161,6 +233,28 @@ object TestData {
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
       .get
 
+  def populateUserAnswersWithCMAPaymentMethodAndClaimantImporter(userAnswers: UserAnswers): UserAnswers =
+    userAnswers
+      .set(ClaimantTypePage, testClaimantTypeImporter)
+      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
+      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
+      .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
+      .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
+      .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
+      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
+      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(ImporterHasEoriPage, true))
+      .flatMap(_.set(ImporterEoriPage, testImporterEORI))
+      .flatMap(_.set(IsVATRegisteredPage, IsVATRegistered.Yes))
+      .flatMap(_.set(ImporterNamePage, testImporterName))
+      .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
+      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
+      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
+      .get
+
   val testCreateClaimRequestRepresentativeWithEmail: CreateClaimRequest = CreateClaimRequest(
     Content(
       testClaimDetails,
@@ -176,6 +270,28 @@ object TestData {
       testClaimDetailsWithCMA,
       Some(testAgentDetails),
       testImporterDetailsRepresentativeJourney,
+      None,
+      testDutyTypeTaxDetails,
+      testDocumentList), Nil
+  )
+
+  val testCreateClaimRequestWithRepresentativeAndMultipleEntries: CreateClaimRequest = CreateClaimRequest(
+    Content(
+      testClaimDetailsWithRepresentativeAndMultipleEntries,
+      Some(testAgentDetails),
+      testImporterDetailsRepresentativeJourney,
+      Some(AllBankDetails(Some(testBankDetails), None)),
+      testDutyTypeTaxDetails,
+      testDocumentList), Nil
+  )
+
+  testCreateClaimRequestWithRepresentativeAndMultipleEntries
+
+  val testCreateClaimRequestWithCMAPaymentMethodAndClaimantImporter: CreateClaimRequest = CreateClaimRequest(
+    Content(
+      testClaimDetailsWithCMAAndImporter,
+      None,
+      testImporterDetails,
       None,
       testDutyTypeTaxDetails,
       testDocumentList), Nil

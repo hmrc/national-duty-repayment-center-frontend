@@ -42,10 +42,23 @@ object CreateClaimRequest {
 
     def getPayeeIndicator(userAnswers: UserAnswers): Option[WhomToPay] = {
       userAnswers.get(ClaimantTypePage) match {
-        case Some(ClaimantType.Importer) => Some(WhomToPay.Importer)
-        case _ => userAnswers.get(RepaymentTypePage) match {
-          case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
-          case _ => userAnswers.get(WhomToPayPage)
+        case Some(ClaimantType.Importer) => {
+          userAnswers.get(NumberOfEntriesTypePage) match {
+            case Some(NumberOfEntriesType.Single) => userAnswers.get(RepaymentTypePage) match {
+              case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
+              case Some(RepaymentType.BACS) => Some(WhomToPay.Importer)
+            }
+            case Some(NumberOfEntriesType.Multiple) => Some(WhomToPay.Importer)
+          }
+        }
+        case Some(ClaimantType.Representative) => {
+          userAnswers.get(NumberOfEntriesTypePage) match {
+            case Some(NumberOfEntriesType.Single) => userAnswers.get(RepaymentTypePage) match {
+              case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
+              case Some(RepaymentType.BACS) => Some(WhomToPay.Importer)
+            }
+            case Some(NumberOfEntriesType.Multiple) => userAnswers.get(WhomToPayPage)
+          }
         }
       }
     }
