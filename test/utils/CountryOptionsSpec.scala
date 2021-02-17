@@ -20,7 +20,6 @@ import base.SpecBase
 import com.kenshoo.play.metrics.{Metrics, MetricsImpl}
 import com.typesafe.config.ConfigException
 import config.FrontendAppConfig
-import controllers.actions.{DataRequiredAction, DataRequiredActionImpl, DataRetrievalAction, FakeDataRetrievalAction, FakeIdentifierAction, IdentifierAction}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
