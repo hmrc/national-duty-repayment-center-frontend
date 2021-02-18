@@ -38,10 +38,11 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val isImporterVatRegisteredRoute = routes.IsImporterVatRegisteredController.onPageLoad(NormalMode).url
-
   val formProvider = new IsImporterVatRegisteredFormProvider()
   val form = formProvider()
+
+  lazy val isImporterVatRegisteredRoute = routes.IsImporterVatRegisteredController.onPageLoad(NormalMode).url
+
   val backLink = routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
 
   "IsImporterVatRegistered Controller" must {
@@ -66,7 +67,7 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsImporterVatRegisteredPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(IsImporterVatRegisteredPage, IsImporterVatRegistered.Yes).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -79,7 +80,7 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(IsImporterVatRegistered.Yes), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -100,7 +101,7 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, isImporterVatRegisteredRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+          .withFormUrlEncodedBody(("value", IsImporterVatRegistered.options(form).head.value.get))
 
       val result = route(application, request).value
 
@@ -153,7 +154,7 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, isImporterVatRegisteredRoute)
-          .withFormUrlEncodedBody(("value", IsImporterVatRegistered.values.head.toString))
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

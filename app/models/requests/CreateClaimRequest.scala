@@ -124,10 +124,14 @@ object CreateClaimRequest {
       )
     }
 
-    def getIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsVATRegisteredPage) match {
-      case Some(IsVATRegistered.Yes) => Some("true")
-      case Some(IsVATRegistered.No) => Some("false")
-      case _ => Some("false")
+    def getIsVATRegistered(userAnswers: UserAnswers): String = userAnswers.get(IsVATRegisteredPage) match {
+      case Some(IsVATRegistered.Yes) => "true"
+      case _ => "false"
+    }
+
+    def getIsImporterVatRegistered(userAnswers: UserAnswers): String = userAnswers.get(IsImporterVatRegisteredPage) match {
+      case Some(IsImporterVatRegistered.Yes) => "true"
+      case _ => "false"
     }
 
     def getImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(ImporterAddressPage) match {
@@ -146,7 +150,6 @@ object CreateClaimRequest {
     }
 
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
-      isVATRegistered <- getIsVATRegistered(userAnswers)
       name <- getImporterName(userAnswers)
       address <- getImporterAddress(userAnswers)
     } yield {
@@ -162,7 +165,12 @@ object CreateClaimRequest {
           case Some(ClaimantType.Importer) => userAnswers.get(PhoneNumberPage)
           case _ => None
         }
-
+      }
+        val isVATRegistered = {
+          userAnswers.get(ClaimantTypePage) match {
+            case Some(ClaimantType.Importer) => getIsVATRegistered(userAnswers)
+            case _ => getIsImporterVatRegistered(userAnswers)
+          }
       }
       UserDetails(
         isVATRegistered,
