@@ -17,6 +17,7 @@
 package services
 
 import connectors.{UpscanInitiateRequest, UpscanInitiateResponse}
+import models.FileType.SupportingEvidence
 import models.requests.UploadRequest
 import models.{DuplicateFileUpload, FileTransmissionFailed, FileType, FileUpload, FileUploadError, FileUploads, FileVerificationFailed, S3UploadError, UpscanFileFailed, UpscanFileReady, UpscanNotification}
 import play.api.libs.json.{Format, Json}
@@ -113,6 +114,13 @@ trait FileUploadService {
     }
 
   final def upscanCallbackArrived(notification: UpscanNotification, fileType: FileType)(state: FileUploadState) = {
+
+    def shouldReplaceExistingFile(fileUploads: FileUploads, fileType: FileType): Boolean = {
+      val singleUploadeFiles = fileUploads.files.filterNot(f => f.fileType.contains(SupportingEvidence))
+      val acceptedSingleUploadFiles = singleUploadeFiles.filter(_.isInstanceOf[FileUpload.Accepted])
+      acceptedSingleUploadFiles.exists(_.fileType.contains(fileType))
+    }
+
     def updateFileUploads(fileUploads: FileUploads) =
       fileUploads.copy(files = fileUploads.files.map {
         // update status of the file with matching upscan reference
@@ -122,8 +130,9 @@ trait FileUploadService {
               //check for existing file uploads with duplicated checksum
               val modifiedFileUpload: FileUpload = fileUploads.files
                 .find(file =>
-                  file.checksumOpt.contains(uploadDetails.checksum) && file.reference != notification.reference && file.fileType == Some(fileType)
-                ) match {
+                  file.checksumOpt.contains(uploadDetails.checksum) && file.reference != notification.reference && file.fileType.contains(fileType)
+                )
+              match {
                 case Some(existingFileUpload: FileUpload.Accepted) =>
                   FileUpload.Duplicate(
                     orderNumber,
@@ -133,8 +142,7 @@ trait FileUploadService {
                     duplicateFileName = uploadDetails.fileName,
                     fileType = Some(fileType)
                   )
-                case s@_ => {
-                  val existingFile = fileUploads.files.find(_.reference == notification.reference)
+                case s@_ =>
                   FileUpload.Accepted(
                     orderNumber,
                     ref,
@@ -145,7 +153,6 @@ trait FileUploadService {
                     uploadDetails.fileMimeType,
                     Some(fileType)
                   )
-                }
               }
               modifiedFileUpload
 
@@ -170,7 +177,13 @@ trait FileUploadService {
       fileUploads,
       errorOpt
       ) =>
-        val updatedFileUploads = updateFileUploads(fileUploads)
+        val uploadsUpdated = if (shouldReplaceExistingFile(fileUploads, fileType)) {
+          val existingSingleUploadFile = fileUploads.files.find(f => f.fileType.contains(fileType) && f.isInstanceOf[FileUpload.Accepted])
+          val updatedFiles = fileUploads.files.filterNot(f => existingSingleUploadFile.map(_.reference).contains(f.reference))
+          fileUploads.copy(files = updatedFiles)
+        } else fileUploads
+
+        val updatedFileUploads = updateFileUploads(uploadsUpdated)
         val currentUpload = updatedFileUploads.files.find(_.reference == reference)
         commonFileUploadStatusHandler(
           updatedFileUploads,

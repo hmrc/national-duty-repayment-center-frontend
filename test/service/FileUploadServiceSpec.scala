@@ -17,7 +17,7 @@
 package service
 
 import base.SpecBase
-import models.FileType.SupportingEvidence
+import models.FileType.{Bulk, SupportingEvidence}
 import models.requests.UploadRequest
 import models.{DuplicateFileUpload, FileTransmissionFailed, FileUpload, FileUploads, FileVerificationFailed, S3UploadError, UpscanFileFailed, UpscanFileReady, UpscanNotification}
 import org.scalatest.{MustMatchers, OptionValues}
@@ -645,6 +645,121 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
       whenReady(service.upscanCallbackArrived(upscanReady, SupportingEvidence)(state)) {
         newState => assert(newState == state.copy(acknowledged = true))
       }
+    }
+  }
+  "at multiple file uploads" should {
+    "should replace an existing Bulk upload file in Accepted state" in {
+      val currentState =
+        UploadFile(
+          "foo-bar-ref-2",
+          UploadRequest(
+            href = "https://s3.bucket",
+            fields = Map(
+              "callbackUrl"     -> "https://foo.bar/callback",
+              "successRedirect" -> "https://foo.bar/success",
+              "errorRedirect"   -> "https://foo.bar/failure"
+            )
+          ),
+          FileUploads(files = Seq(FileUpload.Accepted(
+            1,
+            "foo-bar-ref-1",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "test.pdf",
+            "application/pdf",
+            Some(Bulk)
+          ), FileUpload.Initiated(2, "foo-bar-ref-2"),
+          ))
+        )
+
+      val expectedState =  FileUploaded(
+        FileUploads(files =
+          Seq(FileUpload.Accepted(
+        2,
+        "foo-bar-ref-2",
+        "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+        ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+        "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+        "test2.pdf",
+        "application/pdf",
+        Some(Bulk))))
+      )
+
+      val upscanReady = UpscanFileReady(
+        reference = "foo-bar-ref-2",
+        downloadUrl = "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+        uploadDetails = UpscanNotification.UploadDetails(
+          uploadTimestamp = ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+          checksum = "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          fileName = "test2.pdf",
+          fileMimeType = "application/pdf",
+        )
+      )
+      whenReady(service.upscanCallbackArrived(upscanReady, Bulk)(currentState)) {
+        newState => assert(newState == expectedState)
+      }
+    }
+  }
+
+  "should not replace an existing Supporting evidence files" in {
+    val currentState =
+      UploadFile(
+        "foo-bar-ref-2",
+        UploadRequest(
+          href = "https://s3.bucket",
+          fields = Map(
+            "callbackUrl"     -> "https://foo.bar/callback",
+            "successRedirect" -> "https://foo.bar/success",
+            "errorRedirect"   -> "https://foo.bar/failure"
+          )
+        ),
+        FileUploads(files = Seq(FileUpload.Accepted(
+          1,
+          "foo-bar-ref-1",
+          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+          ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          "test.pdf",
+          "application/pdf",
+          Some(SupportingEvidence)
+        ), FileUpload.Initiated(2, "foo-bar-ref-2"),
+        ))
+      )
+
+    val expectedState =  FileUploaded(
+      FileUploads(files =
+        Seq(FileUpload.Accepted(
+          1,
+          "foo-bar-ref-1",
+          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+          ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          "test.pdf",
+          "application/pdf",
+          Some(SupportingEvidence)),
+        FileUpload.Accepted(
+          2,
+          "foo-bar-ref-2",
+          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+          ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+          "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          "test2.pdf",
+          "application/pdf",
+          Some(SupportingEvidence)))))
+
+    val upscanReady = UpscanFileReady(
+      reference = "foo-bar-ref-2",
+      downloadUrl = "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+      uploadDetails = UpscanNotification.UploadDetails(
+        uploadTimestamp = ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+        checksum = "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+        fileName = "test2.pdf",
+        fileMimeType = "application/pdf",
+      )
+    )
+    whenReady(service.upscanCallbackArrived(upscanReady, SupportingEvidence)(currentState)) {
+      newState => assert(newState == expectedState)
     }
   }
 }
