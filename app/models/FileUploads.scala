@@ -52,7 +52,10 @@ object FileType extends EnumerationFormats[FileType] {
 
   case object Bulk extends FileType
   case object SupportingEvidence extends FileType
-  val values = Set(Bulk, SupportingEvidence)
+  case object ProofOfAuthority extends FileType
+
+  val values = Set(Bulk, SupportingEvidence, ProofOfAuthority)
+  val singleUploadFileTypes = Set(Bulk, ProofOfAuthority)
 }
 
 /** File upload status */
