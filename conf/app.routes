@@ -216,7 +216,9 @@ GET         /upload-proof-of-authority                       controllers.ProofOf
 GET        /upload-multiple-entries                        controllers.BulkFileUploadController.showFileUpload()
 GET        /bulk/file-verification                         controllers.BulkFileUploadController.showWaitingForFileVerification
 GET        /bulk/file-rejected                             controllers.BulkFileUploadController.markFileUploadAsRejected()
-POST        /bulk/:id/callback-from-upscan                controllers.BulkFileUploadController.callbackFromUpscan(id: String)
+GET        /bulk/file-verification/:reference/status       controllers.BulkFileUploadController.checkFileVerificationStatus(reference: String)
+POST       /bulk/:id/callback-from-upscan                  controllers.BulkFileUploadController.callbackFromUpscan(id: String)
+
 GET        /signout                                        controllers.SignOutController.signOut
 
 GET        /referenceNumber                        controllers.ReferenceNumberController.onPageLoad(mode: Mode = NormalMode)
@@ -258,3 +260,10 @@ POST        /ndrc/:id/callback-from-upscan                controllers.FileUpload
 GET         /file-verification                           controllers.FileUploadController.showWaitingForFileVerification
 GET         /file-rejected                                controllers.FileUploadController.markFileUploadAsRejected()
 GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String)
+
+# bulk uploads
+GET        /upload-multiple-entries                        controllers.BulkFileUploadController.showFileUpload()
+GET        /bulk/file-verification                         controllers.BulkFileUploadController.showWaitingForFileVerification
+GET        /bulk/file-rejected                             controllers.BulkFileUploadController.markFileUploadAsRejected()
+GET        /bulk/file-verification/:reference/status       controllers.BulkFileUploadController.checkFileVerificationStatus(reference: String)
+POST       /bulk/:id/callback-from-upscan                  controllers.BulkFileUploadController.callbackFromUpscan(id: String)

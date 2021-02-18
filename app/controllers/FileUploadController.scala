@@ -109,7 +109,7 @@ class FileUploadController @Inject()(
   }
 
   //GET /file-upload
-  val showFileUpload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def showFileUpload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     sessionState(request.internalId).flatMap { ua =>
       ua.userAnswers.flatMap(_.fileUploadState) match {
         case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
@@ -274,7 +274,7 @@ class FileUploadController @Inject()(
           fileUploads,
           controller.submitUploadAnotherFileChoice(),
           controller.removeFileUploadByReference,
-          controller.showFileUpload()
+          routes.EvidenceSupportingDocsController.onPageLoad()
         ))
     }
   }
