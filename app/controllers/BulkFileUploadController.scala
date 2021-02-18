@@ -16,28 +16,28 @@
 
 package controllers
 
-import java.time.LocalDateTime
-import akka.pattern.ask
 import akka.actor.ActorRef
+import akka.pattern.ask
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
-import models.FileType.{Bulk, SupportingEvidence}
-
-import javax.inject.{Inject, Named}
-import models.{CustomsRegulationType, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
+import models.FileType.Bulk
+import models.{CustomsRegulationType, FileVerificationStatus, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
 import pages.CustomsRegulationTypePage
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request, RequestHeader, Result}
+import play.api.libs.json.Json
+import play.api.mvc._
 import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.BulkFileUploadView
 
+import java.time.LocalDateTime
+import javax.inject.{Inject, Named}
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -54,7 +54,6 @@ class BulkFileUploadController @Inject()(
                                           view: BulkFileUploadView
                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
-  final val fileUploadController = routes.FileUploadController
   final val bulkFileUploadController = routes.BulkFileUploadController
   case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
   val fileStateError = InternalServerError("Missing file upload state")
@@ -66,12 +65,8 @@ class BulkFileUploadController @Inject()(
       ss.state match {
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
-            case s: FileUploaded => {
-              Future.successful(Redirect(getBulkEntryDetails(Some(request.userAnswers))))
-            }
-            case s: UploadFile => {
-              Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
-            }
+            case s: FileUploaded => Future.successful(Redirect(getBulkEntryDetails(Some(request.userAnswers))))
+            case s: UploadFile => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
             case _ => Future.successful(fileStateError)
           }
         case _ => Future.successful(fileStateError)
@@ -166,6 +161,26 @@ class BulkFileUploadController @Inject()(
     )
   }
 
+
+  //GET /bulk/file-verification/:reference/status
+  final def checkFileVerificationStatus(reference: String): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
+  }
+
+  private def renderFileVerificationStatus(
+                                            reference: String, state: Option[FileUploadState])(implicit request: Request[_]
+                                          ): Result = {
+
+    state match {
+      case Some(s: FileUploadState) =>
+        s.fileUploads.files.find(_.reference == reference) match {
+          case Some(f) => Ok(Json.toJson(FileVerificationStatus(f)))
+          case None => NotFound
+        }
+      case _ => NotFound
+    }
+  }
+
   final def renderState(userAnswers: Option[UserAnswers], fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None)(implicit request: Request[_]): Result = {
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
@@ -176,7 +191,7 @@ class BulkFileUploadController @Inject()(
             maybeUploadError,
             successAction = getBulkEntryDetails(userAnswers),
             failureAction = routes.BulkFileUploadController.showFileUpload,
-            checkStatusAction = fileUploadController.checkFileVerificationStatus(reference),
+            checkStatusAction = routes.BulkFileUploadController.checkFileVerificationStatus(reference),
             backLink = routes.CustomsRegulationTypeController.onPageLoad(NormalMode)) //TODO: for more than one entry the back link should be diff. Make this method conditional when we get there
         )
     }
