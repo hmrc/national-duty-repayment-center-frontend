@@ -114,9 +114,9 @@ object CreateClaimRequest {
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
       val email = getEmailAddress(userAnswers)
-
+      val isImporterVatRegistered = userAnswers.get(IsImporterVatRegisteredPage).getOrElse(false).toString
       UserDetails(
-       userAnswers.get(IsImporterVatRegisteredPage).orElse(false).toString,
+        isImporterVatRegistered,
         eori,
         name,
         address,
@@ -127,11 +127,8 @@ object CreateClaimRequest {
 
     def getIsVATRegistered(userAnswers: UserAnswers): Option[String] = userAnswers.get(IsVATRegisteredPage) match {
       case Some(IsVATRegistered.Yes) => Some("true")
-    //  case Some(IsVATRegistered.No) => Some("false")
       case _ => Some("false")
     }
-
-
 
     def getImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(ImporterAddressPage) match {
       case Some(_) => userAnswers.get(ImporterAddressPage)
