@@ -16,16 +16,17 @@
 
 package pages
 
+import models.IsImporterVatRegistered
 import pages.behaviours.PageBehaviours
 
 class IsImporterVatRegisteredSpec extends PageBehaviours {
 
   "IsImporterVatRegisteredPage" must {
 
-    beRetrievable[Boolean](IsImporterVatRegisteredPage)
+    beRetrievable[IsImporterVatRegistered](IsImporterVatRegisteredPage)
 
-    beSettable[Boolean](IsImporterVatRegisteredPage)
+    beSettable[IsImporterVatRegistered](IsImporterVatRegisteredPage)
 
-    beRemovable[Boolean](IsImporterVatRegisteredPage)
+    beRemovable[IsImporterVatRegistered](IsImporterVatRegisteredPage)
   }
 }

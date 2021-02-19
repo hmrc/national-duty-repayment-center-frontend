@@ -36,10 +36,14 @@
 
         @components.error_summary(form.errors)
 
-        @forms.yesNoRadio(
-            form,
-            "isImporterVatRegistered.heading",
-            isPageHeading = true
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = IsImporterVatRegistered.options(form),
+            inline = true,
+            legendAsHeading = true,
+            legend = Some(messages("isImporterVatRegistered.heading"))
         )
 
         @html.button("site.continue")

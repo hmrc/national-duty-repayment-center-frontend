@@ -17,14 +17,14 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.{IsImporterVatRegistered, IsVATRegistered}
 import play.api.data.Form
 
 class IsImporterVatRegisteredFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(): Form[IsImporterVatRegistered] =
     Form(
-      "value" -> boolean("isImporterVatRegistered.error.required")
+      "value" -> enumerable[IsImporterVatRegistered]("isImporterVatRegistered.error.required")
     )
 }

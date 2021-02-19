@@ -16,7 +16,12 @@
 
 package models
 
+import models.IsVATRegistered.values
+import play.api.data.Form
+import play.api.i18n.Messages
 import play.api.libs.json._
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import viewmodels.RadioOption
 
 sealed trait IsImporterVatRegistered
@@ -30,9 +35,13 @@ object IsImporterVatRegistered extends Enumerable.Implicits {
     Yes, No
   )
 
-  val options: Seq[RadioOption] = values.map {
+  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
-      RadioOption("isImporterVatRegistered", value.toString)
+      RadioItem(
+        value = Some(value.toString),
+        content = Text(messages(s"isImporterVatRegistered.${value.toString}")),
+        checked = form("value").value.contains(value.toString)
+      )
   }
 
   implicit val enumerable: Enumerable[IsImporterVatRegistered] =
