@@ -605,3 +605,14 @@ error.file-upload.unknown=The selected file could not be uploaded
 error.file-upload.try-again=The selected file could not be uploaded - try again
 error.uploadAnotherFile.required=Select yes if you want to upload another document
 error.file-upload.duplicate=The selected file has already been uploaded
+
+proof-of-authority.title = Upload proof of authority
+proof-of-authority.heading = Upload proof of authority
+proof-of-authority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application.
+proof-of-authority.paragraph2 = This document must be 30MB or less
+proof-of-authority.h2 = Accepted file formats
+proof-of-authority.bullet1 = .doc
+proof-of-authority.bullet2 = .jpg
+proof-of-authority.bullet3 = .pdf
+proof-of-authority.bullet4 = .png
+proof-of-authority.bullet5 = .xls
