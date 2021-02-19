@@ -50,7 +50,7 @@ class BankDetailsController @Inject()(
     userAnswers.get(BankDetailsPage) match {
       case _ if isRepresentative && userAnswers.get(WhomToPayPage).contains(WhomToPay.Importer) => routes.WhomToPayController.onPageLoad(mode)
       case _ if isRepresentative && userAnswers.get(IndirectRepresentativePage).contains(true) => routes.IndirectRepresentativeController.onPageLoad(mode)
-      case _ if isRepresentative && userAnswers.get(IndirectRepresentativePage).contains(false) => routes.ProofOfAuthorityController.onPageLoad()
+      case _ if isRepresentative && userAnswers.get(IndirectRepresentativePage).contains(false) => routes.ProofOfAuthorityController.showFileUpload()
       case _ => routes.RepaymentTypeController.onPageLoad(mode)
     }
   }

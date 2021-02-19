@@ -18,13 +18,16 @@ package controllers
 
 import controllers.actions._
 import forms.IndirectRepresentativeFormProvider
+import models.FileType.ProofOfAuthority
+
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.Navigator
 import pages.IndirectRepresentativePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request}
 import repositories.SessionRepository
+import services.{FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IndirectRepresentativeView
 
@@ -69,8 +72,17 @@ class IndirectRepresentativeController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndirectRepresentativePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _  <- sessionRepository.set(updatedAnswers.copy(fileUploadState = updatedFs(updatedAnswers, value)))
           } yield Redirect(navigator.nextPage(IndirectRepresentativePage, mode, updatedAnswers))
-      )
+          )
+  }
+  private def updatedFs(ua: UserAnswers, isIndirectRepresentative: Boolean): Option[FileUploadState] = {
+    if(isIndirectRepresentative) {
+      ua.fileUploadState match {
+        case Some(s@FileUploaded(fileUploads, _)) => Some(s.copy(fileUploads = fileUploads.copy(files = fileUploads.files.filterNot(_.fileType.contains(ProofOfAuthority)))))
+        case Some(s@UploadFile(_, _, fileUploads, _)) => Some(s.copy(fileUploads = fileUploads.copy(files = fileUploads.files.filterNot(_.fileType.contains(ProofOfAuthority)))))
+        case _ => ua.fileUploadState
+      }
+    } else ua.fileUploadState
   }
 }
