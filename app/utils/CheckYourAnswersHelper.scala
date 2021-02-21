@@ -19,11 +19,11 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, ClaimantType, NumberOfEntriesType, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import viewmodels.AnswerRow
+import viewmodels.{AnswerRow, AnswerSection}
 import CheckYourAnswersHelper._
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
@@ -327,11 +327,64 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def entryDetails: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
+  def getImportantInformationAnswerSection: AnswerSection = {
+    userAnswers.get(NumberOfEntriesTypePage) match {
+      case Some(NumberOfEntriesType.Multiple) =>
+        AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
+        Seq(claimantType.get,
+          numberOfEntriesType.get,
+          howManyEntries.get,
+          customsRegulationType.get,
+          articleType.get))
+      case _ =>
+        AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
+        Seq(claimantType.get,
+          numberOfEntriesType.get,
+          customsRegulationType.get,
+          articleType.get))
+    }
+  }
+
+  def getEntryDetailsAnswerSection: AnswerSection = {
+    userAnswers.get(NumberOfEntriesTypePage) match {
+      case Some(NumberOfEntriesType.Multiple) =>
+        AnswerSection(Some(messages("entryDetails.checkYourAnswersLabel")),
+          Seq(bulkFileUpload.get,
+            entryDetailsEPU.get,
+            entryDetailsNumber.get,
+            entryDetailsDate.get))
+      case _ =>
+        AnswerSection(Some(messages("entryDetails.checkYourAnswersLabel")),
+          Seq(entryDetailsEPU.get,
+            entryDetailsNumber.get,
+            entryDetailsDate.get))
+    }
+
+  }
+
+  private def entryDetailsEPU: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("entryDetails.claimEpu.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.EPU),
+        HtmlFormat.escape(messages("entryDetails.epu.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(x.EPU)),
+        Some(routes.EntryDetailsController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  private def entryDetailsNumber: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("entryDetails.number.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(x.EntryNumber)),
+        Some(routes.EntryDetailsController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  private def entryDetailsDate: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("entryDetails.date.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(x.EntryDate.toString)),
         Some(routes.EntryDetailsController.onPageLoad(CheckMode).url)
       )
   }
@@ -349,7 +402,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("numberOfEntriesType.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"numberOfEntriesType.$x")),
+        HtmlFormat.escape(userAnswers.get(NumberOfEntriesTypePage) match {
+          case Some(NumberOfEntriesType.Single) => messages("numberOfEntriesType.single.checkYourAnswersLabel")
+          case _ => messages("numberOfEntriesType.multiple.checkYourAnswersLabel")
+        }),
         Some(routes.NumberOfEntriesTypeController.onPageLoad(CheckMode).url)
       )
   }
@@ -403,7 +459,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("claimantType.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"claimantType.$x")),
+        HtmlFormat.escape(userAnswers.get(ClaimantTypePage) match {
+          case Some(ClaimantType.Importer) => messages("claimantType.importer")
+          case _ => messages("claimantType.representative")
+        }),
         Some(routes.ClaimantTypeController.onPageLoad(CheckMode).url)
       )
   }
