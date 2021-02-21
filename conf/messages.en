@@ -70,6 +70,10 @@ claimantType.01 = I am the importer
 claimantType.02 = I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or their representative?
 claimantType.error.required = Select if you are the importer or a representative of the importer
+claimantType.importer = Importer
+claimantType.representative = Representative
+
+impInfo.checkYourAnswersLabel = Import information
 
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
@@ -93,7 +97,7 @@ customsRegulationType.title = What was the entry acceptance date?
 customsRegulationType.heading = What was the entry acceptance date?
 customsRegulationType.01 = On or before 31 December 2020
 customsRegulationType.02 = From 1 January 2021
-customsRegulationType.checkYourAnswersLabel = What was the acceptance date for all entries?
+customsRegulationType.checkYourAnswersLabel = Acceptance date
 customsRegulationType.error.required = Select if the entry acceptance date was from 1 January 2021, or on or before 31 December 2020
 
 articleType.title = Why are you applying for this repayment?
@@ -101,7 +105,7 @@ articleType.heading = Why are you applying for this repayment?
 articleType.117 = Overpayment of duty or VAT (Article 117)
 articleType.119 = Error by customs (Article 119)
 articleType.120 = Exceptional circumstances (Article 120)
-articleType.checkYourAnswersLabel = Why are you applying for this repayment?
+articleType.checkYourAnswersLabel = Reason for application
 articleType.error.required = Select the reason you are applying for this repayment
 
 ukRegulationType.title = Why are you applying for this repayment?
@@ -121,11 +125,13 @@ numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = More than one entry
 numberOfEntriesType.02.hint = Multiple entries must all be from the same importer.
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
+numberOfEntriesType.single.checkYourAnswersLabel = One entry
+numberOfEntriesType.multiple.checkYourAnswersLabel = Multiple entries
 numberOfEntriesType.error.required = Select if you want to submit one entry or more than one entry
 
 howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
-howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
+howManyEntries.checkYourAnswersLabel = Number of entries
 howManyEntries.error.required = Enter the number of entries you are claiming for
 howManyEntries.error.length = Number of entries must be between 2 and 999,999
 
@@ -146,8 +152,10 @@ entryDetails.claimEntryDate.error.required.all = Enter the entry date
 entryDetails.claimEntryDate.error.required = Enter the entry date in the correct format
 entryDetails.claimEntryDate.error.invalid = Enter the entry date in the correct format
 
-
-claimEpu.checkYourAnswersLabel = Entry processing unit (EPU)
+entryDetails.checkYourAnswersLabel = Entry information
+entryDetails.epu.checkYourAnswersLabel = EPU number
+entryDetails.number.checkYourAnswersLabel = Entry number
+entryDetails.date.checkYourAnswersLabel = Entry date
 claimEntryNumber.checkYourAnswersLabel = What is the entry number?
 claimEntryDate.checkYourAnswersLabel = What was the entry date?
 
@@ -517,7 +525,7 @@ bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
 bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
 bulkFileUpload.paragraph2 = The spreadsheet must be 30MB or less, and in .csv format.
-bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
+bulkFileUpload.checkYourAnswersLabel = Multiple entries spreadsheet
 bulkFileUpload.error.required = Upload a file to support your application
 
 referenceNumber.title = What is the reference number?
