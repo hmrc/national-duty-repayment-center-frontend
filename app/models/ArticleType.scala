@@ -28,7 +28,6 @@ object ArticleType extends Enumerable.Implicits {
   case object OverPaymentOfDutyOrVAT extends WithName("117") with ArticleType
   case object ErrorByCustoms extends WithName("119") with ArticleType
   case object ExceptionalCircumstances extends WithName("120") with ArticleType
-  case object Schedule extends WithName("990") with ArticleType
 
   val values: Seq[ArticleType] = Seq(
     OverPaymentOfDutyOrVAT, ErrorByCustoms, ExceptionalCircumstances

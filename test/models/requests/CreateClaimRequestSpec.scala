@@ -32,7 +32,8 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       val claimDetails = ClaimDetails(
         FormType = FormType("01"),
         CustomRegulationType = CustomsRegulationType.UKCustomsCodeRegulation,
-        ClaimedUnderArticle = ArticleType.OverPaymentOfDutyOrVAT,
+        ClaimedUnderArticle = None,
+        ClaimedUnderRegulation = Some(UkRegulationType.Rejected),
         Claimant = ClaimantType.Representative,
         ClaimType = NumberOfEntriesType.Multiple,
         NoOfEntries = Some(NoOfEntries("10")),
@@ -96,7 +97,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
           "ClaimDetails" -> Json.obj(
             "FormType" -> "01",
             "CustomRegulationType" -> "02",
-            "ClaimedUnderArticle" -> "117",
+            "ClaimedUnderRegulation" -> "051",
             "Claimant" -> "02",
             "ClaimType" -> "02",
             "NoOfEntries" -> "10",
@@ -236,5 +237,15 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
 
       result mustBe Some(testCreateClaimRequestWithCMAPaymentMethodAndClaimantImporter)
     }
+
+    "returns a valid CreateClaimRequest for a userAnswers containing UK Customs Regulation type" in {
+      val testUserAnswers = populateUserAnswersWithUKCustomsRegulationType(emptyUserAnswers)
+
+      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
+
+      result mustBe Some(testCreateClaimRequestWithUKCustomsRegulationType)
+    }
+
+
   }
 }
