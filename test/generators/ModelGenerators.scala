@@ -89,6 +89,11 @@ trait ModelGenerators {
       Gen.oneOf(ArticleType.values)
     }
 
+  implicit lazy val arbitraryUkRegulationType: Arbitrary[UkRegulationType] =
+    Arbitrary {
+      Gen.oneOf(UkRegulationType.values)
+    }
+
   implicit lazy val arbitraryCustomsRegulationType: Arbitrary[CustomsRegulationType] =
     Arbitrary {
       Gen.oneOf(CustomsRegulationType.values)
