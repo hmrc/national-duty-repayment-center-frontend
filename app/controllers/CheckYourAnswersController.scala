@@ -20,9 +20,9 @@ import java.time.LocalDate
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{ClaimantType, Mode, NormalMode, RepaymentType, UserAnswers}
+import models.{Mode, NormalMode, RepaymentType, UserAnswers}
 import navigation.Navigator
-import pages.{CheckYourAnswersPage, ClaimantTypePage, RepaymentTypePage}
+import pages.{CheckYourAnswersPage, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -60,15 +60,7 @@ class CheckYourAnswersController @Inject()(
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
 
       val sections = Seq(checkYourAnswersHelper.getImportantInformationAnswerSection,
-            checkYourAnswersHelper.getEntryDetailsAnswerSection,
-        checkYourAnswersHelper.getApplicationInformationAnswerSection) ++
-        (request.userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-          case true => Seq(checkYourAnswersHelper.getImporterDetailsAnswerSection)
-          case _ => Seq.empty
-        }) ++
-        Seq(checkYourAnswersHelper.getYourDetailsAnswerSection,
-        checkYourAnswersHelper.getContactDetailsAnswerSection,
-      checkYourAnswersHelper.getPaymentInformationAnswerSection)
+            checkYourAnswersHelper.getEntryDetailsAnswerSection)
 
       Ok(view(sections, getBackLink(NormalMode, request.userAnswers)))
   }
