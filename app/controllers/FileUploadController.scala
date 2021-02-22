@@ -59,7 +59,6 @@ class FileUploadController @Inject()(
                                       fileUploadView: FileUploadView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
-  final val COOKIE_JSENABLED = "jsenabled"
   final val controller = routes.FileUploadController
   val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm
   type ConvertState = (FileUploadState) => Future[FileUploadState]
@@ -99,7 +98,8 @@ class FileUploadController @Inject()(
             if res
           } yield {
             newState match {
-              case s@UploadFile(_, _, _, _) => Redirect(routes.FileUploadController.showFileUploaded())
+              case s@FileUploaded(_, _) => Redirect(routes.FileUploadController.showFileUploaded())
+              case s@UploadFile(_, _, _, _) => Redirect(routes.FileUploadController.showFileUpload())
               case s@_ => renderState(s)
             }
           }
