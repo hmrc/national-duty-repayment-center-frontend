@@ -17,6 +17,7 @@
 package controllers
 
 import java.time.LocalDateTime
+
 import akka.pattern.ask
 import akka.actor.ActorRef
 import akka.util.Timeout
@@ -24,10 +25,9 @@ import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
 import models.FileType.{Bulk, SupportingEvidence}
-
 import javax.inject.{Inject, Named}
 import models.{CustomsRegulationType, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
-import pages.CustomsRegulationTypePage
+import pages.{BulkFileUploadPage, CustomsRegulationTypePage}
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -67,7 +67,11 @@ class BulkFileUploadController @Inject()(
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
             case s: FileUploaded => {
-              Future.successful(Redirect(getBulkEntryDetails(Some(request.userAnswers))))
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(BulkFileUploadPage,
+                  request.userAnswers.fileUploadState.toString))
+                _  <- sessionRepository.set(updatedAnswers)
+              } yield (Redirect(getBulkEntryDetails(Some(request.userAnswers))))
             }
             case s: UploadFile => {
               Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
@@ -200,7 +204,7 @@ class BulkFileUploadController @Inject()(
     )(S3UploadError.apply)(S3UploadError.unapply)
   )
   private def getBulkEntryDetails(answers: Option[UserAnswers]): Call = answers.flatMap(_ .get(CustomsRegulationTypePage)) match {
-    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
+    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => routes.ArticleTypeController.onPageLoad(NormalMode)
     case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
   }
 }
