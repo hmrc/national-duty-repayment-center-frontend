@@ -4,11 +4,11 @@ import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
-import views.html.AmmendConfirmationView
+import views.html.AmendConfirmationView
 
 class AmendConfirmationControllerSpec extends SpecBase {
 
-  "AmmendConfirmation Controller" must {
+  "AmendConfirmation Controller" must {
 
     "return OK and the correct view for a GET" in {
       val claimId = "1"
@@ -18,11 +18,11 @@ class AmendConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.AmmendConfirmationController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.AmendConfirmationController.onPageLoad().url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AmmendConfirmationView]
+      val view = application.injector.instanceOf[AmendConfirmationView]
 
       status(result) mustEqual OK
 
