@@ -19,7 +19,7 @@ package pages
 import models.BulkFileUpload
 import play.api.libs.json.JsPath
 
-case object BulkFileUploadPage extends QuestionPage[BulkFileUpload] {
+case object BulkFileUploadPage extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ toString
 
