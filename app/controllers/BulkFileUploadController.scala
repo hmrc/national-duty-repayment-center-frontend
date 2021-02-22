@@ -69,7 +69,7 @@ class BulkFileUploadController @Inject()(
             case s: FileUploaded => {
               for {
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(BulkFileUploadPage,
-                  request.userAnswers.fileUploadState.toString))
+                  request.userAnswers.fileUploadState.get.fileUploads.files.head.reference))
                 _  <- sessionRepository.set(updatedAnswers)
               } yield (Redirect(getBulkEntryDetails(Some(request.userAnswers))))
             }
