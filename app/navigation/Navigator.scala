@@ -31,6 +31,7 @@ class Navigator @Inject()() {
     case HowManyEntriesPage  => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
     case CustomsRegulationTypePage => getEntryDetails
     case ArticleTypePage => _ => routes.EntryDetailsController.onPageLoad(NormalMode)
+    case UkRegulationTypePage => _ => routes.EntryDetailsController.onPageLoad(NormalMode)
     case EntryDetailsPage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes. WhatAreTheGoodsController.onPageLoad(NormalMode)
@@ -59,7 +60,6 @@ class Navigator @Inject()() {
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
-    case BulkFileUploadPage => getBulkEntryDetails
     case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case ReferenceNumberPage => _ => routes.AmendCaseResponseTypeController.onPageLoad(NormalMode)
     case AmendCaseResponseTypePage => getAmendCaseResponseType
@@ -102,11 +102,6 @@ class Navigator @Inject()() {
       case  _  => routes.RepaymentTypeController.onPageLoad(NormalMode)
     }
 
-  private def getBulkEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
-    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
-    case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
-  }
-
   private def getEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
     case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => {
       answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single) match {
@@ -114,9 +109,9 @@ class Navigator @Inject()() {
         case _=> routes.BulkFileUploadController.showFileUpload
       }
     }
-    case _ => {
+    case Some(CustomsRegulationType.UKCustomsCodeRegulation) => {
       answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single) match {
-        case true => routes.EntryDetailsController.onPageLoad (NormalMode)
+        case true => routes.UkRegulationTypeController.onPageLoad (NormalMode)
         case _=> routes.BulkFileUploadController.showFileUpload
       }
     }

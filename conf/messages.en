@@ -104,6 +104,17 @@ articleType.120 = Exceptional circumstances (Article 120)
 articleType.checkYourAnswersLabel = Why are you applying for this repayment?
 articleType.error.required = Select the reason you are applying for this repayment
 
+ukRegulationType.title = Why are you applying for this repayment?
+ukRegulationType.heading = Why are you applying for this repayment?
+ukRegulationType.048 = Error by Customs (Regulation 48)
+ukRegulationType.049 = Lower rate was applicable (Regulation 49)
+ukRegulationType.050 = Overpayment of duty or VAT (Regulation 50)
+ukRegulationType.051 = Rejected (Regulation 51)
+ukRegulationType.052 = Special circumstances (Regulation 52)
+ukRegulationType.053 = Withdrawal of customs declaration (Regulation 53)
+ukRegulationType.checkYourAnswersLabel = Why are you applying for this repayment?
+ukRegulationType.error.required = Select the reason you are applying for this repayment
+
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
 numberOfEntriesType.01 = One entry

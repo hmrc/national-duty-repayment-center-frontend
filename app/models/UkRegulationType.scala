@@ -21,27 +21,30 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
-sealed trait ArticleType
+sealed trait UkRegulationType
 
-object ArticleType extends Enumerable.Implicits {
+object UkRegulationType extends Enumerable.Implicits {
 
-  case object OverPaymentOfDutyOrVAT extends WithName("117") with ArticleType
-  case object ErrorByCustoms extends WithName("119") with ArticleType
-  case object ExceptionalCircumstances extends WithName("120") with ArticleType
+  case object ErrorByCustoms extends WithName("048") with UkRegulationType
+  case object LowerRateWasApplicable extends WithName("049") with UkRegulationType
+  case object OverPaymentOfDutyOrVAT extends WithName("050") with UkRegulationType
+  case object Rejected extends WithName("051") with UkRegulationType
+  case object SpecialCircumstances extends WithName("052") with UkRegulationType
+  case object WithdrawalOfCustomsDeclaration extends WithName("053") with UkRegulationType
 
-  val values: Seq[ArticleType] = Seq(
-    OverPaymentOfDutyOrVAT, ErrorByCustoms, ExceptionalCircumstances
+  val values: Seq[UkRegulationType] = Seq(
+    ErrorByCustoms, LowerRateWasApplicable, OverPaymentOfDutyOrVAT, Rejected, SpecialCircumstances, WithdrawalOfCustomsDeclaration
   )
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
       RadioItem(
         value = Some(value.toString),
-        content = Text(messages(s"articleType.${value.toString}")),
+        content = Text(messages(s"ukRegulationType.${value.toString}")),
         checked = form("value").value.contains(value.toString)
       )
   }
 
-  implicit val enumerable: Enumerable[ArticleType] =
+  implicit val enumerable: Enumerable[UkRegulationType] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }

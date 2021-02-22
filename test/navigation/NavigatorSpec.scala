@@ -48,6 +48,17 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.IndirectRepresentativeController.onPageLoad(NormalMode))
       }
 
+      "go to UK Regulations page after Customs Regulation Type page when selected UKCustomsCodeRegulation and one entry journey " in {
+        val answers =
+          emptyUserAnswers
+            .set(NumberOfEntriesTypePage, NumberOfEntriesType.Single).success.value
+            .set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
+
+        navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
+          .mustBe(routes.UkRegulationTypeController.onPageLoad(NormalMode))
+
+      }
+
       "go to BankDetails page after WhomToPay page when the claimant is representative and has selected importer to be paid" in {
         val answers =
           emptyUserAnswers
@@ -89,7 +100,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
       }
 
-      "go to BulkFileUpload page after the customsRegulationType page the  UnionsCustomsCodeRegulation has been selected" in {
+      "go to BulkFileUpload page after the customsRegulationType page when the UnionsCustomsCodeRegulation has been selected" in {
 
         val answers =
           emptyUserAnswers
@@ -112,6 +123,11 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
       "go to EntryDetails page after ArticleType page " in {
         navigator.nextPage(ArticleTypePage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
+      }
+
+      "go to EntryDetails page after UkRegulationType page " in {
+        navigator.nextPage(UkRegulationTypePage, NormalMode, emptyUserAnswers)
           .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
       }
 

@@ -33,13 +33,6 @@ object CreateClaimRequest {
 
   def buildValidClaimRequest(userAnswers: UserAnswers): Option[CreateClaimRequest] = {
 
-    def getArticleType(userAnswers: UserAnswers): Option[ArticleType] = {
-      userAnswers.get(CustomsRegulationTypePage) match {
-        case Some(CustomsRegulationType.UKCustomsCodeRegulation) => Some(ArticleType.Schedule)
-        case _ => Some(userAnswers.get(ArticleTypePage).get)
-      }
-    }
-
     def getPayeeIndicator(userAnswers: UserAnswers): Option[WhomToPay] = {
       userAnswers.get(ClaimantTypePage) match {
         case Some(ClaimantType.Importer) => {
@@ -72,7 +65,8 @@ object CreateClaimRequest {
 
     def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
       customRegulationType <- userAnswers.get(CustomsRegulationTypePage)
-      claimedUnderArticle <- getArticleType(userAnswers)
+      claimedUnderArticle <- Some(userAnswers.get(ArticleTypePage))
+      claimedUnderRegulation <- Some(userAnswers.get(UkRegulationTypePage))
       claimant <- userAnswers.get(ClaimantTypePage)
       claimType <- userAnswers.get(NumberOfEntriesTypePage)
       noOfEntries <- Some(userAnswers.get(HowManyEntriesPage))
@@ -84,6 +78,7 @@ object CreateClaimRequest {
     } yield ClaimDetails(FormType("01"),
       customRegulationType,
       claimedUnderArticle,
+      claimedUnderRegulation,
       claimant,
       claimType,
       noOfEntries,

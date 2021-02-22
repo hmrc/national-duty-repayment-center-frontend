@@ -216,6 +216,7 @@ class BulkFileUploadController @Inject()(
   )
   private def getBulkEntryDetails(answers: Option[UserAnswers]): Call = answers.flatMap(_ .get(CustomsRegulationTypePage)) match {
     case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
-    case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
+    case Some(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(NormalMode)
+    case _ => routes.UkRegulationTypeController.onPageLoad(NormalMode)
   }
 }

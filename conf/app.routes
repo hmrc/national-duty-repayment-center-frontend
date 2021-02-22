@@ -47,6 +47,11 @@ POST       /why-are-you-applying                        controllers.ArticleTypeC
 GET        /change-why-are-you-applying                  controllers.ArticleTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-why-are-you-applying                  controllers.ArticleTypeController.onSubmit(mode: Mode = CheckMode)
 
+GET        /why-are-you-applying-uk                         controllers.UkRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /why-are-you-applying-uk                         controllers.UkRegulationTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /change-why-are-you-applying-uk                  controllers.UkRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-why-are-you-applying-uk                  controllers.UkRegulationTypeController.onSubmit(mode: Mode = CheckMode)
+
 GET        /how-many-entries-submitting                        controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = NormalMode)
 POST       /how-many-entries-submitting                        controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = NormalMode)
 GET        /change-how-many-entries-submitting                  controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = CheckMode)
