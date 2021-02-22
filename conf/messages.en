@@ -627,3 +627,12 @@ proof-of-authority.bullet2 = .jpg
 proof-of-authority.bullet3 = .pdf
 proof-of-authority.bullet4 = .png
 proof-of-authority.bullet5 = .xls
+
+amend.confirmation.receivedInformation = We have received your information.
+amend.confirmation.amendWhatHappensNext.p1 = We will check the information you have sent and contact you if we need more information.
+amend.confirmation.moreInformation.heading = If we do not need more information
+amend.confirmation.moreInformation.p1 = We will continue processing your application.
+amend.confirmation.helpUs.heading = Help us improve our services
+amend.confirmation.helpUs.p1 = We use your feedback to make our services better.
+amend.confirmation.helpUs.p2 = What did you think of this service?
+amend.confirmation.helpUs.p3 = (Takes 30 seconds)
