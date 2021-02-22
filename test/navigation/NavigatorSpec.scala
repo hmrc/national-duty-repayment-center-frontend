@@ -77,7 +77,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(IndirectRepresentativePage, false).success.value
 
         navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
-          .mustBe(routes.ProofOfAuthorityController.onPageLoad)
+          .mustBe(routes.ProofOfAuthorityController.showFileUpload())
       }
 
       "go to BankDetails page after the ProofOfAuthority page once the representative has uploaded their proof of authority" in {

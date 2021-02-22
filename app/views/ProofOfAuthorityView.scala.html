@@ -14,34 +14,93 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
-@import models.Mode
+@import config.FrontendAppConfig
+@import models.requests.UploadRequest
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
+@import views.UploadFileViewContext
 
 @this(
-    govukLayout: views.html.layouts.GovukLayoutWrapper,
-    forms: views.components.forms,
-    html: views.components.html
+        govukLayout: views.html.layouts.GovukLayoutWrapper,
+        forms: views.components.forms,
+        html: views.components.html,
+        details: views.html.components.details,
+        govukFileUpload: GovukFileUpload,
+        govukButton: GovukButton,
+        appConfig: FrontendAppConfig,
+        context : UploadFileViewContext
 )
 
-@(backLink: Call)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("proofOfAuthority.title"))}"),
+    pageTitle = Some(s"${titleNoForm(messages("proof-of-authority.title"))}"),
     backLink = Some(backLink.url)
 ) {
 
-    @html.h1(messages("proofOfAuthority.heading"))
+    <form action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate
+    data-file-upload-redirect-success-url="@successAction.url"
+    data-file-upload-redirect-failure-url="@failureAction.url"
+    data-file-upload-check-status-url="@checkStatusAction.url"
+    data-file-upload-aria-live-message="@messages("view.upload-file.waiting")">
 
-    @html.p{ @messages("proofOfAuthority.paragraph1") }
+        @maybeUploadError.map { fileUploadError =>
+            @forms.errorSummary(Seq(context.toFormError(fileUploadError)))
+        }
 
-    @html.p{ @messages("proofOfAuthority.paragraph2") }
+        @uploadRequest.fields.map { case (key, value) =>
+            @forms.inputHidden(key, value)
+        }
 
-    <div class="section">
-        <span>
-            <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" href="@routes.BankDetailsController.onPageLoad(NormalMode)">
-                @messages("site.continue")
-            </a>
-        </span>
-    </div>
+        @html.h1(messages("proof-of-authority.heading"))
 
+        @html.p {
+            @messages("proof-of-authority.paragraph1")
+        }
+
+        @html.p {
+            @messages("proof-of-authority.paragraph2")
+        }
+
+
+        @html.h2(messages("proof-of-authority.h2"), classes = "govuk-heading-m")
+
+
+        @html.ul(
+            messages("proof-of-authority.bullet1"),
+            messages("proof-of-authority.bullet2"),
+            messages("proof-of-authority.bullet3"),
+            messages("proof-of-authority.bullet4"),
+            messages("proof-of-authority.bullet5")
+        )
+
+
+        @html.p{@messages("fileUpload.title")}
+
+        @govukFileUpload(FUpload(
+            name = "file",
+            id = "file",
+            value = Some(""),
+            describedBy = None,
+            hint = None,
+            errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
+            formGroupClasses = "",
+            classes = "",
+            attributes = Map(
+                "accept" -> appConfig.fileFormats.approvedFileExtensions,
+                "data-msg-required" -> messages("error.file-upload.required"),
+                "data-msg-filesize" -> messages("error.file-upload.invalid-size-large",appConfig.fileFormats.maxFileSizeMb),
+                "data-msg-accept" -> messages("error.upload-file.other")
+            ))
+        )
+
+        <div>
+        @govukButton(Button(
+            content = Text(messages("form.upload-file.submit")),
+            preventDoubleClick = true,
+            classes = "file-upload__submit"
+        ))
+        </div>
+
+        <div class="file-upload__loading-container" aria-live="polite" role="region"></div>
+    </form>
 }
