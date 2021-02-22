@@ -77,7 +77,7 @@ impInfo.checkYourAnswersLabel = Import information
 
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
-importerEori.checkYourAnswersLabel = What is your EORI number?
+importerEori.checkYourAnswersLabel = Your EORI number
 importerEori.error.invalid = Enter your EORI number in the correct format
 
 isVATRegistered.title = Are you VAT registered?
@@ -159,6 +159,7 @@ entryDetails.date.checkYourAnswersLabel = Entry date
 claimEntryNumber.checkYourAnswersLabel = What is the entry number?
 claimEntryDate.checkYourAnswersLabel = What was the entry date?
 
+applicationInformation.checkYourAnswersLabel = Application information
 
 claimReasonType.title = What does your application relate to?
 claimReasonType.heading = What does your application relate to?
@@ -173,7 +174,7 @@ claimReasonType.08 = Return of unwanted goods
 claimReasonType.09 = Value
 claimReasonType.10 = Other
 claimReasonType.or = or
-claimReasonType.checkYourAnswersLabel = What does your application relate to?
+claimReasonType.checkYourAnswersLabel = Reason for overpayment
 claimReasonType.error.required = Select what your application relates to
 
 whatAreTheGoods.title = Tell us about the goods
@@ -185,7 +186,7 @@ whatAreTheGoods.hint = Explain in detail what the goods are.
 
 reasonForOverpayment.title = Reason for overpayment
 reasonForOverpayment.heading = Reason for overpayment
-reasonForOverpayment.checkYourAnswersLabel = Reason for overpayment
+reasonForOverpayment.checkYourAnswersLabel = Why the overpayment happened
 reasonForOverpayment.error.required = Enter the reason for the overpayment
 reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or fewer
 reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
@@ -231,7 +232,7 @@ contactType.hint = We will only use these details if we need more information to
 
 importerName.title = What is your name
 importerName.heading = What is your name
-importerName.checkYourAnswersLabel = Enter your name
+importerName.checkYourAnswersLabel = Your name
 importerName.firstName = First Name
 importerName.lastName = Last Name
 importerName.error.required.firstName = Enter your first name
@@ -241,7 +242,7 @@ importerName.error.length = Your name must be 512 characters or less
 
 phoneNumber.title = Enter your phone number
 phoneNumber.heading = Enter your phone number
-phoneNumber.checkYourAnswersLabel = Enter your phone number
+phoneNumber.checkYourAnswersLabel = Phone number
 phoneNumber.error.required = Enter your phone number
 phoneNumber.error.length = Phone number must be 11 numbers
 phoneNumber.error.invalid = Enter a phone number beginning with 0, like 07700 900 982 or 01632 960 001
@@ -270,7 +271,7 @@ repaymentType.title = Select repayment method
 repaymentType.heading = Select repayment method
 repaymentType.01 = Current month amendment (CMA)
 repaymentType.02 = Bank transfer (Bacs)
-repaymentType.checkYourAnswersLabel = Select repayment method
+repaymentType.checkYourAnswersLabel = Payment method
 repaymentType.error.required = Select how you want to receive the repayment
 repaymentType..help.header = What is a current month amendment?
 repaymentType.help.p1 = You can use a current month amendment if the overpayment was made using a duty deferment account.
@@ -345,7 +346,7 @@ otherDutiesDueToHMRC.error.length = Other Duties should have been paid must be 1
 
 importerAddress.title = What is your address?
 importerAddress.heading = What is your address?
-importerAddress.checkYourAnswersLabel = What is your address?
+importerAddress.checkYourAnswersLabel = Your address
 agent.importerAddress.title = What is the importer''s address?
 agent.importerAddress.heading = What is the importer''s address?
 agent.importerAddress.checkYourAnswersLabel = What is the importer's address?
@@ -448,7 +449,7 @@ agentImporterManualAddress.postalCode.error.invalid = Enter a real postcode
 
 bankDetails.title = Enter UK bank details
 bankDetails.heading = Enter UK bank details
-bankDetails.checkYourAnswersLabel = Enter UK bank details
+bankDetails.checkYourAnswersLabel = Bank details
 bankDetails.name.heading = Name on the account
 bankDetails.name.hint = Enter your name as it appears on your bank statement.
 bankDetails.name.error.required = Enter the name on the account
@@ -491,6 +492,7 @@ repaymentAmountSummary.otherduties.1=Other duties that should have been paid
 repaymentAmountSummary.otherduties.2=Total other duties repayment amount
 repaymentAmountSummary.total=Total
 repaymentAmountSummary.total.amount=Total repayment amount
+repaymentAmountSummary.total.checkYourAnswersLabel=Total repayment amount
 fileUpload.title = Upload a file
 fileUpload.heading = Upload a file
 
@@ -500,6 +502,15 @@ additionalFileUpload.01 = Yes
 additionalFileUpload.02 = No
 additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
 additionalFileUpload.error.required = Select yes if you need to upload another file
+
+contactByEmail.title = Can we contact you by email?
+contactByEmail.heading = Can we contact you by email?
+contactByEmail.01 = Yes
+contactByEmail.02 = No
+contactByEmail.checkYourAnswersLabel = Can we contact you by email?
+contactByEmail.error.required = Select if we can contact you by email
+contactByEmail.hintText = We will use this to contact you about this application. If you select ''No'' we will only contact you by post and telephone.
+contactByEmail.yes = Email address
 
 postcode.error.noneFound = Postcode cannot be found
 addressFound.error = Select the address or enter the address manually
@@ -593,6 +604,7 @@ view.upload-file.help.fileType8=substitute entry, which is a form to declare a s
 view.upload-file.help.line4=Upload a file
 view.upload-file.waiting=Your document is being uploaded. You’ll be redirected once the file has been processed.
 form.upload-file.submit= Submit
+view.upload-file.checkYourAnswersLabel = Supporting documents
 view.file-uploaded.plural.title=You have uploaded {0} files
 view.file-uploaded.plural.heading=You have uploaded {0} files
 view.file-uploaded.list.heading=Documents You have uploaded
@@ -664,3 +676,7 @@ amend-file-upload.help.fileFormat2= .jpg
 amend-file-upload.help.fileFormat3= .pdf
 amend-file-upload.help.fileFormat4= .png
 amend-file-upload.help.fileFormat5= .xls
+
+your.details.checkYourAnswersLabel = Your details
+contact.details.checkYourAnswersLabel = Contact details
+payment.information.checkYourAnswersLabel = Payment information

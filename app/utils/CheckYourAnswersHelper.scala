@@ -19,7 +19,7 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import models.{CheckMode, ClaimantType, NumberOfEntriesType, UserAnswers}
+import models.{ArticleType, CheckMode, ClaimantType, CustomsRegulationType, NumberOfEntriesType, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -86,7 +86,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("bankDetails.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.AccountName),
+        HtmlFormat.escape(x.AccountName.concat("\n").
+          concat(x.SortCode).concat("\n").concat(x.AccountNumber)),
         Some(routes.BankDetailsController.onPageLoad(CheckMode).url)
       )
   }
@@ -122,7 +123,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.toString),
+        HtmlFormat.escape(x.AddressLine1.concat("\n").
+          concat(x.AddressLine2.getOrElse("")).concat("\n").
+          concat(x.City).concat("\n").concat(x.Region.getOrElse("").concat("\n").
+          concat(x.CountryCode).concat("\n").concat(x.PostalCode.getOrElse("")))),
         Some(routes.ImporterAddressController.onPageLoad(CheckMode).url)
       )
   }
@@ -255,6 +259,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
+  def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
+    x => {
+      AnswerRow(
+        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"contactByEmail.$x")),
+        Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
+      )
+    }
+  }
+
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
     x =>
       AnswerRow(
@@ -268,7 +282,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.firstName.concat(x.lastName)),
+        HtmlFormat.escape(x.firstName.concat(",").concat(x.lastName)),
         Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
       )
   }
@@ -318,21 +332,55 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
+  def repaymentAmountSummary: AnswerRow = {
+    val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers)
+    AnswerRow(
+    HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
+    HtmlFormat.escape(helper.getTotalAmount.toString),
+    Some(routes.RepaymentAmountSummaryController.onPageLoad.url)
+    )
+  }
+
+  def evidenceFileUploads: AnswerRow = {
+    AnswerRow(
+      HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
+      HtmlFormat.escape(userAnswers.fileUploadState.get.fileUploads.files.size.toString),
+      Some(routes.FileUploadController.showFileUploaded.url)
+    )
+  }
+
   def getImportantInformationAnswerSection: AnswerSection = {
     userAnswers.get(NumberOfEntriesTypePage) match {
       case Some(NumberOfEntriesType.Multiple) =>
-        AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
-        Seq(claimantType.get,
-          numberOfEntriesType.get,
-          howManyEntries.get,
-          customsRegulationType.get,
-          articleType.get))
+        userAnswers.get(CustomsRegulationTypePage) match {
+          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) =>
+            AnswerSection (Some (messages ("impInfo.checkYourAnswersLabel") ),
+            Seq (claimantType.get,
+            numberOfEntriesType.get,
+            howManyEntries.get,
+            customsRegulationType.get,
+            articleType.get))
+          case _ =>
+            AnswerSection (Some (messages ("impInfo.checkYourAnswersLabel") ),
+            Seq (claimantType.get,
+              numberOfEntriesType.get,
+              howManyEntries.get,
+              customsRegulationType.get))
+        }
       case _ =>
-        AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
-        Seq(claimantType.get,
-          numberOfEntriesType.get,
-          customsRegulationType.get,
-          articleType.get))
+        userAnswers.get(CustomsRegulationTypePage) match {
+          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) =>
+            AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
+              Seq(claimantType.get,
+                numberOfEntriesType.get,
+                customsRegulationType.get,
+                articleType.get))
+          case _ =>
+            AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
+              Seq(claimantType.get,
+                numberOfEntriesType.get,
+                customsRegulationType.get))
+        }
     }
   }
 
@@ -350,7 +398,37 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             entryDetailsNumber.get,
             entryDetailsDate.get))
     }
+  }
 
+  def getApplicationInformationAnswerSection: AnswerSection = {
+    AnswerSection(Some(messages("applicationInformation.checkYourAnswersLabel")),
+      Seq(claimReasonType.get,
+        reasonForOverpayment.get,
+        claimRepaymentType.get,
+        repaymentAmountSummary,
+        evidenceFileUploads))
+  }
+
+  def getYourDetailsAnswerSection: AnswerSection = {
+    AnswerSection(Some(messages("your.details.checkYourAnswersLabel")),
+      Seq(importerHasEori.get,
+        importerEori.get,
+        isVATRegistered.get,
+        importerName.get,
+        importerAddress.get))
+  }
+
+  def getContactDetailsAnswerSection: AnswerSection = {
+    AnswerSection(Some(messages("contact.details.checkYourAnswersLabel")),
+      Seq(phoneNumber.get,
+        contactByEmail.get,
+        emailAddress.get))
+  }
+
+  def getPaymentInformationAnswerSection: AnswerSection = {
+    AnswerSection(Some(messages("payment.information.checkYourAnswersLabel")),
+      Seq(repaymentType.get,
+        bankDetails.get))
   }
 
   private def entryDetailsEPU: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {

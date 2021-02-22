@@ -60,7 +60,11 @@ class CheckYourAnswersController @Inject()(
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
 
       val sections = Seq(checkYourAnswersHelper.getImportantInformationAnswerSection,
-            checkYourAnswersHelper.getEntryDetailsAnswerSection)
+            checkYourAnswersHelper.getEntryDetailsAnswerSection,
+        checkYourAnswersHelper.getApplicationInformationAnswerSection,
+        checkYourAnswersHelper.getYourDetailsAnswerSection,
+        checkYourAnswersHelper.getContactDetailsAnswerSection,
+      checkYourAnswersHelper.getPaymentInformationAnswerSection)
 
       Ok(view(sections, getBackLink(NormalMode, request.userAnswers)))
   }
