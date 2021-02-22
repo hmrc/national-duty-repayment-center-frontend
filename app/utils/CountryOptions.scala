@@ -50,7 +50,7 @@ class CountryOptions(val options: Seq[SelectItem]) extends CountryDropDown {
 
   def getCountryNameFromCode(code: String): String =
     options
-      .find(_.value == code)
+      .find(_.value.contains(code))
       .map(_.text)
       .getOrElse(code)
 }

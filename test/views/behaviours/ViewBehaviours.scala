@@ -33,7 +33,6 @@ trait ViewBehaviours extends ViewSpecBase {
 
           val doc = asDocument(view)
           val nav = doc.getElementById("proposition-menu")
-          val span = nav.children.first
         }
 
         "display the correct browser title" in {

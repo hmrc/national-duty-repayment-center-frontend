@@ -18,16 +18,18 @@ package controllers
 
 import controllers.actions._
 import forms.FurtherInformationFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{AmendCaseResponseType, Mode, UserAnswers}
 import navigation.Navigator
-import pages.FurtherInformationPage
+import pages.{AmendCaseResponseTypePage, FurtherInformationPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.FurtherInformationView
 
+import scala.collection.Set
 import scala.concurrent.{ExecutionContext, Future}
 
 class FurtherInformationController @Inject()(
@@ -44,19 +46,19 @@ class FurtherInformationController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.AmendCaseResponseTypeController.onPageLoad(mode)
+  private def getBackLink(mode: Mode, hasSupportingDocs: Boolean): Call = {
+    if(hasSupportingDocs) routes.AmendCaseSendInformationController.showFileUploaded(mode)
+    else  routes.AmendCaseResponseTypeController.onPageLoad(mode)
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(FurtherInformationPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode, getBackLink(mode, hasSupportingDocs(request.userAnswers))))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,7 +66,7 @@ class FurtherInformationController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, hasSupportingDocs(request.userAnswers))))),
 
         value =>
           for {
@@ -72,5 +74,12 @@ class FurtherInformationController @Inject()(
             _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(FurtherInformationPage, mode, updatedAnswers))
       )
+  }
+
+  def hasSupportingDocs(userAnswers: UserAnswers): Boolean  = {
+    userAnswers.get(AmendCaseResponseTypePage) match {
+      case Some(s) => s.contains(AmendCaseResponseType.Supportingdocuments)
+      case _ => false
+    }
   }
 }

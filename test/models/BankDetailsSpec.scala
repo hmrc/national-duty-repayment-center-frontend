@@ -17,9 +17,9 @@
 package models
 
 import generators.Generators
-import play.api.libs.json.{JsError, JsString, Json}
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import play.api.libs.json.{JsString, Json}
 
 class BankDetailsSpec extends WordSpec with MustMatchers with Generators with ScalaCheckPropertyChecks  with OptionValues {
 

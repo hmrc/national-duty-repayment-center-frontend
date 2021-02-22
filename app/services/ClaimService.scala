@@ -70,8 +70,6 @@ class ClaimService @Inject()(
             clientClaimResponse.result.map(_.caseId).get
           else
             clientClaimResponse.error match {
-              case Some(ApiError("409", Some(caseReferenceId))) =>
-                throw new RuntimeException("Case already exists")
               case _ =>
                 val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
                   clientClaimResponse.error.map(_.errorMessage).getOrElse("")
