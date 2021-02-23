@@ -114,8 +114,8 @@ numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = More than one entry
 numberOfEntriesType.02.hint = Multiple entries must all be from the same importer.
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
-numberOfEntriesType.single.checkYourAnswersLabel = One entry
-numberOfEntriesType.multiple.checkYourAnswersLabel = Multiple entries
+numberOfEntriesType.single.checkYourAnswersLabel = one
+numberOfEntriesType.multiple.checkYourAnswersLabel = multiple
 numberOfEntriesType.error.required = Select if you want to submit one entry or more than one entry
 
 howManyEntries.title = How many entries are you claiming for?
