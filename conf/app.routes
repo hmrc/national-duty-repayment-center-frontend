@@ -192,6 +192,7 @@ POST       /changeImporterManualAddress                  controllers.ImporterMan
 
 GET        /confirmation                       controllers.ConfirmationController.onPageLoad()
 
+GET        /amendConfirmation                       controllers.AmendConfirmationController.onPageLoad()
 
 GET        /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
 POST       /agentImporterManualAddress                        controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
@@ -277,3 +278,4 @@ GET        /upload-proof-of-authority/file-verification                         
 GET        /upload-proof-of-authority/file-rejected                             controllers.ProofOfAuthorityController.markFileUploadAsRejected()
 GET        /upload-proof-of-authority/file-verification/:reference/status       controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
 POST       /upload-proof-of-authority/:id/callback-from-upscan                  controllers.ProofOfAuthorityController.callbackFromUpscan(id: String)
+
