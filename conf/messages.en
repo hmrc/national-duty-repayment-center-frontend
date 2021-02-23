@@ -402,6 +402,7 @@ confirmation.referenceNumber = Your Reference Number
 confirmation.whatHappensNext.heading = What happens next
 confirmation.whatHappensNext.p1 = We’ve sent your application to the NDRC team.
 confirmation.whatHappensNext.p2 = They will contact you either to confirm your registration, or to ask for more information.
+amend.confirmation.whatHappensNext.heading = What happens next
 amend.confirmation.receivedInformation = We have received your information.
 amend.confirmation.amendWhatHappensNext.p1 = We will check the information you have sent and contact you if we need more information.
 amend.confirmation.moreInformation.heading = If we do not need more information
