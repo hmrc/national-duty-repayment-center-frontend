@@ -31,7 +31,7 @@
         form = form,
         id = "email",
         name = "email",
-        label = "emailAddress.heading",
+        label = "emailAddress.01.hint",
         inputType = "email",
         isPageHeading = false,
         isInFieldset = false,
@@ -55,19 +55,19 @@
             items = Seq(
                 RadioItem(
                     value = Some("01"),
-                    content = Text(messages("contactByEmail.01")),
+                    content = Text(messages("emailAddress.01")),
                     checked = form("value").value.contains("01"),
                     conditionalHtml = Some(conditionalContent)
                 ),
                 RadioItem(
                     value = Some("02"),
-                    content = Text(messages("contactByEmail.02")),
+                    content = Text(messages("emailAddress.02")),
                     checked = form("value").value.contains("02")
                 )
             ),
             legendAsHeading = true,
-            legend = Some(messages("contactByEmail.heading")),
-            hint = Some(Html(messages("contactByEmail.hintText")))
+            legend = Some(messages("emailAddress.heading")),
+            hint = Some(Html(messages("emailAddress.hintText")))
         )
 
         @html.button("site.continue")
