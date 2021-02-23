@@ -263,7 +263,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x => {
       AnswerRow(
         HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"contactByEmail.$x")),
+        HtmlFormat.escape(x.isBlank match
+              { case true => "No"
+                case _ => "Yes"}),
         Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
       )
     }
