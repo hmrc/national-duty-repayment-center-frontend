@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.EntryDetailsFormProvider
 import javax.inject.Inject
-import models.{CustomsRegulationType, Mode, UserAnswers}
+import models.{CustomsRegulationType, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.{CustomsRegulationTypePage, EntryDetailsPage}
+import pages.{CustomsRegulationTypePage, EntryDetailsPage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -45,8 +45,10 @@ class EntryDetailsController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) match {
-      case true=> routes.CustomsRegulationTypeController.onPageLoad(mode)
+
+    userAnswers.get(NumberOfEntriesTypePage) match {
+      case Some(NumberOfEntriesType.Single) if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(mode)
+      case Some(NumberOfEntriesType.Multiple) if  userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.BulkFileUploadController.showFileUpload()
       case _ => routes.ArticleTypeController.onPageLoad(mode)
     }
   }
