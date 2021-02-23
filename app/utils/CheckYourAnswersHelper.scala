@@ -443,19 +443,35 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def getYourDetailsAnswerSection: AnswerSection = {
-    AnswerSection(Some(messages("your.details.checkYourAnswersLabel")),
-      Seq(importerHasEori.get,
-        importerEori.get,
-        isVATRegistered.get,
-        importerName.get,
-        importerAddress.get))
+    userAnswers.get(ImporterHasEoriPage) match {
+      case Some(true) =>
+        AnswerSection(Some(messages("your.details.checkYourAnswersLabel")),
+          Seq(importerHasEori.get,
+            importerEori.get,
+            isVATRegistered.get,
+            importerName.get,
+            importerAddress.get))
+      case _ =>
+        AnswerSection(Some(messages("your.details.checkYourAnswersLabel")),
+          Seq(importerHasEori.get,
+            isVATRegistered.get,
+            importerName.get,
+            importerAddress.get))
+    }
   }
 
   def getContactDetailsAnswerSection: AnswerSection = {
-    AnswerSection(Some(messages("contact.details.checkYourAnswersLabel")),
-      Seq(phoneNumber.get,
+    userAnswers.get(EmailAddressPage) match {
+      case Some(email) if email.length > 0 =>
+        AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
+        Seq (phoneNumber.get,
         contactByEmail.get,
         emailAddress.get))
+      case _ =>
+        AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
+          Seq (phoneNumber.get,
+            contactByEmail.get) )
+    }
   }
 
   def getPaymentInformationAnswerSection: AnswerSection = {
