@@ -65,7 +65,7 @@ class BulkFileUploadController @Inject()(
       ss.state match {
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
-            case s: FileUploaded => Future.successful(Redirect(getBulkEntryDetails(Some(request.userAnswers))))
+            case s: FileUploaded => Future.successful(Redirect(routes.EntryDetailsController.onPageLoad(NormalMode)))
             case s: UploadFile => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload))
             case _ => Future.successful(fileStateError)
           }
@@ -189,10 +189,10 @@ class BulkFileUploadController @Inject()(
             uploadRequest,
             fileUploads,
             maybeUploadError,
-            successAction = getBulkEntryDetails(userAnswers),
+            successAction = routes.EntryDetailsController.onPageLoad(NormalMode),
             failureAction = routes.BulkFileUploadController.showFileUpload,
             checkStatusAction = routes.BulkFileUploadController.checkFileVerificationStatus(reference),
-            backLink = routes.CustomsRegulationTypeController.onPageLoad(NormalMode)) //TODO: for more than one entry the back link should be diff. Make this method conditional when we get there
+            backLink = routes.ArticleTypeController.onPageLoad(NormalMode)) //TODO: for more than one entry the back link should be diff. Make this method conditional when we get there
         )
     }
   }
@@ -214,9 +214,5 @@ class BulkFileUploadController @Inject()(
       "errorResource" -> optional(text)
     )(S3UploadError.apply)(S3UploadError.unapply)
   )
-  private def getBulkEntryDetails(answers: Option[UserAnswers]): Call = answers.flatMap(_ .get(CustomsRegulationTypePage)) match {
-    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
-    case Some(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(NormalMode)
-    case _ => routes.UkRegulationTypeController.onPageLoad(NormalMode)
-  }
+
 }
