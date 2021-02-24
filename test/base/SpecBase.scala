@@ -68,7 +68,6 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
         "metrics.jvm" -> false
       )
       .overrides(
-        bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),

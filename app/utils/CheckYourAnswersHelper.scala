@@ -263,7 +263,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x => {
       AnswerRow(
         HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.isBlank match
+        HtmlFormat.escape(false match
               { case true => "No"
                 case _ => "Yes"}),
         Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
@@ -348,7 +348,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
       HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.files.size.toString)
       .concat(" ").concat(messages("view.upload-file.documents.added"))),
-      Some(routes.FileUploadController.showFileUploaded.url)
+      Some(routes.FileUploadController.showFileUploaded(CheckMode).url)
     )
   }
 
