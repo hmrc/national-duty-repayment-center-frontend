@@ -20,9 +20,9 @@ import java.time.LocalDate
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{Mode, NormalMode, RepaymentType, UserAnswers}
+import models.{ClaimantType, Mode, NormalMode, RepaymentType, UserAnswers}
 import navigation.Navigator
-import pages.{CheckYourAnswersPage, RepaymentTypePage}
+import pages.{CheckYourAnswersPage, ClaimantTypePage, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -61,9 +61,10 @@ class CheckYourAnswersController @Inject()(
 
       val sections = Seq(checkYourAnswersHelper.getImportantInformationAnswerSection,
             checkYourAnswersHelper.getEntryDetailsAnswerSection,
-        checkYourAnswersHelper.getApplicationInformationAnswerSection,
-        //checkYourAnswersHelper.getImporterDetailsAnswerSection,
-        checkYourAnswersHelper.getYourDetailsAnswerSection,
+        checkYourAnswersHelper.getApplicationInformationAnswerSection) ++
+        (if(request.userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative))
+        Seq(checkYourAnswersHelper.getImporterDetailsAnswerSection) else Seq.empty) ++
+        Seq(checkYourAnswersHelper.getYourDetailsAnswerSection,
         checkYourAnswersHelper.getContactDetailsAnswerSection,
       checkYourAnswersHelper.getPaymentInformationAnswerSection)
 
