@@ -22,7 +22,7 @@ import controllers.actions._
 import models.ClaimantType.Importer
 import models.FileType.{Bulk, SupportingEvidence}
 import models.requests.UploadRequest
-import models.{AgentImporterHasEORI, FileUpload, FileUploads, NormalMode, UpscanNotification, UserAnswers}
+import models.{AgentImporterHasEORI, CheckMode, FileUpload, FileUploads, NormalMode, UpscanNotification, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -75,7 +75,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
   "GET /file-upload" should {
     "show the upload first document page" in {
-      val fileUploadUrl = routes.FileUploadController.showFileUpload().url
+      val fileUploadUrl = routes.FileUploadController.showFileUpload(NormalMode).url
 
       val application =
         appBuilder(userAnswers = Some(emptyUserAnswers))
@@ -90,9 +90,58 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
     }
   }
 
+  "GET /back-file-upload" should {
+    "show go to Evidence supporting documents page in NormalMode" in {
+      val backLinkUrl = routes.FileUploadController.backLink(NormalMode).url
+
+      val application =
+        appBuilder(userAnswers = Some(emptyUserAnswers))
+          .build()
+
+      val request = FakeRequest(GET, backLinkUrl)
+
+      val result = route(application, request).value
+
+      redirectLocation(result) mustEqual Some(routes.EvidenceSupportingDocsController.onPageLoad().url)
+
+      application.stop()
+    }
+
+    "show go to File uploaded page in Check Mode" in {
+      val backLinkUrl = routes.FileUploadController.backLink(CheckMode).url
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+        Seq(
+          FileUpload.Accepted(
+            1,
+            "foo-bar-ref-1",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "test.pdf",
+            "application/pdf",
+            Some(SupportingEvidence)
+          )
+        )
+      ),
+      acknowledged = true
+      )
+      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value.copy(fileUploadState = Some(fileUploadedState))
+      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, backLinkUrl)
+
+      val result = route(application, request).value
+
+      redirectLocation(result) mustEqual Some(routes.FileUploadController.showFileUploaded(CheckMode).url)
+
+      application.stop()
+    }
+  }
+
   "GET /file-uploaded" should {
     "show file uploaded page" in {
-      val fileUploadedUrl = routes.FileUploadController.showFileUploaded().url
+      val fileUploadedUrl = routes.FileUploadController.showFileUploaded(NormalMode).url
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -128,7 +177,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
     "show only Supporting evidence files uploaded page" in {
       val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
-      val fileUploadUrl = routes.FileUploadController.showFileUploaded().url
+      val fileUploadUrl = routes.FileUploadController.showFileUploaded(NormalMode).url
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -171,7 +220,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
   "POST /file-upload" should {
     "go to Agent has EORI page" in {
-      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice.url
+      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice(NormalMode).url
 
       val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
 
@@ -204,7 +253,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "go to Importer has EORI page" in {
-      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice.url
+      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice(NormalMode).url
 
       val userAnswers = UserAnswers(userAnswersId).set(ImporterHasEoriPage, true).success.value.set(ClaimantTypePage, Importer).success.value
 
@@ -236,8 +285,41 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
+    "go to Check your answers page when in CheckMode" in {
+      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice(CheckMode).url
+
+      val userAnswers = UserAnswers(userAnswersId).set(ImporterHasEoriPage, true).success.value.set(ClaimantTypePage, Importer).success.value
+
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf"
+            )
+          )
+        ),
+        acknowledged = true
+      )
+      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadedState)))).build()
+
+      val request = FakeRequest(POST, uploadAnotherFile)
+        .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
+
+      val result = route(application, request).value
+
+      redirectLocation(result) mustEqual Some(routes.CheckYourAnswersController.onPageLoad().url)
+
+      application.stop()
+    }
+
     "go to upload file page" in {
-      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice.url
+      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice(NormalMode).url
 
       val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
 
@@ -264,13 +346,13 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      redirectLocation(result) mustEqual Some(routes.FileUploadController.showFileUpload().url)
+      redirectLocation(result) mustEqual Some(routes.FileUploadController.showFileUpload(NormalMode).url)
 
       application.stop()
     }
 
     "stay on file uploaded page when validation error" in {
-      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice.url
+      lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice(NormalMode).url
 
       val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
 
