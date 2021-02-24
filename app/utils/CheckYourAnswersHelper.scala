@@ -24,7 +24,7 @@ import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import viewmodels.{AnswerRow, AnswerSection}
 import CheckYourAnswersHelper._
-import models.FileType.Bulk
+import models.FileType.{Bulk, SupportingEvidence}
 import models.FileUpload.Accepted
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
@@ -367,7 +367,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def evidenceFileUploads: AnswerRow = {
     AnswerRow(
       HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
-      HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.files.size.toString)
+      HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.files.filterNot(_.fileType.contains(SupportingEvidence)).size.toString)
       .concat(" ").concat(messages("view.upload-file.documents.added"))),
       Some(routes.FileUploadController.showFileUploaded(CheckMode).url)
     )
