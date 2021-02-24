@@ -114,8 +114,8 @@ numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = More than one entry
 numberOfEntriesType.02.hint = Multiple entries must all be from the same importer.
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
-numberOfEntriesType.single.checkYourAnswersLabel = one
-numberOfEntriesType.multiple.checkYourAnswersLabel = multiple
+numberOfEntriesType.single.checkYourAnswersLabel = One entry
+numberOfEntriesType.multiple.checkYourAnswersLabel = Multiple entries
 numberOfEntriesType.error.required = Select if you want to submit one entry or more than one entry
 
 howManyEntries.title = How many entries are you claiming for?
@@ -616,7 +616,9 @@ error.file-upload.unknown=The selected file could not be uploaded
 error.file-upload.try-again=The selected file could not be uploaded - try again
 error.uploadAnotherFile.required=Select yes if you want to upload another document
 error.file-upload.duplicate=The selected file has already been uploaded
+view.upload-file.documents.added = documents added
 
 your.details.checkYourAnswersLabel = Your details
 contact.details.checkYourAnswersLabel = Contact details
 payment.information.checkYourAnswersLabel = Payment information
+importer.details.checkYourAnswersLabel = Importer details
