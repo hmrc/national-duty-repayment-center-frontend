@@ -204,7 +204,7 @@ evidenceSupportingDocs.error.required = Select Supporting documents
 
 agentNameImporter.title = What is the importer''s name?
 agentNameImporter.heading = What is the importer''s name?
-agentNameImporter.checkYourAnswersLabel = What is the importer''s name?
+agentNameImporter.checkYourAnswersLabel = Importer name
 agentNameImporter.firstName = First Name
 agentNameImporter.lastName = Last Name
 agentNameImporter.error.required.firstName = Enter your first name
@@ -265,7 +265,7 @@ repaymentType.help.p1 = You can use a current month amendment if the overpayment
 enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
 enterAgentEORI.hint = This is 2 letters, followed by either 12 or 15 numbers, like ‘GB123456789123’ or ‘GB123456789123000’.
-enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
+enterAgentEORI.checkYourAnswersLabel = Importer EORI number
 enterAgentEORI.error.required = Enter the importer's EORI number in the correct format
 enterAgentEORI.error.valid = Enter the importer's EORI number in the correct format
 
@@ -332,7 +332,7 @@ otherDutiesDueToHMRC.error.length = Other Duties should have been paid must be 1
 
 importerAddress.title = What is your address?
 importerAddress.heading = What is your address?
-importerAddress.checkYourAnswersLabel = Your address
+importerAddress.checkYourAnswersLabel = Importer address
 agent.importerAddress.title = What is the importer''s address?
 agent.importerAddress.heading = What is the importer''s address?
 agent.importerAddress.checkYourAnswersLabel = What is the importer's address?
