@@ -16,7 +16,7 @@
 
 package forms
 
-import forms.behaviours.{BooleanFieldBehaviours, OptionFieldBehaviours}
+import forms.behaviours.OptionFieldBehaviours
 import models.IsVATRegistered
 import play.api.data.FormError
 

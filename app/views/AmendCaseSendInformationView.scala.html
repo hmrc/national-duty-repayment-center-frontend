@@ -14,78 +14,106 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
-@import models.Mode
+@import models.requests.UploadRequest
+@import config.FrontendAppConfig
+@import views.UploadFileViewContext
+@import views.ViewHelpers.pageTitle
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
+@import views.ViewUtils._
 
 @this(
-    govukLayout: views.html.layouts.GovukLayoutWrapper,
-    forms: views.components.forms,
-    html: views.components.html,
-    details: views.html.components.details,
-    govukButton: GovukButton,
-    govukFileUpload: GovukFileUpload
+        govukLayout: views.html.layouts.GovukLayoutWrapper,
+        forms: views.components.forms,
+        html: views.components.html,
+        details: views.html.components.details,
+        govukFileUpload: GovukFileUpload,
+        govukButton: GovukButton,
+        appConfig: FrontendAppConfig,
+        context : UploadFileViewContext
 )
+@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
 
-@(mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+    @govukLayout(
+        pageTitle = Some(s"${titleNoForm(if(fileUploads.isEmpty)messages("view.amend-upload-file.title") else messages("view.amend-upload-file.next.title", maybeUploadError.isDefined))}"),
+        backLink = Some(backLink.url)
+    ) {
 
-@govukLayout(
-    pageTitle= Some("amendCaseSendInformation.title"),
-    backLink = Some(backLink.url)
-) {
+        @html.h1(messages(if(fileUploads.isEmpty) "view.amend-upload-file.heading" else "view.amend-upload-file.next.heading"), classes = "govuk-heading-l")
 
-    @forms.formWithCSRF(action = AmendCaseSendInformationController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+        <form action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate
+        data-file-upload-redirect-success-url="@successAction.url"
+        data-file-upload-redirect-failure-url="@failureAction.url"
+        data-file-upload-check-status-url="@checkStatusAction.url"
+        data-file-upload-aria-live-message="@messages("view.upload-file.waiting")">
+
+            @maybeUploadError.map { fileUploadError =>
+                @forms.errorSummary(Seq(context.toFormError(fileUploadError)))
+            }
+
+            @uploadRequest.fields.map { case (key, value) =>
+                @forms.inputHidden(key, value)
+            }
+
+            @html.p{ @messages("view.amend-upload-file.line1") }
+            @html.p{ @messages("view.amend-upload-file.line2") }
+
+            @html.h2(messages("view.amend-upload-file.h2"), classes = "govuk-heading-m")
 
 
-        @html.h1(messages("amendCaseSendInformation.heading"))
-
-        @html.p{ @messages("amendCaseSendInformation.paragraph1") }
-
-        @html.p{ @messages("amendCaseSendInformation.paragraph2") }
-
-        @html.h2(messages("amendCaseSendInformation.subheading"), classes = "govuk-heading-m")
-
-        @html.p{ @messages("amendCaseSendInformation.paragraph3") }
-
-        @html.ul(
-            messages("amendCaseSendInformation.01"),
-            messages("amendCaseSendInformation.02"),
-            messages("amendCaseSendInformation.03"),
-            messages("amendCaseSendInformation.04"),
-            messages("amendCaseSendInformation.05"),
-            messages("amendCaseSendInformation.06"),
-            messages("amendCaseSendInformation.07"),
-            messages("amendCaseSendInformation.08")
-        )
-
-        @details(messages("amendCaseSendInformation.help.linkText")) {
-            @html.p{ @messages("amendCaseSendInformation.help.line1") }
-            @html.h2("amendCaseSendInformation.help.line2", classes = "govuk-heading-m")
+            @html.p{ @messages("view.amend-upload-file.help.line1") }
             @html.ul(
-            messages("amendCaseSendInformation.help.fileFormat1"),
-            messages("amendCaseSendInformation.help.fileFormat2"),
-            messages("amendCaseSendInformation.help.fileFormat3"),
-            messages("amendCaseSendInformation.help.fileFormat4"),
-            messages("amendCaseSendInformation.help.fileFormat5")
+                messages("view.amend-upload-file.help.fileType1"),
+                messages("view.amend-upload-file.help.fileType2"),
+                messages("view.amend-upload-file.help.fileType3"),
+                messages("view.amend-upload-file.help.fileType4"),
+                messages("view.amend-upload-file.help.fileType5"),
+                messages("view.amend-upload-file.help.fileType6"),
+                messages("view.amend-upload-file.help.fileType7"),
+                messages("view.amend-upload-file.help.fileType8")
             )
-        }
 
-        @govukFileUpload(FUpload(
-            name = "file",
-            id = "upload-file",
-            value = Some(""),
-            describedBy = None,
-            label = Label(
-            content = Text(messages("fileUpload.title")),
-            isPageHeading = false,
-            classes = "govuk-label"
-        ),
-        hint = None,
-        formGroupClasses = "",
-        classes = ""
-        )
-        )
-        @html.button("site.continue")
+            @details(messages("amend-file-upload.help.linkText")) {
+                @html.p{ @messages("amend-file-upload.help.line1") }
+                @html.h2("amend-file-upload.help.line2", classes = "govuk-heading-m")
+                @html.ul(
+                    messages("amend-file-upload.help.fileFormat1"),
+                    messages("amend-file-upload.help.fileFormat2"),
+                    messages("amend-file-upload.help.fileFormat3"),
+                    messages("amend-file-upload.help.fileFormat4"),
+                    messages("amend-file-upload.help.fileFormat5")
+                )
+            }
+
+            @govukFileUpload(FUpload(
+                name = "file",
+                id = "file",
+                value = Some(""),
+                describedBy = None,
+                label = Label(
+                    content = Text(messages("view.amend-upload-file.help.line4")),
+                    isPageHeading = false
+                ),
+                hint = None,
+                errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
+                formGroupClasses = "",
+                classes = "",
+                attributes = Map(
+                    "accept" -> appConfig.fileFormats.approvedFileExtensions,
+                    "data-msg-required" -> messages("error.amend-file-upload.required"),
+                    "data-msg-filesize" -> messages("error.amend-file-upload.invalid-size-large",appConfig.fileFormats.maxFileSizeMb),
+                    "data-msg-accept" -> messages("error.amend-upload-file.other")
+                ))
+            )
+
+            <div>
+                @govukButton(Button(
+                    content = Text(messages("form.amend-upload-file.submit")),
+                    preventDoubleClick = true,
+                    classes = "file-upload__submit"
+                ))
+                <div class="file-upload__spinner ccms-loader hidden"></div>
+            </div>
+
+            <div class="file-upload__loading-container" aria-live="polite" role="region"></div>
+        </form>
     }
-}
-

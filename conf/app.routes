@@ -244,16 +244,6 @@ POST       /amendCaseResponseType                        controllers.AmendCaseRe
 GET        /changeAmendCaseResponseType                  controllers.AmendCaseResponseTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAmendCaseResponseType                  controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /amendCaseSendInformation                        controllers.AmendCaseSendInformationController.onPageLoad(mode: Mode = NormalMode)
-POST       /amendCaseSendInformation                        controllers.AmendCaseSendInformationController.onSubmit(mode: Mode = NormalMode)
-GET        /changeAmendCaseSendInformation                  controllers.AmendCaseSendInformationController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeAmendCaseSendInformation                  controllers.AmendCaseSendInformationController.onSubmit(mode: Mode = CheckMode)
-
-GET        /amendCaseUploadAnotherFile                        controllers.AmendCaseUploadAnotherFileController.onPageLoad(mode: Mode = NormalMode)
-POST       /amendCaseUploadAnotherFile                        controllers.AmendCaseUploadAnotherFileController.onSubmit(mode: Mode = NormalMode)
-GET        /changeAmendCaseUploadAnotherFile                  controllers.AmendCaseUploadAnotherFileController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeAmendCaseUploadAnotherFile                  controllers.AmendCaseUploadAnotherFileController.onSubmit(mode: Mode = CheckMode)
-
 # File uploads
 GET         /file-upload                                  controllers.FileUploadController.showFileUpload()
 GET         /file-uploaded                                controllers.FileUploadController.showFileUploaded()
@@ -279,3 +269,16 @@ GET        /upload-proof-of-authority/file-rejected                             
 GET        /upload-proof-of-authority/file-verification/:reference/status       controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
 POST       /upload-proof-of-authority/:id/callback-from-upscan                  controllers.ProofOfAuthorityController.callbackFromUpscan(id: String)
 
+#amend send information
+
+GET         /amend-case-send-information/file-upload                                  controllers.AmendCaseSendInformationController.showFileUpload()
+GET         /amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = NormalMode)
+POST        /amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = NormalMode)
+GET         /amend-case-send-information/file-verification/:reference/status          controllers.AmendCaseSendInformationController.checkFileVerificationStatus(reference: String)
+POST        /amend-case-send-information/ndrc/:id/callback-from-upscan                controllers.AmendCaseSendInformationController.callbackFromUpscan(id: String)
+GET         /amend-case-send-information/file-verification                           controllers.AmendCaseSendInformationController.showWaitingForFileVerification
+GET         /amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected()
+GET         /amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String)
+
+GET         /change/amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = CheckMode)
+POST        /change/amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)

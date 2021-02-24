@@ -47,3 +47,4 @@ object AmendCaseResponseType extends Enumerable.Implicits {
   implicit val enumerable: Enumerable[AmendCaseResponseType] =
     Enumerable(values.map(v => v.toString -> v): _*)
 }
+

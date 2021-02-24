@@ -16,8 +16,8 @@
 
 package forms
 
-import forms.behaviours.{BooleanFieldBehaviours, OptionFieldBehaviours}
-import models.{IsImporterVatRegistered, IsVATRegistered}
+import forms.behaviours.OptionFieldBehaviours
+import models.IsImporterVatRegistered
 import play.api.data.FormError
 
 class IsImporterVatRegisteredFormProviderSpec extends OptionFieldBehaviours {
