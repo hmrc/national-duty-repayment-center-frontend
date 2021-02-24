@@ -62,7 +62,7 @@ class CheckYourAnswersController @Inject()(
       val sections = Seq(checkYourAnswersHelper.getImportantInformationAnswerSection,
             checkYourAnswersHelper.getEntryDetailsAnswerSection,
         checkYourAnswersHelper.getApplicationInformationAnswerSection,
-        checkYourAnswersHelper.getImporterDetailsAnswerSection,
+        //checkYourAnswersHelper.getImporterDetailsAnswerSection,
         checkYourAnswersHelper.getYourDetailsAnswerSection,
         checkYourAnswersHelper.getContactDetailsAnswerSection,
       checkYourAnswersHelper.getPaymentInformationAnswerSection)
