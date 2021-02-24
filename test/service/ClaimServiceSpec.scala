@@ -18,14 +18,14 @@ package service
 
 import base.SpecBase
 import connectors.NDRCConnector
-import data.TestData.populateUserAnswersRepresentativeWithEmail
-import models.requests.{CreateClaimRequest, DataRequest}
+import data.TestData.{populateUserAnswersRepresentativeWithEmail, populateUserAnswersWithAmendData}
+import models.requests.{AmendClaimRequest, CreateClaimRequest, DataRequest}
 import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
 import org.mockito.Mockito.when
 import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.test.FakeRequest
-import services.{CaseAlreadyExists, ClaimService}
+import services.ClaimService
 import uk.gov.hmrc.http.{HeaderCarrier, SessionKeys}
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
@@ -36,7 +36,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
 
   "Claim service" should {
 
-    "should return caseID when success" in {
+    "should return caseID when create case is successful" in {
       val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
 
       implicit val hc = HeaderCarrier()
@@ -92,8 +92,45 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
         service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
       }
       thrown.getMessage contains(message)
-
     }
 
+    "should return caseID when amend case is successful" in {
+      val testUserAnswers = populateUserAnswersWithAmendData(emptyUserAnswers)
+
+      implicit val hc = HeaderCarrier()
+      implicit val request = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
+      val dataRequest = DataRequest(request, "12", testUserAnswers)
+
+      val claimRequest = AmendClaimRequest.buildValidAmendRequest(testUserAnswers)
+      val connector = mock[NDRCConnector]
+      when(connector.submitAmendClaim(claimRequest.get))
+        .thenReturn(Future.successful(ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))))
+
+      val service = new ClaimService(connector)(ExecutionContext.global)
+      val result = service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
+      result mustBe "caseId"
+    }
+
+    "should throw exception when unknown error returned for amend case" in {
+      val testUserAnswers = populateUserAnswersWithAmendData(emptyUserAnswers)
+
+      implicit val hc = HeaderCarrier()
+      implicit val request = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
+      val dataRequest = DataRequest(request, "12", testUserAnswers)
+
+      val claimRequest = AmendClaimRequest.buildValidAmendRequest(testUserAnswers)
+      val connector = mock[NDRCConnector]
+      val response = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
+      when(connector.submitAmendClaim(claimRequest.get))
+        .thenReturn(Future.successful(response))
+      val message = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
+        response.error.map(_.errorMessage).getOrElse("")
+
+      val service = new ClaimService(connector)(ExecutionContext.global)
+      val thrown = intercept[RuntimeException]  {
+        service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
+      }
+      thrown.getMessage contains(message)
+    }
   }
 }

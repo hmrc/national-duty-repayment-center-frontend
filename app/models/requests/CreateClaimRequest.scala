@@ -298,10 +298,12 @@ object CreateClaimRequest {
 
     for {
       content <- getContent(userAnswers)
-    } yield CreateClaimRequest(
-      content,
-      userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
-    )
+    } yield {
+      CreateClaimRequest(
+        content,
+        userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
+      )
+    }
   }
 }
 

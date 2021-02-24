@@ -18,8 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.AmendCaseResponseTypeFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{AmendCaseResponseType, Mode, UserAnswers}
 import navigation.Navigator
 import pages.AmendCaseResponseTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}

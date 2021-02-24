@@ -31,7 +31,7 @@ import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsArray, JsNull, Json}
 import play.api.test.FakeRequest
 
 import java.time.{LocalDate, ZoneId, ZonedDateTime}
@@ -149,14 +149,15 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   val amendClaimRequest = AmendClaimRequest(
     AmendContent(CaseID = "Risk-2507",
-      Description = "update request for Risk-2507")
+      Description = "update request for Risk-2507"), Nil
   )
 
   val amendJson = Json.obj(
     "Content" -> Json.obj(
       "CaseID" -> "Risk-2507",
       "Description" -> "update request for Risk-2507"
-    )
+    ),
+    "uploadedFiles" -> JsArray()
   )
 
   val json = Json.obj(

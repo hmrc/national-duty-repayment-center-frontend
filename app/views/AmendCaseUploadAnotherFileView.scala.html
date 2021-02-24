@@ -14,39 +14,65 @@
  * limitations under the License.
  *@
 
-@import controllers.routes._
-@import models.{Mode, AmendCaseUploadAnotherFile}
-@import views.ViewUtils._
+@import config.FrontendAppConfig
+@import views.FileUploadedViewContext
+@import views.ViewHelpers.pageTitle
 
 @this(
-    govukLayout: views.html.layouts.GovukLayoutWrapper,
-    forms: views.components.forms,
-    html: views.components.html
+        govukLayout: views.html.layouts.GovukLayoutWrapper,
+        forms: views.components.forms,
+        html: views.components.html,
+        appConfig: FrontendAppConfig,
+        context: FileUploadedViewContext
 )
 
-@(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], fileUploads: FileUploads, postAction: Call, removeFileCall: String => Call, backLink: Call)(implicit request: Request[_], messages: Messages)
+
+@conditionalContent = {
+@html.p(
+    content = Html(messages("form.amend-file-uploaded.uploadAnotherFile.noConditional")),
+    classes = "govuk-body govuk-!-padding-bottom-4 govuk-!-padding-top-4"
+)
+}
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)} ${messages("amendCaseUploadAnotherFile.title")}"),
-    backLink = Some(backLink.url)
-) {
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(if(fileUploads.isSingle)messages("view.amend-file-uploaded.singular.title") else messages("view.amend-file-uploaded.plural.title", fileUploads.acceptedCount))}"),
+    backLink = Some(backLink.url)) {
 
-@forms.formWithCSRF(action = AmendCaseUploadAnotherFileController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = postAction, args = 'novalidate -> "novalidate") {
+        @components.error_summary(form.errors)
 
-    @components.error_summary(form.errors)
+        @html.h1(
+            messages(if(fileUploads.isSingle) "view.amend-file-uploaded.singular.heading" else "view.amend-file-uploaded.plural.heading", fileUploads.acceptedCount),
+            classes = "govuk-heading-xl"
+        )
 
-    @html.h1(messages("amendCaseUploadAnotherFile.heading"), classes = "govuk-heading-xl")
+        @html.summaryList(context.summaryListOfFileUploads(fileUploads, removeFileCall))
 
-    @html.h2(messages("amendCaseUploadAnotherFile.checkYourAnswersLabel"), classes = "govuk-heading-m")
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "uploadAnotherFile",
+            name = "uploadAnotherFile",
+            inline = true,
+            items = Seq(
+                RadioItem(
+                    value = Some("yes"),
+                    content = Text(messages("form.amend-file-uploaded.uploadAnotherFile.yes")),
+                    checked = form("uploadAnotherFile").value.contains("yes")
+                ),
+                RadioItem(
+                    value = Some("no"),
+                    content = Text(messages("form.amend-file-uploaded.uploadAnotherFile.no")),
+                    checked = form("uploadAnotherFile").value.contains("no"),
+                    conditionalHtml = None
+                )
+            ),
+            legend = Some("view.amend-file-uploaded.uploadAnotherFile.heading"),
+            legendAsHeading = false,
+            legendAsH2 = true,
+            legendClasses = "govuk-fieldset__legend--m"
+        )
 
-    @forms.inputRadio(
-        form = form,
-        idPrefix = "value",
-        name = "value",
-        items = AmendCaseUploadAnotherFile.options(form),
-        inline = true
-    )
-
-    @html.button("site.continue")
+        @html.button("form.amend-file-uploaded.continue")
     }
 }

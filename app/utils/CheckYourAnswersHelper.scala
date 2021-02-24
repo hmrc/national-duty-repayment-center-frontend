@@ -33,16 +33,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("amendCaseUploadAnotherFile.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"amendCaseUploadAnotherFile.$x")),
-        Some(routes.AmendCaseUploadAnotherFileController.onPageLoad(CheckMode).url)
-      )
-  }
-
-  def amendCaseSendInformation: Option[AnswerRow] = userAnswers.get(AmendCaseSendInformationPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("amendCaseSendInformation.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.AmendCaseSendInformationController.onPageLoad(CheckMode).url)
+        Some(routes.AmendCaseSendInformationController.showFileUploaded(CheckMode).url)
       )
   }
 

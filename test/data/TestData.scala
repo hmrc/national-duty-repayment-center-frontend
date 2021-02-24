@@ -16,11 +16,14 @@
 
 package data
 
-import java.time.LocalDate
-
+import models.AmendCaseResponseType.Furtherinformation
+import models.FileUpload.Accepted
 import models._
 import models.requests.CreateClaimRequest
 import pages._
+import services.FileUploaded
+
+import java.time.{LocalDate, ZoneId, ZonedDateTime}
 
 object TestData {
 
@@ -29,6 +32,8 @@ object TestData {
   val testEntryDetails: EntryDetails = EntryDetails("123", "123456A", LocalDate.parse("2012-12-12"))
   val testClaimDescription: ClaimDescription = ClaimDescription("this is a claim description")
   val testClaimRepaymentType: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
+  val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.Furtherinformation, AmendCaseResponseType.Supportingdocuments)
+  val referenceNumber: String = "P34567"
   val testCustomsDutyPaid: String = "100.00"
   val testCustomsDutyDueToHMRC: String = "50.00"
   val testAgentImporterHasEORI: AgentImporterHasEORI = AgentImporterHasEORI.Yes
@@ -45,6 +50,7 @@ object TestData {
   val testWhomToPayCMA: WhomToPay = WhomToPay.CMA
   val testBankDetails: BankDetails = BankDetails("account name", "123456", "12345678")
   val testDocumentList: Seq[DocumentList] = Seq(DocumentList(EvidenceSupportingDocs.Other, None))
+  val furtherInformation: String = "More info for amend"
 
   val testClaimDetails: ClaimDetails = ClaimDetails(
     FormType("01"),
@@ -345,6 +351,24 @@ object TestData {
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
       .get
+
+  def populateUserAnswersWithAmendData(userAnswers: UserAnswers): UserAnswers =
+    userAnswers.copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded)))))
+      .set(AmendCaseResponseTypePage, amendCaseResponseType)
+      .flatMap(_.set(ReferenceNumberPage, referenceNumber))
+      .flatMap(_.set(FurtherInformationPage, furtherInformation))
+      .get
+
+  val fileUploaded =
+    Accepted(
+      orderNumber = 1,
+      reference = "ref-123",
+      url = "/bucket/test1.jpeg",
+      uploadTimestamp = ZonedDateTime.of(2020, 10, 10, 10, 10, 10, 0, ZoneId.of("UTC")),
+      checksum = "f55a741917d512ab4c547ea97bdfdd8df72bed5fe51b6a248e0a5a0ae58061c8",
+      fileName = "test1.jpeg",
+      fileMimeType = "image/jpeg"
+    )
 
   val testCreateClaimRequestRepresentativeWithEmail: CreateClaimRequest = CreateClaimRequest(
     Content(

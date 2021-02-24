@@ -64,9 +64,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         "auditing.enabled" -> false,
         "metrics.jvm" -> false
       ).overrides(
-      bind[DataRequiredAction].to[DataRequiredActionImpl],
       bind[IdentifierAction].to[FakeIdentifierAction],
-      bind[DataRequiredAction].to[DataRequiredActionImpl],
       bind[UpscanInitiateConnector].toInstance(upscanMock),
       bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
       bind[Metrics].to[MetricsImpl]
@@ -334,47 +332,33 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = false
       )
       val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value.copy(fileUploadState = Some(fileUploadState))
-      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadState)))).build()
+      val mockSessionRepository = mock[SessionRepository]
+
+      val application = appBuilder(userAnswers = Some(userAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
 
       running(application) {
-        val sessionRepo = application.injector.instanceOf[SessionRepository]
-        sessionRepo.set(userAnswers)
+        when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
 
         val request = buildRequest(GET, fileVerificationUrl("11370e18-6e24-453e-b45a-76d3e32ea33d"))
         val result = route(application, request).value
         status(result) mustEqual 200
-        val answers = Await.result(sessionRepo.get(userAnswersId), 10 seconds).value
         contentAsString(result) mustEqual """{"fileStatus":"NOT_UPLOADED"}"""
-        answers.fileUploadState.get mustBe fileUploadState
 
-
-        val request2 = buildRequest(GET, fileVerificationUrl("2b72fe99-8adf-4edb-865e-622ae710f77c"))
+        val request2 = buildRequest(GET, fileVerificationUrl("f029444f-415c-4dec-9cf2-36774ec63ab8"))
         val result2 = route(application, request2).value
         status(result2) mustEqual 200
-        val answers2 = Await.result(sessionRepo.get(userAnswersId), 10 seconds).value
-        contentAsString(result2) mustEqual """{"fileStatus":"WAITING"}"""
-        answers2.fileUploadState.get mustBe fileUploadState
+        contentAsString(result2) mustEqual """{"fileStatus":"ACCEPTED"}"""
 
-
-        val request3 = buildRequest(GET, fileVerificationUrl("f029444f-415c-4dec-9cf2-36774ec63ab8"))
+        val request3 = buildRequest(GET, fileVerificationUrl("4b1e15a4-4152-4328-9448-4924d9aee6e2"))
         val result3 = route(application, request3).value
         status(result3) mustEqual 200
-        val answers3 = Await.result(sessionRepo.get(userAnswersId), 10 seconds).value
-        contentAsString(result3) mustEqual """{"fileStatus":"ACCEPTED"}"""
-        answers3.fileUploadState.get mustBe fileUploadState
+        contentAsString(result3) mustEqual """{"fileStatus":"FAILED"}"""
 
-        val request4 = buildRequest(GET, fileVerificationUrl("4b1e15a4-4152-4328-9448-4924d9aee6e2"))
+        val request4 = buildRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0114c"))
         val result4 = route(application, request4).value
-        status(result4) mustEqual 200
-        val answers4 = Await.result(sessionRepo.get(userAnswersId), 10 seconds).value
-        contentAsString(result4) mustEqual """{"fileStatus":"FAILED"}"""
-        answers4.fileUploadState.get mustBe fileUploadState
-
-        val request5 = buildRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0114c"))
-        val result5 = route(application, request5).value
-        status(result5) mustEqual 404
-        val answers5 = Await.result(sessionRepo.get(userAnswersId), 10 seconds).value
-        answers5.fileUploadState.get mustBe fileUploadState
+        status(result4) mustEqual 404
       }
       application.stop()
     }
