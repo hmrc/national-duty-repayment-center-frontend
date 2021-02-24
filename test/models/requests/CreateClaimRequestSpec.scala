@@ -246,6 +246,14 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       result mustBe Some(testCreateClaimRequestWithUKCustomsRegulationType)
     }
 
+    "returns a valid CreateClaimRequest for a userAnswers containing claimant type Representative, single entry, and paying representative by bacs" in {
+      val testUserAnswers = populateUserAnswersWithRepresentativeSinglePayingRepresentativeBacs(emptyUserAnswers)
+
+      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
+
+      result mustBe Some(testCreateClaimRequestWithRepresentativeSinglePayingRepresentativeBacs)
+    }
+
 
   }
 }
