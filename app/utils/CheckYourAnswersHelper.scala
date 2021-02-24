@@ -17,7 +17,6 @@
 package utils
 
 import java.time.format.DateTimeFormatter
-
 import controllers.routes
 import models.{AgentImporterHasEORI, ArticleType, CheckMode, ClaimantType, CustomsRegulationType, NumberOfEntriesType, UserAnswers}
 import pages._
@@ -25,6 +24,8 @@ import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import viewmodels.{AnswerRow, AnswerSection}
 import CheckYourAnswersHelper._
+import models.FileType.Bulk
+import models.FileUpload.Accepted
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -73,13 +74,24 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def bulkFileUpload: Option[AnswerRow] = userAnswers.get(BulkFileUploadPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"bulkFileUpload.$x")),
-        Some(routes.BulkFileUploadController.showFileUpload.url)
-      )
+  def bulkFileUpload: Option[AnswerRow] = {
+    userAnswers.fileUploadState.map(_.fileUploads.files.filter(_.fileType.contains(Bulk))).flatMap { f =>
+      f.headOption.map { f =>
+        f match {
+          case Accepted(_, _, _, _, _, fileName, _, _) =>
+            AnswerRow(
+              HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
+              HtmlFormat.escape(messages(s"$fileName")),
+              Some(routes.BulkFileUploadController.showFileUpload.url)
+            )
+          case _ =>  AnswerRow(
+            HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
+            HtmlFormat.escape(messages(s"bulkFileUpload.empty")),
+            Some(routes.BulkFileUploadController.showFileUpload.url)
+          )
+        }
+      }
+    }
   }
 
   def indirectRepresentative: Option[AnswerRow] = userAnswers.get(IndirectRepresentativePage) map {
