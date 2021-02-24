@@ -17,7 +17,6 @@
 package utils
 
 import java.time.format.DateTimeFormatter
-
 import controllers.routes
 import models.{AgentImporterHasEORI, ArticleType, CheckMode, ClaimantType, CustomsRegulationType, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
 import pages._
