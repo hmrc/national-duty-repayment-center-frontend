@@ -270,12 +270,9 @@ GET         /amend-case-send-information/file-verification                      
 GET         /amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected()
 GET         /amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode : Mode = NormalMode)
 
-GET         /change/amend-case-send-information/file-uploaded        controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = CheckMode)
-POST        /change/amend-case-send-information/file-uploaded        controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
-GET         /file-verification                           controllers.FileUploadController.showWaitingForFileVerification(mode: Mode = NormalMode)
-GET         /file-rejected                                controllers.FileUploadController.markFileUploadAsRejected(mode: Mode = NormalMode)
-GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = NormalMode)
-GET         /back-file-upload                            controllers.FileUploadController.backLink(mode: Mode = NormalMode)
+GET         /change/amend-case-send-information/file-uploaded                         controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = CheckMode)
+POST        /change/amend-case-send-information/file-uploaded                         controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
+GET         /change/amend-case-send-information/file-uploaded/:reference/remove       controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode : Mode = CheckMode)
 
 # File uploads
 GET         /file-upload                                  controllers.FileUploadController.showFileUpload(mode: Mode = NormalMode)
