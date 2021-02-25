@@ -358,7 +358,7 @@ importerAddress.hint = We will use this to send letters about this application.
 
 agentImporterAddress.title = What is your business address?
 agentImporterAddress.heading = What is your business address?
-agentImporterAddress.checkYourAnswersLabel = What is your business address?
+agentImporterAddress.checkYourAnswersLabel = Your address
 agentImporterAddress.hint = We will use this to send letters about this application.
 agentImporterAddress.line1.error.required = Enter Address line 1
 agentImporterAddress.line1.error.length = Address line 1 must be 128 characters or less
@@ -401,7 +401,7 @@ confirmation.whatHappensNext.p2 = They will contact you either to confirm your r
 agentImporterManualAddress.title = Enter your business address
 agentImporterManualAddress.heading = Enter your business address
 agentImporterManualAddress.hint = We will use this to send letters about this application.
-agentImporterManualAddress.checkYourAnswersLabel = Enter your business address
+agentImporterManualAddress.checkYourAnswersLabel = Your address
 agentImporterManualAddress.line1.heading = Building and street
 agentImporterManualAddress.line1.error.required = Enter address line 1
 agentImporterManualAddress.line1.error.length = Address line 1 must be 128 characters or less
@@ -495,7 +495,7 @@ postcode.error.required = Enter a UK postcode
 postcode.error.length = Enter a postcode, like AA1 1AA
 indirectRepresentative.title = Are you an indirect representative of the importer?
 indirectRepresentative.heading = Are you an indirect representative of the importer?
-indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?
+indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative?
 indirectRepresentative.error.required = Select if you are an indirect representative of the importer
 
 proofOfAuthority.title = Upload proof of authority
