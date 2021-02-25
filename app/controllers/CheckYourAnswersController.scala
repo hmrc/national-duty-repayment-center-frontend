@@ -62,8 +62,10 @@ class CheckYourAnswersController @Inject()(
       val sections = Seq(checkYourAnswersHelper.getImportantInformationAnswerSection,
             checkYourAnswersHelper.getEntryDetailsAnswerSection,
         checkYourAnswersHelper.getApplicationInformationAnswerSection) ++
-        (if(request.userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative))
-        Seq(checkYourAnswersHelper.getImporterDetailsAnswerSection) else Seq.empty) ++
+        (request.userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+          case true => Seq(checkYourAnswersHelper.getImporterDetailsAnswerSection)
+          case _ => Seq.empty
+        }) ++
         Seq(checkYourAnswersHelper.getYourDetailsAnswerSection,
         checkYourAnswersHelper.getContactDetailsAnswerSection,
       checkYourAnswersHelper.getPaymentInformationAnswerSection)
