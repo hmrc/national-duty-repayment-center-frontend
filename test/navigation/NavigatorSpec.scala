@@ -222,6 +222,11 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad)
       }
 
+      "go to AmendConfirmationAnswers page after AmendCheckYourAnswersPage page " in {
+        navigator.nextPage(AmendCheckYourAnswersPage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.AmendConfirmationController.onPageLoad)
+      }
+
       "go to BankDetails page after EmailAddress page when the claimant is importer and has selected multiple entries" in {
         val answers =
           emptyUserAnswers

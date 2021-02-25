@@ -35,13 +35,7 @@
 
 @forms.formWithCSRF(action = AmendCheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
 
-
-
- <div>
-   <a role="button"  class="govuk-button" href="@routes.AmendConfirmationController.onPageLoad">
-   @messages("site.continue")
-   </a>
- </div>
+@html.button("site.continue")
 }
 }
 
