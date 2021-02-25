@@ -19,13 +19,12 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import controllers.routes
-import models.{AgentImporterHasEORI, ArticleType, CheckMode, ClaimantType, CustomsRegulationType, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
+import models.{AgentImporterHasEORI, CheckMode, ClaimantType, CustomsRegulationType, NumberOfEntriesType, UserAnswers, WhomToPay}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import viewmodels.{AnswerRow, AnswerSection}
-import CheckYourAnswersHelper._
-import models.FileType.{Bulk, SupportingEvidence}
+import models.FileType.{Bulk, SupportingEvidence, ProofOfAuthority}
 import models.FileUpload.Accepted
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
@@ -80,6 +79,26 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"bulkFileUpload.empty")),
             Some(routes.BulkFileUploadController.showFileUpload.url)
+          )
+        }
+      }
+    }
+  }
+
+  def proofOfAuthority: Option[AnswerRow] = {
+    userAnswers.fileUploadState.map(_.fileUploads.files.filter(_.fileType.contains(ProofOfAuthority))).flatMap { f =>
+      f.headOption.map { f =>
+        f match {
+          case Accepted(_, _, _, _, _, fileName, _, _) =>
+            AnswerRow(
+              HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
+              HtmlFormat.escape(messages(s"$fileName")),
+              Some(routes.ProofOfAuthorityController.showFileUpload.url)
+            )
+          case _ =>  AnswerRow(
+            HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
+            HtmlFormat.escape(messages(s"proofOfAuthority.empty")),
+            Some(routes.ProofOfAuthorityController.showFileUpload.url)
           )
         }
       }
@@ -382,7 +401,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         Seq(customsRegulationType.get) ++
         (userAnswers.get(CustomsRegulationTypePage) match {
             case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => Seq(articleType.get)
-            case _ => Seq.empty
+            case _ => Seq(ukRegulationType.get)
         })
     )
   }
@@ -474,6 +493,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case true => Seq(indirectRepresentative.get)
           case _ => Seq.empty
         }) ++
+        (userAnswers.get(IndirectRepresentativePage) match {
+          case Some(false) => Seq(proofOfAuthority.get)
+          case _ => Seq.empty
+        }) ++
         (userAnswers.get(RepaymentTypePage) match {
           case None => Seq.empty
           case _ => Seq(repaymentType.get)
@@ -536,6 +559,15 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("articleType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"articleType.$x")),
         Some(routes.ArticleTypeController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def ukRegulationType: Option[AnswerRow] = userAnswers.get(UkRegulationTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("ukRegulationType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"ukRegulationType.$x")),
+        Some(routes.UkRegulationTypeController.onPageLoad(CheckMode).url)
       )
   }
 

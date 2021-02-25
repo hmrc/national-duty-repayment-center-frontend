@@ -116,7 +116,7 @@ ukRegulationType.050 = Overpayment of duty or VAT (Regulation 50)
 ukRegulationType.051 = Rejected (Regulation 51)
 ukRegulationType.052 = Special circumstances (Regulation 52)
 ukRegulationType.053 = Withdrawal of customs declaration (Regulation 53)
-ukRegulationType.checkYourAnswersLabel = Why are you applying for this repayment?
+ukRegulationType.checkYourAnswersLabel = Reason for application
 ukRegulationType.error.required = Select the reason you are applying for this repayment
 
 numberOfEntriesType.title = How many entries do you want to submit?
@@ -526,6 +526,7 @@ proofOfAuthority.heading = Upload proof of authority
 proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
 proofOfAuthority.paragraph2 = Upload a file
 proofOfAuthority.error.required = Upload proof of authority
+proofOfAuthority.checkYourAnswersLabel = Proof of authority document
 
 bulkFileUpload.title = Upload the multiple entries spreadsheet
 bulkFileUpload.heading = Upload the multiple entries spreadsheet
