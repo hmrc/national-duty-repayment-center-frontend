@@ -88,7 +88,7 @@ class AmendCaseSendInformationController @Inject()(
     renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
   }
 
-  final def removeFileUploadByReference(reference: String, mode : Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  final def removeFileUploadByReference(reference: String, mode : Mode = NormalMode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     sessionState(request.internalId).flatMap { ss =>
       ss.state match {
         case Some(s) =>
@@ -149,7 +149,8 @@ class AmendCaseSendInformationController @Inject()(
         request.userAnswers.fileUploadState.get.fileUploads,
         controller.submitUploadAnotherFileChoice(mode),
         controller.removeFileUploadByReference,
-        controller.showFileUpload(),NormalMode
+        controller.showFileUpload(),
+        NormalMode
       ))),
       value =>
         sessionState(request.internalId).flatMap { ss =>
