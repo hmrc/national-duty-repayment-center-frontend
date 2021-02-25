@@ -61,6 +61,7 @@ class Navigator @Inject()() {
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
+    case AmendCheckYourAnswersPage => _ => routes.AmendConfirmationController.onPageLoad()
     case ReferenceNumberPage => _ => routes.AmendCaseResponseTypeController.onPageLoad(NormalMode)
     case AmendCaseResponseTypePage => getAmendCaseResponseType
     case AmendCaseSendInformationPage => _ => routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
