@@ -16,12 +16,11 @@
 
 package forms
 
-import java.time.LocalDate
-
-import formats.Format
 import forms.behaviours.{DateBehaviours, StringFieldBehaviours}
 import models.EntryDetails
-import play.api.data.{Form, FormError}
+import play.api.data.FormError
+
+import java.time.LocalDate
 
 class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehaviours {
 

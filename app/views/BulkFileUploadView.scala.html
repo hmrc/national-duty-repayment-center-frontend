@@ -68,13 +68,13 @@ backLink = Some(backLink.url)
 	
     @html.p{ @messages("bulkFileUpload.paragraph2") }	
 	
-
-    @html.p{@messages("fileUpload.title")}
-
     @govukFileUpload(FUpload(
         name = "file",
         id = "file",
         value = Some(""),
+        label = Label(
+            content = Text(messages("fileUpload.title"))
+        ),
         describedBy = None,
         hint = None,
         errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),

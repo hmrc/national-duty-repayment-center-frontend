@@ -21,8 +21,9 @@ import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumber
 import play.api.libs.json.{Json, OFormat}
 
 final case class AmendClaimRequest(
-                                     Content: AmendContent
-                                   )
+                                     Content: AmendContent,
+                                     uploadedFiles: Seq[UploadedFile]
+                                  )
 
 object AmendClaimRequest {
   implicit val formats: OFormat[AmendClaimRequest] = Json.format[AmendClaimRequest]
@@ -47,9 +48,18 @@ object AmendClaimRequest {
 
     for {
       content <- getContent(userAnswers)
-    } yield AmendClaimRequest(
-      content
-    )
+    } yield
+      AmendClaimRequest(
+        content,
+        if(!hasSupportingDocs(userAnswers)) Nil else userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
+
+      )
+  }
+  def hasSupportingDocs(userAnswers: UserAnswers): Boolean  = {
+    userAnswers.get(AmendCaseResponseTypePage) match {
+      case Some(s) => s.contains(AmendCaseResponseType.Supportingdocuments)
+      case _ => false
+    }
   }
 }
 

@@ -1,0 +1,54 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import uk.gov.hmrc.play.views.html._
+
+@this(
+        govukLayout: views.html.layouts.GovukLayoutWrapper,
+        html: views.components.html
+)
+
+@(claimId: String)(implicit request: Request[_], messages: Messages)
+
+@govukLayout(
+    pageTitle = Some(s"${titleNoForm(messages("confirmation.title"))}"),
+) {
+
+    <div class="govuk-panel govuk-panel--confirmation">
+        @html.h1("confirmation.heading", classes="govuk-panel__title")
+        <div class="govuk-panel__body">
+            @messages("confirmation.referenceNumber")<br><strong> @claimId.toString </strong>
+        </div>
+    </div>
+
+    @html.p{ @messages("amend.confirmation.receivedInformation") }
+
+    @html.h2("amend.confirmation.whatHappensNext.heading", classes = "govuk-heading-m")
+
+    @html.p{ @messages("amend.confirmation.amendWhatHappensNext.p1") }
+
+    @html.h2("amend.confirmation.moreInformation.heading", classes = "govuk-heading-m")
+    @html.p{ @messages("amend.confirmation.moreInformation.p1") }
+
+    @html.h2("amend.confirmation.helpUs.heading", classes = "govuk-heading-m")
+    @html.p{ @messages("amend.confirmation.helpUs.p1") }
+    @html.p{ <a href="todo">@messages("amend.confirmation.helpUs.p2")</a> @messages("amend.confirmation.helpUs.p3")}
+
+
+
+
+
+}

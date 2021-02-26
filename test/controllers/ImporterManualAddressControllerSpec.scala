@@ -20,7 +20,6 @@ import base.SpecBase
 import forms.ImporterManualAddressFormProvider
 import models.{Address, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.Matchers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -30,9 +29,8 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
-import views.html.ImporterManualAddressView
 import utils.{CountryOptions, FakeCountryOptions}
+import views.html.ImporterManualAddressView
 
 import scala.concurrent.Future
 

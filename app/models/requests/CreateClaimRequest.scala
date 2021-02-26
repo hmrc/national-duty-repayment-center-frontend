@@ -48,7 +48,7 @@ object CreateClaimRequest {
           userAnswers.get(NumberOfEntriesTypePage) match {
             case Some(NumberOfEntriesType.Single) => userAnswers.get(RepaymentTypePage) match {
               case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
-              case Some(RepaymentType.BACS) => Some(WhomToPay.Importer)
+              case Some(RepaymentType.BACS) => userAnswers.get(WhomToPayPage)
             }
             case Some(NumberOfEntriesType.Multiple) => userAnswers.get(WhomToPayPage)
           }
@@ -298,10 +298,12 @@ object CreateClaimRequest {
 
     for {
       content <- getContent(userAnswers)
-    } yield CreateClaimRequest(
-      content,
-      userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
-    )
+    } yield {
+      CreateClaimRequest(
+        content,
+        userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
+      )
+    }
   }
 }
 

@@ -16,11 +16,11 @@
 
 package generators
 
-import java.time.LocalDate
-import models.requests.CreateClaimRequest
 import models._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
+
+import java.time.LocalDate
 
 trait ModelGenerators {
 

@@ -61,10 +61,10 @@ class Navigator @Inject()() {
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
+    case AmendCheckYourAnswersPage => _ => routes.AmendConfirmationController.onPageLoad()
     case ReferenceNumberPage => _ => routes.AmendCaseResponseTypeController.onPageLoad(NormalMode)
     case AmendCaseResponseTypePage => getAmendCaseResponseType
-    case AmendCaseSendInformationPage => _ => routes.AmendCaseUploadAnotherFileController.onPageLoad(NormalMode)
-    case AmendCaseUploadAnotherFilePage => getAmendCaseUploadAnotherFile
+    case AmendCaseSendInformationPage => _ => routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
     case _ => _ => routes.IndexController.onPageLoad()
   }
@@ -79,19 +79,9 @@ class Navigator @Inject()() {
     case _ => routes.ImporterAddressController.onPageLoad(NormalMode)
   }
 
-  private def getAmendCaseUploadAnotherFile(answers: UserAnswers): Call = answers.get(AmendCaseUploadAnotherFilePage) match {
-    case Some(AmendCaseUploadAnotherFile.Yes)  => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
-    case Some(AmendCaseUploadAnotherFile.No) => {
-      answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Furtherinformation) match {
-        case true => routes.FurtherInformationController.onPageLoad(NormalMode)
-        case _ => routes.AmendCheckYourAnswersController.onPageLoad
-      }
-    }
-  }
-
   private def getAmendCaseResponseType(answers: UserAnswers): Call =
     answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Supportingdocuments) match {
-      case true => routes.AmendCaseSendInformationController.onPageLoad(NormalMode)
+      case true => routes.AmendCaseSendInformationController.showFileUpload()
       case  _  => routes.FurtherInformationController.onPageLoad(NormalMode)
     }
 

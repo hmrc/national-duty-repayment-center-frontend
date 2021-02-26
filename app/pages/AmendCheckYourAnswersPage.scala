@@ -14,31 +14,6 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import generators.Generators
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.libs.json.{JsString, Json}
-
-class BankDetailsSpec extends WordSpec with MustMatchers with Generators with ScalaCheckPropertyChecks  with OptionValues {
-
-
-  "Bank Details" must {
-    "must serialise" in {
-
-      val bnkDtls = stringsWithMaxLength(40)
-      forAll(bnkDtls) {
-        bankDetails =>
-          Json.toJson(bankDetails) mustEqual JsString(bankDetails)
-      }
-
-    }
-
-
-  }
-
-
-
-
-}
+case object AmendCheckYourAnswersPage extends Page
