@@ -48,8 +48,8 @@ class EntryDetailsController @Inject()(
 
     userAnswers.get(NumberOfEntriesTypePage) match {
       case Some(NumberOfEntriesType.Single) if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(mode)
-      case Some(NumberOfEntriesType.Multiple) if  userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.BulkFileUploadController.showFileUpload()
-      case _ => routes.ArticleTypeController.onPageLoad(mode)
+      case Some(NumberOfEntriesType.Single) if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UnionsCustomsCodeRegulation) => routes.ArticleTypeController.onPageLoad(mode)
+      case _ => routes.BulkFileUploadController.showFileUpload()
     }
   }
 

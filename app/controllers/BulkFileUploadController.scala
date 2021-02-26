@@ -23,8 +23,8 @@ import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
 import models.FileType.Bulk
-import models.{CustomsRegulationType, FileVerificationStatus, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
-import pages.CustomsRegulationTypePage
+import models.{CustomsRegulationType, FileVerificationStatus, Mode, NormalMode, NumberOfEntriesType, S3UploadError, UpscanNotification, UserAnswers}
+import pages.{CustomsRegulationTypePage, NumberOfEntriesTypePage}
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -35,9 +35,10 @@ import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.BulkFileUploadView
-
 import java.time.LocalDateTime
+
 import javax.inject.{Inject, Named}
+
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -215,8 +216,7 @@ class BulkFileUploadController @Inject()(
     )(S3UploadError.apply)(S3UploadError.unapply)
   )
   private def getBulkEntryDetails(answers: Option[UserAnswers]): Call = answers.flatMap(_ .get(CustomsRegulationTypePage)) match {
-    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
-    case Some(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(NormalMode)
-    case _ => routes.UkRegulationTypeController.onPageLoad(NormalMode)
+    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.EntryDetailsController.onPageLoad(NormalMode)
+    case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
   }
 }
