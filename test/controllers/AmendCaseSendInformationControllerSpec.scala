@@ -111,11 +111,14 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.Furtherinformation, AmendCaseResponseType.Supportingdocuments)
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadedState))
 
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
-
+      val mockSessionRepository = mock[SessionRepository]
+      val application = appBuilder(userAnswers = Some(userAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
       running(application) {
-        val sessionRepo = application.injector.instanceOf[SessionRepository]
-        sessionRepo.set(userAnswers)
+        when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
+        when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
+
         val request = buildRequest(GET, fileUploadedUrl)
         val result = route(application, request).value
         status(result) mustEqual 200
