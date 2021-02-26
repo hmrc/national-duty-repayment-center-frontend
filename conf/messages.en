@@ -23,6 +23,8 @@ error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 
+service.name = National Duty Repayment Centre
+
 index.title = National Duty Repayment Centre
 index.heading = National Duty Repayment Centre
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
