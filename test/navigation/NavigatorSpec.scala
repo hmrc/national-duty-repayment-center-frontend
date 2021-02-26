@@ -100,13 +100,13 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
       }
 
-      "go to BulkFileUpload page after the customsRegulationType page when the UnionsCustomsCodeRegulation has been selected" in {
+      "go to ArticleTypeController page after the customsRegulationType page when the UnionsCustomsCodeRegulation has been selected" in {
 
         val answers =
           emptyUserAnswers
             .set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation).success.value
         navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
-          .mustBe(routes.BulkFileUploadController.showFileUpload)
+          .mustBe(routes.ArticleTypeController.onPageLoad(NormalMode))
 
       }
 
