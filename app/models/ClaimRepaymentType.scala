@@ -42,7 +42,7 @@ object ClaimRepaymentType extends Enumerable.Implicits {
         id = Some(value.toString),
         value = value.toString,
         content = Text(messages(s"claimRepaymentType.${value.toString}")),
-        checked = form("value").value.contains(value.toString)
+        checked = form.data.exists(_._2 == value.toString)
       )
   }
 
