@@ -180,7 +180,7 @@ object CreateClaimRequest {
     def getBankDetails(userAnswers: UserAnswers): Option[AllBankDetails] = getPaymentMethod(userAnswers) match {
       case Some(RepaymentType.BACS) =>
         for {
-          bankDetails <- userAnswers.get(BankDetailsPage)
+          bankDetails <- userAnswers.get(BankDetailsPage)map(cleanseBankDetails)
         } yield (userAnswers.get(ClaimantTypePage), getPayeeIndicator(userAnswers)) match {
           case (Some(ClaimantType.Importer), _) | (Some(ClaimantType.Representative), Some(Importer)) =>
             AllBankDetails(ImporterBankDetails = Some(bankDetails), AgentBankDetails = None)
