@@ -87,34 +87,30 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
     }
 
     "redirect to the next page when valid data is submitted" in {
-
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).
         success.value
 
       val mockSessionRepository = mock[SessionRepository]
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+      running(application) {
+        when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
+        when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
 
-      val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
+        val request =
+          FakeRequest(POST, amendCaseSendInformationRoute)
+            .withFormUrlEncodedBody(("value", "answer"))
 
-      val request =
-        FakeRequest(POST, amendCaseSendInformationRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        val result = route(application, request).value
 
-      val result = route(application, request).value
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
 
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
-
-      application.stop()
+        application.stop()
+      }
     }
-
     "redirect to Session Expired for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
