@@ -396,7 +396,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def evidenceFileUploads: AnswerRow = {
     AnswerRow(
       HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
-      HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.files.filterNot(_.fileType.contains(SupportingEvidence)).size.toString)
+      HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.acceptedCount.toString)
       .concat(" ").concat(messages("view.upload-file.documents.added"))),
       Some(routes.FileUploadController.showFileUploaded(NormalMode).url)
     )
@@ -497,9 +497,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def getPaymentInformationAnswerSection: AnswerSection = {
     AnswerSection (Some (messages ("payment.information.checkYourAnswersLabel") ),
       Seq.empty ++
-        (userAnswers.get(WhomToPayPage) match {
-          case None => Seq.empty
-          case _ => Seq(whomToPay.get)
+        (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+          case true => (userAnswers.get (WhomToPayPage) match {
+                          case None => Seq.empty
+                          case _ => Seq (whomToPay.get)
+                          })
+          case _ => Seq.empty
         }) ++
         (userAnswers.get(WhomToPayPage).contains(WhomToPay.Representative) match {
           case true => Seq(indirectRepresentative.get)
