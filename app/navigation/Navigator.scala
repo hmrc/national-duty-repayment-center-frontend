@@ -95,7 +95,7 @@ class Navigator @Inject()() {
   private def getEntryDetails(answers: UserAnswers): Call =
     answers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) match {
       case true => routes.UkRegulationTypeController.onPageLoad(NormalMode)
-      case _ => routes.ArticleTypeController.onPageLoad(NormalMode)
+      case false => routes.ArticleTypeController.onPageLoad(NormalMode)
     }
 
   private def getArticleType(answers: UserAnswers) : Call =
