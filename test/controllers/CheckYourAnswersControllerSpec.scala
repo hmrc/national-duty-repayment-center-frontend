@@ -17,21 +17,31 @@
 package controllers
 
 import base.SpecBase
-import models.NormalMode
+import data.TestData.{populateUserAnswersWithImporterInformation,
+  populateUserAnswersWithImporterUKCustomsRegulationInformation,
+  populateUserAnswersWithRepresentativeMultipleJourney,
+  populateUserAnswersWithRepresentativeSingleBACSJourney,
+  populateUserAnswersWithRepresentativeSingleCMAJourney,
+  populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney}
+import models._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.AnswerSection
+import utils.CheckYourAnswersHelper
 import views.html.CheckYourAnswersView
 
 class CheckYourAnswersControllerSpec extends SpecBase {
 
-  val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
-
   "Check Your Answers Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for an Importer Journey GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
+
+      val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers)
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
 
@@ -42,7 +52,127 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(Seq(AnswerSection(None, Seq())), backLink)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for an Importer Journey UKCustomsRegulation GET" in {
+
+      val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
+
+      val userAnswers = populateUserAnswersWithImporterUKCustomsRegulationInformation(emptyUserAnswers)
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[CheckYourAnswersView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for Representative Single BACS Journey GET" in {
+
+      val backLink = routes.BankDetailsController.onPageLoad(NormalMode)
+
+      val userAnswers = populateUserAnswersWithRepresentativeSingleBACSJourney(emptyUserAnswers)
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[CheckYourAnswersView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for Representative Single Paying Representative Journey GET" in {
+
+      val backLink = routes.BankDetailsController.onPageLoad(NormalMode)
+
+      val userAnswers = populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney(emptyUserAnswers)
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[CheckYourAnswersView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for Representative Single CMA Journey GET" in {
+
+      val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
+
+      val userAnswers = populateUserAnswersWithRepresentativeSingleCMAJourney(emptyUserAnswers)
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[CheckYourAnswersView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for Representative Multiple Journey GET" in {
+
+      val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
+
+      val userAnswers = populateUserAnswersWithRepresentativeMultipleJourney(emptyUserAnswers)
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[CheckYourAnswersView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
