@@ -25,8 +25,8 @@ import pages.{ClaimantTypePage, ImporterManualAddressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CountryOptions
 import views.html.ImporterManualAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,8 +40,7 @@ class ImporterManualAddressController @Inject()(
                                                  requireData: DataRequiredAction,
                                                  formProvider: ImporterManualAddressFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
-                                                 view: ImporterManualAddressView,
-                                                 val countryOptions: CountryOptions
+                                                 view: ImporterManualAddressView
                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -58,14 +57,16 @@ class ImporterManualAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), countryOptions.options, getBackLink(mode)))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers),
+        Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers),countryOptions.options, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers),
+            Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), getBackLink(mode)))),
 
         value =>
           for {
