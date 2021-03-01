@@ -413,6 +413,19 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     )
   }
 
+  def getCheckYourAnswerSections: Seq[AnswerSection] = {
+    Seq(getImportantInformationAnswerSection,
+      getEntryDetailsAnswerSection,
+      getApplicationInformationAnswerSection) ++
+      (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+        case true => Seq(getImporterDetailsAnswerSection)
+        case _ => Seq.empty
+      }) ++
+      Seq(getYourDetailsAnswerSection,
+        getContactDetailsAnswerSection,
+        getPaymentInformationAnswerSection)
+  }
+
   def getImportantInformationAnswerSection: AnswerSection = {
     AnswerSection (Some(messages ("impInfo.checkYourAnswersLabel") ),
       Seq(claimantType.get,
