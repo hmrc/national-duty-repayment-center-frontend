@@ -139,8 +139,15 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def importerManualAddress: Option[AnswerRow] = userAnswers.get(ImporterManualAddressPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("importerManualAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.toString),
+        HtmlFormat.escape(
+          userAnswers.get(ClaimantTypePage) match {
+            case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
+            case _ => messages("importerAddress.checkYourAnswersLabel")
+          }),
+        HtmlFormat.escape(x.AddressLine1.concat("\n").
+          concat(x.AddressLine2.getOrElse("")).concat("\n").
+          concat(x.City).concat("\n").concat(x.Region.getOrElse("").concat("\n").
+          concat(x.CountryCode).concat("\n").concat(x.PostalCode.getOrElse("")))),
         Some(routes.ImporterManualAddressController.onPageLoad(NormalMode).url)
       )
   }
@@ -160,7 +167,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def importerAddress: Option[AnswerRow] = userAnswers.get(ImporterAddressPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("importerAddress.checkYourAnswersLabel")),
+        HtmlFormat.escape(
+          userAnswers.get(ClaimantTypePage) match {
+            case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
+            case _ => messages("importerAddress.checkYourAnswersLabel")
+          }),
         HtmlFormat.escape(x.AddressLine1.concat("\n").
           concat(x.AddressLine2.getOrElse("")).concat("\n").
           concat(x.City).concat("\n").concat(x.Region.getOrElse("").concat("\n").
@@ -504,14 +515,20 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
                           })
           case _ => Seq.empty
         }) ++
-        (userAnswers.get(WhomToPayPage).contains(WhomToPay.Representative) match {
-          case true => Seq(indirectRepresentative.get)
+        (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+          case true => (userAnswers.get(WhomToPayPage).contains(WhomToPay.Representative) match {
+                          case true => Seq(indirectRepresentative.get)
+                          case _ => Seq.empty
+                        })
           case _ => Seq.empty
-        }) ++
-        (userAnswers.get(IndirectRepresentativePage) match {
-          case Some(false) => Seq(proofOfAuthority.get)
+          }) ++
+        (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+          case true => (userAnswers.get(IndirectRepresentativePage) match {
+                          case Some(false) => Seq(proofOfAuthority.get)
+                          case _ => Seq.empty
+                       })
           case _ => Seq.empty
-        }) ++
+          }) ++
         (userAnswers.get(RepaymentTypePage) match {
           case None => Seq.empty
           case _ => Seq(repaymentType.get)
