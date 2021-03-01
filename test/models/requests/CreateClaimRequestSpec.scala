@@ -254,6 +254,14 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       result mustBe Some(testCreateClaimRequestWithRepresentativeSinglePayingRepresentativeBacs)
     }
 
+    "returns a valid CreateClaimRequest for a userAnswers containing a bank account number with only 6 digits" in {
+      val testUserAnswers = populateUserAnswersWithBankAccountNumberContaining6Digits(emptyUserAnswers)
+
+      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
+
+      result mustBe Some(testCreateClaimRequestWithBankAccountNumberContaining6Digits)
+    }
+
 
   }
 }
