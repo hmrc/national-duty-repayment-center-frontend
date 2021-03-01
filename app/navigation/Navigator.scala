@@ -107,7 +107,7 @@ class Navigator @Inject()() {
   private def getUKRegulationType(answers: UserAnswers) : Call =
     answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match {
       case true => routes.BulkFileUploadController.showFileUpload ()
-      case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
+      case false => routes.EntryDetailsController.onPageLoad(NormalMode)
     }
 
   private def whomToPayRoute(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
