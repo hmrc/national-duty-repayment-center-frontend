@@ -94,7 +94,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       lazy val uploadFile = routes.BulkFileUploadController.showFileUpload.url
 
       val userAnswers = UserAnswers(userAnswersId).
-        set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
+        set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation).success.value
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -113,8 +113,8 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = None))).build()
-
+      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadedState)))).build()
+    println("ussssssssssssssss"+userAnswers)
       running(application) {
         val request = FakeRequest(GET, uploadFile)
         val result = route(application, request).value
