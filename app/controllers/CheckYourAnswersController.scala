@@ -59,18 +59,7 @@ class CheckYourAnswersController @Inject()(
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
 
-      val sections = Seq(checkYourAnswersHelper.getImportantInformationAnswerSection,
-            checkYourAnswersHelper.getEntryDetailsAnswerSection,
-        checkYourAnswersHelper.getApplicationInformationAnswerSection) ++
-        (request.userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-          case true => Seq(checkYourAnswersHelper.getImporterDetailsAnswerSection)
-          case _ => Seq.empty
-        }) ++
-        Seq(checkYourAnswersHelper.getYourDetailsAnswerSection,
-        checkYourAnswersHelper.getContactDetailsAnswerSection,
-      checkYourAnswersHelper.getPaymentInformationAnswerSection)
-
-      Ok(view(sections, getBackLink(NormalMode, request.userAnswers)))
+      Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, getBackLink(NormalMode, request.userAnswers)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
