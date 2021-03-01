@@ -22,7 +22,7 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.NormalMode
 import navigation.Navigator
-import pages.{CheckYourAnswersPage, FurtherInformationPage, ReferenceNumberPage}
+import pages.AmendCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -65,6 +65,6 @@ class AmendCheckYourAnswersController @Inject()(
         updatedClaimId <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
         _ <- sessionRepository.set(updatedClaimDate)
-      } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, request.userAnswers))
+      } yield Redirect(navigator.nextPage(AmendCheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }
