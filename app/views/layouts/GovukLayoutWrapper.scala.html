@@ -16,13 +16,16 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.hmrcfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.{Header => _, _}
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcTrackingConsentSnippet
 @import views.components.FooterLinks
+@import config.FrontendAppConfig
 
 @this(
         govukLayout: GovukLayout,
         govukPhaseBanner: GovukPhaseBanner,
         govukBackLink: GovukBackLink,
+        hmrcHeader: HmrcHeader,
         siteHeader: components.siteHeader,
         link: components.link,
         hmrcTimeoutDialog : HmrcTimeoutDialog,
@@ -41,10 +44,11 @@
 refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @head = {
-  <meta name="format-detection" content="telephone=no">
 @hmrcTrackingConsentSnippet()
-    <!--[if lte IE 8]><link href="@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")" rel="stylesheet" type="text/css" /><![endif]-->
-    <!--[if gt IE 8]><!-->
+
+<!--[if lte IE 8]><link href='@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")' rel="stylesheet" type="text/css" /><![endif]-->
+<!--[if gt IE 8]><!--><link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
+
 @hmrcTimeoutDialog(TimeoutDialog(
     timeout = Some(appConfig.timeout),
     countdown = Some(appConfig.countdown),
@@ -78,6 +82,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @content = {
+
   <div class="govuk-!-margin-bottom-6">
     @contentBlock
   </div>
