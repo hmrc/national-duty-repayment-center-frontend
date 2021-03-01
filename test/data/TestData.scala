@@ -49,6 +49,8 @@ object TestData {
   val testWhomToPayRepresentative: WhomToPay = WhomToPay.Representative
   val testWhomToPayCMA: WhomToPay = WhomToPay.CMA
   val testBankDetails: BankDetails = BankDetails("account name", "123456", "12345678")
+  val testBankDetailsWith6Digits: BankDetails = BankDetails("account name", "123456", "123456")
+  val testPaddedBankDetails: BankDetails = BankDetails("account name", "123456", "00123456")
   val testDocumentList: Seq[DocumentList] = Seq(DocumentList(EvidenceSupportingDocs.Other, None))
   val furtherInformation: String = "More info for amend"
 
@@ -352,6 +354,35 @@ object TestData {
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
       .get
 
+  def populateUserAnswersWithBankAccountNumberContaining6Digits(userAnswers: UserAnswers): UserAnswers =
+    userAnswers
+      .set(ClaimantTypePage, testClaimantTypeRepresentative)
+      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
+      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
+      .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
+      .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
+      .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
+      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
+      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(AgentImporterHasEORIPage, testAgentImporterHasEORI))
+      .flatMap(_.set(EnterAgentEORIPage, testImporterEORI))
+      .flatMap(_.set(IsImporterVatRegisteredPage, IsImporterVatRegistered.Yes))
+      .flatMap(_.set(AgentNameImporterPage, testImporterName))
+      .flatMap(_.set(IsVATRegisteredPage, IsVATRegistered.Yes))
+      .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
+      .flatMap(_.set(ImporterHasEoriPage, true))
+      .flatMap(_.set(ImporterEoriPage, testAgentEORI))
+      .flatMap(_.set(ImporterNamePage, testAgentName))
+      .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
+      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
+      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
+      .flatMap(_.set(BankDetailsPage, testBankDetailsWith6Digits))
+      .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
+      .get
+
   def populateUserAnswersWithAmendData(userAnswers: UserAnswers): UserAnswers =
     userAnswers.copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded)))))
       .set(AmendCaseResponseTypePage, amendCaseResponseType)
@@ -428,6 +459,16 @@ object TestData {
       Some(testAgentDetails),
       testImporterDetailsRepresentativeJourney,
       None,
+      testDutyTypeTaxDetails,
+      testDocumentList), Nil
+  )
+
+  val testCreateClaimRequestWithBankAccountNumberContaining6Digits: CreateClaimRequest = CreateClaimRequest(
+    Content(
+      testClaimDetailsWithRepresentativeSinglePayingRepresentativeBacs,
+      Some(testAgentDetails),
+      testImporterDetailsRepresentativeJourney,
+      Some(AllBankDetails(None, Some(testPaddedBankDetails))),
       testDutyTypeTaxDetails,
       testDocumentList), Nil
   )
