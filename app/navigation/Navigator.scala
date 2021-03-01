@@ -30,8 +30,8 @@ class Navigator @Inject()() {
     case NumberOfEntriesTypePage  => howManyEntries
     case HowManyEntriesPage  => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
     case CustomsRegulationTypePage => getEntryDetails
-    case ArticleTypePage => getArticleType
-    case UkRegulationTypePage => getUKRegulationType
+    case ArticleTypePage => getReasonForRepayment
+    case UkRegulationTypePage => getReasonForRepayment
     case EntryDetailsPage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes. WhatAreTheGoodsController.onPageLoad(NormalMode)
@@ -93,22 +93,19 @@ class Navigator @Inject()() {
     }
 
   private def getEntryDetails(answers: UserAnswers): Call =
-    answers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) match {
-      case true => routes.UkRegulationTypeController.onPageLoad(NormalMode)
-      case _ => routes.ArticleTypeController.onPageLoad(NormalMode)
+    answers.get(CustomsRegulationTypePage) match {
+      case Some(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(NormalMode)
+      case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => routes.ArticleTypeController.onPageLoad(NormalMode)
+
     }
 
-  private def getArticleType(answers: UserAnswers) : Call =
-    answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match {
-      case true => routes.BulkFileUploadController.showFileUpload ()
-      case _ => routes.EntryDetailsController.onPageLoad (NormalMode)
-    }
+  private def getReasonForRepayment(answers: UserAnswers) : Call = {
+    answers.get(NumberOfEntriesTypePage) match {
+      case Some (NumberOfEntriesType.Multiple) => routes.BulkFileUploadController.showFileUpload()
+      case Some (NumberOfEntriesType.Single) => routes.EntryDetailsController.onPageLoad(NormalMode)
 
-  private def getUKRegulationType(answers: UserAnswers) : Call =
-    answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match {
-      case true => routes.BulkFileUploadController.showFileUpload ()
-      case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
     }
+  }
 
   private def whomToPayRoute(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
     case Some(WhomToPay.Importer) => routes.BankDetailsController.onPageLoad(NormalMode)

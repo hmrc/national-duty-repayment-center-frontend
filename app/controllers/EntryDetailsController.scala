@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.EntryDetailsFormProvider
 import javax.inject.Inject
-import models.{CustomsRegulationType, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
+import models.{CustomsRegulationType, Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
 import pages.{CustomsRegulationTypePage, EntryDetailsPage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}

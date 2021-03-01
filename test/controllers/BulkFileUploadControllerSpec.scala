@@ -89,12 +89,9 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
     }
   }
 
-  "POST /upload-multiple-entries" should {
-    "go to entry details page" in {
+  "GET /upload-multiple-entries" should {
+    "go to entry details page when the CustomsRegulationType is set to UnionsCustomsCodeRegulation" in {
       lazy val uploadFile = routes.BulkFileUploadController.showFileUpload.url
-
-      val userAnswers = UserAnswers(userAnswersId).
-        set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -113,8 +110,10 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = None))).build()
+      val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation).
+        success.value.copy(fileUploadState = Some(fileUploadedState))
 
+      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadedState)))).build()
       running(application) {
         val request = FakeRequest(GET, uploadFile)
         val result = route(application, request).value
@@ -122,6 +121,38 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       }
       application.stop()
     }
+    "go to entry details page when the CustomsRegulationType is set to UKCustomsCodeRegulation " in {
+      lazy val uploadFile = routes.BulkFileUploadController.showFileUpload.url
+
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf"
+            )
+          )
+        ),
+        acknowledged = true
+      )
+
+      val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).
+        success.value.copy(fileUploadState = Some(fileUploadedState))
+
+      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadedState)))).build()
+      running(application) {
+        val request = FakeRequest(GET, uploadFile)
+        val result = route(application, request).value
+        status(result) mustEqual 200
+      }
+      application.stop()
+    }
+
   }
 
   "GET /file-verification/:reference/status" should {
