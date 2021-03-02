@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.NumberOfEntriesTypeFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NumberOfEntriesType}
 import navigation.Navigator
-import pages.NumberOfEntriesTypePage
+import pages.{BulkFileUploadPage, HowManyEntriesPage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -31,16 +32,16 @@ import views.html.NumberOfEntriesTypeView
 import scala.concurrent.{ExecutionContext, Future}
 
 class NumberOfEntriesTypeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: NumberOfEntriesTypeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: NumberOfEntriesTypeView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                               override val messagesApi: MessagesApi,
+                                               sessionRepository: SessionRepository,
+                                               navigator: Navigator,
+                                               identify: IdentifierAction,
+                                               getData: DataRetrievalAction,
+                                               requireData: DataRequiredAction,
+                                               formProvider: NumberOfEntriesTypeFormProvider,
+                                               val controllerComponents: MessagesControllerComponents,
+                                               view: NumberOfEntriesTypeView
+                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -69,8 +70,23 @@ class NumberOfEntriesTypeController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, updatedAnswers))
+            removeNumberOfEntries <-
+              Future.fromTry(updatedAnswers.get(NumberOfEntriesTypePage) match {
+                case Some(NumberOfEntriesType.Single) =>
+                  updatedAnswers.remove(HowManyEntriesPage)
+                case _ =>
+                  updatedAnswers.set(NumberOfEntriesTypePage, value)
+              })
+            removeBulkFileUploadEntry <-
+              Future.fromTry(removeNumberOfEntries.get(NumberOfEntriesTypePage) match {
+                case Some(NumberOfEntriesType.Single) =>
+                  removeNumberOfEntries.remove(BulkFileUploadPage)
+                case _ =>
+                  removeNumberOfEntries.set(NumberOfEntriesTypePage, value)
+              })
+            _              <- sessionRepository.set(removeBulkFileUploadEntry)
+          } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, removeBulkFileUploadEntry))
       )
   }
 }
+
