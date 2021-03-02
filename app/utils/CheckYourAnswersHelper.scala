@@ -547,11 +547,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         }) ++
         (userAnswers.get(RepaymentTypePage) match {
           case None => Seq.empty
-          case _ => Seq(repaymentType.get)
+          case _ => (userAnswers.get(NumberOfEntriesTypePage) match {
+            case Some(NumberOfEntriesType.Single) => Seq(repaymentType.get)
+            case _ => Seq.empty
+          })
         }) ++
-        (userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) match {
-          case true => Seq(bankDetails.get)
-          case _ => Seq.empty
+        (userAnswers.get(RepaymentTypePage).contains(RepaymentType.CMA) match {
+          case true => Seq.empty
+          case _ => Seq(bankDetails.get)
         })
     )
   }
