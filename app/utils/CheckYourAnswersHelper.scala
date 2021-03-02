@@ -17,9 +17,8 @@
 package utils
 
 import java.time.format.DateTimeFormatter
-
 import controllers.routes
-import models.{AgentImporterHasEORI, NormalMode, ClaimantType, CustomsRegulationType, NumberOfEntriesType, UserAnswers, WhomToPay}
+import models.{AgentImporterHasEORI, ClaimantType, CustomsRegulationType, NormalMode, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -521,32 +520,39 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def getPaymentInformationAnswerSection: AnswerSection = {
     AnswerSection (Some (messages ("payment.information.checkYourAnswersLabel") ),
       Seq.empty ++
-        (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-          case true => (userAnswers.get (WhomToPayPage) match {
-                          case None => Seq.empty
-                          case _ => Seq (whomToPay.get)
-                          })
+        (userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) match {
+          case true =>
+            (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+              case true => (userAnswers.get(WhomToPayPage) match {
+                case None => Seq.empty
+                case _ => Seq(whomToPay.get)
+              })
+              case _ => Seq.empty
+            }) ++
+              (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+                case true => (userAnswers.get(WhomToPayPage).contains(WhomToPay.Representative) match {
+                  case true => Seq(indirectRepresentative.get)
+                  case _ => Seq.empty
+                })
+                case _ => Seq.empty
+              }) ++
+              (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+                case true => ((userAnswers.get(IndirectRepresentativePage),userAnswers.get(WhomToPayPage)) match {
+                  case (Some(false), Some(WhomToPay.Representative))=> Seq(proofOfAuthority.get)
+                  case _ => Seq.empty
+                })
+                case _ => Seq.empty
+              })
           case _ => Seq.empty
         }) ++
-        (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-          case true => (userAnswers.get(WhomToPayPage).contains(WhomToPay.Representative) match {
-                          case true => Seq(indirectRepresentative.get)
-                          case _ => Seq.empty
-                        })
-          case _ => Seq.empty
-          }) ++
-        (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-          case true => (userAnswers.get(IndirectRepresentativePage) match {
-                          case Some(false) => Seq(proofOfAuthority.get)
-                          case _ => Seq.empty
-                       })
-          case _ => Seq.empty
-          }) ++
         (userAnswers.get(RepaymentTypePage) match {
           case None => Seq.empty
           case _ => Seq(repaymentType.get)
         }) ++
-      Seq(bankDetails.get)
+        (userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) match {
+          case true => Seq(bankDetails.get)
+          case _ => Seq.empty
+        })
     )
   }
 
