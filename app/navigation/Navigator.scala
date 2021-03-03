@@ -30,8 +30,8 @@ class Navigator @Inject()() {
     case NumberOfEntriesTypePage  => howManyEntries
     case HowManyEntriesPage  => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
     case CustomsRegulationTypePage => getEntryDetails
-    case ArticleTypePage => _ => routes.EntryDetailsController.onPageLoad(NormalMode)
-    case UkRegulationTypePage => _ => routes.EntryDetailsController.onPageLoad(NormalMode)
+    case ArticleTypePage => getReasonForRepayment
+    case UkRegulationTypePage => getReasonForRepayment
     case EntryDetailsPage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes. WhatAreTheGoodsController.onPageLoad(NormalMode)
@@ -92,18 +92,18 @@ class Navigator @Inject()() {
       case  _  => routes.RepaymentTypeController.onPageLoad(NormalMode)
     }
 
-  private def getEntryDetails(answers: UserAnswers): Call = answers.get(CustomsRegulationTypePage) match {
-    case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => {
-      answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single) match {
-        case true => routes.ArticleTypeController.onPageLoad (NormalMode)
-        case _=> routes.BulkFileUploadController.showFileUpload
-      }
+  private def getEntryDetails(answers: UserAnswers): Call =
+    answers.get(CustomsRegulationTypePage) match {
+      case Some(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(NormalMode)
+      case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => routes.ArticleTypeController.onPageLoad(NormalMode)
+
     }
-    case Some(CustomsRegulationType.UKCustomsCodeRegulation) => {
-      answers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Single) match {
-        case true => routes.UkRegulationTypeController.onPageLoad (NormalMode)
-        case _=> routes.BulkFileUploadController.showFileUpload
-      }
+
+  private def getReasonForRepayment(answers: UserAnswers) : Call = {
+    answers.get(NumberOfEntriesTypePage) match {
+      case Some (NumberOfEntriesType.Multiple) => routes.BulkFileUploadController.showFileUpload()
+      case Some (NumberOfEntriesType.Single) => routes.EntryDetailsController.onPageLoad(NormalMode)
+
     }
   }
 

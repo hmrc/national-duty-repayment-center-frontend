@@ -100,13 +100,23 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
       }
 
-      "go to BulkFileUpload page after the customsRegulationType page when the UnionsCustomsCodeRegulation has been selected" in {
+      "go to ArticleTypeController page after the customsRegulationType page when the UnionsCustomsCodeRegulation has been selected" in {
 
         val answers =
           emptyUserAnswers
             .set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation).success.value
         navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
-          .mustBe(routes.BulkFileUploadController.showFileUpload)
+          .mustBe(routes.ArticleTypeController.onPageLoad(NormalMode))
+
+      }
+
+      "go to UkRegulationType page after the customsRegulationType page when the UKCustomsCodeRegulation has been selected" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
+        navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
+          .mustBe(routes.UkRegulationTypeController.onPageLoad(NormalMode))
 
       }
 
@@ -119,16 +129,6 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         navigator.nextPage(BankDetailsPage, NormalMode, answers)
           .mustBe(routes.CheckYourAnswersController.onPageLoad)
 
-      }
-
-      "go to EntryDetails page after ArticleType page " in {
-        navigator.nextPage(ArticleTypePage, NormalMode, emptyUserAnswers)
-          .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
-      }
-
-      "go to EntryDetails page after UkRegulationType page " in {
-        navigator.nextPage(UkRegulationTypePage, NormalMode, emptyUserAnswers)
-          .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
       }
 
       "go to ClaimReasonType page after EntryDetails page " in {
