@@ -45,7 +45,7 @@ class ClaimRepaymentTypeController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode): Call = {
-    routes.WhatAreTheGoodsController.onPageLoad(mode)
+    routes.ReasonForOverpaymentController.onPageLoad(mode)
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {

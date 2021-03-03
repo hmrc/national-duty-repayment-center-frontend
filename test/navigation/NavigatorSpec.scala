@@ -136,6 +136,11 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ClaimReasonTypeController.onPageLoad(NormalMode))
       }
 
+      "go to ReasonForOverpayment page after ClaimReasonType page " in {
+        navigator.nextPage(ClaimReasonTypePage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.ReasonForOverpaymentController.onPageLoad(NormalMode))
+      }
+
       "go to WhomToPay page after EmailAddressPage page when the Representative's multiple entry journeys is selected " in {
         val answers =
           emptyUserAnswers
