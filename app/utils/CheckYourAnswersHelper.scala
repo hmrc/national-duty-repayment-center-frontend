@@ -171,9 +171,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
             case _ => messages("importerAddress.checkYourAnswersLabel")
           }),
-        HtmlFormat.escape(x.AddressLine1.concat("\n").
-          concat(x.AddressLine2.getOrElse("")).concat("\n").
-          concat(x.City).concat("\n").concat(x.Region.getOrElse("").concat("\n").
+        HtmlFormat.escape(x.AddressLine1.
+          concat(x.AddressLine2.getOrElse("")).
+          concat(x.City).concat(x.Region.getOrElse("").concat("\n").
           concat(x.CountryCode).concat("\n").concat(x.PostalCode.getOrElse("")))),
         Some(routes.ImporterAddressController.onPageLoad(NormalMode).url)
       )

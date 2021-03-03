@@ -23,7 +23,7 @@
         @row.label
     </dt>
     <dd class="govuk-summary-list__value">
-        @row.answer
+        <pre id="value-summary-list" class="mt-0"> @row.answer</pre>
     </dd>
     <dd class="govuk-summary-list__actions">
         @row.changeUrl.map { changeUrl =>
