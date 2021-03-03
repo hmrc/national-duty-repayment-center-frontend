@@ -319,18 +319,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     }
   }
 
-  def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
-    x => {
-      AnswerRow(
-        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(x match
-              { case x if x.length > 0 => "Yes"
-                case _ => "No"}),
-        Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
-      )
-    }
-  }
-
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
     x =>
       AnswerRow(
