@@ -18,10 +18,12 @@ package controllers
 
 import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
+import models.CustomsRegulationType.UKCustomsCodeRegulation
+
 import javax.inject.Inject
-import models.{Mode, NumberOfEntriesType, UserAnswers}
+import models.{CustomsRegulationType, Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.{CustomsRegulationTypePage, NumberOfEntriesTypePage}
+import pages.{ArticleTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage, UkRegulationTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
