@@ -145,7 +145,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           }),
         HtmlFormat.escape(x.AddressLine1.concat("\n").
           concat(x.AddressLine2.getOrElse("")).concat("\n").
-          concat(x.City).concat("\n").concat(x.Region.getOrElse("").concat("\n").
+          concat(x.City).concat(x.Region.getOrElse("").concat("\n").
           concat(x.CountryCode).concat("\n").concat(x.PostalCode.getOrElse("")))),
         Some(routes.ImporterManualAddressController.onPageLoad(NormalMode).url)
       )
