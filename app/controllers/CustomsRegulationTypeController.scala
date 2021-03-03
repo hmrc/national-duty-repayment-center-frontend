@@ -74,15 +74,8 @@ class CustomsRegulationTypeController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
-            removeRegulationEntries <-
-              Future.fromTry(updatedAnswers.get(CustomsRegulationTypePage) match {
-                case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) =>
-                  updatedAnswers.remove(UkRegulationTypePage)
-                case _ =>
-                  updatedAnswers.remove(ArticleTypePage)
-              })
-            _              <- sessionRepository.set(removeRegulationEntries)
-          } yield Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, removeRegulationEntries))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, updatedAnswers))
       )
   }
 }

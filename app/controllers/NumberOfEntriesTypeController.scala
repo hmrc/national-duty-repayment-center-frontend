@@ -70,22 +70,8 @@ class NumberOfEntriesTypeController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
-            removeNumberOfEntries <-
-              Future.fromTry(updatedAnswers.get(NumberOfEntriesTypePage) match {
-                case Some(NumberOfEntriesType.Single) =>
-                  updatedAnswers.remove(HowManyEntriesPage)
-                case _ =>
-                  updatedAnswers.set(NumberOfEntriesTypePage, value)
-              })
-            removeBulkFileUploadEntry <-
-              Future.fromTry(removeNumberOfEntries.get(NumberOfEntriesTypePage) match {
-                case Some(NumberOfEntriesType.Single) =>
-                  removeNumberOfEntries.remove(BulkFileUploadPage)
-                case _ =>
-                  removeNumberOfEntries.set(NumberOfEntriesTypePage, value)
-              })
-            _              <- sessionRepository.set(removeBulkFileUploadEntry)
-          } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, removeBulkFileUploadEntry))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, updatedAnswers))
       )
   }
 }
