@@ -117,8 +117,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("bankDetails.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.AccountName.concat("\n").
-          concat(x.SortCode).concat("\n").concat(x.AccountNumber)),
+        Html(Seq(
+          HtmlFormat.escape(x.AccountName).toString,
+          HtmlFormat.escape(x.SortCode).toString,
+          HtmlFormat.escape(x.AccountNumber).toString
+        ).mkString("<br>")),
         Some(routes.BankDetailsController.onPageLoad(NormalMode).url)
       )
   }
@@ -127,10 +130,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterManualAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.AddressLine1.concat("\n").
-          concat(x.AddressLine2.getOrElse("")).concat("\n").
-          concat(x.City).concat("\n").concat(x.Region.getOrElse("").concat("\n").
-          concat(x.CountryCode).concat("\n").concat(x.PostalCode.getOrElse("")))),
+        Html(Seq(
+          HtmlFormat.escape(x.AddressLine1).toString,
+          HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
+          HtmlFormat.escape(x.City).toString,
+          HtmlFormat.escape(x.Region.getOrElse("")).toString,
+          HtmlFormat.escape(x.CountryCode).toString,
+          HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
+        ).filter(!_.isEmpty()).mkString("<br>")),
         Some(routes.AgentImporterManualAddressController.onPageLoad(NormalMode).url)
       )
   }
@@ -143,10 +150,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
             case _ => messages("importerAddress.checkYourAnswersLabel")
           }),
-        HtmlFormat.escape(x.AddressLine1.concat("\n").
-          concat(x.AddressLine2.getOrElse("")).concat("\n").
-          concat(x.City).concat(x.Region.getOrElse("").concat("\n").
-          concat(x.CountryCode).concat("\n").concat(x.PostalCode.getOrElse("")))),
+        Html(Seq(
+          HtmlFormat.escape(x.AddressLine1).toString,
+          HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
+          HtmlFormat.escape(x.City).toString,
+          HtmlFormat.escape(x.Region.getOrElse("")).toString,
+          HtmlFormat.escape(x.CountryCode).toString,
+          HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
+        ).filter(!_.isEmpty()).mkString("<br>")),
         Some(routes.ImporterManualAddressController.onPageLoad(NormalMode).url)
       )
   }
@@ -155,10 +166,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.AddressLine1.concat("\n").
-          concat(x.AddressLine2.getOrElse("")).concat("\n").
-          concat(x.City).concat("\n").concat(x.Region.getOrElse("").concat("\n").
-          concat(x.CountryCode).concat("\n").concat(x.PostalCode.getOrElse("")))),
+        Html(Seq(
+          HtmlFormat.escape(x.AddressLine1).toString,
+          HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
+          HtmlFormat.escape(x.City).toString,
+          HtmlFormat.escape(x.Region.getOrElse("")).toString,
+          HtmlFormat.escape(x.CountryCode).toString,
+          HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
+        ).filter(!_.isEmpty()).mkString("<br>")),
         Some(routes.AgentImporterAddressController.onPageLoad(NormalMode).url)
       )
   }
@@ -171,10 +186,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
             case _ => messages("importerAddress.checkYourAnswersLabel")
           }),
-        HtmlFormat.escape(x.AddressLine1.
-          concat(x.AddressLine2.getOrElse("")).
-          concat(x.City).concat(x.Region.getOrElse("").concat("\n").
-          concat(x.CountryCode).concat("\n").concat(x.PostalCode.getOrElse("")))),
+        Html(Seq(
+          HtmlFormat.escape(x.AddressLine1).toString,
+          HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
+          HtmlFormat.escape(x.City).toString,
+          HtmlFormat.escape(x.Region.getOrElse("")).toString,
+          HtmlFormat.escape(x.CountryCode).toString,
+          HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
+        ).filter(!_.isEmpty()).mkString("<br>")),
         Some(routes.ImporterAddressController.onPageLoad(NormalMode).url)
       )
   }
@@ -284,7 +303,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.firstName.concat(x.lastName)),
+        HtmlFormat.escape(x.firstName.concat(" ").concat(x.lastName)),
         Some(routes.AgentNameImporterController.onPageLoad(NormalMode).url)
       )
   }
@@ -332,7 +351,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.firstName.concat(",").concat(x.lastName)),
+        HtmlFormat.escape(x.firstName.concat(" ").concat(x.lastName)),
         Some(routes.ImporterNameController.onPageLoad(NormalMode).url)
       )
   }
@@ -386,7 +405,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers)
     AnswerRow(
     HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
-    HtmlFormat.escape(helper.getTotalAmount.toString),
+      HtmlFormat.escape("£" + helper.getTotalAmount().format2d),
     Some(routes.RepaymentAmountSummaryController.onPageLoad.url)
     )
   }
@@ -566,10 +585,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   private def entryDetailsDate: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
+    val dateFormatter = DateTimeFormatter.ofPattern("dd MM yyyy")
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("entryDetails.date.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(x.EntryDate.toString)),
+        HtmlFormat.escape(messages(x.EntryDate.format(dateFormatter))),
         Some(routes.EntryDetailsController.onPageLoad(NormalMode).url)
       )
   }
@@ -667,6 +687,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     } else {
       HtmlFormat.escape(messages("site.no"))
     }
+
+  implicit class Improvements(s: Double) {
+    def format2d = "%.2f".format(s)
+  }
 }
 
 object CheckYourAnswersHelper {
