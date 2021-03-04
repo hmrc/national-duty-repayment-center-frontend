@@ -22,7 +22,7 @@ import forms.ClaimRepaymentTypeFormProvider
 import javax.inject.Inject
 import models.{ClaimRepaymentType, Mode}
 import navigation.Navigator
-import pages.{ClaimRepaymentTypePage, CustomsDutyDueToHMRCPage, CustomsDutyPaidPage, OtherDutiesDueToHMRCPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage}
+import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -73,42 +73,42 @@ class ClaimRepaymentTypeController @Inject()(
               Future.fromTry(updatedAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) match {
                 case false =>
                   updatedAnswers.remove(CustomsDutyDueToHMRCPage)
-                case _ =>
+                case true =>
                   updatedAnswers.set(ClaimRepaymentTypePage, value)
               })
             removeCustomsPaid <-
               Future.fromTry(removeCustomsDutyDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) match {
                 case false =>
                   removeCustomsDutyDue.remove(CustomsDutyPaidPage)
-                case _ =>
+                case true =>
                   removeCustomsDutyDue.set(ClaimRepaymentTypePage, value)
               })
             removeVATDue <-
               Future.fromTry(removeCustomsPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
                 case false =>
                   removeCustomsPaid.remove(VATDueToHMRCPage)
-                case _ =>
+                case true =>
                   removeCustomsPaid.set(ClaimRepaymentTypePage, value)
               })
             removeVATPaid <-
               Future.fromTry(removeVATDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
                 case false =>
                   removeVATDue.remove(VATPaidPage)
-                case _ =>
+                case true =>
                   removeVATDue.set(ClaimRepaymentTypePage, value)
               })
             removeOtherDutiesDue <-
               Future.fromTry(removeVATPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
                 case false =>
                   removeVATPaid.remove(OtherDutiesDueToHMRCPage)
-                case _ =>
+                case true =>
                   removeVATPaid.set(ClaimRepaymentTypePage, value)
               })
             removeOtherDutiesPaidDue <-
               Future.fromTry(removeOtherDutiesDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
                 case false =>
                   removeOtherDutiesDue.remove(OtherDutiesPaidPage)
-                case _ =>
+                case true =>
                   removeOtherDutiesDue.set(ClaimRepaymentTypePage, value)
               })
             _              <- sessionRepository.set(removeOtherDutiesPaidDue)
