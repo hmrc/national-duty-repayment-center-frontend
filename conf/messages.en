@@ -307,8 +307,11 @@ vATDueToHMRC.checkYourAnswersLabel = How much import VAT should have been paid?
 vATDueToHMRC.error.required = Enter import VAT should have been paid
 vATDueToHMRC.error.length = Import VAT should have been paid must be 14 characters or less
 
-customsDutyPaid.title = How much Customs Duty was paid to HMRC?
-customsDutyPaid.heading = How much Customs Duty was paid to HMRC?
+customsDutyPaid.title = Customs Duty overpayment?
+customsDutyPaid.heading = Customs Duty overpayment?
+customsDutyPaid.hint = Enter the amount of Customs Duty that was paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
+customsDutyPaid.actuallyPaid.heading = Amount of Customs Duty that was paid to HMRC
+customsDutyPaid.shouldPaid.heading = Amount of Customs Duty that should have been paid
 customsDutyPaid.checkYourAnswersLabel = How much Customs Duty was paid to HMRC?
 customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of overpayment for all entries.
 customsDutyPaid.error.required = Enter the amount of Customs Duty that was paid to HMRC

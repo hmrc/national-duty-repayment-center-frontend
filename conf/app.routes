@@ -153,11 +153,6 @@ POST       /customs-duty-paid                        controllers.CustomsDutyPaid
 GET        /change-customs-duty-paid                  controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-customs-duty-paid                  controllers.CustomsDutyPaidController.onSubmit(mode: Mode = CheckMode)
 
-GET        /customsDutyDueToHMRC                        controllers.CustomsDutyDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
-POST       /customsDutyDueToHMRC                        controllers.CustomsDutyDueToHMRCController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCustomsDutyDueToHMRC                  controllers.CustomsDutyDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCustomsDutyDueToHMRC                  controllers.CustomsDutyDueToHMRCController.onSubmit(mode: Mode = CheckMode)
-
 GET        /other-duties-paid                        controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
 POST       /other-duties-paid                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
 GET        /change-other-duties-paid                  controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
