@@ -300,14 +300,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def whatAreTheGoods: Option[AnswerRow] = userAnswers.get(WhatAreTheGoodsPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("whatAreTheGoods.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.WhatAreTheGoodsController.onPageLoad(CheckMode).url)
-      )
-  }
 
   def claimReasonType: Option[AnswerRow] = userAnswers.get(ClaimReasonTypePage) map {
     x =>

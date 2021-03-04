@@ -23,7 +23,7 @@ class ReasonForOverpaymentFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "reasonForOverpayment.error.required"
   val lengthKey = "reasonForOverpayment.error.length"
-  val maxLength = 750
+  val maxLength = 1500
 
   val form = new ReasonForOverpaymentFormProvider()()
 
