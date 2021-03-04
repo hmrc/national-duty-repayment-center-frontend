@@ -26,12 +26,6 @@
 
 @(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
 
-@pageHint = {
-    <p class="mb-30 paragraph-top">
-    @messages("reasonForOverpayment.hint")
-    </p>
-}
-
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("reasonForOverpayment.title"))}"),
     backLink = Some(backLink.url)
@@ -42,45 +36,48 @@
         @components.error_summary(form.errors)
 
         <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="750">
+            <div class="govuk-form-group">
+                <h1 class="govuk-label-wrapper">
+                    <label class="govuk-label govuk-label--l" for="value">
+                        @messages("reasonForOverpayment.heading")
+                    </label>
+                </h1>
 
-          <div>
-              @html.h1(messages("reasonForOverpayment.heading"))
+                <div id="reason-hint" class="govuk-hint">
+                    @html.p {@messages("reasonForOverpayment.hint")}
 
-              @pageHint
+                    @html.p {@messages("reasonForOverpayment.p1")}
 
-              @html.p {@messages("reasonForOverpayment.p1")}
+                    @html.ul(
+                        messages("reasonForOverpayment.bullet1"),
+                        messages("reasonForOverpayment.bullet2"),
+                        messages("reasonForOverpayment.bullet3"),
+                        messages("reasonForOverpayment.bullet4"),
+                        messages("reasonForOverpayment.bullet5"),
+                        messages("reasonForOverpayment.bullet6"),
+                        messages("reasonForOverpayment.bullet7"),
+                        messages("reasonForOverpayment.bullet8"),
+                    )
+                </div>
 
-              @html.ul(
-                  messages("reasonForOverpayment.bullet1"),
-                  messages("reasonForOverpayment.bullet2"),
-                  messages("reasonForOverpayment.bullet3"),
-                  messages("reasonForOverpayment.bullet4"),
-                  messages("reasonForOverpayment.bullet5"),
-                  messages("reasonForOverpayment.bullet6"),
-                  messages("reasonForOverpayment.bullet7"),
-                  messages("reasonForOverpayment.bullet8"),
-              )
-          </div>
+                @forms.textarea(
+                    form = form,
+                    id = "value",
+                    name = "value",
+                    label = "",
+                    isPageHeading = false,
+                    isInFieldset = false,
+                    classes = Some("govuk-js-character-count"),
+                    rows = 6,
+                    countMessageClasses = "",
+                    spellcheck = None,
+                    describedBy = Some("reason-hint value-info")
+                )
 
-            @forms.textarea(
-                form = form,
-                id = "value",
-                name = "value",
-                label = "",
-                isPageHeading = false,
-                isInFieldset = false,
-                classes = Some("govuk-js-character-count"),
-                rows = 6,
-                countMessageClasses = "",
-                spellcheck = None,
-                describedBy = Some("value-info")
-            )
-
-            <div id="value-info" class="govuk-hint govuk-character-count__message" aria-live="polite">
+                <div id="value-info" class="govuk-hint govuk-character-count__message" aria-live="polite"></div>
             </div>
         </div>
 
         @html.button("site.continue")
-
     }
 }
