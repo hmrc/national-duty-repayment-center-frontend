@@ -73,25 +73,17 @@ class ProofOfAuthorityController @Inject()(
     }
   }
 
-  val showFileUpload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    sessionState(request.internalId).flatMap { ua =>
-      ua.userAnswers.flatMap(_.fileUploadState) match {
-        case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
-          for {
-            fs <-  initiateFileUpload(upscanRequest(request.internalId), Some(ProofOfAuthority))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
-            b <- updateSession(fs, ua.userAnswers)
-            if b
-          } yield renderState(ua.userAnswers, s)
-        case _ => {
-          val state = request.userAnswers.fileUploadState
-          for {
-            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId), Some(ProofOfAuthority))(upscanInitiateConnector.initiate(_))(state)
-            res <- updateSession(fileUploadState, Some(request.userAnswers))
-            if res
-          } yield renderState(ua.userAnswers, fileUploadState)
-        }
+  def showFileUpload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    for {
+      ss <- sessionState(request.internalId)
+      s <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
+      fs <- initiateFileUpload(upscanRequest(request.internalId), Some(ProofOfAuthority))(upscanInitiateConnector.initiate(_))(s)
+      b <- fs match {
+        case f@UploadFile(_, _, _, _) => updateSession(f.copy(maybeUploadError = None), ss.userAnswers)
+        case _ => updateSession(fs, ss.userAnswers)
       }
-    }
+      if b
+    } yield renderState(ss.userAnswers, fs)
   }
 
   def sessionState(id: String): Future[SessionState] = {
