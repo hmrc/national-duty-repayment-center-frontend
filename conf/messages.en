@@ -179,19 +179,21 @@ claimReasonType.or = or
 claimReasonType.checkYourAnswersLabel = Reason for overpayment
 claimReasonType.error.required = Select what your application relates to
 
-whatAreTheGoods.title = Tell us about the goods
-whatAreTheGoods.heading = Tell us about the goods
-whatAreTheGoods.checkYourAnswersLabel = Tell us about the goods
-whatAreTheGoods.error.required = Enter a description about the goods
-whatAreTheGoods.error.length = description must be 750 characters or less
-whatAreTheGoods.hint = Explain in detail what the goods are.
-
-reasonForOverpayment.title = Reason for overpayment
-reasonForOverpayment.heading = Reason for overpayment
+reasonForOverpayment.title = Tell us why the overpayment happened
+reasonForOverpayment.heading = Tell us why the overpayment happened
 reasonForOverpayment.checkYourAnswersLabel = Why the overpayment happened
-reasonForOverpayment.error.required = Enter the reason for the overpayment
-reasonForOverpayment.error.length = Reason for overpayment must be 750 characters or fewer
-reasonForOverpayment.hint = Explain in detail why an overpayment has been made.
+reasonForOverpayment.error.required = Tell us why the overpayment happened
+reasonForOverpayment.error.length = Reason for overpayment must be 1500 characters or fewer
+reasonForOverpayment.hint = If you do not provide enough information, we may be unable to process your application.
+reasonForOverpayment.p1 = You can tell us about:
+reasonForOverpayment.bullet1 = any commodity codes
+reasonForOverpayment.bullet2 = changes in currency or exchange rates
+reasonForOverpayment.bullet3 = changes to customs procedures
+reasonForOverpayment.bullet4 = any preferential rates or schemes that applied
+reasonForOverpayment.bullet5 = whether any items were replaced or refunded, and why
+reasonForOverpayment.bullet6 = changes to the value of goods
+reasonForOverpayment.bullet7 = the number of items or goods
+reasonForOverpayment.bullet8 = a description of the items or goods
 
 claimRepaymentType.title = What do you want to reclaim?
 claimRepaymentType.heading = What do you want to reclaim?

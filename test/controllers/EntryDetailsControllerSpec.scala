@@ -47,8 +47,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad(NormalMode).url
 
-  val backLink = routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
-  val articleBackLink = routes.ArticleTypeController.onPageLoad(NormalMode)
+  val backLink = routes.BulkFileUploadController.showFileUpload()
 
   private val userAnswers = UserAnswers(
     userAnswersId,
@@ -76,7 +75,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, articleBackLink)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -94,7 +93,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode, articleBackLink)(fakeRequest, messages).toString
+        view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -150,7 +149,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, articleBackLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

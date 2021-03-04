@@ -100,13 +100,23 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
       }
 
-      "go to BulkFileUpload page after the customsRegulationType page when the UnionsCustomsCodeRegulation has been selected" in {
+      "go to ArticleTypeController page after the customsRegulationType page when the UnionsCustomsCodeRegulation has been selected" in {
 
         val answers =
           emptyUserAnswers
             .set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation).success.value
         navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
-          .mustBe(routes.BulkFileUploadController.showFileUpload)
+          .mustBe(routes.ArticleTypeController.onPageLoad(NormalMode))
+
+      }
+
+      "go to UkRegulationType page after the customsRegulationType page when the UKCustomsCodeRegulation has been selected" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
+        navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
+          .mustBe(routes.UkRegulationTypeController.onPageLoad(NormalMode))
 
       }
 
@@ -121,19 +131,14 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
       }
 
-      "go to EntryDetails page after ArticleType page " in {
-        navigator.nextPage(ArticleTypePage, NormalMode, emptyUserAnswers)
-          .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
-      }
-
-      "go to EntryDetails page after UkRegulationType page " in {
-        navigator.nextPage(UkRegulationTypePage, NormalMode, emptyUserAnswers)
-          .mustBe(routes.EntryDetailsController.onPageLoad(NormalMode))
-      }
-
       "go to ClaimReasonType page after EntryDetails page " in {
         navigator.nextPage(EntryDetailsPage, NormalMode, emptyUserAnswers)
           .mustBe(routes.ClaimReasonTypeController.onPageLoad(NormalMode))
+      }
+
+      "go to ReasonForOverpayment page after ClaimReasonType page " in {
+        navigator.nextPage(ClaimReasonTypePage, NormalMode, emptyUserAnswers)
+          .mustBe(routes.ReasonForOverpaymentController.onPageLoad(NormalMode))
       }
 
       "go to WhomToPay page after EmailAddressPage page when the Representative's multiple entry journeys is selected " in {
