@@ -17,28 +17,26 @@
 package controllers
 
 import akka.actor.ActorRef
-import akka.pattern.{AskTimeoutException, ask}
+import akka.pattern.ask
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
 import forms.AdditionalFileUploadFormProvider
-import models.AmendCaseResponseType.Supportingdocuments
 import models.FileType.SupportingEvidence
-import models.{AmendCaseResponseType, AmendCaseUploadAnotherFile, CheckMode, ClaimantType, FileVerificationStatus, Mode, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
+import models.{AmendCaseResponseType, FileVerificationStatus, Mode, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
 import navigation.Navigator
-import pages.{AmendCaseResponseTypePage, AmendCaseSendInformationPage, AmendCaseUploadAnotherFilePage, ClaimantTypePage, FurtherInformationPage}
-import play.api.Logger.logger
+import pages.AmendCaseResponseTypePage
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
-import play.api.mvc.{request, _}
+import play.api.mvc._
 import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{AmendCaseSendInformationView, AmendCaseUploadAnotherFileView, FileUploadView, FileUploadedView}
+import views.html.{AmendCaseSendInformationView, AmendCaseUploadAnotherFileView}
 
 import java.time.LocalDateTime
 import javax.inject.{Inject, Named}
@@ -110,34 +108,32 @@ class AmendCaseSendInformationController @Inject()(
 
   //GET /file-upload
   def showFileUpload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    sessionState(request.internalId).flatMap { ua =>
-      ua.userAnswers.flatMap(_.fileUploadState) match {
-        case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
-          for {
-            fs <-  initiateFileUpload(upscanRequest(request.internalId), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
-            b <- updateSession(fs, ua.userAnswers)
-            if b
-          } yield renderState(s)
-        case _ => {
-          val state = request.userAnswers.fileUploadState
-          for {
-            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(state)
-            res <- updateSession(fileUploadState, Some(request.userAnswers))
-            if res
-          } yield renderState(fileUploadState)
-        }
+    for {
+      ss <- sessionState(request.internalId)
+      s <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
+      fs <- initiateFileUpload(upscanRequest(request.internalId), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(s)
+      b <- fs match {
+        case f@UploadFile(_, _, _, _) => updateSession(f.copy(maybeUploadError = None), ss.userAnswers)
+        case _ => updateSession(fs, ss.userAnswers)
       }
-    }
+      if b
+    } yield renderState(fs)
   }
 
   //GET /file-uploaded
   def showFileUploaded(mode: Mode = NormalMode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    sessionState(request.internalId).flatMap { ua =>
-      ua.userAnswers.flatMap(_.fileUploadState) match {
-        case s@Some(FileUploaded(_, _)) => Future.successful(renderState(s.get, None, Some(mode)))
-        case s => Future.successful(fileStateError)
-
-      }
+    for {
+      ss <- sessionState(request.internalId)
+      s <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
+      if s.nonEmpty
+    } yield {
+      Ok(fileUploadedView(
+        or(None, uploadAnotherFileChoiceForm, None),
+        s.get.fileUploads,
+        controller.submitUploadAnotherFileChoice(mode),
+        controller.removeFileUploadByReference,
+        controller.showFileUpload()
+      ))
     }
   }
 
