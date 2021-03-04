@@ -18,7 +18,7 @@ package utils
 
 import java.time.format.DateTimeFormatter
 import controllers.routes
-import models.{AgentImporterHasEORI, ClaimantType, CustomsRegulationType, NormalMode, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
+import models.{Address, AgentImporterHasEORI, ClaimantType, CustomsRegulationType, NormalMode, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -130,14 +130,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterManualAddress.checkYourAnswersLabel")),
-        Html(Seq(
-          HtmlFormat.escape(x.AddressLine1).toString,
-          HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
-          HtmlFormat.escape(x.City).toString,
-          HtmlFormat.escape(x.Region.getOrElse("")).toString,
-          HtmlFormat.escape(x.CountryCode).toString,
-          HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
-        ).filter(!_.isEmpty()).mkString("<br>")),
+        formatAddress(x),
         Some(routes.AgentImporterManualAddressController.onPageLoad(NormalMode).url)
       )
   }
@@ -150,14 +143,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
             case _ => messages("importerAddress.checkYourAnswersLabel")
           }),
-        Html(Seq(
-          HtmlFormat.escape(x.AddressLine1).toString,
-          HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
-          HtmlFormat.escape(x.City).toString,
-          HtmlFormat.escape(x.Region.getOrElse("")).toString,
-          HtmlFormat.escape(x.CountryCode).toString,
-          HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
-        ).filter(!_.isEmpty()).mkString("<br>")),
+        formatAddress(x),
         Some(routes.ImporterManualAddressController.onPageLoad(NormalMode).url)
       )
   }
@@ -166,14 +152,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterAddress.checkYourAnswersLabel")),
-        Html(Seq(
-          HtmlFormat.escape(x.AddressLine1).toString,
-          HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
-          HtmlFormat.escape(x.City).toString,
-          HtmlFormat.escape(x.Region.getOrElse("")).toString,
-          HtmlFormat.escape(x.CountryCode).toString,
-          HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
-        ).filter(!_.isEmpty()).mkString("<br>")),
+        formatAddress(x),
         Some(routes.AgentImporterAddressController.onPageLoad(NormalMode).url)
       )
   }
@@ -186,16 +165,23 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
             case _ => messages("importerAddress.checkYourAnswersLabel")
           }),
-        Html(Seq(
-          HtmlFormat.escape(x.AddressLine1).toString,
-          HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
-          HtmlFormat.escape(x.City).toString,
-          HtmlFormat.escape(x.Region.getOrElse("")).toString,
-          HtmlFormat.escape(x.CountryCode).toString,
-          HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
-        ).filter(!_.isEmpty()).mkString("<br>")),
+        formatAddress(x),
         Some(routes.ImporterAddressController.onPageLoad(NormalMode).url)
       )
+  }
+
+  private def formatAddress(x: Address) = {
+    Html(Seq(
+      HtmlFormat.escape(x.AddressLine1).toString,
+      HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
+      HtmlFormat.escape(x.City).toString,
+      HtmlFormat.escape(x.Region.getOrElse("")).toString,
+      HtmlFormat.escape(x.CountryCode match
+            {case "GB" => messages("United Kingdom")
+             case _ => messages("Other")
+      }).toString,
+      HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
+    ).filter(!_.isEmpty()).mkString("<br>"))
   }
 
   def otherDutiesDueToHMRC: Option[AnswerRow] = userAnswers.get(OtherDutiesDueToHMRCPage) map {
