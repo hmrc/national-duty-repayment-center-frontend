@@ -47,7 +47,7 @@ class ImporterHasEoriController @Inject()(
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
 
     userAnswers.get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => routes.FileUploadController.showFileUploaded(mode)
+      case Some(ClaimantType.Importer) => routes.FileUploadController.showFileUploaded()
       case _ => {
         userAnswers.get(ImporterManualAddressPage) match {
           case None => routes.ImporterAddressController.postcodeBackLinkLoad

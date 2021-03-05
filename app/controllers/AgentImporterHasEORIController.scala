@@ -45,7 +45,7 @@ class AgentImporterHasEORIController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode): Call = {
-    routes.FileUploadController.showFileUploaded(mode)
+    routes.FileUploadController.showFileUploaded
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {

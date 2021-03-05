@@ -35,7 +35,7 @@ import scala.concurrent.Future
 
 class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
+  val backLink = routes.FileUploadController.showFileUploaded
 
   def onwardRoute = Call("GET", "/foo")
 

@@ -30,5 +30,5 @@ case object ImporterPostcodePage extends QuestionPage[String] {
 
   override def path: JsPath = ImporterAddressPage.path \ toString
 
-  override def toString: String = "postCode"
+  override def toString: String = "PostalCode"
 }

@@ -24,7 +24,7 @@ class PostcodeFormProviderSpec extends StringFieldBehaviours {
   val maxLength = 9
   val form = new PostcodeFormProvider()()
   ".value" must {
-    val fieldName = "postCode"
+    val fieldName = "PostalCode"
     behave like fieldThatBindsValidData(
       form,
       fieldName,
@@ -43,7 +43,7 @@ class PostcodeFormProviderSpec extends StringFieldBehaviours {
     )
   }
   ".value" must {
-    val fieldName = "postCode"
+    val fieldName = "PostalCode"
     "not bind postcode with less than 6 digit" in {
       val result = form.bind(Map(fieldName -> "AA 1A")).apply(fieldName)
       result.errors shouldEqual Seq(

@@ -30,7 +30,7 @@ class PostcodeFormProvider @Inject() extends Mappings with TrimWhitespace {
   def apply(): Form[PostcodeLookup] =
     Form(
       mapping(
-        "postCode" -> text("postcode.error.required")
+        "PostalCode" -> text("postcode.error.required")
           .transform[String](trimWhitespace, value => value)
           .verifying(minLength(postalCodeMinLength, "postcode.error.length"))
           .verifying(maxLength(postalCodeMaxLength, "postcode.error.length"))

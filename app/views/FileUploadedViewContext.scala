@@ -45,8 +45,7 @@ class FileUploadedViewContext extends RadioItemsHelper with SummaryListRowHelper
 
   def summaryListOfFileUploads(
     fileUploads: FileUploads,
-    removeFileCall: (String, Mode) => Call,
-    mode: Mode
+    removeFileCall: String => Call
   )(implicit
     messages: Messages
   ): SummaryList = {
@@ -58,7 +57,7 @@ class FileUploadedViewContext extends RadioItemsHelper with SummaryListRowHelper
         visuallyHiddenText = Some(fileUpload.fileName),
         keyClasses = Some(""),
         valueClasses = Some("govuk-!-width-full"),
-        action = (removeFileCall(fileUpload.reference, mode), "site.file.remove")
+        action = (removeFileCall(fileUpload.reference), "site.file.remove")
       )
 
     SummaryList(
