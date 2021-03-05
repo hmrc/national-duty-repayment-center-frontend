@@ -390,6 +390,41 @@ object TestData {
       .flatMap(_.set(FurtherInformationPage, furtherInformation))
       .get
 
+  def populateUserAnswersWithImporterInformation(userAnswers: UserAnswers): UserAnswers =
+    populateUserAnswersWithCMAPaymentMethodAndClaimantImporter(userAnswers)
+      .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded)))))
+      .set(BankDetailsPage, testBankDetails)
+      .get
+
+  def populateUserAnswersWithImporterUKCustomsRegulationInformation(userAnswers: UserAnswers): UserAnswers =
+    populateUserAnswersWithUKCustomsRegulationType(userAnswers)
+      .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded)))))
+      .set(BankDetailsPage, testBankDetails)
+      .get
+
+  def populateUserAnswersWithRepresentativeSingleBACSJourney(userAnswers: UserAnswers): UserAnswers =
+    populateUserAnswersRepresentativeWithEmail(userAnswers)
+      .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded)))))
+
+  def populateUserAnswersWithRepresentativeSingleCMAJourney(userAnswers: UserAnswers): UserAnswers =
+    populateUserAnswersWithCMAPaymentMethod(userAnswers)
+      .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded)))))
+      .set(BankDetailsPage, testBankDetails)
+      .get
+
+  def populateUserAnswersWithRepresentativeMultipleJourney(userAnswers: UserAnswers): UserAnswers =
+    populateUserAnswersWithRepresentativeAndMultipleEntries(userAnswers)
+      .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded, bulkFileUploaded)))))
+      .set(HowManyEntriesPage, NoOfEntries("3"))
+      .get
+
+  def populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney(userAnswers: UserAnswers): UserAnswers =
+    populateUserAnswersWithRepresentativeSinglePayingRepresentativeBacs(userAnswers)
+      .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded)))))
+      .set(IndirectRepresentativePage, true)
+      .flatMap(_.set(BankDetailsPage, testBankDetails))
+      .get
+
   val fileUploaded =
     Accepted(
       orderNumber = 1,
@@ -398,7 +433,20 @@ object TestData {
       uploadTimestamp = ZonedDateTime.of(2020, 10, 10, 10, 10, 10, 0, ZoneId.of("UTC")),
       checksum = "f55a741917d512ab4c547ea97bdfdd8df72bed5fe51b6a248e0a5a0ae58061c8",
       fileName = "test1.jpeg",
-      fileMimeType = "image/jpeg"
+      fileMimeType = "image/jpeg",
+      fileType = Some(FileType.SupportingEvidence)
+    )
+
+  val bulkFileUploaded =
+    Accepted(
+      orderNumber = 2,
+      reference = "ref-124",
+      url = "/bucket/test2.jpeg",
+      uploadTimestamp = ZonedDateTime.of(2020, 10, 10, 10, 10, 10, 0, ZoneId.of("UTC")),
+      checksum = "f55a741917d512ab4c547ea97bdfdd8df72bed5fe51b6a248e0a5a0ae58061c8",
+      fileName = "test2.jpeg",
+      fileMimeType = "image/jpeg",
+      fileType = Some(FileType.Bulk)
     )
 
   val testCreateClaimRequestRepresentativeWithEmail: CreateClaimRequest = CreateClaimRequest(

@@ -17,14 +17,14 @@
 package utils
 
 import java.time.format.DateTimeFormatter
-
 import controllers.routes
-import models.{CheckMode, UserAnswers}
+import models.{Address, AgentImporterHasEORI, ClaimantType, CustomsRegulationType, NormalMode, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import viewmodels.AnswerRow
-import CheckYourAnswersHelper._
+import viewmodels.{AnswerRow, AnswerSection}
+import models.FileType.{Bulk, ProofOfAuthority, SupportingEvidence}
+import models.FileUpload.Accepted
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -33,7 +33,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("amendCaseUploadAnotherFile.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"amendCaseUploadAnotherFile.$x")),
-        Some(routes.AmendCaseSendInformationController.showFileUploaded(CheckMode).url)
+        Some(routes.AmendCaseSendInformationController.showFileUploaded(NormalMode).url)
       )
   }
 
@@ -42,7 +42,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("amendCaseResponseType.checkYourAnswersLabel")),
         Html(x.map(value => HtmlFormat.escape(messages(s"amendCaseResponseType.$value")).toString).mkString(",<br>")),
-        Some(routes.AmendCaseResponseTypeController.onPageLoad(CheckMode).url)
+        Some(routes.AmendCaseResponseTypeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -51,7 +51,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("furtherInformation.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.FurtherInformationController.onPageLoad(CheckMode).url)
+        Some(routes.FurtherInformationController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -60,17 +60,48 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("referenceNumber.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.ReferenceNumberController.onPageLoad(CheckMode).url)
+        Some(routes.ReferenceNumberController.onPageLoad(NormalMode).url)
       )
   }
 
-  def bulkFileUpload: Option[AnswerRow] = userAnswers.get(BulkFileUploadPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"bulkFileUpload.$x")),
-        Some(routes.BulkFileUploadController.showFileUpload.url)
-      )
+  def bulkFileUpload: Option[AnswerRow] = {
+    userAnswers.fileUploadState.map(_.fileUploads.files.filter(_.fileType.contains(Bulk))).flatMap { f =>
+      f.headOption.map { f =>
+        f match {
+          case Accepted(_, _, _, _, _, fileName, _, _) =>
+            AnswerRow(
+              HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
+              HtmlFormat.escape(messages(s"$fileName")),
+              Some(routes.BulkFileUploadController.showFileUpload.url)
+            )
+          case _ =>  AnswerRow(
+            HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
+            HtmlFormat.escape(messages(s"bulkFileUpload.empty")),
+            Some(routes.BulkFileUploadController.showFileUpload.url)
+          )
+        }
+      }
+    }
+  }
+
+  def proofOfAuthority: Option[AnswerRow] = {
+    userAnswers.fileUploadState.map(_.fileUploads.files.filter(_.fileType.contains(ProofOfAuthority))).flatMap { f =>
+      f.headOption.map { f =>
+        f match {
+          case Accepted(_, _, _, _, _, fileName, _, _) =>
+            AnswerRow(
+              HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
+              HtmlFormat.escape(messages(s"$fileName")),
+              Some(routes.ProofOfAuthorityController.showFileUpload.url)
+            )
+          case _ =>  AnswerRow(
+            HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
+            HtmlFormat.escape(messages(s"proofOfAuthority.empty")),
+            Some(routes.ProofOfAuthorityController.showFileUpload.url)
+          )
+        }
+      }
+    }
   }
 
   def indirectRepresentative: Option[AnswerRow] = userAnswers.get(IndirectRepresentativePage) map {
@@ -78,7 +109,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("indirectRepresentative.checkYourAnswersLabel")),
         yesOrNo(x),
-        Some(routes.IndirectRepresentativeController.onPageLoad(CheckMode).url)
+        Some(routes.IndirectRepresentativeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -86,8 +117,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("bankDetails.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.AccountName),
-        Some(routes.BankDetailsController.onPageLoad(CheckMode).url)
+        Html(Seq(
+          HtmlFormat.escape(x.AccountName).toString,
+          HtmlFormat.escape(x.SortCode).toString,
+          HtmlFormat.escape(x.AccountNumber).toString
+        ).mkString("<br>")),
+        Some(routes.BankDetailsController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -95,17 +130,21 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterManualAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.toString),
-        Some(routes.AgentImporterManualAddressController.onPageLoad(CheckMode).url)
+        formatAddress(x),
+        Some(routes.AgentImporterManualAddressController.onPageLoad(NormalMode).url)
       )
   }
 
   def importerManualAddress: Option[AnswerRow] = userAnswers.get(ImporterManualAddressPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("importerManualAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.toString),
-        Some(routes.ImporterManualAddressController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(
+          userAnswers.get(ClaimantTypePage) match {
+            case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
+            case _ => messages("importerAddress.checkYourAnswersLabel")
+          }),
+        formatAddress(x),
+        Some(routes.ImporterManualAddressController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -113,18 +152,36 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.toString),
-        Some(routes.AgentImporterAddressController.onPageLoad(CheckMode).url)
+        formatAddress(x),
+        Some(routes.AgentImporterAddressController.onPageLoad(NormalMode).url)
       )
   }
 
   def importerAddress: Option[AnswerRow] = userAnswers.get(ImporterAddressPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("importerAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.toString),
-        Some(routes.ImporterAddressController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(
+          userAnswers.get(ClaimantTypePage) match {
+            case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
+            case _ => messages("importerAddress.checkYourAnswersLabel")
+          }),
+        formatAddress(x),
+        Some(routes.ImporterAddressController.onPageLoad(NormalMode).url)
       )
+  }
+
+  private def formatAddress(x: Address) = {
+    Html(Seq(
+      HtmlFormat.escape(x.AddressLine1).toString,
+      HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
+      HtmlFormat.escape(x.City).toString,
+      HtmlFormat.escape(x.Region.getOrElse("")).toString,
+      HtmlFormat.escape(x.CountryCode match
+            {case "GB" => messages("United Kingdom")
+             case _ => messages("Other")
+      }).toString,
+      HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
+    ).filter(!_.isEmpty()).mkString("<br>"))
   }
 
   def otherDutiesDueToHMRC: Option[AnswerRow] = userAnswers.get(OtherDutiesDueToHMRCPage) map {
@@ -132,7 +189,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("otherDutiesDueToHMRC.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.OtherDutiesDueToHMRCController.onPageLoad(CheckMode).url)
+        Some(routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -141,7 +198,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("otherDutiesPaid.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.OtherDutiesPaidController.onPageLoad(CheckMode).url)
+        Some(routes.OtherDutiesPaidController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -150,7 +207,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyDueToHMRC.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.CustomsDutyDueToHMRCController.onPageLoad(CheckMode).url)
+        Some(routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -159,7 +216,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
+        Some(routes.CustomsDutyPaidController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -168,7 +225,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("vATDueToHMRC.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.VATDueToHMRCController.onPageLoad(CheckMode).url)
+        Some(routes.VATDueToHMRCController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -177,7 +234,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("vATPaid.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.VATPaidController.onPageLoad(CheckMode).url)
+        Some(routes.VATPaidController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -186,7 +243,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterHasEORI.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"agentImporterHasEORI.$x")),
-        Some(routes.AgentImporterHasEORIController.onPageLoad(CheckMode).url)
+        Some(routes.AgentImporterHasEORIController.onPageLoad(NormalMode).url)
     )
   }
   
@@ -195,7 +252,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("isImporterVatRegistered.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"isImporterVatRegistered.$x")),
-        Some(routes.IsImporterVatRegisteredController.onPageLoad(CheckMode).url)
+        Some(routes.IsImporterVatRegisteredController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -204,7 +261,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("enterAgentEORI.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.EnterAgentEORIController.onPageLoad(CheckMode).url)
+        Some(routes.EnterAgentEORIController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -214,7 +271,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("whomToPay.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"whomToPay.$x")),
-        Some(routes.WhomToPayController.onPageLoad(CheckMode).url)
+        Some(routes.WhomToPayController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -223,7 +280,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("repaymentType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"repaymentType.$x")),
-        Some(routes.RepaymentTypeController.onPageLoad(CheckMode).url)
+        Some(routes.RepaymentTypeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -232,8 +289,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.firstName.concat(x.lastName)),
-        Some(routes.AgentNameImporterController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(x.firstName.concat(" ").concat(x.lastName)),
+        Some(routes.AgentNameImporterController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -242,7 +299,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("phoneNumber.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.PhoneNumberController.onPageLoad(CheckMode).url)
+        Some(routes.PhoneNumberController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -251,8 +308,20 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("emailAddress.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
+        Some(routes.EmailAddressController.onPageLoad(NormalMode).url)
       )
+  }
+
+  def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
+    x => {
+      AnswerRow(
+        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
+        HtmlFormat.escape(x match
+              { case x if x.length > 0 => "Yes"
+                case _ => "No"}),
+        Some(routes.EmailAddressController.onPageLoad(NormalMode).url)
+      )
+    }
   }
 
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
@@ -260,7 +329,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("contactType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"contactType.$x")),
-        Some(routes.ContactTypeController.onPageLoad(CheckMode).url)
+        Some(routes.ContactTypeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -268,8 +337,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.firstName.concat(x.lastName)),
-        Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(x.firstName.concat(" ").concat(x.lastName)),
+        Some(routes.ImporterNameController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -287,7 +356,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("claimRepaymentType.checkYourAnswersLabel")),
         Html(x.map(value => HtmlFormat.escape(messages(s"claimRepaymentType.$value")).toString).mkString(",<br>")),
-        Some(routes.ClaimRepaymentTypeController.onPageLoad(CheckMode).url)
+        Some(routes.ClaimRepaymentTypeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -296,26 +365,209 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("reasonForOverpayment.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.ReasonForOverpaymentController.onPageLoad(CheckMode).url)
+        Some(routes.ReasonForOverpaymentController.onPageLoad(NormalMode).url)
       )
   }
-
 
   def claimReasonType: Option[AnswerRow] = userAnswers.get(ClaimReasonTypePage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("claimReasonType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"claimReasonType.$x")),
-        Some(routes.ClaimReasonTypeController.onPageLoad(CheckMode).url)
+        Some(routes.ClaimReasonTypeController.onPageLoad(NormalMode).url)
       )
   }
 
-  def entryDetails: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
+  def repaymentAmountSummary: AnswerRow = {
+    val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers)
+    AnswerRow(
+    HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
+      HtmlFormat.escape("£" + helper.getTotalAmount().format2d),
+    Some(routes.RepaymentAmountSummaryController.onPageLoad.url)
+    )
+  }
+
+  def evidenceFileUploads: AnswerRow = {
+    AnswerRow(
+      HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
+      HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.acceptedCount.toString)
+      .concat(" ").concat(messages("view.upload-file.documents.added"))),
+      Some(routes.FileUploadController.showFileUploaded.url)
+    )
+  }
+
+  def getCheckYourAnswerSections: Seq[AnswerSection] = {
+    Seq(getImportantInformationAnswerSection,
+      getEntryDetailsAnswerSection,
+      getApplicationInformationAnswerSection) ++
+      (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+        case true => Seq(getImporterDetailsAnswerSection)
+        case _ => Seq.empty
+      }) ++
+      Seq(getYourDetailsAnswerSection,
+        getContactDetailsAnswerSection,
+        getPaymentInformationAnswerSection)
+  }
+
+  def getImportantInformationAnswerSection: AnswerSection = {
+    AnswerSection (Some(messages ("impInfo.checkYourAnswersLabel") ),
+      Seq(claimantType.get,
+        numberOfEntriesType.get) ++
+        (userAnswers.get(NumberOfEntriesTypePage) match {
+            case Some(NumberOfEntriesType.Multiple) => Seq (howManyEntries.get)
+            case _ => Seq.empty
+        }) ++
+        Seq(customsRegulationType.get) ++
+        (userAnswers.get(CustomsRegulationTypePage) match {
+            case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => Seq(articleType.get)
+            case _ => Seq(ukRegulationType.get)
+        })
+    )
+  }
+
+  def getEntryDetailsAnswerSection: AnswerSection = {
+    AnswerSection(Some(messages("entryDetails.checkYourAnswersLabel")),
+      Seq.empty ++
+      (userAnswers.get(NumberOfEntriesTypePage) match {
+      case Some(NumberOfEntriesType.Multiple) => Seq(bulkFileUpload.get)
+      case _ => Seq.empty
+      }) ++
+      Seq(entryDetailsEPU.get,
+        entryDetailsNumber.get,
+        entryDetailsDate.get)
+    )
+  }
+
+  def getApplicationInformationAnswerSection: AnswerSection = {
+    AnswerSection(Some(messages("applicationInformation.checkYourAnswersLabel")),
+      Seq(claimReasonType.get,
+        reasonForOverpayment.get,
+        claimRepaymentType.get,
+        repaymentAmountSummary,
+        evidenceFileUploads))
+  }
+
+  def getImporterDetailsAnswerSection: AnswerSection = {
+    AnswerSection(Some(messages("importer.details.checkYourAnswersLabel")),
+      Seq(agentImporterHasEORI.get) ++
+        (userAnswers.get(AgentImporterHasEORIPage) match {
+            case Some(AgentImporterHasEORI.Yes) => Seq(enterAgentEORI.get)
+            case _  => Seq.empty
+        }) ++
+        Seq(
+          isImporterVatRegistered.get,
+          agentNameImporter.get,
+          userAnswers.get(ImporterManualAddressPage) match {
+            case None => importerAddress.get
+            case _ => importerManualAddress.get
+          })
+    )
+  }
+
+  def getYourDetailsAnswerSection: AnswerSection = {
+    AnswerSection(Some(messages("your.details.checkYourAnswersLabel")),
+      Seq(importerHasEori.get) ++
+        (userAnswers.get(ImporterHasEoriPage).get match {
+          case true => Seq(importerEori.get)
+          case _ => Seq.empty
+        }) ++
+        (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
+          case true => Seq(isVATRegistered.get)
+          case _ => Seq.empty}
+          ) ++
+        Seq(importerName.get,
+          userAnswers.get(ClaimantTypePage) match {
+            case Some(ClaimantType.Importer) =>
+                userAnswers.get(ImporterManualAddressPage) match {
+                  case None => importerAddress.get
+                  case _ => importerManualAddress.get
+                }
+            case _ =>
+              userAnswers.get(AgentImporterManualAddressPage) match {
+                case None => agentImporterAddress.get
+                case _ => agentImporterManualAddress.get
+              }
+          }))
+  }
+
+  def getContactDetailsAnswerSection: AnswerSection = {
+    AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
+      Seq (phoneNumber.get,
+        contactByEmail.get) ++
+        (userAnswers.get(EmailAddressPage).get.isEmpty match {
+          case true => Seq.empty
+          case _ => Seq(emailAddress.get)
+        })
+    )
+  }
+
+  def getPaymentInformationAnswerSection: AnswerSection = {
+    AnswerSection (Some (messages ("payment.information.checkYourAnswersLabel") ),
+      Seq.empty ++
+        (userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) match {
+          case true =>
+            (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+              case true => (userAnswers.get(WhomToPayPage) match {
+                case None => Seq.empty
+                case _ => Seq(whomToPay.get)
+              })
+              case _ => Seq.empty
+            }) ++
+              (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+                case true => (userAnswers.get(WhomToPayPage).contains(WhomToPay.Representative) match {
+                  case true => Seq(indirectRepresentative.get)
+                  case _ => Seq.empty
+                })
+                case _ => Seq.empty
+              }) ++
+              (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
+                case true => ((userAnswers.get(IndirectRepresentativePage),userAnswers.get(WhomToPayPage)) match {
+                  case (Some(false), Some(WhomToPay.Representative))=> Seq(proofOfAuthority.get)
+                  case _ => Seq.empty
+                })
+                case _ => Seq.empty
+              })
+          case _ => Seq.empty
+        }) ++
+        (userAnswers.get(RepaymentTypePage) match {
+          case None => Seq.empty
+          case _ => (userAnswers.get(NumberOfEntriesTypePage) match {
+            case Some(NumberOfEntriesType.Single) => Seq(repaymentType.get)
+            case _ => Seq.empty
+          })
+        }) ++
+        (userAnswers.get(RepaymentTypePage).contains(RepaymentType.CMA) match {
+          case true => Seq.empty
+          case _ => Seq(bankDetails.get)
+        })
+    )
+  }
+
+  private def entryDetailsEPU: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("entryDetails.claimEpu.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.EPU),
-        Some(routes.EntryDetailsController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(messages("entryDetails.epu.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(x.EPU)),
+        Some(routes.EntryDetailsController.onPageLoad(NormalMode).url)
+      )
+  }
+
+  private def entryDetailsNumber: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("entryDetails.number.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(x.EntryNumber)),
+        Some(routes.EntryDetailsController.onPageLoad(NormalMode).url)
+      )
+  }
+
+  private def entryDetailsDate: Option[AnswerRow] = userAnswers.get(EntryDetailsPage) map {
+    val dateFormatter = DateTimeFormatter.ofPattern("dd MM yyyy")
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("entryDetails.date.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(x.EntryDate.format(dateFormatter))),
+        Some(routes.EntryDetailsController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -324,7 +576,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("howManyEntries.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.HowManyEntriesController.onPageLoad(CheckMode).url)
+        Some(routes.HowManyEntriesController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -332,8 +584,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("numberOfEntriesType.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"numberOfEntriesType.$x")),
-        Some(routes.NumberOfEntriesTypeController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(userAnswers.get(NumberOfEntriesTypePage) match {
+          case Some(NumberOfEntriesType.Single) => messages("numberOfEntriesType.single.checkYourAnswersLabel")
+          case _ => messages("numberOfEntriesType.multiple.checkYourAnswersLabel")
+        }),
+        Some(routes.NumberOfEntriesTypeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -342,7 +597,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("articleType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"articleType.$x")),
-        Some(routes.ArticleTypeController.onPageLoad(CheckMode).url)
+        Some(routes.ArticleTypeController.onPageLoad(NormalMode).url)
+      )
+  }
+
+  def ukRegulationType: Option[AnswerRow] = userAnswers.get(UkRegulationTypePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("ukRegulationType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"ukRegulationType.$x")),
+        Some(routes.UkRegulationTypeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -351,7 +615,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("customsRegulationType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"customsRegulationType.$x")),
-        Some(routes.CustomsRegulationTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CustomsRegulationTypeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -360,7 +624,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("isVATRegistered.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"isVATRegistered.$x")),
-        Some(routes.IsVATRegisteredController.onPageLoad(CheckMode).url)
+        Some(routes.IsVATRegisteredController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -369,7 +633,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("importerEori.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.ImporterEoriController.onPageLoad(CheckMode).url)
+        Some(routes.ImporterEoriController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -378,7 +642,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("importerHasEori.checkYourAnswersLabel")),
         yesOrNo(x),
-        Some(routes.ImporterHasEoriController.onPageLoad(CheckMode).url)
+        Some(routes.ImporterHasEoriController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -386,8 +650,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("claimantType.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"claimantType.$x")),
-        Some(routes.ClaimantTypeController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(userAnswers.get(ClaimantTypePage) match {
+          case Some(ClaimantType.Importer) => messages("claimantType.importer")
+          case _ => messages("claimantType.representative")
+        }),
+        Some(routes.ClaimantTypeController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -397,6 +664,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     } else {
       HtmlFormat.escape(messages("site.no"))
     }
+
+  implicit class Improvements(s: Double) {
+    def format2d = "%.2f".format(s)
+  }
 }
 
 object CheckYourAnswersHelper {

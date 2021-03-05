@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.BankDetailsFormProvider
+
 import javax.inject.Inject
-import models.{ClaimantType, Mode, UserAnswers, WhomToPay}
+import models.{ClaimantType, Mode, RepaymentType, UserAnswers, WhomToPay}
 import navigation.Navigator
-import pages.{BankDetailsPage, ClaimantTypePage, IndirectRepresentativePage, WhomToPayPage}
+import pages.{BankDetailsPage, ClaimantTypePage, IndirectRepresentativePage, RepaymentTypePage, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -76,8 +77,15 @@ class BankDetailsController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(BankDetailsPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(BankDetailsPage, mode, updatedAnswers))
+            removeCMA <-
+              Future.fromTry(updatedAnswers.get(RepaymentTypePage) match {
+                case Some(RepaymentType.CMA) =>
+                  updatedAnswers.remove(RepaymentTypePage)
+                case _ =>
+                  updatedAnswers.set(BankDetailsPage, value)
+              })
+            _              <- sessionRepository.set(removeCMA)
+          } yield Redirect(navigator.nextPage(BankDetailsPage, mode, removeCMA))
       )
   }
 }
