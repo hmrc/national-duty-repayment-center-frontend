@@ -3,28 +3,5 @@ $hmrc-assets-path: "/national-duty-repayment-center/assets/lib/hmrc-frontend/hmr
 @import "lib/hmrc-frontend/hmrc/all";
 @import "lib/govuk-frontend/govuk/all";
 
-@import 'vendor/location-autocomplete.min.css';
-
-@import 'partials/autocomplete-fix';
-
-@import 'partials/_variables';
-@import 'partials/_base';
-
-@import 'partials/_template';
-@import 'partials/_page';
-
-@import 'partials/_forms';
-@import 'partials/_typography';
-
-@import 'partials/_utilities';
-
-@import 'partials/_shame';
-
-@import 'partials/_application';
-@import 'partials/autocomplete';
-
-// WCGA 2.1
-@import 'partials/_palette';
-@import 'partials/_focus';
-
-@import 'partials/upload-loading';
+// Components
+@import 'components/upload-loading';
