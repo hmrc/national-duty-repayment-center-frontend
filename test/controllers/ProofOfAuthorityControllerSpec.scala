@@ -21,7 +21,7 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiat
 import controllers.actions._
 import models.requests.UploadRequest
 import models.{CustomsRegulationType, FileUpload, FileUploads, UpscanNotification, UserAnswers}
-import org.mockito.Matchers.any
+import org.mockito.Matchers.{any, anyObject}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CustomsRegulationTypePage
@@ -54,6 +54,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
       .asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
   }
   val upscanMock = mock[UpscanInitiateConnector]
+  val mockSessionRepository = mock[SessionRepository]
 
   def appBuilder(userAnswers: Option[UserAnswers]): GuiceApplicationBuilder = {
     new GuiceApplicationBuilder()
@@ -67,7 +68,8 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
       bind[DataRequiredAction].to[DataRequiredActionImpl],
       bind[UpscanInitiateConnector].toInstance(upscanMock),
       bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-      bind[Metrics].to[MetricsImpl]
+      bind[Metrics].to[MetricsImpl],
+      bind[SessionRepository].toInstance(mockSessionRepository)
     )
   }
   when(upscanMock.initiate(any[UpscanInitiateRequest])(any[HeaderCarrier], any[ExecutionContext]))
@@ -80,6 +82,8 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         appBuilder(userAnswers = Some(emptyUserAnswers))
           .build()
       running(application) {
+        when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(emptyUserAnswers))
+        when(mockSessionRepository.set(anyObject())) thenReturn Future.successful(true)
         val request = buildRequest(GET, fileUploadUrl)
         val result = route(application, request).value
         status(result) mustEqual 200
@@ -117,10 +121,8 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = false
       )
       val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value.copy(fileUploadState = Some(fileUploadState))
-      val mockSessionRepository = mock[SessionRepository]
 
       val application = appBuilder(userAnswers = Some(userAnswers))
-        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
         .build()
 
       running(application) {

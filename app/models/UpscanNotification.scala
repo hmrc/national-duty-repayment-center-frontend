@@ -133,7 +133,7 @@ object UpscanNotification {
     )
 
     def decodeMimeEncodedWord(word: String): String =
-      Try(MimeUtility.decodeWord(word)).getOrElse(word)
+      Try(MimeUtility.decodeText(word)).getOrElse(word)
   }
 
   object FailureDetails {

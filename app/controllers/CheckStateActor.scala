@@ -20,13 +20,9 @@ import akka.actor.Actor
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
 import config.FrontendAppConfig
-import models.FileUploadError
 import play.api.Logger.logger
-import play.api.mvc.Call
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
-import uk.gov.hmrc.http.HttpVerbs.{GET, POST}
 
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -39,7 +35,6 @@ class CheckStateActor @Inject()(sessionRepository: SessionRepository, appConfig:
   implicit val timeout = Timeout(30 seconds)
   override def receive: Receive = {
     case CheckState(id, exitTime, state) => {
-      logger.info(s"state $state")
       if (LocalDateTime.now().isAfter(exitTime) || state.isInstanceOf[FileUploaded]) {
         logger.info("exiting.........")
         Future.successful(state).pipeTo(sender)
