@@ -36,8 +36,7 @@ class Navigator @Inject()() {
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
     case ClaimRepaymentTypePage => getClaimRepaymentType
-    case CustomsDutyPaidPage => _ => routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
-    case CustomsDutyDueToHMRCPage => getVATRepaymentType
+    case CustomsDutyPaidPage =>  getVATRepaymentType
     case VATPaidPage => _ => routes.VATDueToHMRCController.onPageLoad(NormalMode)
     case VATDueToHMRCPage => getOtherRepaymentType
     case OtherDutiesPaidPage => _ => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)

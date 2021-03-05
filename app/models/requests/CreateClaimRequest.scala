@@ -205,7 +205,7 @@ object CreateClaimRequest {
       }
 
       val getCustomsDutyDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
-        case true => userAnswers.get(CustomsDutyDueToHMRCPage)
+        case true => ???
         case _ => Some("0.0")
       }
 

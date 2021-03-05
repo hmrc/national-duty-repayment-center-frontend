@@ -14,19 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import pages.behaviours.PageBehaviours
-
-
-class CustomsDutyDueToHMRCPageSpec extends PageBehaviours {
-
-  "CustomsDutyDueToHMRCPage" must {
-
-    beRetrievable[String](CustomsDutyDueToHMRCPage)
-
-    beSettable[String](CustomsDutyDueToHMRCPage)
-
-    beRemovable[String](CustomsDutyDueToHMRCPage)
-  }
+case class CustomsDutyPaid(actuallyPaid: String, shouldHavePaid: String) {
+  val dueAmount: BigDecimal = BigDecimal.apply(actuallyPaid) - BigDecimal.apply(shouldHavePaid)
 }
+
+

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.{ClaimRepaymentType, NormalMode, UserAnswers}
-import pages.{ClaimRepaymentTypePage, CustomsDutyDueToHMRCPage, CustomsDutyPaidPage, OtherDutiesDueToHMRCPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage}
+import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesDueToHMRCPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html

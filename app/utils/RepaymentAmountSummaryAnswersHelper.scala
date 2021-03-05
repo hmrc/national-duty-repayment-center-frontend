@@ -59,7 +59,6 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
         Html(x.map(value => formattedAmount).mkString("")),
         index match {
           case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
-          case "1" if isCustomDutyExists => Some(routes.CustomsDutyDueToHMRCController.onPageLoad(CheckMode).url)
           case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(CheckMode).url)
           case "1" if isVATExists => Some(routes.VATDueToHMRCController.onPageLoad(CheckMode).url)
           case "0" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(CheckMode).url)
@@ -82,7 +81,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
 
     val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
     val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble
-    val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
+    //val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
     val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
     val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
     val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0").toDouble
@@ -104,7 +103,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
 
   def getTotalAmount(): Double = {
     val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble
-    val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
+    //val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
     val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
     val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
     val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0").toDouble
