@@ -329,8 +329,8 @@ customsDutyPaid.shouldhavepaid.error.decimalPlaces = Amount of Customs Duty that
 customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty should have been paid?
 customsDutyDueToHMRC.error.length = Customs Duty should have been paid must be 14 characters or less
 
-customsDutyPaid.amounts.error.same = The due amount cannot be equal to the amount paid
-customsDutyPaid.amounts.error.greater = The due amount cannot be more than the amount paid
+customsDutyPaid.amounts.error.same = The should have been paid amount cannot be equal to the amount paid
+customsDutyPaid.amounts.error.greater = The should have been paid amount cannot be more than the amount paid
 
 otherDutiesPaid.title = How much was paid in other duties to HMRC?
 otherDutiesPaid.heading = How much was paid in other duties to HMRC?

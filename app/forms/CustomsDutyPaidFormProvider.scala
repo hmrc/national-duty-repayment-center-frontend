@@ -45,7 +45,7 @@ class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
           )
         )
     )(CustomsDutyPaid.apply)(CustomsDutyPaid.unapply)
-      .verifying("dutyPaid.amounts.error.same", duty => duty.dueAmount != 0)
-      .verifying("dutyPaid.amounts.error.greater", duty => duty.dueAmount >= 0)
+      .verifying("customsDutyPaid.amounts.error.same", duty => duty.dueAmount != 0)
+      .verifying("customsDutyPaid.amounts.error.greater", duty => duty.dueAmount >= 0)
   )
 }

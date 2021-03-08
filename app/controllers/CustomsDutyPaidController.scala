@@ -52,14 +52,8 @@ class CustomsDutyPaidController @Inject()(
     implicit request =>
 
       val preparedForm = request.userAnswers.get(CustomsDutyPaidPage) match {
-        case None => {
-          println("XXXXXXXXXXXHERE000000000")
-          form
-        }
-        case Some(value) => {
-          println("XXXXXXXXXXXHERE111111")
-          form.fill(value)
-        }
+        case None => form
+        case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, mode, getBackLink(mode)))
