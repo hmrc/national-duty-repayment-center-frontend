@@ -44,8 +44,34 @@ class FileUploadedViewContext extends RadioItemsHelper with SummaryListRowHelper
     )
 
   def summaryListOfFileUploads(
+                                fileUploads: FileUploads,
+                                removeFileCall: String => Call
+                              )(implicit
+                                messages: Messages
+                              ): SummaryList = {
+
+    def fileUploadRow(fileUpload: FileUpload.Accepted, index: Int) =
+      summaryListRow(
+        label = s"$index.",
+        value = fileUpload.fileName,
+        visuallyHiddenText = Some(fileUpload.fileName),
+        keyClasses = Some(""),
+        valueClasses = Some("govuk-!-width-full"),
+        action = (removeFileCall(fileUpload.reference), "site.file.remove")
+      )
+
+    SummaryList(
+      rows = fileUploads.files.collect { case a: FileUpload.Accepted if(a.fileType.contains(SupportingEvidence)) => a }.zipWithIndex.map {
+        case (file, index) => fileUploadRow(file, index + 1)
+      },
+      classes = """govuk-summary-list govuk-!-margin-bottom-9"""
+    )
+  }
+
+  def summaryListOfFileUploads(
     fileUploads: FileUploads,
-    removeFileCall: String => Call
+    removeFileCall: (String, Mode) => Call,
+    mode: Mode
   )(implicit
     messages: Messages
   ): SummaryList = {
@@ -57,7 +83,7 @@ class FileUploadedViewContext extends RadioItemsHelper with SummaryListRowHelper
         visuallyHiddenText = Some(fileUpload.fileName),
         keyClasses = Some(""),
         valueClasses = Some("govuk-!-width-full"),
-        action = (removeFileCall(fileUpload.reference), "site.file.remove")
+        action = (removeFileCall(fileUpload.reference, mode), "site.file.remove")
       )
 
     SummaryList(
