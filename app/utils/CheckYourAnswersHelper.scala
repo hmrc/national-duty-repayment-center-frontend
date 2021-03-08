@@ -149,7 +149,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.ActualPaidAmount),
         Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
       )
   }

@@ -16,24 +16,25 @@
 
 package forms
 
-import forms.behaviours.DecimalFieldBehaviours
+import forms.behaviours.{DecimalFieldBehaviours, StringFieldBehaviours}
+import models.CustomsDutyPaid
 import play.api.data.{Form, FormError}
 
-class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours {
+class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBehaviours {
 
-  val requiredKey = "customsDutyPaid.error.required"
-  val lengthKey = "customsDutyPaid.error.notANumber"
+  val requiredKey = "customsDutyPaid.actualamountpaid.error.required"
+  //val lengthKey = "customsDutyPaid.error.notANumber"
   val maxLength = 14
   val minimum = 0.00
-  var maximum = 99999999999.99
+  var maximum = 9999999.99
 
   val validDataGenerator = intsInRangeWithCommas(minimum.toInt, maximum.toInt)
 
-  val form: Form[String] = new CustomsDutyPaidFormProvider()()
+  val form: Form[CustomsDutyPaid] = new CustomsDutyPaidFormProvider()()
 
-  ".value" must {
+  ".ActualPaidAmount" must {
 
-    val fieldName = "value"
+    val fieldName = "ActualPaidAmount"
 
     behave like fieldThatBindsValidData(
       form,
@@ -44,13 +45,28 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours {
     behave like decimalField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "customsDutyPaid.error.notANumber")
+      nonNumericError  = FormError(fieldName, "customsDutyPaid.actualamountpaid.error.notANumber")
+    )
+
+    behave like decimalFieldWithMinimum(
+      form,
+      fieldName,
+      0.01,
+      expectedError = FormError(fieldName, "customsDutyPaid.actualamountpaid.error.greaterThanZero")
+
+    )
+
+    behave like decimalFieldWithMaximum(
+      form,
+      fieldName,
+      maximum,
+      expectedError = FormError(fieldName, "customsDutyPaid.actualamountpaid.error.length")
     )
 
     "not bind decimals with 3 decimal place" in {
       val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
       result.errors shouldEqual Seq(
-        FormError(fieldName, "customsDutyPaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+        FormError(fieldName, "customsDutyPaid.actualamountpaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
       )
     }
 

@@ -16,8 +16,14 @@
 
 package models
 
-case class CustomsDutyPaid(actuallyPaid: String, shouldHavePaid: String) {
-  val dueAmount: BigDecimal = BigDecimal.apply(actuallyPaid) - BigDecimal.apply(shouldHavePaid)
+import play.api.libs.json.{Json, OFormat}
+
+final case class CustomsDutyPaid(
+                                  ActualPaidAmount: String,
+                                  ShouldHavePaidAmount: String) {
+  val dueAmount: BigDecimal = BigDecimal.apply(ActualPaidAmount) - BigDecimal.apply(ShouldHavePaidAmount)
 }
 
-
+object CustomsDutyPaid {
+  implicit val format: OFormat[CustomsDutyPaid] = Json.format[CustomsDutyPaid]
+}

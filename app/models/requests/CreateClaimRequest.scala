@@ -200,13 +200,13 @@ object CreateClaimRequest {
       val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
 
       val getCustomsDutyPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
-        case true => userAnswers.get(CustomsDutyPaidPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount)
+        case false => Some("0.0")
       }
 
       val getCustomsDutyDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
-        case true => ???
-        case _ => Some("0.0")
+        case true => userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount)
+        case false => Some("0.0")
       }
 
       val CustomsDutyPaidAsDouble = getCustomsDutyPaid.getOrElse("0.0").toDouble

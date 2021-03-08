@@ -59,6 +59,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
         Html(x.map(value => formattedAmount).mkString("")),
         index match {
           case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
+          case "1" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
           case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(CheckMode).url)
           case "1" if isVATExists => Some(routes.VATDueToHMRCController.onPageLoad(CheckMode).url)
           case "0" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(CheckMode).url)
@@ -80,30 +81,28 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   def getSections(): Seq[AnswerSection] = {
 
     val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
-    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble
-    //val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
+    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val customDutyDue = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
     val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
     val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
     val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0").toDouble
     val otherDutiesDue = userAnswers.get(OtherDutiesDueToHMRCPage).getOrElse("0.0").toDouble
 
-    val sections: Seq[AnswerSection] = claimRepaymentType.map { result =>
-      result match {
-        case ClaimRepaymentType.Customs => getAnswerSection("repaymentAmountSummary.customsduty"
-          , customDutyPaid, customDutyDue)
-        case ClaimRepaymentType.Vat => getAnswerSection("repaymentAmountSummary.vat"
-          , vatPaid, vatDue)
-        case ClaimRepaymentType.Other => getAnswerSection("repaymentAmountSummary.otherduties"
-          , otherDutiesPaid, otherDutiesDue)
-      }
+    val sections: Seq[AnswerSection] = claimRepaymentType.map {
+      case ClaimRepaymentType.Customs => getAnswerSection("repaymentAmountSummary.customsduty"
+        , customDutyPaid, customDutyDue)
+      case ClaimRepaymentType.Vat => getAnswerSection("repaymentAmountSummary.vat"
+        , vatPaid, vatDue)
+      case ClaimRepaymentType.Other => getAnswerSection("repaymentAmountSummary.otherduties"
+        , otherDutiesPaid, otherDutiesDue)
     }.toSeq
 
     sections
   }
 
   def getTotalAmount(): Double = {
-    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).getOrElse("0.0").toDouble
-    //val customDutyDue = userAnswers.get(CustomsDutyDueToHMRCPage).getOrElse("0.0").toDouble
+    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val customDutyDue = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
     val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
     val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
     val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).getOrElse("0.0").toDouble

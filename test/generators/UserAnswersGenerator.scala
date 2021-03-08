@@ -42,7 +42,6 @@ trait UserAnswersGenerator extends TryValues {
       arbitrary[(ImporterAddressPage.type, JsValue)] ::
       arbitrary[(OtherDutiesDueToHMRCPage.type, JsValue)] ::
       arbitrary[(OtherDutiesPaidPage.type, JsValue)] ::
-      arbitrary[(CustomsDutyDueToHMRCPage.type, JsValue)] ::
       arbitrary[(CustomsDutyPaidPage.type, JsValue)] ::
       arbitrary[(VATDueToHMRCPage.type, JsValue)] ::
       arbitrary[(VATPaidPage.type, JsValue)] ::
