@@ -26,6 +26,19 @@
 
 @(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
 
+@conditionalContent = {
+    @forms.inputText(
+        form = form,
+        id = "email",
+        name = "email",
+        label = "emailAddress.01.hint",
+        inputType = "email",
+        isPageHeading = false,
+        isInFieldset = false,
+        attributes = Map("autocomplete" -> "email")
+    )
+}
+
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("numberOfEntriesType.title"))}"),
     backLink = Some(backLink.url)
@@ -35,16 +48,23 @@
 
         @components.error_summary(form.errors)
 
-        @forms.inputRadio(
-            form = form,
-            idPrefix = "value",
-            name = "value",
-            items = NumberOfEntriesType.options(form),
-            inline = false,
-            legend = Some("numberOfEntriesType.heading"),
-            hint = None
-        )
+        @forms.fieldset(
+        legend = messages("numberOfEntriesType.heading")
+        ) {
 
-        @html.button("site.continue")
+            @html.p {
+            @messages("numberOfEntriesType.hint")
+            }
+
+            @forms.inputRadio(
+                form = form,
+                idPrefix = "value",
+                name = "value",
+                items = NumberOfEntriesType.options(form),
+                inline = false
+            )
+
+            @html.button("site.continue")
+        }
     }
 }

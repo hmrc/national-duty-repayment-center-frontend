@@ -39,6 +39,7 @@ object NumberOfEntriesType extends Enumerable.Implicits {
         value = Some(value.toString),
         content = Text(messages(s"numberOfEntriesType.${value.toString}")),
         checked = form("value").value.contains(value.toString),
+        conditionalHtml = if(value.toString.equals("02")) Some(conditionalContent) else None,
         hint = Some(Hint(
           content = if(value.toString.equals("02"))
             Text(messages("numberOfEntriesType.02.hint"))

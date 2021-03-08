@@ -123,6 +123,7 @@ ukRegulationType.error.required = Select the reason you are applying for this re
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
+numberOfEntriesType.hint = Multiple entries must be from the same importer, and have the same reason for overpayment.
 numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = More than one entry
 numberOfEntriesType.02.hint = Multiple entries must all be from the same importer.
