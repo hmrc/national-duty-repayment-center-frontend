@@ -209,10 +209,10 @@ object CreateClaimRequest {
         case false => Some("0.0")
       }
 
-      val CustomsDutyPaidAsDouble = getCustomsDutyPaid.getOrElse("0.0").toDouble
-      val CustomsDutyDueAsDouble = getCustomsDutyDue.getOrElse("0.0").toDouble
+      val CustomsDutyPaidAsBigDecimal = BigDecimal(getCustomsDutyPaid.getOrElse("0.0")).setScale(2)
+      val CustomsDutyDueAsBigDecimal = BigDecimal(getCustomsDutyDue.getOrElse("0.0")).setScale(2)
 
-      val CustomsDutyOwedAsString = (CustomsDutyPaidAsDouble - CustomsDutyDueAsDouble).toString
+      val CustomsDutyOwedAsString = (CustomsDutyPaidAsBigDecimal - CustomsDutyDueAsBigDecimal).toString()
 
       DutyTypeTaxList(ClaimRepaymentType.Customs, getCustomsDutyPaid.getOrElse("0.0"), getCustomsDutyDue.getOrElse("0.0"), CustomsDutyOwedAsString)
     }
