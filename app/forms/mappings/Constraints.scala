@@ -20,6 +20,8 @@ import java.time.LocalDate
 
 import play.api.data.validation.{Constraint, Invalid, Valid}
 
+import scala.util.{Success, Try}
+
 trait Constraints {
 
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
@@ -116,5 +118,14 @@ trait Constraints {
         Valid
       case _ =>
         Invalid(errorKey)
+    }
+
+  protected def greaterThanZero(errorKey: String): Constraint[String] =
+    Constraint {
+      input =>
+        Try(BigDecimal(input)) match {
+          case Success(value) if value > 0 => Valid
+          case _ => Invalid(errorKey)
+        }
     }
 }

@@ -202,20 +202,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def customsDutyDueToHMRC: Option[AnswerRow] = userAnswers.get(CustomsDutyDueToHMRCPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("customsDutyDueToHMRC.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode).url)
-      )
-  }
-
   def customsDutyPaid: Option[AnswerRow] = userAnswers.get(CustomsDutyPaidPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.ActualPaidAmount),
         Some(routes.CustomsDutyPaidController.onPageLoad(NormalMode).url)
       )
   }

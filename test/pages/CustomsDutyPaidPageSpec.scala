@@ -16,6 +16,7 @@
 
 package pages
 
+import models.CustomsDutyPaid
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class customsDutyPaidPageSpec extends PageBehaviours {
 
   "customsDutyPaidPage" must {
 
-    beRetrievable[String](CustomsDutyPaidPage)
+    beRetrievable[CustomsDutyPaid](CustomsDutyPaidPage)
 
-    beSettable[String](CustomsDutyPaidPage)
+    beSettable[CustomsDutyPaid](CustomsDutyPaidPage)
 
-    beRemovable[String](CustomsDutyPaidPage)
+    beRemovable[CustomsDutyPaid](CustomsDutyPaidPage)
   }
 }

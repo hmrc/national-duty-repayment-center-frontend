@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package views.components
 
-import pages.behaviours.PageBehaviours
+import uk.gov.hmrc.govukfrontend.views.Aliases.PrefixOrSuffix
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 
+object Prefix {
 
-class CustomsDutyDueToHMRCPageSpec extends PageBehaviours {
-
-  "CustomsDutyDueToHMRCPage" must {
-
-    beRetrievable[String](CustomsDutyDueToHMRCPage)
-
-    beSettable[String](CustomsDutyDueToHMRCPage)
-
-    beRemovable[String](CustomsDutyDueToHMRCPage)
-  }
+  val currencyPrefix = Some(PrefixOrSuffix(content = Text("£")))
 }

@@ -115,6 +115,13 @@ trait ModelGenerators {
     )
   }
 
+  implicit val arbitraryCustomsDutyPaid: Arbitrary[CustomsDutyPaid] = Arbitrary {
+    for {
+      paid <- Gen.choose(99999.99, 9999999.99)
+      due <- Gen.choose(0.10, 9999.99)
+    } yield CustomsDutyPaid(paid.toString, due.toString)
+  }
+
   implicit lazy val arbitraryNoOfEntries: Arbitrary[NoOfEntries] =
     Arbitrary {
       Gen.listOfN(2, Gen.numStr).map(_.mkString).map(NoOfEntries.apply)

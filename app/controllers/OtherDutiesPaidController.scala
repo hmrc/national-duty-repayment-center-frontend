@@ -47,7 +47,7 @@ class OtherDutiesPaidController @Inject()(
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
     userAnswers.get(ClaimRepaymentTypePage) match {
       case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATDueToHMRCController.onPageLoad(mode)
-      case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyDueToHMRCController.onPageLoad(mode)
+      case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(mode)
       case _ => routes.ClaimRepaymentTypeController.onPageLoad(mode)
     }
   }

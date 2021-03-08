@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package forms
+package models
 
-import javax.inject.Inject
+import play.api.libs.json.{Json, OFormat}
 
-import forms.mappings.Mappings
-import play.api.data.Form
+final case class CustomsDutyPaid(
+                                  ActualPaidAmount: String,
+                                  ShouldHavePaidAmount: String) {
+  val dueAmount: BigDecimal = BigDecimal.apply(ActualPaidAmount) - BigDecimal.apply(ShouldHavePaidAmount)
+}
 
-class CustomsDutyDueToHMRCFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("customsDutyDueToHMRC.error.required")
-        .verifying(maxLength(14, "customsDutyDueToHMRC.error.length"))
-    )
+object CustomsDutyPaid {
+  implicit val format: OFormat[CustomsDutyPaid] = Json.format[CustomsDutyPaid]
 }
