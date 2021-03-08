@@ -43,7 +43,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Customs Duty that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/changeCustomsDutyDueToHMRC"),
+        Some("/national-duty-repayment-center/change-customs-duty-paid"),
         Some("customs-duty-due")
       ),
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -89,8 +89,8 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
       val userAnswers = UserAnswers(userAnswersId, Json.obj(
         CustomsDutyPaidPage.toString -> Json.obj(
-          "paid" -> "0.00",
-          "due" -> "0.00"
+          "ActualPaidAmount" -> "0.00",
+          "ShouldHavePaidAmount" -> "0.00"
         )
       ))
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value

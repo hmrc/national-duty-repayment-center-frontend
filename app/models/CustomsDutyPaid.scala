@@ -21,7 +21,7 @@ import play.api.libs.json.{Json, OFormat}
 final case class CustomsDutyPaid(
                                   ActualPaidAmount: String,
                                   ShouldHavePaidAmount: String) {
-  val dueAmount: BigDecimal = BigDecimal.apply(ActualPaidAmount).setScale(2) - BigDecimal.apply(ShouldHavePaidAmount).setScale(2)
+  val dueAmount: BigDecimal = BigDecimal.apply(ActualPaidAmount) - BigDecimal.apply(ShouldHavePaidAmount)
 }
 
 object CustomsDutyPaid {

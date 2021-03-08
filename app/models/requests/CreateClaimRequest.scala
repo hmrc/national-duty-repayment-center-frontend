@@ -201,20 +201,20 @@ object CreateClaimRequest {
 
       val getCustomsDutyPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
         case true => userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount)
-        case false => Some("0.0")
+        case _ => Some("0.00")
       }
 
       val getCustomsDutyDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
         case true => userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount)
-        case false => Some("0.0")
+        case _ => Some("0.00")
       }
 
-      val CustomsDutyPaidAsBigDecimal = BigDecimal(getCustomsDutyPaid.getOrElse("0.0")).setScale(2)
-      val CustomsDutyDueAsBigDecimal = BigDecimal(getCustomsDutyDue.getOrElse("0.0")).setScale(2)
+      val CustomsDutyPaidAsBigDecimal = BigDecimal(getCustomsDutyPaid.getOrElse("0.00")).setScale(2)
+      val CustomsDutyDueAsBigDecimal = BigDecimal(getCustomsDutyDue.getOrElse("0.00")).setScale(2)
 
       val CustomsDutyOwedAsString = (CustomsDutyPaidAsBigDecimal - CustomsDutyDueAsBigDecimal).toString()
 
-      DutyTypeTaxList(ClaimRepaymentType.Customs, getCustomsDutyPaid.getOrElse("0.0"), getCustomsDutyDue.getOrElse("0.0"), CustomsDutyOwedAsString)
+      DutyTypeTaxList(ClaimRepaymentType.Customs, CustomsDutyPaidAsBigDecimal.toString(), CustomsDutyDueAsBigDecimal.toString(), CustomsDutyOwedAsString)
     }
 
     def getVatValues(userAnswers: UserAnswers): DutyTypeTaxList = {
