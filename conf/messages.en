@@ -70,12 +70,16 @@ claimantType.title = Are you the importer or their representative?
 claimantType.heading = Are you the importer or their representative?
 claimantType.01 = I am the importer
 claimantType.02 = I am a representative of the importer
-claimantType.checkYourAnswersLabel = Are you the importer or their representative?
+claimantType.checkYourAnswersLabel = Are you the importer or representative?
 claimantType.error.required = Select if you are the importer or a representative of the importer
+claimantType.importer = Importer
+claimantType.representative = Representative
+
+impInfo.checkYourAnswersLabel = Import information
 
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
-importerEori.checkYourAnswersLabel = What is your EORI number?
+importerEori.checkYourAnswersLabel = Your EORI number
 importerEori.error.invalid = Enter your EORI number in the correct format
 
 isVATRegistered.title = Are you VAT registered?
@@ -95,7 +99,7 @@ customsRegulationType.title = What was the entry acceptance date?
 customsRegulationType.heading = What was the entry acceptance date?
 customsRegulationType.01 = On or before 31 December 2020
 customsRegulationType.02 = From 1 January 2021
-customsRegulationType.checkYourAnswersLabel = What was the acceptance date for all entries?
+customsRegulationType.checkYourAnswersLabel = Acceptance date
 customsRegulationType.error.required = Select if the entry acceptance date was from 1 January 2021, or on or before 31 December 2020
 
 articleType.title = Why are you applying for this repayment?
@@ -103,7 +107,7 @@ articleType.heading = Why are you applying for this repayment?
 articleType.117 = Overpayment of duty or VAT (Article 117)
 articleType.119 = Error by customs (Article 119)
 articleType.120 = Exceptional circumstances (Article 120)
-articleType.checkYourAnswersLabel = Why are you applying for this repayment?
+articleType.checkYourAnswersLabel = Reason for application
 articleType.error.required = Select the reason you are applying for this repayment
 
 ukRegulationType.title = Why are you applying for this repayment?
@@ -114,7 +118,7 @@ ukRegulationType.050 = Overpayment of duty or VAT (Regulation 50)
 ukRegulationType.051 = Rejected (Regulation 51)
 ukRegulationType.052 = Special circumstances (Regulation 52)
 ukRegulationType.053 = Withdrawal of customs declaration (Regulation 53)
-ukRegulationType.checkYourAnswersLabel = Why are you applying for this repayment?
+ukRegulationType.checkYourAnswersLabel = Reason for application
 ukRegulationType.error.required = Select the reason you are applying for this repayment
 
 numberOfEntriesType.title = How many entries do you want to submit?
@@ -123,11 +127,13 @@ numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = More than one entry
 numberOfEntriesType.02.hint = Multiple entries must all be from the same importer.
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
+numberOfEntriesType.single.checkYourAnswersLabel = One entry
+numberOfEntriesType.multiple.checkYourAnswersLabel = Multiple entries
 numberOfEntriesType.error.required = Select if you want to submit one entry or more than one entry
 
 howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
-howManyEntries.checkYourAnswersLabel = How many entries are you claiming for?
+howManyEntries.checkYourAnswersLabel = Number of entries
 howManyEntries.error.required = Enter the number of entries you are claiming for
 howManyEntries.error.length = Number of entries must be between 2 and 999,999
 
@@ -148,11 +154,14 @@ entryDetails.claimEntryDate.error.required.all = Enter the entry date
 entryDetails.claimEntryDate.error.required = Enter the entry date in the correct format
 entryDetails.claimEntryDate.error.invalid = Enter the entry date in the correct format
 
-
-claimEpu.checkYourAnswersLabel = Entry processing unit (EPU)
+entryDetails.checkYourAnswersLabel = Entry information
+entryDetails.epu.checkYourAnswersLabel = EPU number
+entryDetails.number.checkYourAnswersLabel = Entry number
+entryDetails.date.checkYourAnswersLabel = Entry date
 claimEntryNumber.checkYourAnswersLabel = What is the entry number?
 claimEntryDate.checkYourAnswersLabel = What was the entry date?
 
+applicationInformation.checkYourAnswersLabel = Application information
 
 claimReasonType.title = What does your application relate to?
 claimReasonType.heading = What does your application relate to?
@@ -167,13 +176,13 @@ claimReasonType.08 = Return of unwanted goods
 claimReasonType.09 = Value
 claimReasonType.10 = Other
 claimReasonType.or = or
-claimReasonType.checkYourAnswersLabel = What does your application relate to?
+claimReasonType.checkYourAnswersLabel = Reason for overpayment
 claimReasonType.error.required = Select what your application relates to
 
 reasonForOverpayment.title = Tell us why the overpayment happened
 reasonForOverpayment.heading = Tell us why the overpayment happened
-reasonForOverpayment.checkYourAnswersLabel = Tell us why the overpayment happened
-reasonForOverpayment.error.required = Enter the reason for the overpayment
+reasonForOverpayment.checkYourAnswersLabel = Why the overpayment happened
+reasonForOverpayment.error.required = Tell us why the overpayment happened
 reasonForOverpayment.error.length = Reason for overpayment must be 1500 characters or fewer
 reasonForOverpayment.hint = If you do not provide enough information, we may be unable to process your application.
 reasonForOverpayment.p1 = You can tell us about:
@@ -210,7 +219,7 @@ evidenceSupportingDocs.error.required = Select Supporting documents
 
 agentNameImporter.title = What is the importer''s name?
 agentNameImporter.heading = What is the importer''s name?
-agentNameImporter.checkYourAnswersLabel = What is the importer''s name?
+agentNameImporter.checkYourAnswersLabel = Importer name
 agentNameImporter.firstName = First Name
 agentNameImporter.lastName = Last Name
 agentNameImporter.error.required.firstName = Enter your first name
@@ -227,7 +236,7 @@ contactType.hint = We will only use these details if we need more information to
 
 importerName.title = What is your name
 importerName.heading = What is your name
-importerName.checkYourAnswersLabel = Enter your name
+importerName.checkYourAnswersLabel = Your name
 importerName.firstName = First Name
 importerName.lastName = Last Name
 importerName.error.required.firstName = Enter your first name
@@ -237,7 +246,7 @@ importerName.error.length = Your name must be 512 characters or less
 
 phoneNumber.title = Enter your phone number
 phoneNumber.heading = Enter your phone number
-phoneNumber.checkYourAnswersLabel = Enter your phone number
+phoneNumber.checkYourAnswersLabel = Phone number
 phoneNumber.error.required = Enter your phone number
 phoneNumber.error.length = Phone number must be 11 numbers
 phoneNumber.error.invalid = Enter a phone number beginning with 0, like 07700 900 982 or 01632 960 001
@@ -249,7 +258,7 @@ emailAddress.01 = Yes
 emailAddress.02 = No
 emailAddress.hintText = We will use this to contact you about this application. If you select ''No'' we will only contact you by post and telephone.
 emailAddress.01.hint = What is your email address?
-emailAddress.checkYourAnswersLabel = What is your email address?
+emailAddress.checkYourAnswersLabel = Email address
 emailAddress.error.required = Enter an email address
 emailAddress.error.selection.required = Select if we can contact you by email
 emailAddress.error.length = Email Address must be 85 characters or less
@@ -266,7 +275,7 @@ repaymentType.title = Select repayment method
 repaymentType.heading = Select repayment method
 repaymentType.01 = Current month amendment (CMA)
 repaymentType.02 = Bank transfer (Bacs)
-repaymentType.checkYourAnswersLabel = Select repayment method
+repaymentType.checkYourAnswersLabel = Payment method
 repaymentType.error.required = Select how you want to receive the repayment
 repaymentType..help.header = What is a current month amendment?
 repaymentType.help.p1 = You can use a current month amendment if the overpayment was made using a duty deferment account.
@@ -274,7 +283,7 @@ repaymentType.help.p1 = You can use a current month amendment if the overpayment
 enterAgentEORI.title = What is the importer''s EORI number?
 enterAgentEORI.heading = What is the importer''s EORI number?
 enterAgentEORI.hint = This is 2 letters, followed by either 12 or 15 numbers, like ‘GB123456789123’ or ‘GB123456789123000’.
-enterAgentEORI.checkYourAnswersLabel = What is the importer''s EORI number?
+enterAgentEORI.checkYourAnswersLabel = Importer EORI number
 enterAgentEORI.error.required = Enter the importer's EORI number in the correct format
 enterAgentEORI.error.valid = Enter the importer's EORI number in the correct format
 
@@ -351,7 +360,7 @@ otherDutiesDueToHMRC.error.length = Other Duties should have been paid must be 1
 
 importerAddress.title = What is your address?
 importerAddress.heading = What is your address?
-importerAddress.checkYourAnswersLabel = What is your address?
+importerAddress.checkYourAnswersLabel = Importer address
 agent.importerAddress.title = What is the importer''s address?
 agent.importerAddress.heading = What is the importer''s address?
 agent.importerAddress.checkYourAnswersLabel = What is the importer's address?
@@ -377,7 +386,7 @@ importerAddress.hint = We will use this to send letters about this application.
 
 agentImporterAddress.title = What is your business address?
 agentImporterAddress.heading = What is your business address?
-agentImporterAddress.checkYourAnswersLabel = What is your business address?
+agentImporterAddress.checkYourAnswersLabel = Your address
 agentImporterAddress.hint = We will use this to send letters about this application.
 agentImporterAddress.line1.error.required = Enter Address line 1
 agentImporterAddress.line1.error.length = Address line 1 must be 128 characters or less
@@ -403,7 +412,7 @@ importerManualAddress.addressLine2.heading = Building and street Address line 2
 importerManualAddress.city.heading = Town or city
 importerManualAddress.county.heading = County
 importerManualAddress.country.heading = Country
-importerManualAddress.checkYourAnswersLabel = Enter their address
+importerManualAddress.checkYourAnswersLabel = Importer address
 importerManualAddress.error.required = Enter their address
 importerManualAddress.hint = We will use this to send letters about this application.
 importerManualAddress.error.length = Address must be 128 characters or less
@@ -429,7 +438,7 @@ amend.confirmation.helpUs.p3 = (Takes 30 seconds)
 agentImporterManualAddress.title = Enter your business address
 agentImporterManualAddress.heading = Enter your business address
 agentImporterManualAddress.hint = We will use this to send letters about this application.
-agentImporterManualAddress.checkYourAnswersLabel = Enter your business address
+agentImporterManualAddress.checkYourAnswersLabel = Your address
 agentImporterManualAddress.line1.heading = Building and street
 agentImporterManualAddress.line1.error.required = Enter address line 1
 agentImporterManualAddress.line1.error.length = Address line 1 must be 128 characters or less
@@ -454,7 +463,7 @@ agentImporterManualAddress.postalCode.error.invalid = Enter a real postcode
 
 bankDetails.title = Enter UK bank details
 bankDetails.heading = Enter UK bank details
-bankDetails.checkYourAnswersLabel = Enter UK bank details
+bankDetails.checkYourAnswersLabel = Bank details
 bankDetails.name.heading = Name on the account
 bankDetails.name.hint = Enter your name as it appears on your bank statement.
 bankDetails.name.error.required = Enter the name on the account
@@ -497,6 +506,7 @@ repaymentAmountSummary.otherduties.1=Other duties that should have been paid
 repaymentAmountSummary.otherduties.2=Total other duties repayment amount
 repaymentAmountSummary.total=Total
 repaymentAmountSummary.total.amount=Total repayment amount
+repaymentAmountSummary.total.checkYourAnswersLabel=Total repayment amount
 fileUpload.title = Upload a file
 fileUpload.heading = Upload a file
 
@@ -507,13 +517,22 @@ additionalFileUpload.02 = No
 additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
 additionalFileUpload.error.required = Select yes if you need to upload another file
 
+contactByEmail.title = Can we contact you by email?
+contactByEmail.heading = Can we contact you by email?
+contactByEmail.01 = Yes
+contactByEmail.02 = No
+contactByEmail.checkYourAnswersLabel = Can we contact you by email?
+contactByEmail.error.required = Select if we can contact you by email
+contactByEmail.hintText = We will use this to contact you about this application. If you select ''No'' we will only contact you by post and telephone.
+contactByEmail.yes = Email address
+
 postcode.error.noneFound = Postcode cannot be found
 addressFound.error = Select the address or enter the address manually
 postcode.error.required = Enter a UK postcode
 postcode.error.length = Enter a postcode, like AA1 1AA
 indirectRepresentative.title = Are you an indirect representative of the importer?
 indirectRepresentative.heading = Are you an indirect representative of the importer?
-indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative of the importer?
+indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative?
 indirectRepresentative.error.required = Select if you are an indirect representative of the importer
 
 proofOfAuthority.title = Upload proof of authority
@@ -521,6 +540,7 @@ proofOfAuthority.heading = Upload proof of authority
 proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
 proofOfAuthority.paragraph2 = Upload a file
 proofOfAuthority.error.required = Upload proof of authority
+proofOfAuthority.checkYourAnswersLabel = Proof of authority document
 
 bulkFileUpload.title = Upload the multiple entries spreadsheet
 bulkFileUpload.heading = Upload the multiple entries spreadsheet
@@ -531,7 +551,7 @@ bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
 bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
 bulkFileUpload.paragraph2 = The spreadsheet must be 30MB or less, and in .csv format.
-bulkFileUpload.checkYourAnswersLabel = Upload the multiple entries spreadsheet
+bulkFileUpload.checkYourAnswersLabel = Multiple entries spreadsheet
 bulkFileUpload.error.required = Upload a file to support your application
 
 referenceNumber.title = What is the reference number?
@@ -599,6 +619,7 @@ view.upload-file.help.fileType8=substitute entry, which is a form to declare a s
 view.upload-file.help.line4=Upload a file
 view.upload-file.waiting=Your document is being uploaded. You’ll be redirected once the file has been processed.
 form.upload-file.submit= Submit
+view.upload-file.checkYourAnswersLabel = Supporting documents
 view.file-uploaded.plural.title=You have uploaded {0} files
 view.file-uploaded.plural.heading=You have uploaded {0} files
 view.file-uploaded.list.heading=Documents You have uploaded
@@ -620,6 +641,7 @@ error.file-upload.unknown=The selected file could not be uploaded
 error.file-upload.try-again=The selected file could not be uploaded - try again
 error.uploadAnotherFile.required=Select yes if you want to upload another document
 error.file-upload.duplicate=The selected file has already been uploaded
+view.upload-file.documents.added = documents added
 
 proof-of-authority.title = Upload proof of authority
 proof-of-authority.heading = Upload proof of authority
@@ -670,3 +692,8 @@ amend-file-upload.help.fileFormat2= .jpg
 amend-file-upload.help.fileFormat3= .pdf
 amend-file-upload.help.fileFormat4= .png
 amend-file-upload.help.fileFormat5= .xls
+
+your.details.checkYourAnswersLabel = Your details
+contact.details.checkYourAnswersLabel = Contact details
+payment.information.checkYourAnswersLabel = Payment information
+importer.details.checkYourAnswersLabel = Importer details

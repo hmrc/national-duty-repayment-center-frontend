@@ -235,15 +235,22 @@ GET        /changeAmendCaseResponseType                  controllers.AmendCaseRe
 POST       /changeAmendCaseResponseType                  controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = CheckMode)
 
 # File uploads
-GET         /file-upload                                  controllers.FileUploadController.showFileUpload()
-GET         /file-uploaded                                controllers.FileUploadController.showFileUploaded()
-POST        /file-uploaded                                controllers.FileUploadController.submitUploadAnotherFileChoice()
-
+GET         /file-upload                                  controllers.FileUploadController.showFileUpload(mode: Mode = NormalMode)
+GET         /file-uploaded                                controllers.FileUploadController.showFileUploaded(mode: Mode = NormalMode)
+POST        /file-uploaded                                controllers.FileUploadController.submitUploadAnotherFileChoice(mode: Mode = NormalMode)
 GET         /file-verification/:reference/status          controllers.FileUploadController.checkFileVerificationStatus(reference: String)
 POST        /ndrc/:id/callback-from-upscan                controllers.FileUploadController.callbackFromUpscan(id: String)
-GET         /file-verification                           controllers.FileUploadController.showWaitingForFileVerification
-GET         /file-rejected                                controllers.FileUploadController.markFileUploadAsRejected()
-GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String)
+GET         /file-verification                           controllers.FileUploadController.showWaitingForFileVerification(mode: Mode = NormalMode)
+GET         /file-rejected                                controllers.FileUploadController.markFileUploadAsRejected(mode: Mode = NormalMode)
+GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = NormalMode)
+GET         /back-file-upload                            controllers.FileUploadController.backLink(mode: Mode = NormalMode)
+GET         /change-file-uploaded                         controllers.FileUploadController.showFileUploaded(mode: Mode = CheckMode)
+GET         /change-file-upload                           controllers.FileUploadController.showFileUpload(mode: Mode = CheckMode)
+GET         /change-file-verification                     controllers.FileUploadController.showWaitingForFileVerification(mode: Mode = CheckMode)
+GET         /change-file-rejected                         controllers.FileUploadController.markFileUploadAsRejected(mode: Mode = CheckMode)
+POST        /change-file-uploaded                         controllers.FileUploadController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
+GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
+GET         /change-back-file-upload                            controllers.FileUploadController.backLink(mode: Mode = CheckMode)
 
 # bulk uploads
 GET        /upload-multiple-entries                        controllers.BulkFileUploadController.showFileUpload()

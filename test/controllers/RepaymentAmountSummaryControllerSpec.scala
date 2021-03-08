@@ -37,13 +37,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(Html(
         "Customs Duty that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/change-customs-duty-paid"),
+        Some("/national-duty-repayment-center/customs-duty-paid"),
         Some("customs-duty-paid")
       ),
       AnswerRow(
         Html("Customs Duty that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/change-customs-duty-paid"),
+        Some("/national-duty-repayment-center/customs-duty-paid"),
         Some("customs-duty-due")
       ),
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -52,13 +52,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Import VAT that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/change-import-vat-paid"),
+        Some("/national-duty-repayment-center/import-vat-paid"),
         Some("vat-paid")
       ),
       AnswerRow(
         Html("Import VAT that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/changeVATDueToHMRC"),
+        Some("/national-duty-repayment-center/vatDueToHMRC"),
         Some("vat-due")
       ),
       AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -67,13 +67,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Other duties that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/change-other-duties-paid"),
+        Some("/national-duty-repayment-center/other-duties-paid"),
         Some("other-duties-paid")
       ),
       AnswerRow(
         Html("Other duties that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/changeOtherDutiesDueToHMRC"),
+        Some("/national-duty-repayment-center/otherDutiesDueToHMRC"),
         Some("other-duties-due")
       ),
       AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))

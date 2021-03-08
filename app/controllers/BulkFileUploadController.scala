@@ -35,10 +35,9 @@ import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.BulkFileUploadView
+
 import java.time.LocalDateTime
-
 import javax.inject.{Inject, Named}
-
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -76,23 +75,17 @@ class BulkFileUploadController @Inject()(
   }
 
   val showFileUpload: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    sessionState(request.internalId).flatMap { ua =>
-      ua.userAnswers.flatMap(_.fileUploadState) match {
-        case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
-          for {
-            fs <-  initiateFileUpload(upscanRequest(request.internalId), Some(Bulk))(upscanInitiateConnector.initiate(_))(Some(s.copy(maybeUploadError = None)))
-            b <- updateSession(fs, ua.userAnswers)
-            if b
-          } yield renderState(ua.userAnswers, s)
-        case _ => {
-          val state = request.userAnswers.fileUploadState
-          for {
-            fileUploadState <- initiateFileUpload(upscanRequest(request.internalId), Some(Bulk))(upscanInitiateConnector.initiate(_))(state)
-            res <- updateSession(fileUploadState, Some(request.userAnswers))
-            if res
-          } yield renderState(ua.userAnswers, fileUploadState)
-        }
+    for {
+      ss <- sessionState(request.internalId)
+      s <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
+      fs <- initiateFileUpload(upscanRequest(request.internalId), Some(Bulk))(upscanInitiateConnector.initiate(_))(s)
+      b <- fs match {
+        case f@UploadFile(_, _, _, _) => updateSession(f.copy(maybeUploadError = None), ss.userAnswers)
+        case _ => updateSession(fs, ss.userAnswers)
       }
+      if b
+    } yield {
+      renderState(ss.userAnswers, fs)
     }
   }
 
@@ -104,7 +97,6 @@ class BulkFileUploadController @Inject()(
 
   // GET /file-rejected
   final def markFileUploadAsRejected: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     UpscanUploadErrorForm.bindFromRequest().fold(
       _ => Future.successful(BadRequest),
       s3Error =>
@@ -129,7 +121,6 @@ class BulkFileUploadController @Inject()(
 
   // POST /bulk/:id/callback-from-upscan
   final def callbackFromUpscan(id: String) = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
-
     sessionState(id).flatMap { ss =>
       ss.state match {
         case Some(s) => upscanCallbackArrived(request.body, Bulk)(s).flatMap { newState =>

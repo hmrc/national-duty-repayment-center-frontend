@@ -18,6 +18,7 @@ package services
 
 import connectors.{UpscanInitiateRequest, UpscanInitiateResponse}
 import models.FileType.SupportingEvidence
+import models.FileUpload.Initiated
 import models.requests.UploadRequest
 import models.{DuplicateFileUpload, FileTransmissionFailed, FileType, FileUpload, FileUploadError, FileUploads, FileVerificationFailed, S3UploadError, UpscanFileFailed, UpscanFileReady, UpscanNotification}
 import play.api.libs.json.{Format, Json}
@@ -91,10 +92,19 @@ trait FileUploadService {
 
     state match {
 
-      case Some(current@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) =>
-        Future.successful(if (maybeUploadError.isDefined)
-          current.copy(fileUploads = resetFileUploadStatusToInitiated(reference, fileUploads))
-        else current)
+      case Some(current@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) => {
+        for {
+          upscanResponse <- upscanInitiate(upscanRequest)
+        } yield {
+          val files = fileUploads.files.filterNot(_.isInstanceOf[Initiated])
+          val refreshedCurrent = current.copy(upscanResponse.reference, upscanResponse.uploadRequest, fileUploads.copy(files =
+            files :+ FileUpload.Initiated(fileUploads.files.size + 1, upscanResponse.reference, fileType)
+          ))
+          if (maybeUploadError.isDefined)
+            current.copy(fileUploads = resetFileUploadStatusToInitiated(reference, fileUploads))
+          else refreshedCurrent
+        }
+      }
 
       case Some(current@FileUploaded(fileUploads, _)) =>
         fileUploadOrUploaded(

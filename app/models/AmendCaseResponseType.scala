@@ -35,12 +35,12 @@ object AmendCaseResponseType extends Enumerable.Implicits {
 
   def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {
     value =>
-      CheckboxItem(
+     CheckboxItem(
         name = Some("value[]"),
         id = Some(value.toString),
         value = value.toString,
         content = Text(messages(s"amendCaseResponseType.${value.toString}")),
-        checked = form("value").value.contains(value.toString)
+        checked = form.data.values.exists(_ == value.toString)
       )
   }
 

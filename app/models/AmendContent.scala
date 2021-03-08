@@ -20,7 +20,8 @@ import play.api.libs.json.{Json, OFormat}
 
 
 final case class AmendContent(CaseID: String,
-                              Description: String
+                              Description: String,
+                              TypeOfAmendments: Seq[AmendCaseResponseType]
                         )
 
 object AmendContent {

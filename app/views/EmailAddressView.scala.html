@@ -60,7 +60,7 @@
                     conditionalHtml = Some(conditionalContent)
                 ),
                 RadioItem(
-                    value = Some("02"),
+                    value = form("value").value,
                     content = Text(messages("emailAddress.02")),
                     checked = form("value").value.contains("02")
                 )

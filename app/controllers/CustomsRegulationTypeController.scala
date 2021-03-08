@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
+
 import javax.inject.Inject
 import models.{Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator

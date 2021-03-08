@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.ClaimRepaymentTypeFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{ClaimRepaymentType, Mode}
 import navigation.Navigator
-import pages.ClaimRepaymentTypePage
+import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -31,16 +32,16 @@ import views.html.ClaimRepaymentTypeView
 import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimRepaymentTypeController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ClaimRepaymentTypeFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ClaimRepaymentTypeView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                              override val messagesApi: MessagesApi,
+                                              sessionRepository: SessionRepository,
+                                              navigator: Navigator,
+                                              identify: IdentifierAction,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              formProvider: ClaimRepaymentTypeFormProvider,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: ClaimRepaymentTypeView
+                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -61,7 +62,6 @@ class ClaimRepaymentTypeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
@@ -69,8 +69,33 @@ class ClaimRepaymentTypeController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimRepaymentTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, updatedAnswers))
+            removeCustomsPaid <-
+              Future.fromTry(updatedAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) match {
+                case false => updatedAnswers.remove(CustomsDutyPaidPage)
+                case true => updatedAnswers.set(ClaimRepaymentTypePage, value)
+              })
+            removeVATDue <-
+              Future.fromTry(removeCustomsPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
+                case false => removeCustomsPaid.remove(VATDueToHMRCPage)
+                case true => removeCustomsPaid.set(ClaimRepaymentTypePage, value)
+              })
+            removeVATPaid <-
+              Future.fromTry(removeVATDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
+                case false => removeVATDue.remove(VATPaidPage)
+                case true => removeVATDue.set(ClaimRepaymentTypePage, value)
+              })
+            removeOtherDutiesDue <-
+              Future.fromTry(removeVATPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
+                case false => removeVATPaid.remove(OtherDutiesDueToHMRCPage)
+                case true => removeVATPaid.set(ClaimRepaymentTypePage, value)
+              })
+            removeOtherDutiesPaidDue <-
+              Future.fromTry(removeOtherDutiesDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
+                case false => removeOtherDutiesDue.remove(OtherDutiesPaidPage)
+                case true => removeOtherDutiesDue.set(ClaimRepaymentTypePage, value)
+              })
+            _ <- sessionRepository.set(removeOtherDutiesPaidDue)
+          } yield Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaidDue))
       )
   }
 }

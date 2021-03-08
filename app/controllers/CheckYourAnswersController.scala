@@ -20,9 +20,9 @@ import java.time.LocalDate
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{Mode, NormalMode, RepaymentType, UserAnswers}
+import models.{ClaimantType, Mode, NormalMode, RepaymentType, UserAnswers}
 import navigation.Navigator
-import pages.{CheckYourAnswersPage, RepaymentTypePage}
+import pages.{CheckYourAnswersPage, ClaimantTypePage, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -59,9 +59,7 @@ class CheckYourAnswersController @Inject()(
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
 
-      val sections = Seq(AnswerSection(None, Seq()))
-
-      Ok(view(sections, getBackLink(NormalMode, request.userAnswers)))
+      Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, getBackLink(NormalMode, request.userAnswers)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {

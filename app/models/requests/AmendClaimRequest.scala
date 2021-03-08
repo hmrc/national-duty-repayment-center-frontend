@@ -36,13 +36,19 @@ object AmendClaimRequest {
         case _ => Some("Files Uploaded")
     }
 
+    def getAmendCaseResponseType(userAnswers: UserAnswers) : Seq[AmendCaseResponseType] = {
+      userAnswers.get(AmendCaseResponseTypePage).getOrElse(Nil).toSeq
+    }
+
+
     def getContent(userAnswers: UserAnswers): Option[AmendContent] = for {
       referenceNumber <- userAnswers.get(ReferenceNumberPage)
       furtherInformation <- getFurtherInformation(userAnswers)
     } yield {
       AmendContent(
         referenceNumber,
-        furtherInformation
+        furtherInformation,
+        getAmendCaseResponseType(userAnswers)
       )
     }
 
