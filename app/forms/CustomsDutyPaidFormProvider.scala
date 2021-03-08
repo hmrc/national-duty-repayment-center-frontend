@@ -35,11 +35,13 @@ class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
             maximumValue("99999999999.99", "customsDutyPaid.actualamountpaid.error.length")
           )
         ),
-      "ShouldHavePaidAmount" -> text("customsDutyPaid.shouldhavepaid.error.required")
+      "ShouldHavePaidAmount" -> decimal("customsDutyPaid.shouldhavepaid.error.required",
+        "customsDutyPaid.shouldhavepaid.error.notANumber")
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "customsDutyPaid.shouldhavepaid.error.decimalPlaces"),
-            greaterThanZero("customsDutyPaid.shouldhavepaid.error.greaterThanZero")
+            greaterThanZero("customsDutyPaid.shouldhavepaid.error.greaterThanZero"),
+            maximumValue("99999999999.99", "customsDutyPaid.shouldhavepaid.error.length")
           )
         )
     )(CustomsDutyPaid.apply)(CustomsDutyPaid.unapply)

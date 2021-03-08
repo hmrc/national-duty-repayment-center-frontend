@@ -316,16 +316,21 @@ customsDutyPaid.actualamountpaid.error.greaterThanZero = The amount paid must be
 customsDutyPaid.actualamountpaid.error.notANumber = Amount of Customs Duty that was paid to HMRC must be a number
 customsDutyPaid.actualamountpaid.error.length = Amount of Customs Duty paid to HMRC must be 99999999999.99 or less
 customsDutyPaid.actualamountpaid.error.decimalPlaces = Amount of Customs Duty that should have been paid to HMRC must include pence, like 123.45
-customsDutyPaid.amounts.error.same = The due amount cannot be equal to the amount paid
-customsDutyPaid.amounts.error.greater = The due amount cannot be more than the amount paid
 customsDutyPaid.checkYourAnswersLabel = How much Customs Duty was paid to HMRC?
 customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of overpayment for all entries.
 
 customsDutyPaid.shouldhavepaid.title = How much Customs Duty should have been paid?
 customsDutyPaid.shouldhavepaid.heading = Amount of Customs Duty that should have been paid
+customsDutyPaid.shouldhavepaid.error.required = Enter the amount of Customs Duty that should have been paid to HMRC
+customsDutyPaid.shouldhavepaid.error.greaterThanZero = The amount that should have been paid must be higher than £0
+customsDutyPaid.shouldhavepaid.error.notANumber = Amount of Customs Duty that should have been paid to HMRC must be a number
+customsDutyPaid.shouldhavepaid.error.length = Amount of Customs Duty that should have been paid to HMRC must be 99999999999.99 or less
+customsDutyPaid.shouldhavepaid.error.decimalPlaces = Amount of Customs Duty that should have been paid to HMRC must include pence, like 123.45
 customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty should have been paid?
-customsDutyPaid.shouldhavepaid.error.required = Enter Customs Duty should have been paid
 customsDutyDueToHMRC.error.length = Customs Duty should have been paid must be 14 characters or less
+
+customsDutyPaid.amounts.error.same = The due amount cannot be equal to the amount paid
+customsDutyPaid.amounts.error.greater = The due amount cannot be more than the amount paid
 
 otherDutiesPaid.title = How much was paid in other duties to HMRC?
 otherDutiesPaid.heading = How much was paid in other duties to HMRC?
