@@ -1,4 +1,4 @@
-checkYourAnswers.title = Check your answers before sending your application
+checkYourAnswers.title = Check your answers before sending your information
 checkYourAnswers.heading = Check Your Answers
 checkYourAnswers.guidance = Guidance for check your answers
 
@@ -553,14 +553,14 @@ bulkFileUpload.error.required = Upload a file to support your application
 
 referenceNumber.title = What is the reference number?
 referenceNumber.heading = What is the reference number?
-referenceNumber.checkYourAnswersLabel = What is the reference number?
+referenceNumber.checkYourAnswersLabel = Reference number
 referenceNumber.error.required = Enter Reference Number
 referenceNumber.error.length = Reference Number must be 64 characters or less
 referenceNumber.hintText = For example, NDRC1173434
 
 furtherInformation.title = Give us further information
 furtherInformation.heading = Give us further information
-furtherInformation.checkYourAnswersLabel = Give us further information
+furtherInformation.checkYourAnswersLabel = Response to HMRC
 furtherInformation.error.required = Enter Further Information
 furtherInformation.error.length = FurtherInformation must be 1500 characters or less
 furtherInformation.hintText = Send the information that HMRC has asked for.
@@ -569,7 +569,7 @@ amendCaseResponseType.title = What do you need to do?
 amendCaseResponseType.heading = What do you need to do?
 amendCaseResponseType.supportingDocuments = Send more supporting documents
 amendCaseResponseType.furtherInformation = Give us further information in writing
-amendCaseResponseType.checkYourAnswersLabel = What do you need to do?
+amendCaseResponseType.checkYourAnswersLabel = Response type
 amendCaseResponseType.error.required = Select Response Type
 amendCaseResponseType.hintText = Select all that apply.
 
@@ -599,6 +599,10 @@ amendCaseUploadAnotherFile.02 = No
 amendCaseUploadAnotherFile.checkYourAnswersLabel = Do you need to upload another file?
 amendCaseUploadAnotherFile.error.required = Select another file to upload
 
+amendCaseResponseType.sendInformation.checkYourAnswersLabel = Information
+amendCaseResponseType.sendDocuments.checkYourAnswersLabel = Documents
+amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel = Documents and Information
+
 view.upload-file.title = Upload a file
 view.upload-file.heading = Upload a file
 view.upload-file.line1 = You can upload as many files as you need to.
@@ -616,7 +620,7 @@ view.upload-file.help.fileType8=substitute entry, which is a form to declare a s
 view.upload-file.help.line4=Upload a file
 view.upload-file.waiting=Your document is being uploaded. You’ll be redirected once the file has been processed.
 form.upload-file.submit= Submit
-view.upload-file.checkYourAnswersLabel = Supporting documents
+view.upload-file.checkYourAnswersLabel = Documents
 view.file-uploaded.plural.title=You have uploaded {0} files
 view.file-uploaded.plural.heading=You have uploaded {0} files
 view.file-uploaded.list.heading=Documents You have uploaded
@@ -678,9 +682,13 @@ form.amend-file-uploaded.uploadAnotherFile.yes=Yes
 form.amend-file-uploaded.uploadAnotherFile.no=No
 view.amend-file-uploaded.singular.title=You have uploaded 1 file
 view.amend-file-uploaded.singular.heading=You have uploaded {0} file
-view.amend-.next.title=Upload another document
+view.amend-upload-file.next.title=Upload another document
 view.amend-upload-file.next.heading=Upload another document
-
+view.amend-upload-file.documents.added = You have uploaded {0} documents
+view.amend-upload-file.document.added = You have uploaded {0} document
+amend.next.step.heading = Now send your information
+amend.next.step.p1 = By sending this information you are confirming that, to the best of your knowledge, the details you are providing are correct.
+amend.site.continue = Accept and send
 amend-file-upload.help.linkText = Help with file types
 amend-file-upload.help.line1 = Each file must be 30MB or less.
 amend-file-upload.help.line2 = Accepted file formats

@@ -20,7 +20,7 @@ import com.codahale.metrics.MetricRegistry
 import com.kenshoo.play.metrics.{Metrics, MetricsFilterImpl, MetricsImpl}
 import config.FrontendAppConfig
 import controllers.actions._
-import models.AmendCaseResponseType.Furtherinformation
+import models.AmendCaseResponseType.FurtherInformation
 import models._
 import models.requests.{AmendClaimRequest, CreateClaimRequest}
 import org.mockito.Mockito.when
@@ -150,14 +150,14 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   val amendClaimRequest = AmendClaimRequest(
     AmendContent(CaseID = "Risk-2507",
       Description = "update request for Risk-2507",
-      TypeOfAmendments = Seq(Furtherinformation)), Nil
+      TypeOfAmendments = Seq(FurtherInformation)), Nil
   )
 
   val amendJson = Json.obj(
     "Content" -> Json.obj(
       "CaseID" -> "Risk-2507",
       "Description" -> "update request for Risk-2507",
-      "TypeOfAmendments" -> JsArray(Seq(Json.toJson(Furtherinformation.toString))),
+      "TypeOfAmendments" -> JsArray(Seq(Json.toJson(FurtherInformation.toString))),
     ),
     "uploadedFiles" -> JsArray()
   )

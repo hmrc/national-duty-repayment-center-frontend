@@ -17,10 +17,10 @@
 package repositories
 
 import java.time.LocalDateTime
-
 import akka.stream.Materializer
+
 import javax.inject.Inject
-import models.UserAnswers
+import models.{RichJsObject, UserAnswers}
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
@@ -64,10 +64,15 @@ class DefaultSessionRepository @Inject()(
       "_id" -> userAnswers.id
     )
 
-    val modifier = Json.obj(
-      "$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now))
-    )
-
+    val modifier = {
+      if(userAnswers.fileUploadState.isEmpty)
+      Json.obj(
+      "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(userAnswers.fileUploadPath, JsNull).get
+    ) else
+        Json.obj(
+          "$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now))
+        )
+    }
     collection.flatMap {
       _.update(ordered = false)
         .one(selector, modifier, upsert = true).map {

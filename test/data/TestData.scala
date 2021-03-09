@@ -16,7 +16,7 @@
 
 package data
 
-import models.AmendCaseResponseType.Furtherinformation
+import models.AmendCaseResponseType.FurtherInformation
 import models.FileUpload.Accepted
 import models._
 import models.requests.CreateClaimRequest
@@ -32,7 +32,7 @@ object TestData {
   val testEntryDetails: EntryDetails = EntryDetails("123", "123456A", LocalDate.parse("2012-12-12"))
   val testClaimDescription: ClaimDescription = ClaimDescription("this is a claim description")
   val testClaimRepaymentType: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
-  val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.Furtherinformation, AmendCaseResponseType.Supportingdocuments)
+  val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
   val referenceNumber: String = "P34567"
   val testCustomsDutyPaid: CustomsDutyPaid = CustomsDutyPaid("100.00", "50.00")
   val testAgentImporterHasEORI: AgentImporterHasEORI = AgentImporterHasEORI.Yes

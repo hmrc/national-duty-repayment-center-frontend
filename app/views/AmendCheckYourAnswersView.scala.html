@@ -20,21 +20,34 @@
 @import views.ViewUtils._
 
 @this(
-    govukLayout: views.html.layouts.GovukLayoutWrapper,
-    forms: views.components.forms,
-    html: views.components.html
+        govukLayout: views.html.layouts.GovukLayoutWrapper,
+        details: views.html.components.details,
+        forms: views.components.forms,
+        html: views.components.html
 )
 
-@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
- pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}"),
-
- backLink = Some("#")
+    pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}"),
+    backLink = Some(backLink.url)
 ) {
 
-@forms.formWithCSRF(action = AmendCheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
+    @html.h1("checkYourAnswers.title", classes = "govuk-heading-l")
 
-@html.button("site.continue")
-}
+    @forms.formWithCSRF(action = AmendCheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
+
+        @for(section <- answerSections) {
+            @{
+                section match {
+                    case a: AnswerSection => components.answer_section(a)
+                    case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+                }
+            }
+        }
+        @html.h2("amend.next.step.heading", classes = "govuk-heading-m")
+        @html.p{ @messages("amend.next.step.p1") }
+
+        @html.button("amend.site.continue")
+    }
 }
