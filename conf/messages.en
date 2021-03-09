@@ -316,30 +316,27 @@ vATDueToHMRC.checkYourAnswersLabel = How much import VAT should have been paid?
 vATDueToHMRC.error.required = Enter import VAT should have been paid
 vATDueToHMRC.error.length = Import VAT should have been paid must be 14 characters or less
 
-customsDutyPaid.title = Customs Duty overpayment?
-customsDutyPaid.heading = Customs Duty overpayment?
+customsDutyPaid.title = Customs Duty overpayment
+customsDutyPaid.heading = Customs Duty overpayment
 customsDutyPaid.hint = Enter the amount of Customs Duty that was paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
 customsDutyPaid.actualamountpaid.heading = Amount of Customs Duty that was paid to HMRC
 customsDutyPaid.actualamountpaid.error.required = Enter the amount of Customs Duty that was paid to HMRC
-customsDutyPaid.actualamountpaid.error.greaterThanZero = The amount paid must be higher than £0
-customsDutyPaid.actualamountpaid.error.notANumber = Amount of Customs Duty that was paid to HMRC must be a number
-customsDutyPaid.actualamountpaid.error.length = Amount of Customs Duty paid to HMRC must be 99999999999.99 or less
-customsDutyPaid.actualamountpaid.error.decimalPlaces = Amount of Customs Duty that should have been paid to HMRC must include pence, like 123.45
+customsDutyPaid.actualamountpaid.error.greaterThanZero = The amount of Customs Duty that was paid to HMRC must be more than £0
+customsDutyPaid.actualamountpaid.error.notANumber = The amount of Customs Duty that was paid to HMRC must be a number
+customsDutyPaid.actualamountpaid.error.length = The amount of Customs Duty that was paid to HMRC must £99,999,999,999.99 or less
+customsDutyPaid.actualamountpaid.error.decimalPlaces = The amount of Customs Duty that was paid to HMRC must be an amount of money, like £123.45 or £248
 customsDutyPaid.checkYourAnswersLabel = How much Customs Duty was paid to HMRC?
 customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of overpayment for all entries.
 
-customsDutyPaid.shouldhavepaid.title = How much Customs Duty should have been paid?
 customsDutyPaid.shouldhavepaid.heading = Amount of Customs Duty that should have been paid
-customsDutyPaid.shouldhavepaid.error.required = Enter the amount of Customs Duty that should have been paid to HMRC
-customsDutyPaid.shouldhavepaid.error.greaterThanZero = The amount that should have been paid must be higher than £0
-customsDutyPaid.shouldhavepaid.error.notANumber = Amount of Customs Duty that should have been paid to HMRC must be a number
-customsDutyPaid.shouldhavepaid.error.length = Amount of Customs Duty that should have been paid to HMRC must be 99999999999.99 or less
-customsDutyPaid.shouldhavepaid.error.decimalPlaces = Amount of Customs Duty that should have been paid to HMRC must include pence, like 123.45
-customsDutyDueToHMRC.checkYourAnswersLabel = How much Customs Duty should have been paid?
-customsDutyDueToHMRC.error.length = Customs Duty should have been paid must be 14 characters or less
+customsDutyPaid.shouldhavepaid.error.required = Enter the amount of Customs Duty that should have been paid
+customsDutyPaid.shouldhavepaid.error.greaterThanZero = The amount of Customs Duty that should have been paid must be more than £0
+customsDutyPaid.shouldhavepaid.error.notANumber = The amount of Customs Duty that should have been paid must be a number
+customsDutyPaid.shouldhavepaid.error.length = The amount of Customs Duty that should have been paid must £99,999,999,999.99 or less
+customsDutyPaid.shouldhavepaid.error.decimalPlaces = The amount of Customs Duty that should have been paid must be an amount of money, like £123.45 or £248
 
-customsDutyPaid.amounts.error.same = The should have been paid amount cannot be equal to the amount paid
-customsDutyPaid.amounts.error.greater = The should have been paid amount cannot be more than the amount paid
+customsDutyPaid.amounts.error.same = The amount of Customs Duty that should have been paid cannot be the same as the amount of Customs Duty that was paid to HMRC
+customsDutyPaid.amounts.error.greater = The amount of Customs Duty that should have been paid cannot be more than the amount of Customs Duty that was paid to HMRC
 
 otherDutiesPaid.title = How much was paid in other duties to HMRC?
 otherDutiesPaid.heading = How much was paid in other duties to HMRC?

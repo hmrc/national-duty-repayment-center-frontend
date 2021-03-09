@@ -67,7 +67,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
           case _ => None
         },
         index match {
-          case "0" if isCustomDutyExists => Some("customs-duty-paid")
+          case "0" if isCustomDutyExists => Some("customs-duty-overpayment")
           case "1" if isCustomDutyExists => Some("customs-duty-due")
           case "0" if isVATExists => Some("vat-paid")
           case "1" if isVATExists => Some("vat-due")

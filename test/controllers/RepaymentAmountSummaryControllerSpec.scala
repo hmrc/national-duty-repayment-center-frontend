@@ -37,13 +37,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(Html(
         "Customs Duty that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/customs-duty-paid"),
-        Some("customs-duty-paid")
+        Some("/national-duty-repayment-center/customs-duty-overpayment"),
+        Some("customs-duty-overpayment")
       ),
       AnswerRow(
         Html("Customs Duty that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/customs-duty-paid"),
+        Some("/national-duty-repayment-center/customs-duty-overpayment"),
         Some("customs-duty-due")
       ),
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
