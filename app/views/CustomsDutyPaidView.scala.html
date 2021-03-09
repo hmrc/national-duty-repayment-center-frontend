@@ -25,7 +25,11 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[CustomsDutyPaid], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+
+@updateGlobalErrorsTo(field: String) = @{
+    form.copy(errors = form.errors.map(err => err.copy(key = if(err.key.isEmpty) field else err.key)))
+}
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("customsDutyPaid.title"))}"),
@@ -34,40 +38,43 @@
 
     @forms.formWithCSRF(action = CustomsDutyPaidController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.error_summary(form.errors)
+        @defining(updateGlobalErrorsTo("ShouldHavePaidAmount")) { newForm =>
 
-        @forms.fieldset(
-            legend = messages("customsDutyPaid.heading")
-        ) {
-            @html.p {
-                @messages("customsDutyPaid.hint")
+            @components.error_summary(newForm.errors)
+
+            @forms.fieldset(
+                legend = messages("customsDutyPaid.heading")
+            ) {
+                @html.p {
+                    @messages("customsDutyPaid.hint")
+                }
+
+                @forms.inputText(
+                    form = newForm,
+                    id = "ActualPaidAmount",
+                    name = "ActualPaidAmount",
+                    label = "customsDutyPaid.actualamountpaid.heading",
+                    labelMedium = true,
+                    isPageHeading = false,
+                    prefix = Prefix.currencyPrefix,
+                    classes = Some("govuk-input--width-10"),
+                    attributes = Map("autocomplete" -> "off")
+                )
+
+                @forms.inputText(
+                    form = newForm,
+                    id = "ShouldHavePaidAmount",
+                    name = "ShouldHavePaidAmount",
+                    label = "customsDutyPaid.shouldhavepaid.heading",
+                    labelMedium = true,
+                    isPageHeading = false,
+                    prefix = Prefix.currencyPrefix,
+                    classes = Some("govuk-input--width-10"),
+                    attributes = Map("autocomplete" -> "off")
+                )
             }
 
-            @forms.inputText(
-                form = form,
-                id = "ActualPaidAmount",
-                name = "ActualPaidAmount",
-                label = "customsDutyPaid.actualamountpaid.heading",
-                labelMedium = true,
-                isPageHeading = false,
-                prefix = Prefix.currencyPrefix,
-                classes = Some("govuk-input--width-10"),
-                attributes = Map("autocomplete" -> "off")
-            )
-
-            @forms.inputText(
-                form = form,
-                id = "ShouldHavePaidAmount",
-                name = "ShouldHavePaidAmount",
-                label = "customsDutyPaid.shouldhavepaid.heading",
-                labelMedium = true,
-                isPageHeading = false,
-                prefix = Prefix.currencyPrefix,
-                classes = Some("govuk-input--width-10"),
-                attributes = Map("autocomplete" -> "off")
-            )
+            @html.button("site.continue")
         }
-
-        @html.button("site.continue")
     }
 }
