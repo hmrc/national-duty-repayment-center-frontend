@@ -576,7 +576,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("howManyEntries.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.HowManyEntriesController.onPageLoad(NormalMode).url)
+        Some(routes.NumberOfEntriesTypeController.onPageLoad(NormalMode).url)
       )
   }
 
