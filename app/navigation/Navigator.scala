@@ -19,6 +19,7 @@ package navigation
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import controllers.routes
+import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import pages._
 import models._
 
@@ -78,8 +79,8 @@ class Navigator @Inject()() {
   }
 
   private def getAmendCaseResponseType(answers: UserAnswers): Call =
-    answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Supportingdocuments) match {
-      case true => routes.AmendCaseSendInformationController.showFileUpload()
+    answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.SupportingDocuments) match {
+      case true => routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
       case  _  => routes.FurtherInformationController.onPageLoad(NormalMode)
     }
 
@@ -167,14 +168,27 @@ class Navigator @Inject()() {
     case _ => routes.RepaymentAmountSummaryController.onPageLoad
   }
 
-  private val checkRouteMap: Page => UserAnswers => Call = {
-    case _ => _ => routes.CheckYourAnswersController.onPageLoad()
+  private def getAmendCaseResponseTypeCheckMode(answers: UserAnswers): Call = {
+    def documentSelected = answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.SupportingDocuments)
+
+    (documentSelected, answers.fileUploadState.nonEmpty) match {
+      case (true, true) =>  routes.AmendCaseSendInformationController.showFileUploaded(CheckMode)
+      case (true, false) => routes.AmendCaseSendInformationController.showFileUpload(CheckMode)
+      case (_, _) => routes.FurtherInformationController.onPageLoad(CheckMode)
+    }
   }
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
-    case NormalMode =>
-      normalRoutes(page)(userAnswers)
-    case CheckMode =>
-      checkRouteMap(page)(userAnswers)
+
+  private val checkRouteMap: Page => UserAnswers => Call = {
+    case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
+    case _ => _ => routes.AmendCheckYourAnswersController.onPageLoad()
   }
+
+  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
+    mode match {
+      case NormalMode =>
+        normalRoutes(page)(userAnswers)
+      case CheckMode =>
+        checkRouteMap(page)(userAnswers)
+    }
 }

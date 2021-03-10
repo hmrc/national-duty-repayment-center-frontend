@@ -17,14 +17,13 @@
 package controllers
 
 import java.time.LocalDate
-
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.NormalMode
+import models.{Mode, NormalMode, RepaymentType, UserAnswers}
 import navigation.Navigator
-import pages.AmendCheckYourAnswersPage
+import pages.{AmendCheckYourAnswersPage, FurtherInformationPage, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
 import repositories.SessionRepository
 import services.ClaimService
@@ -47,14 +46,17 @@ class AmendCheckYourAnswersController @Inject()(
                                                  view: AmendCheckYourAnswersView
                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
+    userAnswers.get(FurtherInformationPage).isEmpty match {
+      case true => routes.AmendCaseSendInformationController.showFileUploaded(mode)
+      case _ => routes.FurtherInformationController.onPageLoad(mode)
+    }
+  }
+
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-
-      val sections = Seq(AnswerSection(None, Seq()))
-
-      Ok(view(sections))
+      Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, getBackLink(NormalMode, request.userAnswers)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {

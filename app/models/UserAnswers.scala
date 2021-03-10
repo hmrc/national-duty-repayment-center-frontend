@@ -20,7 +20,7 @@ import play.api.libs.json._
 import queries.{Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime, ZoneOffset}
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
@@ -29,6 +29,8 @@ final case class UserAnswers(
                               lastUpdated: LocalDateTime = LocalDateTime.now,
                               fileUploadState: Option[FileUploadState] = None
                             ) {
+
+   def fileUploadPath: JsPath = JsPath \ "fileUploadState"
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
@@ -97,7 +99,7 @@ object UserAnswers {
       (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
       (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead) and
-        (__ \ "state").readNullable[FileUploadState](uploadReads)
+        (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
       ) (UserAnswers.apply _)
   }
 
@@ -109,7 +111,8 @@ object UserAnswers {
       (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
       (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite) and
-        (__ \ "state").writeNullable[FileUploadState](uploadWrites)
+        (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
     ) (unlift(UserAnswers.unapply))
   }
+
 }

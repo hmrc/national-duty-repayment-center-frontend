@@ -78,7 +78,7 @@ class FurtherInformationController @Inject()(
 
   def hasSupportingDocs(userAnswers: UserAnswers): Boolean  = {
     userAnswers.get(AmendCaseResponseTypePage) match {
-      case Some(s) => s.contains(AmendCaseResponseType.Supportingdocuments)
+      case Some(s) => s.contains(AmendCaseResponseType.SupportingDocuments)
       case _ => false
     }
   }
