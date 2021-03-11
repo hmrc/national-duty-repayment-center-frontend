@@ -84,6 +84,16 @@ trait ModelGenerators {
       Gen.oneOf(NumberOfEntriesType.values)
     }
 
+  implicit lazy val arbitraryEntriesType: Arbitrary[Entries] =
+    Arbitrary {
+      for {
+        numberOfEntriesType <- arbitrary[NumberOfEntriesType]
+        entries <- arbitrary[String]
+      } yield Entries(numberOfEntriesType,
+        entries
+      )
+    }
+
   implicit lazy val arbitraryArticleType: Arbitrary[ArticleType] =
     Arbitrary {
       Gen.oneOf(ArticleType.values)

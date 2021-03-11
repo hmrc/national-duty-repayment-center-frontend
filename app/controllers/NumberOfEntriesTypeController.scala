@@ -17,12 +17,12 @@
 package controllers
 
 import controllers.actions._
-import forms.{HowManyEntriesFormProvider, NumberOfEntriesTypeFormProvider}
+import forms.NumberOfEntriesTypeFormProvider
 
 import javax.inject.Inject
-import models.{Mode, NoOfEntries, NumberOfEntriesType}
+import models.{Mode, NoOfEntries}
 import navigation.Navigator
-import pages.{BulkFileUploadPage, HowManyEntriesPage, NumberOfEntriesTypePage}
+import pages.NumberOfEntriesTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -39,13 +39,11 @@ class NumberOfEntriesTypeController @Inject()(
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
                                                formProvider: NumberOfEntriesTypeFormProvider,
-                                               entriesFormProvider: HowManyEntriesFormProvider,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: NumberOfEntriesTypeView
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
-  val entriesForm = entriesFormProvider()
 
   private def getBackLink(mode: Mode): Call = {
     routes.ClaimantTypeController.onPageLoad(mode)
@@ -59,32 +57,21 @@ class NumberOfEntriesTypeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      val numberOfEntriesForm = request.userAnswers.get(HowManyEntriesPage) match {
-        case None => entriesForm
-        case Some(value) => entriesForm.fill(value)
-      }
-
-      Ok(view(preparedForm, numberOfEntriesForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, entriesForm, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
 
-        value =>
+        value => {
           for {
-            updatedAnswersWithEntries <- Future.fromTry(request.userAnswers.set (NumberOfEntriesTypePage, value))
-            updatedAnswers <-
-               Future.fromTry(form.bindFromRequest().data.contains("entries") match {
-                case false => updatedAnswersWithEntries.set(NumberOfEntriesTypePage, value)
-                case true => updatedAnswersWithEntries.set(HowManyEntriesPage,
-                  NoOfEntries(form.bindFromRequest().data.get("entries").head))
-              })
-            _              <- sessionRepository.set(updatedAnswers)
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, updatedAnswers))
+        }
       )
   }
 }

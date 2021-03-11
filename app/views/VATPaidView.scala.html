@@ -47,8 +47,8 @@
             isInFieldset = false,
             classes = Some("govuk-input--width-10"),
             attributes = Map("autocomplete" -> "off"),
-            hint = userAnswers.get(NumberOfEntriesTypePage) match {
-                case Some(NumberOfEntriesType.Multiple) => Some(messages("vATPaid.hint"))
+            hint = userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+                case NumberOfEntriesType.Multiple => Some(messages("vATPaid.hint"))
                 case _ => None
             }
         )

@@ -18,12 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.VATPaidFormProvider
-import models.{ClaimRepaymentType, NormalMode, UserAnswers}
+import models.{ClaimRepaymentType, Entries, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{ClaimRepaymentTypePage, VATPaidPage}
+import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, VATPaidPage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -47,7 +47,8 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
+        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -71,6 +72,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet)
         .success.value.set(VATPaidPage, "0").success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -118,7 +120,8 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
+        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

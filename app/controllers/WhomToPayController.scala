@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.WhomToPayFormProvider
 import javax.inject.Inject
-import models.{ClaimantType, Mode, NoOfEntries, NumberOfEntriesType, UserAnswers, WhomToPay}
+import models._
 import navigation.Navigator
-import pages.{ClaimantTypePage, EmailAddressPage, HowManyEntriesPage, NumberOfEntriesTypePage, WhomToPayPage}
+import pages.{NumberOfEntriesTypePage, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository

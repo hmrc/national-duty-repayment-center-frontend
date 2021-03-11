@@ -84,9 +84,9 @@ class Navigator @Inject()() {
     }
 
   private def getRepaymentType(answers: UserAnswers): Call =
-    (answers.get(NumberOfEntriesTypePage), answers.get(ClaimantTypePage)) match {
-      case (Some(NumberOfEntriesType.Multiple),Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
-      case (Some(NumberOfEntriesType.Multiple),Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
+    (answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType, answers.get(ClaimantTypePage)) match {
+      case (NumberOfEntriesType.Multiple,Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
+      case (NumberOfEntriesType.Multiple,Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
       case  _  => routes.RepaymentTypeController.onPageLoad(NormalMode)
     }
 
@@ -98,9 +98,9 @@ class Navigator @Inject()() {
     }
 
   private def getReasonForRepayment(answers: UserAnswers) : Call = {
-    answers.get(NumberOfEntriesTypePage) match {
-      case Some (NumberOfEntriesType.Multiple) => routes.BulkFileUploadController.showFileUpload()
-      case Some (NumberOfEntriesType.Single) => routes.EntryDetailsController.onPageLoad(NormalMode)
+    answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Multiple => routes.BulkFileUploadController.showFileUpload()
+      case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
 
     }
   }

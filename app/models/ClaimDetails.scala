@@ -30,7 +30,7 @@ final case class ClaimDetails(
                                ClaimedUnderRegulation: Option[UkRegulationType],
                                Claimant: ClaimantType,
                                ClaimType: NumberOfEntriesType,
-                               NoOfEntries: Option[NoOfEntries],
+                               NoOfEntries: Option[String],
                                EntryDetails: EntryDetails,
                                ClaimReason: ClaimReasonType,
                                ClaimDescription: ClaimDescription,

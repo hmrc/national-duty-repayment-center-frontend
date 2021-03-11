@@ -39,6 +39,8 @@ class OptionFieldBehaviours extends FieldBehaviours {
 
       val generator = stringsExceptSpecificValues(validValues.map(_.toString))
 
+      println("hey..........."+validValues)
+
       forAll(generator -> "invalidValue") {
         value =>
 

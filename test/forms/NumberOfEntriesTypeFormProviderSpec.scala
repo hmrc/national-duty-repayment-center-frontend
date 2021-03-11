@@ -16,20 +16,43 @@
 
 package forms
 
-import forms.behaviours.StringFieldBehaviours
+import forms.behaviours.{OptionFieldBehaviours, StringFieldBehaviours}
+import models.{Entries, NumberOfEntriesType}
+import org.scalacheck.Gen
 import play.api.data.FormError
 
-class HowManyEntriesFormProviderSpec extends StringFieldBehaviours {
+class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with StringFieldBehaviours {
 
-  val requiredKey = "howManyEntries.error.required"
-  val lengthKey = "howManyEntries.error.length"
-  val maxLength = 999999
+  val form = new NumberOfEntriesTypeFormProvider()()
 
-  val form = new HowManyEntriesFormProvider()()
+  val requiredKey = "numberOfEntriesType.error.required"
 
   ".value" must {
 
     val fieldName = "value"
+    val requiredKey = "numberOfEntriesType.error.required"
+
+    behave like optionsField[Entries](
+      form,
+      fieldName,
+      validValues  = Seq(Entries.apply(NumberOfEntriesType.Single,intsAboveValue(1).toString),
+        Entries.apply(NumberOfEntriesType.Multiple,intsAboveValue(1).toString)),
+      invalidError = FormError(fieldName, "error.invalid")
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
+
+  /*".entries" must {
+
+    val fieldName = "value"
+    val requiredKey = "howManyEntries.error.required"
+    val lengthKey = "howManyEntries.error.length"
+    val maxLength = 999999
 
     behave like fieldThatBindsValidData(
       form,
@@ -62,5 +85,5 @@ class HowManyEntriesFormProviderSpec extends StringFieldBehaviours {
 
       result.errors shouldEqual(expectedError)
     }
-  }
+  }*/
 }

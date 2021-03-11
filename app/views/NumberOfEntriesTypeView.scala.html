@@ -24,7 +24,7 @@
     html: views.components.html
 )
 
-@(form: Form[_], entriesForm: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("numberOfEntriesType.title"))}"),
@@ -47,7 +47,7 @@
                 form = form,
                 idPrefix = "value",
                 name = "value",
-                items = NumberOfEntriesType.options(form, entriesForm),
+                items = NumberOfEntriesType.options(form),
                 inline = false
             )
 

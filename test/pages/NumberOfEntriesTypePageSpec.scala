@@ -16,18 +16,17 @@
 
 package pages
 
-import models.NoOfEntries
+import models.Entries
 import pages.behaviours.PageBehaviours
 
+class NumberOfEntriesTypeSpec extends PageBehaviours {
 
-class HowManyEntriesPageSpec extends PageBehaviours {
+  "NumberOfEntriesTypePage" must {
 
-  "HowManyEntriesPage" must {
+    beRetrievable[Entries](NumberOfEntriesTypePage)
 
-    beRetrievable[NoOfEntries](HowManyEntriesPage)
+    beSettable[Entries](NumberOfEntriesTypePage)
 
-    beSettable[NoOfEntries](HowManyEntriesPage)
-
-    beRemovable[NoOfEntries](HowManyEntriesPage)
+    beRemovable[Entries](NumberOfEntriesTypePage)
   }
 }

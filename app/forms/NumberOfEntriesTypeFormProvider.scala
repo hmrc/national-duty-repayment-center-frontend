@@ -17,15 +17,18 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
 import play.api.data.Form
-import models.NumberOfEntriesType
+import models.Entries
 
 class NumberOfEntriesTypeFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[NumberOfEntriesType] =
+  def apply(): Form[Entries] =
     Form(
-      "value" -> enumerable[NumberOfEntriesType]("numberOfEntriesType.error.required")
+      "value" -> numberOfEntriesMapping("howManyEntries.error.length",
+        "howManyEntries.error.required",
+        "numberOfEntriesType.error.required"
+        )
     )
+
 }

@@ -16,10 +16,10 @@
 
 package pages
 
-import models.NumberOfEntriesType
+import models.Entries
 import play.api.libs.json.JsPath
 
-case object NumberOfEntriesTypePage extends QuestionPage[NumberOfEntriesType] {
+case object NumberOfEntriesTypePage extends QuestionPage[Entries] {
 
   override def path: JsPath = JsPath \ toString
 

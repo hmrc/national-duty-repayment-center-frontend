@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.NumberOfEntriesType
-import pages.behaviours.PageBehaviours
+import play.api.libs.json.{Json, OFormat}
 
-class NumberOfEntriesTypeSpec extends PageBehaviours {
+case class Entries(numberOfEntriesType : NumberOfEntriesType, entries: String)
 
-  "NumberOfEntriesTypePage" must {
-
-    beRetrievable[NumberOfEntriesType](NumberOfEntriesTypePage)
-
-    beSettable[NumberOfEntriesType](NumberOfEntriesTypePage)
-
-    beRemovable[NumberOfEntriesType](NumberOfEntriesTypePage)
-  }
+object Entries {
+  implicit val format: OFormat[Entries] = Json.format[Entries]
 }
+
+

@@ -17,45 +17,44 @@
 package controllers
 
 import base.SpecBase
-import forms.HowManyEntriesFormProvider
-import models.{NoOfEntries, NormalMode, UserAnswers}
+import forms.NumberOfEntriesTypeFormProvider
+import models.{Entries, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.HowManyEntriesPage
+import pages.NumberOfEntriesTypePage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.HowManyEntriesView
+import views.html.NumberOfEntriesTypeView
 
 import scala.concurrent.Future
 
-class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
-
-  val backLink = routes.NumberOfEntriesTypeController.onPageLoad(NormalMode)
+class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new HowManyEntriesFormProvider()
+  lazy val numberOfEntriesTypeRoute = routes.NumberOfEntriesTypeController.onPageLoad(NormalMode).url
+
+  val formProvider = new NumberOfEntriesTypeFormProvider()
   val form = formProvider()
 
-  lazy val howManyEntriesRoute = routes.HowManyEntriesController.onPageLoad(NormalMode).url
-
-  "HowManyEntries Controller" must {
+  "NumberOfEntriesType Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, howManyEntriesRoute)
+      val request = FakeRequest(GET, numberOfEntriesTypeRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[HowManyEntriesView]
+      val view = application.injector.instanceOf[NumberOfEntriesTypeView]
+
+      val backLink = routes.ClaimantTypeController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -67,20 +66,22 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(HowManyEntriesPage, NoOfEntries("answer")).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, howManyEntriesRoute)
+      val request = FakeRequest(GET, numberOfEntriesTypeRoute)
 
-      val view = application.injector.instanceOf[HowManyEntriesView]
+      val view = application.injector.instanceOf[NumberOfEntriesTypeView]
 
       val result = route(application, request).value
+
+      val backLink = routes.ClaimantTypeController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(NoOfEntries("answer")), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(Entries(NumberOfEntriesType.Multiple,"2")), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -100,12 +101,13 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, howManyEntriesRoute)
-          .withFormUrlEncodedBody(("value", "10"))
+        FakeRequest(POST, numberOfEntriesTypeRoute)
+          .withFormUrlEncodedBody(("value", NumberOfEntriesType.options(form).head.value.get))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -116,14 +118,16 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, howManyEntriesRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, numberOfEntriesTypeRoute)
+          .withFormUrlEncodedBody(("entries", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("entries" -> "invalid value"))
 
-      val view = application.injector.instanceOf[HowManyEntriesView]
+      val view = application.injector.instanceOf[NumberOfEntriesTypeView]
 
       val result = route(application, request).value
+
+      val backLink = routes.ClaimantTypeController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 
@@ -137,12 +141,11 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, howManyEntriesRoute)
+      val request = FakeRequest(GET, numberOfEntriesTypeRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -153,8 +156,8 @@ class HowManyEntriesControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, howManyEntriesRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, numberOfEntriesTypeRoute)
+          .withFormUrlEncodedBody(("value", NumberOfEntriesType.values.head.toString))
 
       val result = route(application, request).value
 

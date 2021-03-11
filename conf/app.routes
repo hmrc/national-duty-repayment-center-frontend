@@ -57,11 +57,6 @@ POST       /how-many-entries-submitting                        controllers.Numbe
 GET        /change-how-many-entries-submitting                  controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-how-many-entries-submitting                 controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = CheckMode)
 
-GET        /number-of-entries                        controllers.HowManyEntriesController.onPageLoad(mode: Mode = NormalMode)
-POST       /number-of-entries                        controllers.HowManyEntriesController.onSubmit(mode: Mode = NormalMode)
-GET        /change-number-of-entries                  controllers.HowManyEntriesController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-number-of-entries                  controllers.HowManyEntriesController.onSubmit(mode: Mode = CheckMode)
-
 GET        /oldest-entry-date                        controllers.EntryDetailsController.onPageLoad(mode: Mode = NormalMode)
 POST       /oldest-entry-date                        controllers.EntryDetailsController.onSubmit(mode: Mode = NormalMode)
 GET        /change-oldest-entry-date                  controllers.EntryDetailsController.onPageLoad(mode: Mode = CheckMode)

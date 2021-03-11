@@ -120,9 +120,6 @@ trait PageGenerators {
   implicit lazy val arbitraryEntryDetailsPage: Arbitrary[EntryDetailsPage.type] =
     Arbitrary(EntryDetailsPage)
 
-  implicit lazy val arbitraryHowManyEntriesPage: Arbitrary[HowManyEntriesPage.type] =
-    Arbitrary(HowManyEntriesPage)
-
   implicit lazy val arbitraryNumberOfEntriesTypePage: Arbitrary[NumberOfEntriesTypePage.type] =
     Arbitrary(NumberOfEntriesTypePage)
 

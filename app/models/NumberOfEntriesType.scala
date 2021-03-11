@@ -16,17 +16,13 @@
 
 package models
 
-import pages.HowManyEntriesPage
 import play.api.data.Form
 import play.api.i18n.Messages
-import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.govukfrontend.views.Aliases.Hint
-import uk.gov.hmrc.govukfrontend.views.html.components
-import uk.gov.hmrc.govukfrontend.views.viewmodels.label.Label
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.govukfrontend.views.viewmodels.input.Input
-import uk.gov.hmrc.govukfrontend.views.html.components.{govukErrorMessage, govukFieldset, govukHint, govukInput, govukLabel}
+import uk.gov.hmrc.govukfrontend.views.html.components.{govukErrorMessage, govukHint, govukInput, govukLabel}
 
 sealed trait NumberOfEntriesType
 
@@ -43,18 +39,18 @@ object NumberOfEntriesType extends Enumerable.Implicits {
     Single, Multiple
   )
 
-  def options(form: Form[_], entriesForm: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
-    val entries = entriesForm.data.contains("value") match {
-      case true => entriesForm.data.get("value").head
-      case false => ""
-    }
+  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
       RadioItem(
         value = Some(value.toString),
         content = Text(messages(s"numberOfEntriesType.${value.toString}")),
-        checked = form("value").value.contains(value.toString),
+        checked = form.value.isEmpty match {
+          case true => form("value").value.contains(value.toString)
+          case false => form.value.head.asInstanceOf[Entries].numberOfEntriesType == value
+        },
         conditionalHtml = if(value.toString.equals("02")) Some(new govukInput(govukErrorMessage, govukHint, govukLabel)
-        (Input(id="entries", value = Some(entries), name="entries", classes = "govuk-input--width-4",attributes = Map(
+        (Input(id="entries", value = form("entries").value,
+          name="entries", classes = "govuk-input--width-4",attributes = Map(
           "autocomplete" -> "off",
           "inputmode" -> "numeric",
           "pattern" -> "[0-9]*"

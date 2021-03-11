@@ -18,7 +18,7 @@ package forms.mappings
 
 import forms.Validation
 import play.api.data.format.Formatter
-import models.Enumerable
+import models.{Entries, Enumerable, NumberOfEntriesType}
 
 import scala.util.{Failure, Success, Try}
 import play.api.data.{FormError, Mapping}
@@ -147,6 +147,36 @@ trait Formatters {
 
     new CustomBindMapping(emailFieldName, bind, unbind)
 
+  }
+
+  def numberOfEntriesMapping(keyLength: String, keyRequired: String, keySelectionRequired: String): Mapping[Entries] = {
+
+    val entriesFieldName = "entries"
+    val selectionFieldName = "value"
+
+
+    def bind(data: Map[String, String]): Either[Seq[FormError], Entries] = {
+
+      val entries = data.get(entriesFieldName)
+      val selection = data.get("value")
+
+      (entries, selection) match {
+        case (Some(""), Some("02")) => Left(Seq(FormError(entriesFieldName, keyRequired)))
+        case (_, None) => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
+        case (Some(entries), Some("02")) if entries.length > 0 &&
+          !entries.matches(Validation.numberOfEntries) => Left(Seq(FormError(entriesFieldName, keyLength)))
+        case _ => Right(if(selection == Some("02"))
+          Entries.apply(NumberOfEntriesType.Multiple,entries.get) else
+          Entries.apply(NumberOfEntriesType.Single,""))
+      }
+
+    }
+
+    def unbind(value: Entries): Map[String, String] = {
+      Map(entriesFieldName -> value.entries)
+    }
+
+    new CustomBindMapping(entriesFieldName, bind, unbind)
   }
 
 }
