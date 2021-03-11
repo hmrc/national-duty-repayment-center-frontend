@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.{ClaimRepaymentType, NormalMode, UserAnswers}
-import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage}
+import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage, VATPaidPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -52,14 +52,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Import VAT that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/import-vat-paid"),
-        Some("vat-paid")
+        Some("/national-duty-repayment-center/import-vat-overpayment"),
+        Some("import-vat-overpayment")
       ),
       AnswerRow(
         Html("Import VAT that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/vatDueToHMRC"),
-        Some("vat-due")
+        Some("/national-duty-repayment-center/import-vat-overpayment"),
+        Some("import-vat-overpayment")
       ),
       AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
     )),
@@ -98,12 +98,10 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
         )
       ))
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(VATPaidPage, "0.00").success.value
-        .set(VATDueToHMRCPage, "0.00").success.value
 
       val backLink = userAnswers.get(ClaimRepaymentTypePage) match {
         case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
-        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATDueToHMRCController.onPageLoad(NormalMode)
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATPaidController.onPageLoad(NormalMode)
         case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
         case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
       }

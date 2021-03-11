@@ -16,10 +16,9 @@
 
 @import controllers.routes._
 @import models.Mode
-@import models.NumberOfEntriesType
 @import models.UserAnswers
-@import pages.NumberOfEntriesTypePage
-
+@import views.components.Prefix
+@import models.RepaymentAmounts
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -27,32 +26,65 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, userAnswers: UserAnswers, backLink: Call)(implicit request: Request[_], messages: Messages)
+
+@(form: Form[RepaymentAmounts], mode: Mode, backLink: Call,  isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
+
+@updateGlobalErrorsTo(field: String) = @{
+    form.copy(errors = form.errors.map(err => err.copy(key = if(err.key.isEmpty) field else err.key)))
+}
+
+@hint =  @{
+    isSingleEntry match {
+        case true => Some(messages("VATPaid.single_entry.hint"))
+        case _ => Some(messages("VATPaid.multiple.hint"))
+    }
+}
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("vATPaid.title"))}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("vatPaid.title"))}"),
     backLink = Some(backLink.url)
 ) {
 
-@forms.formWithCSRF(action = VATPaidController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = VATPaidController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.error_summary(form.errors)
+        @defining(updateGlobalErrorsTo("ShouldHavePaidAmount")) { newForm =>
 
-        @forms.inputText(
-            form = form,
-            id = "value",
-            name = "value",
-            label = "vATPaid.heading",
-            isPageHeading = true,
-            isInFieldset = false,
-            classes = Some("govuk-input--width-10"),
-            attributes = Map("autocomplete" -> "off"),
-            hint = userAnswers.get(NumberOfEntriesTypePage) match {
-                case Some(NumberOfEntriesType.Multiple) => Some(messages("vATPaid.hint"))
-                case _ => None
+            @components.error_summary(newForm.errors)
+
+            @forms.fieldset(
+                legend = messages("vatPaid.title")
+            ) {
+                @html.p {
+                    @hint
+                }
+
+                @forms.inputText(
+                    form = newForm,
+                    id = "ActualPaidAmount",
+                    name = "ActualPaidAmount",
+                    label = "vatPaid.inputText.hint",
+                    labelMedium = true,
+                    isPageHeading = false,
+                    prefix = Prefix.currencyPrefix,
+                    classes = Some("govuk-input--width-10"),
+                    attributes = Map("autocomplete" -> "off")
+                )
+
+                @forms.inputText(
+                    form = newForm,
+                    id = "ShouldHavePaidAmount",
+                    name = "ShouldHavePaidAmount",
+                    label = "vatDueToHMRC.heading",
+                    labelMedium = true,
+                    isPageHeading = false,
+                    prefix = Prefix.currencyPrefix,
+                    classes = Some("govuk-input--width-10"),
+                    attributes = Map("autocomplete" -> "off")
+                )
+
             }
-        )
 
-        @html.button("site.continue")
+            @html.button("site.continue")
+        }
     }
 }

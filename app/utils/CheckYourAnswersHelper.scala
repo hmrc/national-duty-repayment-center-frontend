@@ -204,20 +204,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def vATDueToHMRC: Option[AnswerRow] = userAnswers.get(VATDueToHMRCPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("vATDueToHMRC.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.VATDueToHMRCController.onPageLoad(NormalMode).url)
-      )
-  }
 
   def vATPaid: Option[AnswerRow] = userAnswers.get(VATPaidPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("vATPaid.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(messages("vatPaid.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.ActualPaidAmount),
         Some(routes.VATPaidController.onPageLoad(NormalMode).url)
       )
   }

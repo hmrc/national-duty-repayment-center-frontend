@@ -137,16 +137,10 @@ POST       /is-importer-vat-registered                        controllers.IsImpo
 GET        /change-is-importer-vat-registered                 controllers.IsImporterVatRegisteredController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-is-importer-vat-registered                  controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = CheckMode)
 
-
-GET        /import-vat-paid                      controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
-POST       /import-vat-paid                        controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
-GET        /change-import-vat-paid                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-import-vat-paid                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
-
-GET        /vatDueToHMRC                        controllers.VATDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
-POST       /vatDueToHMRC                        controllers.VATDueToHMRCController.onSubmit(mode: Mode = NormalMode)
-GET        /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onSubmit(mode: Mode = CheckMode)
+GET        /import-vat-overpayment                    controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /import-vat-overpayment                         controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /change-import-vat-overpayment                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-import-vat-overpayment                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
 
 GET        /customs-duty-overpayment                       controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = NormalMode)
 POST       /customs-duty-overpayment                       controllers.CustomsDutyPaidController.onSubmit(mode: Mode = NormalMode)

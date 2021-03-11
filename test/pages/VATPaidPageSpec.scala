@@ -16,6 +16,7 @@
 
 package pages
 
+import models.RepaymentAmounts
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class VATPaidPageSpec extends PageBehaviours {
 
   "VATPaidPage" must {
 
-    beRetrievable[String](VATPaidPage)
+    beRetrievable[RepaymentAmounts](VATPaidPage)
 
-    beSettable[String](VATPaidPage)
+    beSettable[RepaymentAmounts](VATPaidPage)
 
-    beRemovable[String](VATPaidPage)
+    beRemovable[RepaymentAmounts](VATPaidPage)
   }
 }

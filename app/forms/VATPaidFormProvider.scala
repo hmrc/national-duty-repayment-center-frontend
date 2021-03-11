@@ -19,20 +19,35 @@ package forms
 import forms.Validation.monetaryPattern
 import javax.inject.Inject
 import forms.mappings.Mappings
+import models.RepaymentAmounts
 import play.api.data.Form
+import play.api.data.Forms.mapping
 
 class VATPaidFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[RepaymentAmounts] =
     Form(
-      "value" -> decimal("vATPaid.error.required",
-        "vATPaid.error.notANumber")
-        .verifying(regexp(monetaryPattern, "vATPaid.error.decimalPlaces"))
-        .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
-        .verifying(maximumValue[BigDecimal](99999999999.99, "vATPaid.error.length"))
-        .transform[String](
-          d => d.toString,
-          i => i.toDouble
-        )
+      mapping(
+        "ActualPaidAmount" -> decimal("vatPaid.VATActuallyPaid.error.required",
+          "vatPaid.VATActuallyPaid.error.notANumber")
+          .verifying(
+            firstError(
+              regexp(monetaryPattern, "vatPaid.VATActuallyPaid.error.decimalPlaces")),
+            greaterThanZero("vatPaid.VATActuallyPaid.error.greaterThanZero"),
+            maximumValue("99999999999.99", "vatPaid.VATActuallyPaid.error.length"
+            )
+          ),
+        "ShouldHavePaidAmount" -> decimal("vatPaid.VATShouldHavePaid.error.required",
+          "vatPaid.VATShouldHavePaid.error.notANumber")
+          .verifying(
+            firstError(
+              regexp(monetaryPattern, "vatPaid.VATShouldHavePaid.error.decimalPlaces")) ,
+            greaterThanZero("vatPaid.VATShouldHavePaid.error.greaterThanZero"),
+            maximumValue("99999999999.99", "vatPaid.VATShouldHavePaid.error.length")
+
+          )
+      )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
+        .verifying("vatPaid.amounts.error.same", vat => vat.dueAmount != 0)
+        .verifying("vatDue.amounts.error.greater", vat => vat.dueAmount >= 0)
     )
 }
