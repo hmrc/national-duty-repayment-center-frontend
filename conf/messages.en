@@ -338,8 +338,8 @@ customsDutyPaid.shouldhavepaid.error.decimalPlaces = The amount of Customs Duty 
 customsDutyPaid.amounts.error.same = The amount of Customs Duty that should have been paid cannot be the same as the amount of Customs Duty that was paid to HMRC
 customsDutyPaid.amounts.error.greater = The amount of Customs Duty that should have been paid cannot be more than the amount of Customs Duty that was paid to HMRC
 
-otherDutiesPaid.title = How much was paid in other duties to HMRC?
-otherDutiesPaid.heading = How much was paid in other duties to HMRC?
+otherDutiesPaid.title = Overpayment of other duties
+otherDutiesPaid.heading = Overpayment of other duties
 otherDutiesPaid.single_entry.hint = Enter the amount of other duties that were paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
 otherDutiesPaid.multiple_entry.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
 otherDutiesPaid.actualamountpaid.heading = Amount of other duties that were paid to HMRC
