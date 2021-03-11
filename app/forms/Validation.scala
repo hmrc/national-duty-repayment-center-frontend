@@ -31,5 +31,5 @@ object Validation {
   val epu                           = "^[0-9][0-9][0-9]$"
   val epuEntryNumber                = "^([0-9]{6}[a-z|A-Z])$"
   val emailRegex                    = """^[a-zA-Z0-9\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,85}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,85}[a-zA-Z0-9])?)*$"""
-
+  val referenceNumberPattern        = """^[a-zA-Z0-9]*$"""
 }
