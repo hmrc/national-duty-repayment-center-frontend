@@ -25,12 +25,12 @@ sealed trait AmendCaseResponseType
 
 object AmendCaseResponseType extends Enumerable.Implicits {
 
-  case object Supportingdocuments extends WithName("supportingDocuments") with AmendCaseResponseType
-  case object Furtherinformation extends WithName("furtherInformation") with AmendCaseResponseType
+  case object SupportingDocuments extends WithName("supportingDocuments") with AmendCaseResponseType
+  case object FurtherInformation extends WithName("furtherInformation") with AmendCaseResponseType
 
   val values: Seq[AmendCaseResponseType] = Seq(
-    Supportingdocuments,
-    Furtherinformation
+    SupportingDocuments,
+    FurtherInformation
   )
 
   def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {

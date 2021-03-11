@@ -263,14 +263,20 @@ POST       /upload-proof-of-authority/:id/callback-from-upscan                  
 
 #amend send information
 
-GET         /amend-case-send-information/file-upload                                  controllers.AmendCaseSendInformationController.showFileUpload()
+GET         /amend-case-send-information/file-upload                                  controllers.AmendCaseSendInformationController.showFileUpload(mode: Mode = NormalMode)
 GET         /amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = NormalMode)
 POST        /amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = NormalMode)
 GET         /amend-case-send-information/file-verification/:reference/status          controllers.AmendCaseSendInformationController.checkFileVerificationStatus(reference: String)
 POST        /amend-case-send-information/ndrc/:id/callback-from-upscan                controllers.AmendCaseSendInformationController.callbackFromUpscan(id: String)
-GET         /amend-case-send-information/file-verification                           controllers.AmendCaseSendInformationController.showWaitingForFileVerification
-GET         /amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected()
-GET         /amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String)
+GET         /amend-case-send-information/file-verification                            controllers.AmendCaseSendInformationController.showWaitingForFileVerification(mode: Mode = NormalMode)
+GET         /amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected(mode: Mode = NormalMode)
+GET         /amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode: Mode = NormalMode)
+GET         /amend-case-send-information/back-file-upload                                                         controllers.AmendCaseSendInformationController.backLink(mode: Mode = NormalMode)
 
-GET         /change/amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = CheckMode)
-POST        /change/amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-upload                                  controllers.AmendCaseSendInformationController.showFileUpload(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = CheckMode)
+POST        /change-amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-verification                            controllers.AmendCaseSendInformationController.showWaitingForFileVerification(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/back-file-upload                                                         controllers.AmendCaseSendInformationController.backLink(mode: Mode = CheckMode)

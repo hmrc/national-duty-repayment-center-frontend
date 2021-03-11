@@ -18,9 +18,13 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import pages._
+import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models._
+import pages._
+import services.FileUploaded
 import views.behaviours.ViewBehaviours
+
+import java.time.ZonedDateTime
 
 
 class NavigatorSpec extends SpecBase with ViewBehaviours {
@@ -205,7 +209,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       }
 
       "go to FurtherInformation page after ReferenceType page as Further Information " in {
-        val values: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.Furtherinformation)
+        val values: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.FurtherInformation)
         val answers =
           emptyUserAnswers
             .set(AmendCaseResponseTypePage, values).success.value
@@ -214,12 +218,12 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       }
 
       "go to SupportingDocuments page after ReferenceType page as Supporting documents " in {
-        val values: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.Supportingdocuments)
+        val values: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
         val answers =
           emptyUserAnswers
             .set(AmendCaseResponseTypePage, values).success.value
         navigator.nextPage(AmendCaseResponseTypePage, NormalMode, answers)
-          .mustBe(routes.AmendCaseSendInformationController.showFileUpload())
+          .mustBe(routes.AmendCaseSendInformationController.showFileUpload(NormalMode))
       }
 
       "go to AmendCheckYourAnswers page after FurtherInformation page " in {
@@ -263,11 +267,42 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
 
     "in Check mode" must {
-
       "go to CheckYourAnswers from a page that doesn't exist in the edit route map" in {
-
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.CheckYourAnswersController.onPageLoad()
+        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
+      }
+      "go to File upload page" in {
+        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).success.value
+        navigator.nextPage(AmendCaseResponseTypePage, CheckMode, userAnswers)
+          .mustBe(routes.AmendCaseSendInformationController.showFileUpload(CheckMode))
+      }
+      "go to Further Information page" in {
+        val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
+        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
+        navigator.nextPage(AmendCaseResponseTypePage, CheckMode, userAnswers)
+          .mustBe(routes.FurtherInformationController.onPageLoad(CheckMode))
+      }
+      "go to Check your answers page when Further information is added no Documents selected" in {
+        val fileUploadedState = FileUploaded(
+          FileUploads(files =
+            Seq(
+              FileUpload.Accepted(
+                1,
+                "foo-bar-ref-1",
+                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                "test.pdf",
+                "application/pdf"
+              )
+            )
+          ),
+          acknowledged = true
+        )
+        val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
+        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
+        navigator.nextPage(FurtherInformationPage, CheckMode, userAnswers)
+          .mustBe(routes.AmendCheckYourAnswersController.onPageLoad())
       }
     }
   }
