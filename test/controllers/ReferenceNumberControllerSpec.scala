@@ -25,7 +25,7 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ReferenceNumberPage
 import play.api.inject.bind
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
@@ -64,7 +64,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReferenceNumberPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ReferenceNumberPage, "NDRC000A00AB0ABCABC0AB0").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -77,7 +77,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
+        view(form.fill("NDRC000A00AB0ABCABC0AB0"), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -98,7 +98,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, referenceNumberRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", "NDRC000A00AB0ABCABC0AB0"))
 
       val result = route(application, request).value
 
