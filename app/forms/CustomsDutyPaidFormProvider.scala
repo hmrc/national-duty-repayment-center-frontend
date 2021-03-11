@@ -18,13 +18,13 @@ package forms
 
 import javax.inject.Inject
 import forms.mappings.Mappings
-import models.CustomsDutyPaid
+import models.RepaymentAmounts
 import play.api.data.Form
 import play.api.data.Forms._
 
 class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
 
-  def apply(): Form[CustomsDutyPaid] = Form(
+  def apply(): Form[RepaymentAmounts] = Form(
     mapping(
       "ActualPaidAmount" -> decimal("customsDutyPaid.actualamountpaid.error.required",
         "customsDutyPaid.actualamountpaid.error.notANumber")
@@ -44,7 +44,7 @@ class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
             maximumValue("99999999999.99", "customsDutyPaid.shouldhavepaid.error.length")
           )
         )
-    )(CustomsDutyPaid.apply)(CustomsDutyPaid.unapply)
+    )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
       .verifying("customsDutyPaid.amounts.error.same", duty => duty.dueAmount != 0)
       .verifying("customsDutyPaid.amounts.error.greater", duty => duty.dueAmount >= 0)
   )

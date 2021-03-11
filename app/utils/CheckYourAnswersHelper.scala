@@ -186,20 +186,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     ).filter(!_.isEmpty()).mkString("<br>"))
   }
 
-  def otherDutiesDueToHMRC: Option[AnswerRow] = userAnswers.get(OtherDutiesDueToHMRCPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("otherDutiesDueToHMRC.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode).url)
-      )
-  }
-
   def otherDutiesPaid: Option[AnswerRow] = userAnswers.get(OtherDutiesPaidPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("otherDutiesPaid.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.ActualPaidAmount),
         Some(routes.OtherDutiesPaidController.onPageLoad(NormalMode).url)
       )
   }

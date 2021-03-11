@@ -153,15 +153,10 @@ POST       /customs-duty-overpayment                       controllers.CustomsDu
 GET        /change-customs-duty-overpayment                controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-customs-duty-overpayment                controllers.CustomsDutyPaidController.onSubmit(mode: Mode = CheckMode)
 
-GET        /other-duties-paid                        controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
-POST       /other-duties-paid                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
-GET        /change-other-duties-paid                  controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-other-duties-paid                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
-
-GET        /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
-POST       /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = NormalMode)
-GET        /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = CheckMode)
+GET        /other-duties-overpayment                        controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /other-duties-overpayment                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /change-other-duties-overpayment                 controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-other-duties-overpayment                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
 
 GET         /select-importer-address                      controllers.ImporterAddressController.onPageLoad(mode: Mode = NormalMode)
 POST        /select-importer-address                      controllers.ImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)

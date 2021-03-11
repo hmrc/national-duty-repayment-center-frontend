@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Json, OFormat}
 
-case object OtherDutiesDueToHMRCPage extends QuestionPage[String] {
+final case class RepaymentAmounts(
+                                  ActualPaidAmount: String,
+                                  ShouldHavePaidAmount: String) {
+  val dueAmount: BigDecimal = BigDecimal.apply(ActualPaidAmount) - BigDecimal.apply(ShouldHavePaidAmount)
+}
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "otherDutiesDueToHMRC"
+object RepaymentAmounts {
+  implicit val format: OFormat[RepaymentAmounts] = Json.format[RepaymentAmounts]
 }
