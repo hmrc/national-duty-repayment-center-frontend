@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.CustomsDutyPaidFormProvider
-import models.{CustomsDutyPaid, NormalMode, UserAnswers}
+import models.{RepaymentAmounts, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -90,7 +90,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(CustomsDutyPaid("100.00", "50.00")), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(RepaymentAmounts("100.00", "50.00")), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

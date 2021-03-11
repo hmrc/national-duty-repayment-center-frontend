@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.DecimalFieldBehaviours
-import models.CustomsDutyPaid
+import models.RepaymentAmounts
 import play.api.data.{Form, FormError}
 
 class OtherDutiesPaidFormProviderSpec extends DecimalFieldBehaviours {
@@ -30,7 +30,7 @@ class OtherDutiesPaidFormProviderSpec extends DecimalFieldBehaviours {
 
   val validDataGenerator = intsInRangeWithCommas(minimum.toInt, maximum.toInt)
 
-  val form: Form[CustomsDutyPaid] = new OtherDutiesPaidFormProvider()()
+  val form: Form[RepaymentAmounts] = new OtherDutiesPaidFormProvider()()
 
   ".ActualPaidAmount" must {
 

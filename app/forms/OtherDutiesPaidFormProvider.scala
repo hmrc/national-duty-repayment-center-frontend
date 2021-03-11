@@ -16,16 +16,15 @@
 
 package forms
 
-import forms.Validation.monetaryPattern
 import javax.inject.Inject
 import forms.mappings.Mappings
-import models.CustomsDutyPaid
+import models.RepaymentAmounts
 import play.api.data.Form
 import play.api.data.Forms.mapping
 
 class OtherDutiesPaidFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[CustomsDutyPaid] = Form(
+  def apply(): Form[RepaymentAmounts] = Form(
     mapping(
       "ActualPaidAmount" -> decimal("otherDutiesPaid.actualamountpaid.error.required",
         "otherDutiesPaid.actualamountpaid.error.notANumber")
@@ -45,7 +44,7 @@ class OtherDutiesPaidFormProvider @Inject() extends Mappings {
             maximumValue("99999999999.99", "otherDutiesPaid.shouldhavepaid.error.length")
           )
         )
-    )(CustomsDutyPaid.apply)(CustomsDutyPaid.unapply)
+    )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
       .verifying("otherDutiesPaid.amounts.error.same", duty => duty.dueAmount != 0)
       .verifying("otherDutiesPaid.amounts.error.greater", duty => duty.dueAmount >= 0)
   )

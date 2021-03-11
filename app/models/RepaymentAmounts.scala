@@ -18,12 +18,12 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class CustomsDutyPaid(
+final case class RepaymentAmounts(
                                   ActualPaidAmount: String,
                                   ShouldHavePaidAmount: String) {
   val dueAmount: BigDecimal = BigDecimal.apply(ActualPaidAmount) - BigDecimal.apply(ShouldHavePaidAmount)
 }
 
-object CustomsDutyPaid {
-  implicit val format: OFormat[CustomsDutyPaid] = Json.format[CustomsDutyPaid]
+object RepaymentAmounts {
+  implicit val format: OFormat[RepaymentAmounts] = Json.format[RepaymentAmounts]
 }
