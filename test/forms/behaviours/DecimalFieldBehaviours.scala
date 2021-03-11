@@ -43,7 +43,7 @@ trait DecimalFieldBehaviours extends FieldBehaviours {
 
       forAll(decimalsBelowValue(minimum) -> "decimalBelowMin") {
         number: BigDecimal =>
-          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+          val result = form.bind(Map(fieldName -> number.setScale(2).toString)).apply(fieldName)
           result.errors shouldEqual Seq(expectedError)
       }
     }
