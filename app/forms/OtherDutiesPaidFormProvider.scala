@@ -19,20 +19,34 @@ package forms
 import forms.Validation.monetaryPattern
 import javax.inject.Inject
 import forms.mappings.Mappings
+import models.CustomsDutyPaid
 import play.api.data.Form
+import play.api.data.Forms.mapping
 
 class OtherDutiesPaidFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> decimal("otherDutiesPaid.error.required",
-        "otherDutiesPaid.error.notANumber")
-        .verifying(regexp(monetaryPattern, "otherDutiesPaid.error.decimalPlaces"))
-        .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
-        .verifying(maximumValue[BigDecimal](99999999999.99, "otherDutiesPaid.error.length"))
-        .transform[String](
-          d => d.toString,
-          i => i.toDouble
+  def apply(): Form[CustomsDutyPaid] = Form(
+    mapping(
+      "ActualPaidAmount" -> decimal("otherDutiesPaid.actualamountpaid.error.required",
+        "otherDutiesPaid.actualamountpaid.error.notANumber")
+        .verifying(
+          firstError(
+            regexp(Validation.monetaryPattern, "otherDutiesPaid.actualamountpaid.error.decimalPlaces"),
+            greaterThanZero("otherDutiesPaid.actualamountpaid.error.greaterThanZero"),
+            maximumValue("99999999999.99", "otherDutiesPaid.actualamountpaid.error.length")
+          )
+        ),
+      "ShouldHavePaidAmount" -> decimal("otherDutiesPaid.shouldhavepaid.error.required",
+        "otherDutiesPaid.shouldhavepaid.error.notANumber")
+        .verifying(
+          firstError(
+            regexp(Validation.monetaryPattern, "otherDutiesPaid.shouldhavepaid.error.decimalPlaces"),
+            greaterThanZero("otherDutiesPaid.shouldhavepaid.error.greaterThanZero"),
+            maximumValue("99999999999.99", "otherDutiesPaid.shouldhavepaid.error.length")
+          )
         )
-    )
+    )(CustomsDutyPaid.apply)(CustomsDutyPaid.unapply)
+      .verifying("otherDutiesPaid.amounts.error.same", duty => duty.dueAmount != 0)
+      .verifying("otherDutiesPaid.amounts.error.greater", duty => duty.dueAmount >= 0)
+  )
 }

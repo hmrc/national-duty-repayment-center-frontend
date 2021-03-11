@@ -244,21 +244,21 @@ object CreateClaimRequest {
       val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
 
       val getOtherDutyPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Other) match {
-        case true => userAnswers.get(OtherDutiesPaidPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount)
+        case _ => Some("0.00")
       }
 
       val getOtherDutyDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Other) match {
-        case true => userAnswers.get(OtherDutiesDueToHMRCPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount)
+        case _ => Some("0.00")
       }
 
-      val OtherDutyPaidAsDouble = getOtherDutyPaid.getOrElse("0.0").toDouble
-      val OtherDutyDueAsDouble = getOtherDutyDue.getOrElse("0.0").toDouble
+      val OtherDutyPaidAsBigDecimal = BigDecimal(getOtherDutyPaid.getOrElse("0.0")).setScale(2)
+      val OtherDutyDueAsBigDecimal = BigDecimal(getOtherDutyDue.getOrElse("0.0")).setScale(2)
 
-      val OtherDutyOwedAsString = (OtherDutyPaidAsDouble - OtherDutyDueAsDouble).toString
+      val OtherDutyOwedAsString = (OtherDutyPaidAsBigDecimal - OtherDutyDueAsBigDecimal).toString
 
-      DutyTypeTaxList(ClaimRepaymentType.Other, getOtherDutyPaid.getOrElse("0.0"), getOtherDutyDue.getOrElse("0.0"), OtherDutyOwedAsString)
+      DutyTypeTaxList(ClaimRepaymentType.Other, OtherDutyPaidAsBigDecimal.toString(), OtherDutyDueAsBigDecimal.toString(), OtherDutyOwedAsString)
     }
 
     def getDutyTypeTaxDetails(answers: UserAnswers): Seq[DutyTypeTaxList] = {

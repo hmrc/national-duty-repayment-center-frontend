@@ -39,8 +39,7 @@ class Navigator @Inject()() {
     case CustomsDutyPaidPage =>  getVATRepaymentType
     case VATPaidPage => _ => routes.VATDueToHMRCController.onPageLoad(NormalMode)
     case VATDueToHMRCPage => getOtherRepaymentType
-    case OtherDutiesPaidPage => _ => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
-    case OtherDutiesDueToHMRCPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
     case AgentImporterHasEORIPage => getAgentEORIStatus
     case ImporterEoriPage => getEORIPage
     case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)

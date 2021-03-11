@@ -18,13 +18,14 @@ package controllers
 
 import base.SpecBase
 import forms.OtherDutiesPaidFormProvider
-import models.{ClaimRepaymentType, NormalMode, UserAnswers}
+import models.{ClaimRepaymentType, CustomsDutyPaid, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimRepaymentTypePage, OtherDutiesPaidPage}
 import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -34,6 +35,16 @@ import views.html.OtherDutiesPaidView
 import scala.concurrent.Future
 
 class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
+
+  private val userAnswers = UserAnswers(
+    userAnswersId,
+    Json.obj(
+      OtherDutiesPaidPage.toString -> Json.obj(
+        "ActualPaidAmount"   -> "100.00",
+        "ShouldHavePaidAmount"      -> "50.00"
+      )
+    )
+  )
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -69,10 +80,9 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet)
-        .success.value.set(OtherDutiesPaidPage, "0").success.value
+      val userAnswersFull = userAnswers.set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
       val request = FakeRequest(GET, otherDutiesPaidRoute)
 
@@ -85,7 +95,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("0"), NormalMode, otherDutiesBackLink, false)(fakeRequest, messages).toString
+        view(form.fill(CustomsDutyPaid("100.00", "50.00")), NormalMode, otherDutiesBackLink, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -106,7 +116,10 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, otherDutiesPaidRoute)
-          .withFormUrlEncodedBody(("value", "0"))
+          .withFormUrlEncodedBody(
+            ("ActualPaidAmount", "100.00"),
+            ("ShouldHavePaidAmount", "50.00")
+          )
 
       val result = route(application, request).value
 

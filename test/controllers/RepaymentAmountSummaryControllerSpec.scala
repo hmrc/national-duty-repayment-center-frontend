@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.{ClaimRepaymentType, NormalMode, UserAnswers}
-import pages.{BankDetailsPage, ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesDueToHMRCPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage}
+import pages.{BankDetailsPage, ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -67,14 +67,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Other duties that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/other-duties-paid"),
-        Some("other-duties-paid")
+        Some("/national-duty-repayment-center/other-duties-overpayment"),
+        Some("other-duties-overpayment")
       ),
       AnswerRow(
         Html("Other duties that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/otherDutiesDueToHMRC"),
-        Some("other-duties-due")
+        Some("/national-duty-repayment-center/other-duties-overpayment"),
+        Some("other-duties-overpayment")
       ),
       AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
     )),
@@ -91,16 +91,18 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
         CustomsDutyPaidPage.toString -> Json.obj(
           "ActualPaidAmount" -> "0.00",
           "ShouldHavePaidAmount" -> "0.00"
+        ),
+        OtherDutiesPaidPage.toString -> Json.obj(
+          "ActualPaidAmount" -> "0.00",
+          "ShouldHavePaidAmount" -> "0.00"
         )
       ))
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
         .set(VATPaidPage, "0.00").success.value
         .set(VATDueToHMRCPage, "0.00").success.value
-        .set(OtherDutiesPaidPage, "0.00").success.value
-        .set(OtherDutiesDueToHMRCPage, "0.00").success.value
 
       val backLink = userAnswers.get(ClaimRepaymentTypePage) match {
-        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
         case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATDueToHMRCController.onPageLoad(NormalMode)
         case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
         case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)

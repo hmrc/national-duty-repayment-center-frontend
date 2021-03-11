@@ -340,20 +340,26 @@ customsDutyPaid.amounts.error.greater = The amount of Customs Duty that should h
 
 otherDutiesPaid.title = How much was paid in other duties to HMRC?
 otherDutiesPaid.heading = How much was paid in other duties to HMRC?
-otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties to HMRC?
+otherDutiesPaid.single_entry.hint = Enter the amount of other duties that were paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
 otherDutiesPaid.multiple_entry.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
-otherDutiesPaid.single_entry.hint = Do not include any agent fees.
-otherDutiesPaid.error.required = Enter the amount of other duties that were due to HMRC
-otherDutiesPaid.error.notANumber = Amount of other duties that were paid to HMRC must be a number
-otherDutiesPaid.error.length = Amount of other duties that were paid to HMRC must be 99999999999.99 or less
-otherDutiesPaid.error.decimalPlaces = Amount of other duties that were paid to HMRC must include pence, like 123.45
+otherDutiesPaid.actualamountpaid.heading = Amount of other duties that were paid to HMRC
+otherDutiesPaid.actualamountpaid.error.required = Enter the amount of other duties that were paid to HMRC
+otherDutiesPaid.actualamountpaid.error.greaterThanZero = The amount of other duties that were paid to HMRC must be more than £0
+otherDutiesPaid.actualamountpaid.error.notANumber = The amount of other duties that were paid to HMRC must be a number
+otherDutiesPaid.actualamountpaid.error.length = The amount of other duties that were paid to HMRC must £99,999,999,999.99 or less
+otherDutiesPaid.actualamountpaid.error.decimalPlaces = The amount of other duties that were paid to HMRC must be an amount of money, like £123.45 or £248
 
+otherDutiesPaid.shouldhavepaid.heading = Amount of other duties that should have been paid
+otherDutiesPaid.shouldhavepaid.error.required = Enter the amount of other duties that should have been paid
+otherDutiesPaid.shouldhavepaid.error.greaterThanZero = The amount of other duties that should have been paid must be more than £0
+otherDutiesPaid.shouldhavepaid.error.notANumber = The amount of other duties that should have been paid must be a number
+otherDutiesPaid.shouldhavepaid.error.length = The amount of other duties that should have been paid must £99,999,999,999.99 or less
+otherDutiesPaid.shouldhavepaid.error.decimalPlaces = The amount of other duties that should have been paid must be an amount of money, like £123.45 or £248
 
-otherDutiesDueToHMRC.title = How much should have been paid in other duties?
-otherDutiesDueToHMRC.heading = How much should have been paid in other duties?
-otherDutiesDueToHMRC.checkYourAnswersLabel = How much should have been paid in other duties?
-otherDutiesDueToHMRC.error.required = Enter Other Duties should have been paid
-otherDutiesDueToHMRC.error.length = Other Duties should have been paid must be 14 characters or less
+otherDutiesPaid.amounts.error.same = The amount of other duties that should have been paid cannot be the same as the amount of other duties that were paid to HMRC
+otherDutiesPaid.amounts.error.greater = The amount of other duties that should have been paid cannot be more than the amount of other duties that were paid to HMRC
+
+otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties to HMRC?
 
 importerAddress.title = What is your address?
 importerAddress.heading = What is your address?

@@ -84,18 +84,13 @@ class ClaimRepaymentTypeController @Inject()(
                 case false => removeVATDue.remove(VATPaidPage)
                 case true => removeVATDue.set(ClaimRepaymentTypePage, value)
               })
-            removeOtherDutiesDue <-
+            removeOtherDutiesPaid <-
               Future.fromTry(removeVATPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
-                case false => removeVATPaid.remove(OtherDutiesDueToHMRCPage)
+                case false => removeVATPaid.remove(OtherDutiesPaidPage)
                 case true => removeVATPaid.set(ClaimRepaymentTypePage, value)
               })
-            removeOtherDutiesPaidDue <-
-              Future.fromTry(removeOtherDutiesDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
-                case false => removeOtherDutiesDue.remove(OtherDutiesPaidPage)
-                case true => removeOtherDutiesDue.set(ClaimRepaymentTypePage, value)
-              })
-            _ <- sessionRepository.set(removeOtherDutiesPaidDue)
-          } yield Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaidDue))
+            _ <- sessionRepository.set(removeOtherDutiesPaid)
+          } yield Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaid))
       )
   }
 }
