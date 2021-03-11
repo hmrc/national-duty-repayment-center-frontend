@@ -74,7 +74,7 @@ trait Constraints {
 
   protected def regexp(regex: String, errorKey: String): Constraint[String] =
     Constraint {
-      case str if str.matches(regex) =>
+      case str if str.trim.matches(regex) =>
         Valid
       case _ =>
         Invalid(errorKey, regex)
@@ -82,7 +82,7 @@ trait Constraints {
 
   protected def maxLength(maximum: Int, errorKey: String): Constraint[String] =
     Constraint {
-      case str if str.length <= maximum =>
+      case str if str.trim.length <= maximum =>
         Valid
       case _ =>
         Invalid(errorKey, maximum)
@@ -90,10 +90,18 @@ trait Constraints {
 
   protected def minLength(minimum: Int, errorKey: String): Constraint[String] =
     Constraint {
-      case str if str.length >= minimum =>
+      case str if str.trim.length >= minimum =>
         Valid
       case _ =>
         Invalid(errorKey, minimum)
+    }
+
+  protected def startsWith(errorKey: String): Constraint[String] =
+    Constraint {
+      case str if str.toUpperCase.startsWith("NDRC")  =>
+        Valid
+      case _ =>
+        Invalid(errorKey)
     }
 
   protected def maxDate(maximum: LocalDate, errorKey: String, args: Any*): Constraint[LocalDate] =
