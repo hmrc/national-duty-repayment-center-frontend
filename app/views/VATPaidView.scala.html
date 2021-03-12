@@ -35,7 +35,7 @@
 
 @hint =  @{
     isSingleEntry match {
-        case true => Some(messages("VATPaid.single_entry.hint"))
+        case true => Some(messages("VATPaid.single.entry.hint"))
         case _ => Some(messages("VATPaid.multiple.hint"))
     }
 }
@@ -74,7 +74,7 @@
                     form = newForm,
                     id = "ShouldHavePaidAmount",
                     name = "ShouldHavePaidAmount",
-                    label = "vatDueToHMRC.heading",
+                    label = "vatPaid.shouldhavepaid.heading",
                     labelMedium = true,
                     isPageHeading = false,
                     prefix = Prefix.currencyPrefix,

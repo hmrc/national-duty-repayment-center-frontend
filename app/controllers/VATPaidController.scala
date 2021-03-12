@@ -80,7 +80,7 @@ class VATPaidController @Inject()(
   def isSingleEntry(userAnswers: UserAnswers): Boolean = {
     userAnswers.get(NumberOfEntriesTypePage) match {
       case Some(NumberOfEntriesType.Single) => true
-      case _ => false
+      case Some(NumberOfEntriesType.Multiple)  => false
     }
   }
 }

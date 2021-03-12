@@ -199,7 +199,7 @@ claimRepaymentType.title = What do you want to reclaim?
 claimRepaymentType.heading = What do you want to reclaim?
 claimRepaymentType.hint = Select all that apply.
 claimRepaymentType.01 = Customs Duty
-claimRepaymentType.02 = VAT
+claimRepaymentType.02 = Import VAT
 claimRepaymentType.03 = Another type of duty
 claimRepaymentType.checkYourAnswersLabel = What do you want to reclaim?
 claimRepaymentType.error.required = Select what you want to reclaim
@@ -303,24 +303,24 @@ isImporterVatRegistered.error.required = Select yes if the importer is VAT regis
 
 vatPaid.title = Import VAT overpayment
 vatPaid.checkYourAnswersLabel = Import VAT overpayment
-VATPaid.single_entry.hint = Enter the amount of import VAT that was paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
+VATPaid.single.entry.hint = Enter the amount of import VAT that was paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
 VATPaid.multiple.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
 vatPaid.inputText.hint = Amount of import VAT that was paid to HMRC
-vatPaid.VATActuallyPaid.error.required = Enter the amount of import VAT that was paid to HMRC
-vatPaid.VATActuallyPaid.error.notANumber = The amount of import VAT that was paid to HMRC must be a number
-vatPaid.VATActuallyPaid.error.greaterThanZero = The amount of import VAT that was paid to HMRC must be more than £0
-vatPaid.VATActuallyPaid.error.length = The amount of import VAT that was paid to HMRC must £99,999,999,999.99 or less
-vatPaid.VATActuallyPaid.error.decimalPlaces = The amount of import VAT that was paid to HMRC must be an amount of money, like £123.45 or £248
+vatPaid.actualamountpaid.error.required = Enter the amount of import VAT that was paid to HMRC
+vatPaid.actualamountpaid.error.notANumber = The amount of import VAT that was paid to HMRC must be a number
+vatPaid.actualamountpaid.error.greaterThanZero = The amount of import VAT that was paid to HMRC must be more than £0
+vatPaid.actualamountpaid.error.length = The amount of import VAT that was paid to HMRC must £99,999,999,999.99 or less
+vatPaid.actualamountpaid.error.decimalPlaces = The amount of import VAT that was paid to HMRC must be an amount of money, like £123.45 or £248
 
-vatDueToHMRC.heading = Amount of import VAT that should have been paid
-vatPaid.VATShouldHavePaid.error.required = Enter the amount of import VAT that should have been paid
-vatPaid.VATShouldHavePaid.error.greaterThanZero = The amount of import VAT that should have been paid must be more than £0
-vatPaid.VATShouldHavePaid.error.length = The amount of import VAT that should have been paid must £99,999,999,999.99 or less
-vatPaid.VATShouldHavePaid.error.decimalPlaces = The amount of import VAT that should have been paid must be an amount of money, like £123.45 or £248
-vatPaid.VATShouldHavePaid.error.notANumber = The amount of import VAT that should have been paid must be a number
+vatPaid.shouldhavepaid.heading = Amount of import VAT that should have been paid
+vatPaid.shouldhavepaid.error.required = Enter the amount of import VAT that should have been paid
+vatPaid.shouldhavepaid.error.greaterThanZero = The amount of import VAT that should have been paid must be more than £0
+vatPaid.shouldhavepaid.error.length = The amount of import VAT that should have been paid must £99,999,999,999.99 or less
+vatPaid.shouldhavepaid.error.decimalPlaces = The amount of import VAT that should have been paid must be an amount of money, like £123.45 or £248
+vatPaid.shouldhavepaid.error.notANumber = The amount of import VAT that should have been paid must be a number
 
 vatPaid.amounts.error.same = The amount of import VAT that should have been paid cannot be the same as the amount of import VAT that was paid to HMRC
-vatDue.amounts.error.greater = The amount of import VAT that should have been paid cannot be more than the amount of import VAT that was paid to HMRC
+vatPaid.amounts.error.greater = The amount of import VAT that should have been paid cannot be more than the amount of import VAT that was paid to HMRC
 
 customsDutyPaid.title = Customs Duty overpayment
 customsDutyPaid.heading = Customs Duty overpayment

@@ -22,8 +22,8 @@ import play.api.data.{Form, FormError}
 
 class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBehaviours{
 
-  val actualPaidRequiredKey = "vatPaid.VATActuallyPaid.error.required"
-  val shouldHavePaidRequiredKey = "vatPaid.VATShouldHavePaid.error.required"
+  val actualPaidRequiredKey = "vatPaid.actualamountpaid.error.required"
+  val shouldHavePaidRequiredKey = "vatPaid.shouldhavepaid.error.required"
   val maxLength = 14
   val minimum = 0.01
   var maximum = 99999999999.99
@@ -45,14 +45,14 @@ class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBeh
     behave like decimalField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "vatPaid.VATActuallyPaid.error.notANumber")
+      nonNumericError  = FormError(fieldName, "vatPaid.actualamountpaid.error.notANumber")
     )
 
     behave like decimalFieldWithMinimum(
       form,
       fieldName,
       minimum,
-      expectedError = FormError(fieldName, "vatPaid.VATActuallyPaid.error.greaterThanZero")
+      expectedError = FormError(fieldName, "vatPaid.actualamountpaid.error.greaterThanZero")
 
     )
 
@@ -60,7 +60,7 @@ class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBeh
     "not bind decimals with 3 decimal place" in {
       val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
       result.errors shouldEqual Seq(
-        FormError(fieldName, "vatPaid.VATActuallyPaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+        FormError(fieldName, "vatPaid.actualamountpaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
       )
     }
   }
@@ -78,14 +78,14 @@ class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBeh
     behave like decimalField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "vatPaid.VATShouldHavePaid.error.notANumber")
+      nonNumericError  = FormError(fieldName, "vatPaid.shouldhavepaid.error.notANumber")
     )
 
     behave like decimalFieldWithMinimum(
       form,
       fieldName,
       0.01,
-      expectedError = FormError(fieldName, "vatPaid.VATShouldHavePaid.error.greaterThanZero")
+      expectedError = FormError(fieldName, "vatPaid.shouldhavepaid.error.greaterThanZero")
 
     )
 
@@ -93,7 +93,7 @@ class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBeh
     "not bind decimals with 3 decimal place" in {
       val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
       result.errors shouldEqual Seq(
-        FormError(fieldName, "vatPaid.VATShouldHavePaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+        FormError(fieldName, "vatPaid.shouldhavepaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
       )
     }
 
