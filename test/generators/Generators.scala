@@ -116,6 +116,12 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
       chars <- listOfN(length, arbitrary[Char])
     } yield chars.mkString
 
+  def stringsWithMaxLengthAlpha(maxLength: Int): Gen[String] =
+    for {
+      length <- choose(1, maxLength)
+      chars <- listOfN(length, Gen.alphaChar)
+    } yield chars.mkString
+
   def stringsWithMinAndMaxLength(minLength: Int, maxLength: Int): Gen[String] =
     for {
       length <- choose(minLength, maxLength)
@@ -137,6 +143,12 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     maxLength <- (minLength * 2).max(100)
     length    <- Gen.chooseNum(minLength + 1, maxLength)
     chars     <- listOfN(length, arbitrary[Char])
+  } yield chars.mkString
+
+  def stringsLongerThanAlpha(minLength: Int): Gen[String] = for {
+    maxLength <- (minLength * 2).max(100)
+    length    <- Gen.chooseNum(minLength + 1, maxLength)
+    chars     <- listOfN(length,  Gen.alphaChar)
   } yield chars.mkString
 
   def stringsExceptSpecificValues(excluded: Seq[String]): Gen[String] =

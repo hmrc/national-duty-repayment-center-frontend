@@ -561,15 +561,17 @@ bulkFileUpload.error.required = Upload a file to support your application
 referenceNumber.title = What is the reference number?
 referenceNumber.heading = What is the reference number?
 referenceNumber.checkYourAnswersLabel = Reference number
-referenceNumber.error.required = Enter Reference Number
-referenceNumber.error.length = Reference Number must be 64 characters or less
-referenceNumber.hintText = For example, NDRC1173434
+referenceNumber.error.required = Enter the reference number
+referenceNumber.error.length = The reference number must be 23 characters long
+referenceNumber.hintText = For example, NDRC000A00AB0ABCABC0AB0.
+referenceNumber.error.prefix = Enter the reference number in the right format
+referenceNumber.error.invalid.chars =The reference number must only include letters a to z and numbers 0 to 9
 
 furtherInformation.title = Give us further information
 furtherInformation.heading = Give us further information
 furtherInformation.checkYourAnswersLabel = Response to HMRC
-furtherInformation.error.required = Enter Further Information
-furtherInformation.error.length = FurtherInformation must be 1500 characters or less
+furtherInformation.error.required = Enter the further information
+furtherInformation.error.length = Further information must be 1500 characters or fewer
 furtherInformation.hintText = Send the information that HMRC has asked for.
 
 amendCaseResponseType.title = What do you need to do?
@@ -577,7 +579,7 @@ amendCaseResponseType.heading = What do you need to do?
 amendCaseResponseType.supportingDocuments = Send more supporting documents
 amendCaseResponseType.furtherInformation = Give us further information in writing
 amendCaseResponseType.checkYourAnswersLabel = Response type
-amendCaseResponseType.error.required = Select Response Type
+amendCaseResponseType.error.required = Select if you want to send more supporting documents, or give us further information in writing
 amendCaseResponseType.hintText = Select all that apply.
 
 amendCaseSendInformation.error.length = AmendCaseSendInformation must be 1000 characters or less
