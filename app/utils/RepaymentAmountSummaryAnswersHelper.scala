@@ -17,7 +17,7 @@
 package utils
 
 import controllers.routes
-import models.{NormalMode, ClaimRepaymentType, UserAnswers}
+import models.{CheckMode, ClaimRepaymentType, NormalMode, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -58,12 +58,12 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
         Html(x.map(value => HtmlFormat.escape(message).toString).mkString("")),
         Html(x.map(value => formattedAmount).mkString("")),
         index match {
-          case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(NormalMode).url)
-          case "1" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(NormalMode).url)
-          case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(NormalMode).url)
-          case "1" if isVATExists => Some(routes.VATDueToHMRCController.onPageLoad(NormalMode).url)
-          case "0" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(NormalMode).url)
-          case "1" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(NormalMode).url)
+          case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
+          case "1" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
+          case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(CheckMode).url)
+          case "1" if isVATExists => Some(routes.VATDueToHMRCController.onPageLoad(CheckMode).url)
+          case "0" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(CheckMode).url)
+          case "1" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(CheckMode).url)
           case _ => None
         },
         index match {

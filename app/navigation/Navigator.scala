@@ -19,7 +19,6 @@ package navigation
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import controllers.routes
-import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import pages._
 import models._
 
@@ -180,6 +179,9 @@ class Navigator @Inject()() {
 
   private val checkRouteMap: Page => UserAnswers => Call = {
     case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
+    case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
+    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
     case _ => _ => routes.AmendCheckYourAnswersController.onPageLoad()
   }
 
