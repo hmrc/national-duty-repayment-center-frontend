@@ -303,9 +303,9 @@ isImporterVatRegistered.error.required = Select yes if the importer is VAT regis
 
 vatPaid.title = Import VAT overpayment
 vatPaid.checkYourAnswersLabel = Import VAT overpayment
-VATPaid.single.entry.hint = Enter the amount of import VAT that was paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
-VATPaid.multiple.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
-vatPaid.inputText.hint = Amount of import VAT that was paid to HMRC
+vatPaid.single.entry.hint = Enter the amount of import VAT that was paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
+vatPaid.multiple.entry.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
+vatPaid.actualamountpaid.heading = Amount of import VAT that was paid to HMRC
 vatPaid.actualamountpaid.error.required = Enter the amount of import VAT that was paid to HMRC
 vatPaid.actualamountpaid.error.notANumber = The amount of import VAT that was paid to HMRC must be a number
 vatPaid.actualamountpaid.error.greaterThanZero = The amount of import VAT that was paid to HMRC must be more than £0

@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import models.{ClaimRepaymentType, NormalMode, UserAnswers}
+import models.{CheckMode, ClaimRepaymentType, NormalMode, UserAnswers}
 import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage, VATPaidPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
@@ -52,14 +52,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Import VAT that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/import-vat-overpayment"),
-        Some("import-vat-overpayment")
+        Some("/national-duty-repayment-center/change-import-vat-overpayment"),
+        Some("change-import-vat-overpayment")
       ),
       AnswerRow(
         Html("Import VAT that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/import-vat-overpayment"),
-        Some("import-vat-overpayment")
+        Some("/national-duty-repayment-center/change-import-vat-overpayment"),
+        Some("change-import-vat-overpayment")
       ),
       AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
     )),
@@ -101,7 +101,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
       val backLink = userAnswers.get(ClaimRepaymentTypePage) match {
         case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
-        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATPaidController.onPageLoad(NormalMode)
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATPaidController.onPageLoad(CheckMode)
         case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
         case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
       }

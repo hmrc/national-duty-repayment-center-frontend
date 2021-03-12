@@ -17,7 +17,7 @@
 package utils
 
 import controllers.routes
-import models.{NormalMode, ClaimRepaymentType, UserAnswers}
+import models.{CheckMode, ClaimRepaymentType, NormalMode, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -60,8 +60,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
         index match {
           case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(NormalMode).url)
           case "1" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(NormalMode).url)
-          case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(NormalMode).url)
-          case "1" if isVATExists => Some(routes.VATPaidController.onPageLoad(NormalMode).url)
+          case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(CheckMode).url)
+          case "1" if isVATExists => Some(routes.VATPaidController.onPageLoad(CheckMode).url)
           case "0" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(NormalMode).url)
           case "1" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(NormalMode).url)
           case _ => None
@@ -69,8 +69,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
         index match {
           case "0" if isCustomDutyExists => Some("customs-duty-overpayment")
           case "1" if isCustomDutyExists => Some("customs-duty-overpayment")
-          case "0" if isVATExists => Some("import-vat-overpayment")
-          case "1" if isVATExists => Some("import-vat-overpayment")
+          case "0" if isVATExists => Some("change-import-vat-overpayment")
+          case "1" if isVATExists => Some("change-import-vat-overpayment")
           case "0" if isOtherDutiesExists => Some("other-duties-overpayment")
           case "1" if isOtherDutiesExists => Some("other-duties-overpayment")
           case _ => None
