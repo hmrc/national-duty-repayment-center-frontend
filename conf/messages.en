@@ -318,7 +318,8 @@ vATDueToHMRC.error.length = Import VAT should have been paid must be 14 characte
 
 customsDutyPaid.title = Customs Duty overpayment
 customsDutyPaid.heading = Customs Duty overpayment
-customsDutyPaid.hint = Enter the amount of Customs Duty that was paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
+customsDutyPaid.single_entry.hint = Enter the amount of Customs Duty that was paid to HMRC, and the amount you think should have been paid. Do not include any agent fees.
+customsDutyPaid.multiple_entry.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
 customsDutyPaid.actualamountpaid.heading = Amount of Customs Duty that was paid to HMRC
 customsDutyPaid.actualamountpaid.error.required = Enter the amount of Customs Duty that was paid to HMRC
 customsDutyPaid.actualamountpaid.error.greaterThanZero = The amount of Customs Duty that was paid to HMRC must be more than £0

@@ -25,10 +25,17 @@
     html: views.components.html
 )
 
-@(form: Form[RepaymentAmounts], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[RepaymentAmounts], mode: Mode, backLink: Call, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
 @updateGlobalErrorsTo(field: String) = @{
     form.copy(errors = form.errors.map(err => err.copy(key = if(err.key.isEmpty) field else err.key)))
+}
+
+@hint =  @{
+    isSingleEntry match {
+        case true => Some(messages("customsDutyPaid.single_entry.hint"))
+        case _ => Some(messages("customsDutyPaid.multiple_entry.hint"))
+    }
 }
 
 @govukLayout(
@@ -46,7 +53,7 @@
                 legend = messages("customsDutyPaid.heading")
             ) {
                 @html.p {
-                    @messages("customsDutyPaid.hint")
+                    @hint
                 }
 
                 @forms.inputText(
