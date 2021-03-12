@@ -37,8 +37,7 @@ class Navigator @Inject()() {
     case ReasonForOverpaymentPage => _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
     case ClaimRepaymentTypePage => getClaimRepaymentType
     case CustomsDutyPaidPage =>  getVATRepaymentType
-    case VATPaidPage => _ => routes.VATDueToHMRCController.onPageLoad(NormalMode)
-    case VATDueToHMRCPage => getOtherRepaymentType
+    case VATPaidPage => getOtherRepaymentType
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
     case AgentImporterHasEORIPage => getAgentEORIStatus
     case ImporterEoriPage => getEORIPage

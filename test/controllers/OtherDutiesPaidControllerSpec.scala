@@ -68,7 +68,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[OtherDutiesPaidView]
 
-      val otherDutiesBackLink = routes.VATDueToHMRCController.onPageLoad(NormalMode)
+      val otherDutiesBackLink = routes.VATPaidController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -90,7 +90,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val otherDutiesBackLink = routes.VATDueToHMRCController.onPageLoad(NormalMode)
+      val otherDutiesBackLink = routes.VATPaidController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -145,7 +145,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val otherDutiesBackLink = routes.VATDueToHMRCController.onPageLoad(NormalMode)
+      val otherDutiesBackLink = routes.VATPaidController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 

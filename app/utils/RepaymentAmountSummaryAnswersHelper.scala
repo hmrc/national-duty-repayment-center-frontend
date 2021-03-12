@@ -61,7 +61,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
           case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
           case "1" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
           case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(CheckMode).url)
-          case "1" if isVATExists => Some(routes.VATDueToHMRCController.onPageLoad(CheckMode).url)
+          case "1" if isVATExists => Some(routes.VATPaidController.onPageLoad(CheckMode).url)
           case "0" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(CheckMode).url)
           case "1" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(CheckMode).url)
           case _ => None
@@ -69,8 +69,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
         index match {
           case "0" if isCustomDutyExists => Some("customs-duty-overpayment")
           case "1" if isCustomDutyExists => Some("customs-duty-overpayment")
-          case "0" if isVATExists => Some("vat-paid")
-          case "1" if isVATExists => Some("vat-due")
+          case "0" if isVATExists => Some("change-import-vat-overpayment")
+          case "1" if isVATExists => Some("change-import-vat-overpayment")
           case "0" if isOtherDutiesExists => Some("other-duties-overpayment")
           case "1" if isOtherDutiesExists => Some("other-duties-overpayment")
           case _ => None
@@ -83,8 +83,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
     val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
     val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
     val customDutyDue = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
-    val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
-    val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
+    val vatPaid = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val vatDue = userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
     val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
     val otherDutiesDue = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
 
@@ -103,8 +103,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   def getTotalAmount(): Double = {
     val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
     val customDutyDue = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
-    val vatPaid = userAnswers.get(VATPaidPage).getOrElse("0.0").toDouble
-    val vatDue = userAnswers.get(VATDueToHMRCPage).getOrElse("0.0").toDouble
+    val vatPaid = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val vatDue = userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
     val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
     val otherDutiesDue = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
 

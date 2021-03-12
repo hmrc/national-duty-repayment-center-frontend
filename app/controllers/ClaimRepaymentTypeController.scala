@@ -76,7 +76,7 @@ class ClaimRepaymentTypeController @Inject()(
               })
             removeVATDue <-
               Future.fromTry(removeCustomsPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
-                case false => removeCustomsPaid.remove(VATDueToHMRCPage)
+                case false => removeCustomsPaid.remove(VATPaidPage)
                 case true => removeCustomsPaid.set(ClaimRepaymentTypePage, value)
               })
             removeVATPaid <-

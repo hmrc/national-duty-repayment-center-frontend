@@ -19,20 +19,42 @@ package forms
 import forms.Validation.monetaryPattern
 import javax.inject.Inject
 import forms.mappings.Mappings
+import models.RepaymentAmounts
 import play.api.data.Form
+import play.api.data.Forms.mapping
 
 class VATPaidFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[RepaymentAmounts] =
     Form(
-      "value" -> decimal("vATPaid.error.required",
-        "vATPaid.error.notANumber")
-        .verifying(regexp(monetaryPattern, "vATPaid.error.decimalPlaces"))
-        .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
-        .verifying(maximumValue[BigDecimal](99999999999.99, "vATPaid.error.length"))
-        .transform[String](
-          d => d.toString,
-          i => i.toDouble
-        )
+      mapping(
+        "ActualPaidAmount" -> decimal("vatPaid.actualamountpaid.error.required",
+          "vatPaid.actualamountpaid.error.notANumber")
+          .verifying(
+            firstError(
+              regexp(monetaryPattern, "vatPaid.actualamountpaid.error.decimalPlaces")),
+            greaterThanZero("vatPaid.actualamountpaid.error.greaterThanZero")
+          ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
+          .verifying(maximumValue[BigDecimal](99999999999.99, "vatPaid.actualamountpaid.error.length"))
+          .transform[String](
+            d => d.toString,
+            i => i.toDouble
+          ),
+        "ShouldHavePaidAmount" -> decimal("vatPaid.shouldhavepaid.error.required",
+          "vatPaid.shouldhavepaid.error.notANumber")
+          .verifying(
+            firstError(
+              regexp(monetaryPattern, "vatPaid.shouldhavepaid.error.decimalPlaces")) ,
+            greaterThanZero("vatPaid.shouldhavepaid.error.greaterThanZero")
+          ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
+          .verifying(maximumValue[BigDecimal](99999999999.99, "vatPaid.actualamountpaid.error.length"))
+          .transform[String](
+            d => d.toString,
+            i => i.toDouble
+          )
+      )
+      (RepaymentAmounts.apply)(RepaymentAmounts.unapply)
+        .verifying("vatPaid.amounts.error.same", vat => vat.dueAmount != 0)
+        .verifying("vatPaid.amounts.error.greater", vat => vat.dueAmount >= 0)
     )
 }

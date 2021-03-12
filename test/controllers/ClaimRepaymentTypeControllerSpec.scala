@@ -36,8 +36,6 @@ import scala.concurrent.Future
 
 class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
-
   def onwardRoute = Call("GET", "/foo")
 
   lazy val claimRepaymentTypeRoute = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode).url
@@ -56,6 +54,8 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[ClaimRepaymentTypeView]
+
+      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -76,6 +76,8 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[ClaimRepaymentTypeView]
 
       val result = route(application, request).value
+
+      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -125,6 +127,8 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[ClaimRepaymentTypeView]
 
       val result = route(application, request).value
+
+      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 

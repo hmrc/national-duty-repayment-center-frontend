@@ -191,7 +191,7 @@ object TestData {
   val testDutyTypeTaxDetails: DutyTypeTaxDetails = DutyTypeTaxDetails(
     Seq(
       DutyTypeTaxList(ClaimRepaymentType.Customs, "100.00", "50.00", "50.00"),
-      DutyTypeTaxList(ClaimRepaymentType.Vat, "0.0", "0.0", "0.0"),
+      DutyTypeTaxList(ClaimRepaymentType.Vat, "0.00", "0.00", "0.00"),
       DutyTypeTaxList(ClaimRepaymentType.Other, "0.00", "0.00", "0.00"),
 
     )
