@@ -31,18 +31,28 @@ class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "customsDutyPaid.actualamountpaid.error.decimalPlaces"),
-            greaterThanZero("customsDutyPaid.actualamountpaid.error.greaterThanZero"),
-            maximumValue("99999999999.99", "customsDutyPaid.actualamountpaid.error.length")
+            greaterThanZero("customsDutyPaid.actualamountpaid.error.greaterThanZero")
           )
+        )
+        .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
+        .verifying(maximumValue[BigDecimal](99999999999.99, "customsDutyPaid.actualamountpaid.error.length"))
+        .transform[String](
+          d => d.toString,
+          i => i.toDouble
         ),
       "ShouldHavePaidAmount" -> decimal("customsDutyPaid.shouldhavepaid.error.required",
         "customsDutyPaid.shouldhavepaid.error.notANumber")
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "customsDutyPaid.shouldhavepaid.error.decimalPlaces"),
-            greaterThanZero("customsDutyPaid.shouldhavepaid.error.greaterThanZero"),
-            maximumValue("99999999999.99", "customsDutyPaid.shouldhavepaid.error.length")
+            greaterThanZero("customsDutyPaid.shouldhavepaid.error.greaterThanZero")
           )
+        )
+        .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
+        .verifying(maximumValue[BigDecimal](99999999999.99, "customsDutyPaid.shouldhavepaid.error.length"))
+        .transform[String](
+          d => d.toString,
+          i => i.toDouble
         )
     )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
       .verifying("customsDutyPaid.amounts.error.same", duty => duty.dueAmount != 0)
