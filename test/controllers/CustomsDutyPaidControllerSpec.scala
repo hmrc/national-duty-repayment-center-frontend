@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.CustomsDutyPaidFormProvider
-import models.{ClaimRepaymentType, NormalMode, NumberOfEntriesType, RepaymentAmounts, UserAnswers}
+import models.{ClaimRepaymentType, Entries, NormalMode, NumberOfEntriesType, RepaymentAmounts, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -59,7 +59,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswersFull = UserAnswers(userAnswersId)
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
@@ -83,7 +83,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswersFull = userAnswers
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
@@ -136,7 +136,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswersFull = UserAnswers(userAnswersId)
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
