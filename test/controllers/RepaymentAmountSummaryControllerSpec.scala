@@ -37,13 +37,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(Html(
         "Customs Duty that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/customs-duty-overpayment"),
+        Some("/national-duty-repayment-center/change-customs-duty-overpayment"),
         Some("customs-duty-overpayment")
       ),
       AnswerRow(
         Html("Customs Duty that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/customs-duty-overpayment"),
+        Some("/national-duty-repayment-center/change-customs-duty-overpayment"),
         Some("customs-duty-overpayment")
       ),
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -67,13 +67,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Other duties that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/other-duties-overpayment"),
+        Some("/national-duty-repayment-center/change-other-duties-overpayment"),
         Some("other-duties-overpayment")
       ),
       AnswerRow(
         Html("Other duties that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/other-duties-overpayment"),
+        Some("/national-duty-repayment-center/change-other-duties-overpayment"),
         Some("other-duties-overpayment")
       ),
       AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))

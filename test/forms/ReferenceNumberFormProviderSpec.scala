@@ -23,7 +23,10 @@ class ReferenceNumberFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "referenceNumber.error.required"
   val lengthKey = "referenceNumber.error.length"
-  val maxLength = 64
+  val invalidChars = "referenceNumber.error.invalid.chars"
+  val ndrcPrefixKey = "referenceNumber.error.prefix"
+
+  val maxLength = 23
 
   val form = new ReferenceNumberFormProvider()()
 
@@ -31,18 +34,38 @@ class ReferenceNumberFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "value"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(maxLength)
-    )
+    "bind valid data" in {
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
+      forAll(stringsWithMaxLengthAlpha(maxLength - 4) -> "validDataItem") {
+        dataItem: String =>
+          val result = form.bind(Map(fieldName -> ("ndrc" + dataItem))).apply(fieldName)
+          result.value.value shouldBe ("ndrc" + dataItem)
+      }
+    }
+
+    s"not bind strings longer than $maxLength characters" in {
+      forAll(stringsLongerThanAlpha(maxLength - 4) -> "longString") {
+        string =>
+          val result = form.bind(Map(fieldName -> ("ndrc" + string))).apply(fieldName)
+          result.errors shouldEqual Seq( FormError(fieldName, lengthKey, Seq(maxLength)))
+      }
+    }
+
+    s"not bind strings with special characters" in {
+      forAll(stringsWithMaxLength(maxLength) -> "specialCharStrings") {
+        string =>
+          val result = form.bind(Map(fieldName -> (string))).apply(fieldName)
+          result.errors shouldEqual Seq( FormError(fieldName, invalidChars, Seq("^[a-zA-Z0-9]*$")))
+      }
+    }
+
+    s"not bind strings without ndrc prefix" in {
+      forAll(stringsWithMaxLengthAlpha(maxLength) -> "invalidFormat") {
+        string =>
+          val result = form.bind(Map(fieldName -> (string))).apply(fieldName)
+          result.errors shouldEqual Seq( FormError(fieldName, ndrcPrefixKey))
+      }
+    }
 
     behave like mandatoryField(
       form,

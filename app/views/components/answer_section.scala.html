@@ -19,7 +19,7 @@
 
 @(answerSection: AnswerSection)(implicit messages: Messages)
 
-@if(answerSection.headingKey.isDefined){
+@if(answerSection.headingKey.exists(_.trim.nonEmpty)){
   <h2 class="govuk-heading-m">@messages(answerSection.headingKey.get)</h2>
 }
 
