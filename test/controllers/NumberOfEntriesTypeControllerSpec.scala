@@ -66,7 +66,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -81,7 +81,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Entries(NumberOfEntriesType.Multiple,"2")), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(Entries(NumberOfEntriesType.Multiple,Some("2"))), NormalMode, backLink)(fakeRequest, messages).toString
 
       application.stop()
     }

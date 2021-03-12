@@ -18,7 +18,6 @@ package forms
 
 import forms.behaviours.{OptionFieldBehaviours, StringFieldBehaviours}
 import models.{Entries, NumberOfEntriesType}
-import org.scalacheck.Gen
 import play.api.data.FormError
 
 class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with StringFieldBehaviours {
@@ -26,30 +25,30 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
   val form = new NumberOfEntriesTypeFormProvider()()
 
   val requiredKey = "numberOfEntriesType.error.required"
+  val radioFieldName = "value"
 
   ".value" must {
 
-    val fieldName = "value"
     val requiredKey = "numberOfEntriesType.error.required"
 
     behave like optionsField[Entries](
       form,
-      fieldName,
-      validValues  = Seq(Entries.apply(NumberOfEntriesType.Single,intsAboveValue(1).toString),
-        Entries.apply(NumberOfEntriesType.Multiple,intsAboveValue(1).toString)),
-      invalidError = FormError(fieldName, "error.invalid")
+      radioFieldName,
+      validValues  = Seq(Entries.apply(NumberOfEntriesType.Single,None),
+        Entries.apply(NumberOfEntriesType.Multiple,Some(intsAboveValue(1).toString))),
+      invalidError = FormError(radioFieldName, "error.invalid")
     )
 
     behave like mandatoryField(
       form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      radioFieldName,
+      requiredError = FormError(radioFieldName, requiredKey)
     )
   }
 
-  /*".entries" must {
+  ".entries" must {
 
-    val fieldName = "value"
+    val fieldName = "entries"
     val requiredKey = "howManyEntries.error.required"
     val lengthKey = "howManyEntries.error.length"
     val maxLength = 999999
@@ -60,30 +59,30 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
       Validation.numberOfEntries
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(Validation.numberOfEntries))
-    )
-
     behave like mandatoryField(
-      form,
+      form.bind(Map(radioFieldName -> "02")),
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
 
     "fail to bind entries with characters" in {
-      val result = form.bind(Map(fieldName -> "abcjf")).apply(fieldName)
-      val expectedError = FormError(fieldName, lengthKey, Seq(Validation.numberOfEntries))
-      result.errors shouldEqual Seq(expectedError)
+      val results = List(
+        form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "1")).apply(fieldName),
+        form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "abcjf")).apply(fieldName),
+        form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> (maxLength+1).toString)).apply(fieldName)
+      )
+      val expectedError = FormError(fieldName, requiredKey , Seq())
+      results.foreach {
+        result =>
+          result.errors shouldEqual Seq(expectedError)
+      }
     }
 
     "fail to bind a value" in {
-      val result = form.bind(Map(fieldName -> "")).apply(fieldName)
+      val result = form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "")).apply(fieldName)
       val expectedError = error(fieldName, requiredKey)
 
       result.errors shouldEqual(expectedError)
     }
-  }*/
+  }
 }

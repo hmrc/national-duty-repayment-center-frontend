@@ -48,7 +48,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
     "return OK and the correct view for a GET" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
-        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
+        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +72,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet)
         .success.value.set(OtherDutiesPaidPage, "0").success.value
-      .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
+      .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -121,7 +121,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
-        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
+        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

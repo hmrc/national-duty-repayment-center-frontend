@@ -573,7 +573,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("numberOfEntriesType.checkYourAnswersLabel")),
         HtmlFormat.escape(userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
           case NumberOfEntriesType.Single => "1"
-          case _ => userAnswers.get(NumberOfEntriesTypePage).get.entries
+          case NumberOfEntriesType.Multiple => userAnswers.get(NumberOfEntriesTypePage).get.entries.get
         }),
         Some(routes.NumberOfEntriesTypeController.onPageLoad(NormalMode).url)
       )

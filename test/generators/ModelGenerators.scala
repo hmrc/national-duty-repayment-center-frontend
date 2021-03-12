@@ -90,7 +90,7 @@ trait ModelGenerators {
         numberOfEntriesType <- arbitrary[NumberOfEntriesType]
         entries <- arbitrary[String]
       } yield Entries(numberOfEntriesType,
-        entries
+        Some(entries)
       )
     }
 

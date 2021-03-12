@@ -51,7 +51,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to UK Regulations page after Customs Regulation Type page when selected UKCustomsCodeRegulation and one entry journey " in {
         val answers =
           emptyUserAnswers
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,"")).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
             .set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
 
         navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
@@ -63,7 +63,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
             .set(WhomToPayPage, WhomToPay.Importer).success.value
 
         navigator.nextPage(WhomToPayPage, NormalMode, answers)
@@ -144,7 +144,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to WhomToPay page after EmailAddressPage page when the Representative's multiple entry journeys is selected " in {
         val answers =
           emptyUserAnswers
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value.
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value.
             set(ClaimantTypePage, ClaimantType.Representative).success.value
         navigator.nextPage(EmailAddressPage, NormalMode, answers)
           .mustBe(routes.WhomToPayController.onPageLoad(NormalMode))
@@ -153,7 +153,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to RepaymentType page after EmailAddressPage page when Importers/Representative single entry journeys selected " in {
         val answers =
           emptyUserAnswers
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,"2")).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
         navigator.nextPage(EmailAddressPage, NormalMode, answers)
           .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
       }
@@ -236,7 +236,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,"2")).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
         navigator.nextPage(EmailAddressPage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))

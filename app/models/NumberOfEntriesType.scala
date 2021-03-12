@@ -18,7 +18,7 @@ package models
 
 import play.api.data.Form
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.Aliases.Hint
+import uk.gov.hmrc.govukfrontend.views.Aliases.{ErrorMessage, Hint, Label}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.govukfrontend.views.viewmodels.input.Input
@@ -50,6 +50,11 @@ object NumberOfEntriesType extends Enumerable.Implicits {
         },
         conditionalHtml = if(value.toString.equals("02")) Some(new govukInput(govukErrorMessage, govukHint, govukLabel)
         (Input(id="entries", value = form("entries").value,
+          errorMessage = if(form("entries").hasErrors){
+            Some(ErrorMessage(
+              content = Text(messages(form("entries").errors.head.message))
+            ))
+          } else { None },
           name="entries", classes = "govuk-input--width-4",attributes = Map(
           "autocomplete" -> "off",
           "inputmode" -> "numeric",

@@ -81,7 +81,7 @@ object CreateClaimRequest {
       claimedUnderRegulation,
       claimant,
       claimType.numberOfEntriesType,
-      Some(noOfEntries.entries),
+      noOfEntries.entries,
       entryDetails,
       claimReason,
       claimDescription,

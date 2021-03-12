@@ -18,17 +18,21 @@ package forms
 
 import javax.inject.Inject
 import forms.mappings.Mappings
-import play.api.data.Form
-import models.Entries
+import play.api.data.{Form, Forms}
+import models.{Entries, NumberOfEntriesType}
+import play.api.data.Forms.{mapping, optional}
+import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
 class NumberOfEntriesTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Entries] =
-    Form(
-      "value" -> numberOfEntriesMapping("howManyEntries.error.length",
-        "howManyEntries.error.required",
-        "numberOfEntriesType.error.required"
-        )
-    )
+    Form(mapping(
+      "value" -> enumerable[NumberOfEntriesType]("numberOfEntriesType.error.required"),
+      "entries" ->
+        mandatoryIfEqual("value","02",
+          text("howManyEntries.error.required")
+            .verifying(
+              regexp(Validation.numberOfEntries, "howManyEntries.error.length")))
+    )(Entries.apply)(en => Some(en.numberOfEntriesType, en.entries)))
 
 }
