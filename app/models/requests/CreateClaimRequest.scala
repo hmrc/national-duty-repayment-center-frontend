@@ -200,21 +200,21 @@ object CreateClaimRequest {
       val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
 
       val getCustomsDutyPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
-        case true => userAnswers.get(CustomsDutyPaidPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount)
+        case _ => Some("0.00")
       }
 
       val getCustomsDutyDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
-        case true => userAnswers.get(CustomsDutyDueToHMRCPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount)
+        case _ => Some("0.00")
       }
 
-      val CustomsDutyPaidAsDouble = getCustomsDutyPaid.getOrElse("0.0").toDouble
-      val CustomsDutyDueAsDouble = getCustomsDutyDue.getOrElse("0.0").toDouble
+      val CustomsDutyPaidAsBigDecimal = BigDecimal(getCustomsDutyPaid.getOrElse("0.00")).setScale(2)
+      val CustomsDutyDueAsBigDecimal = BigDecimal(getCustomsDutyDue.getOrElse("0.00")).setScale(2)
 
-      val CustomsDutyOwedAsString = (CustomsDutyPaidAsDouble - CustomsDutyDueAsDouble).toString
+      val CustomsDutyOwedAsString = (CustomsDutyPaidAsBigDecimal - CustomsDutyDueAsBigDecimal).toString()
 
-      DutyTypeTaxList(ClaimRepaymentType.Customs, getCustomsDutyPaid.getOrElse("0.0"), getCustomsDutyDue.getOrElse("0.0"), CustomsDutyOwedAsString)
+      DutyTypeTaxList(ClaimRepaymentType.Customs, CustomsDutyPaidAsBigDecimal.toString(), CustomsDutyDueAsBigDecimal.toString(), CustomsDutyOwedAsString)
     }
 
     def getVatValues(userAnswers: UserAnswers): DutyTypeTaxList = {
@@ -222,21 +222,21 @@ object CreateClaimRequest {
       val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
 
       val getVatPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Vat) match {
-        case true => userAnswers.get(VATPaidPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(VATPaidPage).map(_.ActualPaidAmount)
+        case false => Some("0.00")
       }
 
       val getVatDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Vat) match {
-        case true => userAnswers.get(VATDueToHMRCPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount)
+        case false => Some("0.00")
       }
 
-      val VatPaidAsDouble = getVatPaid.getOrElse("0.0").toDouble
-      val VatDueAsDouble = getVatDue.getOrElse("0.0").toDouble
+      val VatPaidAsBigDecimal = BigDecimal(getVatPaid.getOrElse("0.00")).setScale(2)
+      val VatDueAsBigDecimal = BigDecimal(getVatDue.getOrElse("0.00")).setScale(2)
 
-      val VatOwedAsString = (VatPaidAsDouble - VatDueAsDouble).toString
+      val VatOwedAsString = (VatPaidAsBigDecimal - VatDueAsBigDecimal).toString
 
-      DutyTypeTaxList(ClaimRepaymentType.Vat, getVatPaid.getOrElse("0.0"), getVatDue.getOrElse("0.0"), VatOwedAsString)
+      DutyTypeTaxList(ClaimRepaymentType.Vat, VatPaidAsBigDecimal.toString(),VatDueAsBigDecimal.toString, VatOwedAsString)
     }
 
     def getOtherDutyValues(userAnswers: UserAnswers): DutyTypeTaxList = {
@@ -244,21 +244,21 @@ object CreateClaimRequest {
       val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
 
       val getOtherDutyPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Other) match {
-        case true => userAnswers.get(OtherDutiesPaidPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount)
+        case _ => Some("0.00")
       }
 
       val getOtherDutyDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Other) match {
-        case true => userAnswers.get(OtherDutiesDueToHMRCPage)
-        case _ => Some("0.0")
+        case true => userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount)
+        case _ => Some("0.00")
       }
 
-      val OtherDutyPaidAsDouble = getOtherDutyPaid.getOrElse("0.0").toDouble
-      val OtherDutyDueAsDouble = getOtherDutyDue.getOrElse("0.0").toDouble
+      val OtherDutyPaidAsBigDecimal = BigDecimal(getOtherDutyPaid.getOrElse("0.0")).setScale(2)
+      val OtherDutyDueAsBigDecimal = BigDecimal(getOtherDutyDue.getOrElse("0.0")).setScale(2)
 
-      val OtherDutyOwedAsString = (OtherDutyPaidAsDouble - OtherDutyDueAsDouble).toString
+      val OtherDutyOwedAsString = (OtherDutyPaidAsBigDecimal - OtherDutyDueAsBigDecimal).toString
 
-      DutyTypeTaxList(ClaimRepaymentType.Other, getOtherDutyPaid.getOrElse("0.0"), getOtherDutyDue.getOrElse("0.0"), OtherDutyOwedAsString)
+      DutyTypeTaxList(ClaimRepaymentType.Other, OtherDutyPaidAsBigDecimal.toString(), OtherDutyDueAsBigDecimal.toString(), OtherDutyOwedAsString)
     }
 
     def getDutyTypeTaxDetails(answers: UserAnswers): Seq[DutyTypeTaxList] = {

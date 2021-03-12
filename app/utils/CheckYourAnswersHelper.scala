@@ -16,15 +16,17 @@
 
 package utils
 
-import java.time.format.DateTimeFormatter
 import controllers.routes
-import models.{Address, AgentImporterHasEORI, ClaimantType, CustomsRegulationType, Entries, NormalMode, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
+import models._
+import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
+import models.FileType.{Bulk, ProofOfAuthority}
+import models.FileUpload.Accepted
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import viewmodels.{AnswerRow, AnswerSection}
-import models.FileType.{Bulk, ProofOfAuthority, SupportingEvidence}
-import models.FileUpload.Accepted
+
+import java.time.format.DateTimeFormatter
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -37,7 +39,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def amendCaseResponseType: Option[AnswerRow] = userAnswers.get(AmendCaseResponseTypePage) map {
+  def amendCaseResponseTypeNormal: Option[AnswerRow] = userAnswers.get(AmendCaseResponseTypePage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("amendCaseResponseType.checkYourAnswersLabel")),
@@ -46,7 +48,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def furtherInformation: Option[AnswerRow] = userAnswers.get(FurtherInformationPage) map {
+  def furtherInformationNormal: Option[AnswerRow] = userAnswers.get(FurtherInformationPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("furtherInformation.checkYourAnswersLabel")),
@@ -55,7 +57,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def referenceNumber: Option[AnswerRow] = userAnswers.get(ReferenceNumberPage) map {
+  def referenceNumberNormal: Option[AnswerRow] = userAnswers.get(ReferenceNumberPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("referenceNumber.checkYourAnswersLabel")),
@@ -74,7 +76,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
               HtmlFormat.escape(messages(s"$fileName")),
               Some(routes.BulkFileUploadController.showFileUpload.url)
             )
-          case _ =>  AnswerRow(
+          case _ => AnswerRow(
             HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"bulkFileUpload.empty")),
             Some(routes.BulkFileUploadController.showFileUpload.url)
@@ -184,30 +186,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     ).filter(!_.isEmpty()).mkString("<br>"))
   }
 
-  def otherDutiesDueToHMRC: Option[AnswerRow] = userAnswers.get(OtherDutiesDueToHMRCPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("otherDutiesDueToHMRC.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode).url)
-      )
-  }
-
   def otherDutiesPaid: Option[AnswerRow] = userAnswers.get(OtherDutiesPaidPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("otherDutiesPaid.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.ActualPaidAmount),
         Some(routes.OtherDutiesPaidController.onPageLoad(NormalMode).url)
-      )
-  }
-
-  def customsDutyDueToHMRC: Option[AnswerRow] = userAnswers.get(CustomsDutyDueToHMRCPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("customsDutyDueToHMRC.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode).url)
       )
   }
 
@@ -215,25 +199,17 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(x.ActualPaidAmount),
         Some(routes.CustomsDutyPaidController.onPageLoad(NormalMode).url)
       )
   }
 
-  def vATDueToHMRC: Option[AnswerRow] = userAnswers.get(VATDueToHMRCPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("vATDueToHMRC.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.VATDueToHMRCController.onPageLoad(NormalMode).url)
-      )
-  }
 
   def vATPaid: Option[AnswerRow] = userAnswers.get(VATPaidPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("vATPaid.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
+        HtmlFormat.escape(messages("vatPaid.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.ActualPaidAmount),
         Some(routes.VATPaidController.onPageLoad(NormalMode).url)
       )
   }
@@ -246,7 +222,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         Some(routes.AgentImporterHasEORIController.onPageLoad(NormalMode).url)
     )
   }
-  
+
   def isImporterVatRegistered: Option[AnswerRow] = userAnswers.get(IsImporterVatRegisteredPage) map {
     x =>
       AnswerRow(
@@ -392,7 +368,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
       HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.acceptedCount.toString)
       .concat(" ").concat(messages("view.upload-file.documents.added"))),
-      Some(routes.FileUploadController.showFileUploaded.url)
+      Some(routes.FileUploadController.showFileUploaded(NormalMode).url)
     )
   }
 
@@ -645,6 +621,75 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
+
+  def amendCaseResponseTypeCheck: Option[AnswerRow] = userAnswers.get(AmendCaseResponseTypePage) map {
+    x =>
+      val message = if (x.contains(FurtherInformation) && x.contains(SupportingDocuments))
+        messages("amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel")
+      else if (x.contains(FurtherInformation)) messages("amendCaseResponseType.sendInformation.checkYourAnswersLabel")
+      else messages("amendCaseResponseType.sendDocuments.checkYourAnswersLabel")
+
+      AnswerRow(
+        HtmlFormat.escape(messages("amendCaseResponseType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(message)),
+        Some(routes.AmendCaseResponseTypeController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def furtherInformationCheck: Option[AnswerRow] = userAnswers.get(FurtherInformationPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("furtherInformation.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        Some(routes.FurtherInformationController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def referenceNumberCheck: Option[AnswerRow] = userAnswers.get(ReferenceNumberPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("referenceNumber.checkYourAnswersLabel")),
+        HtmlFormat.escape(x),
+        Some(routes.ReferenceNumberController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def evidenceFileUploadsAmend: AnswerRow = {
+    val noOfDocuments = userAnswers.fileUploadState.map(_.fileUploads.acceptedCount).getOrElse(0)
+    AnswerRow(
+      HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
+      if (noOfDocuments == 1)
+        HtmlFormat.escape(messages("view.amend-upload-file.document.added", noOfDocuments))
+      else
+        HtmlFormat.escape(messages("view.amend-upload-file.documents.added", noOfDocuments))
+      ,
+      Some(routes.AmendCaseSendInformationController.showFileUploaded(CheckMode).url)
+    )
+  }
+
+  def getAmendCheckYourAnswerSections: Seq[AnswerSection] = {
+    def additionalSection = userAnswers.get(AmendCaseResponseTypePage).map { amendCaseResponseType =>
+
+      (amendCaseResponseType.contains(FurtherInformation), amendCaseResponseType.contains(SupportingDocuments)) match {
+        case (true, true) if (furtherInformationCheck.nonEmpty) => Seq(furtherInformationCheck.get, evidenceFileUploadsAmend)
+        case (false, true) => Seq(evidenceFileUploadsAmend)
+        case (true, false) if (furtherInformationCheck.nonEmpty) => Seq(furtherInformationCheck.get)
+        case (_, _) => Nil
+      }
+    }.getOrElse(Nil)
+
+    val list = (referenceNumberCheck.nonEmpty, amendCaseResponseTypeCheck.nonEmpty) match {
+      case (true, true) =>  Seq(referenceNumberCheck.get, amendCaseResponseTypeCheck.get)
+      case (true, false) =>  Seq(referenceNumberCheck.get)
+      case (false, true) =>  Seq(amendCaseResponseTypeCheck.get)
+      case(_, _) => Nil
+    }
+
+    Seq(AnswerSection(Some(messages("")),
+      list ++ additionalSection
+    ))
+  }
+
   private def yesOrNo(answer: Boolean)(implicit messages: Messages): Html =
     if (answer) {
       HtmlFormat.escape(messages("site.yes"))
@@ -655,6 +700,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   implicit class Improvements(s: Double) {
     def format2d = "%.2f".format(s)
   }
+
 }
 
 object CheckYourAnswersHelper {

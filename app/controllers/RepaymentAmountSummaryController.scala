@@ -46,9 +46,9 @@ class RepaymentAmountSummaryController @Inject()(
       ).flatten
 
       val backLink = request.userAnswers.get(ClaimRepaymentTypePage) match {
-        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
-        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATDueToHMRCController.onPageLoad(NormalMode)
-        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
+        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATPaidController.onPageLoad(NormalMode)
+        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
         case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
       }
 

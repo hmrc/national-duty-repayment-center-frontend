@@ -16,24 +16,25 @@
 
 package forms
 
-import forms.behaviours.DecimalFieldBehaviours
+import forms.behaviours.{DecimalFieldBehaviours, StringFieldBehaviours}
+import models.RepaymentAmounts
 import play.api.data.{Form, FormError}
 
-class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours {
+class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBehaviours {
 
-  val requiredKey = "customsDutyPaid.error.required"
-  val lengthKey = "customsDutyPaid.error.notANumber"
+  val actualAmountPaidRequiredKey = "customsDutyPaid.actualamountpaid.error.required"
+  val shouldHavePaidRequiredKey = "customsDutyPaid.shouldhavepaid.error.required"
   val maxLength = 14
-  val minimum = 0.00
+  val minimum = 0.01
   var maximum = 99999999999.99
 
   val validDataGenerator = intsInRangeWithCommas(minimum.toInt, maximum.toInt)
 
-  val form: Form[String] = new CustomsDutyPaidFormProvider()()
+  val form: Form[RepaymentAmounts] = new CustomsDutyPaidFormProvider()()
 
-  ".value" must {
+  ".ActualPaidAmount" must {
 
-    val fieldName = "value"
+    val fieldName = "ActualPaidAmount"
 
     behave like fieldThatBindsValidData(
       form,
@@ -44,20 +45,66 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours {
     behave like decimalField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "customsDutyPaid.error.notANumber")
+      nonNumericError  = FormError(fieldName, "customsDutyPaid.actualamountpaid.error.notANumber")
+    )
+
+    behave like decimalFieldWithMinimum(
+      form,
+      fieldName,
+      minimum,
+      expectedError = FormError(fieldName, "customsDutyPaid.actualamountpaid.error.greaterThanZero")
+
     )
 
     "not bind decimals with 3 decimal place" in {
       val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
       result.errors shouldEqual Seq(
-        FormError(fieldName, "customsDutyPaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+        FormError(fieldName, "customsDutyPaid.actualamountpaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
       )
     }
 
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      requiredError = FormError(fieldName, actualAmountPaidRequiredKey)
+    )
+  }
+
+  ".ShouldHavePaidAmount" must {
+
+    val fieldName = "ShouldHavePaidAmount"
+
+    behave like fieldThatBindsValidData(
+      form,
+      fieldName,
+      validDataGenerator
+    )
+
+    behave like decimalField(
+      form,
+      fieldName,
+      nonNumericError  = FormError(fieldName, "customsDutyPaid.shouldhavepaid.error.notANumber")
+    )
+
+    behave like decimalFieldWithMinimum(
+      form,
+      fieldName,
+      minimum,
+      expectedError = FormError(fieldName, "customsDutyPaid.shouldhavepaid.error.greaterThanZero")
+
+    )
+
+    "not bind decimals with 3 decimal place" in {
+      val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
+      result.errors shouldEqual Seq(
+        FormError(fieldName, "customsDutyPaid.shouldhavepaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+      )
+    }
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, shouldHavePaidRequiredKey)
     )
   }
 }

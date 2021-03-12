@@ -32,16 +32,16 @@ import views.html.ClaimRepaymentTypeView
 import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimRepaymentTypeController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ClaimRepaymentTypeFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ClaimRepaymentTypeView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                              override val messagesApi: MessagesApi,
+                                              sessionRepository: SessionRepository,
+                                              navigator: Navigator,
+                                              identify: IdentifierAction,
+                                              getData: DataRetrievalAction,
+                                              requireData: DataRequiredAction,
+                                              formProvider: ClaimRepaymentTypeFormProvider,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: ClaimRepaymentTypeView
+                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -69,50 +69,28 @@ class ClaimRepaymentTypeController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimRepaymentTypePage, value))
-            removeCustomsDutyDue <-
-              Future.fromTry(updatedAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) match {
-                case false =>
-                  updatedAnswers.remove(CustomsDutyDueToHMRCPage)
-                case true =>
-                  updatedAnswers.set(ClaimRepaymentTypePage, value)
-              })
             removeCustomsPaid <-
-              Future.fromTry(removeCustomsDutyDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) match {
-                case false =>
-                  removeCustomsDutyDue.remove(CustomsDutyPaidPage)
-                case true =>
-                  removeCustomsDutyDue.set(ClaimRepaymentTypePage, value)
+              Future.fromTry(updatedAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) match {
+                case false => updatedAnswers.remove(CustomsDutyPaidPage)
+                case true => updatedAnswers.set(ClaimRepaymentTypePage, value)
               })
             removeVATDue <-
               Future.fromTry(removeCustomsPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
-                case false =>
-                  removeCustomsPaid.remove(VATDueToHMRCPage)
-                case true =>
-                  removeCustomsPaid.set(ClaimRepaymentTypePage, value)
+                case false => removeCustomsPaid.remove(VATPaidPage)
+                case true => removeCustomsPaid.set(ClaimRepaymentTypePage, value)
               })
             removeVATPaid <-
               Future.fromTry(removeVATDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
-                case false =>
-                  removeVATDue.remove(VATPaidPage)
-                case true =>
-                  removeVATDue.set(ClaimRepaymentTypePage, value)
+                case false => removeVATDue.remove(VATPaidPage)
+                case true => removeVATDue.set(ClaimRepaymentTypePage, value)
               })
-            removeOtherDutiesDue <-
+            removeOtherDutiesPaid <-
               Future.fromTry(removeVATPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
-                case false =>
-                  removeVATPaid.remove(OtherDutiesDueToHMRCPage)
-                case true =>
-                  removeVATPaid.set(ClaimRepaymentTypePage, value)
+                case false => removeVATPaid.remove(OtherDutiesPaidPage)
+                case true => removeVATPaid.set(ClaimRepaymentTypePage, value)
               })
-            removeOtherDutiesPaidDue <-
-              Future.fromTry(removeOtherDutiesDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
-                case false =>
-                  removeOtherDutiesDue.remove(OtherDutiesPaidPage)
-                case true =>
-                  removeOtherDutiesDue.set(ClaimRepaymentTypePage, value)
-              })
-            _              <- sessionRepository.set(removeOtherDutiesPaidDue)
-          } yield Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaidDue))
+            _ <- sessionRepository.set(removeOtherDutiesPaid)
+          } yield Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaid))
       )
   }
 }

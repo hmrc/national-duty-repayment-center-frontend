@@ -16,17 +16,20 @@
 
 package forms
 
-import javax.inject.Inject
-
 import forms.mappings.Mappings
 import play.api.data.Form
 
-class ReferenceNumberFormProvider @Inject() extends Mappings {
+import javax.inject.Inject
+class ReferenceNumberFormProvider @Inject() extends Mappings with TrimWhitespace {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("referenceNumber.error.required")
-        .verifying(minLength(2, "referenceNumber.error.length"))
-        .verifying(maxLength(64, "referenceNumber.error.length"))
+      "value" -> text("referenceNumber.error.required").transform[String](trimWhitespace, identity)
+        .verifying(firstError(
+          regexp(Validation.referenceNumberPattern,"referenceNumber.error.invalid.chars"),
+          startsWith("referenceNumber.error.prefix"),
+          minLength(23, "referenceNumber.error.length"),
+          maxLength(23, "referenceNumber.error.length")
+        ))
     )
 }

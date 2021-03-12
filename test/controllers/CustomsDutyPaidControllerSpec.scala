@@ -18,13 +18,14 @@ package controllers
 
 import base.SpecBase
 import forms.CustomsDutyPaidFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{ClaimRepaymentType, NormalMode, NumberOfEntriesType, RepaymentAmounts, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CustomsDutyPaidPage
+import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, NumberOfEntriesTypePage}
 import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,7 +36,15 @@ import scala.concurrent.Future
 
 class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
+  private val userAnswers = UserAnswers(
+    userAnswersId,
+    Json.obj(
+      CustomsDutyPaidPage.toString -> Json.obj(
+        "ActualPaidAmount"   -> "100.00",
+        "ShouldHavePaidAmount"      -> "50.00"
+      )
+    )
+  )
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -48,7 +57,11 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswersFull = UserAnswers(userAnswersId)
+        .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
       val request = FakeRequest(GET, CustomsDutyPaidRoute)
 
@@ -56,30 +69,36 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[CustomsDutyPaidView]
 
+      val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode, backLink, false)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CustomsDutyPaidPage, "0").success.value
+      val userAnswersFull = userAnswers
+        .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
       val request = FakeRequest(GET, CustomsDutyPaidRoute)
 
       val view = application.injector.instanceOf[CustomsDutyPaidView]
+
+      val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("0"), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(RepaymentAmounts("100.00", "50.00")), NormalMode, backLink, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -100,7 +119,10 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, CustomsDutyPaidRoute)
-          .withFormUrlEncodedBody(("value", "0"))
+          .withFormUrlEncodedBody(
+            ("ActualPaidAmount", "100.00"),
+            ("ShouldHavePaidAmount", "50.00")
+          )
 
       val result = route(application, request).value
 
@@ -112,7 +134,11 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswersFull = UserAnswers(userAnswersId)
+        .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
       val request =
         FakeRequest(POST, CustomsDutyPaidRoute)
@@ -122,12 +148,14 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[CustomsDutyPaidView]
 
+      val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
+
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, backLink, false)(fakeRequest, messages).toString
 
       application.stop()
     }

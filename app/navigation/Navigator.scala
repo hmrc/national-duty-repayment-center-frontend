@@ -35,12 +35,9 @@ class Navigator @Inject()() {
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
     case ClaimRepaymentTypePage => getClaimRepaymentType
-    case CustomsDutyPaidPage => _ => routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
-    case CustomsDutyDueToHMRCPage => getVATRepaymentType
-    case VATPaidPage => _ => routes.VATDueToHMRCController.onPageLoad(NormalMode)
-    case VATDueToHMRCPage => getOtherRepaymentType
-    case OtherDutiesPaidPage => _ => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
-    case OtherDutiesDueToHMRCPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
+    case CustomsDutyPaidPage =>  getVATRepaymentType
+    case VATPaidPage => getOtherRepaymentType
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad
     case AgentImporterHasEORIPage => getAgentEORIStatus
     case ImporterEoriPage => getEORIPage
     case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)
@@ -78,8 +75,8 @@ class Navigator @Inject()() {
   }
 
   private def getAmendCaseResponseType(answers: UserAnswers): Call =
-    answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Supportingdocuments) match {
-      case true => routes.AmendCaseSendInformationController.showFileUpload()
+    answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.SupportingDocuments) match {
+      case true => routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
       case  _  => routes.FurtherInformationController.onPageLoad(NormalMode)
     }
 
@@ -161,14 +158,30 @@ class Navigator @Inject()() {
     case _ => routes.RepaymentAmountSummaryController.onPageLoad
   }
 
-  private val checkRouteMap: Page => UserAnswers => Call = {
-    case _ => _ => routes.CheckYourAnswersController.onPageLoad()
+  private def getAmendCaseResponseTypeCheckMode(answers: UserAnswers): Call = {
+    def documentSelected = answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.SupportingDocuments)
+
+    (documentSelected, answers.fileUploadState.nonEmpty) match {
+      case (true, true) =>  routes.AmendCaseSendInformationController.showFileUploaded(CheckMode)
+      case (true, false) => routes.AmendCaseSendInformationController.showFileUpload(CheckMode)
+      case (_, _) => routes.FurtherInformationController.onPageLoad(CheckMode)
+    }
   }
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
-    case NormalMode =>
-      normalRoutes(page)(userAnswers)
-    case CheckMode =>
-      checkRouteMap(page)(userAnswers)
+
+  private val checkRouteMap: Page => UserAnswers => Call = {
+    case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
+    case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
+    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
+    case _ => _ => routes.AmendCheckYourAnswersController.onPageLoad()
   }
+
+  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
+    mode match {
+      case NormalMode =>
+        normalRoutes(page)(userAnswers)
+      case CheckMode =>
+        checkRouteMap(page)(userAnswers)
+    }
 }

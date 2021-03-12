@@ -16,7 +16,7 @@
 
 package data
 
-import models.AmendCaseResponseType.Furtherinformation
+import models.AmendCaseResponseType.FurtherInformation
 import models.FileUpload.Accepted
 import models._
 import models.requests.CreateClaimRequest
@@ -32,10 +32,9 @@ object TestData {
   val testEntryDetails: EntryDetails = EntryDetails("123", "123456A", LocalDate.parse("2012-12-12"))
   val testClaimDescription: ClaimDescription = ClaimDescription("this is a claim description")
   val testClaimRepaymentType: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
-  val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.Furtherinformation, AmendCaseResponseType.Supportingdocuments)
+  val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
   val referenceNumber: String = "P34567"
-  val testCustomsDutyPaid: String = "100.00"
-  val testCustomsDutyDueToHMRC: String = "50.00"
+  val testRepaymentAmounts: RepaymentAmounts = RepaymentAmounts("100.00", "50.00")
   val testAgentImporterHasEORI: AgentImporterHasEORI = AgentImporterHasEORI.Yes
   val testImporterEORI: EORI = EORI("GB123456123456")
   val testAgentEORI: EORI = EORI("GB123456123444")
@@ -191,9 +190,9 @@ object TestData {
 
   val testDutyTypeTaxDetails: DutyTypeTaxDetails = DutyTypeTaxDetails(
     Seq(
-      DutyTypeTaxList(ClaimRepaymentType.Customs, "100.00", "50.00", "50.0"),
-      DutyTypeTaxList(ClaimRepaymentType.Vat, "0.0", "0.0", "0.0"),
-      DutyTypeTaxList(ClaimRepaymentType.Other, "0.0", "0.0", "0.0"),
+      DutyTypeTaxList(ClaimRepaymentType.Customs, "100.00", "50.00", "50.00"),
+      DutyTypeTaxList(ClaimRepaymentType.Vat, "0.00", "0.00", "0.00"),
+      DutyTypeTaxList(ClaimRepaymentType.Other, "0.00", "0.00", "0.00"),
 
     )
   )
@@ -208,8 +207,7 @@ object TestData {
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
       .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
-      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
-      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
       .flatMap(_.set(AgentImporterHasEORIPage, testAgentImporterHasEORI))
       .flatMap(_.set(EnterAgentEORIPage, testImporterEORI))
       .flatMap(_.set(IsImporterVatRegisteredPage, IsImporterVatRegistered.Yes))
@@ -236,8 +234,7 @@ object TestData {
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
       .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
-      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
-      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
       .flatMap(_.set(AgentImporterHasEORIPage, testAgentImporterHasEORI))
       .flatMap(_.set(EnterAgentEORIPage, testImporterEORI))
       .flatMap(_.set(IsImporterVatRegisteredPage, IsImporterVatRegistered.Yes))
@@ -265,8 +262,7 @@ object TestData {
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
       .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
-      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
-      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
       .flatMap(_.set(AgentImporterHasEORIPage, testAgentImporterHasEORI))
       .flatMap(_.set(EnterAgentEORIPage, testImporterEORI))
       .flatMap(_.set(IsImporterVatRegisteredPage, IsImporterVatRegistered.Yes))
@@ -292,8 +288,7 @@ object TestData {
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
       .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
-      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
-      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
       .flatMap(_.set(ImporterHasEoriPage, true))
       .flatMap(_.set(ImporterEoriPage, testImporterEORI))
       .flatMap(_.set(IsVATRegisteredPage, IsVATRegistered.Yes))
@@ -314,8 +309,7 @@ object TestData {
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
       .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
-      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
-      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
       .flatMap(_.set(ImporterHasEoriPage, true))
       .flatMap(_.set(ImporterEoriPage, testImporterEORI))
       .flatMap(_.set(IsVATRegisteredPage, IsVATRegistered.Yes))
@@ -336,8 +330,7 @@ object TestData {
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
       .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
-      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
-      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
       .flatMap(_.set(AgentImporterHasEORIPage, testAgentImporterHasEORI))
       .flatMap(_.set(EnterAgentEORIPage, testImporterEORI))
       .flatMap(_.set(IsImporterVatRegisteredPage, IsImporterVatRegistered.Yes))
@@ -364,8 +357,7 @@ object TestData {
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
       .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
-      .flatMap(_.set(CustomsDutyPaidPage, testCustomsDutyPaid))
-      .flatMap(_.set(CustomsDutyDueToHMRCPage, testCustomsDutyDueToHMRC))
+      .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
       .flatMap(_.set(AgentImporterHasEORIPage, testAgentImporterHasEORI))
       .flatMap(_.set(EnterAgentEORIPage, testImporterEORI))
       .flatMap(_.set(IsImporterVatRegisteredPage, IsImporterVatRegistered.Yes))

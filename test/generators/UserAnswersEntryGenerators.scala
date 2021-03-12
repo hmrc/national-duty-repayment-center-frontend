@@ -122,15 +122,6 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       } yield (page, value)
     }
 
-
-  implicit lazy val arbitraryOtherDutiesDueToHMRCUserAnswersEntry: Arbitrary[(OtherDutiesDueToHMRCPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page <- arbitrary[OtherDutiesDueToHMRCPage.type]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
   implicit lazy val arbitraryOtherDutiesPaidUserAnswersEntry: Arbitrary[(OtherDutiesPaidPage.type, JsValue)] =
     Arbitrary {
       for {
@@ -139,26 +130,10 @@ trait UserAnswersEntryGenerators extends PageGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryCustomsDutyDueToHMRCUserAnswersEntry: Arbitrary[(CustomsDutyDueToHMRCPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page <- arbitrary[CustomsDutyDueToHMRCPage.type]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
   implicit lazy val arbitraryCustomsDutyPaidUserAnswersEntry: Arbitrary[(CustomsDutyPaidPage.type, JsValue)] =
     Arbitrary {
       for {
         page <- arbitrary[CustomsDutyPaidPage.type]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryVATDueToHMRCUserAnswersEntry: Arbitrary[(VATDueToHMRCPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page <- arbitrary[VATDueToHMRCPage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }

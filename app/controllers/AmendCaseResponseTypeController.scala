@@ -18,11 +18,12 @@ package controllers
 
 import controllers.actions._
 import forms.AmendCaseResponseTypeFormProvider
+import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 
 import javax.inject.Inject
 import models.{AmendCaseResponseType, Mode, UserAnswers}
 import navigation.Navigator
-import pages.AmendCaseResponseTypePage
+import pages.{AmendCaseResponseTypePage, FurtherInformationPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -69,8 +70,16 @@ class AmendCaseResponseTypeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AmendCaseResponseTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            ua <- {
+              if(!value.contains(FurtherInformation))
+                Future.fromTry(request.userAnswers.remove(FurtherInformationPage))
+              else if(!value.contains(SupportingDocuments))
+                Future.successful(request.userAnswers.copy(fileUploadState = None))
+              else Future.successful(request.userAnswers)
+            }
+            updatedAnswers <- Future.fromTry(ua.set(AmendCaseResponseTypePage, value))
+            res   <- sessionRepository.set(updatedAnswers)
+            if res
           } yield Redirect(navigator.nextPage(AmendCaseResponseTypePage, mode, updatedAnswers))
       )
   }

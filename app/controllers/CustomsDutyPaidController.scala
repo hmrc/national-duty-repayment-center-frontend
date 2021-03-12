@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.CustomsDutyPaidFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.CustomsDutyPaidPage
+import pages.{CustomsDutyPaidPage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -31,16 +31,16 @@ import views.html.CustomsDutyPaidView
 import scala.concurrent.{ExecutionContext, Future}
 
 class CustomsDutyPaidController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: CustomsDutyPaidFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: CustomsDutyPaidView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                           override val messagesApi: MessagesApi,
+                                           sessionRepository: SessionRepository,
+                                           navigator: Navigator,
+                                           identify: IdentifierAction,
+                                           getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
+                                           formProvider: CustomsDutyPaidFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: CustomsDutyPaidView
+                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -56,7 +56,7 @@ class CustomsDutyPaidController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode, getBackLink(mode), isSingleEntry(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -64,13 +64,20 @@ class CustomsDutyPaidController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode), isSingleEntry(request.userAnswers)))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsDutyPaidPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(CustomsDutyPaidPage, mode, updatedAnswers))
       )
+  }
+
+  def isSingleEntry(userAnswers: UserAnswers): Boolean = {
+    userAnswers.get(NumberOfEntriesTypePage) match {
+      case Some(NumberOfEntriesType.Single) => true
+      case Some(NumberOfEntriesType.Multiple) => false
+    }
   }
 }

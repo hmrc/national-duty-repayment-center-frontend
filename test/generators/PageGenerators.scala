@@ -57,20 +57,11 @@ trait PageGenerators {
   implicit lazy val arbitraryImporterAddressPage: Arbitrary[ImporterAddressPage.type] =
     Arbitrary(ImporterAddressPage)
 
-  implicit lazy val arbitraryOtherDutiesDueToHMRCPage: Arbitrary[OtherDutiesDueToHMRCPage.type] =
-    Arbitrary(OtherDutiesDueToHMRCPage)
-
   implicit lazy val arbitraryOtherDutiesPaidPage: Arbitrary[OtherDutiesPaidPage.type] =
     Arbitrary(OtherDutiesPaidPage)
 
-  implicit lazy val arbitraryCustomsDutyDueToHMRCPage: Arbitrary[CustomsDutyDueToHMRCPage.type] =
-    Arbitrary(CustomsDutyDueToHMRCPage)
-
   implicit lazy val arbitraryCustomsDutyPaidPage: Arbitrary[CustomsDutyPaidPage.type] =
     Arbitrary(CustomsDutyPaidPage)
-
-  implicit lazy val arbitraryVATDueToHMRCPage: Arbitrary[VATDueToHMRCPage.type] =
-    Arbitrary(VATDueToHMRCPage)
 
   implicit lazy val arbitraryVATPaidPage: Arbitrary[VATPaidPage.type] =
     Arbitrary(VATPaidPage)

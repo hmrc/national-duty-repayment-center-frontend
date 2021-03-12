@@ -17,6 +17,7 @@
 @import controllers.routes._
 @import models.Mode
 @import views.ViewUtils._
+@import views.components.Prefix
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -24,7 +25,18 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, backLink: Call, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[RepaymentAmounts], mode: Mode, backLink: Call, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
+
+@updateGlobalErrorsTo(field: String) = @{
+    form.copy(errors = form.errors.map(err => err.copy(key = if(err.key.isEmpty) field else err.key)))
+}
+
+@hint =  @{
+    isSingleEntry match {
+        case true => Some(messages("otherDutiesPaid.single_entry.hint"))
+        case _ => Some(messages("otherDutiesPaid.multiple_entry.hint"))
+    }
+}
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("otherDutiesPaid.title"))}"),
@@ -33,23 +45,43 @@
 
     @forms.formWithCSRF(action = OtherDutiesPaidController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
-        @components.error_summary(form.errors)
+        @defining(updateGlobalErrorsTo("ShouldHavePaidAmount")) { newForm =>
 
-        @forms.inputText(
-            form = form,
-            id = "value",
-            name = "value",
-            label = "otherDutiesPaid.heading",
-            isPageHeading = true,
-            isInFieldset = false,
-            hint =  isSingleEntry match {
-                    case true => Some(messages("otherDutiesPaid.single_entry.hint"))
-                    case _ => Some(messages("otherDutiesPaid.multiple_entry.hint"))
-            },
-            classes = Some("govuk-input--width-10"),
-            attributes = Map("autocomplete" -> "off")
-        )
+            @components.error_summary(newForm.errors)
 
-        @html.button("site.continue")
+            @forms.fieldset(
+                legend = messages("otherDutiesPaid.heading")
+            ) {
+                @html.p {
+                    @hint
+                }
+
+                @forms.inputText(
+                    form = newForm,
+                    id = "ActualPaidAmount",
+                    name = "ActualPaidAmount",
+                    label = "otherDutiesPaid.actualamountpaid.heading",
+                    labelMedium = true,
+                    isPageHeading = false,
+                    prefix = Prefix.currencyPrefix,
+                    classes = Some("govuk-input--width-10"),
+                    attributes = Map("autocomplete" -> "off")
+                )
+
+                @forms.inputText(
+                    form = newForm,
+                    id = "ShouldHavePaidAmount",
+                    name = "ShouldHavePaidAmount",
+                    label = "otherDutiesPaid.shouldhavepaid.heading",
+                    labelMedium = true,
+                    isPageHeading = false,
+                    prefix = Prefix.currencyPrefix,
+                    classes = Some("govuk-input--width-10"),
+                    attributes = Map("autocomplete" -> "off")
+                )
+            }
+
+            @html.button("site.continue")
+        }
     }
 }

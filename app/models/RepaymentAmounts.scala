@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import pages.behaviours.PageBehaviours
+import play.api.libs.json.{Json, OFormat}
 
+final case class RepaymentAmounts(
+                                  ActualPaidAmount: String,
+                                  ShouldHavePaidAmount: String) {
+  val dueAmount: BigDecimal = BigDecimal.apply(ActualPaidAmount) - BigDecimal.apply(ShouldHavePaidAmount)
+}
 
-class CustomsDutyDueToHMRCPageSpec extends PageBehaviours {
-
-  "CustomsDutyDueToHMRCPage" must {
-
-    beRetrievable[String](CustomsDutyDueToHMRCPage)
-
-    beSettable[String](CustomsDutyDueToHMRCPage)
-
-    beRemovable[String](CustomsDutyDueToHMRCPage)
-  }
+object RepaymentAmounts {
+  implicit val format: OFormat[RepaymentAmounts] = Json.format[RepaymentAmounts]
 }

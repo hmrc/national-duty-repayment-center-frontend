@@ -132,36 +132,20 @@ POST       /is-importer-vat-registered                        controllers.IsImpo
 GET        /change-is-importer-vat-registered                 controllers.IsImporterVatRegisteredController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-is-importer-vat-registered                  controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = CheckMode)
 
+GET        /import-vat-overpayment                    controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /import-vat-overpayment                         controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /change-import-vat-overpayment                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-import-vat-overpayment                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
 
-GET        /import-vat-paid                      controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
-POST       /import-vat-paid                        controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
-GET        /change-import-vat-paid                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-import-vat-paid                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
+GET        /customs-duty-overpayment                       controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /customs-duty-overpayment                       controllers.CustomsDutyPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /change-customs-duty-overpayment                controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-customs-duty-overpayment                controllers.CustomsDutyPaidController.onSubmit(mode: Mode = CheckMode)
 
-GET        /vatDueToHMRC                        controllers.VATDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
-POST       /vatDueToHMRC                        controllers.VATDueToHMRCController.onSubmit(mode: Mode = NormalMode)
-GET        /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeVATDueToHMRC                  controllers.VATDueToHMRCController.onSubmit(mode: Mode = CheckMode)
-
-GET        /customs-duty-paid                        controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = NormalMode)
-POST       /customs-duty-paid                        controllers.CustomsDutyPaidController.onSubmit(mode: Mode = NormalMode)
-GET        /change-customs-duty-paid                  controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-customs-duty-paid                  controllers.CustomsDutyPaidController.onSubmit(mode: Mode = CheckMode)
-
-GET        /customsDutyDueToHMRC                        controllers.CustomsDutyDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
-POST       /customsDutyDueToHMRC                        controllers.CustomsDutyDueToHMRCController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCustomsDutyDueToHMRC                  controllers.CustomsDutyDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCustomsDutyDueToHMRC                  controllers.CustomsDutyDueToHMRCController.onSubmit(mode: Mode = CheckMode)
-
-GET        /other-duties-paid                        controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
-POST       /other-duties-paid                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
-GET        /change-other-duties-paid                  controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-other-duties-paid                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
-
-GET        /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = NormalMode)
-POST       /otherDutiesDueToHMRC                        controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = NormalMode)
-GET        /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeOtherDutiesDueToHMRC                  controllers.OtherDutiesDueToHMRCController.onSubmit(mode: Mode = CheckMode)
+GET        /other-duties-overpayment                        controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
+POST       /other-duties-overpayment                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
+GET        /change-other-duties-overpayment                 controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-other-duties-overpayment                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
 
 GET         /select-importer-address                      controllers.ImporterAddressController.onPageLoad(mode: Mode = NormalMode)
 POST        /select-importer-address                      controllers.ImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
@@ -235,15 +219,22 @@ GET        /changeAmendCaseResponseType                  controllers.AmendCaseRe
 POST       /changeAmendCaseResponseType                  controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = CheckMode)
 
 # File uploads
-GET         /file-upload                                  controllers.FileUploadController.showFileUpload()
-GET         /file-uploaded                                controllers.FileUploadController.showFileUploaded()
-POST        /file-uploaded                                controllers.FileUploadController.submitUploadAnotherFileChoice()
-
+GET         /file-upload                                  controllers.FileUploadController.showFileUpload(mode: Mode = NormalMode)
+GET         /file-uploaded                                controllers.FileUploadController.showFileUploaded(mode: Mode = NormalMode)
+POST        /file-uploaded                                controllers.FileUploadController.submitUploadAnotherFileChoice(mode: Mode = NormalMode)
 GET         /file-verification/:reference/status          controllers.FileUploadController.checkFileVerificationStatus(reference: String)
 POST        /ndrc/:id/callback-from-upscan                controllers.FileUploadController.callbackFromUpscan(id: String)
-GET         /file-verification                           controllers.FileUploadController.showWaitingForFileVerification
-GET         /file-rejected                                controllers.FileUploadController.markFileUploadAsRejected()
-GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String)
+GET         /file-verification                           controllers.FileUploadController.showWaitingForFileVerification(mode: Mode = NormalMode)
+GET         /file-rejected                                controllers.FileUploadController.markFileUploadAsRejected(mode: Mode = NormalMode)
+GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = NormalMode)
+GET         /back-file-upload                            controllers.FileUploadController.backLink(mode: Mode = NormalMode)
+GET         /change-file-uploaded                         controllers.FileUploadController.showFileUploaded(mode: Mode = CheckMode)
+GET         /change-file-upload                           controllers.FileUploadController.showFileUpload(mode: Mode = CheckMode)
+GET         /change-file-verification                     controllers.FileUploadController.showWaitingForFileVerification(mode: Mode = CheckMode)
+GET         /change-file-rejected                         controllers.FileUploadController.markFileUploadAsRejected(mode: Mode = CheckMode)
+POST        /change-file-uploaded                         controllers.FileUploadController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
+GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
+GET         /change-back-file-upload                            controllers.FileUploadController.backLink(mode: Mode = CheckMode)
 
 # bulk uploads
 GET        /upload-multiple-entries                        controllers.BulkFileUploadController.showFileUpload()
@@ -261,14 +252,20 @@ POST       /upload-proof-of-authority/:id/callback-from-upscan                  
 
 #amend send information
 
-GET         /amend-case-send-information/file-upload                                  controllers.AmendCaseSendInformationController.showFileUpload()
+GET         /amend-case-send-information/file-upload                                  controllers.AmendCaseSendInformationController.showFileUpload(mode: Mode = NormalMode)
 GET         /amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = NormalMode)
 POST        /amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = NormalMode)
 GET         /amend-case-send-information/file-verification/:reference/status          controllers.AmendCaseSendInformationController.checkFileVerificationStatus(reference: String)
 POST        /amend-case-send-information/ndrc/:id/callback-from-upscan                controllers.AmendCaseSendInformationController.callbackFromUpscan(id: String)
-GET         /amend-case-send-information/file-verification                           controllers.AmendCaseSendInformationController.showWaitingForFileVerification
-GET         /amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected()
-GET         /amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String)
+GET         /amend-case-send-information/file-verification                            controllers.AmendCaseSendInformationController.showWaitingForFileVerification(mode: Mode = NormalMode)
+GET         /amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected(mode: Mode = NormalMode)
+GET         /amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode: Mode = NormalMode)
+GET         /amend-case-send-information/back-file-upload                                                         controllers.AmendCaseSendInformationController.backLink(mode: Mode = NormalMode)
 
-GET         /change/amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = CheckMode)
-POST        /change/amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-upload                                  controllers.AmendCaseSendInformationController.showFileUpload(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = CheckMode)
+POST        /change-amend-case-send-information/file-uploaded                                controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-verification                            controllers.AmendCaseSendInformationController.showWaitingForFileVerification(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected(mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
+GET         /change-amend-case-send-information/back-file-upload                                                         controllers.AmendCaseSendInformationController.backLink(mode: Mode = CheckMode)

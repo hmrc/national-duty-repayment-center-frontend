@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package views.components
 
-import play.api.libs.json.JsPath
+import uk.gov.hmrc.govukfrontend.views.Aliases.PrefixOrSuffix
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 
-case object VATDueToHMRCPage extends QuestionPage[String] {
+object Prefix {
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "vATDueToHMRC"
+  val currencyPrefix = Some(PrefixOrSuffix(content = Text("£")))
 }

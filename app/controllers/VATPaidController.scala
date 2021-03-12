@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.VATPaidFormProvider
 import javax.inject.Inject
-import models.{ClaimRepaymentType, Mode, UserAnswers}
+import models.{ClaimRepaymentType, Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.{ClaimRepaymentTypePage, VATPaidPage}
+import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, VATPaidPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,7 +46,7 @@ class VATPaidController @Inject()(
 
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
     userAnswers.get(ClaimRepaymentTypePage) match {
-      case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyDueToHMRCController.onPageLoad(mode)
+      case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(mode)
       case _ => routes.ClaimRepaymentTypeController.onPageLoad(mode)
     }
   }
@@ -59,7 +59,7 @@ class VATPaidController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, request.userAnswers, getBackLink(mode, request.userAnswers)))
+      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -67,7 +67,7 @@ class VATPaidController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, request.userAnswers, getBackLink(mode, request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))),
 
         value =>
           for {
@@ -75,5 +75,12 @@ class VATPaidController @Inject()(
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(VATPaidPage, mode, updatedAnswers))
       )
+  }
+
+  def isSingleEntry(userAnswers: UserAnswers): Boolean = {
+    userAnswers.get(NumberOfEntriesTypePage) match {
+      case Some(NumberOfEntriesType.Single) => true
+      case Some(NumberOfEntriesType.Multiple)  => false
+    }
   }
 }

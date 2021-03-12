@@ -31,7 +31,7 @@ object AmendClaimRequest {
   def buildValidAmendRequest(userAnswers: UserAnswers): Option[AmendClaimRequest] = {
 
     def getFurtherInformation(userAnswers: UserAnswers) : Option[String] =
-      userAnswers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.Furtherinformation) match {
+      userAnswers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.FurtherInformation) match {
         case true => userAnswers.get(FurtherInformationPage)
         case _ => Some("Files Uploaded")
     }
@@ -63,7 +63,7 @@ object AmendClaimRequest {
   }
   def hasSupportingDocs(userAnswers: UserAnswers): Boolean  = {
     userAnswers.get(AmendCaseResponseTypePage) match {
-      case Some(s) => s.contains(AmendCaseResponseType.Supportingdocuments)
+      case Some(s) => s.contains(AmendCaseResponseType.SupportingDocuments)
       case _ => false
     }
   }

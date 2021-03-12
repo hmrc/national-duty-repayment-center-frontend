@@ -17,8 +17,9 @@
 package controllers
 
 import base.SpecBase
-import models.{ClaimRepaymentType, NormalMode, UserAnswers}
-import pages.{ClaimRepaymentTypePage, CustomsDutyDueToHMRCPage, CustomsDutyPaidPage, OtherDutiesDueToHMRCPage, OtherDutiesPaidPage, VATDueToHMRCPage, VATPaidPage}
+import models.{CheckMode, ClaimRepaymentType, NormalMode, UserAnswers}
+import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage, VATPaidPage}
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
@@ -36,14 +37,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(Html(
         "Customs Duty that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/customs-duty-paid"),
-        Some("customs-duty-paid")
+        Some("/national-duty-repayment-center/change-customs-duty-overpayment"),
+        Some("customs-duty-overpayment")
       ),
       AnswerRow(
         Html("Customs Duty that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/customsDutyDueToHMRC"),
-        Some("customs-duty-due")
+        Some("/national-duty-repayment-center/change-customs-duty-overpayment"),
+        Some("customs-duty-overpayment")
       ),
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
     )),
@@ -51,14 +52,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Import VAT that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/import-vat-paid"),
-        Some("vat-paid")
+        Some("/national-duty-repayment-center/change-import-vat-overpayment"),
+        Some("change-import-vat-overpayment")
       ),
       AnswerRow(
         Html("Import VAT that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/vatDueToHMRC"),
-        Some("vat-due")
+        Some("/national-duty-repayment-center/change-import-vat-overpayment"),
+        Some("change-import-vat-overpayment")
       ),
       AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
     )),
@@ -66,14 +67,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Other duties that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/other-duties-paid"),
-        Some("other-duties-paid")
+        Some("/national-duty-repayment-center/change-other-duties-overpayment"),
+        Some("other-duties-overpayment")
       ),
       AnswerRow(
         Html("Other duties that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/otherDutiesDueToHMRC"),
-        Some("other-duties-due")
+        Some("/national-duty-repayment-center/change-other-duties-overpayment"),
+        Some("other-duties-overpayment")
       ),
       AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
     )),
@@ -86,18 +87,22 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
-        success.value.set(CustomsDutyPaidPage, "0.00").success.value
-        .set(CustomsDutyDueToHMRCPage, "0.00").success.value
-        .set(VATPaidPage, "0.00").success.value
-        .set(VATDueToHMRCPage, "0.00").success.value
-        .set(OtherDutiesPaidPage, "0.00").success.value
-        .set(OtherDutiesDueToHMRCPage, "0.00").success.value
+      val userAnswers = UserAnswers(userAnswersId, Json.obj(
+        CustomsDutyPaidPage.toString -> Json.obj(
+          "ActualPaidAmount" -> "0.00",
+          "ShouldHavePaidAmount" -> "0.00"
+        ),
+        OtherDutiesPaidPage.toString -> Json.obj(
+          "ActualPaidAmount" -> "0.00",
+          "ShouldHavePaidAmount" -> "0.00"
+        )
+      ))
+        .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
 
       val backLink = userAnswers.get(ClaimRepaymentTypePage) match {
-        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesDueToHMRCController.onPageLoad(NormalMode)
-        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATDueToHMRCController.onPageLoad(NormalMode)
-        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyDueToHMRCController.onPageLoad(NormalMode)
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATPaidController.onPageLoad(CheckMode)
+        case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
         case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
       }
 
