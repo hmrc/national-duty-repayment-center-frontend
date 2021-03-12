@@ -17,7 +17,7 @@
 package controllers
 
 import akka.actor.ActorRef
-import akka.pattern.ask
+import akka.pattern.{AskTimeoutException, ask}
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
@@ -45,25 +45,27 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
 class AmendCaseSendInformationController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        sessionRepository: SessionRepository,
-                                        additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
-                                        navigator: Navigator,
-                                        appConfig: FrontendAppConfig,
-                                        upscanInitiateConnector: UpscanInitiateConnector,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        @Named("check-state-actor") checkStateActor: ActorRef,
-                                        fileUploadView: AmendCaseSendInformationView,
-                                        fileUploadedView: AmendCaseUploadAnotherFileView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService{
+                                                    override val messagesApi: MessagesApi,
+                                                    identify: IdentifierAction,
+                                                    getData: DataRetrievalAction,
+                                                    requireData: DataRequiredAction,
+                                                    sessionRepository: SessionRepository,
+                                                    additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
+                                                    navigator: Navigator,
+                                                    appConfig: FrontendAppConfig,
+                                                    upscanInitiateConnector: UpscanInitiateConnector,
+                                                    val controllerComponents: MessagesControllerComponents,
+                                                    @Named("check-state-actor") checkStateActor: ActorRef,
+                                                    fileUploadView: AmendCaseSendInformationView,
+                                                    fileUploadedView: AmendCaseUploadAnotherFileView
+                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
   final val controller = routes.AmendCaseSendInformationController
   val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm
   type ConvertState = (FileUploadState) => Future[FileUploadState]
+
   case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
+
   val fileStateError = InternalServerError("Missing file upload state")
 
   // GET /file-verification
@@ -71,11 +73,15 @@ class AmendCaseSendInformationController @Inject()(
     implicit val timeout = Timeout(30 seconds)
     sessionState(request.internalId).flatMap { ss =>
       ss.state match {
-        case Some(s) =>
-          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
-            case s: FileUploaded => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
-            case s: UploadFile => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
-            case _ => Future.successful(fileStateError)
+        case Some(_) =>
+          (checkStateActor ? StopWaiting(LocalDateTime.now.plusSeconds(20))).recover {
+            case e: AskTimeoutException => false
+          }.mapTo[Boolean].flatMap {
+            case true => sessionRepository.get(request.internalId).flatMap(ss => ss.flatMap(_.fileUploadState) match {
+              case s: FileUploaded => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
+              case s: UploadFile => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
+              case _ => Future.successful(fileStateError)
+            })
           }
         case _ => Future.successful(fileStateError)
       }
@@ -133,7 +139,7 @@ class AmendCaseSendInformationController @Inject()(
         s.get.fileUploads,
         controller.submitUploadAnotherFileChoice(mode),
         controller.removeFileUploadByReference,
-        if(mode == NormalMode) controller.showFileUpload(mode) else routes.AmendCheckYourAnswersController.onPageLoad(),
+        if (mode == NormalMode) controller.showFileUpload(mode) else routes.AmendCheckYourAnswersController.onPageLoad(),
         mode
       ))
     }
@@ -155,8 +161,8 @@ class AmendCaseSendInformationController @Inject()(
           ss.state match {
             case Some(s) =>
               if (value)
-                submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode),Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(s).flatMap {
-                  newState => updateSession(newState, ss.userAnswers).map { _ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode))}
+                submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(s).flatMap {
+                  newState => updateSession(newState, ss.userAnswers).map { _ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)) }
                 }
               else Future.successful(Redirect(getAmendCaseUploadAnotherFile(request.userAnswers, mode)))
             case None => Future.successful(fileStateError)
@@ -172,7 +178,7 @@ class AmendCaseSendInformationController @Inject()(
       routes.AmendCheckYourAnswersController.onPageLoad()
   }
 
-  def hasFurtherInformation(userAnswers: UserAnswers): Boolean  = {
+  def hasFurtherInformation(userAnswers: UserAnswers): Boolean = {
     userAnswers.get(AmendCaseResponseTypePage) match {
       case Some(s) => s.contains(AmendCaseResponseType.FurtherInformation)
       case _ => false
@@ -198,15 +204,15 @@ class AmendCaseSendInformationController @Inject()(
     )
   }
 
-  def backLink(mode: Mode) : Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    if(mode == NormalMode)
+  def backLink(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    if (mode == NormalMode)
       Future.successful(Redirect(routes.AmendCaseResponseTypeController.onPageLoad(mode)))
     else {
       for {
         ss <- sessionState(request.internalId)
         fs <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
         res <- updateSession(FileUploaded(fs.get.fileUploads.copy(files = fs.get.fileUploads.files.filterNot(_.isInstanceOf[Initiated]))), ss.userAnswers)
-        if(res)
+        if (res)
       } yield Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode))
     }
   }
@@ -217,7 +223,8 @@ class AmendCaseSendInformationController @Inject()(
     sessionState(id).flatMap { ss =>
       ss.state match {
         case Some(s) => upscanCallbackArrived(request.body, SupportingEvidence)(s).flatMap { newState =>
-          updateSession(newState, ss.userAnswers).map { res =>
+          updateSession(newState, ss.userAnswers).map { _ =>
+            checkStateActor ! CallbackArrived
             acknowledgeFileUploadRedirect(newState)
           }
         }
@@ -265,6 +272,7 @@ class AmendCaseSendInformationController @Inject()(
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
     )
   }
+
   def sessionState(id: String): Future[SessionState] = {
     for {
       u <- sessionRepository.get(id)

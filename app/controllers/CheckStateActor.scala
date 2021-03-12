@@ -57,3 +57,29 @@ class CheckStateActor @Inject()(sessionRepository: SessionRepository, appConfig:
     }
   }
 }
+
+
+case object CallbackArrived
+case class StopWaiting(maxWaitTime: LocalDateTime)
+
+
+class CheckStateActorAmend @Inject()()(implicit ec: ExecutionContext) extends Actor {
+  implicit val timeout = Timeout(30 seconds)
+  import akka.pattern.ask
+
+  def receive = active(false)
+
+  def active(completed: Boolean): Receive = {
+    case CallbackArrived => context become active(true)
+    case StopWaiting(maxWaitTime: LocalDateTime) => {
+      if (LocalDateTime.now().isAfter(maxWaitTime) || completed) {
+        context.become(active(false))
+        Future.successful(completed).pipeTo(sender)
+      }
+      else {
+        context.become(active(false))
+        (self ? StopWaiting(maxWaitTime)).pipeTo(sender)
+      }
+    }.pipeTo(sender)
+  }
+}
