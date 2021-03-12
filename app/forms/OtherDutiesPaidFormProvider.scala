@@ -34,6 +34,11 @@ class OtherDutiesPaidFormProvider @Inject() extends Mappings {
             greaterThanZero("otherDutiesPaid.actualamountpaid.error.greaterThanZero"),
             maximumValue("99999999999.99", "otherDutiesPaid.actualamountpaid.error.length")
           )
+        ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
+        .verifying(maximumValue[BigDecimal](99999999999.99, "otherDutiesPaid.actualamountpaid.error.length"))
+        .transform[String](
+          d => d.toString,
+          i => i.toDouble
         ),
       "ShouldHavePaidAmount" -> decimal("otherDutiesPaid.shouldhavepaid.error.required",
         "otherDutiesPaid.shouldhavepaid.error.notANumber")
@@ -43,6 +48,11 @@ class OtherDutiesPaidFormProvider @Inject() extends Mappings {
             greaterThanZero("otherDutiesPaid.shouldhavepaid.error.greaterThanZero"),
             maximumValue("99999999999.99", "otherDutiesPaid.shouldhavepaid.error.length")
           )
+        ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
+        .verifying(maximumValue[BigDecimal](99999999999.99, "otherDutiesPaid.shouldhavepaid.error.length"))
+        .transform[String](
+          d => d.toString,
+          i => i.toDouble
         )
     )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
       .verifying("otherDutiesPaid.amounts.error.same", duty => duty.dueAmount != 0)
