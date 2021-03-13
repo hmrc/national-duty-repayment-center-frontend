@@ -480,7 +480,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def getPaymentInformationAnswerSection: AnswerSection = {
     AnswerSection (Some (messages ("payment.information.checkYourAnswersLabel") ),
       Seq.empty ++
-        (userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) match {
+        ((userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS)
+          || userAnswers.get(RepaymentTypePage) == None)
+          &&
+          userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
           case true =>
             (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
               case true => (userAnswers.get(WhomToPayPage) match {
