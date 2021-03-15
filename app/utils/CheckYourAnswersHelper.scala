@@ -481,7 +481,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     AnswerSection (Some (messages ("payment.information.checkYourAnswersLabel") ),
       Seq.empty ++
         ((userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS)
-          || userAnswers.get(RepaymentTypePage) == None)
+          || userAnswers.get(RepaymentTypePage).isEmpty)
           &&
           userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
           case true =>
