@@ -21,7 +21,8 @@
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
     forms: views.components.forms,
-    html: views.components.html
+    html: views.components.html,
+    details: views.html.components.details
 )
 
 @(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
@@ -44,6 +45,11 @@
             legendAsHeading = true,
             legend = Some(messages("isVATRegistered.heading"))
         )
+
+        @details(messages("isVATRegistered.details.header")) {
+            @html.p{@messages("isVATRegistered.details.p1")}
+            @html.p{@messages("isVATRegistered.details.p2")}
+        }
 
         @html.button("site.continue")
 
