@@ -97,7 +97,7 @@ class Navigator @Inject()() {
   private def getReasonForRepayment(answers: UserAnswers) : Call = {
     answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
       case NumberOfEntriesType.Multiple => routes.BulkFileUploadController.showFileUpload()
-      case _ => routes.EntryDetailsController.onPageLoad(NormalMode)
+      case NumberOfEntriesType.Single => routes.EntryDetailsController.onPageLoad(NormalMode)
 
     }
   }

@@ -59,7 +59,7 @@ object CreateClaimRequest {
     def getPaymentMethod(userAnswers: UserAnswers): Option[RepaymentType] = {
       userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
         case NumberOfEntriesType.Multiple => Some(RepaymentType.BACS)
-        case _ => userAnswers.get(RepaymentTypePage)
+        case NumberOfEntriesType.Single => userAnswers.get(RepaymentTypePage)
       }
     }
 
@@ -68,8 +68,8 @@ object CreateClaimRequest {
       claimedUnderArticle <- Some(userAnswers.get(ArticleTypePage))
       claimedUnderRegulation <- Some(userAnswers.get(UkRegulationTypePage))
       claimant <- userAnswers.get(ClaimantTypePage)
-      claimType <- userAnswers.get(NumberOfEntriesTypePage)
-      noOfEntries <- userAnswers.get(NumberOfEntriesTypePage)
+      claimType <- userAnswers.get(NumberOfEntriesTypePage).map(_.numberOfEntriesType)
+      noOfEntries <- userAnswers.get(NumberOfEntriesTypePage).map(_.entries)
       entryDetails <- userAnswers.get(EntryDetailsPage)
       claimReason <- userAnswers.get(ClaimReasonTypePage)
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage)
@@ -80,8 +80,8 @@ object CreateClaimRequest {
       claimedUnderArticle,
       claimedUnderRegulation,
       claimant,
-      claimType.numberOfEntriesType,
-      noOfEntries.entries,
+      claimType,
+      noOfEntries,
       entryDetails,
       claimReason,
       claimDescription,

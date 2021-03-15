@@ -402,7 +402,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       Seq.empty ++
       (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
       case NumberOfEntriesType.Multiple => Seq(bulkFileUpload.get)
-      case _ => Seq.empty
+      case NumberOfEntriesType.Single => Seq.empty
       }) ++
       Seq(entryDetailsEPU.get,
         entryDetailsNumber.get,
@@ -505,7 +505,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case None => Seq.empty
           case _ => (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
             case NumberOfEntriesType.Single => Seq(repaymentType.get)
-            case _ => Seq.empty
+            case NumberOfEntriesType.Multiple => Seq.empty
           })
         }) ++
         (userAnswers.get(RepaymentTypePage).contains(RepaymentType.CMA) match {
