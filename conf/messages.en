@@ -88,6 +88,9 @@ isVATRegistered.01 = Yes
 isVATRegistered.02 = No
 isVATRegistered.checkYourAnswersLabel = Are you VAT registered?
 isVATRegistered.error.required = Select yes if you are VAT registered
+isVATRegistered.details.header = Help with VAT registration
+isVATRegistered.details.p1 = You must register your business for VAT with HMRC if its VAT taxable turnover is over the current VAT registration threshold.
+isVATRegistered.details.p2 = You can register voluntarily if your turnover is under the threshold, unless everything you sell is exempt.
 
 importerClaimantVrn.title = What is your VRN number?
 importerClaimantVrn.heading = What is your VRN number?
