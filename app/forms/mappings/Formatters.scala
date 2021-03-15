@@ -148,5 +148,4 @@ trait Formatters {
     new CustomBindMapping(emailFieldName, bind, unbind)
 
   }
-
 }

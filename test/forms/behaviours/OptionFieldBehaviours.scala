@@ -41,7 +41,6 @@ class OptionFieldBehaviours extends FieldBehaviours {
 
       forAll(generator -> "invalidValue") {
         value =>
-
           val result = form.bind(Map(fieldName -> value)).apply(fieldName)
           result.errors shouldEqual Seq(invalidError)
       }

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.VATPaidFormProvider
-import models.{ClaimRepaymentType, NormalMode, NumberOfEntriesType, RepaymentAmounts, UserAnswers}
+import models._
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -58,8 +58,8 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Single).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
+        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -81,8 +81,9 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
+
       val userAnswersFull = userAnswers.set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+         .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
@@ -134,7 +135,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

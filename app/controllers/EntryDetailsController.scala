@@ -46,9 +46,9 @@ class EntryDetailsController @Inject()(
 
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
 
-    userAnswers.get(NumberOfEntriesTypePage) match {
-      case Some(NumberOfEntriesType.Single) if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(mode)
-      case Some(NumberOfEntriesType.Single) if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UnionsCustomsCodeRegulation) => routes.ArticleTypeController.onPageLoad(mode)
+    userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Single if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(mode)
+      case NumberOfEntriesType.Single if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UnionsCustomsCodeRegulation) => routes.ArticleTypeController.onPageLoad(mode)
       case _ => routes.BulkFileUploadController.showFileUpload()
     }
   }

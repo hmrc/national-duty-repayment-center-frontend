@@ -35,16 +35,23 @@
 
         @components.error_summary(form.errors)
 
-        @forms.inputRadio(
-            form = form,
-            idPrefix = "value",
-            name = "value",
-            items = NumberOfEntriesType.options(form),
-            inline = false,
-            legend = Some("numberOfEntriesType.heading"),
-            hint = None
-        )
+        @forms.fieldset(
+        legend = messages("numberOfEntriesType.heading")
+        ) {
 
-        @html.button("site.continue")
+            @html.p {
+            @messages("numberOfEntriesType.hint")
+            }
+
+            @forms.inputRadio(
+                form = form,
+                idPrefix = "value",
+                name = "value",
+                items = NumberOfEntriesType.options(form),
+                inline = false
+            )
+
+            @html.button("site.continue")
+        }
     }
 }

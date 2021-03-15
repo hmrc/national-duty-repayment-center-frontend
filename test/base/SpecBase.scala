@@ -82,7 +82,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     ClaimedUnderRegulation = Some(UkRegulationType.Rejected),
     Claimant = ClaimantType.Representative,
     ClaimType = NumberOfEntriesType.Multiple,
-    NoOfEntries = Some(NoOfEntries("10")),
+    NoOfEntries = Some("10"),
     EntryDetails = EntryDetails(EPU = "123", EntryNumber = "123456Q", EntryDate = LocalDate.now()),
     ClaimReason = ClaimReasonType.Preference,
     ClaimDescription = ClaimDescription("this is a claim description"),

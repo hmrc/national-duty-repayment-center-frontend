@@ -34,7 +34,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(ReferenceNumberPage.type, JsValue)] ::
     arbitrary[(BulkFileUploadPage.type, JsValue)] ::
       arbitrary[(IndirectRepresentativePage.type, JsValue)] ::
-      arbitrary[(HowManyEntriesPage.type, JsValue)] ::
       arbitrary[(BankDetailsPage.type, JsValue)] ::
       arbitrary[(AgentImporterManualAddressPage.type, JsValue)] ::
       arbitrary[(ImporterManualAddressPage.type, JsValue)] ::
@@ -58,7 +57,6 @@ trait UserAnswersGenerator extends TryValues {
       arbitrary[(ReasonForOverpaymentPage.type, JsValue)] ::
       arbitrary[(ClaimReasonTypePage.type, JsValue)] ::
       arbitrary[(EntryDetailsPage.type, JsValue)] ::
-      arbitrary[(HowManyEntriesPage.type, JsValue)] ::
       arbitrary[(NumberOfEntriesTypePage.type, JsValue)] ::
       arbitrary[(ArticleTypePage.type, JsValue)] ::
       arbitrary[(CustomsRegulationTypePage.type, JsValue)] ::

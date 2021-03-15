@@ -36,30 +36,30 @@ object CreateClaimRequest {
     def getPayeeIndicator(userAnswers: UserAnswers): Option[WhomToPay] = {
       userAnswers.get(ClaimantTypePage) match {
         case Some(ClaimantType.Importer) => {
-          userAnswers.get(NumberOfEntriesTypePage) match {
-            case Some(NumberOfEntriesType.Single) => userAnswers.get(RepaymentTypePage) match {
+          userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+            case NumberOfEntriesType.Single => userAnswers.get(RepaymentTypePage) match {
               case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
               case Some(RepaymentType.BACS) => Some(WhomToPay.Importer)
             }
-            case Some(NumberOfEntriesType.Multiple) => Some(WhomToPay.Importer)
+            case NumberOfEntriesType.Multiple => Some(WhomToPay.Importer)
           }
         }
         case Some(ClaimantType.Representative) => {
-          userAnswers.get(NumberOfEntriesTypePage) match {
-            case Some(NumberOfEntriesType.Single) => userAnswers.get(RepaymentTypePage) match {
+          userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+            case NumberOfEntriesType.Single => userAnswers.get(RepaymentTypePage) match {
               case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
               case Some(RepaymentType.BACS) => userAnswers.get(WhomToPayPage)
             }
-            case Some(NumberOfEntriesType.Multiple) => userAnswers.get(WhomToPayPage)
+            case _ => userAnswers.get(WhomToPayPage)
           }
         }
       }
     }
 
     def getPaymentMethod(userAnswers: UserAnswers): Option[RepaymentType] = {
-      userAnswers.get(NumberOfEntriesTypePage) match {
-        case Some(NumberOfEntriesType.Multiple) => Some(RepaymentType.BACS)
-        case _ => userAnswers.get(RepaymentTypePage)
+      userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+        case NumberOfEntriesType.Multiple => Some(RepaymentType.BACS)
+        case NumberOfEntriesType.Single => userAnswers.get(RepaymentTypePage)
       }
     }
 
@@ -68,8 +68,8 @@ object CreateClaimRequest {
       claimedUnderArticle <- Some(userAnswers.get(ArticleTypePage))
       claimedUnderRegulation <- Some(userAnswers.get(UkRegulationTypePage))
       claimant <- userAnswers.get(ClaimantTypePage)
-      claimType <- userAnswers.get(NumberOfEntriesTypePage)
-      noOfEntries <- Some(userAnswers.get(HowManyEntriesPage))
+      claimType <- userAnswers.get(NumberOfEntriesTypePage).map(_.numberOfEntriesType)
+      noOfEntries <- userAnswers.get(NumberOfEntriesTypePage).map(_.entries)
       entryDetails <- userAnswers.get(EntryDetailsPage)
       claimReason <- userAnswers.get(ClaimReasonTypePage)
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage)

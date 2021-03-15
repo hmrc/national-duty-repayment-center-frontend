@@ -18,9 +18,11 @@ package models
 
 import play.api.data.Form
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.Aliases.Hint
+import uk.gov.hmrc.govukfrontend.views.Aliases.{ErrorMessage, Hint, Label}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
+import uk.gov.hmrc.govukfrontend.views.viewmodels.input.Input
+import uk.gov.hmrc.govukfrontend.views.html.components.{govukErrorMessage, govukHint, govukInput, govukLabel}
 
 sealed trait NumberOfEntriesType
 
@@ -28,6 +30,10 @@ object NumberOfEntriesType extends Enumerable.Implicits {
 
   case object Single extends WithName("01") with NumberOfEntriesType
   case object Multiple extends WithName("02") with NumberOfEntriesType
+
+  private val govukErrorMessage: govukErrorMessage = new govukErrorMessage()
+  private val govukHint: govukHint = new govukHint()
+  private val govukLabel: govukLabel = new govukLabel()
 
   val values: Seq[NumberOfEntriesType] = Seq(
     Single, Multiple
@@ -38,14 +44,26 @@ object NumberOfEntriesType extends Enumerable.Implicits {
       RadioItem(
         value = Some(value.toString),
         content = Text(messages(s"numberOfEntriesType.${value.toString}")),
-        checked = form("value").value.contains(value.toString),
-        hint = Some(Hint(
-          content = if(value.toString.equals("02"))
-            Text(messages("numberOfEntriesType.02.hint"))
-            else Text("")
-        ))
+        checked = form.value.isEmpty match {
+          case true => form("value").value.contains(value.toString)
+          case false => form.value.head.asInstanceOf[Entries].numberOfEntriesType == value
+        },
+        conditionalHtml = if(value.toString.equals("02")) Some(new govukInput(govukErrorMessage, govukHint, govukLabel)
+        (Input(id="entries", value = form("entries").value,
+          errorMessage = if(form("entries").hasErrors){
+            Some(ErrorMessage(
+              content = Text(messages(form("entries").errors.head.message))
+            ))
+          } else { None },
+          name="entries", classes = "govuk-input--width-4",attributes = Map(
+          "autocomplete" -> "off",
+          "inputmode" -> "numeric",
+          "pattern" -> "[0-9]*"
+        ), hint=Some(Hint(classes = "govuk-label",content=Text(messages("numberOfEntriesType.02.hint")))))))
+        else None
       )
   }
+
 
   implicit val enumerable: Enumerable[NumberOfEntriesType] =
     Enumerable(values.map(v => v.toString -> v): _*)

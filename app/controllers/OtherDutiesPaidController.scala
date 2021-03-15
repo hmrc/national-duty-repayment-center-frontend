@@ -79,8 +79,8 @@ class OtherDutiesPaidController @Inject()(
   }
 
   def isSingleEntry(userAnswers: UserAnswers): Boolean = {
-    userAnswers.get(NumberOfEntriesTypePage) match {
-      case Some(NumberOfEntriesType.Single) => true
+    userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Single => true
       case _ => false
     }
   }

@@ -20,9 +20,9 @@ import controllers.actions._
 import forms.NumberOfEntriesTypeFormProvider
 
 import javax.inject.Inject
-import models.{Mode, NumberOfEntriesType}
+import models.{Mode, NoOfEntries}
 import navigation.Navigator
-import pages.{BulkFileUploadPage, HowManyEntriesPage, NumberOfEntriesTypePage}
+import pages.NumberOfEntriesTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -62,16 +62,16 @@ class NumberOfEntriesTypeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
 
-        value =>
+        value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, updatedAnswers))
+        }
       )
   }
 }

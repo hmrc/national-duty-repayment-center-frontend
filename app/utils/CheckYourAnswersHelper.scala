@@ -17,10 +17,10 @@
 package utils
 
 import controllers.routes
+import models._
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.FileType.{Bulk, ProofOfAuthority}
 import models.FileUpload.Accepted
-import models.{Address, AgentImporterHasEORI, CheckMode, ClaimantType, CustomsRegulationType, NormalMode, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
@@ -389,10 +389,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     AnswerSection (Some(messages ("impInfo.checkYourAnswersLabel") ),
       Seq(claimantType.get,
         numberOfEntriesType.get) ++
-        (userAnswers.get(NumberOfEntriesTypePage) match {
-            case Some(NumberOfEntriesType.Multiple) => Seq (howManyEntries.get)
-            case _ => Seq.empty
-        }) ++
         Seq(customsRegulationType.get) ++
         (userAnswers.get(CustomsRegulationTypePage) match {
             case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => Seq(articleType.get)
@@ -404,9 +400,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def getEntryDetailsAnswerSection: AnswerSection = {
     AnswerSection(Some(messages("entryDetails.checkYourAnswersLabel")),
       Seq.empty ++
-      (userAnswers.get(NumberOfEntriesTypePage) match {
-      case Some(NumberOfEntriesType.Multiple) => Seq(bulkFileUpload.get)
-      case _ => Seq.empty
+      (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Multiple => Seq(bulkFileUpload.get)
+      case NumberOfEntriesType.Single => Seq.empty
       }) ++
       Seq(entryDetailsEPU.get,
         entryDetailsNumber.get,
@@ -507,9 +503,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         }) ++
         (userAnswers.get(RepaymentTypePage) match {
           case None => Seq.empty
-          case _ => (userAnswers.get(NumberOfEntriesTypePage) match {
-            case Some(NumberOfEntriesType.Single) => Seq(repaymentType.get)
-            case _ => Seq.empty
+          case _ => (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+            case NumberOfEntriesType.Single => Seq(repaymentType.get)
+            case NumberOfEntriesType.Multiple => Seq.empty
           })
         }) ++
         (userAnswers.get(RepaymentTypePage).contains(RepaymentType.CMA) match {
@@ -547,22 +543,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def howManyEntries: Option[AnswerRow] = userAnswers.get(HowManyEntriesPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("howManyEntries.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.value),
-        Some(routes.HowManyEntriesController.onPageLoad(NormalMode).url)
-      )
-  }
-
   def numberOfEntriesType: Option[AnswerRow] = userAnswers.get(NumberOfEntriesTypePage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("numberOfEntriesType.checkYourAnswersLabel")),
-        HtmlFormat.escape(userAnswers.get(NumberOfEntriesTypePage) match {
-          case Some(NumberOfEntriesType.Single) => messages("numberOfEntriesType.single.checkYourAnswersLabel")
-          case _ => messages("numberOfEntriesType.multiple.checkYourAnswersLabel")
+        HtmlFormat.escape(userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+          case NumberOfEntriesType.Single => "1"
+          case NumberOfEntriesType.Multiple => userAnswers.get(NumberOfEntriesTypePage).get.entries.get
         }),
         Some(routes.NumberOfEntriesTypeController.onPageLoad(NormalMode).url)
       )

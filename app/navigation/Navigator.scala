@@ -27,8 +27,7 @@ class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
     case ClaimantTypePage => _ => routes.NumberOfEntriesTypeController.onPageLoad(NormalMode)
-    case NumberOfEntriesTypePage  => howManyEntries
-    case HowManyEntriesPage  => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
+    case NumberOfEntriesTypePage  => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
     case CustomsRegulationTypePage => getEntryDetails
     case ArticleTypePage => getReasonForRepayment
     case UkRegulationTypePage => getReasonForRepayment
@@ -82,9 +81,9 @@ class Navigator @Inject()() {
     }
 
   private def getRepaymentType(answers: UserAnswers): Call =
-    (answers.get(NumberOfEntriesTypePage), answers.get(ClaimantTypePage)) match {
-      case (Some(NumberOfEntriesType.Multiple),Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
-      case (Some(NumberOfEntriesType.Multiple),Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
+    (answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType, answers.get(ClaimantTypePage)) match {
+      case (NumberOfEntriesType.Multiple,Some(ClaimantType.Representative)) => routes.WhomToPayController.onPageLoad(NormalMode)
+      case (NumberOfEntriesType.Multiple,Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
       case  _  => routes.RepaymentTypeController.onPageLoad(NormalMode)
     }
 
@@ -96,9 +95,9 @@ class Navigator @Inject()() {
     }
 
   private def getReasonForRepayment(answers: UserAnswers) : Call = {
-    answers.get(NumberOfEntriesTypePage) match {
-      case Some (NumberOfEntriesType.Multiple) => routes.BulkFileUploadController.showFileUpload()
-      case Some (NumberOfEntriesType.Single) => routes.EntryDetailsController.onPageLoad(NormalMode)
+    answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Multiple => routes.BulkFileUploadController.showFileUpload()
+      case NumberOfEntriesType.Single => routes.EntryDetailsController.onPageLoad(NormalMode)
 
     }
   }
@@ -141,12 +140,6 @@ class Navigator @Inject()() {
       case (Some(RepaymentType.BACS), Some(ClaimantType.Importer)) => routes.BankDetailsController.onPageLoad(NormalMode)
       case _ => routes.CheckYourAnswersController.onPageLoad
     }
-
-  private def howManyEntries(answers: UserAnswers): Call = answers.get(NumberOfEntriesTypePage) match {
-    case Some(NumberOfEntriesType.Single)  => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
-    case Some(NumberOfEntriesType.Multiple) => routes.HowManyEntriesController.onPageLoad(NormalMode)
-    case None => routes.SessionExpiredController.onPageLoad()
-  }
 
   private def getClaimRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
     case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs))  => routes.CustomsDutyPaidController.onPageLoad(NormalMode)

@@ -78,7 +78,7 @@ object TestData {
     None,
     testClaimantTypeRepresentative,
     NumberOfEntriesType.Multiple,
-    None,
+    Some("2"),
     testEntryDetails,
     ClaimReasonType.Cpuchange,
     testClaimDescription,
@@ -200,7 +200,7 @@ object TestData {
   def populateUserAnswersWithRepresentativeAndMultipleEntries(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Multiple))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -227,7 +227,7 @@ object TestData {
   def populateUserAnswersRepresentativeWithEmail(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -255,7 +255,7 @@ object TestData {
   def populateUserAnswersWithCMAPaymentMethod(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -281,7 +281,7 @@ object TestData {
   def populateUserAnswersWithCMAPaymentMethodAndClaimantImporter(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeImporter)
-      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -302,7 +302,7 @@ object TestData {
   def populateUserAnswersWithUKCustomsRegulationType(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeImporter)
-      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation))
       .flatMap(_.set(UkRegulationTypePage, UkRegulationType.Rejected))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -323,7 +323,7 @@ object TestData {
   def populateUserAnswersWithRepresentativeSinglePayingRepresentativeBacs(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -350,7 +350,7 @@ object TestData {
   def populateUserAnswersWithBankAccountNumberContaining6Digits(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, NumberOfEntriesType.Single))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -407,7 +407,7 @@ object TestData {
   def populateUserAnswersWithRepresentativeMultipleJourney(userAnswers: UserAnswers): UserAnswers =
     populateUserAnswersWithRepresentativeAndMultipleEntries(userAnswers)
       .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded, bulkFileUploaded)))))
-      .set(HowManyEntriesPage, NoOfEntries("3"))
+      .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("3")))
       .get
 
   def populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney(userAnswers: UserAnswers): UserAnswers =

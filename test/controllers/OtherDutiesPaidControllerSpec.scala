@@ -18,12 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.OtherDutiesPaidFormProvider
-import models.{ClaimRepaymentType, RepaymentAmounts, NormalMode, UserAnswers}
+import models._
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{ClaimRepaymentTypePage, OtherDutiesPaidPage}
+import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, OtherDutiesPaidPage}
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -58,7 +58,8 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
+        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -81,6 +82,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswersFull = userAnswers.set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+                            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
@@ -131,7 +133,8 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
+        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

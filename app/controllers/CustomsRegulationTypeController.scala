@@ -45,11 +45,8 @@ class CustomsRegulationTypeController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match {
-      case true=> routes.HowManyEntriesController.onPageLoad(mode)
-      case _ => routes.NumberOfEntriesTypeController.onPageLoad(mode)
-    }
+  private def getBackLink(mode: Mode): Call = {
+    routes.NumberOfEntriesTypeController.onPageLoad(mode)
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -60,7 +57,7 @@ class CustomsRegulationTypeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
+      Ok(view(preparedForm, mode, getBackLink(mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -68,7 +65,7 @@ class CustomsRegulationTypeController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
 
         value =>
           for {

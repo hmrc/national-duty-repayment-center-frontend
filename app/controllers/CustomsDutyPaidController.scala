@@ -75,9 +75,9 @@ class CustomsDutyPaidController @Inject()(
   }
 
   def isSingleEntry(userAnswers: UserAnswers): Boolean = {
-    userAnswers.get(NumberOfEntriesTypePage) match {
-      case Some(NumberOfEntriesType.Single) => true
-      case Some(NumberOfEntriesType.Multiple) => false
+    userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Single => true
+      case NumberOfEntriesType.Multiple => false
     }
   }
 }

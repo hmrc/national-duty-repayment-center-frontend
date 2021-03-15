@@ -17,15 +17,14 @@
 package controllers
 
 import java.time.{LocalDate, ZoneOffset}
-
 import base.SpecBase
 import forms.EntryDetailsFormProvider
-import models.{EPU, EntryDetails, NormalMode, UserAnswers}
+import models.{EPU, Entries, EntryDetails, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.EntryDetailsPage
+import pages.{EntryDetailsPage, NumberOfEntriesTypePage}
 import play.api.inject.bind
 import play.api.libs.json.{JsString, Json}
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call}
@@ -47,8 +46,6 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad(NormalMode).url
 
-  val backLink = routes.BulkFileUploadController.showFileUpload()
-
   private val userAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
@@ -64,13 +61,17 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, entryDetailsRoute)
 
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[EntryDetailsView]
+
+      val backLink = routes.BulkFileUploadController.showFileUpload()
 
       status(result) mustEqual OK
 
@@ -82,13 +83,16 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers.set(NumberOfEntriesTypePage,
+        Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value)).build()
 
       val request = FakeRequest(GET, entryDetailsRoute)
 
       val view = application.injector.instanceOf[EntryDetailsView]
 
       val result = route(application, request).value
+
+      val backLink = routes.BulkFileUploadController.showFileUpload()
 
       status(result) mustEqual OK
 
@@ -134,7 +138,9 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = UserAnswers(userAnswersId).set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, entryDetailsRoute)
@@ -145,6 +151,8 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[EntryDetailsView]
 
       val result = route(application, request).value
+
+      val backLink = routes.BulkFileUploadController.showFileUpload()
 
       status(result) mustEqual BAD_REQUEST
 

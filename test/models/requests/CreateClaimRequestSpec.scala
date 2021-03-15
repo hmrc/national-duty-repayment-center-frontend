@@ -36,7 +36,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         ClaimedUnderRegulation = Some(UkRegulationType.Rejected),
         Claimant = ClaimantType.Representative,
         ClaimType = NumberOfEntriesType.Multiple,
-        NoOfEntries = Some(NoOfEntries("10")),
+        NoOfEntries = Some("10"),
         EntryDetails = EntryDetails(EPU = "123", EntryNumber = "123456Q", EntryDate = LocalDate.of(2020, 8, 5)),
         ClaimReason = ClaimReasonType.Preference,
         ClaimDescription = ClaimDescription("this is a claim description"),
