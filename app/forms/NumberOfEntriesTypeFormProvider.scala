@@ -30,7 +30,7 @@ class NumberOfEntriesTypeFormProvider @Inject() extends Mappings {
       "value" -> enumerable[NumberOfEntriesType]("numberOfEntriesType.error.required"),
       "entries" ->
         mandatoryIfEqual("value","02",
-          text("howManyEntries.error.required")
+          decimal("howManyEntries.error.required", "howManyEntries.error.length")
             .verifying(
               regexp(Validation.numberOfEntries, "howManyEntries.error.length")))
     )(Entries.apply)(en => Some(en.numberOfEntriesType, en.entries)))
