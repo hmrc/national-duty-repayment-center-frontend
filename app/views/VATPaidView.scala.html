@@ -54,9 +54,9 @@
             @forms.fieldset(
                 legend = messages("vatPaid.title")
             ) {
-                @html.p {
-                    @hint
-                }
+                    <p class="govuk-body" id="instructions">
+                        @hint
+                    </p>
 
                 @forms.inputText(
                     form = newForm,
