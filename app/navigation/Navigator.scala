@@ -174,6 +174,7 @@ class Navigator @Inject()() {
     case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
     case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
+    case ClaimRepaymentTypePage => getClaimRepaymentType
     case _ => _ => routes.AmendCheckYourAnswersController.onPageLoad()
   }
 
