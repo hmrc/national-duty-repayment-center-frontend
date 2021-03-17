@@ -133,10 +133,6 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
   "fail to bind an empty date" in {
     val result = form.bind(Map.empty[String, String])
 
-    result.errors should contain allElementsOf List(
-      FormError(s"EntryDate.day", LocalDateFormatter.dayBlankErrorKey),
-      FormError(s"EntryDate.month", LocalDateFormatter.monthBlankErrorKey),
-      FormError(s"EntryDate.year", LocalDateFormatter.yearBlankErrorKey),
-    )
+    result.errors should contain (FormError("EntryDate", "entryDetails.claimEntryDate.error.required"))
   }
 }
