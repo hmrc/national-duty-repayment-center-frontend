@@ -73,7 +73,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels mustNot contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels must contain (htmlEscapedMessage("view.upload-file.checkYourAnswersLabel"))
+      labels must contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
       application.stop()
     }
 
@@ -100,7 +100,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels mustNot contain (htmlEscapedMessage("view.upload-file.checkYourAnswersLabel"))
+      labels mustNot contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
 
       application.stop()
     }
@@ -143,7 +143,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels must contain (htmlEscapedMessage("view.upload-file.checkYourAnswersLabel"))
+      labels must contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
       application.stop()
     }
 

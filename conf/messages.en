@@ -639,7 +639,7 @@ view.upload-file.help.fileType8=substitute entry, which is a form to declare a s
 view.upload-file.help.line4=Upload a file
 view.upload-file.waiting=Your document is being uploaded. You’ll be redirected once the file has been processed.
 form.upload-file.submit= Submit
-view.upload-file.checkYourAnswersLabel = Documents
+view.upload-file.checkYourAnswersLabel = Supporting documents
 view.file-uploaded.plural.title=You have uploaded {0} files
 view.file-uploaded.plural.heading=You have uploaded {0} files
 view.file-uploaded.list.heading=Documents You have uploaded
@@ -705,6 +705,7 @@ view.amend-upload-file.next.title=Upload another document
 view.amend-upload-file.next.heading=Upload another document
 view.amend-upload-file.documents.added = You have uploaded {0} documents
 view.amend-upload-file.document.added = You have uploaded {0} document
+view.amend-upload-file.checkYourAnswersLabel = Documents
 amend.next.step.heading = Now send your information
 amend.next.step.p1 = By sending this information you are confirming that, to the best of your knowledge, the details you are providing are correct.
 amend.site.continue = Accept and send
@@ -716,6 +717,7 @@ amend-file-upload.help.fileFormat2= .jpg
 amend-file-upload.help.fileFormat3= .pdf
 amend-file-upload.help.fileFormat4= .png
 amend-file-upload.help.fileFormat5= .xls
+
 
 your.details.checkYourAnswersLabel = Your details
 contact.details.checkYourAnswersLabel = Contact details

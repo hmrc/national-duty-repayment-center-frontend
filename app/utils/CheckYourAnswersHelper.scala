@@ -660,7 +660,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def evidenceFileUploadsAmend: AnswerRow = {
     val noOfDocuments = userAnswers.fileUploadState.map(_.fileUploads.acceptedCount).getOrElse(0)
     AnswerRow(
-      HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
+      HtmlFormat.escape(messages("view.amend-upload-file.checkYourAnswersLabel")),
       if (noOfDocuments == 1)
         HtmlFormat.escape(messages("view.amend-upload-file.document.added", noOfDocuments))
       else
