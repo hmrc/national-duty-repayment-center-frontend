@@ -49,7 +49,10 @@ object NumberOfEntriesType extends Enumerable.Implicits {
           case false => form.value.head.asInstanceOf[Entries].numberOfEntriesType == value
         },
         conditionalHtml = if(value.toString.equals("02")) Some(new govukInput(govukErrorMessage, govukHint, govukLabel)
-        (Input(id="entries", value = form("entries").value,
+        (Input(id="entries", value = form("entries").value,label= Label(
+          content=Text(messages("numberOfEntriesType.02.hint")),
+          isPageHeading = false
+        ),
           errorMessage = if(form("entries").hasErrors){
             Some(ErrorMessage(
               content = Text(messages(form("entries").errors.head.message))
@@ -59,7 +62,7 @@ object NumberOfEntriesType extends Enumerable.Implicits {
           "autocomplete" -> "off",
           "inputmode" -> "numeric",
           "pattern" -> "[0-9]*"
-        ), hint=Some(Hint(classes = "govuk-label",content=Text(messages("numberOfEntriesType.02.hint")))))))
+        ))))
         else None
       )
   }
