@@ -19,8 +19,9 @@ package forms
 import forms.behaviours.{DateBehaviours, StringFieldBehaviours}
 import models.EntryDetails
 import play.api.data.FormError
-
 import java.time.LocalDate
+
+import forms.mappings.LocalDateFormatter
 
 class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehaviours {
 
@@ -113,7 +114,7 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
     result.errors shouldEqual Seq(expectedError)
   }
 
-  "Accept valid form  data" in {
+  "Accept valid form data" in {
     val form2 = new EntryDetailsFormProvider().apply().bind(
       buildFormData())
 
@@ -129,34 +130,13 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
 
   }
 
-  "Fail if the Date has a future day" in {
-    val form2 = new EntryDetailsFormProvider().apply().bind(
-      buildFormData(
-        day = Some(s"${LocalDate.now().getDayOfMonth + 1}"),
-        month = Some(s"${LocalDate.now().getMonthValue}"),
-        year = Some(s"${LocalDate.now().getYear}")
-      ))
+  "fail to bind an empty date" in {
+    val result = form.bind(Map.empty[String, String])
 
-    form2.errors.size shouldBe 1
-    form2.errors.head.key shouldBe "EntryDate"
-    form2.errors.head.message shouldBe "entryDetails.claimEntryDate.error.invalid"
-
-  }
-
-  "Fail if the Date contains an error in the Year" in {
-    val form2 = new EntryDetailsFormProvider().apply().bind(buildFormData(year = Some("20")))
-
-    form2.errors.size shouldBe  1
-    form2.errors.head.key shouldBe  "EntryDate"
-    form2.errors.head.message shouldBe  "entryDetails.claimEntryDate.error.invalid"
-  }
-
-
-  "Fail if the Date contains an error in the day" in {
-    val form2 = new EntryDetailsFormProvider().apply().bind(buildFormData(month = Some("43")))
-
-    form2.errors.size shouldBe  1
-    form2.errors.head.key shouldBe  "EntryDate"
-    form2.errors.head.message shouldBe  "entryDetails.claimEntryDate.error.invalid"
+    result.errors should contain allElementsOf List(
+      FormError(s"EntryDate.day", LocalDateFormatter.dayBlankErrorKey),
+      FormError(s"EntryDate.month", LocalDateFormatter.monthBlankErrorKey),
+      FormError(s"EntryDate.year", LocalDateFormatter.yearBlankErrorKey),
+    )
   }
 }
