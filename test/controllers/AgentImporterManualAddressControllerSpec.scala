@@ -71,7 +71,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
       val userAnswers = UserAnswers(userAnswersId).set(
         AgentImporterManualAddressPage,
-        Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
+        Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")
       ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -86,7 +86,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
       contentAsString(result) mustEqual
         view(form.fill(
-          Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
+          Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")
         ), NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), backLink)(fakeRequest, messages).toString
 
       application.stop()

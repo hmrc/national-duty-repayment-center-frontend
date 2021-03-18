@@ -192,36 +192,13 @@ class AgentImporterAddressFormProviderSpec extends StringFieldBehaviours {
   ".PostalCode" must {
 
     val fieldName = "PostalCode"
+    val maxLength = 10
+    val minLength = 2
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      validPostcodes
+      stringsWithMinAndMaxLength(minLength, maxLength)
     )
-
-    behave like optionalField(
-      form,
-      fieldName
-    )
-
-    "not bind invalid postcodes" in {
-
-      val expectedError = FormError(fieldName, "agentImporterAddress.postalCode.error.invalid", Seq(Validation.postcodeRegex))
-
-      val results = List(
-        form.bind(Map(fieldName -> "AA 1AA")).apply(fieldName),
-        form.bind(Map(fieldName -> "AAA 1AA")).apply(fieldName),
-        form.bind(Map(fieldName -> "AA111 1AA")).apply(fieldName),
-        form.bind(Map(fieldName -> "AA1 AA")).apply(fieldName),
-        form.bind(Map(fieldName -> "AA11 1A")).apply(fieldName),
-        form.bind(Map(fieldName -> "AA1 1A1")).apply(fieldName),
-        form.bind(Map(fieldName -> "1A1 1AA")).apply(fieldName)
-      )
-
-      results.foreach {
-        result =>
-          result.errors shouldEqual Seq(expectedError)
-      }
-    }
   }
 }

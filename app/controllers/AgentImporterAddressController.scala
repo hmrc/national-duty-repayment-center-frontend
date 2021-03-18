@@ -138,7 +138,7 @@ class AgentImporterAddressController @Inject()(
   def postcodeBackLinkLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
 
     implicit request =>
-      doPostcodeLookup(PostcodeLookup(request.userAnswers.get(AgentImporterAddressPage).get.PostalCode.get), mode, selectionForm)
+      doPostcodeLookup(PostcodeLookup(request.userAnswers.get(AgentImporterAddressPage).get.PostalCode), mode, selectionForm)
   }
 
   def addressSelectSubmit(mode: Mode): Action[AnyContent] = (identify  andThen getData andThen requireData).async {
