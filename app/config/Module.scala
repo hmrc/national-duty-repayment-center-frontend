@@ -20,7 +20,7 @@ import akka.actor.ActorSystem
 import com.google.inject.name.Named
 import com.google.inject.{AbstractModule, Inject, Singleton}
 import com.typesafe.config.Config
-import controllers.CheckStateActor
+import controllers.{CheckStateActor, CheckStateActorAmend}
 import controllers.actions._
 import play.api.Configuration
 import play.api.libs.concurrent.AkkaGuiceSupport
@@ -40,6 +40,7 @@ class Module extends AbstractModule with AkkaGuiceSupport {
     bind(classOf[HttpGet]).to(classOf[CustomHttpClient])
     bind(classOf[HttpPost]).to(classOf[CustomHttpClient])
     bind(classOf[FrontendAppConfig]).to(classOf[FrontendAppConfigImpl]).asEagerSingleton()
+    bindActor[CheckStateActorAmend]("check-state-actor-amend")
     bindActor[CheckStateActor]("check-state-actor")
 
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()

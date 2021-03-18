@@ -23,16 +23,18 @@ import config.FrontendAppConfig
 import play.api.Logger.logger
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
+import akka.pattern.ask
 
 import java.time.LocalDateTime
 import javax.inject.Inject
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
-case class CheckState(id: String, exitTime: LocalDateTime,state: FileUploadState)
+case class CheckState(id: String, exitTime: LocalDateTime, state: FileUploadState)
 
 class CheckStateActor @Inject()(sessionRepository: SessionRepository, appConfig: FrontendAppConfig)(implicit ec: ExecutionContext) extends Actor with FileUploadService {
   implicit val timeout = Timeout(30 seconds)
+
   override def receive: Receive = {
     case CheckState(id, exitTime, state) => {
       if (LocalDateTime.now().isAfter(exitTime) || state.isInstanceOf[FileUploaded]) {
@@ -47,13 +49,37 @@ class CheckStateActor @Inject()(sessionRepository: SessionRepository, appConfig:
             Future.successful(s)
           }
           case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) => {
-            if(s.maybeUploadError.nonEmpty) {
+            if (s.maybeUploadError.nonEmpty) {
               Future.successful(s)
             } else
-            (self ? CheckState(id, exitTime, s))
+              (self ? CheckState(id, exitTime, s))
           }
         }).pipeTo(sender)
       }
     }
+  }
+}
+
+case object CallbackArrived
+
+case class StopWaiting(maxWaitTime: LocalDateTime)
+
+class CheckStateActorAmend @Inject()()(implicit ec: ExecutionContext) extends Actor {
+  implicit val timeout = Timeout(20 seconds)
+
+  def receive = active(false)
+
+  def active(completed: Boolean): Receive = {
+    case CallbackArrived =>
+      context become active(true)
+
+    case StopWaiting(maxWaitTime: LocalDateTime) => {
+      if (LocalDateTime.now().isAfter(maxWaitTime) || completed) {
+        context.become(active(false))
+        Future.successful(completed).pipeTo(sender)
+      }
+      else
+        (self ? StopWaiting(maxWaitTime)).pipeTo(sender)
+    }.pipeTo(sender)
   }
 }
