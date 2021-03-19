@@ -63,25 +63,20 @@ class ClaimantTypeController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
-          for {
-            updatedAnswers <- {
-              if(request.userAnswers.nonEmpty && mode.equals(CheckMode)) {
-                  val oldClaimantType = request.userAnswers.get.get(ClaimantTypePage).get
-                  if (oldClaimantType != value) {
-                    sessionRepository.reset(request.userAnswers.get)
-                  }
-              }
-              Future.fromTry(request.userAnswers.getOrElse
-              (UserAnswers(request.internalId)) set(ClaimantTypePage, value))
-            }
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield {
+          if(request.userAnswers.nonEmpty && request.userAnswers.get.get(ClaimantTypePage).get != value && mode.equals(CheckMode) ) {
+            for {
 
-            //if(mode.equals(CheckMode) && request.userAnswers.contains(NumberOfEntriesTypePage)) {
-              //Redirect(navigator.nextPage(ClaimantTypePage, CheckMode, updatedAnswers))
-            //} else {
-              Redirect(navigator.nextPage(ClaimantTypePage, NormalMode, updatedAnswers))
-            //}
+              _ <- sessionRepository.reset(request.userAnswers.get)
+              ua <- Future.fromTry (request.userAnswers.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.internalId)).set(ClaimantTypePage, value))
+              res <- sessionRepository.set(ua)
+              if(res)
+            } yield Redirect(navigator.nextPage(ClaimantTypePage, CheckMode, ua))
+          } else {
+            for {
+              ua <- Future.fromTry (request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(ClaimantTypePage, value)))
+              res <- sessionRepository.set(ua)
+              if(res)
+            } yield Redirect(navigator.nextPage(ClaimantTypePage, NormalMode, ua))
           }
       )
   }
