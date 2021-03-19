@@ -175,7 +175,12 @@ class Navigator @Inject()() {
     case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad()
     case ClaimRepaymentTypePage => getClaimRepaymentType
-    case _ => _ => routes.AmendCheckYourAnswersController.onPageLoad()
+    case _ => getCheckYourAnswers
+  }
+
+  private def getCheckYourAnswers(answers: UserAnswers): Call = answers.get(AmendCaseResponseTypePage).isEmpty match {
+    case false => routes.AmendCheckYourAnswersController.onPageLoad()
+    case true => routes.CheckYourAnswersController.onPageLoad()
   }
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =

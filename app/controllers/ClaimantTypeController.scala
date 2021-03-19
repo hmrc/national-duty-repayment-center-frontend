@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.ClaimantTypeFormProvider
+
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.{CheckMode, Entries, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.ClaimantTypePage
+import pages.{ClaimantTypePage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -63,9 +64,25 @@ class ClaimantTypeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.internalId))set(ClaimantTypePage, value))
+            updatedAnswers <- {
+              if(request.userAnswers.nonEmpty && mode.equals(CheckMode)) {
+                  val oldClaimantType = request.userAnswers.get.get(ClaimantTypePage).get
+                  if (oldClaimantType != value) {
+                    sessionRepository.reset(request.userAnswers.get)
+                  }
+              }
+              Future.fromTry(request.userAnswers.getOrElse
+              (UserAnswers(request.internalId)) set(ClaimantTypePage, value))
+            }
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ClaimantTypePage, mode, updatedAnswers))
+          } yield {
+
+            //if(mode.equals(CheckMode) && request.userAnswers.contains(NumberOfEntriesTypePage)) {
+              //Redirect(navigator.nextPage(ClaimantTypePage, CheckMode, updatedAnswers))
+            //} else {
+              Redirect(navigator.nextPage(ClaimantTypePage, NormalMode, updatedAnswers))
+            //}
+          }
       )
   }
 }
