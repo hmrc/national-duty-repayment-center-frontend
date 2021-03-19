@@ -18,7 +18,7 @@ package services
 
 import connectors.{UpscanInitiateRequest, UpscanInitiateResponse}
 import models.FileType.SupportingEvidence
-import models.FileUpload.Initiated
+import models.FileUpload.{Accepted, Initiated}
 import models.requests.UploadRequest
 import models.{DuplicateFileUpload, FileTransmissionFailed, FileType, FileUpload, FileUploadError, FileUploads, FileVerificationFailed, S3UploadError, UpscanFileFailed, UpscanFileReady, UpscanNotification}
 import play.api.libs.json.{Format, Json}
@@ -92,11 +92,11 @@ trait FileUploadService {
 
     state match {
 
-      case Some(current@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) => {
+      case Some(current@UploadFile(reference, _, fileUploads, maybeUploadError)) => {
         for {
           upscanResponse <- upscanInitiate(upscanRequest)
         } yield {
-          val files = fileUploads.files.filterNot(_.isInstanceOf[Initiated])
+          val files = filesNotInStateInitiated(fileUploads.files)
           val refreshedCurrent = current.copy(upscanResponse.reference, upscanResponse.uploadRequest, fileUploads.copy(files =
             files :+ FileUpload.Initiated(fileUploads.files.size + 1, upscanResponse.reference, fileType)
           ))
@@ -126,8 +126,8 @@ trait FileUploadService {
   final def upscanCallbackArrived(notification: UpscanNotification, fileType: FileType)(state: FileUploadState) = {
 
     def shouldReplaceExistingFile(fileUploads: FileUploads, fileType: FileType): Boolean = {
-      val singleUploadeFiles = fileUploads.files.filterNot(f => f.fileType.contains(SupportingEvidence))
-      val acceptedSingleUploadFiles = singleUploadeFiles.filter(_.isInstanceOf[FileUpload.Accepted])
+      val singleUploadFiles = fileUploads.files.filterNot(f => f.fileType.contains(SupportingEvidence))
+      val acceptedSingleUploadFiles = filesInStateAccepted(singleUploadFiles)
       acceptedSingleUploadFiles.exists(_.fileType.contains(fileType))
     }
 
@@ -303,5 +303,16 @@ trait FileUploadService {
         })
         current.copy(fileUploads = updatedFileUploads, maybeUploadError = Some(FileTransmissionFailed(error)))
     }
+  }
+
+  def filesNotInStateInitiated(files: Seq[FileUpload]): Seq[FileUpload] = {
+    files.filter {
+      case s@Initiated(_, _, _) => false
+      case _ => true
+    }
+  }
+
+  def filesInStateAccepted(files: Seq[FileUpload]): Seq[FileUpload] = {
+    files collect { case s@Accepted(_, _, _, _, _, _, _, _)  => s }
   }
 }
