@@ -62,9 +62,27 @@
     )
     ),
     hint = hintText.map(hint => Hint(content = Text(messages(hint)))),
-    errorMessage = form(id).error
+    errorMessage = {
+            form(id).error
         .orElse(form(s"$id.day").error)
         .orElse(form(s"$id.month").error)
         .orElse(form(s"$id.year").error)
-        .map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+        .map(err => {
+            if(form(s"$id.day").error && form(s"$id.month").error && form(s"$id.year").error) {
+                ErrorMessage(content = Text(messages("error.date.all", err.args:_*)))
+            }
+            else if(form(s"$id.day").error && form(s"$id.month").error) {
+                ErrorMessage(content = Text(messages("error.date.day_month", err.args:_*)))
+            }
+            else if(form(s"$id.day").error && form(s"$id.year").error) {
+                ErrorMessage(content = Text(messages("error.date.day_year", err.args:_*)))
+            }
+            else if(form(s"$id.month").error && form(s"$id.year").error) {
+                ErrorMessage(content = Text(messages("error.date.month_year", err.args:_*)))
+            }
+            else
+                ErrorMessage(content = Text(messages(err.message, err.args:_*)))
+        }
+        )
+}
 ))

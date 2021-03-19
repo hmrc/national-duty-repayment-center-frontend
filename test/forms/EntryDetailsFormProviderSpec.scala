@@ -25,6 +25,9 @@ import forms.mappings.LocalDateFormatter
 
 class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehaviours {
 
+  def formData(year: Int, month: Int, day: Int) = Map("EntryDate.year" -> year.toString, "EntryDate.month" -> month.toString, "EntryDate.day" -> day.toString)
+
+
   val form = new EntryDetailsFormProvider()()
   def buildFormData(epu: Option[String] = Some("123"),
                     entryNumber: Option[String] = Some("123456Q"),
@@ -133,6 +136,10 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
   "fail to bind an empty date" in {
     val result = form.bind(Map.empty[String, String])
 
-    result.errors should contain (FormError("EntryDate", "entryDetails.claimEntryDate.error.required"))
+    result.errors should contain allElementsOf List(
+      FormError(s"EntryDate.day", LocalDateFormatter.dayBlankErrorKey),
+      FormError(s"EntryDate.month", LocalDateFormatter.monthBlankErrorKey),
+      FormError(s"EntryDate.year", LocalDateFormatter.yearBlankErrorKey),
+    )
   }
 }

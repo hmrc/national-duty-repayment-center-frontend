@@ -51,7 +51,11 @@ private[mappings] class LocalDateFormatter(invalidKey: String, requiredKey: Stri
         nonNumericKey = invalidErrorKey
       ).bind(s"$key.$subKey", data.mapValues(_.trim))
         .right
-        .flatMap(int => if (extraValidation(int)) Right(int) else Left(Seq(FormError(s"$key.$subKey", invalidErrorKey))))
+        .flatMap(int => if (extraValidation(int)) {
+          Right(int)
+        } else {
+          Left(Seq(FormError(s"$key.$subKey", invalidErrorKey)))
+        })
 
     val dayField = bindIntSubfield("day", dayBlankErrorKey, dayInvalidErrorKey, day => day >= 1 && day <= 31)
 
@@ -61,10 +65,7 @@ private[mappings] class LocalDateFormatter(invalidKey: String, requiredKey: Stri
 
     (dayField, monthField, yearField) match {
       case (Right(day), Right(month), Right(year)) => toDate(key, day, month, year)
-      case (Right(day), month, year) => Left(month.left.toSeq.flatten ++ year.left.toSeq.flatten)
-      case (day, Right(month), year) => Left(day.left.toSeq.flatten ++ year.left.toSeq.flatten)
-      case (day, month, Right(year)) => Left(day.left.toSeq.flatten ++ month.left.toSeq.flatten)
-      case (day, month, year) => Left(Seq(FormError(key, requiredKey)))
+      case (day, month, year) => Left(day.left.toSeq.flatten ++ month.left.toSeq.flatten ++ year.left.toSeq.flatten)
     }
   }
 
