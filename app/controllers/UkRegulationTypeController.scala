@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.UkRegulationTypeFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{CheckMode, Mode, NormalMode}
 import navigation.Navigator
-import pages.UkRegulationTypePage
+import pages.{ArticleTypePage, CustomsRegulationTypePage, UkRegulationTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -68,9 +69,10 @@ class UkRegulationTypeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UkRegulationTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UkRegulationTypePage, mode, updatedAnswers))
+            userAnswers <- Future.fromTry(request.userAnswers.set(UkRegulationTypePage, value))
+            _ <- sessionRepository.set(userAnswers)
+          } yield
+              Redirect(navigator.nextPage(UkRegulationTypePage, mode, userAnswers))
       )
   }
 }

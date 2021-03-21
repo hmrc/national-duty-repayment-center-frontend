@@ -20,9 +20,9 @@ import controllers.actions._
 import forms.NumberOfEntriesTypeFormProvider
 
 import javax.inject.Inject
-import models.{Mode, NoOfEntries}
+import models.{CheckMode, Mode, NoOfEntries, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.NumberOfEntriesTypePage
+import pages.{ClaimantTypePage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -67,10 +67,26 @@ class NumberOfEntriesTypeController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
 
         value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, updatedAnswers))
+          if(request.userAnswers.get(NumberOfEntriesTypePage).nonEmpty &&
+            request.userAnswers.get(NumberOfEntriesTypePage).get != value
+            && mode.equals(CheckMode) ) {
+            val claimantType = request.userAnswers.get(ClaimantTypePage).get
+            for {
+              _ <- sessionRepository.resetData(request.userAnswers)
+              sessionData <- sessionRepository.get(request.internalId)
+              userAnswers <- Future.fromTry (sessionData.map(_.copy(id = request.internalId)).
+                getOrElse(UserAnswers(request.internalId)).set(NumberOfEntriesTypePage, value))
+              claimantTypeAnswers <- Future.fromTry (userAnswers.set(ClaimantTypePage, claimantType))
+              res <- sessionRepository.set(claimantTypeAnswers)
+              if(res)
+            } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, NormalMode, claimantTypeAnswers))
+          } else {
+            for {
+              userAnswers <- Future.fromTry (request.userAnswers.set(NumberOfEntriesTypePage, value))
+              res <- sessionRepository.set(userAnswers)
+              if(res)
+            } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, userAnswers))
+          }
         }
       )
   }

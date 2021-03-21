@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.ArticleTypeFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{CheckMode, Mode}
 import navigation.Navigator
-import pages.ArticleTypePage
+import pages.{ArticleTypePage, UkRegulationTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -68,9 +69,10 @@ class ArticleTypeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ArticleTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ArticleTypePage, mode, updatedAnswers))
+            userAnswers <- Future.fromTry(request.userAnswers.set(ArticleTypePage, value))
+            _ <- sessionRepository.set(userAnswers)
+          } yield
+              Redirect(navigator.nextPage(ArticleTypePage, mode, userAnswers))
       )
   }
 }

@@ -24,7 +24,7 @@
     html: views.components.html
 )
 
-@(answerSections: Seq[Section], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], backLink: Call, category: String)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("repaymentAmountSummary.title"))}"),
@@ -42,6 +42,10 @@
             }
         }
 
-        @components.button_link()
-
+        @{
+            category match {
+                case "CheckMode" => components.button_cya_link()
+                case _           => components.button_link()
+            }
+        }
     }

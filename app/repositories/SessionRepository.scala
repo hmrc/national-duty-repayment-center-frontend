@@ -58,7 +58,7 @@ class DefaultSessionRepository @Inject()(
   override def get(id: String): Future[Option[UserAnswers]] =
     collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
 
-  def reset(userAnswers: UserAnswers): Future[Boolean] = {
+  def resetData(userAnswers: UserAnswers): Future[Boolean] = {
 
     val selector = Json.obj(
       "_id" -> userAnswers.id
@@ -67,7 +67,8 @@ class DefaultSessionRepository @Inject()(
     val modifier = {
         Json.obj(
       "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).
-        as[JsObject].setObject(userAnswers.dataPath, JsNull).get
+        as[JsObject].setObject(userAnswers.dataPath, Json.obj()).get.
+        setObject(userAnswers.fileUploadPath, JsNull).get
       )
     }
     collection.flatMap {
@@ -113,5 +114,5 @@ trait SessionRepository {
 
   def set(userAnswers: UserAnswers): Future[Boolean]
 
-  def reset(userAnswers: UserAnswers): Future[Boolean]
+  def resetData(userAnswers: UserAnswers): Future[Boolean]
 }

@@ -35,7 +35,7 @@ class RepaymentAmountSummaryController @Inject()(
                                                   view: RepaymentAmountSummaryView
                                                 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(category: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
@@ -52,6 +52,6 @@ class RepaymentAmountSummaryController @Inject()(
         case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
       }
 
-      Ok(view(sections, backLink))
+      Ok(view(sections, backLink, category))
   }
 }

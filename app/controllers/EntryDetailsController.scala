@@ -49,7 +49,7 @@ class EntryDetailsController @Inject()(
     userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
       case NumberOfEntriesType.Single if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(mode)
       case NumberOfEntriesType.Single if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UnionsCustomsCodeRegulation) => routes.ArticleTypeController.onPageLoad(mode)
-      case _ => routes.BulkFileUploadController.showFileUpload()
+      case _ => routes.BulkFileUploadController.showFileUpload(mode)
     }
   }
 

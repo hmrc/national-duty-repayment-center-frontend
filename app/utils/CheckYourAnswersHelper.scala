@@ -74,12 +74,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             AnswerRow(
               HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
               HtmlFormat.escape(messages(s"$fileName")),
-              Some(routes.BulkFileUploadController.showFileUpload.url)
+              Some(routes.BulkFileUploadController.showFileUpload(CheckMode).url)
             )
           case _ => AnswerRow(
             HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"bulkFileUpload.empty")),
-            Some(routes.BulkFileUploadController.showFileUpload.url)
+            Some(routes.BulkFileUploadController.showFileUpload(CheckMode).url)
           )
         }
       }
@@ -359,7 +359,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     AnswerRow(
     HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
       HtmlFormat.escape("£" + helper.getTotalAmount().format2d),
-    Some(routes.RepaymentAmountSummaryController.onPageLoad.url)
+    Some(routes.RepaymentAmountSummaryController.onPageLoad("CheckMode").url)
     )
   }
 

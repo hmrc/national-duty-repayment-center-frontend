@@ -57,26 +57,28 @@ class ClaimantTypeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
-          if(request.userAnswers.nonEmpty && request.userAnswers.get.get(ClaimantTypePage).get != value && mode.equals(CheckMode) ) {
+          if(request.userAnswers.nonEmpty && request.userAnswers.get.get(ClaimantTypePage).get != value
+            && mode.equals(CheckMode) ) {
             for {
-
-              _ <- sessionRepository.reset(request.userAnswers.get)
-              ua <- Future.fromTry (request.userAnswers.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.internalId)).set(ClaimantTypePage, value))
-              res <- sessionRepository.set(ua)
+              _ <- sessionRepository.resetData(request.userAnswers.get)
+              sessionData <- sessionRepository.get(request.internalId)
+              userAnswers <- Future.fromTry (sessionData.map(_.copy(id = request.internalId)).
+                getOrElse(UserAnswers(request.internalId)).set(ClaimantTypePage, value))
+              res <- sessionRepository.set(userAnswers)
               if(res)
-            } yield Redirect(navigator.nextPage(ClaimantTypePage, CheckMode, ua))
+            } yield Redirect(navigator.nextPage(ClaimantTypePage, NormalMode, userAnswers))
           } else {
             for {
-              ua <- Future.fromTry (request.userAnswers.getOrElse(UserAnswers(request.internalId)).set(ClaimantTypePage, value)))
-              res <- sessionRepository.set(ua)
+              userAnswers <- Future.fromTry (request.userAnswers.getOrElse(UserAnswers(request.internalId)).
+                set(ClaimantTypePage, value))
+              res <- sessionRepository.set(userAnswers)
               if(res)
-            } yield Redirect(navigator.nextPage(ClaimantTypePage, NormalMode, ua))
+            } yield Redirect(navigator.nextPage(ClaimantTypePage, mode, userAnswers))
           }
       )
   }
