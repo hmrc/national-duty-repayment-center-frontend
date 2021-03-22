@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.DeclarantReferenceNumber
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Json, OFormat}
 
-case object DeclarantReferenceNumberPage extends QuestionPage[DeclarantReferenceNumber] {
+case class DeclarantReferenceNumber(declarantReferenceType : DeclarantReferenceType, declarantReferenceNumber: Option[String])
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "declarantReferenceNumber"
+object DeclarantReferenceNumber {
+  implicit val format: OFormat[DeclarantReferenceNumber] = Json.format[DeclarantReferenceNumber]
 }

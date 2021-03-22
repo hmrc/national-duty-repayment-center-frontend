@@ -248,6 +248,9 @@ declarantReferenceNumber.declarantReferenceNumber = Declarant reference number
 declarantReferenceNumber.checkYourAnswersLabel = Declarant reference number
 declarantReferenceNumber.error.required.declarantReferenceNumber = Enter declarant reference number
 
+declarantReferenceNumber.error.invalid = Enter declarant reference number
+declarantReferenceNumber.error.required = Enter declarant reference number
+
 importerName.title = What is your name
 importerName.heading = What is your name
 importerName.checkYourAnswersLabel = Your name

@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.DeclarantReferenceNumberFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NoOfEntries}
 import navigation.Navigator
 import pages.DeclarantReferenceNumberPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -27,6 +27,7 @@ import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarantReferenceNumberView
+import models.DeclarantReferenceNumber
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,7 +46,7 @@ class DeclarantReferenceNumberController @Inject()(
   val form = formProvider()
 
   private def getBackLink(mode: Mode): Call = {
-    routes.ContactTypeController.onPageLoad(mode)
+    routes.EmailAddressController.onPageLoad(mode)
   }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -69,7 +70,7 @@ class DeclarantReferenceNumberController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarantReferenceNumberPage, Some(value).getOrElse("")))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarantReferenceNumberPage, value))
             _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(DeclarantReferenceNumberPage, mode, updatedAnswers))
       )

@@ -16,17 +16,22 @@
 
 package forms
 
-import forms.mappings.Mappings
 import javax.inject.Inject
-import play.api.data.Form
+import forms.mappings.Mappings
+import play.api.data.{Form, Forms}
+import models.{DeclarantReferenceNumber, DeclarantReferenceType}
+import play.api.data.Forms.{mapping, optional}
+import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
 class DeclarantReferenceNumberFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
-    Form(
-      "declarantReferenceNumber" -> text("declarantReferenceNumber.error.required.declarantReferenceNumber")
-        .verifying(firstError(
-          maxLength(512,
-            "declarantReferenceNumber.error.length")
-        )))
+  def apply(): Form[DeclarantReferenceNumber] =
+    Form(mapping(
+      "value" -> enumerable[DeclarantReferenceType]("declarantReferenceNumber.error.required"),
+      "declarantReferenceNumber" ->
+        mandatoryIfEqual("value","01",
+          decimal("declarantReferenceNumber.error.required", "declarantReferenceNumber.error.required")
+            .verifying(
+              regexp(Validation.numberOfEntries, "declarantReferenceNumber.error.required")))
+    )(DeclarantReferenceNumber.apply)(en => Some(en.declarantReferenceType, en.declarantReferenceNumber)))
 }

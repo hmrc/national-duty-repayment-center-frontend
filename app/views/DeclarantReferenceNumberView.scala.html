@@ -17,6 +17,7 @@
 @import controllers.routes._
 @import models.Mode
 @import views.ViewUtils._
+@import models.{Mode, DeclarantReferenceType}
 
 @this(
         govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -39,10 +40,6 @@
   )
 }
 
-@hint = {
-  @html.p{@messages("declarantReferenceNumber.hint1")}
-  @html.p{@messages("declarantReferenceNumber.hint2")}
-}
 
 @govukLayout(
   pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("declarantReferenceNumber.title"))}"),
@@ -53,28 +50,22 @@
 
     @components.error_summary(form.errors)
 
-    @forms.inputRadio(
-      form = form,
-      idPrefix = "value",
-      name = "value",
-      items = Seq(
-        RadioItem(
-          value = Some("01"),
-          content = Text(messages("declarantReferenceNumber.01")),
-          checked = form("value").value.contains("01"),
-          conditionalHtml = Some(conditionalContent)
-        ),
-        RadioItem(
-          value = form("value").value,
-          content = Text(messages("declarantReferenceNumber.02")),
-          checked = form("value").value.contains("02")
-        )
-      ),
-      legendAsHeading = true,
-      legend = Some(messages("declarantReferenceNumber.heading")),
-      hint = Some(hint)
-    )
+    @forms.fieldset(
+        legend = messages("declarantReferenceNumber.heading")
+        ) {
 
-    @html.button("site.continue")
+        @html.p{@messages("declarantReferenceNumber.hint1")}
+        @html.p{@messages("declarantReferenceNumber.hint2")}
+
+        @forms.inputRadio(
+            form = form,
+            idPrefix = "value",
+            name = "value",
+            items = DeclarantReferenceType.options(form),
+            inline = false
+        )
+
+        @html.button("site.continue")
+    }
   }
 }
