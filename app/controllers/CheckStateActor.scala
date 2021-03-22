@@ -65,21 +65,29 @@ case object CallbackArrived
 case class StopWaiting(maxWaitTime: LocalDateTime)
 
 class CheckStateActorAmend @Inject()()(implicit ec: ExecutionContext) extends Actor {
-  implicit val timeout = Timeout(20 seconds)
+  implicit val timeout = Timeout(30 seconds)
 
-  def receive = active(false)
+  def receive = {
+    logger.info("Starting actor..")
+    active(false)
+  }
 
   def active(completed: Boolean): Receive = {
-    case CallbackArrived =>
+    case CallbackArrived => {
+      logger.info("callback arrived.. setting state to true..")
       context become active(true)
+    }
 
     case StopWaiting(maxWaitTime: LocalDateTime) => {
       if (LocalDateTime.now().isAfter(maxWaitTime) || completed) {
+        logger.info(s"exiting.. wait over or state completed..${LocalDateTime.now().isAfter(maxWaitTime)} || ${completed}")
         context.become(active(false))
-        Future.successful(completed).pipeTo(sender)
+        Future.successful(true).pipeTo(sender)
       }
-      else
+      else {
+        println("Continue waiting........")
         (self ? StopWaiting(maxWaitTime)).pipeTo(sender)
+      }
     }.pipeTo(sender)
   }
 }

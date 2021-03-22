@@ -24,10 +24,10 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
 import forms.AdditionalFileUploadFormProvider
 import models.FileType.SupportingEvidence
-import models.FileUpload.Initiated
-import models.{AmendCaseResponseType, CheckMode, FileVerificationStatus, Mode, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
+import models.{AmendCaseResponseType, FileVerificationStatus, Mode, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
 import navigation.Navigator
 import pages.AmendCaseResponseTypePage
+import play.api.Logger.logger
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -69,7 +69,7 @@ class AmendCaseSendInformationController @Inject()(
 
   // GET /file-verification
   final def showWaitingForFileVerification(mode: Mode) = (identify andThen getData andThen requireData).async { implicit request =>
-    implicit val timeout = Timeout(30 seconds)
+    implicit val timeout = Timeout(20 seconds)
     sessionState(request.internalId).flatMap { ss =>
       ss.state match {
         case Some(_) =>
@@ -77,13 +77,28 @@ class AmendCaseSendInformationController @Inject()(
             case _: AskTimeoutException => false
           }.mapTo[Boolean].flatMap {
             case true => sessionRepository.get(request.internalId).flatMap(ss => ss.flatMap(_.fileUploadState) match {
-              case Some(_@FileUploaded(_, _)) => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
-              case Some(_@UploadFile(_,_,_,_)) => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
-              case _ => Future.successful(fileStateError)
+              case Some(s@FileUploaded(_, _)) => {
+                logger.info(s"In FileUploaded State $s")
+                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
+              }
+              case Some(s@UploadFile(_,_,_,_)) => {
+                logger.info(s"In UploadFile State $s")
+                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
+              }
+              case _ => {
+                logger.info("Error scenario 1")
+                Future.successful(fileStateError)
+              }
             })
-            case false => Future.successful(fileStateError)
+            case false => {
+              logger.info("Error scenario 2")
+              Future.successful(fileStateError)
+            }
           }
-        case _ => Future.successful(fileStateError)
+        case _ => {
+          logger.info("Error scenario 3")
+          Future.successful(fileStateError)
+        }
       }
     }
   }
@@ -221,10 +236,13 @@ class AmendCaseSendInformationController @Inject()(
   final def callbackFromUpscan(id: String) = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
     sessionState(id).flatMap { ss =>
       ss.state match {
-        case Some(s) => upscanCallbackArrived(request.body, SupportingEvidence)(s).flatMap { newState =>
-          updateSession(newState, ss.userAnswers).map { _ =>
-            checkStateActor ! CallbackArrived
-            acknowledgeFileUploadRedirect(newState)
+        case Some(s) => {
+          println("Callback from upscan arrived..........................")
+          upscanCallbackArrived(request.body, SupportingEvidence)(s).flatMap { newState =>
+            updateSession(newState, ss.userAnswers).map { _ =>
+              checkStateActor ! CallbackArrived
+              acknowledgeFileUploadRedirect(newState)
+            }
           }
         }
         case None => Future.successful(InternalServerError("Missing file upload state"))
