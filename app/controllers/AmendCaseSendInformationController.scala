@@ -78,20 +78,20 @@ class AmendCaseSendInformationController @Inject()(
           }.mapTo[Boolean].flatMap {
             case true => sessionRepository.get(request.internalId).flatMap(ss => ss.flatMap(_.fileUploadState) match {
               case Some(s@FileUploaded(_, _)) => {
-                logger.info(s"In FileUploaded State $s")
+                println(s"In FileUploaded State $s")
                 Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
               }
               case Some(s@UploadFile(_,_,_,_)) => {
-                logger.info(s"In UploadFile State $s")
+                println(s"In UploadFile State $s")
                 Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
               }
               case _ => {
-                logger.info("Error scenario 1")
+                println("Error scenario 1")
                 Future.successful(fileStateError)
               }
             })
             case false => {
-              logger.info("Error scenario 2")
+              println("Error scenario 2")
               Future.successful(fileStateError)
             }
           }
