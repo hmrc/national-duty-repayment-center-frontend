@@ -21,6 +21,7 @@ import models.FileType.SupportingEvidence
 import models.FileUpload.{Accepted, Initiated}
 import models.requests.UploadRequest
 import models.{DuplicateFileUpload, FileTransmissionFailed, FileType, FileUpload, FileUploadError, FileUploads, FileVerificationFailed, S3UploadError, UpscanFileFailed, UpscanFileReady, UpscanNotification}
+import play.api.libs.Files.logger
 import play.api.libs.json.{Format, Json}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -232,9 +233,10 @@ trait FileUploadService {
       Future.successful(UploadFile(reference, uploadRequest, fileUploads))
 
 
-    case Some(acceptedFile: FileUpload.Accepted) =>
+    case Some(acceptedFile: FileUpload.Accepted) => {
+      logger.info("Updated file status to FileUploaded")
       Future.successful(FileUploaded(fileUploads))
-
+    }
 
     case Some(failedFile: FileUpload.Failed) =>
 
