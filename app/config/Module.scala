@@ -20,8 +20,8 @@ import akka.actor.ActorSystem
 import com.google.inject.name.Named
 import com.google.inject.{AbstractModule, Inject, Singleton}
 import com.typesafe.config.Config
-import controllers.{CheckStateActor, CheckStateActorAmend}
 import controllers.actions._
+import controllers.{CheckStateActor, CheckStateActorAmend}
 import play.api.Configuration
 import play.api.libs.concurrent.AkkaGuiceSupport
 import play.api.libs.ws.WSClient

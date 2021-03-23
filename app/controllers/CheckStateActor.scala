@@ -80,12 +80,12 @@ class CheckStateActorAmend @Inject()()(implicit ec: ExecutionContext) extends Ac
     case StopWaiting(maxWaitTime: LocalDateTime) => {
       if (LocalDateTime.now().isAfter(maxWaitTime) || completed) {
         println(s"exiting.. wait over or state completed...time =.${LocalDateTime.now().isAfter(maxWaitTime)} || completed =  ${completed}")
-        context.become(active(false))
         Future.successful(true).pipeTo(sender)
+        context.become(active(false))
       }
       else {
-       // println(s"Continue waiting........$completed")
         (self ? StopWaiting(maxWaitTime)).pipeTo(sender)
+        context.become(active(false))
       }
     }
   }
