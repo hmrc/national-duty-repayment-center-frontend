@@ -23,7 +23,6 @@ import config.FrontendAppConfig
 import play.api.Logger.logger
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
-import akka.pattern.ask
 
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -80,14 +79,14 @@ class CheckStateActorAmend @Inject()()(implicit ec: ExecutionContext) extends Ac
 
     case StopWaiting(maxWaitTime: LocalDateTime) => {
       if (LocalDateTime.now().isAfter(maxWaitTime) || completed) {
-        println(s"exiting.. wait over or state completed..${LocalDateTime.now().isAfter(maxWaitTime)} || ${completed}")
+        println(s"exiting.. wait over or state completed...time =.${LocalDateTime.now().isAfter(maxWaitTime)} || completed =  ${completed}")
         context.become(active(false))
-        Future.successful(true)
+        Future.successful(true).pipeTo(sender)
       }
       else {
-        println("Continue waiting........")
-        (self ? StopWaiting(maxWaitTime))
+       // println(s"Continue waiting........$completed")
+        (self ? StopWaiting(maxWaitTime)).pipeTo(sender)
       }
-    }.pipeTo(sender)
+    }
   }
 }
