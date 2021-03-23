@@ -19,8 +19,9 @@ package controllers
 import connectors.AddressLookupConnector
 import controllers.actions._
 import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
+
 import javax.inject.Inject
-import models.{Address, ClaimantType, Mode, PostcodeLookup, UserAnswers}
+import models.{Address, ClaimantType, Mode, NormalMode, PostcodeLookup, UserAnswers}
 import navigation.Navigator
 import pages.{ClaimantTypePage, ImporterAddressPage, ImporterManualAddressPage, ImporterPostcodePage}
 import org.slf4j.LoggerFactory
@@ -71,7 +72,6 @@ class ImporterAddressController @Inject()(
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ImporterPostcodePage) match {
         case None => postcodeForm
         case Some(value) =>
@@ -104,7 +104,6 @@ class ImporterAddressController @Inject()(
   }
 
   private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject], isImporterJourney: Boolean)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
-
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
@@ -160,8 +159,16 @@ class ImporterAddressController @Inject()(
                   _              <- sessionRepository.set(removeManualAddressAnswers)
                 } yield {
                   request.userAnswers.get(ClaimantTypePage) match {
-                    case Some(ClaimantType.Importer) => Redirect(routes.PhoneNumberController.onPageLoad(mode))
-                    case _ => Redirect(routes.ImporterHasEoriController.onPageLoad(mode))
+                    case Some(ClaimantType.Importer) =>
+                      if(mode.equals(NormalMode))
+                        Redirect(routes.PhoneNumberController.onPageLoad(mode))
+                      else
+                        Redirect(routes.CheckYourAnswersController.onPageLoad)
+                    case _ =>
+                      if(mode.equals(NormalMode))
+                        Redirect(routes.ImporterHasEoriController.onPageLoad(mode))
+                      else
+                        Redirect(routes.CheckYourAnswersController.onPageLoad)
                   }
                 }
             )

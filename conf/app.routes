@@ -149,12 +149,14 @@ POST       /change-other-duties-overpayment                  controllers.OtherDu
 
 GET         /select-importer-address                      controllers.ImporterAddressController.onPageLoad(mode: Mode = NormalMode)
 POST        /select-importer-address                      controllers.ImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
+POST        /change-select-post-importer-address          controllers.ImporterAddressController.postcodeSubmit(mode: Mode = CheckMode)
 GET         /change-select-importer-address               controllers.ImporterAddressController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-select-importer-address               controllers.ImporterAddressController.onSubmit(mode: Mode = CheckMode)
 GET         /change-importer-address                      controllers.ImporterAddressController.postcodeBackLinkLoad(mode: Mode = NormalMode)
 
 GET         /your-business-address                        controllers.AgentImporterAddressController.onPageLoad(mode: Mode = NormalMode)
 POST        /your-business-address                        controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
+POST        /change-select-your-business-address          controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = CheckMode)
 GET         /change-your-business-address                 controllers.AgentImporterAddressController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-your-business-address                 controllers.AgentImporterAddressController.onSubmit(mode: Mode = CheckMode)
 GET         /change-business-address                      controllers.AgentImporterAddressController.postcodeBackLinkLoad(mode: Mode = NormalMode)
@@ -178,13 +180,18 @@ POST       /enter-bank-details                        controllers.BankDetailsCon
 GET        /change-enter-bank-details                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-enter-bank-details                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
-GET        /repayment-summary                       controllers.RepaymentAmountSummaryController.onPageLoad(category: String)
+GET        /repayment-summary                       controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = NormalMode)
+GET        /change-repayment-summary                controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = CheckMode)
 
 GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-importer-address               controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)
+POST        /change-enter-importer-address       controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = CheckMode)
+
 
 GET         /enter-agent-importer-address         controllers.AgentImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-agent-importer-address         controllers.AgentImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)
+POST        /change-enter-agent-importer-address      controllers.AgentImporterAddressController.addressSelectSubmit(mode: Mode = CheckMode)
+
 
 GET        /indirect-representative                        controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = NormalMode)
 POST       /indirect-representative                        controllers.IndirectRepresentativeController.onSubmit(mode: Mode = NormalMode)

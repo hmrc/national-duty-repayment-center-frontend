@@ -18,14 +18,16 @@ package controllers
 
 import controllers.actions._
 import forms.CustomsDutyPaidFormProvider
+
 import javax.inject.Inject
-import models.{Mode, NumberOfEntriesType, UserAnswers}
+import models.{CheckMode, Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.{CustomsDutyPaidPage, NumberOfEntriesTypePage}
+import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.{CheckYourAnswersHelper, RepaymentAmountSummaryAnswersHelper}
 import views.html.CustomsDutyPaidView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -61,7 +63,6 @@ class CustomsDutyPaidController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode), isSingleEntry(request.userAnswers)))),

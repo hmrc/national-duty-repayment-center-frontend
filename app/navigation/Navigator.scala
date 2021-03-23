@@ -34,10 +34,8 @@ class Navigator @Inject()() {
     case EntryDetailsPage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
     case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
-    case ClaimRepaymentTypePage => getClaimRepaymentType
     case CustomsDutyPaidPage =>  getVATRepaymentType
     case VATPaidPage => getOtherRepaymentType
-    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad("")
     case AgentImporterHasEORIPage => getAgentEORIStatus
     case ImporterEoriPage => getEORIPage
     case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)
@@ -61,6 +59,8 @@ class Navigator @Inject()() {
     case AmendCaseResponseTypePage => getAmendCaseResponseType
     case AmendCaseSendInformationPage => _ => routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+    case ClaimRepaymentTypePage => getClaimRepaymentType
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
@@ -128,12 +128,27 @@ class Navigator @Inject()() {
     case _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
   }
 
+  private def getAgentEORIStatusWithCheckMode(answers: UserAnswers): Call = answers.get(AgentImporterHasEORIPage) match {
+    case Some(AgentImporterHasEORI.Yes)  => routes.EnterAgentEORIController.onPageLoad(CheckMode)
+    case _ => routes.IsImporterVatRegisteredController.onPageLoad(CheckMode)
+  }
+
   private def getEORIConfirmation(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
     case Some(true)  => routes.ImporterEoriController.onPageLoad(NormalMode)
     case _ => {
       answers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
         case true => routes.IsVATRegisteredController.onPageLoad(NormalMode)
         case _ => routes.ImporterNameController.onPageLoad(NormalMode)
+      }
+    }
+  }
+
+  private def getEORIConfirmationWithCheckMode(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
+    case Some(true)  => routes.ImporterEoriController.onPageLoad(CheckMode)
+    case _ => {
+      answers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
+        case true => routes.IsVATRegisteredController.onPageLoad(CheckMode)
+        case _ => routes.ImporterNameController.onPageLoad(CheckMode)
       }
     }
   }
@@ -151,15 +166,32 @@ class Navigator @Inject()() {
     case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
   }
 
+  private def getClaimRepaymentTypeWithCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs))  => routes.CustomsDutyPaidController.onPageLoad(CheckMode)
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat)) => routes.VATPaidController.onPageLoad(CheckMode)
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(CheckMode)
+  }
+
   private def getVATRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
     case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat))  => routes.VATPaidController.onPageLoad(NormalMode)
     case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
-    case _ => routes.RepaymentAmountSummaryController.onPageLoad("")
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+  }
+
+  private def getVATRepaymentTypeWithCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat))  => routes.VATPaidController.onPageLoad(CheckMode)
+    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(CheckMode)
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
   }
 
   private def getOtherRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
     case true => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
-    case _ => routes.RepaymentAmountSummaryController.onPageLoad("")
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+  }
+
+  private def getOtherRepaymentTypeWithCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
+    case true => routes.OtherDutiesPaidController.onPageLoad(CheckMode)
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
   }
 
   private def getAmendCaseResponseTypeCheckMode(answers: UserAnswers): Call = {
@@ -172,14 +204,15 @@ class Navigator @Inject()() {
     }
   }
 
-
   private val checkRouteMap: Page => UserAnswers => Call = {
     case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
-    case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad("CheckMode")
+    case CustomsDutyPaidPage => getVATRepaymentTypeWithCheckMode
     case CustomsRegulationTypePage => getEntryDetailsWithCheckMode
-    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad("CheckMode")
-    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad("CheckMode")
-    case ClaimRepaymentTypePage => getClaimRepaymentType
+    case VATPaidPage => getOtherRepaymentTypeWithCheckMode
+    case ImporterHasEoriPage => getEORIConfirmationWithCheckMode
+    case AgentImporterHasEORIPage => getAgentEORIStatusWithCheckMode
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+    case ClaimRepaymentTypePage => getClaimRepaymentTypeWithCheckMode
     case _ => getCheckYourAnswers
   }
 

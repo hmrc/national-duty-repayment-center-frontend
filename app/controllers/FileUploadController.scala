@@ -161,7 +161,7 @@ class FileUploadController @Inject()(
                     updateSession(newState, ss.userAnswers)
                       .map { _ => Redirect(routes.FileUploadController.showFileUpload(mode)) }
                 }
-              else Future.successful(Redirect(additionalFileUploadRoute(request.userAnswers)))
+              else Future.successful(Redirect(additionalFileUploadRoute(request.userAnswers, mode)))
             case None => Future.successful(fileStateError)
           }
         }
@@ -241,11 +241,14 @@ class FileUploadController @Inject()(
     )
   }
 
-  private def additionalFileUploadRoute(answers: UserAnswers): Call = {
-    if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
-      routes.ImporterHasEoriController.onPageLoad(NormalMode)
-    else
-      routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
+  private def additionalFileUploadRoute(answers: UserAnswers, mode: Mode): Call = {
+    if(mode.equals(NormalMode)) {
+      if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
+        routes.ImporterHasEoriController.onPageLoad(NormalMode)
+      else
+        routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
+    } else
+      routes.CheckYourAnswersController.onPageLoad()
   }
 
   def sessionState(id: String): Future[SessionState] = {

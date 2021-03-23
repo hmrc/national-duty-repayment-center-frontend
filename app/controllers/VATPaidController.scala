@@ -18,8 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.VATPaidFormProvider
+
 import javax.inject.Inject
-import models.{ClaimRepaymentType, Mode, NumberOfEntriesType, UserAnswers}
+import models.{CheckMode, ClaimRepaymentType, Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
 import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, VATPaidPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -64,7 +65,6 @@ class VATPaidController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))),

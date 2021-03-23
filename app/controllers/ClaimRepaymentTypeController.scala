@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ClaimRepaymentTypeFormProvider
 
 import javax.inject.Inject
-import models.{ClaimRepaymentType, Mode}
+import models.{CheckMode, ClaimRepaymentType, Mode}
 import navigation.Navigator
 import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -90,7 +90,14 @@ class ClaimRepaymentTypeController @Inject()(
                 case true => removeVATPaid.set(ClaimRepaymentTypePage, value)
               })
             _ <- sessionRepository.set(removeOtherDutiesPaid)
-          } yield Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaid))
+          } yield {
+            if(request.userAnswers.get(ClaimRepaymentTypePage).nonEmpty &&
+              request.userAnswers.get(ClaimRepaymentTypePage).get == value
+              && mode.equals(CheckMode) ) {
+              Redirect(routes.CheckYourAnswersController.onPageLoad())
+            } else
+                Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaid))
+          }
       )
   }
 }

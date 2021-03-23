@@ -18,8 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.ImporterManualAddressFormProvider
+
 import javax.inject.Inject
-import models.{ClaimantType, Mode, UserAnswers}
+import models.{ClaimantType, Mode, NormalMode, UserAnswers}
 import navigation.Navigator
 import pages.{ClaimantTypePage, ImporterManualAddressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -72,7 +73,12 @@ class ImporterManualAddressController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterManualAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ImporterManualAddressPage, mode, updatedAnswers))
+          } yield {
+            if(mode.equals(NormalMode))
+              Redirect(navigator.nextPage(ImporterManualAddressPage, mode, updatedAnswers))
+            else
+              Redirect(routes.CheckYourAnswersController.onPageLoad)
+          }
       )
   }
 
