@@ -17,19 +17,17 @@
 package controllers
 
 import akka.actor.ActorRef
-import akka.pattern.{AskTimeoutException, ask}
+import akka.pattern.ask
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
-import forms.AdditionalFileUploadFormProvider
+import forms.{AdditionalFileUploadFormProvider, UpscanS3ErrorFormProvider}
 import models.FileType.SupportingEvidence
-import models.{AmendCaseResponseType, FileVerificationStatus, Mode, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
+import models.{AmendCaseResponseType, FileVerificationStatus, Mode, NormalMode, UpscanNotification, UserAnswers}
 import navigation.Navigator
 import pages.AmendCaseResponseTypePage
-import play.api.Logger.logger
 import play.api.data.Form
-import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -38,7 +36,7 @@ import repositories.SessionRepository
 import services._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.{AmendCaseSendInformationView, AmendCaseUploadAnotherFileView}
-
+import models.SessionState
 import java.time.LocalDateTime
 import javax.inject.{Inject, Named}
 import scala.concurrent.duration.DurationInt
@@ -55,50 +53,29 @@ class AmendCaseSendInformationController @Inject()(
                                                     appConfig: FrontendAppConfig,
                                                     upscanInitiateConnector: UpscanInitiateConnector,
                                                     val controllerComponents: MessagesControllerComponents,
-                                                    @Named("check-state-actor-amend") checkStateActor: ActorRef,
+                                                    val upscanS3ErrorFormProvider: UpscanS3ErrorFormProvider,
+                                                    @Named("check-state-actor") checkStateActor: ActorRef,
                                                     fileUploadView: AmendCaseSendInformationView,
                                                     fileUploadedView: AmendCaseUploadAnotherFileView
                                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
   final val controller = routes.AmendCaseSendInformationController
   val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm
-
-  case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
-
+  val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
   val fileStateError = InternalServerError("Missing file upload state")
 
   // GET /file-verification
   final def showWaitingForFileVerification(mode: Mode) = (identify andThen getData andThen requireData).async { implicit request =>
-    implicit val timeout = Timeout(20 seconds)
+    implicit val timeout = Timeout(30 seconds)
     sessionState(request.internalId).flatMap { ss =>
       ss.state match {
-        case Some(_) =>
-          (checkStateActor ? StopWaiting(LocalDateTime.now.plusSeconds(20))).recover {
-            case _: AskTimeoutException => false
-          }.mapTo[Boolean].flatMap {
-            case true => sessionRepository.get(request.internalId).flatMap(ss => ss.flatMap(_.fileUploadState) match {
-              case Some(s@FileUploaded(_, _)) => {
-                println(s"In FileUploaded State $s")
-                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
-              }
-              case Some(s@UploadFile(_,_,_,_)) => {
-                println(s"In UploadFile State $s")
-                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
-              }
-              case _ => {
-                println("Error scenario 1")
-                Future.successful(fileStateError)
-              }
-            })
-            case false => {
-              println("Error scenario 2")
-              Future.successful(fileStateError)
-            }
+        case Some(s) =>
+          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
+            case _: FileUploaded => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
+            case _: UploadFile => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
+            case _ => Future.successful(fileStateError)
           }
-        case _ => {
-          logger.info("Error scenario 3")
-          Future.successful(fileStateError)
-        }
+        case _ => Future.successful(fileStateError)
       }
     }
   }
@@ -174,12 +151,13 @@ class AmendCaseSendInformationController @Inject()(
       value =>
         sessionState(request.internalId).flatMap { ss =>
           ss.state match {
-            case Some(s) =>
-              if (value)
-                submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(s).flatMap {
-                  newState => updateSession(newState, ss.userAnswers).map { _ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)) }
-                }
-              else Future.successful(Redirect(getAmendCaseUploadAnotherFile(request.userAnswers, mode)))
+            case Some(s) if (value) =>
+              for {
+                newState <- submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(s)
+                res <- updateSession(newState, ss.userAnswers)
+                if res
+              } yield Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode))
+            case Some(_) => Future.successful(Redirect(getAmendCaseUploadAnotherFile(request.userAnswers, mode)))
             case None => Future.successful(fileStateError)
           }
         }
@@ -208,11 +186,12 @@ class AmendCaseSendInformationController @Inject()(
       s3Error =>
         sessionState(request.internalId).flatMap { ss =>
           ss.state match {
-            case Some(s) => fileUploadWasRejected(s3Error)(s).flatMap { newState =>
-              updateSession(newState, ss.userAnswers).map { _ =>
-                Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode))
-              }
-            }
+            case Some(s) =>
+              for {
+                newState <- Future.successful(fileUploadWasRejected(s3Error)(s))
+                res <- updateSession(newState, ss.userAnswers)
+                if res
+              } yield Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode))
             case None => Future.successful(InternalServerError("Missing file upload state"))
           }
         }
@@ -236,15 +215,12 @@ class AmendCaseSendInformationController @Inject()(
   final def callbackFromUpscan(id: String) = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
     sessionState(id).flatMap { ss =>
       ss.state match {
-        case Some(s) => {
-          println("Callback from upscan arrived..........................")
-          upscanCallbackArrived(request.body, SupportingEvidence)(s).flatMap { newState =>
-            updateSession(newState, ss.userAnswers).map { _ =>
-              checkStateActor ! CallbackArrived
-              acknowledgeFileUploadRedirect(newState)
-            }
-          }
-        }
+        case Some(s) =>
+          for {
+            newState <- upscanCallbackArrived(request.body, SupportingEvidence)(s)
+            res <- updateSession(newState, ss.userAnswers)
+            if res
+          } yield acknowledgeFileUploadRedirect(newState)
         case None => Future.successful(InternalServerError("Missing file upload state"))
       }
     }
@@ -322,14 +298,4 @@ class AmendCaseSendInformationController @Inject()(
         ))
     }
   }
-
-  val UpscanUploadErrorForm = Form[S3UploadError](
-    mapping(
-      "key" -> nonEmptyText,
-      "errorCode" -> text,
-      "errorMessage" -> text,
-      "errorRequestId" -> optional(text),
-      "errorResource" -> optional(text)
-    )(S3UploadError.apply)(S3UploadError.unapply)
-  )
 }

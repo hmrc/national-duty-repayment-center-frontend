@@ -21,7 +21,6 @@ import models.FileType.SupportingEvidence
 import models.FileUpload.{Accepted, Initiated}
 import models.requests.UploadRequest
 import models.{DuplicateFileUpload, FileTransmissionFailed, FileType, FileUpload, FileUploadError, FileUploads, FileVerificationFailed, S3UploadError, UpscanFileFailed, UpscanFileReady, UpscanNotification}
-import play.api.libs.Files.logger
 import play.api.libs.json.{Format, Json}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -88,7 +87,7 @@ trait FileUploadService {
     })
 
   def initiateFileUpload(
-                         upscanRequest: UpscanInitiateRequest, fileType: Option[FileType]
+                          upscanRequest: UpscanInitiateRequest, fileType: Option[FileType]
                         )(upscanInitiate: UpscanInitiateApi)(state: Option[FileUploadState])(implicit ec: ExecutionContext): Future[FileUploadState] =
 
     state match {
@@ -107,7 +106,7 @@ trait FileUploadService {
         }
       }
 
-      case Some(current@FileUploaded(fileUploads, _)) =>
+      case Some(_@FileUploaded(fileUploads, _)) =>
         fileUploadOrUploaded(
           upscanRequest,
           upscanInitiate,
@@ -124,7 +123,7 @@ trait FileUploadService {
           fileType)
     }
 
-  final def upscanCallbackArrived(notification: UpscanNotification, fileType: FileType)(state: FileUploadState) = {
+  final def upscanCallbackArrived(notification: UpscanNotification, fileType: FileType)(state: FileUploadState): Future[FileUploadState] = {
 
     def shouldReplaceExistingFile(fileUploads: FileUploads, fileType: FileType): Boolean = {
       val singleUploadFiles = fileUploads.files.filterNot(f => f.fileType.contains(SupportingEvidence))
@@ -186,7 +185,7 @@ trait FileUploadService {
       reference,
       uploadRequest,
       fileUploads,
-      errorOpt
+      _
       ) =>
         val uploadsUpdated = if (shouldReplaceExistingFile(fileUploads, fileType)) {
           val existingSingleUploadFile = fileUploads.files.find(f => f.fileType.contains(fileType) && f.isInstanceOf[FileUpload.Accepted])
@@ -208,7 +207,7 @@ trait FileUploadService {
 
   final def removeFileUploadBy(reference: String)(
     upscanRequest: UpscanInitiateRequest
-  )(upscanInitiate: UpscanInitiateApi)(state: FileUploadState)(implicit ec: ExecutionContext) =
+  )(upscanInitiate: UpscanInitiateApi)(state: FileUploadState)(implicit ec: ExecutionContext): Future[FileUploadState] =
     state match {
       case current: FileUploaded =>
         val updatedFileUploads = current.fileUploads
@@ -229,14 +228,13 @@ trait FileUploadService {
                                            ): PartialFunction[Option[FileUpload], Future[FileUploadState]] = {
     case None => Future.successful(fallbackState)
 
-    case Some(initiatedFile: FileUpload.Initiated) =>
+    case Some(_: FileUpload.Initiated) =>
       Future.successful(UploadFile(reference, uploadRequest, fileUploads))
 
 
-    case Some(acceptedFile: FileUpload.Accepted) => {
-      println("Updated file status to FileUploaded")
+    case Some(_: FileUpload.Accepted) =>
       Future.successful(FileUploaded(fileUploads))
-    }
+
 
     case Some(failedFile: FileUpload.Failed) =>
 
@@ -274,11 +272,11 @@ trait FileUploadService {
   }
 
   final def submitedUploadAnotherFileChoice(
-                                            upscanRequest: UpscanInitiateRequest,
-                                            fileType: Option[FileType]
-                                           )(upscanInitiate: UpscanInitiateApi)(state: FileUploadState)(implicit ec: ExecutionContext) =
+                                             upscanRequest: UpscanInitiateRequest,
+                                             fileType: Option[FileType]
+                                           )(upscanInitiate: UpscanInitiateApi)(state: FileUploadState)(implicit ec: ExecutionContext): Future[FileUploadState] =
     state match {
-      case current@FileUploaded(fileUploads, acknowledged) =>
+      case _@FileUploaded(fileUploads, _) =>
         fileUploadOrUploaded(
           upscanRequest,
           upscanInitiate,
@@ -290,13 +288,13 @@ trait FileUploadService {
     }
 
 
-  def fileUploadWasRejected(error: S3UploadError)(state: FileUploadState) = Future.successful {
+  def fileUploadWasRejected(error: S3UploadError)(state: FileUploadState): UploadFile =
     state match {
       case current@UploadFile(
       reference,
-      uploadRequest,
+      _,
       fileUploads,
-      maybeUploadError
+      _
       ) =>
         val updatedFileUploads = fileUploads.copy(files = fileUploads.files.map {
           case FileUpload.Initiated(orderNumber, ref, fileType) if ref == error.key =>
@@ -305,16 +303,16 @@ trait FileUploadService {
         })
         current.copy(fileUploads = updatedFileUploads, maybeUploadError = Some(FileTransmissionFailed(error)))
     }
-  }
+
 
   def filesNotInStateInitiated(files: Seq[FileUpload]): Seq[FileUpload] = {
     files.filter {
-      case s@Initiated(_, _, _) => false
+      case _@Initiated(_, _, _) => false
       case _ => true
     }
   }
 
   def filesInStateAccepted(files: Seq[FileUpload]): Seq[FileUpload] = {
-    files collect { case s@Accepted(_, _, _, _, _, _, _, _)  => s }
+    files collect { case s@Accepted(_, _, _, _, _, _, _, _) => s }
   }
 }

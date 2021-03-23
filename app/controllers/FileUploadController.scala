@@ -22,7 +22,7 @@ import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
-import forms.AdditionalFileUploadFormProvider
+import forms.{AdditionalFileUploadFormProvider, UpscanS3ErrorFormProvider}
 import models.FileType.SupportingEvidence
 import models.FileUpload.Initiated
 import models.{ClaimantType, FileVerificationStatus, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
@@ -53,6 +53,7 @@ class FileUploadController @Inject()(
                                       upscanInitiateConnector: UpscanInitiateConnector,
                                       val controllerComponents: MessagesControllerComponents,
                                       additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
+                                      val upscanS3ErrorFormProvider: UpscanS3ErrorFormProvider,
                                       fileUploadedView: FileUploadedView,
                                       requireData: DataRequiredAction,
                                       @Named("check-state-actor") checkStateActor: ActorRef,
@@ -61,9 +62,9 @@ class FileUploadController @Inject()(
 
   final val controller = routes.FileUploadController
   val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm
-  type ConvertState = (FileUploadState) => Future[FileUploadState]
 
   case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
+  val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
 
   val fileStateError = InternalServerError("Missing file upload state")
 
@@ -130,7 +131,7 @@ class FileUploadController @Inject()(
       if s.nonEmpty
     } yield {
       Ok(fileUploadedView(
-        or(None, uploadAnotherFileChoiceForm, None),
+        uploadAnotherFileChoiceForm,
         s.get.fileUploads,
         controller.submitUploadAnotherFileChoice(mode),
         controller.removeFileUploadByReference,
@@ -170,17 +171,17 @@ class FileUploadController @Inject()(
 
   // GET /file-rejected
   final def markFileUploadAsRejected(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     UpscanUploadErrorForm.bindFromRequest().fold(
       _ => Future.successful(BadRequest),
       s3Error =>
         sessionState(request.internalId).flatMap { ss =>
           ss.state match {
-            case Some(s) => fileUploadWasRejected(s3Error)(s).flatMap { newState =>
-              updateSession(newState, ss.userAnswers).map { res =>
-                Redirect(routes.FileUploadController.showFileUpload(mode))
-              }
-            }
+            case Some(s) =>
+              for {
+                newState <- Future.successful(fileUploadWasRejected(s3Error)(s))
+                res <- updateSession(newState, ss.userAnswers)
+                if res
+              } yield Redirect(routes.FileUploadController.showFileUpload(mode))
             case None => Future.successful(InternalServerError("Missing file upload state"))
           }
         }
@@ -191,11 +192,12 @@ class FileUploadController @Inject()(
   final def callbackFromUpscan(id: String) = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
     sessionState(id).flatMap { ss =>
       ss.state match {
-        case Some(s) => upscanCallbackArrived(request.body, SupportingEvidence)(s).flatMap { newState =>
-          updateSession(newState, ss.userAnswers).map { res =>
-            acknowledgeFileUploadRedirect(newState)
-          }
-        }
+        case Some(s) =>
+          for {
+            newState <- upscanCallbackArrived(request.body, SupportingEvidence)(s)
+            res <- updateSession(newState, ss.userAnswers)
+            if res
+          } yield acknowledgeFileUploadRedirect(newState)
         case None => Future.successful(InternalServerError("Missing file upload state"))
       }
     }
@@ -284,7 +286,7 @@ class FileUploadController @Inject()(
 
       case FileUploaded(fileUploads, _) =>
         Ok(fileUploadedView(
-          or(formWithErrors, uploadAnotherFileChoiceForm, None),
+          formWithErrors.getOrElse(uploadAnotherFileChoiceForm),
           fileUploads,
           controller.submitUploadAnotherFileChoice(mode),
           controller.removeFileUploadByReference,
@@ -293,22 +295,4 @@ class FileUploadController @Inject()(
         ))
     }
   }
-
-  def or[T](formWithErrors: Option[Form[_]], emptyForm: Form[T], maybeFillWith: Option[T])(implicit request: Request[_]): Form[T] =
-    formWithErrors
-      .map(_.asInstanceOf[Form[T]])
-      .getOrElse {
-        if (request.flash.isEmpty) maybeFillWith.map(emptyForm.fill).getOrElse(emptyForm)
-        else emptyForm.bind(request.flash.data)
-      }
-
-  val UpscanUploadErrorForm = Form[S3UploadError](
-    mapping(
-      "key" -> nonEmptyText,
-      "errorCode" -> text,
-      "errorMessage" -> text,
-      "errorRequestId" -> optional(text),
-      "errorResource" -> optional(text)
-    )(S3UploadError.apply)(S3UploadError.unapply)
-  )
 }
