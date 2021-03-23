@@ -234,7 +234,7 @@ trait FileUploadService {
 
 
     case Some(acceptedFile: FileUpload.Accepted) => {
-      logger.info("Updated file status to FileUploaded")
+      println("Updated file status to FileUploaded")
       Future.successful(FileUploaded(fileUploads))
     }
 
