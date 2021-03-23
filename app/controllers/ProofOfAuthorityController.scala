@@ -22,10 +22,10 @@ import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.actions._
+import forms.UpscanS3ErrorFormProvider
 import models.FileType.ProofOfAuthority
-import models.{FileVerificationStatus, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
+import models.{FileVerificationStatus, NormalMode, SessionState, UpscanNotification, UserAnswers}
 import play.api.data.Form
-import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -48,13 +48,14 @@ class ProofOfAuthorityController @Inject()(
                                             requireData: DataRequiredAction,
                                             sessionRepository: SessionRepository,
                                             upscanInitiateConnector: UpscanInitiateConnector,
+                                            val upscanS3ErrorFormProvider: UpscanS3ErrorFormProvider,
                                             @Named("check-state-actor") checkStateActor: ActorRef,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: ProofOfAuthorityView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
   final val controller = routes.ProofOfAuthorityController
-  case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
+  val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
   val fileStateError = InternalServerError("Missing file upload state")
 
   // GET /upload-proof-of-authority/file-verification
@@ -64,8 +65,8 @@ class ProofOfAuthorityController @Inject()(
       ss.state match {
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
-            case s: FileUploaded => Future.successful(Redirect(routes.BankDetailsController.onPageLoad(NormalMode)))
-            case s: UploadFile => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload))
+            case _: FileUploaded => Future.successful(Redirect(routes.BankDetailsController.onPageLoad(NormalMode)))
+            case _: UploadFile => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload))
             case _ => Future.successful(fileStateError)
           }
         case _ => Future.successful(fileStateError)
@@ -83,7 +84,7 @@ class ProofOfAuthorityController @Inject()(
         case _ => updateSession(fs, ss.userAnswers)
       }
       if b
-    } yield renderState(ss.userAnswers, fs)
+    } yield renderState(fs)
   }
 
   def sessionState(id: String): Future[SessionState] = {
@@ -94,17 +95,17 @@ class ProofOfAuthorityController @Inject()(
 
   // GET /upload-proof-of-authority/file-rejected
   final def markFileUploadAsRejected: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     UpscanUploadErrorForm.bindFromRequest().fold(
       _ => Future.successful(BadRequest),
       s3Error =>
         sessionState(request.internalId).flatMap { ss =>
           ss.state match {
-            case Some(s) => fileUploadWasRejected(s3Error)(s).flatMap { newState =>
-              updateSession(newState, ss.userAnswers).map { res =>
-                Redirect(routes.ProofOfAuthorityController.showFileUpload())
-              }
-            }
+            case Some(s) =>
+              for {
+                newState <- Future.successful(fileUploadWasRejected(s3Error)(s))
+                res <- updateSession(newState, ss.userAnswers)
+                if res
+              } yield Redirect(routes.ProofOfAuthorityController.showFileUpload())
             case None => Future.successful(InternalServerError("Missing file upload state"))
           }
         }
@@ -122,11 +123,11 @@ class ProofOfAuthorityController @Inject()(
 
     sessionState(id).flatMap { ss =>
       ss.state match {
-        case Some(s) => upscanCallbackArrived(request.body, ProofOfAuthority)(s).flatMap { newState =>
-          updateSession(newState, ss.userAnswers).map { res =>
-            acknowledgeFileUploadRedirect(newState)
-          }
-        }
+        case Some(s) => for {
+          newState <- upscanCallbackArrived(request.body, ProofOfAuthority)(s)
+          res <- updateSession(newState, ss.userAnswers)
+          if res
+        } yield acknowledgeFileUploadRedirect(newState)
         case None => Future.successful(InternalServerError("Missing file upload state"))
       }
     }
@@ -172,7 +173,7 @@ class ProofOfAuthorityController @Inject()(
     }
   }
 
-  final def renderState(userAnswers: Option[UserAnswers], fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None)(implicit request: Request[_]): Result = {
+  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None)(implicit request: Request[_]): Result = {
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
         Ok(
@@ -187,22 +188,4 @@ class ProofOfAuthorityController @Inject()(
         )
     }
   }
-
-  def or[T](formWithErrors: Option[Form[_]], emptyForm: Form[T], maybeFillWith: Option[T])(implicit request: Request[_]): Form[T] =
-    formWithErrors
-      .map(_.asInstanceOf[Form[T]])
-      .getOrElse {
-        if (request.flash.isEmpty) maybeFillWith.map(emptyForm.fill).getOrElse(emptyForm)
-        else emptyForm.bind(request.flash.data)
-      }
-
-  val UpscanUploadErrorForm = Form[S3UploadError](
-    mapping(
-      "key" -> nonEmptyText,
-      "errorCode" -> text,
-      "errorMessage" -> text,
-      "errorRequestId" -> optional(text),
-      "errorResource" -> optional(text)
-    )(S3UploadError.apply)(S3UploadError.unapply)
-  )
 }

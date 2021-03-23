@@ -408,8 +408,8 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
         errorResource = Some("c"),
         errorRequestId = Some("d")
       )
-      whenReady(service.fileUploadWasRejected(error)(currentState)
-      ){ newState => assert(newState == expectedState)}
+      val newState = service.fileUploadWasRejected(error)(currentState)
+      assert(newState == expectedState)
     }
   }
   "when callback returns" should {
