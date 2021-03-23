@@ -98,7 +98,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     City = "city",
     Region = Some("region"),
     CountryCode = "GB",
-    PostalCode = Some("ZZ111ZZ")
+    PostalCode = "ZZ111ZZ"
   )
 
   val userDetails = UserDetails(

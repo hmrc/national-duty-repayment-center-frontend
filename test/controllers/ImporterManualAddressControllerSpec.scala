@@ -67,7 +67,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterManualAddressPage, Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ImporterManualAddressPage, Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -82,7 +82,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))),
+        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")),
           NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), backLink)(fakeRequest, messages).toString
 
       application.stop()
