@@ -244,8 +244,10 @@ declarantReferenceNumber.hint1 = This will only be used for your own records.
 declarantReferenceNumber.hint2 = You will be given an application reference number when this application is complete.
 declarantReferenceNumber.01 = Yes
 declarantReferenceNumber.02 = No
+declarantReferenceNumber.checkYourAnswersLabel = Do you want to create a declarant reference number?
+declarantReferenceNumber.yes.checkYourAnswersLabel = Yes
+declarantReferenceNumber.no.checkYourAnswersLabel = No
 declarantReferenceNumber.declarantReferenceNumber = Declarant reference number
-declarantReferenceNumber.checkYourAnswersLabel = Declarant reference number
 declarantReferenceNumber.error.required.declarantReferenceNumber = Enter declarant reference number
 
 declarantReferenceNumber.error.invalid = Enter declarant reference number

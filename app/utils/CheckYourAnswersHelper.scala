@@ -300,6 +300,27 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     }
   }
 
+  def declarantReferenceNumber: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(x.declarantReferenceNumber.getOrElse(""))),
+        Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
+      )
+  }
+
+ /* def addDeclarantReferenceNumber: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
+    x => {
+      AnswerRow(
+        HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel")),
+        HtmlFormat.escape(x match
+        { case x if x.length > 0 => "Yes"
+          case _ => "No"}),
+        Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
+      )
+    }
+  }*/
+
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
     x =>
       AnswerRow(
@@ -465,7 +486,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def getContactDetailsAnswerSection: AnswerSection = {
     AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
       Seq (phoneNumber.get,
-        contactByEmail.get) ++
+        contactByEmail.get,
+        declarantReferenceNumber.get) ++
         (userAnswers.get(EmailAddressPage).get.isEmpty match {
           case true => Seq.empty
           case _ => Seq(emailAddress.get)
