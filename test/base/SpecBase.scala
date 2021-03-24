@@ -19,10 +19,12 @@ package base
 import com.codahale.metrics.MetricRegistry
 import com.kenshoo.play.metrics.{Metrics, MetricsFilterImpl, MetricsImpl}
 import config.FrontendAppConfig
+import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
 import controllers.actions._
 import models.AmendCaseResponseType.FurtherInformation
 import models._
-import models.requests.{AmendClaimRequest, CreateClaimRequest}
+import models.requests.{AmendClaimRequest, CreateClaimRequest, UploadRequest}
+import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -33,9 +35,14 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
 import play.api.libs.json.{JsArray, JsNull, Json}
+import play.api.mvc.AnyContentAsEmpty
+import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
+import repositories.SessionRepository
+import uk.gov.hmrc.http.HeaderCarrier
 
 import java.time.{LocalDate, ZoneId, ZonedDateTime}
+import scala.concurrent.{ExecutionContext, Future}
 
 
 trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience with MockitoSugar {
@@ -61,19 +68,35 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
+  val upscanMock = mock[UpscanInitiateConnector]
+  val uscanResponse =
+    UpscanInitiateResponse(
+      reference = "foo-bar-ref-new",
+      uploadRequest =
+        UploadRequest(href = "https://s3.bucket", fields = Map("callbackUrl" -> "https://foo.bar/callback-new"))
+    )
+  when(upscanMock.initiate(any[UpscanInitiateRequest])(any[HeaderCarrier], any[ExecutionContext]))
+    .thenReturn(Future.successful(uscanResponse))
+
+  val mockSessionRepository = mock[SessionRepository]
+
+  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder = {
     new GuiceApplicationBuilder()
       .configure(
         "metrics.enabled" -> false,
         "auditing.enabled" -> false,
         "metrics.jvm" -> false
-      )
-      .overrides(
-        bind[IdentifierAction].to[FakeIdentifierAction],
-        bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-        bind[Metrics].to[MetricsImpl]
-      )
+      ).overrides(
+      bind[DataRequiredAction].to[DataRequiredActionImpl],
+      bind[IdentifierAction].to[FakeIdentifierAction],
+      bind[DataRequiredAction].to[DataRequiredActionImpl],
+      bind[UpscanInitiateConnector].toInstance(upscanMock),
+      bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
+      bind[SessionRepository].toInstance(mockSessionRepository),
+      bind[Metrics].to[MetricsImpl]
+    )
+  }
+
 
   val claimDetails = ClaimDetails(
     FormType = FormType("01"),
@@ -261,6 +284,10 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
       )
     )
   )
-
+  def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] = {
+    FakeRequest(method, path)
+      .withCSRFToken
+      .asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
+  }
 
 }

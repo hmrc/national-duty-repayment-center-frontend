@@ -16,74 +16,32 @@
 
 package controllers
 import base.SpecBase
-import com.kenshoo.play.metrics.{Metrics, MetricsImpl}
-import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
-import controllers.actions._
-import models.requests.UploadRequest
-import models.{CustomsRegulationType, FileUpload, FileUploads, UpscanNotification, UserAnswers}
-import org.mockito.Matchers.{any, anyObject}
+import models.{CustomsRegulationType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import org.mockito.Matchers.anyObject
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CustomsRegulationTypePage
 import play.api.i18n.Messages
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{GET, contentAsString, defaultAwaitTimeout, route, running, status, writeableOf_AnyContentAsEmpty}
 import play.twirl.api.HtmlFormat
-import repositories.SessionRepository
 import services.FileUploaded
-import uk.gov.hmrc.http.HeaderCarrier
 
 import java.time.ZonedDateTime
-import scala.concurrent.duration._
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.Future
 
 class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
   val id = "1"
-  val uscanResponse =
-    UpscanInitiateResponse(
-      reference = "foo-bar-ref",
-      uploadRequest =
-        UploadRequest(href = "https://s3.bucket", fields = Map("callbackUrl" -> "https://foo.bar/callback"))
-    )
-
-  def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] = {
-    FakeRequest(method, path)
-      .asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
-  }
-  val upscanMock = mock[UpscanInitiateConnector]
-  val mockSessionRepository = mock[SessionRepository]
-
-  def appBuilder(userAnswers: Option[UserAnswers]): GuiceApplicationBuilder = {
-    new GuiceApplicationBuilder()
-      .configure(
-        "metrics.enabled" -> false,
-        "auditing.enabled" -> false,
-        "metrics.jvm" -> false
-      ).overrides(
-      bind[DataRequiredAction].to[DataRequiredActionImpl],
-      bind[IdentifierAction].to[FakeIdentifierAction],
-      bind[DataRequiredAction].to[DataRequiredActionImpl],
-      bind[UpscanInitiateConnector].toInstance(upscanMock),
-      bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-      bind[SessionRepository].toInstance(mockSessionRepository),
-      bind[Metrics].to[MetricsImpl]
-    )
-  }
-  when(upscanMock.initiate(any[UpscanInitiateRequest])(any[HeaderCarrier], any[ExecutionContext]))
-    .thenReturn(Future.successful(uscanResponse))
 
   "GET /file-upload" should {
     "show the upload first document page" in {
       val fileUploadUrl = routes.BulkFileUploadController.showFileUpload().url
       val application =
-        appBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .build()
       running(application) {
-        when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(emptyUserAnswers))
-        when(mockSessionRepository.set(anyObject())) thenReturn Future.successful(true)
+        when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(None, Some(emptyUserAnswers))))
+        when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
         val request = buildRequest(GET, fileUploadUrl)
         val result = route(application, request).value
         status(result) mustEqual 200
@@ -117,7 +75,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation).
         success.value.copy(fileUploadState = Some(fileUploadedState))
 
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
       running(application) {
         when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(emptyUserAnswers))
         when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
@@ -151,7 +109,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).
         success.value.copy(fileUploadState = Some(fileUploadedState))
 
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
       running(application) {
         when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(emptyUserAnswers))
         when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
@@ -173,7 +131,6 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         FileUploads(files =
           Seq(
             FileUpload.Initiated(1, "11370e18-6e24-453e-b45a-76d3e32ea33d"),
-            FileUpload.Posted(2, "2b72fe99-8adf-4edb-865e-622ae710f77c"),
             FileUpload.Accepted(
               4,
               "f029444f-415c-4dec-9cf2-36774ec63ab8",
@@ -193,7 +150,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = false
       )
       val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value.copy(fileUploadState = Some(fileUploadState))
-      val application = appBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadState)))).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadState)))).build()
 
       running(application) {
         when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
