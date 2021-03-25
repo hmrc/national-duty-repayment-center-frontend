@@ -204,6 +204,16 @@ class Navigator @Inject()() {
     }
   }
 
+  private def getWhomToPayCheckMode(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
+    case Some(WhomToPay.Representative) => routes.IndirectRepresentativeController.onPageLoad(CheckMode)
+    case Some(WhomToPay.Importer) => routes.CheckYourAnswersController.onPageLoad()
+  }
+
+  private def getIndirectRepresentativeWithCheckMode(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
+    case Some(false) => routes.ProofOfAuthorityController.showFileUpload()
+    case Some(true)  => routes.CheckYourAnswersController.onPageLoad()
+  }
+
   private val checkRouteMap: Page => UserAnswers => Call = {
     case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
     case CustomsDutyPaidPage => getVATRepaymentTypeWithCheckMode
@@ -213,6 +223,8 @@ class Navigator @Inject()() {
     case AgentImporterHasEORIPage => getAgentEORIStatusWithCheckMode
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
     case ClaimRepaymentTypePage => getClaimRepaymentTypeWithCheckMode
+    case WhomToPayPage => getWhomToPayCheckMode
+    case IndirectRepresentativePage => getIndirectRepresentativeWithCheckMode
     case _ => getCheckYourAnswers
   }
 

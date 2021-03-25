@@ -195,7 +195,7 @@ POST        /change-enter-agent-importer-address      controllers.AgentImporterA
 
 GET        /indirect-representative                        controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = NormalMode)
 POST       /indirect-representative                        controllers.IndirectRepresentativeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeindirect-representative                  controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = CheckMode)
+GET        /change-indirect-representative                  controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-indirect-representative                  controllers.IndirectRepresentativeController.onSubmit(mode: Mode = CheckMode)
 
 GET        /signout                                        controllers.SignOutController.signOut
@@ -250,9 +250,9 @@ GET        /bulk/change-file-rejected                             controllers.Bu
 
 
 # proof of authority
-GET        /upload-proof-of-authority                                           controllers.ProofOfAuthorityController.showFileUpload()
-GET        /upload-proof-of-authority/file-verification                         controllers.ProofOfAuthorityController.showWaitingForFileVerification
-GET        /upload-proof-of-authority/file-rejected                             controllers.ProofOfAuthorityController.markFileUploadAsRejected()
+GET        /upload-proof-of-authority                                           controllers.ProofOfAuthorityController.showFileUpload(mode: Mode = NormalMode)
+GET        /upload-proof-of-authority/file-verification                         controllers.ProofOfAuthorityController.showWaitingForFileVerification(mode: Mode = NormalMode)
+GET        /upload-proof-of-authority/file-rejected                             controllers.ProofOfAuthorityController.markFileUploadAsRejected(mode: Mode = NormalMode)
 GET        /upload-proof-of-authority/file-verification/:reference/status       controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
 POST       /upload-proof-of-authority/:id/callback-from-upscan                  controllers.ProofOfAuthorityController.callbackFromUpscan(id: String)
 
