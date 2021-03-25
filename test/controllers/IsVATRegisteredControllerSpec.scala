@@ -42,8 +42,6 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val isVatRegisteredRoute = routes.IsVATRegisteredController.onPageLoad(NormalMode).url
 
-  val backLink = routes.ImporterHasEoriController.onPageLoad(NormalMode)
-
   "IsVATRegistered Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -59,7 +57,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -79,7 +77,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(IsVATRegistered.Yes), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(IsVATRegistered.Yes), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -128,7 +126,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

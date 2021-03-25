@@ -44,10 +44,6 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
   private val addressForm = (new AgentImporterAddressFormProvider) ()
   private val selectionForm = (new AddressSelectionFormProvider) ()
 
-  val backLink = routes.AgentNameImporterController.onPageLoad(NormalMode)
-
-  val backLinkAgentAddress = routes.AgentImporterAddressController.onPageLoad(NormalMode)
-
   def onwardRoute: Call = Call("GET", "/national-duty-repayment-center/enter-agent-importer-address")
 
   def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] = {
@@ -70,7 +66,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm, NormalMode, backLink)(request, messages).toString
+          view(postcodeForm, NormalMode)(request, messages).toString
       }
     }
 
@@ -89,7 +85,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode, backLink)(request, messages).toString
+          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode)(request, messages).toString
       }
     }
 
@@ -110,7 +106,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedView = application.injector.instanceOf[AgentImporterAddressView]
 
         contentAsString(result) mustEqual
-          expectedView(boundForm, NormalMode, backLink)(request, messages).toString
+          expectedView(boundForm, NormalMode)(request, messages).toString
       }
     }
 
@@ -168,7 +164,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedView = application.injector.instanceOf[AgentImporterAddressView]
         val boundForm = addressForm.bind(Map.empty[String, String])
         contentAsString(result) mustEqual
-          expectedView(boundForm, NormalMode, backLink)(request, messages).toString
+          expectedView(boundForm, NormalMode)(request, messages).toString
       }
     }
 
@@ -210,7 +206,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         )
 
         contentAsString(result) mustEqual
-          expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode, backLinkAgentAddress)(request, messages).toString
+          expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode)(request, messages).toString
       }
     }
 

@@ -95,55 +95,6 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
     }
   }
 
-  "GET /back-file-upload" should {
-    "show go to Evidence supporting documents page in NormalMode" in {
-      val backLinkUrl = routes.FileUploadController.backLink(NormalMode).url
-
-      val application =
-        appBuilder(userAnswers = Some(emptyUserAnswers))
-          .build()
-
-      val request = FakeRequest(GET, backLinkUrl)
-
-      val result = route(application, request).value
-
-      redirectLocation(result) mustEqual Some(routes.EvidenceSupportingDocsController.onPageLoad().url)
-
-      application.stop()
-    }
-
-    "show go to File uploaded page in Check Mode" in {
-      val backLinkUrl = routes.FileUploadController.backLink(NormalMode).url
-      val fileUploadedState = FileUploaded(
-        FileUploads(files =
-          Seq(
-            FileUpload.Accepted(
-              1,
-              "foo-bar-ref-1",
-              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-              "test.pdf",
-              "application/pdf",
-              Some(SupportingEvidence)
-            )
-          )
-        ),
-        acknowledged = true
-      )
-      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value.copy(fileUploadState = Some(fileUploadedState))
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, backLinkUrl)
-
-      val result = route(application, request).value
-
-      redirectLocation(result) mustEqual Some(routes.EvidenceSupportingDocsController.onPageLoad.url)
-
-      application.stop()
-    }
-  }
-
   "GET /file-uploaded" should {
     "show file uploaded page" in {
       val fileUploadedUrl = routes.FileUploadController.showFileUploaded(NormalMode).url

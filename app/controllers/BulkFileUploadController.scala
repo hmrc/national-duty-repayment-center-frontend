@@ -186,8 +186,7 @@ class BulkFileUploadController @Inject()(
             maybeUploadError,
             successAction = routes.EntryDetailsController.onPageLoad(NormalMode),
             failureAction = routes.BulkFileUploadController.showFileUpload,
-            checkStatusAction = routes.BulkFileUploadController.checkFileVerificationStatus(reference),
-            backLink = getBulkEntryDetails(userAnswers))
+            checkStatusAction = routes.BulkFileUploadController.checkFileVerificationStatus(reference))
         )
     }
   }

@@ -35,7 +35,6 @@ import scala.concurrent.Future
 
 class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -59,7 +58,7 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -79,7 +78,7 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UkRegulationType.values.head), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(UkRegulationType.values.head), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -128,7 +127,7 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

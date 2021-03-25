@@ -46,17 +46,10 @@ class AmendCheckYourAnswersController @Inject()(
                                                  view: AmendCheckYourAnswersView
                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(FurtherInformationPage).isEmpty match {
-      case true => routes.AmendCaseSendInformationController.showFileUploaded(mode)
-      case _ => routes.FurtherInformationController.onPageLoad(mode)
-    }
-  }
-
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-      Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, getBackLink(NormalMode, request.userAnswers)))
+      Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {

@@ -27,7 +27,7 @@
 )
 
 
-@(form: Form[RepaymentAmounts], mode: Mode, backLink: Call,  isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[RepaymentAmounts], mode: Mode,  isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
 @updateGlobalErrorsTo(field: String) = @{
     form.copy(errors = form.errors.map(err => err.copy(key = if(err.key.isEmpty) field else err.key)))
@@ -41,8 +41,7 @@
 }
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("vatPaid.title"))}"),
-    backLink = Some(backLink.url)
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("vatPaid.title"))}")
 ) {
 
     @forms.formWithCSRF(action = VATPaidController.onSubmit(mode), args = 'novalidate -> "novalidate") {

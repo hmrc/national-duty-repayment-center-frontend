@@ -71,12 +71,10 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[EntryDetailsView]
 
-      val backLink = routes.BulkFileUploadController.showFileUpload()
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -92,12 +90,10 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.BulkFileUploadController.showFileUpload()
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -152,12 +148,10 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.BulkFileUploadController.showFileUpload()
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

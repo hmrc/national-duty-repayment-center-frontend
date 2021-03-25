@@ -285,55 +285,6 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
     }
   }
 
-  "back from file upload page" should {
-    "GET /change-amend-case-send-information/back-file-upload should go to AmendCaseResponseType page in NormalMode" in {
-      val backLinkUrl = routes.AmendCaseSendInformationController.backLink(NormalMode).url
-
-      val application =
-        appBuilder(userAnswers = Some(emptyUserAnswers))
-          .build()
-
-      val request = FakeRequest(GET, backLinkUrl)
-
-      val result = route(application, request).value
-
-      redirectLocation(result) mustEqual Some(routes.AmendCaseResponseTypeController.onPageLoad(NormalMode).url)
-
-      application.stop()
-    }
-
-    "GET /change-amend-case-send-information/back-file-upload show go to File uploaded page in Check Mode" in {
-      val backLinkUrl = routes.AmendCaseSendInformationController.backLink(CheckMode).url
-      val fileUploadedState = FileUploaded(
-        FileUploads(files =
-          Seq(
-            FileUpload.Accepted(
-              1,
-              "foo-bar-ref-1",
-              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-              "test.pdf",
-              "application/pdf",
-              Some(SupportingEvidence)
-            )
-          )
-        ),
-        acknowledged = true
-      )
-      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value.copy(fileUploadState = Some(fileUploadedState))
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, backLinkUrl)
-
-      val result = route(application, request).value
-
-      redirectLocation(result) mustEqual Some(routes.AmendCaseSendInformationController.showFileUploaded(CheckMode).url)
-
-      application.stop()
-    }
-  }
-
   "In CheckMode" should {
     "go to Further Information page when both Documents and Further Information selected" in {
       lazy val uploadAnotherFile = routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice(CheckMode).url

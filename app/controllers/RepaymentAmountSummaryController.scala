@@ -45,13 +45,6 @@ class RepaymentAmountSummaryController @Inject()(
         Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)
       ).flatten
 
-      val backLink = request.userAnswers.get(ClaimRepaymentTypePage) match {
-        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
-        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) => routes.VATPaidController.onPageLoad(NormalMode)
-        case _ if request.userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(NormalMode)
-        case _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
-      }
-
-      Ok(view(sections, backLink))
+      Ok(view(sections))
   }
 }

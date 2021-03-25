@@ -43,8 +43,6 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new CustomsRegulationTypeFormProvider()
   val form = formProvider()
 
-  val backLink = routes.NumberOfEntriesTypeController.onPageLoad(NormalMode);
-
   "CustomsRegulationType Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -60,7 +58,7 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -80,7 +78,7 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(CustomsRegulationType.values.head), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(CustomsRegulationType.values.head), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -129,7 +127,7 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
