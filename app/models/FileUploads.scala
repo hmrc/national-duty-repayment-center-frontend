@@ -90,14 +90,6 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
                        fileType: Option[FileType] = None
                      ) extends FileUpload
 
-  /** Status when the file has successfully arrived to AWS S3 for verification. */
-  case class Posted(
-
-                     orderNumber: Int,
-                     reference: String,
-                     fileType: Option[FileType] = None
-  ) extends FileUpload
-
   /** Status when the file has been positively verified and is ready for further actions. */
   case class Accepted(
 
@@ -136,7 +128,6 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
     Set(
       Case[Initiated](Json.format[Initiated]),
       Case[Rejected](Json.format[Rejected]),
-      Case[Posted](Json.format[Posted]),
       Case[Accepted](Json.format[Accepted]),
       Case[Failed](Json.format[Failed]),
       Case[Duplicate](Json.format[Duplicate])

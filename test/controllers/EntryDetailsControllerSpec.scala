@@ -16,23 +16,22 @@
 
 package controllers
 
-import java.time.{LocalDate, ZoneOffset}
 import base.SpecBase
 import forms.EntryDetailsFormProvider
-import models.{EPU, Entries, EntryDetails, NormalMode, NumberOfEntriesType, UserAnswers}
+import models.{Entries, EntryDetails, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{EntryDetailsPage, NumberOfEntriesTypePage}
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Call}
+import play.api.libs.json.Json
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.EntryDetailsView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
@@ -102,15 +101,12 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val dateAnswer: LocalDate = LocalDate.parse("2020-01-01")
 
-      val mockSessionRepository = mock[SessionRepository]
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
 

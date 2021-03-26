@@ -22,7 +22,7 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiat
 import controllers.actions._
 import models.FileType.SupportingEvidence
 import models.requests.UploadRequest
-import models.{AgentImporterHasEORI, AmendCaseResponseType, CheckMode, FileUpload, FileUploads, NormalMode, UpscanNotification, UserAnswers}
+import models.{AgentImporterHasEORI, AmendCaseResponseType, CheckMode, FileUpload, FileUploads, NormalMode, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.Matchers.{any, anyObject}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -34,7 +34,6 @@ import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
-import repositories.SessionRepository
 import services.FileUploaded
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -43,44 +42,14 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar {
   val id = "1"
-  val uscanResponse =
-    UpscanInitiateResponse(
-      reference = "foo-bar-ref",
-      uploadRequest =
-        UploadRequest(href = "https://s3.bucket", fields = Map("callbackUrl" -> "https://foo.bar/callback"))
-    )
-
-  def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] = {
-    FakeRequest(method, path)
-      .asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
-  }
-  val upscanMock = mock[UpscanInitiateConnector]
-  val mockSessionRepository = mock[SessionRepository]
-
-  def appBuilder(userAnswers: Option[UserAnswers]): GuiceApplicationBuilder = {
-    new GuiceApplicationBuilder()
-      .configure(
-        "metrics.enabled" -> false,
-        "auditing.enabled" -> false,
-        "metrics.jvm" -> false
-      ).overrides(
-      bind[IdentifierAction].to[FakeIdentifierAction],
-      bind[SessionRepository].toInstance(mockSessionRepository),
-      bind[UpscanInitiateConnector].toInstance(upscanMock),
-      bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-      bind[Metrics].to[MetricsImpl]
-    )
-  }
-  when(upscanMock.initiate(any[UpscanInitiateRequest])(any[HeaderCarrier], any[ExecutionContext]))
-    .thenReturn(Future.successful(uscanResponse))
 
   "GET /file-upload" should {
     "show the upload first document page" in {
       val fileUploadUrl = routes.AmendCaseSendInformationController.showFileUpload(NormalMode).url
-      val application = appBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
-        when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(emptyUserAnswers))
-        when(mockSessionRepository.set(anyObject())) thenReturn Future.successful(true)
+        when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(None, Some(emptyUserAnswers))))
+        when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
         val request = buildRequest(GET, fileUploadUrl)
         val result = route(application, request).value
         status(result) mustEqual 200
@@ -114,11 +83,11 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadedState))
 
-      val application = appBuilder(userAnswers = Some(userAnswers))
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
         .build()
       running(application) {
-        when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
-        when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
+        when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(None, Some(userAnswers))))
+        when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
         val request = buildRequest(GET, fileUploadedUrl)
         val result = route(application, request).value
@@ -152,10 +121,10 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadedState))
 
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
-      when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
+      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers))))
+      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
       val request = FakeRequest(POST, uploadAnotherFile)
         .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
@@ -191,11 +160,10 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadedState))
 
+      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers))))
+      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
-      when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
-      when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
-
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(POST, uploadAnotherFile)
         .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
@@ -231,13 +199,13 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadedState))
 
-      when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
-      when(mockSessionRepository.set(anyObject())) thenReturn Future.successful(true)
+      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers))))
+      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
       val request = FakeRequest(POST, uploadAnotherFile)
         .withFormUrlEncodedBody(("uploadAnotherFile", "yes"))
 
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val result = route(application, request).value
 
@@ -269,10 +237,10 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadedState))
 
-      when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
-      when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
+      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(None, Some(userAnswers))))
+      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(POST, uploadAnotherFile)
         .withFormUrlEncodedBody(("uploadAnotherFile", ""))
@@ -309,11 +277,10 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadedState))
 
+      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers))))
+      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
-      when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
-      when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
-
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(POST, uploadAnotherFile)
         .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
@@ -348,11 +315,10 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadedState))
 
+      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers))))
+      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
-      when(mockSessionRepository.get(userAnswersId)) thenReturn Future.successful(Some(userAnswers))
-      when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
-
-      val application = appBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(POST, uploadAnotherFile)
         .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
@@ -393,7 +359,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
       val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, amendCaseResponseType).success.value.copy(fileUploadState = Some(fileUploadState))
-      val application = appBuilder(userAnswers = Some(userAnswers))
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
         .build()
 
       running(application) {

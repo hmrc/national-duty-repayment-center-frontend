@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import connectors.AddressLookupConnector
 import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
-import models.responses.{AddressLookupResponseModel, Location, LookedUpAddress, LookedUpAddressWrapper, Uprn}
+import models.responses._
 import models.{ClaimantType, NormalMode, PostcodeLookup, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
@@ -27,11 +27,8 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimantTypePage, ImporterPostcodePage}
 import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, Call}
-import play.api.test.CSRFTokenHelper._
-import play.api.test.FakeRequest
+import play.api.mvc.Call
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.{ImporterAddressConfirmationView, ImporterAddressView}
 
@@ -45,12 +42,6 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
   private val selectionForm = (new AddressSelectionFormProvider) ()
 
   def onwardRoute: Call = Call("GET", "/national-duty-repayment-center/enter-importer-address")
-
-  def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] = {
-    FakeRequest(method, path)
-      .withCSRFToken
-      .asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
-  }
 
   "ImporterAddressController" must {
     "return OK and the correct view for a GET on the postcode page" in {
@@ -112,15 +103,12 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to the next page when an address has been selected" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
 
@@ -139,15 +127,12 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       "return a Bad Request and errors on the manual address entry page when invalid address data is submitted for selection" in {
 
-        val mockSessionRepository = mock[SessionRepository]
-
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers))
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-              bind[SessionRepository].toInstance(mockSessionRepository)
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
             )
             .build()
 
@@ -170,7 +155,6 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       "return a Bad Request and errors when nothing is selected" in {
         val addressLookupConnector = mock[AddressLookupConnector]
-        val mockSessionRepository = mock[SessionRepository]
 
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
         val addresses = Seq(
@@ -184,7 +168,6 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
           applicationBuilder(userAnswers = Some(emptyUserAnswers))
             .overrides(
               bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-              bind[SessionRepository].toInstance(mockSessionRepository),
               bind[AddressLookupConnector].toInstance(addressLookupConnector)
             )
             .build()
@@ -274,7 +257,6 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
     "return header as 'Select their' when user is Representative" in {
       val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, ClaimantType.Representative).success.value
       val addressLookupConnector = mock[AddressLookupConnector]
-      val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       val addresses = Seq(
@@ -288,7 +270,6 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository),
             bind[AddressLookupConnector].toInstance(addressLookupConnector)
           )
           .build()
@@ -316,7 +297,6 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
     "return header as 'Select your address' when user is Importer" in {
       val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, ClaimantType.Importer).success.value
       val addressLookupConnector = mock[AddressLookupConnector]
-      val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       val addresses = Seq(
@@ -330,7 +310,6 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository),
             bind[AddressLookupConnector].toInstance(addressLookupConnector)
           )
           .build()

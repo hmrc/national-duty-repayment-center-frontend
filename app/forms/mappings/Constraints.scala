@@ -98,7 +98,7 @@ trait Constraints {
 
   protected def startsWith(errorKey: String): Constraint[String] =
     Constraint {
-      case str if str.toUpperCase.startsWith("NDRC")  =>
+      case str if str.trim.toUpperCase.startsWith("NDRC")  =>
         Valid
       case _ =>
         Invalid(errorKey)

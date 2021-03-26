@@ -54,7 +54,6 @@ object FileUploaded {
 
 
 trait FileUploadService {
-
   type UpscanInitiateApi = UpscanInitiateRequest => Future[UpscanInitiateResponse]
 
   final def fileUploadOrUploaded(
@@ -288,7 +287,7 @@ trait FileUploadService {
     }
 
 
-  def fileUploadWasRejected(error: S3UploadError)(state: FileUploadState): UploadFile =
+  def fileUploadWasRejected(error: S3UploadError)(state: FileUploadState): Future[FileUploadState] = Future.successful {
     state match {
       case current@UploadFile(
       reference,
@@ -303,6 +302,7 @@ trait FileUploadService {
         })
         current.copy(fileUploads = updatedFileUploads, maybeUploadError = Some(FileTransmissionFailed(error)))
     }
+  }
 
 
   def filesNotInStateInitiated(files: Seq[FileUpload]): Seq[FileUpload] = {

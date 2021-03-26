@@ -42,7 +42,6 @@ object FileVerificationStatus {
     fileUpload match {
       case f: FileUpload.Accepted  => FileVerificationStatus("ACCEPTED")
       case f: FileUpload.Failed    => FileVerificationStatus("FAILED")
-      case f: FileUpload.Posted    => FileVerificationStatus("WAITING")
       case f: FileUpload.Rejected  => FileVerificationStatus("REJECTED")
       case f: FileUpload.Initiated => FileVerificationStatus("NOT_UPLOADED")
       case f: FileUpload.Duplicate => FileVerificationStatus("DUPLICATE")
