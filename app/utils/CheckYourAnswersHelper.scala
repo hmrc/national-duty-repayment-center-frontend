@@ -302,7 +302,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     }
   }
 
-  def declarantReferenceNumber: AnswerRow = userAnswers.get(DeclarantReferenceNumberPage) map {
+  def declarantReferenceNumber: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
@@ -315,7 +315,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceType).get match  {
         case Yes => Seq(AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-          HtmlFormat.escape(Yes.toString), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)) ++
+          HtmlFormat.escape(Yes.toString), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)) ,
           declarantReferenceNumber
         )
         case No =>Seq(AnswerRow(
@@ -426,7 +426,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       Seq.empty ++
       (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
       case NumberOfEntriesType.Multiple => Seq(bulkFileUpload.get)
-      case NumberOfEntriesType.Single => Seq.empty
+      case NumberOfEntriesType.Single
+      => Seq.empty
       }) ++
       Seq(entryDetailsEPU.get,
         entryDetailsNumber.get,
@@ -495,8 +496,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case true => Seq.empty
           case _ => Seq(emailAddress.get)
         }) ++
-       Seq(declarantReferenceNumberQuestion.get,
-         declarantReferenceNumber.get)
+       declarantReferenceNumberQuestion
     )
   }
 
