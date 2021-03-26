@@ -35,7 +35,6 @@ import scala.concurrent.Future
 
 class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.EmailAddressController.onPageLoad(NormalMode)
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -56,6 +55,8 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[RepaymentTypeView]
 
+      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
@@ -75,6 +76,8 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[RepaymentTypeView]
 
       val result = route(application, request).value
+
+      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -124,6 +127,8 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[RepaymentTypeView]
 
       val result = route(application, request).value
+
+      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 

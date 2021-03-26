@@ -109,13 +109,15 @@ object CreateClaimRequest {
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
       val email = getEmailAddress(userAnswers)
+      val declarantReference = userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber
       UserDetails(
         "false",
         eori,
         name,
         address,
         Some(telephone),
-        email
+        email,
+        declarantReference
       )
     }
 
@@ -167,13 +169,15 @@ object CreateClaimRequest {
             case _ => getIsImporterVatRegistered(userAnswers)
           }
       }
+      val declarantReference = userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber
       UserDetails(
         isVATRegistered,
         eori,
         name,
         address,
         telephone,
-        email
+        email,
+        declarantReference
       )
     }
 

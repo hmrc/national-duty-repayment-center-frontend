@@ -24,7 +24,8 @@ final case class UserDetails(
                              Name: UserName,
                              Address: Address,
                              TelephoneNumber: Option[String],
-                             EmailAddress: Option[String]
+                             EmailAddress: Option[String],
+                             DeclarantReferenceNumber: Option[String]
                            )
 
 object UserDetails{

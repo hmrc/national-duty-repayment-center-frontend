@@ -107,7 +107,9 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     Name = UserName("Joe", "Bloggs"),
     Address = address,
     TelephoneNumber = Some("12345678"),
-    EmailAddress = Some("example@example.com")
+    EmailAddress = Some("example@example.com"),
+    DeclarantReferenceNumber = Some("1234567")
+
   )
 
   val bankDetails = AllBankDetails(

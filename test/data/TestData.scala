@@ -167,7 +167,8 @@ object TestData {
     testAgentName,
     testAgentManualAddress,
     Some(testPhoneNumber),
-    Some(testEmailAddress)
+    Some(testEmailAddress),
+    Some("1234567")
   )
 
   val testImporterDetailsRepresentativeJourney: UserDetails = UserDetails(
@@ -176,7 +177,8 @@ object TestData {
     testImporterName,
     testImporterManualAddress,
     None,
-    None
+    None,
+    Some("1234567")
   )
 
   val testImporterDetails: UserDetails = UserDetails(
@@ -185,7 +187,8 @@ object TestData {
     testImporterName,
     testImporterManualAddress,
     Some(testPhoneNumber),
-    Some(testEmailAddress)
+    Some(testEmailAddress),
+    Some("1234567")
   )
 
   val testDutyTypeTaxDetails: DutyTypeTaxDetails = DutyTypeTaxDetails(

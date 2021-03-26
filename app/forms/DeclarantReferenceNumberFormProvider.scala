@@ -25,13 +25,17 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
 class DeclarantReferenceNumberFormProvider @Inject() extends Mappings {
 
+  val minLength = 1
+  val maxLength = 50
+
   def apply(): Form[DeclarantReferenceNumber] =
     Form(mapping(
       "value" -> enumerable[DeclarantReferenceType]("declarantReferenceNumber.error.required"),
       "declarantReferenceNumber" ->
         mandatoryIfEqual("value","01",
-          decimal("declarantReferenceNumber.error.required", "declarantReferenceNumber.error.required")
+          decimal("declarantReferenceNumber.error.invalid", "declarantReferenceNumber.error.invalid")
             .verifying(
-              regexp(Validation.numberOfEntries, "declarantReferenceNumber.error.required")))
+              minLength(minLength, "declarantReferenceNumber.error.invalid"),
+              maxLength(maxLength, "declarantReferenceNumber.error.invalid")))
     )(DeclarantReferenceNumber.apply)(en => Some(en.declarantReferenceType, en.declarantReferenceNumber)))
 }

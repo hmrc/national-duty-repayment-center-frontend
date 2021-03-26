@@ -36,8 +36,6 @@ import scala.concurrent.Future
 
 class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
-
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new BankDetailsFormProvider()
@@ -68,6 +66,8 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[BankDetailsView]
 
+      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
+
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
@@ -85,6 +85,8 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[BankDetailsView]
 
       val result = route(application, request).value
+
+      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
@@ -133,6 +135,8 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[BankDetailsView]
 
       val result = route(application, request).value
+
+      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 

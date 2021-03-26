@@ -47,7 +47,7 @@ class WhomToPayController @Inject()(
   private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
 
     userAnswers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match{
-      case true  => routes.EmailAddressController.onPageLoad(mode)
+      case true  => routes.DeclarantReferenceNumberController.onPageLoad(mode)
       case false => routes.RepaymentTypeController.onPageLoad(mode)
     }
 

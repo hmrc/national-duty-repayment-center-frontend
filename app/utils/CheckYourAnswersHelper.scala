@@ -25,8 +25,9 @@ import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import viewmodels.{AnswerRow, AnswerSection}
-
 import java.time.format.DateTimeFormatter
+
+import models.DeclarantReferenceType.{No, Yes}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -303,23 +304,23 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def declarantReferenceNumber: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(x.declarantReferenceNumber.getOrElse(""))),
+        HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
+        HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get),
+
         Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
       )
   }
+    def declarantReferenceNumberQuestion: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
+      x =>
+        AnswerRow(
+          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
+          HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get)
 
- /* def addDeclarantReferenceNumber: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
-    x => {
-      AnswerRow(
-        HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel")),
-        HtmlFormat.escape(x match
-        { case x if x.length > 0 => "Yes"
-          case _ => "No"}),
-        Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
-      )
+          //need to return yes/no
+          ,
+          Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
+        )
     }
-  }*/
 
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
     x =>
@@ -486,12 +487,14 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def getContactDetailsAnswerSection: AnswerSection = {
     AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
       Seq (phoneNumber.get,
-        contactByEmail.get,
-        declarantReferenceNumber.get) ++
+        contactByEmail.get
+        ) ++
         (userAnswers.get(EmailAddressPage).get.isEmpty match {
           case true => Seq.empty
           case _ => Seq(emailAddress.get)
-        })
+        }) ++
+       Seq(declarantReferenceNumberQuestion.get,
+         declarantReferenceNumber.get)
     )
   }
 
