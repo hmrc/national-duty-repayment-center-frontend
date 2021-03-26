@@ -55,12 +55,10 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[ClaimRepaymentTypeView]
 
-      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -77,12 +75,10 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ClaimRepaymentType.values.toSet), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(ClaimRepaymentType.values.toSet), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -128,12 +124,10 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

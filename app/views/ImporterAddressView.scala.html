@@ -24,14 +24,13 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, isImporterJourney: Boolean, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
                                                             case true => messages("importerAddress.title")
                                                             case _ => messages("agent.importerAddress.title")
-                                                            })}"),
-    backLink = Some(backLink.url)
+                                                            })}")
 ) {
 
     @forms.formWithCSRF(action = ImporterAddressController.postcodeSubmit()) {

@@ -54,12 +54,10 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[NumberOfEntriesTypeView]
 
-      val backLink = routes.ClaimantTypeController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -76,12 +74,10 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ClaimantTypeController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Entries(NumberOfEntriesType.Multiple,Some("2"))), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(Entries(NumberOfEntriesType.Multiple,Some("2"))), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -127,12 +123,10 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ClaimantTypeController.onPageLoad(NormalMode)
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

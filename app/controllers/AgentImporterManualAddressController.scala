@@ -45,10 +45,6 @@ class AgentImporterManualAddressController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.AgentImporterAddressController.onPageLoad(mode)
-  }
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -58,7 +54,7 @@ class AgentImporterManualAddressController @Inject()(
       }
 
       Ok(view(preparedForm, mode,
-        Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), getBackLink(mode)))
+        Seq(SelectItem(text = "United Kingdom", value = Some("GB")))))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -67,7 +63,7 @@ class AgentImporterManualAddressController @Inject()(
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode,
-            Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), getBackLink(mode)))),
+            Seq(SelectItem(text = "United Kingdom", value = Some("GB")))))),
 
         value =>
           for {

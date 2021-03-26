@@ -183,8 +183,7 @@ class ProofOfAuthorityController @Inject()(
             maybeUploadError,
             successAction = routes.BankDetailsController.onPageLoad(NormalMode),
             failureAction = routes.ProofOfAuthorityController.showFileUpload,
-            checkStatusAction = routes.ProofOfAuthorityController.checkFileVerificationStatus(reference),
-            backLink = routes.IndirectRepresentativeController.onPageLoad(NormalMode))
+            checkStatusAction = routes.ProofOfAuthorityController.checkFileVerificationStatus(reference))
         )
     }
   }

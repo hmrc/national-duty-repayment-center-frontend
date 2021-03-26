@@ -131,7 +131,6 @@ class AmendCaseSendInformationController @Inject()(
         s.get.fileUploads,
         controller.submitUploadAnotherFileChoice(mode),
         controller.removeFileUploadByReference,
-        if (mode == NormalMode) controller.showFileUpload(mode) else routes.AmendCheckYourAnswersController.onPageLoad(),
         mode
       ))
     }
@@ -145,7 +144,6 @@ class AmendCaseSendInformationController @Inject()(
         request.userAnswers.fileUploadState.get.fileUploads,
         controller.submitUploadAnotherFileChoice(mode),
         controller.removeFileUploadByReference,
-        controller.showFileUpload(mode),
         mode
       ))),
       value =>
@@ -196,19 +194,6 @@ class AmendCaseSendInformationController @Inject()(
           }
         }
     )
-  }
-
-  def backLink(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    if (mode == NormalMode)
-      Future.successful(Redirect(routes.AmendCaseResponseTypeController.onPageLoad(mode)))
-    else {
-      for {
-        ss <- sessionState(request.internalId)
-        fs <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
-        res <- updateSession(FileUploaded(fs.get.fileUploads.copy(files = filesNotInStateInitiated(fs.get.fileUploads.files))), ss.userAnswers)
-        if (res)
-      } yield Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode))
-    }
   }
 
   // POST /ndrc/:id/callback-from-upscan
@@ -282,8 +267,7 @@ class AmendCaseSendInformationController @Inject()(
             maybeUploadError,
             successAction = controller.showFileUploaded(mode),
             failureAction = controller.showFileUpload(mode),
-            checkStatusAction = controller.checkFileVerificationStatus(reference),
-            backLink = controller.backLink(mode))
+            checkStatusAction = controller.checkFileVerificationStatus(reference))
         )
       }
 
@@ -293,7 +277,6 @@ class AmendCaseSendInformationController @Inject()(
           fileUploads,
           controller.submitUploadAnotherFileChoice(mode),
           controller.removeFileUploadByReference,
-          controller.showFileUpload(mode),
           mode
         ))
     }

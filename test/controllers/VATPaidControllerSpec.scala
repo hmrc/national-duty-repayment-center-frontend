@@ -40,7 +40,6 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new VATPaidFormProvider()
   val form = formProvider()
-  val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
 
   lazy val vATPaidRoute = routes.VATPaidController.onPageLoad(NormalMode).url
 
@@ -69,12 +68,10 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[VATPaidView]
 
-      val vatBackLink = routes.CustomsDutyPaidController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, vatBackLink, true)(fakeRequest, messages).toString
+        view(form, NormalMode, true)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -93,12 +90,10 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val vatBackLink = routes.CustomsDutyPaidController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(RepaymentAmounts("100.00", "50.00")), NormalMode, vatBackLink, false)(fakeRequest, messages).toString
+        view(form.fill(RepaymentAmounts("100.00", "50.00")), NormalMode, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -149,12 +144,10 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val vatBackLink = routes.CustomsDutyPaidController.onPageLoad(NormalMode)
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, vatBackLink, false)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, false)(fakeRequest, messages).toString
 
       application.stop()
     }

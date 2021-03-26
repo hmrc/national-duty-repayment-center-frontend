@@ -135,7 +135,6 @@ class FileUploadController @Inject()(
         s.get.fileUploads,
         controller.submitUploadAnotherFileChoice(mode),
         controller.removeFileUploadByReference,
-        routes.FileUploadController.showFileUpload(mode),
         mode
       ))
     }
@@ -149,7 +148,6 @@ class FileUploadController @Inject()(
         request.userAnswers.fileUploadState.get.fileUploads,
         controller.submitUploadAnotherFileChoice(mode),
         controller.removeFileUploadByReference,
-        controller.showFileUpload(mode),
         mode
       ))),
       value =>
@@ -256,18 +254,6 @@ class FileUploadController @Inject()(
     } yield (SessionState(u.flatMap(_.fileUploadState), u))
   }
 
-  def backLink(mode: Mode) : Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    if(mode == NormalMode)
-      Future.successful(Redirect(routes.EvidenceSupportingDocsController.onPageLoad()))
-    else {
-      for {
-        ss <- sessionState(request.internalId)
-        fs <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
-        res <- updateSession(FileUploaded(fs.get.fileUploads.copy(files = fs.get.fileUploads.files.filterNot(_.isInstanceOf[Initiated]))), ss.userAnswers)
-        if(res)
-      } yield Redirect(routes.FileUploadController.showFileUploaded(mode))
-    }
-  }
 
   final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None, mode: Mode)(implicit request: Request[_]): Result = {
     fileUploadState match {
@@ -279,8 +265,7 @@ class FileUploadController @Inject()(
             maybeUploadError,
             successAction = controller.showFileUploaded(mode),
             failureAction = controller.showFileUpload(mode),
-            checkStatusAction = controller.checkFileVerificationStatus(reference),
-            backLink = routes.EvidenceSupportingDocsController.onPageLoad())
+            checkStatusAction = controller.checkFileVerificationStatus(reference))
         )
       }
 
@@ -290,7 +275,6 @@ class FileUploadController @Inject()(
           fileUploads,
           controller.submitUploadAnotherFileChoice(mode),
           controller.removeFileUploadByReference,
-          routes.FileUploadController.showFileUpload(mode),
           mode
         ))
     }

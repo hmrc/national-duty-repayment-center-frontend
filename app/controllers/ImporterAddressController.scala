@@ -57,14 +57,6 @@ class ImporterAddressController @Inject()(
 
   private val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.ImporterNameController.onPageLoad(mode)
-  }
-
-  private def getImporterAdddressBackLink(mode: Mode): Call = {
-    routes.ImporterAddressController.onPageLoad(mode)
-  }
-
   private val postcodeForm = postcodeFormProvider()
   private val selectionForm = addressSelectionFormProvider()
   val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
@@ -78,7 +70,7 @@ class ImporterAddressController @Inject()(
           postcodeForm.fill(PostcodeLookup(value))
       }
 
-      Future.successful(Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), getBackLink(mode))))
+      Future.successful(Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers))))
   }
 
   def postcodeSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -86,7 +78,7 @@ class ImporterAddressController @Inject()(
     implicit request =>
       postcodeForm.bindFromRequest.fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
         lookup => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterPostcodePage, lookup.postcode))
@@ -96,22 +88,15 @@ class ImporterAddressController @Inject()(
         }
       )
   }
-
-  def postcodeBackLinkLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-
-    implicit request =>
-      doPostcodeLookup(PostcodeLookup(request.userAnswers.get(ImporterAddressPage).get.PostalCode), mode, selectionForm, isImporterJourney(request.userAnswers))
-  }
-
   private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject], isImporterJourney: Boolean)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
 
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
-        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney, getBackLink(mode)))
+        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney))
 
       case Right(candidates) if candidates.noOfHits == 0 =>
-        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney, getBackLink(mode)))
+        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney))
 
       case Right(candidates) =>
         val selectionItems = sorter.sort(candidates.candidateAddresses)
@@ -126,9 +111,9 @@ class ImporterAddressController @Inject()(
           )
 
         if (form.hasErrors) {
-          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney, getImporterAdddressBackLink(mode)))
+          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney))
         } else {
-          Ok(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney, getImporterAdddressBackLink(mode)))
+          Ok(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney))
         }
     }
   }
@@ -152,7 +137,7 @@ class ImporterAddressController @Inject()(
           js =>
             form.bind(js).fold(
               formWithErrors =>
-                Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))),
+                Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
               address =>
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, address))
@@ -177,7 +162,7 @@ class ImporterAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -185,7 +170,7 @@ class ImporterAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
 
         value =>
           for {

@@ -43,8 +43,6 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val importerHasEoriRoute = routes.ImporterHasEoriController.onPageLoad(NormalMode).url
 
-  val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
-
   "ImporterHasEori Controller" must {
 
     "return OK and the correct view for a GET" in {
@@ -59,12 +57,10 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[ImporterHasEoriView]
 
-      val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -81,12 +77,11 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
 
       status(result) mustEqual OK
 
-//      contentAsString(result) mustEqual
-//        view(form.fill(true), NormalMode, backLink)(fakeRequest, messages).toString
+      contentAsString(result) mustEqual
+        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -134,12 +129,10 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
