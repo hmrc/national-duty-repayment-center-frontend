@@ -302,23 +302,25 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     }
   }
 
-  def declarantReferenceNumber: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
-        HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get),
+  def declarantReferenceNumber: Option[AnswerRow] = {
+    userAnswers.get(DeclarantReferenceNumberPage) map {
+      x =>
+        AnswerRow(
+          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
+          HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get),
 
-        Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
-      )
+          Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
+        )
+    }
   }
     def declarantReferenceNumberQuestion: Seq[AnswerRow] = {
       userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceType).get match  {
-        case Yes => Seq(AnswerRow(
+        case Yes => Seq(Some(AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-          HtmlFormat.escape(Yes.toString), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)) ,
+          HtmlFormat.escape(Yes.toString), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url))) ,
           declarantReferenceNumber
-        )
-        case No =>Seq(AnswerRow(
+        ).flatten
+        case No => Seq(AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
           HtmlFormat.escape(No.toString), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)))
       }
