@@ -154,9 +154,22 @@ entryDetails.entryNumber.error.required = Enter the entry number
 entryDetails.entryNumber.error.valid = Enter the entry number in the correct format
 entryDetails.entryDate.heading = Entry date
 entryDetails.entryDate.hint = For example, 25 3 2019
-entryDetails.claimEntryDate.error.required.all = Enter the entry date
-entryDetails.claimEntryDate.error.required = Enter the entry date in the correct format
+
+entryDetails.claimEntryDate.error.required = Enter the entry date
 entryDetails.claimEntryDate.error.invalid = Enter the entry date in the correct format
+entryDetails.claimEntryDate.error.invalid_future = The entry date must be today or in the past
+
+error.date.day_blank = Enter the day in the correct format
+error.date.day_invalid = Enter the day in the correct format
+error.date.month_blank = Enter the month in the correct format
+error.date.month_invalid = Enter the month in the correct format
+error.date.year_blank = Enter the year in the correct format
+error.date.year_invalid = Enter the year in the correct format
+
+error.date.all = Enter the day, month and year in the correct format
+error.date.day_month = Enter the day and month in the correct format
+error.date.day_year = Enter the day and year in the correct format
+error.date.month_year = Enter the month and year in the correct format
 
 entryDetails.checkYourAnswersLabel = Entry information
 entryDetails.epu.checkYourAnswersLabel = EPU number
