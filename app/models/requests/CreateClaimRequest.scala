@@ -75,6 +75,7 @@ object CreateClaimRequest {
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage)
       payeeIndicator <- getPayeeIndicator(userAnswers)
       paymentMethod <- getPaymentMethod(userAnswers)
+      declarantReNumber <- userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceNumber)
     } yield ClaimDetails(FormType("01"),
       customRegulationType,
       claimedUnderArticle,
@@ -89,7 +90,7 @@ object CreateClaimRequest {
       LocalDate.now(),
       payeeIndicator,
       paymentMethod,
-      "NA"
+      declarantReNumber
     )
 
     def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(AgentImporterAddressPage) match {
@@ -109,15 +110,13 @@ object CreateClaimRequest {
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
       val email = getEmailAddress(userAnswers)
-      val declarantReference = userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber
       UserDetails(
         "false",
         eori,
         name,
         address,
         Some(telephone),
-        email,
-        declarantReference
+        email
       )
     }
 
@@ -169,15 +168,13 @@ object CreateClaimRequest {
             case _ => getIsImporterVatRegistered(userAnswers)
           }
       }
-      val declarantReference = userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber
       UserDetails(
         isVATRegistered,
         eori,
         name,
         address,
         telephone,
-        email,
-        declarantReference
+        email
       )
     }
 

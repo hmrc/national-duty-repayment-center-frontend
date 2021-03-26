@@ -301,25 +301,28 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     }
   }
 
-  def declarantReferenceNumber: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
-        HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get),
-
-        Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
-      )
-  }
-    def declarantReferenceNumberQuestion: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
+  def declarantReferenceNumber: Option[AnswerRow] = {
+    userAnswers.get(DeclarantReferenceNumberPage) map {
       x =>
         AnswerRow(
-          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-          HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get)
+          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
+          HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get),
 
-          //need to return yes/no
-          ,
           Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
         )
+    }
+  }
+    def declarantReferenceNumberQuestion: Seq[AnswerRow] = {
+      userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceType).get match  {
+        case Yes => Seq(Some(AnswerRow(
+          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
+          HtmlFormat.escape(changeToYesNo(Yes.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url))) ,
+          declarantReferenceNumber
+        ).flatten
+        case No => Seq(AnswerRow(
+          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
+          HtmlFormat.escape(changeToYesNo(No.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)))
+      }
     }
 
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
@@ -424,7 +427,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       Seq.empty ++
       (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
       case NumberOfEntriesType.Multiple => Seq(bulkFileUpload.get)
-      case NumberOfEntriesType.Single => Seq.empty
+      case NumberOfEntriesType.Single
+      => Seq.empty
       }) ++
       Seq(entryDetailsEPU.get,
         entryDetailsNumber.get,
@@ -493,8 +497,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case true => Seq.empty
           case _ => Seq(emailAddress.get)
         }) ++
-       Seq(declarantReferenceNumberQuestion.get,
-         declarantReferenceNumber.get)
+       declarantReferenceNumberQuestion
     )
   }
 
@@ -727,6 +730,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   implicit class Improvements(s: Double) {
     def format2d = "%.2f".format(s)
+  }
+
+ private def changeToYesNo(string: String): String = {
+    string match {
+      case "01" => "Yes"
+      case "02" => "No"
+    }
   }
 
 }

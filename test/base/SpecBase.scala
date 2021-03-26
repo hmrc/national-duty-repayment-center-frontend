@@ -90,7 +90,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     ClaimDate = LocalDate.of(2020, 8, 5),
     PayeeIndicator = WhomToPay.Importer,
     PaymentMethod = RepaymentType.BACS,
-    DeclarantRefNumber = "NA"
+    DeclarantRefNumber = Some("P34567")
   )
 
   val address = Address(AddressLine1 = "line 1",
@@ -107,9 +107,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     Name = UserName("Joe", "Bloggs"),
     Address = address,
     TelephoneNumber = Some("12345678"),
-    EmailAddress = Some("example@example.com"),
-    DeclarantReferenceNumber = Some("1234567")
-
+    EmailAddress = Some("example@example.com")
   )
 
   val bankDetails = AllBankDetails(
