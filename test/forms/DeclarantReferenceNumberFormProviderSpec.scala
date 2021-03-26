@@ -43,5 +43,30 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
       fieldName,
       stringsWithMinAndMaxLength(minLength,maxLength)
     )
+
+    behave like mandatoryField(
+      form.bind(Map(radioFieldName -> "02")),
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+
+    //    "fail to bind entries with characters" in {
+    //      val results = List(
+    //        form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "1")).apply(fieldName),
+    //        form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> (maxLength+1).toString)).apply(fieldName)
+    //      )
+    //      val expectedError = FormError(fieldName, requiredKey , Seq())
+    //      results.foreach {
+    //        result =>
+    //          result.errors shouldEqual Seq(expectedError)
+    //      }
+    //    }
+    //
+    //    "fail to bind a value" in {
+    //      val result = form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "")).apply(fieldName)
+    //      val expectedError = error(fieldName, requiredKey)
+    //
+    //      result.errors shouldEqual(expectedError)
+    //    }
   }
 }

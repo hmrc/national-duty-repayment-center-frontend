@@ -19,6 +19,7 @@ package utils
 import controllers.routes
 import models._
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
+import models.DeclarantReferenceType.{Yes, No}
 import models.FileType.{Bulk, ProofOfAuthority}
 import models.FileUpload.Accepted
 import pages._
@@ -310,18 +311,19 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
       )
   }
-    def declarantReferenceNumberQuestion: Option[AnswerRow] = userAnswers.get(DeclarantReferenceNumberPage) map {
-      x =>
+    def declarantReferenceNumberQuestion: AnswerRow = {
+
+
+      val decRef=   userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceType).get
         AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-          HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get)
+          HtmlFormat.escape(decRef)
 
           //need to return yes/no
           ,
           Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)
         )
     }
-
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
     x =>
       AnswerRow(
