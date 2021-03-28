@@ -53,6 +53,7 @@ class EntryDetailsController @Inject()(
       }
 
       Ok(view(preparedForm, mode, isSingleEntry(request.userAnswers)))
+
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -61,6 +62,7 @@ class EntryDetailsController @Inject()(
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
+
 
         value =>
           for {
