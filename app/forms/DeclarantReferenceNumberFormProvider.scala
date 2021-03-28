@@ -33,7 +33,7 @@ class DeclarantReferenceNumberFormProvider @Inject() extends Mappings {
       "value" -> enumerable[DeclarantReferenceType]("declarantReferenceNumber.error.required"),
       "declarantReferenceNumber" ->
         mandatoryIfEqual("value","01",
-          decimal("declarantReferenceNumber.error.invalid", "declarantReferenceNumber.error.invalid")
+          text("declarantReferenceNumber.error.invalid")
             .verifying(
               minLength(minLength, "declarantReferenceNumber.error.invalid"),
               maxLength(maxLength, "declarantReferenceNumber.error.invalid")))

@@ -38,7 +38,7 @@ final case class ClaimDetails(
                                ClaimDate: LocalDate,
                                PayeeIndicator: WhomToPay,
                                PaymentMethod: RepaymentType,
-                               DeclarantRefNumber: String
+                               DeclarantRefNumber: Option[String]
                              )
 
 object ClaimDetails {

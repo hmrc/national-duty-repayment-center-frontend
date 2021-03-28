@@ -19,7 +19,6 @@ package utils
 import controllers.routes
 import models._
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
-import models.DeclarantReferenceType.{Yes, No}
 import models.FileType.{Bulk, ProofOfAuthority}
 import models.FileUpload.Accepted
 import pages._
@@ -317,12 +316,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceType).get match  {
         case Yes => Seq(Some(AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-          HtmlFormat.escape(Yes.toString), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url))) ,
+          HtmlFormat.escape(changeToYesNo(Yes.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url))) ,
           declarantReferenceNumber
         ).flatten
         case No => Seq(AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-          HtmlFormat.escape(No.toString), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)))
+          HtmlFormat.escape(changeToYesNo(No.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url)))
       }
     }
 
@@ -731,6 +730,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   implicit class Improvements(s: Double) {
     def format2d = "%.2f".format(s)
+  }
+
+ private def changeToYesNo(string: String): String = {
+    string match {
+      case "01" => "Yes"
+      case "02" => "No"
+    }
   }
 
 }
