@@ -73,7 +73,6 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-
       view(form, NormalMode, false)(fakeRequest, messages).toString
 
 
@@ -94,7 +93,6 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-
       view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode, false)(fakeRequest, messages).toString
 
 
@@ -151,7 +149,6 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-
       view(boundForm, NormalMode, false)(fakeRequest, messages).toString
 
 
