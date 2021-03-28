@@ -22,7 +22,7 @@ import models.Address
 import play.api.data.{Form, Forms}
 import play.api.data.Forms.{mapping, optional}
 
-class ImporterManualAddressFormProvider @Inject() extends Mappings {
+class ImporterManualAddressFormProvider @Inject() extends Mappings  with TrimWhitespace {
 
   private val maxLineLength = 128
   private val maxCityLength = 64
@@ -61,11 +61,12 @@ class ImporterManualAddressFormProvider @Inject() extends Mappings {
             maxLength(maxCCLength, "importerAddress.countryCode.error.length"),
             regexp(Validation.safeInputPattern,"importerAddress.countryCode.error.invalid")
           )),
-      "PostalCode" ->
-        optional(Forms.text
+      "PostalCode" -> text("importerAddress.postalCode.error.invalid")
+          .transform[String](trimWhitespace, value => value)
           .verifying(firstError(
-            regexp(Validation.postcodeRegex, "importerAddress.postalCode.error.invalid")
-          )))
+            minLength(2, "importerAddress.postalCode.error.invalid"),
+            maxLength(10, "importerAddress.postalCode.error.invalid")
+          ))
     )(Address.apply)(importerAddress => Some((importerAddress.AddressLine1, importerAddress.AddressLine2, importerAddress.City, importerAddress.Region, importerAddress.CountryCode, importerAddress.PostalCode)))
   )
 }

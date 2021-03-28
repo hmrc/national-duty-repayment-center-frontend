@@ -46,11 +46,6 @@ class FurtherInformationController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, hasSupportingDocs: Boolean): Call = {
-    if(hasSupportingDocs) routes.AmendCaseSendInformationController.showFileUploaded(mode)
-    else  routes.AmendCaseResponseTypeController.onPageLoad(mode)
-  }
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(FurtherInformationPage) match {
@@ -58,7 +53,7 @@ class FurtherInformationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, hasSupportingDocs(request.userAnswers))))
+      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -66,7 +61,7 @@ class FurtherInformationController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, hasSupportingDocs(request.userAnswers))))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
           for {

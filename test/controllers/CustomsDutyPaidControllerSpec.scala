@@ -29,7 +29,6 @@ import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.CustomsDutyPaidView
 
 import scala.concurrent.Future
@@ -69,12 +68,11 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[CustomsDutyPaidView]
 
-      val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink, false)(fakeRequest, messages).toString
+        view(form, NormalMode, false)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -91,29 +89,24 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[CustomsDutyPaidView]
 
-      val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
-
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(RepaymentAmounts("100.00", "50.00")), NormalMode, backLink, false)(fakeRequest, messages).toString
+        view(form.fill(RepaymentAmounts("100.00", "50.00")), NormalMode, false)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
 
@@ -148,14 +141,12 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[CustomsDutyPaidView]
 
-      val backLink = routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
-
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink, false)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, false)(fakeRequest, messages).toString
 
       application.stop()
     }

@@ -44,13 +44,6 @@ class IsVATRegisteredController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(ImporterHasEoriPage) match {
-      case Some(true) => routes.ImporterEoriController.onPageLoad(mode)
-      case _ => routes.ImporterHasEoriController.onPageLoad(mode)
-    }
-  }
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -59,7 +52,7 @@ class IsVATRegisteredController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
+      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -67,7 +60,7 @@ class IsVATRegisteredController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
           for {

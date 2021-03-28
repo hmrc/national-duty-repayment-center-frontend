@@ -173,16 +173,6 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     }
   }
 
-  val validPostcodes: Gen[String] = for {
-    numberOfLeadingChars <- Gen.choose(1, 2)
-    leadingChars         <- Gen.listOfN(numberOfLeadingChars, Gen.alphaChar)
-    numberOfDigits       <- Gen.choose(1, 2)
-    firstPartDigits      <- Gen.listOfN(numberOfDigits, Gen.numChar)
-    separator            <- Gen.oneOf(Gen.const(" "), Gen.const(""))
-    secondPartDigit      <- Gen.numChar
-    secondPartChars      <- Gen.listOfN(2, Gen.alphaChar)
-  } yield s"${leadingChars.mkString}${firstPartDigits.mkString}$separator${secondPartDigit.toString}${secondPartChars.mkString}"
-
   val to2dp: BigDecimal => BigDecimal = _.setScale(2, BigDecimal.RoundingMode.HALF_UP)
 
   def decimalsBelowValue(value: BigDecimal): Gen[BigDecimal] = {

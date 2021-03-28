@@ -29,14 +29,11 @@ import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.BankDetailsView
 
 import scala.concurrent.Future
 
 class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
-
-  val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
 
   def onwardRoute = Call("GET", "/foo")
 
@@ -71,7 +68,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -89,22 +86,19 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(BankDetails("name", "123456", "00123456")), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(BankDetails("name", "123456", "00123456")), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
 
@@ -137,7 +131,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

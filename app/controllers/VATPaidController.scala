@@ -44,13 +44,6 @@ class VATPaidController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(ClaimRepaymentTypePage) match {
-      case _ if userAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) => routes.CustomsDutyPaidController.onPageLoad(mode)
-      case _ => routes.ClaimRepaymentTypeController.onPageLoad(mode)
-    }
-  }
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -59,7 +52,7 @@ class VATPaidController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))
+      Ok(view(preparedForm, mode, isSingleEntry(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -67,7 +60,7 @@ class VATPaidController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
 
         value =>
           for {

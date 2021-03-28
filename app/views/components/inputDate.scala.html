@@ -41,26 +41,48 @@
         items = Seq(
         InputItem(
         id = s"$id.day",
-        classes = s"govuk-input--width-2${if(form(id).hasErrors || form.errors.exists(_.key.isEmpty)) " govuk-input--error" else ""}",
+        classes = s"govuk-input--width-2${if(form(id).hasErrors || form(s"$id.day").hasErrors) " govuk-input--error" else ""}",
         name =  s"$id.day",
         label = Some(messages("date.day")),
         value = form(s"$id.day").value
     ),
     InputItem(
         id = s"$id.month",
-        classes = s"govuk-input--width-2${if(form(id).hasErrors || form.errors.exists(_.key.isEmpty)) " govuk-input--error" else ""}",
+        classes = s"govuk-input--width-2${if(form(id).hasErrors || form(s"$id.month").hasErrors) " govuk-input--error" else ""}",
         name = s"$id.month",
         label = Some(messages("date.month")),
         value = form(s"$id.month").value
     ),
     InputItem(
         id = s"$id.year",
-        classes = s"govuk-input--width-4${if(form(id).hasErrors || form.errors.exists(_.key.isEmpty)) " govuk-input--error" else ""}",
+        classes = s"govuk-input--width-4${if(form(id).hasErrors || form(s"$id.year").hasErrors) " govuk-input--error" else ""}",
         name = s"$id.year",
         label = Some(messages("date.year")),
         value = form(s"$id.year").value
     )
     ),
     hint = hintText.map(hint => Hint(content = Text(messages(hint)))),
-    errorMessage = form(id).error.fold(form.errors.find(_.key.isEmpty))(err => Some(err)).map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+    errorMessage = {
+            form(id).error
+        .orElse(form(s"$id.day").error)
+        .orElse(form(s"$id.month").error)
+        .orElse(form(s"$id.year").error)
+        .map(err => {
+            if(form(s"$id.day").error && form(s"$id.month").error && form(s"$id.year").error) {
+                ErrorMessage(content = Text(messages("error.date.all", err.args:_*)))
+            }
+            else if(form(s"$id.day").error && form(s"$id.month").error) {
+                ErrorMessage(content = Text(messages("error.date.day_month", err.args:_*)))
+            }
+            else if(form(s"$id.day").error && form(s"$id.year").error) {
+                ErrorMessage(content = Text(messages("error.date.day_year", err.args:_*)))
+            }
+            else if(form(s"$id.month").error && form(s"$id.year").error) {
+                ErrorMessage(content = Text(messages("error.date.month_year", err.args:_*)))
+            }
+            else
+                ErrorMessage(content = Text(messages(err.message, err.args:_*)))
+        }
+        )
+}
 ))

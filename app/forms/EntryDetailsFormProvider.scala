@@ -28,7 +28,7 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
 
   def apply(): Form[EntryDetails] = {
 
-    val limitDate = LocalDate.now.minusDays(1)
+    val limitDate = LocalDate.now
     val minDateLimit = LocalDate.parse("1900-01-01")
 
     Form(
@@ -39,15 +39,11 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
           ),
         "EntryNumber" -> text("entryDetails.entryNumber.error.required")
           .verifying(regexp(
-            Validation.epuEntryNumber,"entryDetails.entryNumber.error.valid")
+            Validation.epuEntryNumber, "entryDetails.entryNumber.error.valid")
           ),
 
-        "EntryDate" -> localDate(
-          invalidKey     = "entryDetails.claimEntryDate.error.invalid",
-          allRequiredKey = "entryDetails.claimEntryDate.error.required.all",
-          twoRequiredKey = "entryDetails.claimEntryDate.error.required",
-          requiredKey    = "entryDetails.claimEntryDate.error.required"
-        ).verifying(maxDate(limitDate, "entryDetails.claimEntryDate.error.invalid", Format.formattedDate(limitDate)))
+        "EntryDate" -> localDate(invalidKey = "entryDetails.claimEntryDate.error.invalid", requiredKey = "entryDetails.claimEntryDate.error.required")
+          .verifying(maxDate(limitDate, "entryDetails.claimEntryDate.error.invalid_future", Format.formattedDate(limitDate)))
           .verifying(minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid", Format.formattedDate(minDateLimit)))
 
       )(EntryDetails.apply)(EntryDetails.unapply)

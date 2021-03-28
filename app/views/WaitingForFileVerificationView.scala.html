@@ -24,11 +24,11 @@
         appConfig: FrontendAppConfig
 )
 
-@(successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(successAction: Call, failureAction: Call, checkStatusAction: Call)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
   pageTitle("view.upload-file.waiting"),
-  backLink = Some(backLink.url),
+  backLink = false,
   refresh = 3) {
 
     <h1 class="govuk-heading-l">@messages("view.upload-file.waiting")</h1>

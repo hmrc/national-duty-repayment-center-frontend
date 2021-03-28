@@ -44,15 +44,6 @@ class EntryDetailsController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-
-    userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Single if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(mode)
-      case NumberOfEntriesType.Single if userAnswers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UnionsCustomsCodeRegulation) => routes.ArticleTypeController.onPageLoad(mode)
-      case _ => routes.BulkFileUploadController.showFileUpload()
-    }
-  }
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -61,7 +52,7 @@ class EntryDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))
+      Ok(view(preparedForm, mode, isSingleEntry(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -69,7 +60,7 @@ class EntryDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers), isSingleEntry(request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
 
         value =>
           for {

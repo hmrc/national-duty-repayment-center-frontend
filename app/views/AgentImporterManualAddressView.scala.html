@@ -25,11 +25,10 @@
     govukSelect: GovukSelect
 )
 
-@(form: Form[_], mode: Mode, countryOptions: Seq[SelectItem], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, countryOptions: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterManualAddress.title"))}"),
-    backLink = Some(backLink.url)
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterManualAddress.title"))}")
 ) {
 
     @forms.formWithCSRF(action = AgentImporterManualAddressController.onSubmit(mode), args = 'novalidate -> "novalidate") {

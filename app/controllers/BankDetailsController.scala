@@ -45,17 +45,6 @@ class BankDetailsController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    val isRepresentative = userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative)
-
-    userAnswers.get(BankDetailsPage) match {
-      case _ if isRepresentative && userAnswers.get(WhomToPayPage).contains(WhomToPay.Importer) => routes.WhomToPayController.onPageLoad(mode)
-      case _ if isRepresentative && userAnswers.get(IndirectRepresentativePage).contains(true) => routes.IndirectRepresentativeController.onPageLoad(mode)
-      case _ if isRepresentative && userAnswers.get(IndirectRepresentativePage).contains(false) => routes.ProofOfAuthorityController.showFileUpload()
-      case _ => routes.RepaymentTypeController.onPageLoad(mode)
-    }
-  }
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -64,7 +53,7 @@ class BankDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
+      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -72,7 +61,7 @@ class BankDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
           for {
