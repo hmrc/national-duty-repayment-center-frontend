@@ -52,7 +52,7 @@ object TestData {
   val testPaddedBankDetails: BankDetails = BankDetails("account name", "123456", "00123456")
   val testDocumentList: Seq[DocumentList] = Seq(DocumentList(EvidenceSupportingDocs.Other, None))
   val furtherInformation: String = "More info for amend"
-  val testDeclarantRefNumber:Some[String] = Some("12345")
+  val testDeclarantRefNumber:String = "12345"
 
   val testClaimDetails: ClaimDetails = ClaimDetails(
     FormType("01"),
@@ -223,7 +223,7 @@ object TestData {
       .flatMap(_.set(EmailAddressPage, testEmailAddress))
       .flatMap(_.set(WhomToPayPage, testWhomToPay))
       .flatMap(_.set(BankDetailsPage, testBankDetails))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, testDeclarantRefNumber)))
+      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
       .get
 
   def populateUserAnswersRepresentativeWithEmail(userAnswers: UserAnswers): UserAnswers =
@@ -252,7 +252,7 @@ object TestData {
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPay))
       .flatMap(_.set(BankDetailsPage, testBankDetails))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, testDeclarantRefNumber)))
+      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
         .get
 
   def populateUserAnswersWithCMAPaymentMethod(userAnswers: UserAnswers): UserAnswers =
@@ -279,7 +279,7 @@ object TestData {
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
       .flatMap(_.set(EmailAddressPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, testDeclarantRefNumber)))
+      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
       .get
 
   def populateUserAnswersWithCMAPaymentMethodAndClaimantImporter(userAnswers: UserAnswers): UserAnswers =
@@ -301,7 +301,7 @@ object TestData {
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
       .flatMap(_.set(EmailAddressPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, testDeclarantRefNumber)))
+      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
       .get
 
   def populateUserAnswersWithUKCustomsRegulationType(userAnswers: UserAnswers): UserAnswers =
@@ -323,7 +323,7 @@ object TestData {
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
       .flatMap(_.set(EmailAddressPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, testDeclarantRefNumber)))
+      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
       .get
 
   def populateUserAnswersWithRepresentativeSinglePayingRepresentativeBacs(userAnswers: UserAnswers): UserAnswers =
@@ -351,7 +351,7 @@ object TestData {
       .flatMap(_.set(EmailAddressPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, testDeclarantRefNumber)))
+      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
       .get
 
   def populateUserAnswersWithBankAccountNumberContaining6Digits(userAnswers: UserAnswers): UserAnswers =
@@ -380,7 +380,7 @@ object TestData {
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(BankDetailsPage, testBankDetailsWith6Digits))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, testDeclarantRefNumber)))
+      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
       .get
 
   def populateUserAnswersWithAmendData(userAnswers: UserAnswers): UserAnswers =
