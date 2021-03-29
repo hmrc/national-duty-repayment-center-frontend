@@ -141,8 +141,10 @@ howManyEntries.checkYourAnswersLabel = Number of entries
 howManyEntries.error.required = Enter the number of entries you are claiming for
 howManyEntries.error.length = Number of entries must be between 2 and 999,999
 
-entryDetails.title = Entry details
-entryDetails.heading = Entry details
+entryDetails.single.title = Entry details
+entryDetails.multiple.title = Enter the details of the oldest entry
+entryDetails.single.heading = Entry details
+entryDetails.multiple.heading = Enter the details of the oldest entry
 entryDetails.hint = These can be found on C88 and E2 documents
 entryDetails.claimEpu.heading = Entry processing unit (EPU)
 entryDetails.claimEpu.hint = This is 3 numbers, for example ''123''

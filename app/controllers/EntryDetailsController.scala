@@ -52,7 +52,8 @@ class EntryDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, isSingleEntry(request.userAnswers)))
+
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +61,8 @@ class EntryDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
+
 
         value =>
           for {
@@ -68,5 +70,12 @@ class EntryDetailsController @Inject()(
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(EntryDetailsPage, mode, updatedAnswers))
       )
+  }
+
+  def isSingleEntry(userAnswers: UserAnswers): Boolean = {
+    userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Single => true
+      case NumberOfEntriesType.Multiple  => false
+    }
   }
 }
