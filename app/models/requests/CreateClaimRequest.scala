@@ -18,6 +18,7 @@ package models.requests
 
 import java.time.LocalDate
 
+import models.DeclarantReferenceType.{No, Yes}
 import models.WhomToPay.Importer
 import models._
 import pages._
@@ -75,7 +76,7 @@ object CreateClaimRequest {
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage)
       payeeIndicator <- getPayeeIndicator(userAnswers)
       paymentMethod <- getPaymentMethod(userAnswers)
-      declarantReNumber <- userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceNumber)
+      declarantReNumber <- getDecRef(userAnswers)
     } yield ClaimDetails(FormType("01"),
       customRegulationType,
       claimedUnderArticle,
@@ -97,7 +98,10 @@ object CreateClaimRequest {
       case Some(_) => userAnswers.get(AgentImporterAddressPage)
       case _ => userAnswers.get(AgentImporterManualAddressPage)
     }
-
+    def getDecRef(userAnswers: UserAnswers): Option[String] = userAnswers.get(DeclarantReferenceNumberPage) match {
+      case Some(decRef) if decRef.declarantReferenceType == Yes => Some(decRef.declarantReferenceNumber.get)
+      case Some(decRef) if decRef.declarantReferenceType == No => Some("No")
+    }
     def getEmailAddress(userAnswers: UserAnswers): Option[String] = userAnswers.get(EmailAddressPage) match {
       case Some(email) if email.length > 0 => Some(email)
       case _ => None
