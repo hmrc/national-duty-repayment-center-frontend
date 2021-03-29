@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EvidenceSupportingDocsView
@@ -35,7 +36,7 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[EvidenceSupportingDocsView]
 
-      val backLink = routes.RepaymentAmountSummaryController.onPageLoad()
+      val backLink = routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 

@@ -94,12 +94,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             AnswerRow(
               HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
               HtmlFormat.escape(messages(s"$fileName")),
-              Some(routes.ProofOfAuthorityController.showFileUpload.url)
+              Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
             )
           case _ =>  AnswerRow(
             HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"proofOfAuthority.empty")),
-            Some(routes.ProofOfAuthorityController.showFileUpload.url)
+            Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
           )
         }
       }

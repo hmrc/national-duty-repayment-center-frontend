@@ -20,9 +20,10 @@ import controllers.actions._
 import forms.RepaymentTypeFormProvider
 import javax.inject.Inject
 import models.ClaimantType.Importer
+import models.RepaymentType.CMA
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.{ClaimantTypePage, RepaymentTypePage, WhomToPayPage}
+import pages.{BankDetailsPage, ClaimantTypePage, RepaymentTypePage, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -76,9 +77,15 @@ class RepaymentTypeController @Inject()(
                 case _ => Future.successful(updatedAnswers)
               }
             }
-            _ <- sessionRepository.set(updatesAnswersWithWhomToPay)
+            updatedAnswersWithCMA <- {
+              request.userAnswers.get(RepaymentTypePage) match {
+                case Some(CMA) => Future.fromTry(updatesAnswersWithWhomToPay.remove(BankDetailsPage))
+                case _ => Future.successful(updatesAnswersWithWhomToPay)
+              }
+            }
+            _ <- sessionRepository.set(updatedAnswersWithCMA)
 
-          } yield Redirect(navigator.nextPage(RepaymentTypePage, mode, updatesAnswersWithWhomToPay))
+          } yield Redirect(navigator.nextPage(RepaymentTypePage, mode, updatedAnswersWithCMA))
       )
   }
 }

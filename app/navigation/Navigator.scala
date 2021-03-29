@@ -114,7 +114,7 @@ class Navigator @Inject()() {
 
   private def indirectRepresentativeRoute(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
     case Some(true)  => routes.BankDetailsController.onPageLoad(NormalMode)
-    case Some(false) => routes.ProofOfAuthorityController.showFileUpload()
+    case Some(false) => routes.ProofOfAuthorityController.showFileUpload(NormalMode)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
@@ -178,20 +178,9 @@ class Navigator @Inject()() {
     case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
   }
 
-  private def getVATRepaymentTypeWithCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
-    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat))  => routes.VATPaidController.onPageLoad(CheckMode)
-    case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(CheckMode)
-    case _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
-  }
-
   private def getOtherRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
     case true => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
     case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
-  }
-
-  private def getOtherRepaymentTypeWithCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
-    case true => routes.OtherDutiesPaidController.onPageLoad(CheckMode)
-    case _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
   }
 
   private def getAmendCaseResponseTypeCheckMode(answers: UserAnswers): Call = {
@@ -209,22 +198,28 @@ class Navigator @Inject()() {
     case Some(WhomToPay.Importer) => routes.CheckYourAnswersController.onPageLoad()
   }
 
+  private def getRepaymentTypeWithCheckMode(answers: UserAnswers): Call = answers.get(RepaymentTypePage) match {
+    case Some(RepaymentType.BACS) if answers.get(BankDetailsPage).isEmpty => routes.BankDetailsController.onPageLoad(CheckMode)
+    case Some(RepaymentType.CMA) => routes.CheckYourAnswersController.onPageLoad()
+  }
+
   private def getIndirectRepresentativeWithCheckMode(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
-    case Some(false) => routes.ProofOfAuthorityController.showFileUpload()
+    case Some(false) => routes.ProofOfAuthorityController.showFileUpload(CheckMode)
     case Some(true)  => routes.CheckYourAnswersController.onPageLoad()
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
     case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
-    case CustomsDutyPaidPage => getVATRepaymentTypeWithCheckMode
+    case CustomsDutyPaidPage => _ =>  routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
     case CustomsRegulationTypePage => getEntryDetailsWithCheckMode
-    case VATPaidPage => getOtherRepaymentTypeWithCheckMode
+    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
     case ImporterHasEoriPage => getEORIConfirmationWithCheckMode
     case AgentImporterHasEORIPage => getAgentEORIStatusWithCheckMode
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
     case ClaimRepaymentTypePage => getClaimRepaymentTypeWithCheckMode
     case WhomToPayPage => getWhomToPayCheckMode
     case IndirectRepresentativePage => getIndirectRepresentativeWithCheckMode
+    case RepaymentTypePage => getRepaymentTypeWithCheckMode
     case _ => getCheckYourAnswers
   }
 

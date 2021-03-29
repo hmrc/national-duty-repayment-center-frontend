@@ -108,7 +108,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.RepaymentAmountSummaryController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.RepaymentAmountSummaryController.onPageLoad(NormalMode).url)
 
       val result = route(application, request).value
 
@@ -117,7 +117,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-      view(answersViewModel, backLink)(fakeRequest, messages).toString
+      view(answersViewModel, backLink, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

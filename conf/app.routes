@@ -256,6 +256,11 @@ GET        /upload-proof-of-authority/file-rejected                             
 GET        /upload-proof-of-authority/file-verification/:reference/status       controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
 POST       /upload-proof-of-authority/:id/callback-from-upscan                  controllers.ProofOfAuthorityController.callbackFromUpscan(id: String)
 
+GET        /change-upload-proof-of-authority                                           controllers.ProofOfAuthorityController.showFileUpload(mode: Mode = CheckMode)
+GET        /upload-proof-of-authority/change-file-verification                         controllers.ProofOfAuthorityController.showWaitingForFileVerification(mode: Mode = CheckMode)
+GET        /upload-proof-of-authority/change-file-rejected                             controllers.ProofOfAuthorityController.markFileUploadAsRejected(mode: Mode = CheckMode)
+
+
 #amend send information
 
 GET         /amend-case-send-information/file-upload                                  controllers.AmendCaseSendInformationController.showFileUpload(mode: Mode = NormalMode)

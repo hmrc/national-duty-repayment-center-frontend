@@ -20,7 +20,7 @@ import com.kenshoo.play.metrics.{Metrics, MetricsImpl}
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
 import controllers.actions._
 import models.requests.UploadRequest
-import models.{CustomsRegulationType, FileUpload, FileUploads, UpscanNotification, UserAnswers}
+import models.{CustomsRegulationType, FileUpload, FileUploads, NormalMode, UpscanNotification, UserAnswers}
 import org.mockito.Matchers.{any, anyObject}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -35,8 +35,8 @@ import play.twirl.api.HtmlFormat
 import repositories.SessionRepository
 import services.FileUploaded
 import uk.gov.hmrc.http.HeaderCarrier
-
 import java.time.ZonedDateTime
+
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 
@@ -77,7 +77,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
 
   "GET /upload-proof-of-authority" should {
     "show the upload first document page" in {
-      val fileUploadUrl = routes.ProofOfAuthorityController.showFileUpload().url
+      val fileUploadUrl = routes.ProofOfAuthorityController.showFileUpload(NormalMode).url
       val application =
         appBuilder(userAnswers = Some(emptyUserAnswers))
           .build()

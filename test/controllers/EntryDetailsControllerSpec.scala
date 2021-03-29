@@ -71,7 +71,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[EntryDetailsView]
 
-      val backLink = routes.BulkFileUploadController.showFileUpload()
+      val backLink = routes.BulkFileUploadController.showFileUpload(NormalMode)
 
       status(result) mustEqual OK
 
@@ -92,7 +92,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.BulkFileUploadController.showFileUpload()
+      val backLink = routes.BulkFileUploadController.showFileUpload(NormalMode)
 
       status(result) mustEqual OK
 
@@ -152,7 +152,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.BulkFileUploadController.showFileUpload()
+      val backLink = routes.BulkFileUploadController.showFileUpload(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 

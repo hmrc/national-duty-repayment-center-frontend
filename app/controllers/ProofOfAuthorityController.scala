@@ -89,7 +89,7 @@ class ProofOfAuthorityController @Inject()(
         case _ => updateSession(fs, ss.userAnswers)
       }
       if b
-    } yield renderState(ss.userAnswers, fs)
+    } yield renderState(ss.userAnswers, fs, mode = mode)
   }
 
   def sessionState(id: String): Future[SessionState] = {

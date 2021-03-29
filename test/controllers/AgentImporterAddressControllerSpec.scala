@@ -39,7 +39,7 @@ import scala.concurrent.Future
 
 class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
   private lazy val agentImporterAddressPostcodeRoute = routes.AgentImporterAddressController.onPageLoad(NormalMode).url
-  private lazy val agentImporterAddressSelectRoute = routes.AgentImporterAddressController.addressSelectSubmit.url
+  private lazy val agentImporterAddressSelectRoute = routes.AgentImporterAddressController.addressSelectSubmit(NormalMode).url
   private val postcodeForm = (new PostcodeFormProvider) ()
   private val addressForm = (new AgentImporterAddressFormProvider) ()
   private val selectionForm = (new AddressSelectionFormProvider) ()
