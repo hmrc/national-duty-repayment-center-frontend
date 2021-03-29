@@ -20,41 +20,13 @@ import play.api.data.FormError
 class PostcodeFormProviderSpec extends StringFieldBehaviours {
   val requiredKey = "postcode.error.required"
   val lengthKey = "postcode.error.length"
-  val minLength = 6
-  val maxLength = 9
   val form = new PostcodeFormProvider()()
   ".value" must {
     val fieldName = "PostalCode"
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMinAndMaxLength(minLength,maxLength)
-    )
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
-  }
-  ".value" must {
-    val fieldName = "PostalCode"
-    "not bind postcode with less than 6 digit" in {
-      val result = form.bind(Map(fieldName -> "AA 1A")).apply(fieldName)
-      result.errors shouldEqual Seq(
-        FormError(fieldName, lengthKey, Seq(minLength))
-      )
-    }
-    "not bind postcode with more than 9 digit" in {
-      val result = form.bind(Map(fieldName -> "AA111 1AAAA")).apply(fieldName)
-      result.errors shouldEqual Seq(
-        FormError(fieldName, lengthKey, Seq(maxLength))
-      )
-    }
   }
 }
