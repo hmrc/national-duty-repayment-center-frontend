@@ -47,19 +47,12 @@ class CheckYourAnswersController @Inject()(
                                             view: CheckYourAnswersView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS) match {
-      case true=> routes.BankDetailsController.onPageLoad(mode)
-      case _ => routes.RepaymentTypeController.onPageLoad(mode)
-    }
-  }
-
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
 
-      Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, getBackLink(NormalMode, request.userAnswers)))
+      Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {

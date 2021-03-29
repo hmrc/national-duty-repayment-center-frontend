@@ -18,18 +18,16 @@ package controllers
 
 import base.SpecBase
 import forms.ClaimRepaymentTypeFormProvider
-import models.{NormalMode, ClaimRepaymentType, UserAnswers}
+import models.{ClaimRepaymentType, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ClaimRepaymentTypePage
 import play.api.inject.bind
-import play.api.libs.json.{JsString, Json}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.ClaimRepaymentTypeView
 
 import scala.concurrent.Future
@@ -55,12 +53,10 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[ClaimRepaymentTypeView]
 
-      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -77,27 +73,22 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ClaimRepaymentType.values.toSet), NormalMode, backLink)(fakeRequest, messages).toString
+        view(form.fill(ClaimRepaymentType.values.toSet), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
 
@@ -128,12 +119,10 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

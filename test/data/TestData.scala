@@ -40,8 +40,8 @@ object TestData {
   val testAgentEORI: EORI = EORI("GB123456123444")
   val testAgentName: UserName = UserName("agent first", "agent last")
   val testImporterName: UserName = UserName("importer first", "importer last")
-  val testImporterManualAddress: Address = Address("line 1", Some("line 2"), "City", Some("Region"), "GB", Some("AA11AA"))
-  val testAgentManualAddress: Address = Address("line 1 agent", Some("line 2 agent"), "City agent", Some("Region agent"), "IT", None)
+  val testImporterManualAddress: Address = Address("line 1", Some("line 2"), "City", Some("Region"), "GB", "AA11AA")
+  val testAgentManualAddress: Address = Address("line 1 agent", Some("line 2 agent"), "City agent", Some("Region agent"), "IT", "AA11AA")
   val testPhoneNumber: String = "01234567890"
   val testEmailAddress: String = "test@testing.com"
   val testWhomToPay: WhomToPay = WhomToPay.Importer

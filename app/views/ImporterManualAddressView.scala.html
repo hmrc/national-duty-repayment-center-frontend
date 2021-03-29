@@ -25,14 +25,13 @@
     govukSelect: GovukSelect
 )
 
-@(form: Form[_], mode: Mode, isImporterJourney: Boolean, countryOptions: Seq[SelectItem], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isImporterJourney: Boolean, countryOptions: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
     case true => messages("importerYourAddress.title")
     case _ => messages("importerManualAddress.title")
-    })}"),
-    backLink = Some(backLink.url)
+    })}")
     ) {
 
     @forms.formWithCSRF(action = ImporterManualAddressController.onSubmit(mode), args = 'novalidate -> "novalidate") {

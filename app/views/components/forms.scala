@@ -34,5 +34,4 @@ class forms @Inject() (
 //  val inputTime: views.html.components.inputTime,
   val textarea: views.html.components.textarea,
   val errorSummary: views.html.components.errorSummary
-
                       )

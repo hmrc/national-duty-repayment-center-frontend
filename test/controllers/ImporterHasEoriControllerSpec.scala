@@ -29,7 +29,6 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.ImporterHasEoriView
 
 import scala.concurrent.Future
@@ -42,8 +41,6 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
   val form = formProvider()
 
   lazy val importerHasEoriRoute = routes.ImporterHasEoriController.onPageLoad(NormalMode).url
-
-  val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
 
   "ImporterHasEori Controller" must {
 
@@ -59,12 +56,10 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[ImporterHasEoriView]
 
-      val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, backLink)(fakeRequest, messages).toString
+        view(form, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -81,27 +76,23 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
 
       status(result) mustEqual OK
 
-//      contentAsString(result) mustEqual
-//        view(form.fill(true), NormalMode, backLink)(fakeRequest, messages).toString
+      contentAsString(result) mustEqual
+        view(form.fill(true), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
 
@@ -134,12 +125,10 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.FileUploadController.showFileUploaded(NormalMode)
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }

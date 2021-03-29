@@ -57,14 +57,6 @@ class AgentImporterAddressController @Inject()(
 
   private val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.AgentNameImporterController.onPageLoad(mode)
-  }
-
-  private def getAgentAdddressBackLink(mode: Mode): Call = {
-    routes.AgentImporterAddressController.onPageLoad(mode)
-  }
-
   private val postcodeForm = postcodeFormProvider()
   private val selectionForm = addressSelectionFormProvider()
   val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
@@ -78,7 +70,7 @@ class AgentImporterAddressController @Inject()(
           postcodeForm.fill(PostcodeLookup(value))
       }
 
-      Future.successful(Ok(view(preparedForm, mode, getBackLink(mode))))
+      Future.successful(Ok(view(preparedForm, mode)))
   }
 
   def postcodeSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -86,7 +78,7 @@ class AgentImporterAddressController @Inject()(
     implicit request =>
       postcodeForm.bindFromRequest.fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
         lookup => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterPostcodePage, lookup.postcode))
@@ -102,10 +94,10 @@ class AgentImporterAddressController @Inject()(
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
-        BadRequest(view(buildLookupFailureError(lookup), mode, getBackLink(mode)))
+        BadRequest(view(buildLookupFailureError(lookup), mode))
 
       case Right(candidates) if candidates.noOfHits == 0 =>
-        BadRequest(view(buildLookupFailureError(lookup), mode, getBackLink(mode)))
+        BadRequest(view(buildLookupFailureError(lookup), mode))
 
       case Right(candidates) =>
         val selectionItems = sorter.sort(candidates.candidateAddresses)
@@ -120,9 +112,9 @@ class AgentImporterAddressController @Inject()(
           )
 
         if (form.hasErrors) {
-          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, getAgentAdddressBackLink(mode)))
+          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode))
         } else {
-          Ok(addressConfirmationView(form, lookup, selectionItems, mode, getAgentAdddressBackLink(mode)))
+          Ok(addressConfirmationView(form, lookup, selectionItems, mode))
         }
     }
   }
@@ -135,12 +127,6 @@ class AgentImporterAddressController @Inject()(
     postcode       <- form.get("address-postcode").flatMap(_.headOption)
   } yield PostcodeLookup(postcode)
 
-  def postcodeBackLinkLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-
-    implicit request =>
-      doPostcodeLookup(PostcodeLookup(request.userAnswers.get(AgentImporterAddressPage).get.PostalCode.get), mode, selectionForm)
-  }
-
   def addressSelectSubmit(mode: Mode): Action[AnyContent] = (identify  andThen getData andThen requireData).async {
     implicit request =>
 
@@ -152,7 +138,7 @@ class AgentImporterAddressController @Inject()(
           js =>
             form.bind(js).fold(
               formWithErrors =>
-                Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+                Future.successful(BadRequest(view(formWithErrors, mode))),
               address =>
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, address))
@@ -172,7 +158,7 @@ class AgentImporterAddressController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -180,7 +166,7 @@ class AgentImporterAddressController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
           for {

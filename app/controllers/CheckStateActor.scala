@@ -19,8 +19,6 @@ package controllers
 import akka.actor.Actor
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
-import config.FrontendAppConfig
-import play.api.Logger.logger
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 
@@ -29,29 +27,25 @@ import javax.inject.Inject
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
-case class CheckState(id: String, exitTime: LocalDateTime,state: FileUploadState)
+case class CheckState(id: String, exitTime: LocalDateTime, state: FileUploadState)
 
-class CheckStateActor @Inject()(sessionRepository: SessionRepository, appConfig: FrontendAppConfig)(implicit ec: ExecutionContext) extends Actor with FileUploadService {
+class CheckStateActor @Inject()(sessionRepository: SessionRepository)(implicit ec: ExecutionContext) extends Actor with FileUploadService {
   implicit val timeout = Timeout(30 seconds)
+
   override def receive: Receive = {
     case CheckState(id, exitTime, state) => {
-      if (LocalDateTime.now().isAfter(exitTime) || state.isInstanceOf[FileUploaded]) {
-        logger.info("exiting.........")
+      if (LocalDateTime.now().isAfter(exitTime) || state.isInstanceOf[FileUploaded])
         Future.successful(state).pipeTo(sender)
-      }
       else {
-        logger.info("continue.........")
         sessionRepository.get(id).flatMap(ss => ss.flatMap(_.fileUploadState) match {
-          case Some(s@FileUploaded(_, _)) => {
-            logger.info("found")
+          case Some(s@FileUploaded(_, _)) =>
             Future.successful(s)
-          }
-          case Some(s@UploadFile(reference, uploadRequest, fileUploads, maybeUploadError)) => {
-            if(s.maybeUploadError.nonEmpty) {
+
+          case Some(s@UploadFile(_, _, _, _)) =>
+            if (s.maybeUploadError.nonEmpty) {
               Future.successful(s)
             } else
-            (self ? CheckState(id, exitTime, s))
-          }
+              (self ? CheckState(id, exitTime, s))
         }).pipeTo(sender)
       }
     }

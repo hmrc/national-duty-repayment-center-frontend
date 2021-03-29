@@ -41,7 +41,6 @@ class Module extends AbstractModule with AkkaGuiceSupport {
     bind(classOf[HttpPost]).to(classOf[CustomHttpClient])
     bind(classOf[FrontendAppConfig]).to(classOf[FrontendAppConfigImpl]).asEagerSingleton()
     bindActor[CheckStateActor]("check-state-actor")
-
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
 

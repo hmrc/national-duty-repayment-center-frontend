@@ -47,7 +47,6 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           ),
           FileUploads(files =
             Seq(
-              FileUpload.Posted(1, "foo-bar-ref-1"),
               FileUpload.Initiated(2, "foo-bar-ref-2"),
               FileUpload.Accepted(
                 3,
@@ -70,7 +69,6 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
       val expectedState = FileUploaded(
         FileUploads(files =
           Seq(
-            FileUpload.Posted(1, "foo-bar-ref-1"),
             FileUpload.Initiated(2, "foo-bar-ref-2"),
             FileUpload.Accepted(
               3,
@@ -118,7 +116,6 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           ),
           FileUploads(files =
             Seq(
-              FileUpload.Posted(1, "foo-bar-ref-1"),
               FileUpload.Initiated(2, "foo-bar-ref-2"),
               FileUpload.Accepted(
                 3,
@@ -150,7 +147,6 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
         ),
         FileUploads(files =
           Seq(
-            FileUpload.Posted(1, "foo-bar-ref-1"),
             FileUpload.Initiated(2, "foo-bar-ref-2"),
             FileUpload.Accepted(
               3,
@@ -428,7 +424,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           ),
           FileUploads(files =
             Seq(
-              FileUpload.Posted(1, "foo-bar-ref-1")
+              FileUpload.Initiated(1, "foo-bar-ref-1")
             )
           )
       )
@@ -444,7 +440,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
         ),
         FileUploads(files =
           Seq(
-            FileUpload.Posted(1, "foo-bar-ref-1")
+            FileUpload.Initiated(1, "foo-bar-ref-1")
           )
         )
       )
@@ -531,7 +527,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               "errorRedirect"   -> "https://foo.bar/failure"
             )
           ),
-          FileUploads(files = Seq(FileUpload.Posted(1, "foo-bar-ref-1")))
+          FileUploads(files = Seq(FileUpload.Initiated(1, "foo-bar-ref-1")))
         )
       val expectedState = FileUploaded(
         FileUploads(files =
@@ -575,7 +571,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               "errorRedirect"   -> "https://foo.bar/failure"
             )
           ),
-          FileUploads(files = Seq(FileUpload.Posted(1, "foo-bar-ref-1")))
+          FileUploads(files = Seq(FileUpload.Initiated(1, "foo-bar-ref-1")))
         )
       val expectedState = UploadFile(
         "foo-bar-ref-1",

@@ -28,7 +28,6 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.AgentImporterManualAddressView
 
@@ -47,8 +46,6 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
     "return OK and the correct view for a GET" in {
 
-      val backLink = routes.AgentImporterAddressController.onPageLoad(NormalMode)
-
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request = FakeRequest(GET, agentImporterManualAddressRoute)
@@ -60,18 +57,16 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), backLink)(fakeRequest, messages).toString
+        view(form, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val backLink = routes.AgentImporterAddressController.onPageLoad(NormalMode)
-
       val userAnswers = UserAnswers(userAnswersId).set(
         AgentImporterManualAddressPage,
-        Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
+        Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")
       ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -86,23 +81,20 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
       contentAsString(result) mustEqual
         view(form.fill(
-          Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))
-        ), NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), backLink)(fakeRequest, messages).toString
+          Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")
+        ), NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )
           .build()
 
@@ -127,8 +119,6 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val backLink = routes.AgentImporterAddressController.onPageLoad(NormalMode)
-
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))build()
 
       val request =
@@ -144,7 +134,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
 
       application.stop()
     }

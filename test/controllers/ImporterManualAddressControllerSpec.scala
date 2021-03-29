@@ -28,7 +28,6 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.ImporterManualAddressView
 
@@ -55,19 +54,17 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[ImporterManualAddressView]
 
-      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), backLink)(fakeRequest, messages).toString
+        view(form, NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterManualAddressPage, Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ImporterManualAddressPage, Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -77,20 +74,16 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", Some("AA211AA"))),
-          NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), backLink)(fakeRequest, messages).toString
+        view(form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")),
+          NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
-
-      val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
@@ -98,7 +91,6 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
@@ -135,12 +127,10 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.ImporterAddressController.onPageLoad(NormalMode)
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))), backLink)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
 
       application.stop()
     }
