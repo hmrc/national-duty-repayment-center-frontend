@@ -96,7 +96,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
               HtmlFormat.escape(messages(s"$fileName")),
               Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
             )
-          case _ =>  AnswerRow(
+          case _ => AnswerRow(
             HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"proofOfAuthority.empty")),
             Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
@@ -178,9 +178,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
       HtmlFormat.escape(x.City).toString,
       HtmlFormat.escape(x.Region.getOrElse("")).toString,
-      HtmlFormat.escape(x.CountryCode match
-            {case "GB" => messages("United Kingdom")
-             case _ => messages("Other")
+      HtmlFormat.escape(x.CountryCode match { case "GB" => messages("United Kingdom")
+      case _ => messages("Other")
       }).toString,
       HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
     ).filter(!_.isEmpty()).mkString("<br>"))
@@ -220,7 +219,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(messages("agentImporterHasEORI.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"agentImporterHasEORI.$x")),
         Some(routes.AgentImporterHasEORIController.onPageLoad(CheckMode).url)
-    )
+      )
   }
 
   def isImporterVatRegistered: Option[AnswerRow] = userAnswers.get(IsImporterVatRegisteredPage) map {
@@ -292,9 +291,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x => {
       AnswerRow(
         HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(x match
-              { case x if x.length > 0 => "Yes"
-                case _ => "No"}),
+        HtmlFormat.escape(x match { case x if x.length > 0 => "Yes"
+        case _ => "No"
+        }),
         Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
       )
     }
@@ -357,9 +356,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def repaymentAmountSummary: AnswerRow = {
     val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers)
     AnswerRow(
-    HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
+      HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
       HtmlFormat.escape("£" + helper.getTotalAmount().format2d),
-    Some(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode).url)
+      Some(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode).url)
     )
   }
 
@@ -367,7 +366,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     AnswerRow(
       HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
       HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.acceptedCount.toString)
-      .concat(" ").concat(messages("view.upload-file.documents.added"))),
+        .concat(" ").concat(messages("view.upload-file.documents.added"))),
       Some(routes.FileUploadController.showFileUploaded(CheckMode).url)
     )
   }
@@ -386,13 +385,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def getImportantInformationAnswerSection: AnswerSection = {
-    AnswerSection (Some(messages ("impInfo.checkYourAnswersLabel") ),
+    AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
       Seq(claimantType.get,
         numberOfEntriesType.get) ++
         Seq(customsRegulationType.get) ++
         (userAnswers.get(CustomsRegulationTypePage) match {
-            case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => Seq(articleType.get)
-            case _ => Seq(ukRegulationType.get)
+          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => Seq(articleType.get)
+          case _ => Seq(ukRegulationType.get)
         })
     )
   }
@@ -400,13 +399,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def getEntryDetailsAnswerSection: AnswerSection = {
     AnswerSection(Some(messages("entryDetails.checkYourAnswersLabel")),
       Seq.empty ++
-      (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Multiple => Seq(bulkFileUpload.get)
-      case NumberOfEntriesType.Single => Seq.empty
-      }) ++
-      Seq(entryDetailsEPU.get,
-        entryDetailsNumber.get,
-        entryDetailsDate.get)
+        (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+          case NumberOfEntriesType.Multiple => Seq(bulkFileUpload.get)
+          case NumberOfEntriesType.Single => Seq.empty
+        }) ++
+        Seq(entryDetailsEPU.get,
+          entryDetailsNumber.get,
+          entryDetailsDate.get)
     )
   }
 
@@ -423,8 +422,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     AnswerSection(Some(messages("importer.details.checkYourAnswersLabel")),
       Seq(agentImporterHasEORI.get) ++
         (userAnswers.get(AgentImporterHasEORIPage) match {
-            case Some(AgentImporterHasEORI.Yes) => Seq(enterAgentEORI.get)
-            case _  => Seq.empty
+          case Some(AgentImporterHasEORI.Yes) => Seq(enterAgentEORI.get)
+          case _ => Seq.empty
         }) ++
         Seq(
           isImporterVatRegistered.get,
@@ -445,15 +444,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         }) ++
         (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
           case true => Seq(isVATRegistered.get)
-          case _ => Seq.empty}
+          case _ => Seq.empty
+        }
           ) ++
         Seq(importerName.get,
           userAnswers.get(ClaimantTypePage) match {
             case Some(ClaimantType.Importer) =>
-                userAnswers.get(ImporterManualAddressPage) match {
-                  case None => importerAddress.get
-                  case _ => importerManualAddress.get
-                }
+              userAnswers.get(ImporterManualAddressPage) match {
+                case None => importerAddress.get
+                case _ => importerManualAddress.get
+              }
             case _ =>
               userAnswers.get(AgentImporterManualAddressPage) match {
                 case None => agentImporterAddress.get
@@ -463,8 +463,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def getContactDetailsAnswerSection: AnswerSection = {
-    AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
-      Seq (phoneNumber.get,
+    AnswerSection(Some(messages("contact.details.checkYourAnswersLabel")),
+      Seq(phoneNumber.get,
         contactByEmail.get) ++
         (userAnswers.get(EmailAddressPage).get.isEmpty match {
           case true => Seq.empty
@@ -474,7 +474,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def getPaymentInformationAnswerSection: AnswerSection = {
-    AnswerSection (Some (messages ("payment.information.checkYourAnswersLabel") ),
+    AnswerSection(Some(messages("payment.information.checkYourAnswersLabel")),
       Seq.empty ++
         ((userAnswers.get(RepaymentTypePage).contains(RepaymentType.BACS)
           || userAnswers.get(RepaymentTypePage).isEmpty)
@@ -496,8 +496,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
                 case _ => Seq.empty
               }) ++
               (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-                case true => ((userAnswers.get(IndirectRepresentativePage),userAnswers.get(WhomToPayPage)) match {
-                  case (Some(false), Some(WhomToPay.Representative))=> Seq(proofOfAuthority.get)
+                case true => ((userAnswers.get(IndirectRepresentativePage), userAnswers.get(WhomToPayPage)) match {
+                  case (Some(false), Some(WhomToPay.Representative)) => Seq(proofOfAuthority.get)
                   case _ => Seq.empty
                 })
                 case _ => Seq.empty
@@ -682,10 +682,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     }.getOrElse(Nil)
 
     val list = (referenceNumberCheck.nonEmpty, amendCaseResponseTypeCheck.nonEmpty) match {
-      case (true, true) =>  Seq(referenceNumberCheck.get, amendCaseResponseTypeCheck.get)
-      case (true, false) =>  Seq(referenceNumberCheck.get)
-      case (false, true) =>  Seq(amendCaseResponseTypeCheck.get)
-      case(_, _) => Nil
+      case (true, true) => Seq(referenceNumberCheck.get, amendCaseResponseTypeCheck.get)
+      case (true, false) => Seq(referenceNumberCheck.get)
+      case (false, true) => Seq(amendCaseResponseTypeCheck.get)
+      case (_, _) => Nil
     }
 
     Seq(AnswerSection(Some(messages("")),

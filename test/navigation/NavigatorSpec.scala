@@ -296,13 +296,16 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad())
       }
       "go to Repayment Amount Summary page after the Customs Duty Paid page" in {
-        navigator.nextPage(CustomsDutyPaidPage, CheckMode, UserAnswers("id")) mustBe routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+        navigator.nextPage(CustomsDutyPaidPage, CheckMode, UserAnswers("id"))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
       "go to Repayment Amount Summary page after the VAT Paid page" in {
-        navigator.nextPage(VATPaidPage, CheckMode, UserAnswers("id")) mustBe routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+        navigator.nextPage(VATPaidPage, CheckMode, UserAnswers("id"))
+        .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
       "go to Repayment Amount Summary page after the Other Duties Paid page" in {
-        navigator.nextPage(OtherDutiesPaidPage, CheckMode, UserAnswers("id")) mustBe routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+        navigator.nextPage(OtherDutiesPaidPage, CheckMode, UserAnswers("id"))
+        .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
       "go to Customs Duty Paid page when Customs is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs)
@@ -325,13 +328,58 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
           .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
       }
+      "go to the Indirect Representatives page after the Whom to pay page if the representative is to be paid" in {
+        val userAnswers = UserAnswers(userAnswersId).set(WhomToPayPage, WhomToPay.Representative).success.value
+
+        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
+          .mustBe(routes.IndirectRepresentativeController.onPageLoad(CheckMode))
+      }
+      "go to the Check your answers page after the whom to pay page if the importer is to be paid and bank details have already been entered" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(WhomToPayPage, WhomToPay.Importer).success.value
+          .set(BankDetailsPage, BankDetails("name", "111111", "11111111")).success.value
+
+        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+      "go to the Bank Details page after the whom to pay page if the importer is to be paid and bank details have not been entered" in {
+        val userAnswers = UserAnswers(userAnswersId).set(WhomToPayPage, WhomToPay.Importer).success.value
+
+        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
+          .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
+      }
       "go to Bank Details page when BACs is selected as a repayment method and bank account details are empty" in {
         val userAnswers = UserAnswers(userAnswersId).set(RepaymentTypePage, RepaymentType.BACS).success.value
 
         navigator.nextPage(RepaymentTypePage, CheckMode, userAnswers)
         .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
       }
+      "go to the Whom is to be paid page after the repayment type page when in agent journey and BACS is selected" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
 
+        navigator.nextPage(RepaymentTypePage, CheckMode, userAnswers)
+          .mustBe(routes.WhomToPayController.onPageLoad(CheckMode))
+      }
+      "go to the Proof of Authority page after the Indirect Representative page when in agent journey and is not an indirect representative and BACS is selected" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
+          .set(IndirectRepresentativePage, false).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, CheckMode, userAnswers)
+          .mustBe(routes.ProofOfAuthorityController.showFileUpload(CheckMode))
+      }
+      "go to the Bank Details page after the Indirect Representative page when in agent journey and is an indirect representative and BACS is selected" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
+          .set(IndirectRepresentativePage, true).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, CheckMode, userAnswers)
+          .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
+      }
     }
   }
 }

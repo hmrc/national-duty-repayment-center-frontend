@@ -37,6 +37,7 @@ import views.html.ProofOfAuthorityView
 import java.time.LocalDateTime
 
 import javax.inject.{Inject, Named}
+import pages.BankDetailsPage
 
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
@@ -68,8 +69,11 @@ class ProofOfAuthorityController @Inject()(
             case s: FileUploaded => {
               if(mode == "NormalMode")
                 Future.successful(Redirect(routes.BankDetailsController.onPageLoad(mode)))
-              else
-                Future.successful(Redirect(routes.CheckYourAnswersController.onPageLoad))
+              else request.userAnswers.get(BankDetailsPage).isEmpty match {
+                case true => Future.successful(Redirect(routes.BankDetailsController.onPageLoad(mode)))
+                case false => Future.successful(Redirect(routes.CheckYourAnswersController.onPageLoad))
+              }
+
             }
             case s: UploadFile => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload(mode)))
             case _ => Future.successful(fileStateError)

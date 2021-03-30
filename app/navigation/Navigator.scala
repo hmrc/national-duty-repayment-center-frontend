@@ -19,6 +19,8 @@ package navigation
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.Call
 import controllers.routes
+import models.ClaimantType.Representative
+import models.RepaymentType.BACS
 import pages._
 import models._
 
@@ -195,17 +197,24 @@ class Navigator @Inject()() {
 
   private def getWhomToPayCheckMode(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
     case Some(WhomToPay.Representative) => routes.IndirectRepresentativeController.onPageLoad(CheckMode)
-    case Some(WhomToPay.Importer) => routes.CheckYourAnswersController.onPageLoad()
+    case Some(WhomToPay.Importer) => answers.get(BankDetailsPage).isEmpty match {
+      case false => routes.CheckYourAnswersController.onPageLoad()
+      case true => routes.BankDetailsController.onPageLoad(CheckMode)
+    }
   }
 
-  private def getRepaymentTypeWithCheckMode(answers: UserAnswers): Call = answers.get(RepaymentTypePage) match {
-    case Some(RepaymentType.BACS) if answers.get(BankDetailsPage).isEmpty => routes.BankDetailsController.onPageLoad(CheckMode)
-    case Some(RepaymentType.CMA) => routes.CheckYourAnswersController.onPageLoad()
+  private def getRepaymentTypeWithCheckMode(answers: UserAnswers): Call = (answers.get(RepaymentTypePage), answers.get(ClaimantTypePage)) match {
+    case (Some(BACS), Some(Representative)) => routes.WhomToPayController.onPageLoad(CheckMode)
+    case (Some(BACS), _) if answers.get(BankDetailsPage).isEmpty => routes.BankDetailsController.onPageLoad(CheckMode)
+    case (Some(RepaymentType.CMA), _) => routes.CheckYourAnswersController.onPageLoad()
   }
 
   private def getIndirectRepresentativeWithCheckMode(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
     case Some(false) => routes.ProofOfAuthorityController.showFileUpload(CheckMode)
-    case Some(true)  => routes.CheckYourAnswersController.onPageLoad()
+    case Some(true)  => answers.get(BankDetailsPage).isEmpty match {
+      case false => routes.CheckYourAnswersController.onPageLoad()
+      case true => routes.BankDetailsController.onPageLoad(CheckMode)
+    }
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
