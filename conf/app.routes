@@ -263,3 +263,8 @@ POST        /change-amend-case-send-information/file-uploaded                   
 GET         /change-amend-case-send-information/file-verification                            controllers.AmendCaseSendInformationController.showWaitingForFileVerification(mode: Mode = CheckMode)
 GET         /change-amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected(mode: Mode = CheckMode)
 GET         /change-amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
+
+GET        /contact                        controllers.EmailAddressAndPhoneNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /contact                        controllers.EmailAddressAndPhoneNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /change-contact                 controllers.EmailAddressAndPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact                 controllers.EmailAddressAndPhoneNumberController.onSubmit(mode: Mode = CheckMode)

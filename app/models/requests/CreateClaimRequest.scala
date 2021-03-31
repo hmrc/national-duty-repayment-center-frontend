@@ -97,8 +97,9 @@ object CreateClaimRequest {
       case _ => userAnswers.get(AgentImporterManualAddressPage)
     }
 
-    def getEmailAddress(userAnswers: UserAnswers): Option[String] = userAnswers.get(EmailAddressPage) match {
-      case Some(email) if email.length > 0 => Some(email)
+    def getEmailAddress(userAnswers: UserAnswers): Option[String] = userAnswers.get(EmailAddressAndPhoneNumberPage) match {
+      //case Some(email) if email.length > 0 => Some(email)
+      case Some(emailAndPhone) if emailAndPhone.email.map(_.length).getOrElse(0) > 0 => Some(emailAndPhone.email.get)
       case _ => None
     }
 

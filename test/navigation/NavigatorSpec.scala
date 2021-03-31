@@ -143,20 +143,20 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ReasonForOverpaymentController.onPageLoad(NormalMode))
       }
 
-      "go to WhomToPay page after EmailAddressPage page when the Representative's multiple entry journeys is selected " in {
+      "go to WhomToPay page after EmailAddressAndPhoneNumberPage page when the Representative's multiple entry journeys is selected " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value.
             set(ClaimantTypePage, ClaimantType.Representative).success.value
-        navigator.nextPage(EmailAddressPage, NormalMode, answers)
+        navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
           .mustBe(routes.WhomToPayController.onPageLoad(NormalMode))
       }
 
-      "go to RepaymentType page after EmailAddressPage page when Importers/Representative single entry journeys selected " in {
+      "go to RepaymentType page after EmailAddressAndPhoneNumberPage page when Importers/Representative single entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
-        navigator.nextPage(EmailAddressPage, NormalMode, answers)
+        navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
           .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
       }
 
@@ -240,7 +240,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
 
-        navigator.nextPage(EmailAddressPage, NormalMode, answers)
+        navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
 

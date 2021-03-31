@@ -18,6 +18,8 @@
 
 @(
     form: Form[_],
+    idPrefix: Option[String] = None,
+    name: Option[String] = None,
     legend: String,
     items: Seq[CheckboxItem],
     legendAsHeading: Boolean = true,

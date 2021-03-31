@@ -219,7 +219,7 @@ object TestData {
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
       .flatMap(_.set(WhomToPayPage, testWhomToPay))
       .flatMap(_.set(BankDetailsPage, testBankDetails))
       .get
@@ -246,7 +246,7 @@ object TestData {
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPay))
       .flatMap(_.set(BankDetailsPage, testBankDetails))
@@ -274,7 +274,7 @@ object TestData {
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
       .get
 
@@ -295,7 +295,7 @@ object TestData {
       .flatMap(_.set(ImporterNamePage, testImporterName))
       .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
       .get
 
@@ -316,7 +316,7 @@ object TestData {
       .flatMap(_.set(ImporterNamePage, testImporterName))
       .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
       .get
 
@@ -342,7 +342,7 @@ object TestData {
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
       .get
@@ -369,7 +369,7 @@ object TestData {
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(BankDetailsPage, testBankDetailsWith6Digits))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))

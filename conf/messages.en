@@ -739,3 +739,16 @@ contact.details.checkYourAnswersLabel = Contact details
 payment.information.checkYourAnswersLabel = Payment information
 importer.details.checkYourAnswersLabel = Importer details
 create.cya.continue = Accept and send
+
+isContactProvided.title = How can we contact you?
+isContactProvided.heading = How can we contact you?
+isContactProvided.hintText = <p>We will use these details if we need to contact you for further information.</p><div id="value-hint" class="govuk-hint"> Select at least one option.</div>
+isContactProvided.01.hint = Email address
+isContactProvided.02.hint = Phone number
+isContactProvided.01 = Email
+isContactProvided.02 = Phone
+isContactProvided.checkYourAnswersLabel = Email address
+isContactProvided.error.required = Enter an email address
+isContactProvided.error.selection.required = Select if we can contact you by email
+isContactProvided.error.length = Email Address must be 85 characters or less
+isContactProvided.error.invalid = Enter an email address in the correct format, like name@example.com
