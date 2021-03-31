@@ -19,35 +19,32 @@ package controllers
 import controllers.actions._
 import forms.DeclarantReferenceNumberFormProvider
 import javax.inject.Inject
-import models.{Mode, NoOfEntries}
+import models.{DeclarantReferenceNumber, DeclarantReferenceType, Mode, NoOfEntries, UserAnswers}
 import navigation.Navigator
-import pages.DeclarantReferenceNumberPage
+import pages.{DeclarantReferenceNumberPage, EmailAddressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarantReferenceNumberView
-import models.DeclarantReferenceNumber
+import models.DeclarantReferenceType.{No, Yes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class DeclarantReferenceNumberController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: DeclarantReferenceNumberFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: DeclarantReferenceNumberView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                    override val messagesApi: MessagesApi,
+                                                    sessionRepository: SessionRepository,
+                                                    navigator: Navigator,
+                                                    identify: IdentifierAction,
+                                                    getData: DataRetrievalAction,
+                                                    requireData: DataRequiredAction,
+                                                    formProvider: DeclarantReferenceNumberFormProvider,
+                                                    val controllerComponents: MessagesControllerComponents,
+                                                    view: DeclarantReferenceNumberView
+                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode): Call = {
-    routes.EmailAddressController.onPageLoad(mode)
-  }
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -57,7 +54,7 @@ class DeclarantReferenceNumberController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode)))
+      Ok(view(preparedForm, mode))
   }
 
 
@@ -66,7 +63,7 @@ class DeclarantReferenceNumberController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode)))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
           for {
