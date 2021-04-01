@@ -27,6 +27,7 @@ import uk.gov.voa.play.form.ConditionalMappings.{mandatoryAndOnlyIfAnyOf, mandat
 import javax.inject.Inject
 
 case class EmailAndPhoneNumber(emailOrPhone: Set[IsContactProvided], email: Option[String], phone: Option[String])
+
 object EmailAndPhoneNumber {
   implicit val format: OFormat[EmailAndPhoneNumber] = Json.format[EmailAndPhoneNumber]
 }
@@ -43,13 +44,14 @@ class EmailAddressAndPhoneNumberFormProvider @Inject() extends Mappings with Tri
 
   def apply(): Form[EmailAndPhoneNumber] =
     Form( mapping(
-      "value" -> set(enumerable[IsContactProvided]("isContactProvided.error.selection.required")).verifying(nonEmptySet("isContactProvided.error.selection.required")),
-      "email" ->  mandatoryIfContains(contains("value", "01"),
-        emailAddressMapping(
-          "isContactProvided.error.length",
-          "isContactProvided.error.invalid",
-          "isContactProvided.error.required",
-          "isContactProvided.error.required").transform[String](x => x.getOrElse(""), value => Option(value))),
+      "value" -> set(enumerable[IsContactProvided]("isContactProvided.error.required")).verifying(nonEmptySet("isContactProvided.error.required")),
+      "email" ->  mandatoryIfContains(contains("value", "01"), text("emailAddress.error.required")
+        .transform[String](trimWhitespace, value => value)
+        .verifying(firstError(
+          maxLength(85, "emailAddress.error.length"),
+          regexp(Validation.emailRegex,"emailAddress.error.invalid")
+        ))
+      ),
 
       "phone" ->  mandatoryIfContains(contains("value","02"), text("phoneNumber.error.required")
         .transform[String](trimWhitespace, value => value)

@@ -25,7 +25,9 @@
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
-
+@{
+println(form.data.values)
+}
 @conditionalContent = {
     @forms.inputText(
         form = form,
@@ -38,12 +40,13 @@
         attributes = Map("autocomplete" -> "email")
     )
 }
+
 @conditionalContentPhone = {
     @forms.inputText(
         form = form,
         id = "phone",
         name = "phone",
-        label = "isContactProvided.02.hint",
+        label = "phoneNumber.02.hint",
         inputType = "text",
         isPageHeading = false,
         isInFieldset = false,
@@ -52,7 +55,7 @@
 }
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("isContactProvided.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("emailAddress.title"))}")
 ) {
 
     @forms.formWithCSRF(action = EmailAddressAndPhoneNumberController.onSubmit(mode), args = 'novalidate -> "novalidate") {
@@ -62,27 +65,27 @@
     @forms.inputCheckboxes(
         form = form,
         idPrefix = Some("value"),
-        name = Some("value"),
+        name = Some("value[]"),
         items = Seq(
             CheckboxItem(
-                name = Some("value[]"),
-                value = "01",
-                content = Text(messages("isContactProvided.01")),
-                checked = form.data.values.exists(_ == "01"),
-                conditionalHtml = Some(conditionalContent)
-            ),
+            name = Some("value[]"),
+            value = "01",
+            content = Text(messages("isContactProvided.01")),
+            checked = form.data.values.exists(_ == "01"),
+            conditionalHtml = Some(conditionalContent)
+        ),
             CheckboxItem(
-                name = Some("value"),
+                name = Some("value[]"),
                 value = "02",
                 content = Text(messages("isContactProvided.02")),
                 checked = form.data.values.exists(_ == "02"),
                 conditionalHtml = Some(conditionalContentPhone)
             )
         ),
-            legendAsHeading = true,
-            legend = messages("isContactProvided.heading"),
-            hint = Some(Html(messages("isContactProvided.hintText")))
+        legendAsHeading = true,
+        legend = messages("emailAddress.heading"),
+        hint = Some(Html(messages("emailAddress.hintText")))
     )
-    @html.button("site.continue")
+        @html.button("site.continue")
     }
 }
