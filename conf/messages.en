@@ -434,15 +434,15 @@ agentImporterAddress.countryCode.error.invalid = Country code includes 1 or more
 agentImporterAddress.postalCode.error.invalid = Enter a real postcode
 
 
-importerManualAddress.title = Enter their address
-importerManualAddress.heading = Enter their address
+importerManualAddress.title = Enter the importer''s address
+importerManualAddress.heading = Enter the importer''s address
 importerManualAddress.addressLine1.heading = Building and street
 importerManualAddress.addressLine2.heading = Building and street Address line 2
 importerManualAddress.city.heading = Town or city
 importerManualAddress.county.heading = County
 importerManualAddress.country.heading = Country
 importerManualAddress.checkYourAnswersLabel = Importer address
-importerManualAddress.error.required = Enter their address
+importerManualAddress.error.required = Enter the importer''s address
 importerManualAddress.hint = We will use this to send letters about this application.
 importerManualAddress.error.length = Address must be 128 characters or less
 importerYourAddress.title = Enter your address
