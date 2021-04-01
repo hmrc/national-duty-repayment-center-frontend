@@ -270,25 +270,25 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def phoneNumber: Option[AnswerRow] = userAnswers.get(PhoneNumberPage) map {
+  def phoneNumber: Option[AnswerRow] = userAnswers.get(EmailAddressAndPhoneNumberPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("phoneNumber.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.PhoneNumberController.onPageLoad(NormalMode).url)
+        HtmlFormat.escape(x.phone.getOrElse("")),
+        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url)
       )
   }
 
-  def emailAddress: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
+  def emailAddress: Option[AnswerRow] = userAnswers.get(EmailAddressAndPhoneNumberPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("emailAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.EmailAddressController.onPageLoad(NormalMode).url)
+        HtmlFormat.escape(x.email.getOrElse("")),
+        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url)
       )
   }
 
-  def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
+ /* def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
     x => {
       AnswerRow(
         HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
@@ -296,6 +296,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
               { case x if x.length > 0 => "Yes"
                 case _ => "No"}),
         Some(routes.EmailAddressController.onPageLoad(NormalMode).url)
+      )
+    }
+  }*/
+
+  def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressAndPhoneNumberPage) map {
+    x => {
+      AnswerRow(
+        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.emailOrPhone.toString),
+        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url)
       )
     }
   }
@@ -466,9 +476,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
       Seq (phoneNumber.get,
         contactByEmail.get) ++
-        (userAnswers.get(EmailAddressPage).get.isEmpty match {
+        (userAnswers.get(EmailAddressAndPhoneNumberPage).get.email.isEmpty match {
+        //(userAnswers.get(EmailAddressPage).get.isEmpty match {
           case true => Seq.empty
           case _ => Seq(emailAddress.get)
+          case _ => Seq(phoneNumber.get)
         })
     )
   }
