@@ -67,7 +67,7 @@ class ProofOfAuthorityController @Inject()(
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
             case s: FileUploaded => {
-              if(mode == "NormalMode")
+              if(mode.equals(NormalMode))
                 Future.successful(Redirect(routes.BankDetailsController.onPageLoad(mode)))
               else request.userAnswers.get(BankDetailsPage).isEmpty match {
                 case true => Future.successful(Redirect(routes.BankDetailsController.onPageLoad(mode)))
