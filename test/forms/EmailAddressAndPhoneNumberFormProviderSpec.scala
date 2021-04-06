@@ -32,7 +32,7 @@ class EmailAddressAndPhoneNumberFormProviderSpec extends StringFieldBehaviours {
   ".email" must {
 
     val fieldName = "email"
-    val fieldName2 = "value"
+    val fieldName2 = "emailOrPhone"
     val fieldValueYes = "01"
 
     val basicEmail            = Gen.const("foo@example.com")

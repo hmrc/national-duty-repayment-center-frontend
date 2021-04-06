@@ -16,6 +16,7 @@
 
 package data
 
+import forms.EmailAndPhoneNumber
 import models.AmendCaseResponseType.FurtherInformation
 import models.FileUpload.Accepted
 import models._
@@ -42,8 +43,7 @@ object TestData {
   val testImporterName: UserName = UserName("importer first", "importer last")
   val testImporterManualAddress: Address = Address("line 1", Some("line 2"), "City", Some("Region"), "GB", "AA11AA")
   val testAgentManualAddress: Address = Address("line 1 agent", Some("line 2 agent"), "City agent", Some("Region agent"), "IT", "AA11AA")
-  val testPhoneNumber: String = "01234567890"
-  val testEmailAddress: String = "test@testing.com"
+  val testEmailAndPhoneNumber: EmailAndPhoneNumber = EmailAndPhoneNumber(Set(IsContactProvided.Email, IsContactProvided.Phone), Some("test@testing.com"), Some("01234567890"))
   val testWhomToPay: WhomToPay = WhomToPay.Importer
   val testWhomToPayRepresentative: WhomToPay = WhomToPay.Representative
   val testWhomToPayCMA: WhomToPay = WhomToPay.CMA
@@ -166,8 +166,8 @@ object TestData {
     testAgentEORI,
     testAgentName,
     testAgentManualAddress,
-    Some(testPhoneNumber),
-    Some(testEmailAddress)
+    testEmailAndPhoneNumber.phone,
+    testEmailAndPhoneNumber.email
   )
 
   val testImporterDetailsRepresentativeJourney: UserDetails = UserDetails(
@@ -184,8 +184,8 @@ object TestData {
     testImporterEORI,
     testImporterName,
     testImporterManualAddress,
-    Some(testPhoneNumber),
-    Some(testEmailAddress)
+    testEmailAndPhoneNumber.phone,
+    testEmailAndPhoneNumber.email
   )
 
   val testDutyTypeTaxDetails: DutyTypeTaxDetails = DutyTypeTaxDetails(
@@ -218,8 +218,7 @@ object TestData {
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
-      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(WhomToPayPage, testWhomToPay))
       .flatMap(_.set(BankDetailsPage, testBankDetails))
       .get
@@ -245,8 +244,7 @@ object TestData {
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
-      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPay))
       .flatMap(_.set(BankDetailsPage, testBankDetails))
@@ -273,8 +271,7 @@ object TestData {
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
-      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
       .get
 
@@ -294,8 +291,7 @@ object TestData {
       .flatMap(_.set(IsVATRegisteredPage, IsVATRegistered.Yes))
       .flatMap(_.set(ImporterNamePage, testImporterName))
       .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
-      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
       .get
 
@@ -315,8 +311,7 @@ object TestData {
       .flatMap(_.set(IsVATRegisteredPage, IsVATRegistered.Yes))
       .flatMap(_.set(ImporterNamePage, testImporterName))
       .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
-      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
       .get
 
@@ -341,8 +336,7 @@ object TestData {
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
-      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
       .get
@@ -368,8 +362,7 @@ object TestData {
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(ImporterNamePage, testAgentName))
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
-      .flatMap(_.set(PhoneNumberPage, testPhoneNumber))
-      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAddress))
+      .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(BankDetailsPage, testBankDetailsWith6Digits))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))

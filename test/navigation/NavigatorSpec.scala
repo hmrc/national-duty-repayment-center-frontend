@@ -182,7 +182,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
         navigator.nextPage(AgentImporterManualAddressPage, NormalMode, answers)
-          .mustBe(routes.PhoneNumberController.onPageLoad(NormalMode))
+          .mustBe(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode))
       }
 
       "go to ImporterEori page after importerHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
@@ -250,7 +250,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
 
         navigator.nextPage(ImporterManualAddressPage, NormalMode, answers)
-          .mustBe(routes.PhoneNumberController.onPageLoad(NormalMode))
+          .mustBe(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode))
       }
 
       "go to ImporterHasEori page after ImporterManualAddress page when the claimant is representative" in {

@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import forms.EmailAddressAndPhoneNumberFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.{EmailAddressAndPhoneNumberFormProvider, EmailAndPhoneNumber}
+import models.{IsContactProvided, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -28,7 +28,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.EmailAddressView
+import views.html.EmailAddressAndPhoneNumberView
 
 import scala.concurrent.Future
 
@@ -63,7 +63,8 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(EmailAddressAndPhoneNumberPage, "test@test.com").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(EmailAddressAndPhoneNumberPage,
+        EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -76,30 +77,7 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Some("test@test.com")), NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
-    "redirect to the next page when valid data is submitted" in {
-
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
-
-      val request =
-        FakeRequest(POST, emailAddressRoute)
-          .withFormUrlEncodedBody(("email", "test@test.com"),("value", "01"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+        view(form.fill(EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +92,7 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
 
       val boundForm = form.bind(Map("email" -> ""))
 
-      val view = application.injector.instanceOf[EmailAddressView]
+      val view = application.injector.instanceOf[EmailAddressAndPhoneNumberView]
 
       val result = route(application, request).value
 

@@ -16,6 +16,7 @@
 
 package pages
 
+import forms.EmailAndPhoneNumber
 import pages.behaviours.PageBehaviours
 
 
@@ -23,10 +24,10 @@ class EmailAddressAndPhoneNumberPageSpec extends PageBehaviours {
 
   "EmailAddressPage" must {
 
-    beRetrievable[String](EmailAddressAndPhoneNumberPage)
+    beRetrievable[EmailAndPhoneNumber](EmailAddressAndPhoneNumberPage)
 
-    beSettable[String](EmailAddressAndPhoneNumberPage)
+    beSettable[EmailAndPhoneNumber](EmailAddressAndPhoneNumberPage)
 
-    beRemovable[String](EmailAddressAndPhoneNumberPage)
+    beRemovable[EmailAndPhoneNumber](EmailAddressAndPhoneNumberPage)
   }
 }

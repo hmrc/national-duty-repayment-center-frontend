@@ -95,12 +95,6 @@ POST       /agentNameImporter                        controllers.AgentNameImport
 GET        /changeAgentNameImporter                  controllers.AgentNameImporterController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentNameImporter                  controllers.AgentNameImporterController.onSubmit(mode: Mode = CheckMode)
 
-GET        /contact-by-email                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
-POST       /contact-by-email                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
-GET        /change-contact-by-email                 controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-contact-by-email                 controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
-
-
 GET        /repaid                        controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
 POST       /repaid                        controllers.WhomToPayController.onSubmit(mode: Mode = NormalMode)
 GET        /change-repaid                  controllers.WhomToPayController.onPageLoad(mode: Mode = CheckMode)
