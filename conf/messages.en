@@ -546,15 +546,6 @@ additionalFileUpload.02 = No
 additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
 additionalFileUpload.error.required = Select yes if you need to upload another file
 
-contactByEmail.title = Can we contact you by email?
-contactByEmail.heading = Can we contact you by email?
-contactByEmail.01 = Yes
-contactByEmail.02 = No
-contactByEmail.checkYourAnswersLabel = Can we contact you by email?
-contactByEmail.error.required = Select if we can contact you by email
-contactByEmail.hintText = We will use this to contact you about this application. If you select ''No'' we will only contact you by post and telephone.
-contactByEmail.yes = Email address
-
 postcode.error.noneFound = Postcode cannot be found
 addressFound.error = Select the address or enter the address manually
 postcode.error.required = Enter a UK postcode

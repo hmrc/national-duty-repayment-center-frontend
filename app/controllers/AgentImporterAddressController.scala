@@ -144,7 +144,7 @@ class AgentImporterAddressController @Inject()(
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, address))
                   removeManualAddressAnswers <- Future.fromTry(updatedAnswers.remove(AgentImporterManualAddressPage))
                   _              <- sessionRepository.set(removeManualAddressAnswers)
-                } yield Redirect(routes.PhoneNumberController.onPageLoad(mode))
+                } yield Redirect(routes.EmailAddressAndPhoneNumberController.onPageLoad(mode))
             )
         )
       }.getOrElse(Future.successful(Redirect(routes.AgentImporterAddressController.enteredAddressPageLoad())))

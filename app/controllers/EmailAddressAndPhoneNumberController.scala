@@ -18,14 +18,12 @@ package controllers
 
 import controllers.actions._
 import forms.EmailAddressAndPhoneNumberFormProvider
-import forms.PhoneNumberFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.EmailAddressAndPhoneNumberPage
-import pages.PhoneNumberPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.EmailAddressAndPhoneNumberView

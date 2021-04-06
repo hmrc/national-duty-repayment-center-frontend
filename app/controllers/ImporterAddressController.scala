@@ -145,7 +145,7 @@ class ImporterAddressController @Inject()(
                   _              <- sessionRepository.set(removeManualAddressAnswers)
                 } yield {
                   request.userAnswers.get(ClaimantTypePage) match {
-                    case Some(ClaimantType.Importer) => Redirect(routes.PhoneNumberController.onPageLoad(mode))
+                    case Some(ClaimantType.Importer) => Redirect(routes.EmailAddressAndPhoneNumberController.onPageLoad(mode))
                     case _ => Redirect(routes.ImporterHasEoriController.onPageLoad(mode))
                   }
                 }

@@ -45,13 +45,13 @@ class Navigator @Inject()() {
     case ImporterManualAddressPage => getImporterManualAddress
     case ImporterHasEoriPage => getEORIConfirmation
     case IsVATRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
-    case PhoneNumberPage => _ => routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode)
+    //case PhoneNumberPage => _ => routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode)
     case EmailAddressAndPhoneNumberPage => getRepaymentType
     case RepaymentTypePage => getRepaymentMethodType
     case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad
     case EnterAgentEORIPage => _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
     case AgentNameImporterPage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
-    case AgentImporterManualAddressPage => _ => routes.PhoneNumberController.onPageLoad(NormalMode)
+    case AgentImporterManualAddressPage => _ => routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode)
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
@@ -65,7 +65,7 @@ class Navigator @Inject()() {
   }
 
   private def getImporterManualAddress(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
-    case Some(ClaimantType.Importer)  => routes.PhoneNumberController.onPageLoad(NormalMode)
+    case Some(ClaimantType.Importer)  => routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode)
     case _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
   }
 

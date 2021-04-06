@@ -288,28 +288,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
- /* def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
-    x => {
-      AnswerRow(
-        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(x match
-              { case x if x.length > 0 => "Yes"
-                case _ => "No"}),
-        Some(routes.EmailAddressController.onPageLoad(NormalMode).url)
-      )
-    }
-  }*/
-
-  def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressAndPhoneNumberPage) map {
-    x => {
-      AnswerRow(
-        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.emailOrPhone.toString),
-        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url)
-      )
-    }
-  }
-
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
     x =>
       AnswerRow(
@@ -474,13 +452,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   def getContactDetailsAnswerSection: AnswerSection = {
     AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
-      Seq (phoneNumber.get,
-        contactByEmail.get) ++
-        (userAnswers.get(EmailAddressAndPhoneNumberPage).get.email.isEmpty match {
-        //(userAnswers.get(EmailAddressPage).get.isEmpty match {
+        (userAnswers.get(EmailAddressAndPhoneNumberPage).get.phone.isEmpty match {
           case true => Seq.empty
-          case _ => Seq(emailAddress.get)
-          case _ => Seq(phoneNumber.get)
+          case false => Seq(phoneNumber.get)
+        }) ++
+        (userAnswers.get(EmailAddressAndPhoneNumberPage).get.email.isEmpty match {
+          case true => Seq.empty
+          case false => Seq(emailAddress.get)
         })
     )
   }
