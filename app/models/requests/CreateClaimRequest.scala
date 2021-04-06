@@ -111,16 +111,16 @@ object CreateClaimRequest {
     def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
       name <- userAnswers.get(ImporterNamePage)
       address <- getAgentImporterAddress(userAnswers)
-      telephone <- getTelePhone(userAnswers)
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
+      val telephone = getTelePhone(userAnswers)
       val email = getEmailAddress(userAnswers)
       UserDetails(
         "false",
         eori,
         name,
         address,
-        Some(telephone),
+        telephone,
         email
       )
     }
