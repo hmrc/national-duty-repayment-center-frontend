@@ -217,11 +217,24 @@ class Navigator @Inject()() {
     }
   }
 
+  private def getVatPaidCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
+    case true => routes.OtherDutiesPaidController.onPageLoad(CheckMode)
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+  }
+
+  private def getCustomsDutyCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
+    case true => routes.VATPaidController.onPageLoad(CheckMode)
+    case _ => answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
+      case true =>routes.OtherDutiesPaidController.onPageLoad(CheckMode)
+      case _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+    }
+  }
+
   private val checkRouteMap: Page => UserAnswers => Call = {
     case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
-    case CustomsDutyPaidPage => _ =>  routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+    case CustomsDutyPaidPage => getCustomsDutyCheckMode
     case CustomsRegulationTypePage => getEntryDetailsWithCheckMode
-    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+    case VATPaidPage => getVatPaidCheckMode
     case ImporterHasEoriPage => getEORIConfirmationWithCheckMode
     case AgentImporterHasEORIPage => getAgentEORIStatusWithCheckMode
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)

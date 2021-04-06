@@ -295,13 +295,40 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         navigator.nextPage(FurtherInformationPage, CheckMode, userAnswers)
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad())
       }
-      "go to Repayment Amount Summary page after the Customs Duty Paid page" in {
-        navigator.nextPage(CustomsDutyPaidPage, CheckMode, UserAnswers("id"))
+      "go to Repayment Amount Summary page after the Customs Duty Paid page when VAT and Other Duties is not selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
-      "go to Repayment Amount Summary page after the VAT Paid page" in {
-        navigator.nextPage(VATPaidPage, CheckMode, UserAnswers("id"))
+      "go to Vat Paid page after the Customs Duty Paid page when VAT is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs, Vat)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
+          .mustBe(routes.VATPaidController.onPageLoad(CheckMode))
+      }
+      "go to Other Duties Paid page after the Customs Duty Paid page when VAT is not selected and Other Duties is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs, Other)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
+          .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
+      }
+      "go to Repayment Amount Summary page after the VAT Paid page when Other Duties is not selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Vat)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(VATPaidPage, CheckMode, userAnswers)
         .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
+      }
+      "go to Other Duties page after the VAT Paid page when Other Duties is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Other)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(VATPaidPage, CheckMode, userAnswers)
+        .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
       }
       "go to Repayment Amount Summary page after the Other Duties Paid page" in {
         navigator.nextPage(OtherDutiesPaidPage, CheckMode, UserAnswers("id"))

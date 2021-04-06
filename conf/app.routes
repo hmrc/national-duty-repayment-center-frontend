@@ -234,7 +234,7 @@ GET         /change-file-upload                           controllers.FileUpload
 GET         /change-file-verification                     controllers.FileUploadController.showWaitingForFileVerification(mode: Mode = CheckMode)
 GET         /change-file-rejected                         controllers.FileUploadController.markFileUploadAsRejected(mode: Mode = CheckMode)
 POST        /change-file-uploaded                         controllers.FileUploadController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
-GET         /file-uploaded/:reference/remove              controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
+GET         /file-uploaded/:reference/change-remove              controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
 GET         /change-back-file-upload                            controllers.FileUploadController.backLink(mode: Mode = CheckMode)
 
 # bulk uploads
