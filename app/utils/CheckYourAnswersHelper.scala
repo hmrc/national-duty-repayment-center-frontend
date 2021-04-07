@@ -485,7 +485,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         (userAnswers.get(EmailAddressAndPhoneNumberPage).get.email.isEmpty match {
           case true => Seq.empty
           case false => Seq(emailAddress.get)
-        })
+        }) ++
+          declarantReferenceNumberQuestion
     )
   }
 

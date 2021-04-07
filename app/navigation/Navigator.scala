@@ -45,7 +45,7 @@ class Navigator @Inject()() {
     case ImporterManualAddressPage => getImporterManualAddress
     case ImporterHasEoriPage => getEORIConfirmation
     case IsVATRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
-    case EmailAddressAndPhoneNumberPage => routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
+    case EmailAddressAndPhoneNumberPage => _ => routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
     case DeclarantReferenceNumberPage => getRepaymentType
     case RepaymentTypePage => getRepaymentMethodType
     case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad

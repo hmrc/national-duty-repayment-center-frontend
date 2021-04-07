@@ -143,28 +143,20 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ReasonForOverpaymentController.onPageLoad(NormalMode))
       }
 
-      "go to WhomToPay page after EmailAddressAndPhoneNumberPage page when the Representative's multiple entry journeys is selected " in {
+      "go to DeclarantReferenceNumber page after EmailAddressAndPhoneNumberPage page when the Representative's multiple entry journeys is selected " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value.
             set(ClaimantTypePage, ClaimantType.Representative).success.value
         navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
-          .mustBe(routes.WhomToPayController.onPageLoad(NormalMode))
+          .mustBe(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode))
       }
 
-      "go to RepaymentType page after EmailAddressAndPhoneNumberPage page when Importers/Representative single entry journeys selected " in {
+      "go to DeclarantReferenceNumber page after EmailAddressAndPhoneNumberPage page when Importers/Representative single entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
         navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
-          .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
-      }
-
-      "go to DeclarantReferenceNumber page after EmailAddressPage page when Importers/Representative single entry journeys selected " in {
-        val answers =
-          emptyUserAnswers
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
-        navigator.nextPage(EmailAddressPage, NormalMode, answers)
           .mustBe(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode))
       }
 

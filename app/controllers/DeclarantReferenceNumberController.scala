@@ -19,15 +19,14 @@ package controllers
 import controllers.actions._
 import forms.DeclarantReferenceNumberFormProvider
 import javax.inject.Inject
-import models.{DeclarantReferenceNumber, DeclarantReferenceType, Mode, NoOfEntries, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.{DeclarantReferenceNumberPage, EmailAddressPage}
+import pages.DeclarantReferenceNumberPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarantReferenceNumberView
-import models.DeclarantReferenceType.{No, Yes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
