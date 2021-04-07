@@ -22,14 +22,14 @@ import play.api.data.FormError
 
 class EmailAddressAndPhoneNumberFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "emailAddress.error.required"
-  val lengthKey = "emailAddress.error.length"
-  val invalidKey = "emailAddress.error.invalid"
-  val maxLength = 85
 
   val form = new EmailAddressAndPhoneNumberFormProvider()()
 
   ".email" must {
+
+    val requiredKey = "emailAddress.error.required"
+    val lengthKey = "emailAddress.error.length"
+    val invalidKey = "emailAddress.error.invalid"
 
     val fieldName = "email"
     val fieldName2 = "emailOrPhone"
@@ -43,15 +43,6 @@ class EmailAddressAndPhoneNumberFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       validData
-    )
-
-    behave like fieldWithMaxLengthCombo(
-      form,
-      fieldName,
-      fieldName2,
-      fieldValueYes,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey)
     )
 
   }

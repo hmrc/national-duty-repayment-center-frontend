@@ -731,7 +731,7 @@ payment.information.checkYourAnswersLabel = Payment information
 importer.details.checkYourAnswersLabel = Importer details
 create.cya.continue = Accept and send
 
-isContactProvided.error.required = Select yes, if we can contact you by email
+isContactProvided.error.required = Select how we can contact you
 isContactProvided.01 = Email
 isContactProvided.02 = Phone
 phoneNumber.02.hint = Phone number
