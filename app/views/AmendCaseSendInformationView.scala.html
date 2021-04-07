@@ -31,11 +31,10 @@
         appConfig: FrontendAppConfig,
         context : UploadFileViewContext
 )
-@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call)(implicit request: Request[_], messages: Messages)
 
     @govukLayout(
-        pageTitle = Some(s"${titleNoForm(if(fileUploads.isEmpty)messages("view.amend-upload-file.title") else messages("view.amend-upload-file.next.title", maybeUploadError.isDefined))}"),
-        backLink = Some(backLink.url)
+        pageTitle = Some(s"${titleNoForm(if(fileUploads.isEmpty)messages("view.amend-upload-file.title") else messages("view.amend-upload-file.next.title", maybeUploadError.isDefined))}")
     ) {
 
         @html.h1(messages(if(fileUploads.isEmpty) "view.amend-upload-file.heading" else "view.amend-upload-file.next.heading"), classes = "govuk-heading-l")

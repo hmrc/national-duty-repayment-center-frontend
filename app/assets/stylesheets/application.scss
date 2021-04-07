@@ -4,4 +4,5 @@ $hmrc-assets-path: "/national-duty-repayment-center/assets/lib/hmrc-frontend/hmr
 @import "lib/govuk-frontend/govuk/all";
 
 // Components
+@import 'components/back-link';
 @import 'components/upload-loading';

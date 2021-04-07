@@ -28,7 +28,7 @@
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("referenceNumber.title"))}"),
-    backLink = Some("#")
+    backLink = false
 ) {
 
     @forms.formWithCSRF(action = ReferenceNumberController.onSubmit(mode), args = 'novalidate -> "novalidate") {

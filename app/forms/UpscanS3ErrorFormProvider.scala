@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import java.time.LocalDate
+import models.S3UploadError
+import play.api.data.Form
+import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 
-import play.api.libs.json.JsPath
+class UpscanS3ErrorFormProvider {
 
-case object ClaimEntryDatePage extends QuestionPage[LocalDate] {
-
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "claimEntryDate"
+  def apply(): Form[S3UploadError]
+  = Form[S3UploadError](
+    mapping(
+      "key" -> nonEmptyText,
+      "errorCode" -> text,
+      "errorMessage" -> text,
+      "errorRequestId" -> optional(text),
+      "errorResource" -> optional(text)
+    )(S3UploadError.apply)(S3UploadError.unapply)
+  )
 }

@@ -28,6 +28,7 @@
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimantType.title"))}"),
+    backLink = false
 ) {
 
   @forms.formWithCSRF(action = ClaimantTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {

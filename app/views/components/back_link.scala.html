@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,20 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package forms
+@()(implicit messages: Messages)
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import models.EntryNumber
-import play.api.data.Form
-
-class ClaimEntryNumberFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[EntryNumber] =
-    Form(
-      "value" -> text("claimEntryNumber.error.required")
-        .verifying(maxLength(7, "claimEntryNumber.error.length")).transform[EntryNumber](EntryNumber.apply, _.value)
-    )
-}
+<a href="#" id="back-link" class="govuk-back-link app-back-link">@messages("site.back")</a>

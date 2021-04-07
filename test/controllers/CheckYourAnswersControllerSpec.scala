@@ -35,8 +35,6 @@ class CheckYourAnswersControllerSpec extends SpecBase {
 
     "return OK and the correct view for an Importer Journey GET" in {
 
-      val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
-
       val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers)
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
@@ -52,14 +50,12 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "return OK and the correct view for an Importer Journey UKCustomsRegulation GET" in {
-
-      val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
 
       val userAnswers = populateUserAnswersWithImporterUKCustomsRegulationInformation(emptyUserAnswers)
 
@@ -76,14 +72,12 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "return OK and the correct view for Representative Single BACS Journey GET" in {
-
-      val backLink = routes.BankDetailsController.onPageLoad(NormalMode)
 
       val userAnswers = populateUserAnswersWithRepresentativeSingleBACSJourney(emptyUserAnswers)
 
@@ -100,14 +94,12 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "return OK and the correct view for Representative Single Paying Representative Journey GET" in {
-
-      val backLink = routes.BankDetailsController.onPageLoad(NormalMode)
 
       val userAnswers = populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney(emptyUserAnswers)
 
@@ -124,14 +116,12 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "return OK and the correct view for Representative Single CMA Journey GET" in {
-
-      val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
 
       val userAnswers = populateUserAnswersWithRepresentativeSingleCMAJourney(emptyUserAnswers)
 
@@ -148,14 +138,12 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "return OK and the correct view for Representative Multiple Journey GET" in {
-
-      val backLink = routes.RepaymentTypeController.onPageLoad(NormalMode)
 
       val userAnswers = populateUserAnswersWithRepresentativeMultipleJourney(emptyUserAnswers)
 
@@ -172,7 +160,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
 
       application.stop()
     }

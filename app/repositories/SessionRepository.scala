@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 import akka.stream.Materializer
 
 import javax.inject.Inject
-import models.{RichJsObject, UserAnswers}
+import models.{RichJsObject, SessionState, UserAnswers}
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
@@ -28,6 +28,7 @@ import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
+import services.FileUploadState
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -89,8 +90,7 @@ class DefaultSessionRepository @Inject()(
     val modifier = {
       if(userAnswers.fileUploadState.isEmpty)
       Json.obj(
-      "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).
-        as[JsObject].setObject(userAnswers.fileUploadPath, JsNull).get
+      "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(userAnswers.fileUploadPath, JsNull).get
     ) else
         Json.obj(
           "$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now))
@@ -104,6 +104,18 @@ class DefaultSessionRepository @Inject()(
       }
     }
   }
+  override def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean] = {
+    if (userAnswers.nonEmpty)
+      set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
+    else Future.successful(true)
+  }
+
+  override def getFileUploadState(id: String): Future[SessionState] = {
+    for {
+      u <- get(id)
+    } yield (SessionState(u.flatMap(_.fileUploadState), u))
+  }
+
 }
 
 trait SessionRepository {
@@ -113,6 +125,10 @@ trait SessionRepository {
   def get(id: String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
+
+  def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean]
+
+  def getFileUploadState(id: String): Future[SessionState]
 
   def resetData(userAnswers: UserAnswers): Future[Boolean]
 }

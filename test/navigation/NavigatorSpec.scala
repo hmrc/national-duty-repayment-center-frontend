@@ -18,14 +18,11 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
+import models.AmendCaseResponseType.FurtherInformation
+import models.ClaimRepaymentType.{Customs, Other, Vat}
 import models._
 import pages._
-import services.FileUploaded
 import views.behaviours.ViewBehaviours
-import java.time.ZonedDateTime
-
-import models.ClaimRepaymentType.{Customs, Other, Vat}
 
 
 class NavigatorSpec extends SpecBase with ViewBehaviours {

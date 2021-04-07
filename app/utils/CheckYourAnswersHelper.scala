@@ -181,7 +181,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       HtmlFormat.escape(x.CountryCode match { case "GB" => messages("United Kingdom")
       case _ => messages("Other")
       }).toString,
-      HtmlFormat.escape(x.PostalCode.getOrElse("")).toString
+      HtmlFormat.escape(x.PostalCode).toString
     ).filter(!_.isEmpty()).mkString("<br>"))
   }
 

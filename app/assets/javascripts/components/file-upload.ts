@@ -8,8 +8,8 @@ export class FileUpload extends Component {
   private submit: HTMLInputElement;
   private fileInput: HTMLInputElement;
 
-  constructor(form: HTMLFormElement) {
-    super(form);
+  constructor(form: HTMLFormElement, app) {
+    super(form, app);
 
     this.config = {
       uploadUrl: form.action,

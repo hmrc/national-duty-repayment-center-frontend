@@ -26,11 +26,10 @@
         html: views.components.html
 )
 
-@(backLink: Call)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("evidenceSupportingDocs.title"))}"),
-    backLink = Some(backLink.url)
+    pageTitle = Some(s"${titleNoForm(messages("evidenceSupportingDocs.title"))}")
 ) {
 
     @html.h1(messages("evidenceSupportingDocs.heading"))

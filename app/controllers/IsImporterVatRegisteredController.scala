@@ -44,13 +44,6 @@ class IsImporterVatRegisteredController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-    userAnswers.get(AgentImporterHasEORIPage).contains(AgentImporterHasEORI.Yes) match {
-      case true=> routes.EnterAgentEORIController.onPageLoad(mode)
-      case _ => routes.AgentImporterHasEORIController.onPageLoad(mode)
-    }
-  }
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -59,7 +52,7 @@ class IsImporterVatRegisteredController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
+      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -67,7 +60,7 @@ class IsImporterVatRegisteredController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
           for {

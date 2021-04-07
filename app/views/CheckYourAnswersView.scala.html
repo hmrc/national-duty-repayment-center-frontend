@@ -25,11 +25,10 @@
     html: views.components.html
 )
 
-@(answerSections: Seq[Section], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}"),
-    backLink = Some(backLink.url)
+    pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}")
 ) {
 
     @html.h1("checkYourAnswers.title", classes = "govuk-heading-l")

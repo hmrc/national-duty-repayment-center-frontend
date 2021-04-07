@@ -25,7 +25,8 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
+
 
 @pageHint = {
 <p class="mb-30 paragraph-top">
@@ -34,8 +35,12 @@
 }
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("entryDetails.title"))}"),
-    backLink = Some(backLink.url)
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(
+        isSingleEntry match{
+            case true =>  messages("entryDetails.single.title")
+            case false => messages("entryDetails.multiple.title")
+        })}")
+
 ) {
 
     @forms.formWithCSRF(action = EntryDetailsController.onSubmit(mode), args = 'novalidate -> "novalidate") {
@@ -43,7 +48,10 @@
         @components.error_summary(form.errors)
 
         @forms.fieldset(
-            legend = messages("entryDetails.heading")
+            legend =  isSingleEntry match {
+                case true => messages("entryDetails.single.heading")
+                case false => messages("entryDetails.multiple.heading")
+            }
         ) {
            @pageHint
 

@@ -45,15 +45,6 @@ class WhomToPayController @Inject()(
 
   val form = formProvider()
 
-  private def getBackLink(mode: Mode, userAnswers: UserAnswers): Call = {
-
-    userAnswers.get(NumberOfEntriesTypePage).contains(NumberOfEntriesType.Multiple) match{
-      case true  => routes.EmailAddressController.onPageLoad(mode)
-      case false => routes.RepaymentTypeController.onPageLoad(mode)
-    }
-
-  }
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
@@ -62,7 +53,7 @@ class WhomToPayController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getBackLink(mode, request.userAnswers)))
+      Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -70,7 +61,7 @@ class WhomToPayController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, getBackLink(mode, request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
           for {

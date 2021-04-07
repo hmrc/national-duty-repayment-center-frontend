@@ -21,16 +21,13 @@ import akka.pattern.ask
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
+import controllers.FileUploadUtils._
 import controllers.actions._
+import forms.UpscanS3ErrorFormProvider
 import models.FileType.Bulk
-import models.{CustomsRegulationType, FileVerificationStatus, Mode, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
-import pages.CustomsRegulationTypePage
-import play.api.data.Form
-import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
+import models.{Mode, NormalMode, UpscanNotification}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
 import play.api.mvc._
-import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -40,7 +37,6 @@ import java.time.LocalDateTime
 import javax.inject.{Inject, Named}
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
-
 class BulkFileUploadController @Inject()(
                                           override val messagesApi: MessagesApi,
                                           appConfig: FrontendAppConfig,
@@ -49,55 +45,50 @@ class BulkFileUploadController @Inject()(
                                           requireData: DataRequiredAction,
                                           sessionRepository: SessionRepository,
                                           upscanInitiateConnector: UpscanInitiateConnector,
+                                          val fileUtils: FileUploadUtils,
+                                          val upscanS3ErrorFormProvider: UpscanS3ErrorFormProvider,
                                           @Named("check-state-actor") checkStateActor: ActorRef,
                                           val controllerComponents: MessagesControllerComponents,
                                           view: BulkFileUploadView
                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
   final val bulkFileUploadController = routes.BulkFileUploadController
-  case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
-  val fileStateError = InternalServerError("Missing file upload state")
+  val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
 
   // GET /file-verification
   final def showWaitingForFileVerification(mode: Mode) = (identify andThen getData andThen requireData).async { implicit request =>
     implicit val timeout = Timeout(10 seconds)
-    sessionState(request.internalId).flatMap { ss =>
+    sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
       ss.state match {
         case Some(s) =>
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
-            case s: FileUploaded => {
+            case _: FileUploaded => {
               if(mode.equals(NormalMode))
                 Future.successful(Redirect(routes.EntryDetailsController.onPageLoad(mode)))
               else
                 Future.successful(Redirect(routes.CheckYourAnswersController.onPageLoad))
             }
-            case s: UploadFile => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload(mode)))
-            case _ => Future.successful(fileStateError)
+            case _: UploadFile => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload(mode)))
+            case _ => Future.successful(missingFileUploadState)
           }
-        case _ => Future.successful(fileStateError)
+        case _ => Future.successful(missingFileUploadState)
       }
     }
   }
 
   def showFileUpload(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
-      ss <- sessionState(request.internalId)
+      ss <- sessionRepository.getFileUploadState(request.internalId)
       s <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
       fs <- initiateFileUpload(upscanRequest(request.internalId, mode), Some(Bulk))(upscanInitiateConnector.initiate(_))(s)
       b <- fs match {
-        case f@UploadFile(_, _, _, _) => updateSession(f.copy(maybeUploadError = None), ss.userAnswers)
-        case _ => updateSession(fs, ss.userAnswers)
+        case f@UploadFile(_, _, _, _) => sessionRepository.updateSession(f.copy(maybeUploadError = None), ss.userAnswers)
+        case _ => sessionRepository.updateSession(fs, ss.userAnswers)
       }
       if b
     } yield {
-      renderState(ss.userAnswers, fs, mode = mode)
+      renderState(fs, mode = mode)
     }
-  }
-
-  def sessionState(id: String): Future[SessionState] = {
-    for {
-      u <- sessionRepository.get(id)
-    } yield (SessionState(u.flatMap(_.fileUploadState), u))
   }
 
   // GET /file-rejected
@@ -105,49 +96,26 @@ class BulkFileUploadController @Inject()(
     UpscanUploadErrorForm.bindFromRequest().fold(
       _ => Future.successful(BadRequest),
       s3Error =>
-        sessionState(request.internalId).flatMap { ss =>
+        sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
           ss.state match {
-            case Some(s) => fileUploadWasRejected(s3Error)(s).flatMap { newState =>
-              updateSession(newState, ss.userAnswers).map { res =>
-                Redirect(routes.BulkFileUploadController.showFileUpload(mode))
-              }
-            }
-            case None => Future.successful(InternalServerError("Missing file upload state"))
+            case Some(s) => fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(_ =>  Redirect(routes.BulkFileUploadController.showFileUpload(mode)))
+            case None => Future.successful(missingFileUploadState)
           }
         }
     )
   }
 
-  private def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]) = {
-    if (userAnswers.nonEmpty)
-      sessionRepository.set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
-    else Future.successful(true)
-  }
-
   // POST /bulk/:id/callback-from-upscan
-  final def callbackFromUpscan(id: String) = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
-    sessionState(id).flatMap { ss =>
+  final def callbackFromUpscan(id: String): Action[UpscanNotification] = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
+    sessionRepository.getFileUploadState(id).flatMap { ss =>
       ss.state match {
-        case Some(s) => upscanCallbackArrived(request.body, Bulk)(s).flatMap { newState =>
-          updateSession(newState, ss.userAnswers).map { res =>
-            acknowledgeFileUploadRedirect(newState)
-          }
-        }
-        case None => Future.successful(InternalServerError("Missing file upload state"))
+        case Some(s) => fileUtils.applyTransition(upscanCallbackArrived(request.body, Bulk)(_), s, ss).map(newState => acknowledgeFileUploadRedirect(newState))
+        case None => Future.successful(missingFileUploadState)
       }
     }
   }
 
-  private def acknowledgeFileUploadRedirect(state: FileUploadState)(
-    implicit request: Request[_]
-  ): Result =
-    (state match {
-      case _: FileUploaded => Created
-      case _ => NoContent
-    }).withHeaders(HeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN -> "*")
-
-
-  final def upscanRequest(id: String, mode: Mode)(implicit rh: RequestHeader): UpscanInitiateRequest = {
+  final def upscanRequest(id: String, mode: Mode): UpscanInitiateRequest = {
     UpscanInitiateRequest(
       callbackUrl = appConfig.baseInternalCallbackUrl + bulkFileUploadController.callbackFromUpscan(id).url,
       successRedirect = Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.showWaitingForFileVerification(mode)),
@@ -164,21 +132,7 @@ class BulkFileUploadController @Inject()(
     renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
   }
 
-  private def renderFileVerificationStatus(
-                                            reference: String, state: Option[FileUploadState])(implicit request: Request[_]
-                                          ): Result = {
-
-    state match {
-      case Some(s: FileUploadState) =>
-        s.fileUploads.files.find(_.reference == reference) match {
-          case Some(f) => Ok(Json.toJson(FileVerificationStatus(f)))
-          case None => NotFound
-        }
-      case _ => NotFound
-    }
-  }
-
-  final def renderState(userAnswers: Option[UserAnswers], fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None, mode: Mode)(implicit request: Request[_]): Result = {
+  final def renderState(fileUploadState: FileUploadState, mode: Mode)(implicit request: Request[_]): Result = {
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
         Ok(
@@ -188,32 +142,8 @@ class BulkFileUploadController @Inject()(
             maybeUploadError,
             successAction = routes.EntryDetailsController.onPageLoad(mode),
             failureAction = routes.BulkFileUploadController.showFileUpload(mode),
-            checkStatusAction = routes.BulkFileUploadController.checkFileVerificationStatus(reference),
-            backLink = getBulkEntryDetails(userAnswers))
+            checkStatusAction = routes.BulkFileUploadController.checkFileVerificationStatus(reference))
         )
     }
-  }
-
-  def or[T](formWithErrors: Option[Form[_]], emptyForm: Form[T], maybeFillWith: Option[T])(implicit request: Request[_]): Form[T] =
-    formWithErrors
-      .map(_.asInstanceOf[Form[T]])
-      .getOrElse {
-        if (request.flash.isEmpty) maybeFillWith.map(emptyForm.fill).getOrElse(emptyForm)
-        else emptyForm.bind(request.flash.data)
-      }
-
-  val UpscanUploadErrorForm = Form[S3UploadError](
-    mapping(
-      "key" -> nonEmptyText,
-      "errorCode" -> text,
-      "errorMessage" -> text,
-      "errorRequestId" -> optional(text),
-      "errorResource" -> optional(text)
-    )(S3UploadError.apply)(S3UploadError.unapply)
-  )
-  private def getBulkEntryDetails(answers: Option[UserAnswers]): Call = answers.flatMap(_ .get(CustomsRegulationTypePage)) match {
-      case Some(CustomsRegulationType.UnionsCustomsCodeRegulation)  => routes.ArticleTypeController.onPageLoad(NormalMode)
-      case Some(CustomsRegulationType.UKCustomsCodeRegulation) => routes.UkRegulationTypeController.onPageLoad(NormalMode)
-      case _ => routes.UkRegulationTypeController.onPageLoad(NormalMode)
   }
 }

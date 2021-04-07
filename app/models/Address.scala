@@ -25,7 +25,7 @@ final case class Address(
                           City: String,
                           Region: Option[String],
                           CountryCode: String,
-                          PostalCode: Option[String]
+                          PostalCode: String
                         ) {
   val inlineText: String = List(
     AddressLine1,
@@ -47,6 +47,6 @@ object Address {
     candidate.address.town,
     candidate.address.county,
     "GB",
-    Some(candidate.address.postcode)
+    (candidate.address.postcode)
   )
 }
