@@ -20,9 +20,9 @@ import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
 
 import javax.inject.Inject
-import models.{Mode, NumberOfEntriesType, UserAnswers}
+import models.{CheckMode, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.{CustomsRegulationTypePage, NumberOfEntriesTypePage}
+import pages.{ArticleTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -65,9 +65,10 @@ class CustomsRegulationTypeController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, updatedAnswers))
+              userAnswers <- Future.fromTry (request.userAnswers.set(CustomsRegulationTypePage, value))
+              _ <- sessionRepository.set(userAnswers)
+            } yield
+                Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, userAnswers))
       )
   }
 }

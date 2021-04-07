@@ -33,7 +33,7 @@
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerAddressConfirmation.title"))}")
 ) {
 
-    @forms.formWithCSRF(action = routes.ImporterAddressController.addressSelectSubmit()) {
+    @forms.formWithCSRF(action = routes.ImporterAddressController.addressSelectSubmit(mode)) {
 
         @components.error_summary(form.errors)
     <div class="form-group">

@@ -19,9 +19,10 @@ package controllers
 import controllers.actions._
 import forms.WhomToPayFormProvider
 import javax.inject.Inject
+import models.WhomToPay.Importer
 import models._
 import navigation.Navigator
-import pages.{NumberOfEntriesTypePage, WhomToPayPage}
+import pages.{IndirectRepresentativePage, NumberOfEntriesTypePage, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -65,8 +66,12 @@ class WhomToPayController @Inject()(
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
+            updatedAnswersCleaned <- request.userAnswers.get(WhomToPayPage) match {
+              case Some(Importer) => Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage))
+              case _ => Future.successful(updatedAnswers)
+            }
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhomToPayPage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(WhomToPayPage, mode, updatedAnswersCleaned))
       )
   }
 }

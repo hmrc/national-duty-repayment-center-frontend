@@ -33,7 +33,7 @@
                                                             })}")
 ) {
 
-    @forms.formWithCSRF(action = ImporterAddressController.postcodeSubmit()) {
+    @forms.formWithCSRF(action = ImporterAddressController.postcodeSubmit(mode)) {
 
             @components.error_summary(form.errors)
 
@@ -64,7 +64,10 @@
                     )
             }
                 <p>@html.a(
-                    link = "importerManualAddress",
+                    link = mode match {
+                        case NormalMode => "importerManualAddress"
+                        case CheckMode => "changeImporterManualAddress"
+                    },
                     messageKey = messages("importerAddress.manual"),
                     id = Some("enter-address-manually")
                     )</p>
