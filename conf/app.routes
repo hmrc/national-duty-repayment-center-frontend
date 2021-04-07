@@ -89,6 +89,10 @@ POST       /contactType                        controllers.ContactTypeController
 GET        /changeContactType                  controllers.ContactTypeController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeContactType                  controllers.ContactTypeController.onSubmit(mode: Mode = CheckMode)
 
+GET        /declarant-reference-number                        controllers.DeclarantReferenceNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /declarant-reference-number                        controllers.DeclarantReferenceNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /change-declarant-reference-number                  controllers.DeclarantReferenceNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-declarant-reference-number                  controllers.DeclarantReferenceNumberController.onSubmit(mode: Mode = CheckMode)
 
 GET        /agentNameImporter                        controllers.AgentNameImporterController.onPageLoad(mode: Mode = NormalMode)
 POST       /agentNameImporter                        controllers.AgentNameImporterController.onSubmit(mode: Mode = NormalMode)
@@ -105,7 +109,6 @@ GET        /contact-by-email                        controllers.EmailAddressCont
 POST       /contact-by-email                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
 GET        /change-contact-by-email                 controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-contact-by-email                 controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
-
 
 GET        /repaid                        controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
 POST       /repaid                        controllers.WhomToPayController.onSubmit(mode: Mode = NormalMode)

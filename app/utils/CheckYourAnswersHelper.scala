@@ -25,8 +25,9 @@ import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import viewmodels.{AnswerRow, AnswerSection}
-
 import java.time.format.DateTimeFormatter
+
+import models.DeclarantReferenceType.{No, Yes}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -178,8 +179,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
       HtmlFormat.escape(x.City).toString,
       HtmlFormat.escape(x.Region.getOrElse("")).toString,
-      HtmlFormat.escape(x.CountryCode match { case "GB" => messages("United Kingdom")
-      case _ => messages("Other")
+      HtmlFormat.escape(x.CountryCode match
+            {case "GB" => messages("United Kingdom")
+             case _ => messages("Other")
       }).toString,
       HtmlFormat.escape(x.PostalCode).toString
     ).filter(!_.isEmpty()).mkString("<br>"))
@@ -291,13 +293,37 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x => {
       AnswerRow(
         HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(x match { case x if x.length > 0 => "Yes"
-        case _ => "No"
-        }),
+        HtmlFormat.escape(x match
+              { case x if x.length > 0 => "Yes"
+                case _ => "No"}),
         Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
       )
     }
   }
+
+  def declarantReferenceNumber: Option[AnswerRow] = {
+    userAnswers.get(DeclarantReferenceNumberPage) map {
+      x =>
+        AnswerRow(
+          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
+          HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get),
+
+          Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)
+        )
+    }
+  }
+    def declarantReferenceNumberQuestion: Seq[AnswerRow] = {
+      userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceType).get match  {
+        case Yes => Seq(Some(AnswerRow(
+          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
+          HtmlFormat.escape(changeToYesNo(Yes.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url))) ,
+          declarantReferenceNumber
+        ).flatten
+        case No => Seq(AnswerRow(
+          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
+          HtmlFormat.escape(changeToYesNo(No.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)))
+      }
+    }
 
   def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
     x =>
@@ -469,7 +495,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         (userAnswers.get(EmailAddressPage).get.isEmpty match {
           case true => Seq.empty
           case _ => Seq(emailAddress.get)
-        })
+        }) ++
+       declarantReferenceNumberQuestion
     )
   }
 
@@ -702,6 +729,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   implicit class Improvements(s: Double) {
     def format2d = "%.2f".format(s)
+  }
+
+ private def changeToYesNo(string: String): String = {
+    string match {
+      case "01" => "Yes"
+      case "02" => "No"
+    }
   }
 
 }
