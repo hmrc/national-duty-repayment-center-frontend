@@ -17,55 +17,41 @@
 package controllers
 
 import base.SpecBase
-import forms.BankDetailsFormProvider
-import models.{BankDetails, NormalMode, UserAnswers}
+import forms.DeclarantReferenceNumberFormProvider
+import models.{DeclarantReferenceNumber, DeclarantReferenceType, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.BankDetailsPage
+import pages.DeclarantReferenceNumberPage
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.BankDetailsView
+import views.html.DeclarantReferenceNumberView
 
 import scala.concurrent.Future
 
-class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
+class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new BankDetailsFormProvider()
+  val formProvider = new DeclarantReferenceNumberFormProvider()
   val form = formProvider()
 
-  lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad(NormalMode).url
+  lazy val declarantReferenceNumberRoute = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url
 
-  private val userAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      BankDetailsPage.toString -> Json.obj(
-        "AccountName" -> "name",
-        "SortCode" -> "123456",
-        "AccountNumber" -> "00123456"
-      )
-    )
-  )
-
-  "BankDetails Controller" must {
+  "DeclarantReferenceNumber Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, bankDetailsRoute)
+      val request = FakeRequest(GET, declarantReferenceNumberRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[BankDetailsView]
-
-      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
+      val view = application.injector.instanceOf[DeclarantReferenceNumberView]
 
       status(result) mustEqual OK
 
@@ -77,20 +63,20 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
+      val userAnswers = UserAnswers(userAnswersId).set(DeclarantReferenceNumberPage, DeclarantReferenceNumber(DeclarantReferenceType.Yes,Some("123"))).success.value
+
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, bankDetailsRoute)
+      val request = FakeRequest(GET, declarantReferenceNumberRoute)
 
-      val view = application.injector.instanceOf[BankDetailsView]
+      val view = application.injector.instanceOf[DeclarantReferenceNumberView]
 
       val result = route(application, request).value
-
-      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(BankDetails("name", "123456", "00123456")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(DeclarantReferenceNumber(DeclarantReferenceType.Yes,Some("123"))), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -107,8 +93,9 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, bankDetailsRoute)
-          .withFormUrlEncodedBody(("AccountName", "name"), ("SortCode", "123456"), ("AccountNumber", "00123456"))
+        FakeRequest(POST, declarantReferenceNumberRoute)
+          .withFormUrlEncodedBody(("value", "01"), ("declarantReferenceNumber", "01"))
+
 
       val result = route(application, request).value
 
@@ -123,16 +110,14 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, bankDetailsRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, declarantReferenceNumberRoute)
+          .withFormUrlEncodedBody(("test", ""))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("test" -> ""))
 
-      val view = application.injector.instanceOf[BankDetailsView]
+      val view = application.injector.instanceOf[DeclarantReferenceNumberView]
 
       val result = route(application, request).value
-
-      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
 
       status(result) mustEqual BAD_REQUEST
 
@@ -146,7 +131,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, bankDetailsRoute)
+      val request = FakeRequest(GET, declarantReferenceNumberRoute)
 
       val result = route(application, request).value
 
@@ -162,8 +147,8 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, bankDetailsRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, declarantReferenceNumberRoute)
+          .withFormUrlEncodedBody(("value", "123"))
 
       val result = route(application, request).value
 

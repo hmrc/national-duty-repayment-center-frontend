@@ -160,6 +160,23 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
       }
 
+      "go to DeclarantReferenceNumber page after EmailAddressPage page when Importers/Representative single entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
+        navigator.nextPage(EmailAddressPage, NormalMode, answers)
+          .mustBe(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode))
+      }
+
+      "go to RepaymentType page after DeclarantReferenceNumber page when Importers/Representative single entry journeys selected " in {
+        val answers =
+          emptyUserAnswers
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
+        navigator.nextPage(DeclarantReferenceNumberPage, NormalMode, answers)
+          .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
+      }
+
+
       "go to EnterAgentEORI page after agentImporterHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
         val answers =
           emptyUserAnswers
@@ -234,13 +251,12 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.AmendConfirmationController.onPageLoad)
       }
 
-      "go to BankDetails page after EmailAddress page when the claimant is importer and has selected multiple entries" in {
+      "go to BankDetails page after DeclarantReferenceNumberPage page when the claimant is importer and has selected multiple entries" in {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
-
-        navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
+        navigator.nextPage(DeclarantReferenceNumberPage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
 
@@ -403,6 +419,13 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
         navigator.nextPage(IndirectRepresentativePage, CheckMode, userAnswers)
           .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
+      }
+      "go to the Check your answers page after the Declarant Reference page" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(DeclarantReferenceNumberPage, DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("this is a reference"))).success.value
+
+        navigator.nextPage(DeclarantReferenceNumberPage, CheckMode, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
       }
     }
   }
