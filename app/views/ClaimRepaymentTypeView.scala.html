@@ -34,11 +34,42 @@
 
         @components.error_summary(form.errors)
 
-        @forms.inputCheckboxes(
+<!--        @forms.inputCheckboxes(
             form = form,
+            idPrefix = Some("value"),
+            name = Some("value"),
             legendAsHeading = true,
             legend = messages("claimRepaymentType.heading"),
             items = ClaimRepaymentType.options(form),
+            hint = Some(Html(messages("claimRepaymentType.hint")))
+        )-->
+
+        @forms.inputCheckboxes(
+            form = form,
+            idPrefix = Some("value"),
+            name = Some("value"),
+                items = Seq(
+                    CheckboxItem(
+                        name = Some("value[]"),
+                        value = "01",
+                        content = Text(messages("claimRepaymentType.01")),
+                        checked = form.data.values.exists(_ == "01")
+                    ),
+                    CheckboxItem(
+                        name = Some("value[]"),
+                        value = "02",
+                        content = Text(messages("claimRepaymentType.02")),
+                        checked = form.data.values.exists(_ == "02")
+                    ),
+                    CheckboxItem(
+                        name = Some("value[]"),
+                        value = "03",
+                        content = Text(messages("claimRepaymentType.03")),
+                        checked = form.data.values.exists(_ == "03")
+                    )
+                ),
+            legendAsHeading = true,
+            legend = messages("claimRepaymentType.heading"),
             hint = Some(Html(messages("claimRepaymentType.hint")))
         )
 
