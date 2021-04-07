@@ -19,8 +19,9 @@ package controllers
 import connectors.AddressLookupConnector
 import controllers.actions._
 import forms.{AddressSelectionFormProvider, AgentImporterAddressFormProvider, PostcodeFormProvider}
+
 import javax.inject.Inject
-import models.{Address, Mode, PostcodeLookup}
+import models.{Address, Mode, NormalMode, PostcodeLookup}
 import navigation.Navigator
 import pages.{AgentImporterAddressPage, AgentImporterManualAddressPage, AgentImporterPostcodePage}
 import org.slf4j.LoggerFactory
@@ -144,7 +145,12 @@ class AgentImporterAddressController @Inject()(
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, address))
                   removeManualAddressAnswers <- Future.fromTry(updatedAnswers.remove(AgentImporterManualAddressPage))
                   _              <- sessionRepository.set(removeManualAddressAnswers)
-                } yield Redirect(routes.EmailAddressAndPhoneNumberController.onPageLoad(mode))
+                } yield {
+                  if (mode.equals(NormalMode))
+                    Redirect(routes.EmailAddressAndPhoneNumberController.onPageLoad(mode))
+                  else
+                    Redirect(routes.CheckYourAnswersController.onPageLoad)
+                }
             )
         )
       }.getOrElse(Future.successful(Redirect(routes.AgentImporterAddressController.enteredAddressPageLoad())))

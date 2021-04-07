@@ -25,7 +25,6 @@ import controllers.FileUploadUtils._
 import controllers.actions._
 import forms.{AdditionalFileUploadFormProvider, UpscanS3ErrorFormProvider}
 import models.FileType.SupportingEvidence
-import models.FileUpload.Initiated
 import models.{ClaimantType, Mode, NormalMode, UpscanNotification, UserAnswers}
 import pages.ClaimantTypePage
 import play.api.data.Form
@@ -142,7 +141,7 @@ class FileUploadController @Inject()(
             case Some(s) if value =>
               fileUtils.applyTransition(submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(_), s, ss)
                 .map(_ => Redirect(routes.FileUploadController.showFileUpload(mode)))
-            case Some(_) => Future.successful(Redirect(additionalFileUploadRoute(request.userAnswers)))
+            case Some(_) => Future.successful(Redirect(additionalFileUploadRoute(request.userAnswers, mode)))
             case None => Future.successful(missingFileUploadState)
           }
         }
@@ -184,11 +183,14 @@ class FileUploadController @Inject()(
     )
   }
 
-  private def additionalFileUploadRoute(answers: UserAnswers): Call = {
-    if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
-      routes.ImporterHasEoriController.onPageLoad(NormalMode)
-    else
-      routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
+  private def additionalFileUploadRoute(answers: UserAnswers, mode: Mode): Call = {
+    if(mode.equals(NormalMode)) {
+      if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
+        routes.ImporterHasEoriController.onPageLoad(NormalMode)
+      else
+        routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
+    } else
+      routes.CheckYourAnswersController.onPageLoad()
   }
 
 

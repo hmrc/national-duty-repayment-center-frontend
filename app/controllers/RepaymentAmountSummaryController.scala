@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import models.{ClaimRepaymentType, NormalMode}
+import models.{ClaimRepaymentType, Mode, NormalMode}
 import pages.ClaimRepaymentTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -35,7 +35,7 @@ class RepaymentAmountSummaryController @Inject()(
                                                   view: RepaymentAmountSummaryView
                                                 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
@@ -45,6 +45,6 @@ class RepaymentAmountSummaryController @Inject()(
         Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)
       ).flatten
 
-      Ok(view(sections))
+      Ok(view(sections, mode))
   }
 }

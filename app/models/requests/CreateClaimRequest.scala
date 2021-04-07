@@ -301,7 +301,6 @@ object CreateClaimRequest {
       )
     }
 
-
     for {
       content <- getContent(userAnswers)
     } yield {

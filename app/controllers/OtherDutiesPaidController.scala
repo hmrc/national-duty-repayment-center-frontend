@@ -18,8 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.OtherDutiesPaidFormProvider
+
 import javax.inject.Inject
-import models.{ClaimRepaymentType, Mode, NumberOfEntriesType, UserAnswers}
+import models.{CheckMode, ClaimRepaymentType, Mode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
 import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, OtherDutiesPaidPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -57,7 +58,6 @@ class OtherDutiesPaidController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),

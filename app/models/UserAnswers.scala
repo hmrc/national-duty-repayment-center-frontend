@@ -32,6 +32,8 @@ final case class UserAnswers(
 
    def fileUploadPath: JsPath = JsPath \ "fileUploadState"
 
+   def dataPath: JsPath = JsPath \ "data"
+
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
 
