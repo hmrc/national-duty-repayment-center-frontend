@@ -18,6 +18,8 @@
 
 @(
     form: Form[_],
+    idPrefix: Option[String] = None,
+    name: Option[String] = None,
     legend: String,
     items: Seq[CheckboxItem],
     legendAsHeading: Boolean = true,
@@ -37,5 +39,5 @@
         content = HtmlContent(hintHtml)
         )),
         items = items,
-        errorMessage = form.errors.headOption.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+        errorMessage = form("value").error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
     ))

@@ -18,8 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.AgentImporterManualAddressFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.AgentImporterManualAddressPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -69,7 +70,12 @@ class AgentImporterManualAddressController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterManualAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AgentImporterManualAddressPage, mode, updatedAnswers))
+          } yield {
+            if(mode.equals(NormalMode))
+              Redirect(navigator.nextPage(AgentImporterManualAddressPage, mode, updatedAnswers))
+            else
+              Redirect(routes.CheckYourAnswersController.onPageLoad)
+          }
       )
   }
 }

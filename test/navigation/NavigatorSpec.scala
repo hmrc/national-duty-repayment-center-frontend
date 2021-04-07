@@ -90,7 +90,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(IndirectRepresentativePage, false).success.value
 
         navigator.nextPage(IndirectRepresentativePage, NormalMode, answers)
-          .mustBe(routes.ProofOfAuthorityController.showFileUpload())
+          .mustBe(routes.ProofOfAuthorityController.showFileUpload(NormalMode))
       }
 
       "go to BankDetails page after the ProofOfAuthority page once the representative has uploaded their proof of authority" in {
@@ -274,53 +274,151 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
 
     "in Check mode" must {
-      "go to CheckYourAnswers from a page that doesn't exist in the edit route map" in {
+      "go to CheckYourAnswers from a page that doesn't exist in the edit route map and it's not an amend journey" in {
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
+        val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
+        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
+
+        navigator.nextPage(UnknownPage, CheckMode, userAnswers) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
       }
       "go to File upload page" in {
         val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).success.value
+
         navigator.nextPage(AmendCaseResponseTypePage, CheckMode, userAnswers)
           .mustBe(routes.AmendCaseSendInformationController.showFileUpload(CheckMode))
       }
       "go to Further Information page" in {
         val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
         val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
+
         navigator.nextPage(AmendCaseResponseTypePage, CheckMode, userAnswers)
           .mustBe(routes.FurtherInformationController.onPageLoad(CheckMode))
       }
-      "go to Check your answers page when Further information is added no Documents selected" in {
+      "go to Amend Check your answers page when Further information is added no Documents selected" in {
         val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
         val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
+
         navigator.nextPage(FurtherInformationPage, CheckMode, userAnswers)
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad())
       }
-      "go to Repayment Amount Summary page after the Customs Duty Paid page" in {
-        navigator.nextPage(CustomsDutyPaidPage, CheckMode, UserAnswers("id")) mustBe routes.RepaymentAmountSummaryController.onPageLoad()
+      "go to Repayment Amount Summary page after the Customs Duty Paid page when VAT and Other Duties is not selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
-      "go to Repayment Amount Summary page after the VAT Paid page" in {
-        navigator.nextPage(VATPaidPage, CheckMode, UserAnswers("id")) mustBe routes.RepaymentAmountSummaryController.onPageLoad()
+      "go to Vat Paid page after the Customs Duty Paid page when VAT is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs, Vat)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
+          .mustBe(routes.VATPaidController.onPageLoad(CheckMode))
+      }
+      "go to Other Duties Paid page after the Customs Duty Paid page when VAT is not selected and Other Duties is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs, Other)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
+          .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
+      }
+      "go to Repayment Amount Summary page after the VAT Paid page when Other Duties is not selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Vat)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(VATPaidPage, CheckMode, userAnswers)
+        .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
+      }
+      "go to Other Duties page after the VAT Paid page when Other Duties is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Other)
+        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(VATPaidPage, CheckMode, userAnswers)
+        .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
       }
       "go to Repayment Amount Summary page after the Other Duties Paid page" in {
-        navigator.nextPage(OtherDutiesPaidPage, CheckMode, UserAnswers("id")) mustBe routes.RepaymentAmountSummaryController.onPageLoad()
+        navigator.nextPage(OtherDutiesPaidPage, CheckMode, UserAnswers("id"))
+        .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
       "go to Customs Duty Paid page when Customs is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs)
         val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
         navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
-          .mustBe(routes.CustomsDutyPaidController.onPageLoad(NormalMode))
+          .mustBe(routes.CustomsDutyPaidController.onPageLoad(CheckMode))
       }
       "go to Vat Paid page when Vat is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Vat)
         val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
         navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
-          .mustBe(routes.VATPaidController.onPageLoad(NormalMode))
+          .mustBe(routes.VATPaidController.onPageLoad(CheckMode))
       }
       "go to Other Duties Paid page when Other is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Other)
         val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+
         navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
-          .mustBe(routes.OtherDutiesPaidController.onPageLoad(NormalMode))
+          .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
+      }
+      "go to the Indirect Representatives page after the Whom to pay page if the representative is to be paid" in {
+        val userAnswers = UserAnswers(userAnswersId).set(WhomToPayPage, WhomToPay.Representative).success.value
+
+        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
+          .mustBe(routes.IndirectRepresentativeController.onPageLoad(CheckMode))
+      }
+      "go to the Check your answers page after the whom to pay page if the importer is to be paid and bank details have already been entered" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(WhomToPayPage, WhomToPay.Importer).success.value
+          .set(BankDetailsPage, BankDetails("name", "111111", "11111111")).success.value
+
+        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+      "go to the Bank Details page after the whom to pay page if the importer is to be paid and bank details have not been entered" in {
+        val userAnswers = UserAnswers(userAnswersId).set(WhomToPayPage, WhomToPay.Importer).success.value
+
+        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
+          .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
+      }
+      "go to Bank Details page when BACs is selected as a repayment method and bank account details are empty" in {
+        val userAnswers = UserAnswers(userAnswersId).set(RepaymentTypePage, RepaymentType.BACS).success.value
+
+        navigator.nextPage(RepaymentTypePage, CheckMode, userAnswers)
+        .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
+      }
+      "go to the Whom is to be paid page after the repayment type page when in agent journey and BACS is selected" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
+
+        navigator.nextPage(RepaymentTypePage, CheckMode, userAnswers)
+          .mustBe(routes.WhomToPayController.onPageLoad(CheckMode))
+      }
+      "go to the Proof of Authority page after the Indirect Representative page when in agent journey and is not an indirect representative and BACS is selected" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
+          .set(IndirectRepresentativePage, false).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, CheckMode, userAnswers)
+          .mustBe(routes.ProofOfAuthorityController.showFileUpload(CheckMode))
+      }
+      "go to the Bank Details page after the Indirect Representative page when in agent journey and is an indirect representative and BACS is selected" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
+          .set(IndirectRepresentativePage, true).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, CheckMode, userAnswers)
+          .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
+      }
+      "go to the Check your answers page after the Declarant Reference page" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(DeclarantReferenceNumberPage, DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("this is a reference"))).success.value
+
+        navigator.nextPage(DeclarantReferenceNumberPage, CheckMode, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
       }
     }
   }

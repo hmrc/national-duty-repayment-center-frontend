@@ -30,7 +30,7 @@
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterAddress.title"))}")
 ) {
 
-    @forms.formWithCSRF(action = AgentImporterAddressController.postcodeSubmit()) {
+    @forms.formWithCSRF(action = AgentImporterAddressController.postcodeSubmit(mode)) {
 
         @components.error_summary(form.errors)
 
@@ -54,7 +54,10 @@
             )
         }
             <p>@html.a(
-                link = "agentImporterManualAddress",
+                link = mode match {
+                        case NormalMode => "agentImporterManualAddress"
+                        case CheckMode => "changeAgentImporterManualAddress"
+                    },
                 messageKey = messages("importerAddress.manual"),
                 id = Some("enter-address-manually")
                 )</p>

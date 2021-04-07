@@ -100,7 +100,7 @@ object CreateClaimRequest {
     }
     def getDecRef(userAnswers: UserAnswers): Option[String] = userAnswers.get(DeclarantReferenceNumberPage) match {
       case Some(decRef) if decRef.declarantReferenceType == Yes => Some(decRef.declarantReferenceNumber.get)
-      case Some(decRef) if decRef.declarantReferenceType == No => Some("No")
+      case Some(decRef) if decRef.declarantReferenceType == No => Some("NA")
     }
 
     def getEmailAddress(userAnswers: UserAnswers): Option[String] = userAnswers.get(EmailAddressPage) match {
@@ -300,7 +300,6 @@ object CreateClaimRequest {
         Seq(documentList)
       )
     }
-
 
     for {
       content <- getContent(userAnswers)

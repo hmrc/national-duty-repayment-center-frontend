@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package forms
+@()(implicit request: Request[_], messages: Messages)
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import models.PostcodeLookup
-import play.api.data.Forms._
-import play.api.data.{Form, Forms}
-
-class PostcodeFormProvider @Inject() extends Mappings with TrimWhitespace {
-
-  def apply(): Form[PostcodeLookup] =
-    Form(
-      mapping(
-        "PostalCode" -> text("postcode.error.required")
-          .transform[String](trimWhitespace, value => value)
-      )(PostcodeLookup.apply)(PostcodeLookup.unapply)
-    )
-}
+<div>
+    <span>
+        <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" href="@routes.CheckYourAnswersController.onPageLoad()">
+            @messages("site.continue")
+        </a>
+    </span>
+</div>

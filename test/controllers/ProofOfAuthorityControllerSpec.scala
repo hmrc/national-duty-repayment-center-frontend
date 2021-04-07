@@ -16,7 +16,7 @@
 
 package controllers
 import base.SpecBase
-import models.{CustomsRegulationType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import models.{CustomsRegulationType, FileUpload, FileUploads, NormalMode, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.Matchers.anyObject
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -33,7 +33,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
   val id = "1"
   "GET /upload-proof-of-authority" should {
     "show the upload first document page" in {
-      val fileUploadUrl = routes.ProofOfAuthorityController.showFileUpload().url
+      val fileUploadUrl = routes.ProofOfAuthorityController.showFileUpload(NormalMode).url
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .build()

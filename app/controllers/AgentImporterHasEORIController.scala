@@ -18,10 +18,11 @@ package controllers
 
 import controllers.actions._
 import forms.AgentImporterHasEORIFormProvider
+
 import javax.inject.Inject
-import models.Mode
+import models.{AgentImporterHasEORI, CheckMode, Mode}
 import navigation.Navigator
-import pages.AgentImporterHasEORIPage
+import pages.{AgentImporterHasEORIPage, EnterAgentEORIPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -57,6 +58,8 @@ class AgentImporterHasEORIController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val oldEORI = if(request.userAnswers.get(AgentImporterHasEORIPage).nonEmpty)
+        request.userAnswers.get(AgentImporterHasEORIPage).get
 
       form.bindFromRequest().fold(
         formWithErrors =>
@@ -64,9 +67,23 @@ class AgentImporterHasEORIController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterHasEORIPage, value))
+            setEORINumber <- Future.fromTry (request.userAnswers.set(AgentImporterHasEORIPage, value))
+            updatedAnswers <- {
+              Future.fromTry(setEORINumber.get(AgentImporterHasEORIPage).get match {
+                case AgentImporterHasEORI.No => setEORINumber.remove(EnterAgentEORIPage)
+                case AgentImporterHasEORI.Yes => setEORINumber.set(AgentImporterHasEORIPage, value)
+              })
+            }
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AgentImporterHasEORIPage, mode, updatedAnswers))
+          } yield {
+            if (mode.equals(CheckMode)) {
+              (oldEORI, value) match {
+                case (AgentImporterHasEORI.No, AgentImporterHasEORI.Yes) => Redirect(navigator.nextPage(AgentImporterHasEORIPage, CheckMode, updatedAnswers))
+                case _ => Redirect(routes.CheckYourAnswersController.onPageLoad())
+              }
+            } else
+              Redirect(navigator.nextPage(AgentImporterHasEORIPage, mode, updatedAnswers))
+          }
       )
   }
 }
