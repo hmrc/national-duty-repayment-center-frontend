@@ -24,7 +24,6 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
 
   val form = new DeclarantReferenceNumberFormProvider()()
 
-  val requiredKey = "declarantReferenceNumber.error.required"
   val radioFieldName = "value"
   val minLength = 1
   val maxLength = 50
@@ -36,8 +35,8 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
     behave like optionsField[DeclarantReferenceNumber](
       form,
       radioFieldName,
-      validValues  = Seq(DeclarantReferenceNumber.apply(DeclarantReferenceType.Yes,None),
-        DeclarantReferenceNumber.apply(DeclarantReferenceType.No,Some(stringsWithMinAndMaxLength(minLength, maxLength).toString))),
+      validValues = Seq(DeclarantReferenceNumber.apply(DeclarantReferenceType.Yes, None),
+        DeclarantReferenceNumber.apply(DeclarantReferenceType.No, Some(stringsWithMinAndMaxLength(minLength, maxLength).toString))),
       invalidError = FormError(radioFieldName, "error.invalid")
     )
 
@@ -51,14 +50,22 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
   ".declarantReferenceNumber" must {
 
     val fieldName = "declarantReferenceNumber"
-    val requiredKey = "declarantReferenceNumber.error.invalid"
+    val requiredKey = "declarantReferenceNumber.error.required.declarantReferenceNumber"
+    val invalidKey = "declarantReferenceNumber.error.invalid"
     val maxLength = 50
     val minLength = 1
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMinAndMaxLength(minLength,maxLength)
+      stringsWithMinAndMaxLength(minLength, maxLength)
+    )
+
+    behave like declarantReferencePreventsUnsafeInput(
+      form,
+      fieldName,
+      unsafeInputsWithMaxLength(maxLength),
+      invalidError = FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
     )
 
     behave like mandatoryField(
@@ -67,23 +74,23 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
       requiredError = FormError(fieldName, requiredKey)
     )
 
-        "fail to bind reference number above maxLength" in {
-          val results = List(
-            form.bind(Map(radioFieldName -> "01")).bind(Map(fieldName -> "1")).apply(fieldName),
-            form.bind(Map(radioFieldName -> "01")).bind(Map(fieldName -> (maxLength+1).toString)).apply(fieldName)
-          )
-          val expectedError = FormError(fieldName, requiredKey , Seq())
-          results.foreach {
-            result =>
-              result.errors shouldEqual Seq(expectedError)
-          }
-        }
+    "fail to bind reference number above maxLength" in {
+      val results = List(
+        form.bind(Map(radioFieldName -> "01")).bind(Map(fieldName -> "1")).apply(fieldName),
+        form.bind(Map(radioFieldName -> "01")).bind(Map(fieldName -> (maxLength + 1).toString)).apply(fieldName)
+      )
+      val expectedError = FormError(fieldName, requiredKey, Seq())
+      results.foreach {
+        result =>
+          result.errors shouldEqual Seq(expectedError)
+      }
+    }
 
-        "fail to bind a value" in {
-          val result = form.bind(Map(radioFieldName -> "01")).bind(Map(fieldName -> "")).apply(fieldName)
-          val expectedError = error(fieldName, requiredKey)
+    "fail to bind a value" in {
+      val result = form.bind(Map(radioFieldName -> "01")).bind(Map(fieldName -> "")).apply(fieldName)
+      val expectedError = error(fieldName, requiredKey)
 
-          result.errors shouldEqual(expectedError)
-        }
+      result.errors shouldEqual (expectedError)
+    }
   }
 }

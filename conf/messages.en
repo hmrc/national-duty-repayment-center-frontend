@@ -264,8 +264,9 @@ declarantReferenceNumber.yes.checkYourAnswersLabel = Yes
 declarantReferenceNumber.no.checkYourAnswersLabel = No
 declarantReferenceNumber.checkYourAnswersLabel.question = Do you want to create a declarant reference number?
 declarantReferenceNumber.error.required.declarantReferenceNumber = Enter declarant reference number
-declarantReferenceNumber.error.invalid = The declarante reference number must be 50 characters or fewer
+declarantReferenceNumber.error.invalid.length = The declarant reference number must be 50 characters or fewer
 declarantReferenceNumber.error.required = Select yes if you want to create a declarant reference number
+declarantReferenceNumber.error.invalid = The declarant reference number must only include letters a to z without accents, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
 
 importerName.title = What is your name
 importerName.heading = What is your name
