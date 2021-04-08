@@ -22,6 +22,7 @@ import models.AmendCaseResponseType.FurtherInformation
 import models.ClaimRepaymentType.{Customs, Other, Vat}
 import models._
 import pages._
+import forms.EmailAndPhoneNumber
 import views.behaviours.ViewBehaviours
 
 
@@ -418,6 +419,13 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
         navigator.nextPage(DeclarantReferenceNumberPage, CheckMode, userAnswers)
           .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+      "go to the Check your answers page after the How can we contact you" in {
+         val userAnswers = UserAnswers(userAnswersId)
+           .set(EmailAddressAndPhoneNumberPage, EmailAndPhoneNumber(Set(IsContactProvided.Email, IsContactProvided.Phone), Some("abc@gmail.com"), Some("01632 960 001"))).success.value
+
+           navigator.nextPage(EmailAddressAndPhoneNumberPage, CheckMode, userAnswers)
+             .mustBe(routes.CheckYourAnswersController.onPageLoad())
       }
     }
   }

@@ -276,7 +276,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("phoneNumber.checkYourAnswersLabel")),
         HtmlFormat.escape(x.phone.getOrElse("")),
-        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url)
+        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(CheckMode).url)
       )
   }
 
@@ -285,7 +285,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("emailAddress.checkYourAnswersLabel")),
         HtmlFormat.escape(x.email.getOrElse("")),
-        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url)
+        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(CheckMode).url)
       )
   }
 
