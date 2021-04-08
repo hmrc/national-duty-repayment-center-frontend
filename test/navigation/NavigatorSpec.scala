@@ -22,6 +22,7 @@ import models.AmendCaseResponseType.FurtherInformation
 import models.ClaimRepaymentType.{Customs, Other, Vat}
 import models._
 import pages._
+import forms.EmailAndPhoneNumber
 import views.behaviours.ViewBehaviours
 
 
@@ -143,20 +144,20 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ReasonForOverpaymentController.onPageLoad(NormalMode))
       }
 
-      "go to DeclarantReferenceNumber page after EmailAddressPage page when the Representative's multiple entry journeys is selected " in {
+      "go to DeclarantReferenceNumber page after EmailAddressAndPhoneNumberPage page when the Representative's multiple entry journeys is selected " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value.
             set(ClaimantTypePage, ClaimantType.Representative).success.value
-        navigator.nextPage(EmailAddressPage, NormalMode, answers)
+        navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
           .mustBe(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode))
       }
 
-      "go to DeclarantReferenceNumber page after EmailAddressPage page when Importers/Representative single entry journeys selected " in {
+      "go to DeclarantReferenceNumber page after EmailAddressAndPhoneNumberPage page when Importers/Representative single entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
-        navigator.nextPage(EmailAddressPage, NormalMode, answers)
+        navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
           .mustBe(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode))
       }
 
@@ -191,7 +192,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
         navigator.nextPage(AgentImporterManualAddressPage, NormalMode, answers)
-          .mustBe(routes.PhoneNumberController.onPageLoad(NormalMode))
+          .mustBe(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode))
       }
 
       "go to ImporterEori page after importerHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
@@ -248,7 +249,6 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
-
         navigator.nextPage(DeclarantReferenceNumberPage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
@@ -259,7 +259,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
 
         navigator.nextPage(ImporterManualAddressPage, NormalMode, answers)
-          .mustBe(routes.PhoneNumberController.onPageLoad(NormalMode))
+          .mustBe(routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode))
       }
 
       "go to ImporterHasEori page after ImporterManualAddress page when the claimant is representative" in {
@@ -419,6 +419,13 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
         navigator.nextPage(DeclarantReferenceNumberPage, CheckMode, userAnswers)
           .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+      "go to the Check your answers page after the How can we contact you" in {
+         val userAnswers = UserAnswers(userAnswersId)
+           .set(EmailAddressAndPhoneNumberPage, EmailAndPhoneNumber(Set(IsContactProvided.Email, IsContactProvided.Phone), Some("abc@gmail.com"), Some("01632 960 001"))).success.value
+
+           navigator.nextPage(EmailAddressAndPhoneNumberPage, CheckMode, userAnswers)
+             .mustBe(routes.CheckYourAnswersController.onPageLoad())
       }
     }
   }

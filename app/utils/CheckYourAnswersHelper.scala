@@ -271,34 +271,22 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def phoneNumber: Option[AnswerRow] = userAnswers.get(PhoneNumberPage) map {
+  def phoneNumber: Option[AnswerRow] = userAnswers.get(EmailAddressAndPhoneNumberPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("phoneNumber.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.PhoneNumberController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(x.phone.getOrElse("")),
+        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(CheckMode).url)
       )
   }
 
-  def emailAddress: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
+  def emailAddress: Option[AnswerRow] = userAnswers.get(EmailAddressAndPhoneNumberPage) map {
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("emailAddress.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(x.email.getOrElse("")),
+        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(CheckMode).url)
       )
-  }
-
-  def contactByEmail: Option[AnswerRow] = userAnswers.get(EmailAddressPage) map {
-    x => {
-      AnswerRow(
-        HtmlFormat.escape(messages("contactByEmail.checkYourAnswersLabel")),
-        HtmlFormat.escape(x match
-              { case x if x.length > 0 => "Yes"
-                case _ => "No"}),
-        Some(routes.EmailAddressController.onPageLoad(CheckMode).url)
-      )
-    }
   }
 
   def declarantReferenceNumber: Option[AnswerRow] = {
@@ -489,14 +477,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def getContactDetailsAnswerSection: AnswerSection = {
-    AnswerSection(Some(messages("contact.details.checkYourAnswersLabel")),
-      Seq(phoneNumber.get,
-        contactByEmail.get) ++
-        (userAnswers.get(EmailAddressPage).get.isEmpty match {
+    AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
+        (userAnswers.get(EmailAddressAndPhoneNumberPage).get.phone.isEmpty match {
           case true => Seq.empty
-          case _ => Seq(emailAddress.get)
+          case false => Seq(phoneNumber.get)
         }) ++
-       declarantReferenceNumberQuestion
+        (userAnswers.get(EmailAddressAndPhoneNumberPage).get.email.isEmpty match {
+          case true => Seq.empty
+          case false => Seq(emailAddress.get)
+        }) ++
+          declarantReferenceNumberQuestion
     )
   }
 

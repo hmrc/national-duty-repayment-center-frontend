@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import play.api.data.Form
+import forms.EmailAndPhoneNumber
+import pages.behaviours.PageBehaviours
 
-class EmailAddressFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Option[String]] =
-    Form(
-      "email" -> emailAddressMapping(
-        "emailAddress.error.length",
-        "emailAddress.error.invalid",
-        "emailAddress.error.required",
-        "emailAddress.error.selection.required"
-      ))
+class EmailAddressAndPhoneNumberPageSpec extends PageBehaviours {
+
+  "EmailAddressPage" must {
+
+    beRetrievable[EmailAndPhoneNumber](EmailAddressAndPhoneNumberPage)
+
+    beSettable[EmailAndPhoneNumber](EmailAddressAndPhoneNumberPage)
+
+    beRemovable[EmailAndPhoneNumber](EmailAddressAndPhoneNumberPage)
+  }
 }

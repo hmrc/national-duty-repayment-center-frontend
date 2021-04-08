@@ -16,6 +16,7 @@
 
 package generators
 
+import forms.EmailAndPhoneNumber
 import models._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
@@ -83,6 +84,22 @@ trait ModelGenerators {
     Arbitrary {
       Gen.oneOf(NumberOfEntriesType.values)
     }
+
+  implicit lazy val arbitraryEmailAndPhoneNumber: Arbitrary[EmailAndPhoneNumber] =
+    Arbitrary {
+      for {
+        email <- arbitrary[String]
+        phone <- arbitrary[String]
+      } yield EmailAndPhoneNumber(setIsContactProvided,
+        Some(email),
+        Some(phone)
+      )
+    }
+
+  implicit lazy val setIsContactProvided: Set[IsContactProvided] =
+    Set (
+      IsContactProvided.Email, IsContactProvided.Phone
+    )
 
   implicit lazy val arbitraryEntriesType: Arbitrary[Entries] =
     Arbitrary {

@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package models
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import play.api.data.Form
+sealed trait IsContactProvided
 
-class PhoneNumberFormProvider @Inject() extends Mappings with TrimWhitespace {
+object IsContactProvided extends Enumerable.Implicits {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("phoneNumber.error.required")
-        .transform[String](trimWhitespace, value => value)
-        .verifying(firstError(
-          maxLength(11, "phoneNumber.error.length"),
-          regexp(Validation.phoneNumberPattern,"phoneNumber.error.invalid")
-        ))
-    )
+  case object Email extends WithName("01") with IsContactProvided
+  case object Phone extends WithName("02") with IsContactProvided
 
+  val values: Seq[IsContactProvided] = Seq(
+    Email, Phone
+  )
 
+  implicit val enumerable: Enumerable[IsContactProvided] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

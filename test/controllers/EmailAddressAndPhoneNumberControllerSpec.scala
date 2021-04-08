@@ -17,44 +17,41 @@
 package controllers
 
 import base.SpecBase
-import forms.PhoneNumberFormProvider
-import models.ClaimantType.Importer
-import models.{NormalMode, UserAnswers}
+import forms.{EmailAddressAndPhoneNumberFormProvider, EmailAndPhoneNumber}
+import models.{IsContactProvided, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{ClaimantTypePage, PhoneNumberPage}
+import pages.EmailAddressAndPhoneNumberPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.PhoneNumberView
+import views.html.EmailAddressAndPhoneNumberView
 
 import scala.concurrent.Future
 
-class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
+class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new PhoneNumberFormProvider()
+  val formProvider = new EmailAddressAndPhoneNumberFormProvider()
   val form = formProvider()
 
-  lazy val phoneNumberRoute = routes.PhoneNumberController.onPageLoad(NormalMode).url
+  lazy val emailAddressRoute = routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url
 
-  "PhoneNumber Controller" must {
+  "EmailAddress Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, phoneNumberRoute)
+      val request = FakeRequest(GET, emailAddressRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[PhoneNumberView]
+      val view = application.injector.instanceOf[EmailAddressAndPhoneNumberView]
 
       status(result) mustEqual OK
 
@@ -66,60 +63,36 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value.set(PhoneNumberPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(EmailAddressAndPhoneNumberPage,
+        EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, phoneNumberRoute)
+      val request = FakeRequest(GET, emailAddressRoute)
 
-      val view = application.injector.instanceOf[PhoneNumberView]
+      val view = application.injector.instanceOf[EmailAddressAndPhoneNumberView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
-    "redirect to the next page when valid data is submitted" in {
-
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
-
-      val request =
-        FakeRequest(POST, phoneNumberRoute)
-          .withFormUrlEncodedBody(("value", "07486236608"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+        view(form.fill(EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))), NormalMode)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value.set(PhoneNumberPage, "answer").success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, phoneNumberRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, emailAddressRoute)
+          .withFormUrlEncodedBody(("email", ""))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("email" -> ""))
 
-      val view = application.injector.instanceOf[PhoneNumberView]
+      val view = application.injector.instanceOf[EmailAddressAndPhoneNumberView]
 
       val result = route(application, request).value
 
@@ -135,7 +108,7 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, phoneNumberRoute)
+      val request = FakeRequest(GET, emailAddressRoute)
 
       val result = route(application, request).value
 
@@ -151,8 +124,8 @@ class PhoneNumberControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, phoneNumberRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, emailAddressRoute)
+          .withFormUrlEncodedBody(("email", "test@test.com"))
 
       val result = route(application, request).value
 

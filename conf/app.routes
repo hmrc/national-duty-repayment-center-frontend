@@ -99,17 +99,6 @@ POST       /agentNameImporter                        controllers.AgentNameImport
 GET        /changeAgentNameImporter                  controllers.AgentNameImporterController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeAgentNameImporter                  controllers.AgentNameImporterController.onSubmit(mode: Mode = CheckMode)
 
-
-GET        /enter-phone-number                        controllers.PhoneNumberController.onPageLoad(mode: Mode = NormalMode)
-POST       /enter-phone-number                        controllers.PhoneNumberController.onSubmit(mode: Mode = NormalMode)
-GET        /change-enter-phone-number                  controllers.PhoneNumberController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-enter-phone-number                  controllers.PhoneNumberController.onSubmit(mode: Mode = CheckMode)
-
-GET        /contact-by-email                        controllers.EmailAddressController.onPageLoad(mode: Mode = NormalMode)
-POST       /contact-by-email                        controllers.EmailAddressController.onSubmit(mode: Mode = NormalMode)
-GET        /change-contact-by-email                 controllers.EmailAddressController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-contact-by-email                 controllers.EmailAddressController.onSubmit(mode: Mode = CheckMode)
-
 GET        /repaid                        controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
 POST       /repaid                        controllers.WhomToPayController.onSubmit(mode: Mode = NormalMode)
 GET        /change-repaid                  controllers.WhomToPayController.onPageLoad(mode: Mode = CheckMode)
@@ -278,3 +267,7 @@ GET         /change-amend-case-send-information/file-verification               
 GET         /change-amend-case-send-information/file-rejected                                controllers.AmendCaseSendInformationController.markFileUploadAsRejected(mode: Mode = CheckMode)
 GET         /change-amend-case-send-information/file-uploaded/:reference/remove              controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
 
+GET        /contact                        controllers.EmailAddressAndPhoneNumberController.onPageLoad(mode: Mode = NormalMode)
+POST       /contact                        controllers.EmailAddressAndPhoneNumberController.onSubmit(mode: Mode = NormalMode)
+GET        /change-contact                 controllers.EmailAddressAndPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact                 controllers.EmailAddressAndPhoneNumberController.onSubmit(mode: Mode = CheckMode)

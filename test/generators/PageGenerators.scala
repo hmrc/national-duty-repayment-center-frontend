@@ -84,11 +84,8 @@ trait PageGenerators {
   implicit lazy val arbitraryAgentNameImporterPage: Arbitrary[AgentNameImporterPage.type] =
     Arbitrary(AgentNameImporterPage)
 
-  implicit lazy val arbitraryPhoneNumberPage: Arbitrary[PhoneNumberPage.type] =
-    Arbitrary(PhoneNumberPage)
-
-  implicit lazy val arbitraryEmailAddressPage: Arbitrary[EmailAddressPage.type] =
-    Arbitrary(EmailAddressPage)
+  implicit lazy val arbitraryEmailAddressAndPhoneNumberPage: Arbitrary[EmailAddressAndPhoneNumberPage.type] =
+    Arbitrary(EmailAddressAndPhoneNumberPage)
 
   implicit lazy val arbitraryContactTypePage: Arbitrary[ContactTypePage.type] =
     Arbitrary(ContactTypePage)

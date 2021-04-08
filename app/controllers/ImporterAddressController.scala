@@ -146,7 +146,7 @@ class ImporterAddressController @Inject()(
                   request.userAnswers.get(ClaimantTypePage) match {
                     case Some(ClaimantType.Importer) =>
                       if(mode.equals(NormalMode))
-                        Redirect(routes.PhoneNumberController.onPageLoad(mode))
+                        Redirect(routes.EmailAddressAndPhoneNumberController.onPageLoad(mode))
                       else
                         Redirect(routes.CheckYourAnswersController.onPageLoad)
                     case _ =>

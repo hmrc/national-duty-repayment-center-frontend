@@ -103,24 +103,30 @@ object CreateClaimRequest {
       case Some(decRef) if decRef.declarantReferenceType == No => Some("NA")
     }
 
-    def getEmailAddress(userAnswers: UserAnswers): Option[String] = userAnswers.get(EmailAddressPage) match {
-      case Some(email) if email.length > 0 => Some(email)
+    def getEmailAddress(userAnswers: UserAnswers): Option[String] = userAnswers.get(EmailAddressAndPhoneNumberPage) match {
+      //case Some(email) if email.length > 0 => Some(email)
+      case Some(emailAndPhone) if emailAndPhone.email.map(_.length).getOrElse(0) > 0 => Some(emailAndPhone.email.get)
+      case _ => None
+    }
+
+    def getTelePhone(userAnswers: UserAnswers): Option[String] = userAnswers.get(EmailAddressAndPhoneNumberPage) match {
+      case Some(emailAndPhone) if emailAndPhone.phone.map(_.length).getOrElse(0) > 0 => Some(emailAndPhone.phone.get)
       case _ => None
     }
 
     def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
       name <- userAnswers.get(ImporterNamePage)
       address <- getAgentImporterAddress(userAnswers)
-      telephone <- userAnswers.get(PhoneNumberPage)
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
+      val telephone = getTelePhone(userAnswers)
       val email = getEmailAddress(userAnswers)
       UserDetails(
         "false",
         eori,
         name,
         address,
-        Some(telephone),
+        telephone,
         email
       )
     }
@@ -163,7 +169,7 @@ object CreateClaimRequest {
       }
       val telephone = {
         userAnswers.get(ClaimantTypePage) match {
-          case Some(ClaimantType.Importer) => userAnswers.get(PhoneNumberPage)
+          case Some(ClaimantType.Importer) => getTelePhone(userAnswers)
           case _ => None
         }
       }

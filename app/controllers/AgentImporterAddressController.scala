@@ -147,7 +147,7 @@ class AgentImporterAddressController @Inject()(
                   _              <- sessionRepository.set(removeManualAddressAnswers)
                 } yield {
                   if (mode.equals(NormalMode))
-                    Redirect(routes.PhoneNumberController.onPageLoad(mode))
+                    Redirect(routes.EmailAddressAndPhoneNumberController.onPageLoad(mode))
                   else
                     Redirect(routes.CheckYourAnswersController.onPageLoad)
                 }

@@ -16,17 +16,13 @@
 
 package pages
 
-import pages.behaviours.PageBehaviours
+import forms.EmailAndPhoneNumber
+import play.api.libs.json.JsPath
 
+case object EmailAddressAndPhoneNumberPage extends QuestionPage[EmailAndPhoneNumber] {
 
-class EmailAddressPageSpec extends PageBehaviours {
+  override def path: JsPath = JsPath \ toString
 
-  "EmailAddressPage" must {
+  //override def toString: String = "isContactProvided"
 
-    beRetrievable[String](EmailAddressPage)
-
-    beSettable[String](EmailAddressPage)
-
-    beRemovable[String](EmailAddressPage)
-  }
 }
