@@ -61,7 +61,7 @@ class BulkFileUploadController @Inject()(
     sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
       ss.state match {
         case Some(s) =>
-          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
+          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[FileUploadState].flatMap {
             case _: FileUploaded => {
               if(mode.equals(NormalMode))
                 Future.successful(Redirect(routes.EntryDetailsController.onPageLoad(mode)))
