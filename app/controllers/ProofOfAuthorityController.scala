@@ -21,28 +21,23 @@ import akka.pattern.ask
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
-import controllers.FileUploadUtils.missingFileUploadState
+import controllers.FileUploadUtils.{missingFileUploadState, _}
 import controllers.actions._
 import forms.UpscanS3ErrorFormProvider
 import models.FileType.ProofOfAuthority
-import models.{FileVerificationStatus, Mode, NormalMode, S3UploadError, UpscanNotification, UserAnswers}
-import play.api.data.Form
-import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
-import models.{NormalMode, SessionState, UpscanNotification}
+import models.{Mode, NormalMode, UpscanNotification}
+import pages.BankDetailsPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ProofOfAuthorityView
+
 import java.time.LocalDateTime
-
 import javax.inject.{Inject, Named}
-import pages.BankDetailsPage
-
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
-import FileUploadUtils._
 class ProofOfAuthorityController @Inject()(
                                             override val messagesApi: MessagesApi,
                                             appConfig: FrontendAppConfig,
@@ -67,7 +62,7 @@ class ProofOfAuthorityController @Inject()(
     sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
       ss.state match {
         case Some(s) =>
-          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
+          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[FileUploadState].flatMap {
             case _: FileUploaded => Future.successful(Redirect(routes.BankDetailsController.onPageLoad(NormalMode)))
             case _: UploadFile => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload(mode)))
             case _ => Future.successful(missingFileUploadState)
