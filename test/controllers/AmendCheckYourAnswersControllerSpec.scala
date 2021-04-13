@@ -69,7 +69,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
       contentAsString(result) must contain
-        view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels mustNot contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
@@ -96,7 +96,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
       contentAsString(result) must contain
-      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(fakeRequest, messages).toString
+      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
@@ -139,7 +139,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
       contentAsString(result) must contain
-      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(fakeRequest, messages).toString
+      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))

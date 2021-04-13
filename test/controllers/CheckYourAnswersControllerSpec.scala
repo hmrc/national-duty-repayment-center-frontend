@@ -50,7 +50,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
 
       application.stop()
     }
@@ -72,7 +72,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
 
       application.stop()
     }
@@ -94,7 +94,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
 
       application.stop()
     }
@@ -116,7 +116,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
 
       application.stop()
     }
@@ -138,7 +138,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
 
       application.stop()
     }
@@ -160,7 +160,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(fakeRequest, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
 
       application.stop()
     }

@@ -43,7 +43,7 @@ class AmendConfirmationControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(claimId)(fakeRequest, messages).toString
+        view(claimId)(request, messages).toString
 
       application.stop()
     }
