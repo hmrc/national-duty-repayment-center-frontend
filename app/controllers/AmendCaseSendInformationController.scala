@@ -62,11 +62,11 @@ class AmendCaseSendInformationController @Inject()(
 
   // GET /file-verification
   final def showWaitingForFileVerification(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    implicit val timeout = Timeout(30 seconds)
+    implicit val timeout = Timeout(10 seconds)
     sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
       ss.state match {
         case Some(s) =>
-          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(30), s)).mapTo[FileUploadState].flatMap {
+          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[FileUploadState].flatMap {
             case _: FileUploaded => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
             case _: UploadFile => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
             case _ => Future.successful(missingFileUploadState)

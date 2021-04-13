@@ -24,7 +24,8 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("session_expired.title"))}")
+    pageTitle = Some(s"${titleNoForm(messages("session_expired.title"))}"),
+    timeout = false
 ) {
 
     @html.h1(messages("session_expired.heading"))

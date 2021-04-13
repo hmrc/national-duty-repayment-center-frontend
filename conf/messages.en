@@ -290,7 +290,7 @@ emailAddress.title = How can we contact you?
 emailAddress.heading = How can we contact you?
 emailAddress.01 = Yes
 emailAddress.02 = No
-emailAddress.hintText = <p>We will use these details if we need to contact you for further information.</p> <div id="value-hint" class="govuk-hint">Select at least one option.</div>
+emailAddress.hintText = <p>We will use these details if we need to contact you for further information.</p> <div class="govuk-hint">Select at least one option.</div>
 emailAddress.01.hint = Email address
 emailAddress.checkYourAnswersLabel = Email address
 emailAddress.error.required = Enter an email address
