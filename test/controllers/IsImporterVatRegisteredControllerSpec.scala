@@ -46,7 +46,6 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
       val request = FakeRequest(GET, isImporterVatRegisteredRoute)
 
       val result = route(application, request).value
@@ -55,8 +54,11 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual OK
 
+      println(contentAsString(result))
+      println(view(form, NormalMode)(request, messages).toString)
+
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -76,7 +78,7 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(IsImporterVatRegistered.Yes), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(IsImporterVatRegistered.Yes), NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -119,9 +121,8 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
-
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(request, messages).toString
 
       application.stop()
     }

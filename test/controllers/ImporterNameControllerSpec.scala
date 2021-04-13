@@ -65,7 +65,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -83,7 +83,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UserName("Joe", "Bloggs")), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(UserName("Joe", "Bloggs")), NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -128,7 +128,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(request, messages).toString
 
       application.stop()
     }

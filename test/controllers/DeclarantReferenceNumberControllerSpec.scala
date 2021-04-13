@@ -56,7 +56,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(fakeRequest, messages).toString
+        view(form, NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -76,7 +76,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeclarantReferenceNumber(DeclarantReferenceType.Yes,Some("123"))), NormalMode)(fakeRequest, messages).toString
+        view(form.fill(DeclarantReferenceNumber(DeclarantReferenceType.Yes,Some("123"))), NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -122,7 +122,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, NormalMode)(request, messages).toString
 
       application.stop()
     }

@@ -25,9 +25,7 @@
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
-@{
-println(form.data.values)
-}
+
 @conditionalContent = {
     @forms.inputText(
         form = form,

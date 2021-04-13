@@ -57,7 +57,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
+        view(form, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(request, messages).toString
 
       application.stop()
     }
@@ -82,7 +82,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       contentAsString(result) mustEqual
         view(form.fill(
           Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")
-        ), NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
+        ), NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(request, messages).toString
 
       application.stop()
     }
@@ -134,7 +134,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(fakeRequest, messages).toString
+        view(boundForm, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(request, messages).toString
 
       application.stop()
     }
