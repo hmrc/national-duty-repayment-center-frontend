@@ -15,7 +15,7 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, ClaimantType}
+@import models.{Mode, CreateOrAmendCase}
 @import views.ViewUtils._
 
 @this(
@@ -27,10 +27,11 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimantType.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("createOrAmendCase.title"))}"),
+    backLink = false
 ) {
 
-  @forms.formWithCSRF(action = ClaimantTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+  @forms.formWithCSRF(action = CreateOrAmendCaseController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
     @components.error_summary(form.errors)
 
@@ -38,10 +39,10 @@
       form = form,
       idPrefix = "value",
       name = "value",
-      items = ClaimantType.options(form),
+      items = CreateOrAmendCase.options(form),
       inline = false,
       legendAsHeading = true,
-      legend = Some(messages("claimantType.heading"))
+      legend = Some(messages("createOrAmendCase.heading"))
     )
 
     @html.button("site.continue")

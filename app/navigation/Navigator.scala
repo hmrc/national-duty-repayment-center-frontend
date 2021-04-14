@@ -28,6 +28,7 @@ import models._
 class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
+    case CreateOrAmendCasePage =>  getCreateOrAmendCase
     case ClaimantTypePage => _ => routes.NumberOfEntriesTypeController.onPageLoad(NormalMode)
     case NumberOfEntriesTypePage  => _ => routes.CustomsRegulationTypeController.onPageLoad(NormalMode)
     case CustomsRegulationTypePage => getEntryDetails
@@ -64,6 +65,11 @@ class Navigator @Inject()() {
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
     case ClaimRepaymentTypePage => getClaimRepaymentType
     case _ => _ => routes.IndexController.onPageLoad()
+  }
+
+  private def getCreateOrAmendCase(answers: UserAnswers): Call = answers.get(CreateOrAmendCasePage) match {
+    case Some(CreateOrAmendCase.CreateCase)  => routes.ClaimantTypeController.onPageLoad(NormalMode)
+    case Some(CreateOrAmendCase.AmendCase) => routes.ReferenceNumberController.onPageLoad(NormalMode)
   }
 
   private def getImporterManualAddress(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {

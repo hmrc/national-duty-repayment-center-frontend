@@ -17,38 +17,36 @@
 package controllers
 
 import controllers.actions._
-import forms.ClaimantTypeFormProvider
-
-import javax.inject.Inject
-import models.{CheckMode, Entries, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
+import forms.CreateOrAmendCaseFormProvider
+import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.{ClaimantTypePage, NumberOfEntriesTypePage}
+import pages.CreateOrAmendCasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.ClaimantTypeView
+import views.html.CreateOrAmendCaseView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimantTypeController @Inject()(
+class CreateOrAmendCaseController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        sessionRepository: SessionRepository,
                                        navigator: Navigator,
                                        identify: IdentifierAction,
                                        getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: ClaimantTypeFormProvider,
+                                       formProvider: CreateOrAmendCaseFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: ClaimantTypeView
+                                       view: CreateOrAmendCaseView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(ClaimantTypePage) match {
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(CreateOrAmendCasePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -56,30 +54,30 @@ class ClaimantTypeController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
-          if(request.userAnswers.get(ClaimantTypePage) != value
+          if(request.userAnswers.nonEmpty && request.userAnswers.get.get(CreateOrAmendCasePage).get != value
             && mode.equals(CheckMode) ) {
             for {
-              _ <- sessionRepository.resetData(request.userAnswers)
+              _ <- sessionRepository.resetData(request.userAnswers.get)
               sessionData <- sessionRepository.get(request.internalId)
               userAnswers <- Future.fromTry (sessionData.map(_.copy(id = request.internalId)).
-                getOrElse(UserAnswers(request.internalId)).set(ClaimantTypePage, value))
+                getOrElse(UserAnswers(request.internalId)).set(CreateOrAmendCasePage, value))
               res <- sessionRepository.set(userAnswers)
               if(res)
-            } yield Redirect(navigator.nextPage(ClaimantTypePage, NormalMode, userAnswers))
+            } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, NormalMode, userAnswers))
           } else {
             for {
-              userAnswers <- Future.fromTry (request.userAnswers.
-                set(ClaimantTypePage, value))
+              userAnswers <- Future.fromTry (request.userAnswers.getOrElse(UserAnswers(request.internalId)).
+                set(CreateOrAmendCasePage, value))
               res <- sessionRepository.set(userAnswers)
               if(res)
-            } yield Redirect(navigator.nextPage(ClaimantTypePage, mode, userAnswers))
+            } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, mode, userAnswers))
           }
       )
   }
