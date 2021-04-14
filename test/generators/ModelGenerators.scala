@@ -131,6 +131,11 @@ trait ModelGenerators {
       Gen.oneOf(ClaimantType.values)
     }
 
+  implicit lazy val arbitraryCreateOrAmendCase: Arbitrary[CreateOrAmendCase] =
+    Arbitrary {
+      Gen.oneOf(CreateOrAmendCase.values)
+    }
+
   implicit val arbitraryBankDetails: Arbitrary[BankDetails] = Arbitrary {
     for {
       accountName <- arbitrary[String]

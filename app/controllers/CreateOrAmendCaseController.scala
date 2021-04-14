@@ -61,24 +61,12 @@ class CreateOrAmendCaseController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
         value =>
-          if(request.userAnswers.nonEmpty && request.userAnswers.get.get(CreateOrAmendCasePage).get != value
-            && mode.equals(CheckMode) ) {
-            for {
-              _ <- sessionRepository.resetData(request.userAnswers.get)
-              sessionData <- sessionRepository.get(request.internalId)
-              userAnswers <- Future.fromTry (sessionData.map(_.copy(id = request.internalId)).
-                getOrElse(UserAnswers(request.internalId)).set(CreateOrAmendCasePage, value))
-              res <- sessionRepository.set(userAnswers)
-              if(res)
-            } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, NormalMode, userAnswers))
-          } else {
             for {
               userAnswers <- Future.fromTry (request.userAnswers.getOrElse(UserAnswers(request.internalId)).
                 set(CreateOrAmendCasePage, value))
               res <- sessionRepository.set(userAnswers)
               if(res)
             } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, mode, userAnswers))
-          }
       )
   }
 }
