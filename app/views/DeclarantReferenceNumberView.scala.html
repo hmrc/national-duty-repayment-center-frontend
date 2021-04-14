@@ -27,19 +27,6 @@
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@conditionalContent = {
-  @forms.inputText(
-    form = form,
-    id = "declarantReferenceNumber",
-    name = "declarantReferenceNumber",
-    label = "declarantReferenceNumber.checkYourAnswersLabel.question",
-    inputType = "declarantReferenceNumber",
-    isPageHeading = false,
-    isInFieldset = false,
-    attributes = Map("autocomplete" -> "declarantReferenceNumber")
-  )
-}
-
 
 @govukLayout(
   pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("declarantReferenceNumber.title"))}")

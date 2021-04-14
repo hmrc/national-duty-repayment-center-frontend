@@ -50,7 +50,7 @@ object DeclarantReferenceType extends Enumerable.Implicits {
         },
         conditionalHtml = if(value.toString.equals("01")) Some(new govukInput(govukErrorMessage, govukHint, govukLabel)
         (Input(id="declarantReferenceNumber", value = form("declarantReferenceNumber").value,label= Label(
-          content=Text(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
+          content=Text(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
           isPageHeading = false
         ),
           errorMessage = if(form("declarantReferenceNumber").hasErrors){
