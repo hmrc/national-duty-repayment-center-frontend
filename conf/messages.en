@@ -751,3 +751,11 @@ isContactProvided.error.required = Select how we can contact you
 isContactProvided.01 = Email
 isContactProvided.02 = Phone
 phoneNumber.02.hint = Phone number
+
+createOrAmendCase.title = What do you want to do? - Apply for repayment of import duties and import VAT - GOV.UK
+createOrAmendCase.heading = What do you want to do?
+createOrAmendCase.01 = Start a new application
+createOrAmendCase.02 = Amend an existing application
+createOrAmendCase.hint.01 = Apply for repayment of overpaid import duties or import VAT.
+createOrAmendCase.hint.02 = Add further information or make changes to an existing application. You will need the claim reference number.
+createOrAmendCase.error.required = Select if you want to start a new application or amend an existing application
