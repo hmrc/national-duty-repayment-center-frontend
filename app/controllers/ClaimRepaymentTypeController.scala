@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ClaimRepaymentTypeFormProvider
 
 import javax.inject.Inject
-import models.{CheckMode, ClaimRepaymentType, Mode}
+import models.{CheckMode, ClaimantType, ClaimRepaymentType, Mode, UserAnswers}
 import navigation.Navigator
 import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -53,14 +53,14 @@ class ClaimRepaymentTypeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
 
         value =>
           for {
@@ -96,4 +96,10 @@ class ClaimRepaymentTypeController @Inject()(
           }
       )
   }
+  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
+        userAnswers.get(ClaimantTypePage) match {
+          case Some(ClaimantType.Importer) => true
+          case _ => false
+        }
+      }
 }
