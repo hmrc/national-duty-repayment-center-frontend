@@ -54,7 +54,6 @@ class ClaimRepaymentTypeController @Inject()(
       }
 
       Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
-      //Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
