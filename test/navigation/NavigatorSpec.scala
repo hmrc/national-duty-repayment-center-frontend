@@ -270,6 +270,24 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         navigator.nextPage(ImporterManualAddressPage, NormalMode, answers)
           .mustBe(routes.ImporterHasEoriController.onPageLoad(NormalMode))
       }
+
+      "go to ClaimantType page when CreateOrAmendCase is type of Start a new application" in {
+        val answers =
+          emptyUserAnswers
+            .set(CreateOrAmendCasePage, CreateOrAmendCase.CreateCase).success.value
+
+        navigator.nextPage(CreateOrAmendCasePage, NormalMode, answers)
+          .mustBe(routes.ClaimantTypeController.onPageLoad(NormalMode))
+      }
+
+      "go to ReferenceNumber page when CreateOrAmendCase is type of Amend an existing application" in {
+        val answers =
+          emptyUserAnswers
+            .set(CreateOrAmendCasePage, CreateOrAmendCase.AmendCase).success.value
+
+        navigator.nextPage(CreateOrAmendCasePage, NormalMode, answers)
+          .mustBe(routes.ReferenceNumberController.onPageLoad(NormalMode))
+      }
     }
 
 
