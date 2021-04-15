@@ -27,13 +27,16 @@ class AdditionalFileUploadFormProvider {
         .filter(predicate)
         .fold[ValidationResult](Invalid(ValidationError(s"error.$fieldName.$errorType")))(_ => Valid)
     }
-  def booleanMapping(fieldName: String, trueValue: String, falseValue: String): Mapping[Boolean] =
-    optional(text)
-      .verifying(constraint[Option[String]](fieldName, "required", _.exists(s => s == trueValue || s == falseValue)))
-      .transform[Boolean](_.contains(trueValue), b => if (b) Some(trueValue) else Some(falseValue))
-  val uploadAnotherFileMapping: Mapping[Boolean] = booleanMapping("uploadAnotherFile", "yes", "no")
 
-  val UploadAnotherFileChoiceForm = Form[Boolean](
-    mapping("uploadAnotherFile" -> uploadAnotherFileMapping)(identity)(Option.apply)
+  def booleanMapping(fieldName: String, trueValue: String, falseValue: String, count: Int): Mapping[Boolean] =
+    optional(text)
+      .verifying(constraint[Option[String]](fieldName, "required", _.exists(s => s == trueValue || (s == falseValue && count >= 1))))
+      .transform[Boolean](_.contains(trueValue), b => if (b) Some(trueValue) else Some(falseValue))
+
+
+  def uploadAnotherFileMapping(count: Int) : Mapping[Boolean] = booleanMapping("uploadAnotherFile", "yes", "no", count)
+
+  def UploadAnotherFileChoiceForm(uploadFilesCount: Int) = Form[Boolean](
+    mapping("uploadAnotherFile" -> uploadAnotherFileMapping(uploadFilesCount))(identity)(Option.apply)
   )
 }

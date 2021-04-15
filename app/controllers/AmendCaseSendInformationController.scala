@@ -39,6 +39,7 @@ import java.time.LocalDateTime
 import javax.inject.{Inject, Named}
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
+
 class AmendCaseSendInformationController @Inject()(
                                                     override val messagesApi: MessagesApi,
                                                     identify: IdentifierAction,
@@ -57,7 +58,6 @@ class AmendCaseSendInformationController @Inject()(
                                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
   final val controller = routes.AmendCaseSendInformationController
-  val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm
   val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
 
   // GET /file-verification
@@ -84,11 +84,14 @@ class AmendCaseSendInformationController @Inject()(
   final def removeFileUploadByReference(reference: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
       ss.state match {
-        case Some(s) => fileUtils.applyTransition(removeFileUploadBy(reference)(upscanRequest(request.internalId, mode))(upscanInitiateConnector.initiate(_))(_), s, ss).map {
-              case _@FileUploaded(_, _) => Redirect(controller.showFileUploaded(mode))
-              case _@UploadFile(_, _, _, _) => Redirect(controller.showFileUpload(mode))
-              case s@_ => renderState(fileUploadState = s, mode = mode)
-          }
+        case Some(s) =>
+          val removeState = FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
+          val sessionState = ss.copy(state = Some(removeState))
+          fileUtils.applyTransition(removeFileUploadBy(reference)(upscanRequest(request.internalId, mode))(upscanInitiateConnector.initiate(_))(_), removeState, sessionState).map {
+          case _@FileUploaded(_, _) => Redirect(controller.showFileUploaded(mode))
+          case _@UploadFile(_, _, _, _) => Redirect(controller.showFileUpload(mode))
+          case s@_ => renderState(fileUploadState = s, mode = mode)
+        }
         case None => Future.successful(missingFileUploadState)
       }
     }
@@ -115,6 +118,7 @@ class AmendCaseSendInformationController @Inject()(
       s <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
       if s.nonEmpty
     } yield {
+      val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(ss.userAnswers.flatMap(_.fileUploadState.map(f => filesInStateAccepted(f.fileUploads.files).size)).getOrElse(0))
       Ok(fileUploadedView(
         uploadAnotherFileChoiceForm,
         s.get.fileUploads,
@@ -127,25 +131,30 @@ class AmendCaseSendInformationController @Inject()(
 
   // POST /file-uploaded
   final def submitUploadAnotherFileChoice(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    uploadAnotherFileChoiceForm.bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(fileUploadedView(
-        formWithErrors,
-        request.userAnswers.fileUploadState.get.fileUploads,
-        controller.submitUploadAnotherFileChoice(mode),
-        controller.removeFileUploadByReference,
-        mode
-      ))),
-      value =>
-        sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
-          ss.state match {
-            case Some(s) if value =>
-              fileUtils.applyTransition(submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(_), s, ss)
-                .map(_ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
-            case Some(_) => Future.successful(Redirect(getAmendCaseUploadAnotherFile(request.userAnswers, mode)))
-            case None => Future.successful(missingFileUploadState)
+    sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
+      val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(ss.userAnswers.flatMap(_.fileUploadState.map(f => filesInStateAccepted(f.fileUploads.files).size)).getOrElse(0))
+
+      uploadAnotherFileChoiceForm.bindFromRequest().fold(
+        formWithErrors => Future.successful(BadRequest(fileUploadedView(
+          formWithErrors,
+          request.userAnswers.fileUploadState.get.fileUploads,
+          controller.submitUploadAnotherFileChoice(mode),
+          controller.removeFileUploadByReference,
+          mode
+        ))),
+        value =>
+          sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
+            ss.state match {
+              case Some(s) if value =>
+                fileUtils.applyTransition(submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(_), s, ss)
+                  .map(_ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
+              case Some(_) => Future.successful(Redirect(getAmendCaseUploadAnotherFile(request.userAnswers, mode)))
+              case None => Future.successful(missingFileUploadState)
+            }
           }
-        }
-    )
+      )
+    }
+
   }
 
   private def getAmendCaseUploadAnotherFile(answers: UserAnswers, mode: Mode): Call = {
@@ -212,6 +221,7 @@ class AmendCaseSendInformationController @Inject()(
       }
 
       case FileUploaded(fileUploads, _) =>
+        val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(filesInStateAccepted(fileUploads.files).size)
         Ok(fileUploadedView(
           formWithErrors.getOrElse(uploadAnotherFileChoiceForm),
           fileUploads,
