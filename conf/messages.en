@@ -216,10 +216,11 @@ reasonForOverpayment.bullet8 = a description of the items or goods
 
 claimRepaymentType.title = What do you want to reclaim?
 claimRepaymentType.heading = What do you want to reclaim?
-claimRepaymentType.hint = Select all that apply.
+claimRepaymentType.representative.hint = Select all that apply.
+claimRepaymentType.importer.hint = <p>You can check with your shipping courier if you are not sure.</p> <div class="govuk-hint">Select all that apply.</div>
 claimRepaymentType.01 = Customs Duty
 claimRepaymentType.02 = Import VAT
-claimRepaymentType.03 = Another type of duty
+claimRepaymentType.03 = Other duties
 claimRepaymentType.checkYourAnswersLabel = What do you want to reclaim?
 claimRepaymentType.error.required = Select what you want to reclaim
 

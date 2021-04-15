@@ -24,7 +24,7 @@
     html: views.components.html
 )
 
-@(form: Form[Set[ClaimRepaymentType]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[Set[ClaimRepaymentType]], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimRepaymentType.title"))}")
@@ -33,16 +33,6 @@
     @forms.formWithCSRF(action = ClaimRepaymentTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
-
-<!--        @forms.inputCheckboxes(
-            form = form,
-            idPrefix = Some("value"),
-            name = Some("value"),
-            legendAsHeading = true,
-            legend = messages("claimRepaymentType.heading"),
-            items = ClaimRepaymentType.options(form),
-            hint = Some(Html(messages("claimRepaymentType.hint")))
-        )-->
 
         @forms.inputCheckboxes(
             form = form,
@@ -70,7 +60,10 @@
                 ),
             legendAsHeading = true,
             legend = messages("claimRepaymentType.heading"),
-            hint = Some(Html(messages("claimRepaymentType.hint")))
+            hint = isImporterJourney match {
+                case true => Some(Html(messages("claimRepaymentType.importer.hint")))
+                case _ => Some(Html(messages("claimRepaymentType.representative.hint")))
+            }
         )
 
         @html.button("site.continue")
