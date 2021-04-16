@@ -103,10 +103,10 @@ class ImporterAddressController @Inject()(
           .map(a =>
             SelectItem(
             text = a.AddressLine1+" "+
-              (if (a.AddressLine2 == None) "" else a.AddressLine2.get)+" "+
-              (if (a.City == None) "" else a.City)+" "+
-              (if (a.Region == None) "" else a.Region),
-            value = Some(Json.toJson(a).toString()))
+              a.AddressLine2.getOrElse("")+" "+
+              a.City+" "+
+              a.Region.getOrElse(""),
+              value = Some(Json.toJson(a).toString()))
           )
 
         if (form.hasErrors) {
