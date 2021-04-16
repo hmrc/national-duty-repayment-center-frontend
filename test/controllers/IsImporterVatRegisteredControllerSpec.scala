@@ -54,9 +54,6 @@ class IsImporterVatRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual OK
 
-      println(contentAsString(result))
-      println(view(form, NormalMode)(request, messages).toString)
-
       contentAsString(result) mustEqual
         view(form, NormalMode)(request, messages).toString
 
