@@ -530,8 +530,9 @@ importerAddressConfirmation.link1 = change
 importerAddressConfirmation.link2 = I can't find my address in the list
 importerAddressConfirmation.address = Select an address
 
-agent.importerAddressConfirmation.title = Select their address
-agent.importerAddressConfirmation.heading = Select their address
+agent.importerAddressConfirmation.title = Select the importer''s address
+agent.importerAddressConfirmation.title = Select the importer''s address
+agent.importerAddressConfirmation.heading = Select the importer''s address
 agentImporterAddressConfirmation.title = Select your business address
 agentImporterAddressConfirmation.heading = Select your business address
 

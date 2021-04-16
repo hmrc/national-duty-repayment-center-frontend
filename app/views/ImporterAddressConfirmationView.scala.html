@@ -30,7 +30,11 @@
 @(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerAddressConfirmation.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
+        case true => messages("importerAddressConfirmation.title")
+        case _ => messages("agent.importerAddressConfirmation.title")
+        })
+    }")
 ) {
 
     @forms.formWithCSRF(action = routes.ImporterAddressController.addressSelectSubmit(mode)) {
