@@ -170,8 +170,8 @@ POST       /enter-bank-details                        controllers.BankDetailsCon
 GET        /change-enter-bank-details                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-enter-bank-details                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
-GET        /repayment-summary                       controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = NormalMode)
-GET        /change-repayment-summary                controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = CheckMode)
+GET        /repayment-summary                       controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = NormalMode, fromCYA: Boolean)
+GET        /change-repayment-summary                controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = CheckMode, fromCYA: Boolean)
 
 GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-importer-address               controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)

@@ -62,7 +62,7 @@ class Navigator @Inject()() {
     case AmendCaseResponseTypePage => getAmendCaseResponseType
     case AmendCaseSendInformationPage => _ => routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
-    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode, false)
     case ClaimRepaymentTypePage => getClaimRepaymentType
     case _ => _ => routes.IndexController.onPageLoad()
   }
@@ -183,12 +183,12 @@ class Navigator @Inject()() {
   private def getVATRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage) match {
     case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat))  => routes.VATPaidController.onPageLoad(NormalMode)
     case x if (answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other))  => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
-    case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode, false)
   }
 
   private def getOtherRepaymentType(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
     case true => routes.OtherDutiesPaidController.onPageLoad(NormalMode)
-    case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+    case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode, false)
   }
 
   private def getAmendCaseResponseTypeCheckMode(answers: UserAnswers): Call = {
@@ -223,7 +223,7 @@ class Navigator @Inject()() {
     }
   }
 
-  private def getVatPaidCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
+  /*private def getVatPaidCheckMode(answers: UserAnswers): Call = answers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
     case true => routes.OtherDutiesPaidController.onPageLoad(CheckMode)
     case _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
   }
@@ -234,16 +234,16 @@ class Navigator @Inject()() {
       case true =>routes.OtherDutiesPaidController.onPageLoad(CheckMode)
       case _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
     }
-  }
+  }*/
 
   private val checkRouteMap: Page => UserAnswers => Call = {
     case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
-    case CustomsDutyPaidPage => getCustomsDutyCheckMode
+    case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode, false)
     case CustomsRegulationTypePage => getEntryDetailsWithCheckMode
-    case VATPaidPage => getVatPaidCheckMode
+    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode, false)
     case ImporterHasEoriPage => getEORIConfirmationWithCheckMode
     case AgentImporterHasEORIPage => getAgentEORIStatusWithCheckMode
-    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode, false)
     case ClaimRepaymentTypePage => getClaimRepaymentTypeWithCheckMode
     case WhomToPayPage => getWhomToPayCheckMode
     case IndirectRepresentativePage => getIndirectRepresentativeWithCheckMode

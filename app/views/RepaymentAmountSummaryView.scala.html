@@ -24,7 +24,7 @@
     html: views.components.html
 )
 
-@(answerSections: Seq[Section], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], mode: Mode, fromCYA: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("repaymentAmountSummary.title"))}")
@@ -42,9 +42,10 @@
         }
 
         @{
-            mode match {
-                case CheckMode => components.button_cya_link()
-                case NormalMode => components.button_link()
+            (mode, fromCYA) match {
+                case (CheckMode, true) => components.button_cya_link()
+                case (CheckMode, false) => components.button_link()
+                case (NormalMode, _) => components.button_link()
             }
         }
     }

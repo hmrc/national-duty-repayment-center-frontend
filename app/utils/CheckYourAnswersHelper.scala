@@ -372,7 +372,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     AnswerRow(
       HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
       HtmlFormat.escape("£" + helper.getTotalAmount().format2d),
-      Some(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode).url)
+      Some(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode, true).url)
     )
   }
 
