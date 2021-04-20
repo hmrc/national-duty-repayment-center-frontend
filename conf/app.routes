@@ -128,16 +128,22 @@ GET        /import-vat-overpayment                    controllers.VATPaidControl
 POST       /import-vat-overpayment                         controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
 GET        /change-import-vat-overpayment                  controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-import-vat-overpayment                  controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
+GET        /repay-import-vat-overpayment                  controllers.VATPaidController.onPageLoad(mode: Mode = RepayMode)
+POST       /repay-import-vat-overpayment                  controllers.VATPaidController.onSubmit(mode: Mode = RepayMode)
 
 GET        /customs-duty-overpayment                       controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = NormalMode)
 POST       /customs-duty-overpayment                       controllers.CustomsDutyPaidController.onSubmit(mode: Mode = NormalMode)
 GET        /change-customs-duty-overpayment                controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-customs-duty-overpayment                controllers.CustomsDutyPaidController.onSubmit(mode: Mode = CheckMode)
+GET        /repay-customs-duty-overpayment                controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = RepayMode)
+POST       /repay-customs-duty-overpayment                controllers.CustomsDutyPaidController.onSubmit(mode: Mode = RepayMode)
 
 GET        /other-duties-overpayment                        controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
 POST       /other-duties-overpayment                        controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
 GET        /change-other-duties-overpayment                 controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-other-duties-overpayment                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
+GET        /repay-other-duties-overpayment                 controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = RepayMode)
+POST       /repay-other-duties-overpayment                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = RepayMode)
 
 GET         /select-importer-address                      controllers.ImporterAddressController.onPageLoad(mode: Mode = NormalMode)
 POST        /select-importer-address                      controllers.ImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
@@ -170,8 +176,8 @@ POST       /enter-bank-details                        controllers.BankDetailsCon
 GET        /change-enter-bank-details                  controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-enter-bank-details                  controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
 
-GET        /repayment-summary                       controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = NormalMode, fromCYA: Boolean)
-GET        /change-repayment-summary                controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = CheckMode, fromCYA: Boolean)
+GET        /repayment-summary                       controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = NormalMode)
+GET        /change-repayment-summary                controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = CheckMode)
 
 GET         /enter-importer-address               controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
 POST        /enter-importer-address               controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)

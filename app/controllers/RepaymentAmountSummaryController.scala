@@ -23,12 +23,14 @@ import models.{CheckMode, ClaimRepaymentType, Mode, NormalMode}
 import pages.ClaimRepaymentTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.RepaymentAmountSummaryAnswersHelper
+import utils.{CheckYourAnswersHelper, RepaymentAmountSummaryAnswersHelper}
 import views.html.RepaymentAmountSummaryView
 
 class RepaymentAmountSummaryController @Inject()(
                                                   override val messagesApi: MessagesApi,
+                                                  sessionRepository: SessionRepository,
                                                   identify: IdentifierAction,
                                                   getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
@@ -36,7 +38,7 @@ class RepaymentAmountSummaryController @Inject()(
                                                   view: RepaymentAmountSummaryView
                                                 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(mode: Mode, fromCYA: Boolean): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
@@ -46,6 +48,13 @@ class RepaymentAmountSummaryController @Inject()(
         Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)
       ).flatten
 
-      Ok(view(sections, mode, fromCYA))
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+
+      try {
+        checkYourAnswersHelper.getCheckYourAnswerSections
+        Ok(view(sections, CheckMode))
+      } catch {
+        case e: Exception => Ok(view(sections, NormalMode))
+      }
   }
 }
