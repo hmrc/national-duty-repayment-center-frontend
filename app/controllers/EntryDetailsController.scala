@@ -19,7 +19,8 @@ package controllers
 import controllers.actions._
 import forms.EntryDetailsFormProvider
 import javax.inject.Inject
-import models.{CustomsRegulationType, Mode, NumberOfEntriesType, UserAnswers}
+import models.{ClaimantType,  CustomsRegulationType, Mode, NumberOfEntriesType, UserAnswers}
+import pages._
 import navigation.Navigator
 import pages.{CustomsRegulationTypePage, EntryDetailsPage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -52,7 +53,7 @@ class EntryDetailsController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isSingleEntry(request.userAnswers)))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), isSingleEntry(request.userAnswers)))
 
   }
 
@@ -61,7 +62,7 @@ class EntryDetailsController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), isSingleEntry(request.userAnswers)))),
 
 
         value =>
@@ -72,10 +73,18 @@ class EntryDetailsController @Inject()(
       )
   }
 
+  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
+        userAnswers.get(ClaimantTypePage) match {
+          case Some(ClaimantType.Importer) => true
+          case _ => false
+        }
+      }
+
   def isSingleEntry(userAnswers: UserAnswers): Boolean = {
     userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
       case NumberOfEntriesType.Single => true
       case NumberOfEntriesType.Multiple  => false
     }
   }
+
 }

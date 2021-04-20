@@ -25,12 +25,15 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isImporterJourney: Boolean, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
 
 @pageHint = {
 <p class="mb-30 paragraph-top">
-    @messages("entryDetails.hint")
+    @messages(isImporterJourney match {
+        case true =>"entryDetails.importer.hint"
+        case _ => "entryDetails.representative.hint"
+    })
 </p>
 }
 
