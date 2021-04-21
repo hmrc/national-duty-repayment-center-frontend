@@ -41,20 +41,13 @@ class RepaymentAmountSummaryController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
+      val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers, mode)
 
       val sections = Seq(
         helper.getSections(),
         Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)
       ).flatten
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-
-      try {
-        checkYourAnswersHelper.getCheckYourAnswerSections
-        Ok(view(sections, CheckMode))
-      } catch {
-        case e: Exception => Ok(view(sections, NormalMode))
-      }
+      Ok(view(sections, mode))
   }
 }

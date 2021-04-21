@@ -251,7 +251,14 @@ class Navigator @Inject()() {
     case _ => getCheckYourAnswers
   }
 
-  private val repayRouteMap: Page => UserAnswers => Call = {
+  private val repayNormalRouteMap: Page => UserAnswers => Call = {
+    case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
+    case _ => getCheckYourAnswers
+  }
+
+  private val repayCheckRouteMap: Page => UserAnswers => Call = {
     case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
     case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
@@ -269,7 +276,9 @@ class Navigator @Inject()() {
         normalRoutes(page)(userAnswers)
       case CheckMode =>
         checkRouteMap(page)(userAnswers)
-      case RepayMode =>
-        repayRouteMap(page)(userAnswers)
+      case RepayNormalMode =>
+        repayNormalRouteMap(page)(userAnswers)
+      case RepayCheckMode =>
+        repayCheckRouteMap(page)(userAnswers)
     }
 }

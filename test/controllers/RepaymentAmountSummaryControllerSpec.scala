@@ -101,7 +101,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.RepaymentAmountSummaryController.onPageLoad(CheckMode).url)
+      val request = FakeRequest(GET, routes.RepaymentAmountSummaryController.onPageLoad(NormalMode).url)
 
       val result = route(application, request).value
 

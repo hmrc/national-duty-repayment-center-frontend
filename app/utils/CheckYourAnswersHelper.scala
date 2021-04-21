@@ -368,7 +368,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def repaymentAmountSummary: AnswerRow = {
-    val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers)
+    val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers, RepayCheckMode)
     AnswerRow(
       HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
       HtmlFormat.escape("£" + helper.getTotalAmount().format2d),
@@ -404,7 +404,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         numberOfEntriesType.get) ++
         Seq(customsRegulationType.get) ++
         (userAnswers.get(CustomsRegulationTypePage) match {
-          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => Seq(articleType.get)
+          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) =>
+            if(articleType.isEmpty)
+            Seq.empty
+              else
+            Seq(articleType.get)
+
           case _ => Seq(ukRegulationType.get)
         })
     )

@@ -17,13 +17,13 @@
 package utils
 
 import controllers.routes
-import models.{RepayMode, ClaimRepaymentType, UserAnswers}
+import models.{CheckMode, ClaimRepaymentType, Mode, NormalMode, RepayCheckMode, RepayNormalMode, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import viewmodels.{AnswerRow, AnswerSection}
 
-class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers, mode: Mode)(implicit messages: Messages) {
 
   implicit class Improvements(s: Double) {
     def format2d = "%.2f".format(s)
@@ -58,13 +58,20 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
         Html(x.map(value => HtmlFormat.escape(message).toString).mkString("")),
         Html(x.map(value => formattedAmount).mkString("")),
         index match {
-          case "0" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(RepayMode).url)
-          case "1" if isCustomDutyExists => Some(routes.CustomsDutyPaidController.onPageLoad(RepayMode).url)
-          case "0" if isVATExists => Some(routes.VATPaidController.onPageLoad(RepayMode).url)
-          case "1" if isVATExists => Some(routes.VATPaidController.onPageLoad(RepayMode).url)
-          case "0" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(RepayMode).url)
-          case "1" if isOtherDutiesExists => Some(routes.OtherDutiesPaidController.onPageLoad(RepayMode).url)
-          case _ => None
+        case "0" if isCustomDutyExists && mode == NormalMode => Some (routes.CustomsDutyPaidController.onPageLoad (RepayNormalMode).url)
+        case "1" if isCustomDutyExists && mode == NormalMode => Some (routes.CustomsDutyPaidController.onPageLoad (RepayNormalMode).url)
+        case "0" if isVATExists && mode == NormalMode => Some (routes.VATPaidController.onPageLoad (RepayNormalMode).url)
+        case "1" if isVATExists && mode == NormalMode => Some (routes.VATPaidController.onPageLoad (RepayNormalMode).url)
+        case "0" if isOtherDutiesExists && mode == NormalMode => Some (routes.OtherDutiesPaidController.onPageLoad (RepayNormalMode).url)
+        case "1" if isOtherDutiesExists && mode == NormalMode => Some (routes.OtherDutiesPaidController.onPageLoad (RepayNormalMode).url)
+
+        case "0" if isCustomDutyExists && mode == CheckMode => Some(routes.CustomsDutyPaidController.onPageLoad(RepayCheckMode).url)
+        case "1" if isCustomDutyExists && mode == CheckMode => Some(routes.CustomsDutyPaidController.onPageLoad(RepayCheckMode).url)
+        case "0" if isVATExists && mode == CheckMode => Some(routes.VATPaidController.onPageLoad(RepayCheckMode).url)
+        case "1" if isVATExists && mode == CheckMode => Some(routes.VATPaidController.onPageLoad(RepayCheckMode).url)
+        case "0" if isOtherDutiesExists && mode == CheckMode => Some(routes.OtherDutiesPaidController.onPageLoad(RepayCheckMode).url)
+        case "1" if isOtherDutiesExists && mode == CheckMode => Some(routes.OtherDutiesPaidController.onPageLoad(RepayCheckMode).url)
+        case _ => None
         },
         index match {
           case "0" if isCustomDutyExists => Some("customs-duty-overpayment")
