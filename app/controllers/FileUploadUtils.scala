@@ -19,7 +19,7 @@ package controllers
 import controllers.FileUploadUtils.ConvertStateApi
 import models.{FileVerificationStatus, SessionState}
 import play.api.libs.json.Json
-import play.api.mvc.Results.{InternalServerError, _}
+import play.api.mvc.Results._
 import play.api.mvc.{Request, Result}
 import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
@@ -28,6 +28,7 @@ import services.{FileUploadState, FileUploaded}
 import javax.inject.Inject
 import scala.concurrent.Future
 
+case class FileUploadException(message: String) extends RuntimeException(message)
 
 case class FileUploadUtils @Inject()(sessionRepository: SessionRepository) {
 
@@ -44,7 +45,7 @@ case class FileUploadUtils @Inject()(sessionRepository: SessionRepository) {
 
 object FileUploadUtils {
 
-  val missingFileUploadState = InternalServerError("Missing file upload state")
+  def fileStateErrror = throw FileUploadException("File upload state error")
   type ConvertStateApi = (FileUploadState) => Future[FileUploadState]
 
   def acknowledgeFileUploadRedirect(state: FileUploadState)(

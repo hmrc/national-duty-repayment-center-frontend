@@ -69,9 +69,9 @@ class BulkFileUploadController @Inject()(
                 Future.successful(Redirect(routes.CheckYourAnswersController.onPageLoad))
             }
             case _: UploadFile => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload(mode)))
-            case _ => Future.successful(missingFileUploadState)
+            case _ => Future.successful(fileStateErrror)
           }
-        case _ => Future.successful(missingFileUploadState)
+        case _ => Future.successful(fileStateErrror)
       }
     }
   }
@@ -99,7 +99,7 @@ class BulkFileUploadController @Inject()(
         sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
           ss.state match {
             case Some(s) => fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(_ =>  Redirect(routes.BulkFileUploadController.showFileUpload(mode)))
-            case None => Future.successful(missingFileUploadState)
+            case None => Future.successful(fileStateErrror)
           }
         }
     )
@@ -110,7 +110,7 @@ class BulkFileUploadController @Inject()(
     sessionRepository.getFileUploadState(id).flatMap { ss =>
       ss.state match {
         case Some(s) => fileUtils.applyTransition(upscanCallbackArrived(request.body, Bulk)(_), s, ss).map(newState => acknowledgeFileUploadRedirect(newState))
-        case None => Future.successful(missingFileUploadState)
+        case None => Future.successful(fileStateErrror)
       }
     }
   }
