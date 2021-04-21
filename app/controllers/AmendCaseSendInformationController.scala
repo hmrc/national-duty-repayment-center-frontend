@@ -69,9 +69,9 @@ class AmendCaseSendInformationController @Inject()(
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[FileUploadState].flatMap {
             case _: FileUploaded => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
             case _: UploadFile => Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
-            case _ => Future.successful(missingFileUploadState)
+            case _ => Future.successful(fileStateErrror)
           }
-        case _ => Future.successful(missingFileUploadState)
+        case _ => Future.successful(fileStateErrror)
       }
     }
   }
@@ -92,7 +92,7 @@ class AmendCaseSendInformationController @Inject()(
           case _@UploadFile(_, _, _, _) => Redirect(controller.showFileUpload(mode))
           case s@_ => renderState(fileUploadState = s, mode = mode)
         }
-        case None => Future.successful(missingFileUploadState)
+        case None => Future.successful(fileStateErrror)
       }
     }
   }
@@ -149,7 +149,7 @@ class AmendCaseSendInformationController @Inject()(
                 fileUtils.applyTransition(submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(_), s, ss)
                   .map(_ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
               case Some(_) => Future.successful(Redirect(getAmendCaseUploadAnotherFile(request.userAnswers, mode)))
-              case None => Future.successful(missingFileUploadState)
+              case None => Future.successful(fileStateErrror)
             }
           }
       )
@@ -179,7 +179,7 @@ class AmendCaseSendInformationController @Inject()(
         sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
           ss.state match {
             case Some(s) => fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(_ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
-            case None => Future.successful(missingFileUploadState)
+            case None => Future.successful(fileStateErrror)
           }
         }
     )
@@ -190,7 +190,7 @@ class AmendCaseSendInformationController @Inject()(
     sessionRepository.getFileUploadState(id).flatMap { ss =>
       ss.state match {
         case Some(s) => fileUtils.applyTransition(upscanCallbackArrived(request.body, SupportingEvidence)(_), s, ss).map(newState => acknowledgeFileUploadRedirect(newState))
-        case None => Future.successful(missingFileUploadState)
+        case None => Future.successful(fileStateErrror)
       }
     }
   }

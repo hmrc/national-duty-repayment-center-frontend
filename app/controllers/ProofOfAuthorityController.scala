@@ -21,7 +21,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
-import controllers.FileUploadUtils.{missingFileUploadState, _}
+import controllers.FileUploadUtils.{fileStateErrror, _}
 import controllers.actions._
 import forms.UpscanS3ErrorFormProvider
 import models.FileType.ProofOfAuthority
@@ -65,7 +65,7 @@ class ProofOfAuthorityController @Inject()(
           (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[FileUploadState].flatMap {
             case _: FileUploaded => Future.successful(Redirect(routes.BankDetailsController.onPageLoad(NormalMode)))
             case _: UploadFile => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload(mode)))
-            case _ => Future.successful(missingFileUploadState)
+            case _ => Future.successful(fileStateErrror)
             case s: FileUploaded => {
               if(mode.equals(NormalMode))
                 Future.successful(Redirect(routes.BankDetailsController.onPageLoad(mode)))
@@ -76,9 +76,9 @@ class ProofOfAuthorityController @Inject()(
 
             }
             case s: UploadFile => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload(mode)))
-            case _ => Future.successful(missingFileUploadState)
+            case _ => Future.successful(fileStateErrror)
           }
-        case _ => Future.successful(missingFileUploadState)
+        case _ => Future.successful(fileStateErrror)
       }
     }
   }
@@ -105,7 +105,7 @@ class ProofOfAuthorityController @Inject()(
         sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
           ss.state match {
             case Some(s) => fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(_ =>  Redirect(routes.ProofOfAuthorityController.showFileUpload(mode)))
-            case None => Future.successful(missingFileUploadState)
+            case None => Future.successful(fileStateErrror)
           }
         }
     )
@@ -116,7 +116,7 @@ class ProofOfAuthorityController @Inject()(
     sessionRepository.getFileUploadState(id).flatMap { ss =>
       ss.state match {
         case Some(s) => fileUtils.applyTransition(upscanCallbackArrived(request.body, ProofOfAuthority)(_), s, ss).map(newState => acknowledgeFileUploadRedirect(newState))
-        case None => Future.successful(missingFileUploadState)
+        case None => Future.successful(fileStateErrror)
       }
     }
   }
