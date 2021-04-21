@@ -404,12 +404,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         numberOfEntriesType.get) ++
         Seq(customsRegulationType.get) ++
         (userAnswers.get(CustomsRegulationTypePage) match {
-          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) =>
-            if(articleType.isEmpty)
-            Seq.empty
-              else
-            Seq(articleType.get)
-
+          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => Seq(articleType.get)
           case _ => Seq(ukRegulationType.get)
         })
     )
