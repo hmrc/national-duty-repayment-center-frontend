@@ -251,17 +251,10 @@ class Navigator @Inject()() {
     case _ => getCheckYourAnswers
   }
 
-  private val repayNormalRouteMap: Page => UserAnswers => Call = {
-    case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
-    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
-    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
-    case _ => getCheckYourAnswers
-  }
-
-  private val repayCheckRouteMap: Page => UserAnswers => Call = {
-    case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
-    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
-    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(CheckMode)
+  private def repayRouteMap(mode: Mode): Page => UserAnswers => Call =  {
+    case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(mode)
+    case VATPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(mode)
+    case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(mode)
     case _ => getCheckYourAnswers
   }
 
@@ -277,8 +270,8 @@ class Navigator @Inject()() {
       case CheckMode =>
         checkRouteMap(page)(userAnswers)
       case RepayNormalMode =>
-        repayNormalRouteMap(page)(userAnswers)
+        repayRouteMap(NormalMode)(page)(userAnswers)
       case RepayCheckMode =>
-        repayCheckRouteMap(page)(userAnswers)
+        repayRouteMap(CheckMode)(page)(userAnswers)
     }
 }
