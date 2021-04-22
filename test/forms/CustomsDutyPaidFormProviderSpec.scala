@@ -28,7 +28,7 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with String
   val minimum = 0.01
   var maximum = 99999999999.99
 
-  val validDataGenerator = intsInRangeWithCommas(minimum.toInt, maximum.toInt)
+  val validDataGenerator = decimalInRangeWithCommas(minimum.toDouble, maximum)
 
   val form: Form[RepaymentAmounts] = new CustomsDutyPaidFormProvider()()
 

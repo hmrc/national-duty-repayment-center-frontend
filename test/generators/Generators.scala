@@ -72,6 +72,11 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     Gen.const('|')
   )
 
+  def decimalInRangeWithCommas(min: Double, max: Double): Gen[String] = {
+    val numberGen = choose[Double](min, max)
+    genIntersperseString(numberGen.toString, ",")
+  }
+
   def intsInRangeWithCommas(min: Int, max: Int): Gen[String] = {
     val numberGen = choose[Int](min, max)
     genIntersperseString(numberGen.toString, ",")
