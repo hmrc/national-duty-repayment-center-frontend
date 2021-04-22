@@ -528,7 +528,7 @@ bankDetails.accountNumber.error.length = Account number must be between 6 and 8 
 importerAddressConfirmation.title = Select your address
 importerAddressConfirmation.heading = Select your address
 importerAddressConfirmation.link1 = change
-importerAddressConfirmation.link2 = I can't find my address in the list
+importerAddressConfirmation.link2 = I can''t find my address in the list
 importerAddressConfirmation.address = Select an address
 
 agent.importerAddressConfirmation.title = Select the importer''s address
