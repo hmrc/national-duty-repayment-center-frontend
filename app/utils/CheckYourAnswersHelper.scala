@@ -368,7 +368,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def repaymentAmountSummary: AnswerRow = {
-    val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers)
+    val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers, RepayCheckMode)
     AnswerRow(
       HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
       HtmlFormat.escape("£" + helper.getTotalAmount().format2d),

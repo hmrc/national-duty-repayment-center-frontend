@@ -288,6 +288,21 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         navigator.nextPage(CreateOrAmendCasePage, NormalMode, answers)
           .mustBe(routes.ReferenceNumberController.onPageLoad(NormalMode))
       }
+
+      "go to EvidenceSupportingDocs page after the Customs Duty Paid Page with RepayNormalMode" in {
+        navigator.nextPage(CustomsDutyPaidPage, RepayNormalMode, UserAnswers("id"))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(NormalMode))
+      }
+
+      "go to EvidenceSupportingDocs page after the VAT Paid Page with RepayNormalMode" in {
+        navigator.nextPage(VATPaidPage, RepayNormalMode, UserAnswers("id"))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(NormalMode))
+      }
+
+      "go to EvidenceSupportingDocs page after the Other Duties Paid Page with RepayNormalMode" in {
+        navigator.nextPage(OtherDutiesPaidPage, RepayNormalMode, UserAnswers("id"))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(NormalMode))
+      }
     }
 
 
@@ -444,6 +459,21 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
 
            navigator.nextPage(EmailAddressAndPhoneNumberPage, CheckMode, userAnswers)
              .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+
+      "go to Check Your Answers page after the Customs Duty Paid Page with RepayCheckMode" in {
+        navigator.nextPage(CustomsDutyPaidPage, RepayCheckMode, UserAnswers("id"))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
+      }
+
+      "go to Check Your Answers page after the VAT Paid Page with RepayCheckMode" in {
+        navigator.nextPage(VATPaidPage, RepayCheckMode, UserAnswers("id"))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
+      }
+
+      "go to Check Your Answers page after the Other Duties Paid Page with RepayCheckMode" in {
+        navigator.nextPage(OtherDutiesPaidPage, RepayCheckMode, UserAnswers("id"))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
     }
   }

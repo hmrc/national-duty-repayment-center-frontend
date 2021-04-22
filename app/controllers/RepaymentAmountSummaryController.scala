@@ -17,17 +17,20 @@
 package controllers
 
 import controllers.actions._
+
 import javax.inject.Inject
-import models.{ClaimRepaymentType, Mode, NormalMode}
+import models.{CheckMode, ClaimRepaymentType, Mode, NormalMode}
 import pages.ClaimRepaymentTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.RepaymentAmountSummaryAnswersHelper
+import utils.{CheckYourAnswersHelper, RepaymentAmountSummaryAnswersHelper}
 import views.html.RepaymentAmountSummaryView
 
 class RepaymentAmountSummaryController @Inject()(
                                                   override val messagesApi: MessagesApi,
+                                                  sessionRepository: SessionRepository,
                                                   identify: IdentifierAction,
                                                   getData: DataRetrievalAction,
                                                   requireData: DataRequiredAction,
@@ -38,7 +41,7 @@ class RepaymentAmountSummaryController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
+      val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers, mode)
 
       val sections = Seq(
         helper.getSections(),
