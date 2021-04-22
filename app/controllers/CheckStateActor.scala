@@ -33,7 +33,7 @@ class CheckStateActor @Inject()(sessionRepository: SessionRepository)(implicit e
   implicit val timeout = Timeout(30 seconds)
 
   override def receive: Receive = {
-    case CheckState(id, exitTime, state) => {
+    case CheckState(id, exitTime, state) =>
       if (LocalDateTime.now().isAfter(exitTime) || state.isInstanceOf[FileUploaded])
         Future.successful(state).pipeTo(sender)
       else {
@@ -42,12 +42,11 @@ class CheckStateActor @Inject()(sessionRepository: SessionRepository)(implicit e
             Future.successful(s)
 
           case Some(s@UploadFile(_, _, _, _)) =>
-            if (s.maybeUploadError.nonEmpty) {
+            if (s.maybeUploadError.nonEmpty)
               Future.successful(s)
-            } else
+            else
               (self ? CheckState(id, exitTime, s))
         }).pipeTo(sender)
       }
     }
-  }
 }
