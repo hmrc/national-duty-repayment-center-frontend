@@ -295,13 +295,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
           HtmlFormat.escape(userAnswers.get(DeclarantReferenceNumberPage).get.declarantReferenceNumber.get),
-
           Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)
         )
     }
   }
     def declarantReferenceNumberQuestion: Seq[AnswerRow] = {
-      userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceType).get match  {
+      userAnswers.get(DeclarantReferenceNumberPage).isEmpty match {
+        case false => userAnswers.get(DeclarantReferenceNumberPage).map(_.declarantReferenceType).get match  {
         case Yes => Seq(Some(AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
           HtmlFormat.escape(changeToYesNo(Yes.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url))) ,
@@ -310,6 +310,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         case No => Seq(AnswerRow(
           HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
           HtmlFormat.escape(changeToYesNo(No.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)))
+      }
+        case true => Seq.empty
       }
     }
 
@@ -377,9 +379,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def evidenceFileUploads: AnswerRow = {
+    val noOfDocuments = userAnswers.fileUploadState.map(_.fileUploads.acceptedCount).getOrElse(0)
     AnswerRow(
       HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
-      HtmlFormat.escape((userAnswers.fileUploadState.get.fileUploads.acceptedCount.toString)
+      HtmlFormat.escape((noOfDocuments.toString)
         .concat(" ").concat(messages("view.upload-file.documents.added"))),
       Some(routes.FileUploadController.showFileUploaded(CheckMode).url)
     )
@@ -400,91 +403,109 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   def getImportantInformationAnswerSection: AnswerSection = {
     AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
-      Seq(claimantType.get,
-        numberOfEntriesType.get) ++
-        Seq(customsRegulationType.get) ++
+        getAnswerRow(claimantType) ++
+        getAnswerRow(numberOfEntriesType) ++
+        getAnswerRow(customsRegulationType) ++
         (userAnswers.get(CustomsRegulationTypePage) match {
-          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => Seq(articleType.get)
-          case _ => Seq(ukRegulationType.get)
+          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => getAnswerRow(articleType)
+          case _ => getAnswerRow(ukRegulationType)
         })
     )
+  }
+
+  private def getAnswerRow(answerRow: Option[AnswerRow]) = {
+    answerRow.nonEmpty match {
+      case true => Seq(answerRow.get)
+      case false => Seq.empty
+    }
   }
 
   def getEntryDetailsAnswerSection: AnswerSection = {
     AnswerSection(Some(messages("entryDetails.checkYourAnswersLabel")),
       Seq.empty ++
-        (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-          case NumberOfEntriesType.Multiple => Seq(bulkFileUpload.get)
+        (userAnswers.get(NumberOfEntriesTypePage).isEmpty match {
+          case false => userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+          case NumberOfEntriesType.Multiple => getAnswerRow(bulkFileUpload)
           case NumberOfEntriesType.Single => Seq.empty
+        }
+          case true => Seq.empty
         }) ++
-        Seq(entryDetailsEPU.get,
-          entryDetailsNumber.get,
-          entryDetailsDate.get)
+        getAnswerRow(entryDetailsEPU) ++
+        getAnswerRow(entryDetailsNumber) ++
+        getAnswerRow(entryDetailsDate)
     )
   }
 
   def getApplicationInformationAnswerSection: AnswerSection = {
     AnswerSection(Some(messages("applicationInformation.checkYourAnswersLabel")),
-      Seq(claimReasonType.get,
-        reasonForOverpayment.get,
-        claimRepaymentType.get,
-        repaymentAmountSummary,
+      getAnswerRow(claimReasonType) ++
+        getAnswerRow(reasonForOverpayment) ++
+        getAnswerRow(claimRepaymentType) ++
+      Seq(repaymentAmountSummary,
         evidenceFileUploads))
   }
 
   def getImporterDetailsAnswerSection: AnswerSection = {
     AnswerSection(Some(messages("importer.details.checkYourAnswersLabel")),
-      Seq(agentImporterHasEORI.get) ++
+      getAnswerRow(agentImporterHasEORI) ++
         (userAnswers.get(AgentImporterHasEORIPage) match {
-          case Some(AgentImporterHasEORI.Yes) => Seq(enterAgentEORI.get)
+          case Some(AgentImporterHasEORI.Yes) => getAnswerRow(enterAgentEORI)
           case _ => Seq.empty
         }) ++
-        Seq(
-          isImporterVatRegistered.get,
-          agentNameImporter.get,
-          userAnswers.get(ImporterManualAddressPage) match {
-            case None => importerAddress.get
-            case _ => importerManualAddress.get
-          })
+        getAnswerRow(isImporterVatRegistered) ++
+        getAnswerRow(agentNameImporter) ++
+        (userAnswers.get(ImporterManualAddressPage) match {
+            case None => getAnswerRow(importerAddress)
+            case _ => getAnswerRow(importerManualAddress)
+        })
     )
   }
 
   def getYourDetailsAnswerSection: AnswerSection = {
     AnswerSection(Some(messages("your.details.checkYourAnswersLabel")),
-      Seq(importerHasEori.get) ++
-        (userAnswers.get(ImporterHasEoriPage).get match {
-          case true => Seq(importerEori.get)
-          case _ => Seq.empty
-        }) ++
+      getAnswerRow(importerHasEori) ++
+        (userAnswers.get(ImporterHasEoriPage).isEmpty match {
+          case false => userAnswers.get(ImporterHasEoriPage).get match {
+            case true => getAnswerRow(importerEori)
+            case _ => Seq.empty
+          }
+          case true => Seq.empty
+          }) ++
         (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
-          case true => Seq(isVATRegistered.get)
+          case true => getAnswerRow(isVATRegistered)
           case _ => Seq.empty
         }
           ) ++
-        Seq(importerName.get,
-          userAnswers.get(ClaimantTypePage) match {
+        getAnswerRow(importerName) ++
+        getAnswerRow(userAnswers.get(ClaimantTypePage) match {
             case Some(ClaimantType.Importer) =>
               userAnswers.get(ImporterManualAddressPage) match {
-                case None => importerAddress.get
-                case _ => importerManualAddress.get
+                case None => importerAddress
+                case _ => importerManualAddress
               }
             case _ =>
               userAnswers.get(AgentImporterManualAddressPage) match {
-                case None => agentImporterAddress.get
-                case _ => agentImporterManualAddress.get
+                case None => agentImporterAddress
+                case _ => agentImporterManualAddress
               }
           }))
   }
 
   def getContactDetailsAnswerSection: AnswerSection = {
     AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
-        (userAnswers.get(EmailAddressAndPhoneNumberPage).get.phone.isEmpty match {
+      (userAnswers.get(EmailAddressAndPhoneNumberPage).isEmpty match {
+        case false => userAnswers.get(EmailAddressAndPhoneNumberPage).get.phone.isEmpty match {
           case true => Seq.empty
-          case false => Seq(phoneNumber.get)
+          case false => getAnswerRow(phoneNumber)
+        }
+          case true => Seq.empty
         }) ++
-        (userAnswers.get(EmailAddressAndPhoneNumberPage).get.email.isEmpty match {
+        (userAnswers.get(EmailAddressAndPhoneNumberPage).isEmpty match {
+          case false => userAnswers.get(EmailAddressAndPhoneNumberPage).get.email.isEmpty match {
           case true => Seq.empty
-          case false => Seq(emailAddress.get)
+          case false => getAnswerRow(emailAddress)
+        }
+          case true => Seq.empty
         }) ++
           declarantReferenceNumberQuestion
     )
@@ -499,38 +520,38 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
           case true =>
             (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-              case true => (userAnswers.get(WhomToPayPage) match {
+              case true => userAnswers.get(WhomToPayPage) match {
                 case None => Seq.empty
-                case _ => Seq(whomToPay.get)
-              })
+                case _ => getAnswerRow(whomToPay)
+              }
               case _ => Seq.empty
             }) ++
               (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-                case true => (userAnswers.get(WhomToPayPage).contains(WhomToPay.Representative) match {
-                  case true => Seq(indirectRepresentative.get)
+                case true => userAnswers.get(WhomToPayPage).contains(WhomToPay.Representative) match {
+                  case true => getAnswerRow(indirectRepresentative)
                   case _ => Seq.empty
-                })
+                }
                 case _ => Seq.empty
               }) ++
               (userAnswers.get(ClaimantTypePage).contains(ClaimantType.Representative) match {
-                case true => ((userAnswers.get(IndirectRepresentativePage), userAnswers.get(WhomToPayPage)) match {
-                  case (Some(false), Some(WhomToPay.Representative)) => Seq(proofOfAuthority.get)
+                case true => (userAnswers.get(IndirectRepresentativePage), userAnswers.get(WhomToPayPage)) match {
+                  case (Some(false), Some(WhomToPay.Representative)) => getAnswerRow(proofOfAuthority)
                   case _ => Seq.empty
-                })
+                }
                 case _ => Seq.empty
               })
           case _ => Seq.empty
         }) ++
         (userAnswers.get(RepaymentTypePage) match {
           case None => Seq.empty
-          case _ => (userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-            case NumberOfEntriesType.Single => Seq(repaymentType.get)
+          case _ => userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+            case NumberOfEntriesType.Single => getAnswerRow(repaymentType)
             case NumberOfEntriesType.Multiple => Seq.empty
-          })
+          }
         }) ++
         (userAnswers.get(RepaymentTypePage).contains(RepaymentType.CMA) match {
           case true => Seq.empty
-          case _ => Seq(bankDetails.get)
+          case _ => getAnswerRow(bankDetails)
         })
     )
   }
@@ -693,15 +714,15 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       (amendCaseResponseType.contains(FurtherInformation), amendCaseResponseType.contains(SupportingDocuments)) match {
         case (true, true) if (furtherInformationCheck.nonEmpty) => Seq(furtherInformationCheck.get, evidenceFileUploadsAmend)
         case (false, true) => Seq(evidenceFileUploadsAmend)
-        case (true, false) if (furtherInformationCheck.nonEmpty) => Seq(furtherInformationCheck.get)
+        case (true, false) if (furtherInformationCheck.nonEmpty) => getAnswerRow(furtherInformationCheck)
         case (_, _) => Nil
       }
     }.getOrElse(Nil)
 
     val list = (referenceNumberCheck.nonEmpty, amendCaseResponseTypeCheck.nonEmpty) match {
       case (true, true) => Seq(referenceNumberCheck.get, amendCaseResponseTypeCheck.get)
-      case (true, false) => Seq(referenceNumberCheck.get)
-      case (false, true) => Seq(amendCaseResponseTypeCheck.get)
+      case (true, false) => getAnswerRow(referenceNumberCheck)
+      case (false, true) => getAnswerRow(amendCaseResponseTypeCheck)
       case (_, _) => Nil
     }
 
