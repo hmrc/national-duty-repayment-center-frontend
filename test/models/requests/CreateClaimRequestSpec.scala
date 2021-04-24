@@ -44,7 +44,8 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         ClaimDate = LocalDate.of(2020, 8, 5),
         PayeeIndicator = WhomToPay.Importer,
         PaymentMethod = RepaymentType.BACS,
-        DeclarantRefNumber = "12345"
+        DeclarantRefNumber = "12345",
+        DeclarantName = "DummyData"
       )
 
       val address = Address(AddressLine1 = "line 1",
@@ -112,8 +113,9 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
             "ClaimDate" -> "20200805",
             "PayeeIndicator" -> "01",
             "PaymentMethod" -> "02",
-            "DeclarantRefNumber" -> "12345"
-          ),
+            "DeclarantRefNumber" -> "12345",
+            "DeclarantName" -> "DummyData"
+        ),
           "AgentDetails" -> Json.obj(
             "IsVATRegistered" -> "true",
             "EORI" -> "GB123456789123456",

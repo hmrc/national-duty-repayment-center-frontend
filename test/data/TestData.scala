@@ -53,6 +53,7 @@ object TestData {
   val testDocumentList: Seq[DocumentList] = Seq(DocumentList(EvidenceSupportingDocs.Other, None))
   val furtherInformation: String = "More info for amend"
   val testDeclarantRefNumber:String = "12345"
+  val testDeclarantName: String = "DummyData"
 
   val testClaimDetails: ClaimDetails = ClaimDetails(
     FormType("01"),
@@ -69,7 +70,8 @@ object TestData {
     LocalDate.now(),
     testWhomToPay,
     RepaymentType.BACS,
-    testDeclarantRefNumber
+    testDeclarantRefNumber,
+    testDeclarantName
   )
 
   val testClaimDetailsWithRepresentativeAndMultipleEntries: ClaimDetails = ClaimDetails(
@@ -87,7 +89,8 @@ object TestData {
     LocalDate.now(),
     testWhomToPay,
     RepaymentType.BACS,
-    testDeclarantRefNumber
+    testDeclarantRefNumber,
+    testDeclarantName
   )
 
   val testClaimDetailsWithCMA: ClaimDetails = ClaimDetails(
@@ -105,7 +108,8 @@ object TestData {
     LocalDate.now(),
     testWhomToPayCMA,
     RepaymentType.CMA,
-    testDeclarantRefNumber
+    testDeclarantRefNumber,
+    testDeclarantName
   )
 
   val testClaimDetailsWithCMAAndImporter: ClaimDetails = ClaimDetails(
@@ -123,7 +127,8 @@ object TestData {
     LocalDate.now(),
     testWhomToPayCMA,
     RepaymentType.CMA,
-    testDeclarantRefNumber
+    testDeclarantRefNumber,
+    testDeclarantName
   )
 
   val testClaimDetailsWithUKCustomsRegulationType: ClaimDetails = ClaimDetails(
@@ -141,7 +146,8 @@ object TestData {
     LocalDate.now(),
     testWhomToPayCMA,
     RepaymentType.CMA,
-    testDeclarantRefNumber
+    testDeclarantRefNumber,
+    testDeclarantName
   )
 
   val testClaimDetailsWithRepresentativeSinglePayingRepresentativeBacs: ClaimDetails = ClaimDetails(
@@ -159,7 +165,8 @@ object TestData {
     LocalDate.now(),
     testWhomToPayRepresentative,
     RepaymentType.BACS,
-    testDeclarantRefNumber
+    testDeclarantRefNumber,
+    testDeclarantName
   )
 
   val testAgentDetails: UserDetails = UserDetails(
