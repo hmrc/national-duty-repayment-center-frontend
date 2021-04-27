@@ -744,9 +744,9 @@ amend.site.continue = Accept and send
 amend-file-upload.help.linkText = Help with file types
 amend-file-upload.help.line1 = Each file must be 6MB or less.
 amend-file-upload.help.line2 = Accepted file formats
-amend-file-upload.help.fileFormat1= Microsoft (Word, Excel or PowerPoint)
-amend-file-upload.help.fileFormat2= image (.jpg, .jpeg, .png or .tiff)
-amend-file-upload.help.fileFormat3= PDF (.pdf)
+amend-file-upload.help.fileFormat1= image (.jpg, .jpeg, .png or .tiff)
+amend-file-upload.help.fileFormat2= PDF (.pdf)
+amend-file-upload.help.fileFormat3= Microsoft (Word, Excel or PowerPoint)
 amend-file-upload.help.fileFormat4= Open Document Format (ODF)
 amend-file-upload.help.fileFormat5= email (.txt, .oft or .msg)
 
