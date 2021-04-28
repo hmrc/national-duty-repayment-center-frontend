@@ -65,7 +65,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
     )),
     AnswerSection(Some("Other duties"), Seq(
       AnswerRow(
-        Html("Other duties that was paid"),
+        Html("Other duties that were paid"),
         Html("£0.00"),
         Some("/national-duty-repayment-center/repay-other-duties-overpayment"),
         Some("other-duties-overpayment")
