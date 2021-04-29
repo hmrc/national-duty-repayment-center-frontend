@@ -16,7 +16,7 @@
 
 package forms.mappings
 
-import forms.Validation
+import forms.{TrimWhitespace, Validation}
 import play.api.data.format.Formatter
 import models.Enumerable
 
@@ -25,7 +25,7 @@ import play.api.data.{FormError, Mapping}
 
 import scala.util.control.Exception.nonFatalCatch
 
-trait Formatters {
+trait Formatters extends TrimWhitespace {
 
   private[mappings] def stringFormatter(errorKey: String): Formatter[String] = new Formatter[String] {
 
@@ -68,11 +68,11 @@ trait Formatters {
           .bind(key, data)
           .right.map(_.replace(",", ""))
           .right.flatMap {
-          case s if s.split("\\s+").mkString.matches(decimalRegexp) =>
+          case s if trimWhitespace(s).matches(decimalRegexp) =>
             Left(Seq(FormError(key, wholeNumberKey, args)))
           case s =>
             nonFatalCatch
-              .either(s.split("\\s+").mkString.toInt)
+              .either(trimWhitespace(s).toInt)
               .left.map(_ => Seq(FormError(key, nonNumericKey, args)))
         }
 
@@ -107,8 +107,8 @@ trait Formatters {
           .right.map(_.replace("£", ""))
           .right.flatMap {
           s =>
-            Try(s.split("\\s+").mkString.toDouble) match {
-              case Success(_) => Right(s.split("\\s+").mkString)
+            Try(trimWhitespace(s).toDouble) match {
+              case Success(_) => Right(trimWhitespace(s))
               case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
             }
         }
