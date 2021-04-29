@@ -42,6 +42,19 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
         year.map(_ => "EntryDate.year" -> year.get)
       ).toMap
 
+  def buildFormDataWithSpaces(epu: Option[String] = Some("1 2 3"),
+                    entryNumber: Option[String] = Some("123 456 Q"),
+                    day: Option[String] = Some("3 1"),
+                    month: Option[String] = Some(" 1 2"),
+                    year: Option[String] = Some(" 20 20 ")): Map[String, String] =
+    (
+      epu.map(_ => "EPU" -> epu.get) ++
+        entryNumber.map(_ => "EntryNumber" -> entryNumber.get) ++
+        day.map(_ => "EntryDate.day" -> day.get) ++
+        month.map(_ => "EntryDate.month" -> month.get) ++
+        year.map(_ => "EntryDate.year" -> year.get)
+      ).toMap
+
   ".EPU" must {
 
     val fieldName = "EPU"
@@ -141,5 +154,12 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
       FormError(s"EntryDate.month", LocalDateFormatter.monthBlankErrorKey),
       FormError(s"EntryDate.year", LocalDateFormatter.yearBlankErrorKey),
     )
+  }
+
+  "trim white spaces in EntryDetails" in {
+    val result = new EntryDetailsFormProvider().apply().bind(
+      buildFormDataWithSpaces())
+    result.get shouldBe EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31))
+    result.errors shouldBe List.empty
   }
 }

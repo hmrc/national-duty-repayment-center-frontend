@@ -24,7 +24,7 @@ import models.EntryDetails
 import play.api.data.Form
 import play.api.data.Forms._
 
-class EntryDetailsFormProvider @Inject() extends Mappings {
+class EntryDetailsFormProvider @Inject() extends Mappings with TrimWhitespace {
 
   def apply(): Form[EntryDetails] = {
 
@@ -34,10 +34,12 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
     Form(
       mapping(
         "EPU" -> text("entryDetails.claimEpu.error.required")
+          .transform[String](trimWhitespace, value => value)
           .verifying(
             regexp(Validation.epu, "entryDetails.claimEpu.error.valid")
           ),
         "EntryNumber" -> text("entryDetails.entryNumber.error.required")
+          .transform[String](trimWhitespace, value => value)
           .verifying(regexp(
             Validation.epuEntryNumber, "entryDetails.entryNumber.error.valid")
           ),

@@ -30,6 +30,12 @@ class OtherDutiesPaidFormProviderSpec extends DecimalFieldBehaviours {
 
   val validDataGenerator = decimalInRangeWithCommas(minimum.toDouble, maximum)
 
+  def buildFormDataWithSpaces(ActualPaidAmount: Option[String] = Some(" 2 2 2 "),
+                              ShouldHavePaidAmount: Option[String] = Some(" 1 1 1 ")): Map[String, String] =
+    (
+      ActualPaidAmount.map(_ => "ActualPaidAmount" -> ActualPaidAmount.get) ++
+        ShouldHavePaidAmount.map(_ => "ShouldHavePaidAmount" -> ShouldHavePaidAmount.get)
+      ).toMap
 
   val form: Form[RepaymentAmounts] = new OtherDutiesPaidFormProvider()()
 
@@ -107,5 +113,11 @@ class OtherDutiesPaidFormProviderSpec extends DecimalFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, shouldHavePaidRequiredKey)
     )
+  }
+
+  "trim white spaces in OtherDuties Amounts" in {
+    val result = new OtherDutiesPaidFormProvider().apply().bind(buildFormDataWithSpaces())
+    result.get shouldBe RepaymentAmounts("222","111")
+    result.errors shouldBe List.empty
   }
 }

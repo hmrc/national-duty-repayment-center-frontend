@@ -21,11 +21,12 @@ import forms.mappings.Mappings
 import models.EORI
 import play.api.data.Form
 
-class ImporterEoriFormProvider @Inject() extends Mappings {
+class ImporterEoriFormProvider @Inject() extends Mappings with TrimWhitespace {
 
   def apply(): Form[EORI] =
     Form(
       "value" -> text("importerEori.error.invalid")
+        .transform[String](trimWhitespace, value => value)
         .verifying(firstError(
           regexp(Validation.eoriPattern.toString, "importerEori.error.invalid")
         ))

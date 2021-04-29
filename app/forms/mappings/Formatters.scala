@@ -68,11 +68,11 @@ trait Formatters {
           .bind(key, data)
           .right.map(_.replace(",", ""))
           .right.flatMap {
-          case s if s.matches(decimalRegexp) =>
+          case s if s.split("\\s+").mkString.matches(decimalRegexp) =>
             Left(Seq(FormError(key, wholeNumberKey, args)))
           case s =>
             nonFatalCatch
-              .either(s.toInt)
+              .either(s.split("\\s+").mkString.toInt)
               .left.map(_ => Seq(FormError(key, nonNumericKey, args)))
         }
 
@@ -107,8 +107,8 @@ trait Formatters {
           .right.map(_.replace("£", ""))
           .right.flatMap {
           s =>
-            Try(s.toDouble) match {
-              case Success(_) => Right(s)
+            Try(s.split("\\s+").mkString.toDouble) match {
+              case Success(_) => Right(s.split("\\s+").mkString)
               case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
             }
         }
