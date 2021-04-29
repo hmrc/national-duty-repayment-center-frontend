@@ -107,8 +107,9 @@ trait Formatters extends TrimWhitespace {
           .right.map(_.replace("£", ""))
           .right.flatMap {
           s =>
-            Try(trimWhitespace(s).toDouble) match {
-              case Success(_) => Right(trimWhitespace(s))
+            val valueNoSpaces = trimWhitespace(s)
+            Try(valueNoSpaces.toDouble) match {
+              case Success(_) => Right(valueNoSpaces)
               case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
             }
         }
