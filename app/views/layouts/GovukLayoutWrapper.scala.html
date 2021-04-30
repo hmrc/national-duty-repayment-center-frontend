@@ -58,7 +58,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
         countdown = Some(appConfig.countdown),
         keepAliveUrl = Some(routes.ClaimantTypeController.onPageLoad(NormalMode).url),
         signOutUrl = Some(appConfig.feedbackSurvey),
-        timeoutUrl = Some(routes.SessionExpiredController.onPageLoad().url),
+        timeoutUrl = Some(appConfig.feedbackSurvey),
         language = Some(messages.lang.code)
     ))
 }
