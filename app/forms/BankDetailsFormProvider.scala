@@ -22,7 +22,7 @@ import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.data.Forms._
 
-class BankDetailsFormProvider @Inject() extends Mappings with TrimWhitespace {
+class BankDetailsFormProvider @Inject() extends Mappings {
 
   def apply(): Form[BankDetails] = Form(
     mapping(
@@ -31,13 +31,11 @@ class BankDetailsFormProvider @Inject() extends Mappings with TrimWhitespace {
           maxLength(40, "bankDetails.name.error.length"),
           regexp(Validation.safeInputPattern, "bankDetails.name.error.invalid")
         )),
-      "SortCode" -> text("bankDetails.sortCode.error.required")
-        .transform[String](trimWhitespace, value => value)
+      "SortCode" -> textNoSpaces("bankDetails.sortCode.error.required")
         .verifying(firstError(
           regexp(Validation.sortCodePattern.toString, "bankDetails.sortCode.error.invalid")
         )),
-      "AccountNumber" -> text("bankDetails.accountNumber.error.required")
-        .transform[String](trimWhitespace, value => value)
+      "AccountNumber" -> textNoSpaces("bankDetails.accountNumber.error.required")
         .verifying(firstError(
           minLength(6, "bankDetails.accountNumber.error.length"),
           maxLength(8, "bankDetails.accountNumber.error.length"),

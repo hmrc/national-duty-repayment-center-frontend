@@ -24,6 +24,13 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
 
   val form = new NumberOfEntriesTypeFormProvider()()
 
+  def buildFormDataWithSpaces(value: Option[String] = Some("02"),
+                              entries: Option[String] = Some(" 1 2 ")): Map[String, String] =
+    (
+      value.map(_ => "value" -> value.get) ++
+        entries.map(_ => "entries" -> entries.get)
+      ).toMap
+
   val requiredKey = "numberOfEntriesType.error.required"
   val radioFieldName = "value"
 
@@ -50,7 +57,6 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
 
     val fieldName = "entries"
     val requiredKey = "howManyEntries.error.required"
-    val lengthKey = "howManyEntries.error.length"
     val maxLength = 999999
 
     behave like fieldThatBindsValidData(
@@ -83,6 +89,12 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
       val expectedError = error(fieldName, requiredKey)
 
       result.errors shouldEqual(expectedError)
+    }
+
+    "trim white spaces in number of entries" in {
+      val result = new NumberOfEntriesTypeFormProvider().apply().bind(buildFormDataWithSpaces())
+      result.get shouldBe Entries(NumberOfEntriesType.Multiple,Some("12"))
+      result.errors shouldBe List.empty
     }
   }
 }

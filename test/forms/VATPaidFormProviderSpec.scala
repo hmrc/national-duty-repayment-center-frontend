@@ -28,6 +28,13 @@ class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBeh
   val minimum = 0.01
   var maximum = 99999999999.99
 
+  def buildFormDataWithSpaces(ActualPaidAmount: Option[String] = Some(" 2 2 2 "),
+                              ShouldHavePaidAmount: Option[String] = Some(" 1 1 1 ")): Map[String, String] =
+    (
+      ActualPaidAmount.map(_ => "ActualPaidAmount" -> ActualPaidAmount.get) ++
+        ShouldHavePaidAmount.map(_ => "ShouldHavePaidAmount" -> ShouldHavePaidAmount.get)
+      ).toMap
+
   val validDataGenerator = decimalInRangeWithCommas(minimum.toDouble, maximum)
 
   val form: Form[RepaymentAmounts] = new VATPaidFormProvider()()
@@ -96,6 +103,11 @@ class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBeh
         FormError(fieldName, "vatPaid.shouldhavepaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
       )
     }
+  }
 
+  "trim white spaces in VAT Amounts" in {
+    val result = new VATPaidFormProvider().apply().bind(buildFormDataWithSpaces())
+    result.get shouldBe RepaymentAmounts("222","111")
+    result.errors shouldBe List.empty
   }
 }

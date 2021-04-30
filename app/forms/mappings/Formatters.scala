@@ -16,7 +16,7 @@
 
 package forms.mappings
 
-import forms.Validation
+import forms.{TrimWhitespace, Validation}
 import play.api.data.format.Formatter
 import models.Enumerable
 
@@ -25,7 +25,7 @@ import play.api.data.{FormError, Mapping}
 
 import scala.util.control.Exception.nonFatalCatch
 
-trait Formatters {
+trait Formatters extends TrimWhitespace {
 
   private[mappings] def stringFormatter(errorKey: String): Formatter[String] = new Formatter[String] {
 
@@ -37,6 +37,18 @@ trait Formatters {
 
     override def unbind(key: String, value: String): Map[String, String] =
       Map(key -> value.trim)
+  }
+
+  private[mappings] def stringFormatterNoSpaces(errorKey: String): Formatter[String] = new Formatter[String] {
+
+    override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
+      data.get(key) match {
+        case None | Some("") => Left(Seq(FormError(key, errorKey)))
+        case Some(s) => Right(trimWhitespace(s))
+      }
+
+    override def unbind(key: String, value: String): Map[String, String] =
+      Map(key -> trimWhitespace(value))
   }
 
   private[mappings] def booleanFormatter(requiredKey: String, invalidKey: String): Formatter[Boolean] =
@@ -68,11 +80,11 @@ trait Formatters {
           .bind(key, data)
           .right.map(_.replace(",", ""))
           .right.flatMap {
-          case s if s.matches(decimalRegexp) =>
+          case s if trimWhitespace(s).matches(decimalRegexp) =>
             Left(Seq(FormError(key, wholeNumberKey, args)))
           case s =>
             nonFatalCatch
-              .either(s.toInt)
+              .either(trimWhitespace(s).toInt)
               .left.map(_ => Seq(FormError(key, nonNumericKey, args)))
         }
 
@@ -107,8 +119,9 @@ trait Formatters {
           .right.map(_.replace("£", ""))
           .right.flatMap {
           s =>
-            Try(s.toDouble) match {
-              case Success(_) => Right(s)
+            val valueNoSpaces = trimWhitespace(s)
+            Try(valueNoSpaces.toDouble) match {
+              case Success(_) => Right(valueNoSpaces)
               case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
             }
         }

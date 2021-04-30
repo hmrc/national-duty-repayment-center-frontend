@@ -52,8 +52,14 @@ class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
 
     "bind values with eori expression" in {
 
-      val result = form.bind(Map("value" -> "GB123456123456")).apply(fieldName)
+      val result = form.bind(Map(fieldName -> "GB123456123456")).apply(fieldName)
       result.value.get shouldBe "GB123456123456"
+      result.errors shouldBe List.empty
+    }
+
+    "trim white spaces in EORI" in {
+      val result = form.bind(Map(fieldName -> "GB 123456 123456"))
+      result.get.value shouldBe "GB123456123456"
       result.errors shouldBe List.empty
     }
   }

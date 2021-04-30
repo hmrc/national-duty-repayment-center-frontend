@@ -55,5 +55,11 @@ class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
       result.value.get shouldBe "GB123456123456"
       result.errors shouldBe List.empty
     }
+
+    "trim white spaces in EORI" in {
+      val result = form.bind(Map("value" -> "GB 123456 123456"))
+      result.get.value shouldBe "GB123456123456"
+      result.errors shouldBe List.empty
+    }
   }
 }

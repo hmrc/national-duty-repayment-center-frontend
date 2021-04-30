@@ -22,13 +22,12 @@ import models.PostcodeLookup
 import play.api.data.Forms._
 import play.api.data.{Form, Forms}
 
-class PostcodeFormProvider @Inject() extends Mappings with TrimWhitespace {
+class PostcodeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[PostcodeLookup] =
     Form(
       mapping(
-        "PostalCode" -> text("postcode.error.required")
-          .transform[String](trimWhitespace, value => value)
+        "PostalCode" -> textNoSpaces("postcode.error.required")
       )(PostcodeLookup.apply)(PostcodeLookup.unapply)
     )
 }

@@ -33,11 +33,11 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
 
     Form(
       mapping(
-        "EPU" -> text("entryDetails.claimEpu.error.required")
+        "EPU" -> textNoSpaces("entryDetails.claimEpu.error.required")
           .verifying(
             regexp(Validation.epu, "entryDetails.claimEpu.error.valid")
           ),
-        "EntryNumber" -> text("entryDetails.entryNumber.error.required")
+        "EntryNumber" -> textNoSpaces("entryDetails.entryNumber.error.required")
           .verifying(regexp(
             Validation.epuEntryNumber, "entryDetails.entryNumber.error.valid")
           ),
