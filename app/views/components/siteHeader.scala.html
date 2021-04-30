@@ -16,9 +16,11 @@
 
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.header.Header
 
+
 @this(
     hmrcHeader: HmrcHeader,
-    govukBackLink: GovukBackLink
+    govukBackLink: GovukBackLink,
+    appConfig: config.FrontendAppConfig
 )
 
 @(showSignOut: Boolean = true)(implicit messages: Messages)
@@ -28,5 +30,5 @@
     serviceName = Some(messages("site.service_name")),
     containerClasses = "govuk-width-container",
     navigation = None,
-    signOutHref = if (showSignOut) Some(controllers.routes.SignOutController.signOut.url) else None
+    signOutHref = if (showSignOut) Some(appConfig.feedbackSurvey) else None
 ))

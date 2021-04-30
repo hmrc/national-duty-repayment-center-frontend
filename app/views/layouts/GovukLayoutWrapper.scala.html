@@ -43,6 +43,7 @@
     timeout: Boolean = true,
     js: Option[Html] = None,
     backLink: Boolean = true,
+    feedback: Boolean = true,
 refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @head = {
@@ -56,7 +57,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
         timeout = Some(appConfig.timeout),
         countdown = Some(appConfig.countdown),
         keepAliveUrl = Some(routes.ClaimantTypeController.onPageLoad(NormalMode).url),
-        signOutUrl = Some(routes.SignOutController.signOut().url),
+        signOutUrl = Some(appConfig.feedbackSurvey),
         timeoutUrl = Some(routes.SessionExpiredController.onPageLoad().url),
         language = Some(messages.lang.code)
     ))
