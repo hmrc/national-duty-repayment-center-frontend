@@ -20,11 +20,11 @@ import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
-class ReferenceNumberFormProvider @Inject() extends Mappings with TrimWhitespace {
+class ReferenceNumberFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("referenceNumber.error.required").transform[String](trimWhitespace, identity)
+      "value" -> textNoSpaces("referenceNumber.error.required")
         .verifying(firstError(
           regexp(Validation.referenceNumberPattern,"referenceNumber.error.invalid.chars"),
           startsWith("referenceNumber.error.prefix"),

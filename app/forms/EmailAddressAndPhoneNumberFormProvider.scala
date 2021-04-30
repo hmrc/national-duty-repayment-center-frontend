@@ -32,7 +32,7 @@ object EmailAndPhoneNumber {
   implicit val format: OFormat[EmailAndPhoneNumber] = Json.format[EmailAndPhoneNumber]
 }
 
-class EmailAddressAndPhoneNumberFormProvider @Inject() extends Mappings with TrimWhitespace {
+class EmailAddressAndPhoneNumberFormProvider @Inject() extends Mappings {
 
   def contains(field: String, elem: String): Condition = x => {
     val t = x.values.exists(_ == elem)
@@ -45,16 +45,14 @@ class EmailAddressAndPhoneNumberFormProvider @Inject() extends Mappings with Tri
   def apply(): Form[EmailAndPhoneNumber] =
     Form( mapping(
       "value" -> set(enumerable[IsContactProvided]("isContactProvided.error.required")).verifying(nonEmptySet("isContactProvided.error.required")),
-      "email" ->  mandatoryIfContains(contains("value", "01"), text("emailAddress.error.required")
-        .transform[String](trimWhitespace, value => value)
+      "email" ->  mandatoryIfContains(contains("value", "01"), textNoSpaces("emailAddress.error.required")
         .verifying(firstError(
           maxLength(85, "emailAddress.error.length"),
           regexp(Validation.emailRegex,"emailAddress.error.invalid")
         ))
       ),
 
-      "phone" ->  mandatoryIfContains(contains("value","02"), text("phoneNumber.error.required")
-        .transform[String](trimWhitespace, value => value)
+      "phone" ->  mandatoryIfContains(contains("value","02"), textNoSpaces("phoneNumber.error.required")
         .verifying(firstError(
           maxLength(11, "phoneNumber.error.length"),
           regexp(Validation.phoneNumberPattern,"phoneNumber.error.invalid")

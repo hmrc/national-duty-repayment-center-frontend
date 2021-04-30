@@ -21,12 +21,11 @@ import forms.mappings.Mappings
 import models.EORI
 import play.api.data.Form
 
-class EnterAgentEORIFormProvider @Inject() extends Mappings with TrimWhitespace {
+class EnterAgentEORIFormProvider @Inject() extends Mappings {
 
   def apply(): Form[EORI] =
     Form(
-      "value" -> text("enterAgentEORI.error.required")
-        .transform[String](trimWhitespace, value => value)
+      "value" -> textNoSpaces("enterAgentEORI.error.required")
         .verifying(firstError(
           regexp(Validation.eoriPattern.toString, "enterAgentEORI.error.valid")
         ))

@@ -39,6 +39,18 @@ trait Formatters extends TrimWhitespace {
       Map(key -> value.trim)
   }
 
+  private[mappings] def stringFormatterNoSpaces(errorKey: String): Formatter[String] = new Formatter[String] {
+
+    override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
+      data.get(key) match {
+        case None | Some("") => Left(Seq(FormError(key, errorKey)))
+        case Some(s) => Right(trimWhitespace(s))
+      }
+
+    override def unbind(key: String, value: String): Map[String, String] =
+      Map(key -> trimWhitespace(value))
+  }
+
   private[mappings] def booleanFormatter(requiredKey: String, invalidKey: String): Formatter[Boolean] =
     new Formatter[Boolean] {
 
