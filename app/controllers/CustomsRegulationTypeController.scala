@@ -20,9 +20,9 @@ import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
 
 import javax.inject.Inject
-import models.{CheckMode, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
+import models.{CheckMode, Mode, ClaimantType, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
-import pages.{ArticleTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage}
+import pages.{ArticleTypePage, ClaimantTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -53,7 +53,7 @@ class CustomsRegulationTypeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -61,7 +61,7 @@ class CustomsRegulationTypeController @Inject()(
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
 
         value =>
           for {
@@ -71,4 +71,11 @@ class CustomsRegulationTypeController @Inject()(
                 Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, userAnswers))
       )
   }
+
+  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
+      userAnswers.get(ClaimantTypePage) match {
+        case Some(ClaimantType.Importer) => true
+        case _ => false
+      }
+    }
 }

@@ -24,7 +24,7 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("customsRegulationType.title"))}")
@@ -34,17 +34,27 @@
 
         @components.error_summary(form.errors)
 
-        @forms.inputRadio(
-            form = form,
-            idPrefix = "value",
-            name = "value",
-            items = CustomsRegulationType.options(form),
-            inline = false,
-            legendAsHeading = true,
-            legend = Some(messages("customsRegulationType.heading"))
-        )
+        @forms.fieldset(
+        legend = messages("customsRegulationType.heading")
+        ) {
 
-        @html.button("site.continue")
+            @html.p {
+                @Some(Html(messages(isImporterJourney match {
+                    case true =>"customsRegulationType.importer"
+                    case _ => "customsRegulationType.representative"
+                })))
+            }
+
+            @forms.inputRadio(
+                form = form,
+                idPrefix = "value",
+                name = "value",
+                items = CustomsRegulationType.options(form),
+                inline = false,
+                legendAsHeading = false
+            )
+
+            @html.button("site.continue")
+        }
     }
-
 }

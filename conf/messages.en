@@ -100,6 +100,8 @@ importerClaimantVrn.error.length = VRN number must be 9 characters or less
 
 customsRegulationType.title = What was the entry acceptance date?
 customsRegulationType.heading = What was the entry acceptance date?
+customsRegulationType.importer = You can find this on the E2 document under &#8216;Entry Acceptance Details&#x2019;, or by asking your shipping agent or courier.
+customsRegulationType.representative = You can find this on the E2 document.
 customsRegulationType.01 = On or before 31 December 2020
 customsRegulationType.02 = From 1 January 2021
 customsRegulationType.checkYourAnswersLabel = Acceptance date
