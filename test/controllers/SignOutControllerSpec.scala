@@ -35,7 +35,7 @@ class SignOutControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, FakeRequest(GET, signOutRoute)).value
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(frontendAppConfig.signOutUrl)
+      redirectLocation(result) mustBe Some(frontendAppConfig.feedbackSurvey)
     }
   }
 }
