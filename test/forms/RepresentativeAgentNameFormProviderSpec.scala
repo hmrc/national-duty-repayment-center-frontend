@@ -19,43 +19,49 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class ImporterNameFormProviderSpec extends StringFieldBehaviours {
+class RepresentativeAgentNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "importerName.error.required"
-  val lengthKey = "importerName.error.length"
-  val nameInvalidKey = "importerName.error.invalid"
-  val maxLength = 512
+  val requiredFirstNameKey = "representative.agent.firstName.error.required"
+  val requiredLastNameKey = "representative.agent.lastName.error.required"
+  val lengthFirstNameKey = "representative.agent.firstName.error.length"
+  val lengthLastNameNameKey = "representative.agent.lastName.error.length"
+  val maxLength = 255
 
-  val form = new ImporterNameFormProvider()()
+  val form = new RepresentativeAgentNameFormProvider()()
 
-  ".importerName" must {
+  ".firstName" must {
 
-    val fieldName = "importerName"
+    val fieldName = "firstName"
 
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      stringsWithMaxLengthAlpha(maxLength)
     )
 
     behave like fieldWithMaxLength(
       form,
       fieldName,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      lengthError = FormError(fieldName, lengthFirstNameKey, Seq(maxLength))
     )
+  }
 
-    behave like mandatoryField(
+  ".lastName" must {
+
+    val fieldName = "lastName"
+
+    behave like fieldThatBindsValidData(
       form,
       fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      stringsWithMaxLengthAlpha(maxLength)
     )
 
-    behave like fieldThatPreventsUnsafeInput(
+    behave like fieldWithMaxLength(
       form,
       fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, nameInvalidKey, Seq(Validation.safeInputPattern))
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthLastNameNameKey, Seq(maxLength))
     )
   }
 }

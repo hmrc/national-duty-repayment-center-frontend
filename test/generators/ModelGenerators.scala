@@ -159,6 +159,11 @@ trait ModelGenerators {
       Gen.listOfN(2, Gen.numStr).map(_.mkString).map(NoOfEntries.apply)
     }
 
+  implicit lazy val userName: Arbitrary[UserName] =
+    Arbitrary {
+      self.stringsWithMaxLength(512).map(UserName.apply)
+    }
+
   implicit lazy val arbitraryEori: Arbitrary[EORI] =
     Arbitrary {
       self.stringsWithMaxLength(17).map(EORI.apply)
@@ -176,12 +181,17 @@ trait ModelGenerators {
       )
     }
 
-  implicit lazy val arbitraryUserName: Arbitrary[UserName] =
+  implicit lazy val arbitraryName: Arbitrary[Name] =
     Arbitrary {
       for {
         firstName <- self.stringsWithMaxLength(512)
         lastName <- self.stringsWithMaxLength(512)
-      } yield UserName(firstName, lastName)
+      } yield Name(firstName, lastName)
+    }
+
+  implicit lazy val arbitraryDoYouOwnTheGoods: Arbitrary[DoYouOwnTheGoods] =
+    Arbitrary {
+      Gen.oneOf(DoYouOwnTheGoods.values)
     }
 
   implicit val arbitraryAddress: Arbitrary[Address] = Arbitrary {

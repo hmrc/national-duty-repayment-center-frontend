@@ -17,48 +17,51 @@
 package controllers
 
 import base.SpecBase
-import forms.ImporterNameFormProvider
+import forms.RepresentativeImporterNameFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ImporterNamePage
+import pages.RepresentativeAgentNamePage
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.ImporterNameView
+import views.html.RepresentativeAgentNameView
 
 import scala.concurrent.Future
 
-class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
+class RepresentativeAgentNameControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ImporterNameFormProvider()
+  val formProvider = new RepresentativeImporterNameFormProvider()
   private val userAnswersDummy = UserAnswers(
     userAnswersId,
     Json.obj(
-      ImporterNamePage.toString -> "Joe Bloggs"
+      RepresentativeAgentNamePage.toString -> Json.obj(
+        "firstName" -> "Joe",
+        "lastName" -> "Bloggs"
+      )
     ))
 
   val form = formProvider()
 
-  lazy val importerNameRoute = routes.ImporterNameController.onPageLoad(NormalMode).url
+  lazy val agentNameRoute = routes.RepresentativeAgentNameController.onPageLoad(NormalMode).url
 
-  " ImporterName Controller" must {
+  "RepresentativeAgentName Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, importerNameRoute)
+      val request = FakeRequest(GET, agentNameRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ImporterNameView]
+      val view = application.injector.instanceOf[RepresentativeAgentNameView]
 
       status(result) mustEqual OK
 
@@ -72,16 +75,16 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersDummy)).build()
 
-      val request = FakeRequest(GET, importerNameRoute)
+      val request = FakeRequest(GET, agentNameRoute)
 
-      val view = application.injector.instanceOf[ImporterNameView]
+      val view = application.injector.instanceOf[RepresentativeAgentNameView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(models.UserName("Joe Bloggs")), NormalMode)(request, messages).toString
+        view(form.fill(models.Name("Joe", "Bloggs")), NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -98,8 +101,8 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, importerNameRoute)
-          .withFormUrlEncodedBody(("importerName", "Joe Blogs"))
+        FakeRequest(POST, agentNameRoute)
+          .withFormUrlEncodedBody(("firstName", "Joe"), ("lastName", "Bloggs"))
 
       val result = route(application, request).value
 
@@ -114,12 +117,12 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, importerNameRoute)
+        FakeRequest(POST, agentNameRoute)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[ImporterNameView]
+      val view = application.injector.instanceOf[RepresentativeAgentNameView]
 
       val result = route(application, request).value
 
@@ -135,7 +138,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, importerNameRoute)
+      val request = FakeRequest(GET, agentNameRoute)
 
       val result = route(application, request).value
 
@@ -151,7 +154,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, importerNameRoute)
+        FakeRequest(POST, agentNameRoute)
           .withFormUrlEncodedBody(("value", "answer"))
 
       val result = route(application, request).value

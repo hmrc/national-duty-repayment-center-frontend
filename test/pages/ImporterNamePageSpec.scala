@@ -19,7 +19,6 @@ package pages
 import models.UserName
 import pages.behaviours.PageBehaviours
 
-
 class ImporterNamePageSpec extends PageBehaviours {
 
   "ImporterNamePage" must {

@@ -16,11 +16,14 @@
 
 package models
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Json, OFormat}
 
-case class UserName(value: String)
-
-object UserName {
-  implicit val format: Format[UserName] =
-    JsonFormatUtils.stringFormat(UserName.apply)(_.value)
+case class Name(firstName: String,
+                lastName:String) {
+  override def toString = firstName.concat(" ").concat(lastName)
 }
+object Name {
+  implicit val format: OFormat[Name] = Json.format[Name]
+}
+
+

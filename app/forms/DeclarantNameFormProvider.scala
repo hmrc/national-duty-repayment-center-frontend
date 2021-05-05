@@ -15,28 +15,29 @@
  */
 
 package forms
-
-import javax.inject.Inject
 import forms.mappings.Mappings
-import models.UserName
+import models.Name
 import play.api.data.Form
 import play.api.data.Forms._
 
-class AgentNameImporterFormProvider @Inject() extends Mappings {
+import javax.inject.Inject
 
-  def apply(): Form[UserName] =
+class DeclarantNameFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Name] =
     Form(
         mapping (
-        "firstName" -> text("agentNameImporter.error.required.firstName")
+        "firstName" -> text("declarantName.firstName.error.required")
           .verifying(firstError(
-            maxLength(512,
-              "agentNameImporter.error.length")
+            maxLength(255,
+              "declarantName.firstName.error.length"),
+            regexp(Validation.safeInputPattern,"declarantName.firstName.error.invalid")
           )),
-        "lastName" -> text("agentNameImporter.error.required.lastName")
+        "lastName" -> text("declarantName.lastName.error.required")
           .verifying(firstError(
-            maxLength(512,
-              "agentNameImporter.error.length")
+            maxLength(255,
+              "declarantName.lastName.error.length"),
+            regexp(Validation.safeInputPattern,"declarantName.lastName.error.invalid")
           ))
-        )(UserName.apply)(UserName.unapply))
-
+        )(Name.apply)(Name.unapply))
 }

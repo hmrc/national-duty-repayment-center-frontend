@@ -77,6 +77,7 @@ object CreateClaimRequest {
       payeeIndicator <- getPayeeIndicator(userAnswers)
       paymentMethod <- getPaymentMethod(userAnswers)
       declarantReNumber <- getDecRef(userAnswers)
+      declarantName <-  getDeclarantName(userAnswers)
     } yield ClaimDetails(FormType("01"),
       customRegulationType,
       claimedUnderArticle,
@@ -91,10 +92,16 @@ object CreateClaimRequest {
       LocalDate.now(),
       payeeIndicator,
       paymentMethod,
-      declarantReNumber
+      declarantReNumber,
+      declarantName
     )
 
-    def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(AgentImporterAddressPage) match {
+    def getDeclarantName(userAnswers: UserAnswers): Option[String] = userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => userAnswers.get(DeclarantNamePage).map(_.toString)
+      case _ => Some("DummyData")
+    }
+
+      def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(AgentImporterAddressPage) match {
       case Some(_) => userAnswers.get(AgentImporterAddressPage)
       case _ => userAnswers.get(AgentImporterManualAddressPage)
     }
@@ -115,7 +122,7 @@ object CreateClaimRequest {
     }
 
     def getAgentUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
-      name <- userAnswers.get(ImporterNamePage)
+      name <- getAgentImporterName(userAnswers)
       address <- getAgentImporterAddress(userAnswers)
     } yield {
       val eori = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
@@ -146,9 +153,17 @@ object CreateClaimRequest {
       case _ => userAnswers.get(ImporterManualAddressPage)
     }
 
-    def getImporterName(userAnswers: UserAnswers): Option[UserName] = userAnswers.get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => userAnswers.get(ImporterNamePage)
-      case _ => userAnswers.get(AgentNameImporterPage)
+    def getAgentImporterName(userAnswers: UserAnswers): Option[String] = userAnswers.get(RepresentativeAgentNamePage).map(_.toString)
+
+    def getImporterName(userAnswers: UserAnswers): Option[String] = {
+      val declarantNamePage = userAnswers.get(DeclarantNamePage)
+      userAnswers.get(ClaimantTypePage) match {
+        case Some(ClaimantType.Importer) => userAnswers.get(DoYouOwnTheGoodsPage) match {
+          case Some(DoYouOwnTheGoods.No) => userAnswers.get(ImporterNamePage).map(_.value)
+          case _ => declarantNamePage.map(_.toString)
+        }
+        case _ => userAnswers.get(RepresentativeImporterNamePage).map(_.toString)
+      }
     }
 
     def getImporterEORI(userAnswers: UserAnswers): EORI = userAnswers.get(ClaimantTypePage) match {

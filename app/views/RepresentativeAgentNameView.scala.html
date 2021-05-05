@@ -19,29 +19,40 @@
 @import views.ViewUtils._
 
 @this(
-        govukLayout: views.html.layouts.GovukLayoutWrapper,
-        forms: views.components.forms,
-        html: views.components.html
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerName.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("representative.agent.title"))}")
 ) {
 
-    @forms.formWithCSRF(action = ImporterNameController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = RepresentativeAgentNameController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
         @forms.fieldset(
-            legend = messages("importerName.heading")
+            legend = messages("representative.agent.heading")
         ) {
             @forms.inputText(
                 form = form,
-                id = "importerName",
-                name = "importerName",
+                id = "firstName",
+                name = "firstName",
                 inputType = "text",
-                label = "",
+                label = "representative.agent.firstName",
+                isPageHeading = false,
+                isInFieldset = false,
+                attributes = Map("autocomplete" -> "off")
+            )
+
+            @forms.inputText(
+                form = form,
+                id = "lastName",
+                name = "lastName",
+                inputType = "text",
+                label = "representative.agent.lastName",
                 isPageHeading = false,
                 isInFieldset = false,
                 attributes = Map("autocomplete" -> "off")

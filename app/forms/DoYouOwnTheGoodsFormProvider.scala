@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package models
+package forms
 
-import play.api.libs.json.Format
+import forms.mappings.Mappings
+import models.DoYouOwnTheGoods
+import play.api.data.Form
 
-case class UserName(value: String)
+import javax.inject.Inject
 
-object UserName {
-  implicit val format: Format[UserName] =
-    JsonFormatUtils.stringFormat(UserName.apply)(_.value)
+class DoYouOwnTheGoodsFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[DoYouOwnTheGoods] =
+    Form(
+      "value" -> enumerable[DoYouOwnTheGoods]("doYouOwnTheGoods.error.required")
+    )
 }

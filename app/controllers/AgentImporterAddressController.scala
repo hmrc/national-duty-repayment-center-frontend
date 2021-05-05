@@ -19,16 +19,14 @@ package controllers
 import connectors.AddressLookupConnector
 import controllers.actions._
 import forms.{AddressSelectionFormProvider, AgentImporterAddressFormProvider, PostcodeFormProvider}
-
-import javax.inject.Inject
 import models.{Address, Mode, NormalMode, PostcodeLookup}
 import navigation.Navigator
-import pages.{AgentImporterAddressPage, AgentImporterManualAddressPage, AgentImporterPostcodePage}
 import org.slf4j.LoggerFactory
+import pages.{AgentImporterAddressPage, AgentImporterManualAddressPage, AgentImporterPostcodePage}
 import play.api.data.Form
-import play.api.libs.json.{JsObject, Json}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request, Result}
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.http.HeaderCarrier
@@ -36,6 +34,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.AddressSorter
 import views.html.{AgentImporterAddressConfirmationView, AgentImporterAddressView}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentImporterAddressController @Inject()(

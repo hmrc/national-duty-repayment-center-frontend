@@ -39,7 +39,7 @@ final case class ClaimDetails(
                                PayeeIndicator: WhomToPay,
                                PaymentMethod: RepaymentType,
                                DeclarantRefNumber: String,
-                               DeclarantName: String = "DummyData"
+                               DeclarantName: String
                              )
 
 object ClaimDetails {
