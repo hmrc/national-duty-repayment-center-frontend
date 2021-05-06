@@ -95,8 +95,9 @@ class FrontendAppConfigImpl @Inject()(configuration: Configuration) extends Fron
   override val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
   override val signOutUrl: String = configuration.get[String]("urls.logout")
-  override val feedbackSurvey : String = configuration.get[Service]("feedback-frontend").baseUrl +
-    configuration.get[String]("feedback-frontend.url")
+  private lazy val feedbackHost: String = configuration.get[String]("feedback-frontend.host")
+  private lazy val feedbackUrl: String = configuration.get[String]("feedback-frontend.url")
+  lazy val feedbackSurvey: String = s"$feedbackHost$feedbackUrl"
   override val fileFormats: FrontendAppConfig.FileFormats = FrontendAppConfig.FileFormats(
     maxFileSizeMb = configuration.get[Int]("file-formats.max-file-size-mb"),
     approvedFileExtensions = configuration.get[String]("file-formats.approved-file-extensions"),
