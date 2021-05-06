@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package models
+package forms
 
-import play.api.libs.json.Format
+import forms.behaviours.OptionFieldBehaviours
+import play.api.data.FormError
 
-case class UserName(value: String)
+class DoYouOwnTheGoodsFormProviderSpec extends OptionFieldBehaviours {
 
-object UserName {
-  implicit val format: Format[UserName] =
-    JsonFormatUtils.stringFormat(UserName.apply)(_.value)
+  val form = new DoYouOwnTheGoodsFormProvider()()
+
+  ".value" must {
+
+    val fieldName = "value"
+    val requiredKey = "doYouOwnTheGoods.error.required"
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

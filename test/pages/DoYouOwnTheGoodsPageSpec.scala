@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.Format
+import models.DoYouOwnTheGoods
+import pages.behaviours.PageBehaviours
 
-case class UserName(value: String)
+class DoYouOwnTheGoodsPageSpec extends PageBehaviours {
 
-object UserName {
-  implicit val format: Format[UserName] =
-    JsonFormatUtils.stringFormat(UserName.apply)(_.value)
+  "DoYouOwnTheGoodsPage" must {
+
+    beRetrievable[DoYouOwnTheGoods](DoYouOwnTheGoodsPage)
+
+    beSettable[DoYouOwnTheGoods](DoYouOwnTheGoodsPage)
+
+    beRemovable[DoYouOwnTheGoods](DoYouOwnTheGoodsPage)
+  }
 }

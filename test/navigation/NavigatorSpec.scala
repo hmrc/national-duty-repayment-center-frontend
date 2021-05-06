@@ -120,10 +120,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
         navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
           .mustBe(routes.UkRegulationTypeController.onPageLoad(NormalMode))
-
       }
-
-
 
       "go to CheckYourAnswers page after the bank details has been entered " in {
 
@@ -186,6 +183,51 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.IsImporterVatRegisteredController.onPageLoad(NormalMode))
       }
 
+      "go to Declarant name page after IsVatRegistered page in importer journey" in {
+        val answers =
+          emptyUserAnswers
+            .set(IsVATRegisteredPage, IsVATRegistered.No).success.value
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+        navigator.nextPage(IsVATRegisteredPage, NormalMode, answers)
+          .mustBe(routes.DeclarantNameController.onPageLoad(NormalMode))
+      }
+
+      "go to 'Do you own the goods page' after Declarant name page in importer journey" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+            .set(DeclarantNamePage, Name("Joe", "Bloggs")).success.value
+        navigator.nextPage(DeclarantNamePage, NormalMode, answers)
+          .mustBe(routes.DoYouOwnTheGoodsController.onPageLoad(NormalMode))
+      }
+
+      "go to Select address for importer page after 'Do you own the goods page' in importer journey if 'Yes' is selected" in {
+        val answers =
+          emptyUserAnswers
+            .set(DoYouOwnTheGoodsPage, DoYouOwnTheGoods.Yes).success.value
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+        navigator.nextPage(DoYouOwnTheGoodsPage, NormalMode, answers)
+          .mustBe(routes.ImporterAddressController.onPageLoad(NormalMode))
+      }
+
+      "go to Importer name page from 'Do you own the goods page' in importer journey if 'No' is selected" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+            .set(DoYouOwnTheGoodsPage, DoYouOwnTheGoods.No).success.value
+        navigator.nextPage(DoYouOwnTheGoodsPage, NormalMode, answers)
+          .mustBe(routes.ImporterNameController.onPageLoad(NormalMode))
+      }
+
+      "go to select address page after entering the importer name details" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+            .set(ImporterNamePage, UserName("Joe Bloggs")).success.value
+        navigator.nextPage(ImporterNamePage, NormalMode, answers)
+          .mustBe(routes.ImporterAddressController.onPageLoad(NormalMode))
+      }
+
       "go to PhoneNumber page after importerAddressConfirmation page when Representative single/multiple entry journeys selected " in {
         val answers =
           emptyUserAnswers
@@ -203,12 +245,12 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ImporterEoriController.onPageLoad(NormalMode))
       }
 
-      "go to ImporterName page after importerHasEORI with No page when Representative single/multiple entry journeys selected " in {
+      "go to AgentName page after importerHasEORI with No page when Representative single/multiple entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(ImporterHasEoriPage, false).success.value
         navigator.nextPage(ImporterHasEoriPage, NormalMode, answers)
-          .mustBe(routes.ImporterNameController.onPageLoad(NormalMode))
+          .mustBe(routes.RepresentativeAgentNameController.onPageLoad(NormalMode))
       }
 
       "go to AmendCaseResponseType page after ReferenceNumber page " in {
@@ -474,6 +516,27 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to Check Your Answers page after the Other Duties Paid Page with RepayCheckMode" in {
         navigator.nextPage(OtherDutiesPaidPage, RepayCheckMode, UserAnswers("id"))
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
+      }
+
+      "go to Check your answers page after the Declarant name page" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(DeclarantNamePage, Name("Joe", "Bloggs")).success.value
+        navigator.nextPage(DeclarantNamePage, CheckMode, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+
+      "go to Check your answers page when Do You own the goods answer is 'Yes'" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(DoYouOwnTheGoodsPage, DoYouOwnTheGoods.Yes).success.value
+        navigator.nextPage(DeclarantNamePage, CheckMode, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+
+      "go to Check your answers page after Importer name page" in {
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(ImporterNamePage, UserName("Joe Bloggs")).success.value
+        navigator.nextPage(DeclarantNamePage, CheckMode, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
       }
     }
   }

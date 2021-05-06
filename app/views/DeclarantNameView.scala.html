@@ -27,22 +27,21 @@
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentNameImporter.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("declarantName.title"))}")
 ) {
 
-    @forms.formWithCSRF(action = AgentNameImporterController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = DeclarantNameController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
-
         @forms.fieldset(
-            legend = messages("agentNameImporter.heading")
+            legend = messages("declarantName.heading")
         ) {
             @forms.inputText(
                 form = form,
                 id = "firstName",
                 name = "firstName",
                 inputType = "text",
-                label = "agentNameImporter.firstName",
+                label = "declarantName.firstName",
                 isPageHeading = false,
                 isInFieldset = false,
                 attributes = Map("autocomplete" -> "off")
@@ -53,7 +52,7 @@
                 id = "lastName",
                 name = "lastName",
                 inputType = "text",
-                label = "agentNameImporter.lastName",
+                label = "declarantName.lastName",
                 isPageHeading = false,
                 isInFieldset = false,
                 attributes = Map("autocomplete" -> "off")

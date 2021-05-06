@@ -81,8 +81,11 @@ trait PageGenerators {
   implicit lazy val arbitraryRepaymentTypePage: Arbitrary[RepaymentTypePage.type] =
     Arbitrary(RepaymentTypePage)
 
-  implicit lazy val arbitraryAgentNameImporterPage: Arbitrary[AgentNameImporterPage.type] =
-    Arbitrary(AgentNameImporterPage)
+  implicit lazy val arbitraryRepresentativeAgentNameImporterPage: Arbitrary[RepresentativeAgentNamePage.type] =
+    Arbitrary(RepresentativeAgentNamePage)
+
+  implicit lazy val arbitraryRepresentativeImporterNameImporterPage: Arbitrary[RepresentativeImporterNamePage.type] =
+    Arbitrary(RepresentativeImporterNamePage)
 
   implicit lazy val arbitraryEmailAddressAndPhoneNumberPage: Arbitrary[EmailAddressAndPhoneNumberPage.type] =
     Arbitrary(EmailAddressAndPhoneNumberPage)
@@ -92,6 +95,9 @@ trait PageGenerators {
 
   implicit lazy val arbitraryImporterNamePage: Arbitrary[ImporterNamePage.type] =
     Arbitrary(ImporterNamePage)
+
+  implicit lazy val arbitraryDeclarantNamePage: Arbitrary[DeclarantNamePage.type] =
+    Arbitrary(DeclarantNamePage)
 
   implicit lazy val arbitraryEvidenceSupportingDocsPage: Arbitrary[EvidenceSupportingDocsPage.type] =
     Arbitrary(EvidenceSupportingDocsPage)
@@ -128,4 +134,7 @@ trait PageGenerators {
 
   implicit lazy val arbitraryClaimantTypePage: Arbitrary[ClaimantTypePage.type] =
     Arbitrary(ClaimantTypePage)
+
+  implicit lazy val arbitraryDoYouOwnTheGoodsPage: Arbitrary[DoYouOwnTheGoodsPage.type] =
+    Arbitrary(DoYouOwnTheGoodsPage)
 }

@@ -19,14 +19,15 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class AgentNameImporterFormProviderSpec extends StringFieldBehaviours {
+class RepresentativeImporterNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "agentNameImporter.error.required.firstName"
-  val lastNameKey = "agentNameImporter.error.required.lastName"
-  val lengthKey = "agentNameImporter.error.length"
-  val maxLength = 512
+  val requiredFirstNameKey = "representative.importer.firstName.error.required"
+  val requiredLastNameKey = "representative.importer.lastName.error.required"
+  val lengthFirstNameKey = "representative.importer.firstName.error.length"
+  val lengthLastNameNameKey = "representative.importer.lastName.error.length"
+  val maxLength = 255
 
-  val form = new AgentNameImporterFormProvider()()
+  val form = new RepresentativeImporterNameFormProvider()()
 
   ".firstName" must {
 
@@ -35,44 +36,32 @@ class AgentNameImporterFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      stringsWithMaxLengthAlpha(maxLength)
     )
 
     behave like fieldWithMaxLength(
       form,
       fieldName,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      lengthError = FormError(fieldName, lengthFirstNameKey, Seq(maxLength))
     )
   }
 
   ".lastName" must {
 
-    val lastName = "lastName"
+    val fieldName = "lastName"
 
     behave like fieldThatBindsValidData(
       form,
-      lastName,
-      stringsWithMaxLength(maxLength)
+      fieldName,
+      stringsWithMaxLengthAlpha(maxLength)
     )
 
     behave like fieldWithMaxLength(
       form,
-      lastName,
+      fieldName,
       maxLength = maxLength,
-      lengthError = FormError(lastName, lengthKey, Seq(maxLength))
-    )
-
-    behave like mandatoryField(
-      form,
-      lastName,
-      requiredError = FormError(lastName, lastNameKey)
+      lengthError = FormError(fieldName, lengthLastNameNameKey, Seq(maxLength))
     )
   }
 }

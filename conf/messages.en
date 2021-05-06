@@ -240,15 +240,6 @@ evidenceSupportingDocs.bullet5 = .xls
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
 
-agentNameImporter.title = What is the importer''s name?
-agentNameImporter.heading = What is the importer''s name?
-agentNameImporter.checkYourAnswersLabel = Importer name
-agentNameImporter.firstName = First Name
-agentNameImporter.lastName = Last Name
-agentNameImporter.error.required.firstName = Enter your first name
-agentNameImporter.error.required.lastName = Enter your last name
-agentNameImporter.error.length = Importer's name must be 512 characters or less
-
 contactType.title = How should we contact you?
 contactType.heading = How should we contact you?
 contactType.01 = Email
@@ -263,7 +254,7 @@ declarantReferenceNumber.hint1 = This will only be used for your own records.
 declarantReferenceNumber.hint2 = You will be given an application reference number when this application is complete.
 declarantReferenceNumber.01 = Yes
 declarantReferenceNumber.02 = No
-declarantReferenceNumber.checkYourAnswersLabel.answer = Declarant  reference number
+declarantReferenceNumber.checkYourAnswersLabel.answer = Declarant reference number
 declarantReferenceNumber.yes.checkYourAnswersLabel = Yes
 declarantReferenceNumber.no.checkYourAnswersLabel = No
 declarantReferenceNumber.checkYourAnswersLabel.question = Do you want to create a declarant reference number?
@@ -272,15 +263,12 @@ declarantReferenceNumber.error.invalid.length = The declarant reference number m
 declarantReferenceNumber.error.required = Select yes if you want to create a declarant reference number
 declarantReferenceNumber.error.invalid = The declarant reference number must only include letters a to z without accents, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
 
-importerName.title = What is your name
-importerName.heading = What is your name
-importerName.checkYourAnswersLabel = Your name
-importerName.firstName = First Name
-importerName.lastName = Last Name
-importerName.error.required.firstName = Enter your first name
-importerName.error.required.lastName = Enter your last name
-
-importerName.error.length = Your name must be 512 characters or less
+importerName.title = What is the name on the import documents?
+importerName.heading = What is the name on the import documents?
+importerName.checkYourAnswersLabel = Name on import documents
+importerName.error.required = Enter the name on the import documents
+importerName.error.length = Name on the import documents must be 255 characters or less
+importerName.error.invalid = Name on the import documents must only include letters a to z without accents, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
 
 phoneNumber.title = Enter your phone number
 phoneNumber.heading = Enter your phone number
@@ -772,3 +760,43 @@ createOrAmendCase.02 = Amend an existing application
 createOrAmendCase.hint.01 = Apply for repayment of overpaid import duties or import VAT.
 createOrAmendCase.hint.02 = Add further information or make changes to an existing application. You will need the claim reference number.
 createOrAmendCase.error.required = Select if you want to start a new application or amend an existing application
+
+doYouOwnTheGoods.title = Is {0} the name on the import documents?
+doYouOwnTheGoods.heading = Is {0} the name on the import documents?
+doYouOwnTheGoods.error.required = Select if {0} is the name on the import documents
+doYouOwnTheGoods.01 = Yes
+doYouOwnTheGoods.02 = No
+doYouOwnTheGoods.checkYourAnswersLabel = Is {0} the name on the import documents?
+
+declarantName.title = What is your name?
+declarantName.heading = What is your name?
+declarantName.checkYourAnswersLabel = Your name
+declarantName.firstName = First name
+declarantName.lastName = Last name
+declarantName.firstName.error.required = Enter your first name
+declarantName.lastName.error.required = Enter your last name
+declarantName.firstName.error.length = First name must be 255 characters or less
+declarantName.lastName.error.length = Last name must be 255 characters or less
+declarantName.firstName.error.invalid = First name must only include letters a to z without accents, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
+declarantName.lastName.error.invalid = Last name must only include letters a to z without accents, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
+
+representative.agent.title = What is your name
+representative.agent.heading = What is your name
+representative.agent.checkYourAnswersLabel = Your name
+representative.agent.firstName = First Name
+representative.agent.lastName = Last Name
+representative.agent.firstName.error.required = Enter your first name
+representative.agent.lastName.error.required = Enter your last name
+representative.agent.firstName.error.length= First name must be 255 characters or less
+representative.agent.lastName.error.length= Last name must be 255 characters or less
+
+representative.importer.title = What is the importer''s name?
+representative.importer.heading = What is the importer''s name?
+representative.importer.checkYourAnswersLabel = Importer name
+representative.importer.firstName = First Name
+representative.importer.lastName = Last Name
+representative.importer.firstName.error.required = Enter your first name
+representative.importer.lastName.error.required = Enter your last name
+representative.importer.firstName.error.length= First name must be 255 characters or less
+representative.importer.lastName.error.length= Last name must be 255 characters or less
+

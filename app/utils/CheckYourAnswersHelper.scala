@@ -104,17 +104,17 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   def proofOfAuthority: Option[AnswerRow] = {
     fileUploadState.map(_.fileUploads.files.filter(_.fileType.contains(ProofOfAuthority))).flatMap(_.headOption.map(_ match {
-          case Accepted(_, _, _, _, _, fileName, _, _) =>
-            AnswerRow(
-              HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
-              HtmlFormat.escape(messages(s"$fileName")),
-              Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
-            )
-          case _ => AnswerRow(
-            HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
-            HtmlFormat.escape(messages(s"proofOfAuthority.empty")),
-            Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
-          )
+      case Accepted(_, _, _, _, _, fileName, _, _) =>
+        AnswerRow(
+          HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
+          HtmlFormat.escape(messages(s"$fileName")),
+          Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
+        )
+      case _ => AnswerRow(
+        HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages(s"proofOfAuthority.empty")),
+        Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
+      )
     }))
   }
 
@@ -190,9 +190,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
       HtmlFormat.escape(x.City).toString,
       HtmlFormat.escape(x.Region.getOrElse("")).toString,
-      HtmlFormat.escape(x.CountryCode match
-            {case "GB" => messages("United Kingdom")
-             case _ => messages("Other")
+      HtmlFormat.escape(x.CountryCode match { case "GB" => messages("United Kingdom")
+      case _ => messages("Other")
       }).toString,
       HtmlFormat.escape(x.PostalCode).toString
     ).filter(!_.isEmpty()).mkString("<br>"))
@@ -273,12 +272,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
 
-  def agentNameImporter: Option[AnswerRow] = userAnswers.get(AgentNameImporterPage) map {
+  def representativeImporterName: Option[AnswerRow] = userAnswers.get(RepresentativeImporterNamePage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("agentNameImporter.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages("representative.importer.checkYourAnswersLabel")),
         HtmlFormat.escape(x.firstName.concat(" ").concat(x.lastName)),
-        Some(routes.AgentNameImporterController.onPageLoad(CheckMode).url)
+        Some(routes.RepresentativeImporterNameController.onPageLoad(CheckMode).url)
       )
   }
 
@@ -301,19 +300,19 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   def declarantReferenceNumber: Option[AnswerRow] = declarantReferenceNumberPage map {
-      x =>
-        AnswerRow(
-          HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
-          HtmlFormat.escape(x.declarantReferenceNumber.getOrElse("")),
-          Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)
-        )
-    }
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
+        HtmlFormat.escape(x.declarantReferenceNumber.getOrElse("")),
+        Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)
+      )
+  }
 
   def declarantReferenceNumberQuestion: Seq[AnswerRow] =
     declarantReferenceNumberPage match {
       case Some(v) if v.declarantReferenceType == Yes => Seq(Some(AnswerRow(
         HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-        HtmlFormat.escape(changeToYesNo(Yes.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url))) ,
+        HtmlFormat.escape(changeToYesNo(Yes.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url))),
         declarantReferenceNumber
       ).flatten
       case _ => Seq(AnswerRow(
@@ -330,12 +329,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def importerName: Option[AnswerRow] = userAnswers.get(ImporterNamePage) map {
+  def declarantName: Option[AnswerRow] = userAnswers.get(DeclarantNamePage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages("declarantName.checkYourAnswersLabel")),
         HtmlFormat.escape(x.firstName.concat(" ").concat(x.lastName)),
-        Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
+        Some(routes.DeclarantNameController.onPageLoad(CheckMode).url)
       )
   }
 
@@ -375,6 +374,33 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
+  def agentName: Option[AnswerRow] = userAnswers.get(RepresentativeAgentNamePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("representative.agent.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.toString),
+        Some(routes.RepresentativeAgentNameController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def doYouOwnTheGoods(declarantName: String): Option[AnswerRow] = userAnswers.get(DoYouOwnTheGoodsPage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("doYouOwnTheGoods.checkYourAnswersLabel", declarantName)),
+        HtmlFormat.escape(changeToYesNo(x.toString)),
+        Some(routes.DoYouOwnTheGoodsController.onPageLoad(CheckMode).url)
+      )
+  }
+
+  def goodsOwnerName: Option[AnswerRow] = userAnswers.get(ImporterNamePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.value),
+        Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
+      )
+  }
+
   def repaymentAmountSummary: AnswerRow = {
     val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers, RepayCheckMode)
     AnswerRow(
@@ -409,7 +435,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   def getImportantInformationAnswerSection: AnswerSection = {
     AnswerSection(Some(messages("impInfo.checkYourAnswersLabel")),
-        getAnswerRow(claimantType) ++
+      getAnswerRow(claimantType) ++
         getAnswerRow(numberOfEntriesType) ++
         getAnswerRow(customsRegulationType) ++
         (customsRegulationTypePage match {
@@ -439,8 +465,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       getAnswerRow(claimReasonType) ++
         getAnswerRow(reasonForOverpayment) ++
         getAnswerRow(claimRepaymentType) ++
-      Seq(repaymentAmountSummary,
-        evidenceFileUploads))
+        Seq(repaymentAmountSummary,
+          evidenceFileUploads))
   }
 
   def getImporterDetailsAnswerSection: AnswerSection = {
@@ -451,10 +477,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case _ => Nil
         }) ++
         getAnswerRow(isImporterVatRegistered) ++
-        getAnswerRow(agentNameImporter) ++
+        getAnswerRow(representativeImporterName) ++
         (importerManualAddressPage match {
-            case None => getAnswerRow(importerAddress)
-            case _ => getAnswerRow(importerManualAddress)
+          case None => getAnswerRow(importerAddress)
+          case _ => getAnswerRow(importerManualAddress)
         })
     )
   }
@@ -463,40 +489,48 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     AnswerSection(Some(messages("your.details.checkYourAnswersLabel")),
       getAnswerRow(importerHasEori) ++
         (importerHasEoriPage match {
-            case Some(v) if v => getAnswerRow(importerEori)
-            case _ => Nil
-          }) ++
+          case Some(v) if v => getAnswerRow(importerEori)
+          case _ => Nil
+        }) ++
         (claimantTypePage.contains(ClaimantType.Importer) match {
           case true => getAnswerRow(isVATRegistered)
           case _ => Nil
         }
           ) ++
-        getAnswerRow(importerName) ++
+
+        (claimantTypePage.contains(ClaimantType.Importer) match {
+          case true => {
+            getAnswerRow(declarantName) ++
+            getAnswerRow(doYouOwnTheGoods(userAnswers.get(DeclarantNamePage).map(_.toString).getOrElse(""))) ++
+              getAnswerRow(goodsOwnerName)
+          }
+          case _ => getAnswerRow(agentName)
+        }) ++
         getAnswerRow(claimantTypePage match {
-            case Some(ClaimantType.Importer) =>
-              importerManualAddressPage match {
-                case None => importerAddress
-                case _ => importerManualAddress
-              }
-            case _ =>
-              agentImporterManualAddressPage match {
-                case None => agentImporterAddress
-                case _ => agentImporterManualAddress
-              }
-          }))
+          case Some(ClaimantType.Importer) =>
+            importerManualAddressPage match {
+              case None => importerAddress
+              case _ => importerManualAddress
+            }
+          case _ =>
+            agentImporterManualAddressPage match {
+              case None => agentImporterAddress
+              case _ => agentImporterManualAddress
+            }
+        }))
   }
 
   def getContactDetailsAnswerSection: AnswerSection = {
-    AnswerSection (Some (messages ("contact.details.checkYourAnswersLabel") ),
+    AnswerSection(Some(messages("contact.details.checkYourAnswersLabel")),
       (emailAddressAndPhoneNumberPage match {
-          case Some(v) if v.phone.isEmpty => Nil
-          case _ => getAnswerRow(phoneNumber)
-        }) ++
+        case Some(v) if v.phone.isEmpty => Nil
+        case _ => getAnswerRow(phoneNumber)
+      }) ++
         (emailAddressAndPhoneNumberPage match {
           case Some(v) if v.email.isEmpty => Nil
           case _ => getAnswerRow(emailAddress)
         }) ++
-          declarantReferenceNumberQuestion
+        declarantReferenceNumberQuestion
     )
   }
 
@@ -507,27 +541,27 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           || repaymentTypePage.isEmpty)
           &&
           claimantTypePage.contains(ClaimantType.Representative) match {
-            case true =>
-                (whomToPayPage match {
-                  case None => Nil
-                  case _ => getAnswerRow(whomToPay)
-                }) ++
-                (whomToPayPage.contains(WhomToPay.Representative) match {
-                    case true => getAnswerRow(indirectRepresentative)
-                    case _ => Nil
-                }) ++
-                ((indirectRepresentativePage, whomToPayPage) match {
-                    case (Some(false), Some(WhomToPay.Representative)) => getAnswerRow(proofOfAuthority)
-                    case _ => Nil
-                })
-            case _ => Nil
+          case true =>
+            (whomToPayPage match {
+              case None => Nil
+              case _ => getAnswerRow(whomToPay)
+            }) ++
+              (whomToPayPage.contains(WhomToPay.Representative) match {
+                case true => getAnswerRow(indirectRepresentative)
+                case _ => Nil
+              }) ++
+              ((indirectRepresentativePage, whomToPayPage) match {
+                case (Some(false), Some(WhomToPay.Representative)) => getAnswerRow(proofOfAuthority)
+                case _ => Nil
+              })
+          case _ => Nil
         }) ++
         (repaymentTypePage match {
           case None => Nil
           case _ => numberOfEntriesTypePage match {
-              case Some(v) if v.numberOfEntriesType == Single => getAnswerRow(repaymentType)
-              case _ => Nil
-            }
+            case Some(v) if v.numberOfEntriesType == Single => getAnswerRow(repaymentType)
+            case _ => Nil
+          }
         }) ++
         (repaymentTypePage.contains(RepaymentType.CMA) match {
           case true => Nil
@@ -722,7 +756,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     def format2d = "%.2f".format(s)
   }
 
- private def changeToYesNo(string: String): String = {
+  private def changeToYesNo(string: String): String = {
     string match {
       case "01" => "Yes"
       case "02" => "No"

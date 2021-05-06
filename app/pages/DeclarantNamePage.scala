@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.Format
+import models.Name
+import play.api.libs.json.JsPath
 
-case class UserName(value: String)
+case object DeclarantNamePage extends QuestionPage[Name] {
 
-object UserName {
-  implicit val format: Format[UserName] =
-    JsonFormatUtils.stringFormat(UserName.apply)(_.value)
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "declarantName"
 }

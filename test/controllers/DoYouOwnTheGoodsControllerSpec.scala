@@ -17,77 +17,73 @@
 package controllers
 
 import base.SpecBase
-import forms.ImporterNameFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.DoYouOwnTheGoodsFormProvider
+import models.{DoYouOwnTheGoods, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ImporterNamePage
+import pages.{DeclarantNamePage, DoYouOwnTheGoodsPage}
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.ImporterNameView
+import views.html.DoYouOwnTheGoodsView
 
 import scala.concurrent.Future
 
-class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
+class DoYouOwnTheGoodsControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new ImporterNameFormProvider()
-  private val userAnswersDummy = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      ImporterNamePage.toString -> "Joe Bloggs"
-    ))
-
+  val formProvider = new DoYouOwnTheGoodsFormProvider()
   val form = formProvider()
 
-  lazy val importerNameRoute = routes.ImporterNameController.onPageLoad(NormalMode).url
+  lazy val doYouOwnTheGoodsRoute = routes.DoYouOwnTheGoodsController.onPageLoad(NormalMode).url
 
-  " ImporterName Controller" must {
+  "DoYouOwnTheGoods Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request = FakeRequest(GET, importerNameRoute)
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers
+        .set(DeclarantNamePage, models.Name("Joe", "Bloggs")).success.value
+      )).build()
+      val request = FakeRequest(GET, doYouOwnTheGoodsRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ImporterNameView]
+      val view = application.injector.instanceOf[DoYouOwnTheGoodsView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode, "Joe Bloggs")(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersDummy)).build()
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(DoYouOwnTheGoodsPage, DoYouOwnTheGoods.Yes).success.value
+        .set(DeclarantNamePage, models.Name("Joe", "Bloggs")).success.value
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, importerNameRoute)
+      val request = FakeRequest(GET, doYouOwnTheGoodsRoute)
 
-      val view = application.injector.instanceOf[ImporterNameView]
+      val view = application.injector.instanceOf[DoYouOwnTheGoodsView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(models.UserName("Joe Bloggs")), NormalMode)(request, messages).toString
+        view(form.fill(DoYouOwnTheGoods.Yes), NormalMode, "Joe Bloggs")(request, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
-
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
@@ -98,12 +94,13 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, importerNameRoute)
-          .withFormUrlEncodedBody(("importerName", "Joe Blogs"))
+        FakeRequest(POST, doYouOwnTheGoodsRoute)
+          .withFormUrlEncodedBody(("value", DoYouOwnTheGoods.options(form).head.value.get))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
+
       redirectLocation(result).value mustEqual onwardRoute.url
 
       application.stop()
@@ -114,19 +111,18 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
-        FakeRequest(POST, importerNameRoute)
-          .withFormUrlEncodedBody(("value", ""))
+        FakeRequest(POST, doYouOwnTheGoodsRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
 
-      val boundForm = form.bind(Map("value" -> ""))
+      val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[ImporterNameView]
+      val view = application.injector.instanceOf[DoYouOwnTheGoodsView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
-
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, NormalMode, "")(request, messages).toString
 
       application.stop()
     }
@@ -135,12 +131,11 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, importerNameRoute)
+      val request = FakeRequest(GET, doYouOwnTheGoodsRoute)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
@@ -151,8 +146,8 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, importerNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+        FakeRequest(POST, doYouOwnTheGoodsRoute)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

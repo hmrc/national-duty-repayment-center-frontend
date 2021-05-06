@@ -41,17 +41,20 @@ class Navigator @Inject()() {
     case VATPaidPage => getOtherRepaymentType
     case AgentImporterHasEORIPage => getAgentEORIStatus
     case ImporterEoriPage => getEORIPage
-    case IsImporterVatRegisteredPage => _ => routes.AgentNameImporterController.onPageLoad(NormalMode)
-    case ImporterNamePage => getImporterName
+    case IsImporterVatRegisteredPage => _ => routes.RepresentativeImporterNameController.onPageLoad(NormalMode)
+    case ImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
+    case RepresentativeImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
+    case DeclarantNamePage => getDeclarantName
+    case DoYouOwnTheGoodsPage => doYouOwnTheGoods
     case ImporterManualAddressPage => getImporterManualAddress
     case ImporterHasEoriPage => getEORIConfirmation
-    case IsVATRegisteredPage => _ => routes.ImporterNameController.onPageLoad(NormalMode)
+    case IsVATRegisteredPage => _ => routes.DeclarantNameController.onPageLoad(NormalMode)
     case EmailAddressAndPhoneNumberPage => _ => routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
     case DeclarantReferenceNumberPage => getRepaymentType
     case RepaymentTypePage => getRepaymentMethodType
     case BankDetailsPage => _ => routes.CheckYourAnswersController.onPageLoad
     case EnterAgentEORIPage => _ => routes.IsImporterVatRegisteredController.onPageLoad(NormalMode)
-    case AgentNameImporterPage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
+    case RepresentativeImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
     case AgentImporterManualAddressPage => _ => routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode)
     case WhomToPayPage => whomToPayRoute
     case IndirectRepresentativePage => indirectRepresentativeRoute
@@ -64,6 +67,7 @@ class Navigator @Inject()() {
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
     case ClaimRepaymentTypePage => getClaimRepaymentType
+    case RepresentativeAgentNamePage => _ => routes.AgentImporterAddressController.onPageLoad(NormalMode)
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
@@ -77,11 +81,15 @@ class Navigator @Inject()() {
     case _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
   }
 
-  private def getImporterName(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
-    case Some(ClaimantType.Representative)  => routes.AgentImporterAddressController.onPageLoad(NormalMode)
-    case _ => routes.ImporterAddressController.onPageLoad(NormalMode)
+  private def getDeclarantName(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
+    case Some(ClaimantType.Importer)  =>  routes.DoYouOwnTheGoodsController.onPageLoad(NormalMode)
+    case _ => ???
   }
 
+  private def doYouOwnTheGoods(answers: UserAnswers): Call = answers.get(DoYouOwnTheGoodsPage) match {
+    case Some(DoYouOwnTheGoods.Yes)  => routes.ImporterAddressController.onPageLoad(NormalMode)
+    case _ => routes.ImporterNameController.onPageLoad(NormalMode)
+  }
   private def getAmendCaseResponseType(answers: UserAnswers): Call =
     answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.SupportingDocuments) match {
       case true => routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
@@ -127,7 +135,10 @@ class Navigator @Inject()() {
   }
 
   private def getEORIPage(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
-    case Some(ClaimantType.Representative)  => routes.ImporterNameController.onPageLoad(NormalMode)
+    case Some(ClaimantType.Representative)  =>
+      if(answers.get(RepresentativeImporterNamePage).isEmpty)
+      routes.RepresentativeImporterNameController.onPageLoad(NormalMode)
+      else routes.RepresentativeAgentNameController.onPageLoad(NormalMode)
     case _ => routes.IsVATRegisteredController.onPageLoad(NormalMode)
   }
 
@@ -146,7 +157,7 @@ class Navigator @Inject()() {
     case _ => {
       answers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
         case true => routes.IsVATRegisteredController.onPageLoad(NormalMode)
-        case _ => routes.ImporterNameController.onPageLoad(NormalMode)
+        case _ => routes.RepresentativeAgentNameController.onPageLoad(NormalMode)
       }
     }
   }
@@ -236,6 +247,10 @@ class Navigator @Inject()() {
     }
   }
 
+  private def doYouOwnTheGoodsWithCheckMode(answers: UserAnswers): Call = answers.get(DoYouOwnTheGoodsPage).contains(DoYouOwnTheGoods.No) match {
+    case true => routes.ImporterNameController.onPageLoad(CheckMode)
+    case false => routes.CheckYourAnswersController.onPageLoad()
+  }
   private val checkRouteMap: Page => UserAnswers => Call = {
     case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
     case CustomsDutyPaidPage => getCustomsDutyCheckMode
@@ -248,6 +263,7 @@ class Navigator @Inject()() {
     case WhomToPayPage => getWhomToPayCheckMode
     case IndirectRepresentativePage => getIndirectRepresentativeWithCheckMode
     case RepaymentTypePage => getRepaymentTypeWithCheckMode
+    case DoYouOwnTheGoodsPage => doYouOwnTheGoodsWithCheckMode
     case _ => getCheckYourAnswers
   }
 
