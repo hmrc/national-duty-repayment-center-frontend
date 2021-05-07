@@ -59,7 +59,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, NormalMode, false)(request, messages).toString
 
       application.stop()
     }
@@ -80,7 +80,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode)(request, messages).toString
+        view(form.fill(true), NormalMode, false)(request, messages).toString
 
       application.stop()
     }
@@ -128,7 +128,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, NormalMode, false)(request, messages).toString
 
       application.stop()
     }
