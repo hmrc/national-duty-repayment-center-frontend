@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.ImporterHasEoriFormProvider
 import models.ClaimantType.Importer
-import models.{NormalMode, UserAnswers}
+import models.{ClaimantType, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -59,7 +59,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, false)(request, messages).toString
+        view(form, NormalMode, true)(request, messages).toString
 
       application.stop()
     }
@@ -80,7 +80,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, false)(request, messages).toString
+        view(form.fill(true), NormalMode, true)(request, messages).toString
 
       application.stop()
     }
@@ -128,7 +128,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, false)(request, messages).toString
+        view(boundForm, NormalMode, true)(request, messages).toString
 
       application.stop()
     }
