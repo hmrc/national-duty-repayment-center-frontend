@@ -267,7 +267,7 @@ importerName.title = What is the name on the import documents?
 importerName.heading = What is the name on the import documents?
 importerName.checkYourAnswersLabel = Name on import documents
 importerName.error.required = Enter the name on the import documents
-importerName.error.length = Name on the import documents must be 255 characters or less
+importerName.error.length = Name on the import documents must be 512 characters or less
 importerName.error.invalid = Name on the import documents must only include letters a to z without accents, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
 
 phoneNumber.title = Enter your phone number
