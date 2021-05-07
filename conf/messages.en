@@ -320,6 +320,10 @@ agentImporterHasEORI.01 = Yes
 agentImporterHasEORI.02 = No
 agentImporterHasEORI.checkYourAnswersLabel = Does the importer have an EORI number?
 agentImporterHasEORI.error.required = Select yes if the importer has an EORI number
+importerHasEori.details.header = Help with EORI numbers
+importerHasEori.details.p1 = EORI numbers are needed to move goods between Great Britain and other countries.
+importerHasEori.details.p2 = If a trader is registered for VAT, they will already have an EORI number.
+importerHasEori.details.p3 = Private individuals do not need an EORI number where goods are imported for personal use.
 
 isImporterVatRegistered.title = Is the importer VAT registered?
 isImporterVatRegistered.heading = Is the importer VAT registered?

@@ -53,7 +53,7 @@ class ImporterHasEoriController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -62,7 +62,7 @@ class ImporterHasEoriController @Inject()(
         request.userAnswers.get(ImporterHasEoriPage).get
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
 
         value =>
           for {
@@ -85,4 +85,11 @@ class ImporterHasEoriController @Inject()(
           }
       )
   }
+
+  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
+        userAnswers.get(ClaimantTypePage) match {
+          case Some(ClaimantType.Importer) => true
+          case _ => false
+        }
+      }
 }
