@@ -41,10 +41,12 @@
             isPageHeading = true
         )
 
-        @details(messages("importerHasEori.details.header")) {
-            @html.p{@messages("importerHasEori.details.p1")}
-            @html.p{@messages("importerHasEori.details.p2")}
-            @html.p{@messages("importerHasEori.details.p3")}
+        @if(isImporterJourney) {
+            @details(messages("importerHasEori.details.header")) {
+                @html.p{@messages("importerHasEori.details.p1")}
+                @html.p{@messages("importerHasEori.details.p2")}
+                @html.p{@messages("importerHasEori.details.p3")}
+            }
         }
 
         @html.button("site.continue")
