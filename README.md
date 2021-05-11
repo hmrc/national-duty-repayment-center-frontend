@@ -52,5 +52,9 @@ Open your browser and navigate to the following url:
 
 ## Technical information
 
-The service uses MongoDB to store user session state.
+The service uses MongoDB to store user session answers.
+
+### License
+
+This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
 
