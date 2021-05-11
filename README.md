@@ -20,7 +20,7 @@ Another variation worth noting is the option for the claimant to make a single c
 
 At the end of each user journey the user will be presented with their answers for them to check. They will be given the opportunity here to change any of their answers before submitting.
 
-If the submission is successfull he user will be presented with a claim reference number. This reference number is generated in PEGA and returned to the front-end service.
+If the submission is successful the user will be presented with a claim reference number. This reference number is generated in PEGA and returned to the front-end service.
 
 ## Running from source
 Clone the repository using SSH:
