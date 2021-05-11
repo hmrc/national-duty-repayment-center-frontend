@@ -245,12 +245,21 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.ImporterEoriController.onPageLoad(NormalMode))
       }
 
+      "go to Representative importer name page after IsVatRegistered page when Representative single/multiple entry journeys selected" in {
+        val answers =
+          emptyUserAnswers
+            .set(IsImporterVatRegisteredPage, IsImporterVatRegistered.No).success.value
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+        navigator.nextPage(IsImporterVatRegisteredPage, NormalMode, answers)
+          .mustBe(routes.RepresentativeImporterNameController.onPageLoad(NormalMode))
+      }
+
       "go to AgentName page after importerHasEORI with No page when Representative single/multiple entry journeys selected " in {
         val answers =
           emptyUserAnswers
             .set(ImporterHasEoriPage, false).success.value
         navigator.nextPage(ImporterHasEoriPage, NormalMode, answers)
-          .mustBe(routes.RepresentativeAgentNameController.onPageLoad(NormalMode))
+          .mustBe(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(NormalMode))
       }
 
       "go to AmendCaseResponseType page after ReferenceNumber page " in {

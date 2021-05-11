@@ -301,8 +301,8 @@ POST        /representative-importer-name                                       
 GET         /change-representative-importer-name                                       controllers.RepresentativeImporterNameController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-representative-importer-name                                       controllers.RepresentativeImporterNameController.onSubmit(mode: Mode = CheckMode)
 
-GET         /representative-agent-name                                                 controllers.RepresentativeAgentNameController.onPageLoad(mode: Mode = NormalMode)
-POST        /representative-agent-name                                                 controllers.RepresentativeAgentNameController.onSubmit(mode: Mode = NormalMode)
-GET         /change-representative-agent-name                                          controllers.RepresentativeAgentNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-representative-agent-name                                          controllers.RepresentativeAgentNameController.onSubmit(mode: Mode = CheckMode)
+GET         /representative-agent-name                                                 controllers.RepresentativeDeclarantAndBusinessNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /representative-agent-name                                                 controllers.RepresentativeDeclarantAndBusinessNameController.onSubmit(mode: Mode = NormalMode)
+GET         /change-representative-agent-name                                          controllers.RepresentativeDeclarantAndBusinessNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-representative-agent-name                                          controllers.RepresentativeDeclarantAndBusinessNameController.onSubmit(mode: Mode = CheckMode)
 

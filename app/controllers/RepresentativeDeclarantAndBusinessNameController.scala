@@ -17,29 +17,29 @@
 package controllers
 
 import controllers.actions._
-import forms.{DeclarantNameFormProvider, RepresentativeAgentNameFormProvider}
+import forms.RepresentativeDeclarantAndBusinessNameFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.{DeclarantNamePage, RepresentativeAgentNamePage}
+import pages.RepresentativeDeclarantAndBusinessNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.{DeclarantNameView, RepresentativeAgentNameView}
+import views.html.RepresentativeDeclarantAndBusinessNameView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RepresentativeAgentNameController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: RepresentativeAgentNameFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: RepresentativeAgentNameView
+class RepresentativeDeclarantAndBusinessNameController @Inject()(
+                                                                  override val messagesApi: MessagesApi,
+                                                                  sessionRepository: SessionRepository,
+                                                                  navigator: Navigator,
+                                                                  identify: IdentifierAction,
+                                                                  getData: DataRetrievalAction,
+                                                                  requireData: DataRequiredAction,
+                                                                  formProvider: RepresentativeDeclarantAndBusinessNameFormProvider,
+                                                                  val controllerComponents: MessagesControllerComponents,
+                                                                  view: RepresentativeDeclarantAndBusinessNameView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
@@ -47,7 +47,7 @@ class RepresentativeAgentNameController @Inject()(
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(RepresentativeAgentNamePage) match {
+      val preparedForm = request.userAnswers.get(RepresentativeDeclarantAndBusinessNamePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -64,9 +64,9 @@ class RepresentativeAgentNameController @Inject()(
 
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(RepresentativeAgentNamePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(RepresentativeDeclarantAndBusinessNamePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(RepresentativeAgentNamePage, mode, updatedAnswers))
+          } yield Redirect(navigator.nextPage(RepresentativeDeclarantAndBusinessNamePage, mode, updatedAnswers))
       )
   }
 }

@@ -98,7 +98,7 @@ object CreateClaimRequest {
 
     def getDeclarantName(userAnswers: UserAnswers): Option[String] = userAnswers.get(ClaimantTypePage) match {
       case Some(ClaimantType.Importer) => userAnswers.get(DeclarantNamePage).map(_.toString)
-      case _ => Some("DummyData")
+      case _ => userAnswers.get(RepresentativeDeclarantAndBusinessNamePage).map(_.declarantName)
     }
 
       def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(AgentImporterAddressPage) match {
@@ -153,7 +153,7 @@ object CreateClaimRequest {
       case _ => userAnswers.get(ImporterManualAddressPage)
     }
 
-    def getAgentImporterName(userAnswers: UserAnswers): Option[String] = userAnswers.get(RepresentativeAgentNamePage).map(_.toString)
+    def getAgentImporterName(userAnswers: UserAnswers): Option[String] = userAnswers.get(RepresentativeDeclarantAndBusinessNamePage).map(_.agentName)
 
     def getImporterName(userAnswers: UserAnswers): Option[String] = {
       val declarantNamePage = userAnswers.get(DeclarantNamePage)
@@ -162,7 +162,7 @@ object CreateClaimRequest {
           case Some(DoYouOwnTheGoods.No) => userAnswers.get(ImporterNamePage).map(_.value)
           case _ => declarantNamePage.map(_.toString)
         }
-        case _ => userAnswers.get(RepresentativeImporterNamePage).map(_.toString)
+        case _ => userAnswers.get(RepresentativeImporterNamePage).map(_.value)
       }
     }
 
