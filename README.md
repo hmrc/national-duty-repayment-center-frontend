@@ -1,6 +1,6 @@
 
 
-# discounted-dining-claim-frontend
+# national-duty-repayment-center-frontend
 
 ## About
 The frontend to "Apply for repayment of import duty and import VAT"
