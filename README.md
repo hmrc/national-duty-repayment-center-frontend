@@ -12,11 +12,13 @@ Previously users would fill out an C285 form and submit as a PDF with the releva
 
 The landing page of the service allows users to select if they would like to submit a new claim (create claim) or add additional information to an existing claim (amend claim).
 
-The create claim user journey allows the user to make a new claim. The journey will take the user through a number of pages to collect all the required data, followed by a declaration page, after which the data is sent to the backend and which then sends the data through EIS to PEGA.
+The 'create claim' user journey allows the user to make a new claim. The journey will take the user through a number of pages to collect all the required data, followed by a declaration page, after which the data is sent to the backend which then sends the data through EIS to PEGA.
 
-There are two major variations on the create claim journey: one for importers and one for representatives. The latter captures data for both the representative and the importer.
+There are two major variations on the 'create claim' journey: one for importers and one for representatives. The latter captures data for both the representative and the importer.
 
 Another variation worth noting is the option for the claimant to make a single claim or bulk claim. Bulk claims require the user to upload a spreadsheet with information relevant to each claim.
+
+The 'amend claim' journey allows the user to provide further information about the claim or upload further supporting evidence.
 
 At the end of each user journey the user will be presented with their answers for them to check. They will be given the opportunity here to change any of their answers before submitting.
 
