@@ -15,10 +15,12 @@
  *@
 
 @import uk.gov.hmrc.play.views.html._
+@import config.FrontendAppConfig
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
-    html: views.components.html
+    html: views.components.html,
+    config: FrontendAppConfig
 )
 
 @(claimId: String)(implicit request: Request[_], messages: Messages)
@@ -40,4 +42,10 @@
     @html.p{ @messages("confirmation.whatHappensNext.p1") }
     @html.p{ @messages("confirmation.whatHappensNext.p2") }
 
+    @html.h2("confirmation.improveService.heading", classes = "govuk-heading-m")
+    @html.p{ @messages("confirmation.improveService.p1") }
+    @html.p{
+        @html.a(config.feedbackSurvey, messages("confirmation.improveService.link.text1"))
+            @messages("confirmation.improveService.link.text2")
+    }
 }
