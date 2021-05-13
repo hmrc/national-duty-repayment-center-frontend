@@ -470,7 +470,7 @@ confirmation.improveService.heading = Help us improve our services
 confirmation.improveService.p1 = We use your feedback to make our services better.
 confirmation.improveService.link.text1 = What did you think of this service?
 confirmation.improveService.link.tab = ?newTab=true
-confirmation.improveService.link.text2 = (takes 30 seconds)
+confirmation.improveService.link.text2 = (takes one minute)
 
 amend.confirmation.whatHappensNext.heading = What happens next
 amend.confirmation.receivedInformation = We have received your information.
@@ -480,7 +480,7 @@ amend.confirmation.moreInformation.p1 = We will continue processing your applica
 amend.confirmation.helpUs.heading = Help us improve our services
 amend.confirmation.helpUs.p1 = We use your feedback to make our services better.
 amend.confirmation.helpUs.p2 = What did you think of this service?
-amend.confirmation.helpUs.p3 = (takes 30 seconds)
+amend.confirmation.helpUs.p3 = (takes one minute)
 
 agentImporterManualAddress.title = Enter your business address
 agentImporterManualAddress.heading = Enter your business address
