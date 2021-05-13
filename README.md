@@ -41,7 +41,7 @@ Dependencies will also need to be started from source or using service manager.
 
 Ensure your service manager config is up to date, and run the following command:
 
-`sm --start NDRC_ALL -f`
+`sm --start NDRC_ALL -r`
 
 This will start all the required services
 
@@ -59,4 +59,3 @@ The service uses MongoDB to store user session answers.
 ### License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
-
