@@ -23,10 +23,8 @@ error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 
-service.name = National Duty Repayment Centre
-
-index.title = National Duty Repayment Centre
-index.heading = National Duty Repayment Centre
+index.title = Apply for repayment of import duty and import VAT
+index.heading = Apply for repayment of import duty and import VAT
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
 
 session_expired.title = For your security, we signed you out
@@ -48,7 +46,7 @@ site.no = No
 site.yes = Yes
 site.continue = Continue
 find.address = Find address
-site.service_name = National Duty Repayment Centre
+site.service_name = Apply for repayment of import duty and import VAT
 site.textarea.char_limit = (Limit is {0} characters)
 site.govuk = GOV.UK
 
