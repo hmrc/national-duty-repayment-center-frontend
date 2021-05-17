@@ -16,18 +16,18 @@
 
 package pages
 
-import models.Name
+import models.RepresentativeDeclarantAndBusinessName
 import pages.behaviours.PageBehaviours
 
 
 class RepresentativeAgentNamePageSpec extends PageBehaviours {
 
-  "RepresentativeAgentNamePage" must {
+  "RepresentativeDeclarantAndAgentNamePage" must {
 
-    beRetrievable[Name](RepresentativeAgentNamePage)
+    beRetrievable[RepresentativeDeclarantAndBusinessName](RepresentativeDeclarantAndBusinessNamePage)
 
-    beSettable[Name](RepresentativeAgentNamePage)
+    beSettable[RepresentativeDeclarantAndBusinessName](RepresentativeDeclarantAndBusinessNamePage)
 
-    beRemovable[Name](RepresentativeAgentNamePage)
+    beRemovable[RepresentativeDeclarantAndBusinessName](RepresentativeDeclarantAndBusinessNamePage)
   }
 }

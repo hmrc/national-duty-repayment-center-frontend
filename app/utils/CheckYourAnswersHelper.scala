@@ -276,7 +276,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("representative.importer.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.firstName.concat(" ").concat(x.lastName)),
+        HtmlFormat.escape(x.value),
         Some(routes.RepresentativeImporterNameController.onPageLoad(CheckMode).url)
       )
   }
@@ -374,12 +374,20 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def agentName: Option[AnswerRow] = userAnswers.get(RepresentativeAgentNamePage) map {
+  def agentName: Option[AnswerRow] = userAnswers.get(RepresentativeDeclarantAndBusinessNamePage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("representative.agent.checkYourAnswersLabel")),
-        HtmlFormat.escape(x.toString),
-        Some(routes.RepresentativeAgentNameController.onPageLoad(CheckMode).url)
+        HtmlFormat.escape(messages("representative.declarantAndBusinessName.agentName.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.agentName),
+        Some(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(CheckMode).url)
+      )
+  }
+  def representativeDeclarantName: Option[AnswerRow] = userAnswers.get(RepresentativeDeclarantAndBusinessNamePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(messages("representative.declarantAndBusinessName.declarantName.checkYourAnswersLabel")),
+        HtmlFormat.escape(x.declarantName),
+        Some(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(CheckMode).url)
       )
   }
 
@@ -504,7 +512,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             getAnswerRow(doYouOwnTheGoods(userAnswers.get(DeclarantNamePage).map(_.toString).getOrElse(""))) ++
               getAnswerRow(goodsOwnerName)
           }
-          case _ => getAnswerRow(agentName)
+          case _ => getAnswerRow(representativeDeclarantName) ++ getAnswerRow(agentName)
         }) ++
         getAnswerRow(claimantTypePage match {
           case Some(ClaimantType.Importer) =>

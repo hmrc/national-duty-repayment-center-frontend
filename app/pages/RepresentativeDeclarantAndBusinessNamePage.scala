@@ -16,18 +16,12 @@
 
 package pages
 
-import models.{Name, UserName}
-import pages.behaviours.PageBehaviours
+import models.RepresentativeDeclarantAndBusinessName
+import play.api.libs.json.JsPath
 
+case object RepresentativeDeclarantAndBusinessNamePage extends QuestionPage[RepresentativeDeclarantAndBusinessName] {
 
-class RepresentativeImporterNamePageSpec extends PageBehaviours {
+  override def path: JsPath = JsPath \ toString
 
-  "RepresentativeImporterNamePage" must {
-
-    beRetrievable[UserName](RepresentativeImporterNamePage)
-
-    beSettable[UserName](RepresentativeImporterNamePage)
-
-    beRemovable[UserName](RepresentativeImporterNamePage)
-  }
+  override def toString: String = "representativeDeclarantAndBusinessNamePage"
 }

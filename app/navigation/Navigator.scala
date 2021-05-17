@@ -67,7 +67,7 @@ class Navigator @Inject()() {
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
     case ClaimRepaymentTypePage => getClaimRepaymentType
-    case RepresentativeAgentNamePage => _ => routes.AgentImporterAddressController.onPageLoad(NormalMode)
+    case RepresentativeDeclarantAndBusinessNamePage => _ => routes.AgentImporterAddressController.onPageLoad(NormalMode)
     case _ => _ => routes.IndexController.onPageLoad()
   }
 
@@ -138,7 +138,7 @@ class Navigator @Inject()() {
     case Some(ClaimantType.Representative)  =>
       if(answers.get(RepresentativeImporterNamePage).isEmpty)
       routes.RepresentativeImporterNameController.onPageLoad(NormalMode)
-      else routes.RepresentativeAgentNameController.onPageLoad(NormalMode)
+      else routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(NormalMode)
     case _ => routes.IsVATRegisteredController.onPageLoad(NormalMode)
   }
 
@@ -157,7 +157,7 @@ class Navigator @Inject()() {
     case _ => {
       answers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
         case true => routes.IsVATRegisteredController.onPageLoad(NormalMode)
-        case _ => routes.RepresentativeAgentNameController.onPageLoad(NormalMode)
+        case _ => routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(NormalMode)
       }
     }
   }

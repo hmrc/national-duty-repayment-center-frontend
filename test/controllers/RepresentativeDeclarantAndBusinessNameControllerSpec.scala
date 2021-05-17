@@ -17,41 +17,41 @@
 package controllers
 
 import base.SpecBase
-import forms.RepresentativeImporterNameFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.RepresentativeDeclarantAndBusinessNameFormProvider
+import models.{NormalMode, RepresentativeDeclarantAndBusinessName, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.RepresentativeAgentNamePage
+import pages.RepresentativeDeclarantAndBusinessNamePage
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.RepresentativeAgentNameView
+import views.html.RepresentativeDeclarantAndBusinessNameView
 
 import scala.concurrent.Future
 
-class RepresentativeAgentNameControllerSpec extends SpecBase with MockitoSugar {
+class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new RepresentativeImporterNameFormProvider()
+  val formProvider = new RepresentativeDeclarantAndBusinessNameFormProvider()
   private val userAnswersDummy = UserAnswers(
     userAnswersId,
     Json.obj(
-      RepresentativeAgentNamePage.toString -> Json.obj(
-        "firstName" -> "Joe",
-        "lastName" -> "Bloggs"
+      RepresentativeDeclarantAndBusinessNamePage.toString -> Json.obj(
+        "declarantName" -> "dec name",
+        "agentName" -> "agent name"
       )
     ))
 
   val form = formProvider()
 
-  lazy val agentNameRoute = routes.RepresentativeAgentNameController.onPageLoad(NormalMode).url
+  lazy val agentNameRoute = routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(NormalMode).url
 
-  "RepresentativeAgentName Controller" must {
+  "RepresentativeDeclarantAndBusinessName Controller" must {
 
     "return OK and the correct view for a GET" in {
 
@@ -61,7 +61,7 @@ class RepresentativeAgentNameControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[RepresentativeAgentNameView]
+      val view = application.injector.instanceOf[RepresentativeDeclarantAndBusinessNameView]
 
       status(result) mustEqual OK
 
@@ -77,14 +77,14 @@ class RepresentativeAgentNameControllerSpec extends SpecBase with MockitoSugar {
 
       val request = FakeRequest(GET, agentNameRoute)
 
-      val view = application.injector.instanceOf[RepresentativeAgentNameView]
+      val view = application.injector.instanceOf[RepresentativeDeclarantAndBusinessNameView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(models.Name("Joe", "Bloggs")), NormalMode)(request, messages).toString
+        view(form.fill(RepresentativeDeclarantAndBusinessName("dec name", "agent name")), NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -102,7 +102,7 @@ class RepresentativeAgentNameControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, agentNameRoute)
-          .withFormUrlEncodedBody(("firstName", "Joe"), ("lastName", "Bloggs"))
+          .withFormUrlEncodedBody(("declarantName", "Joe Bloggs"), ("agentName", "Agent 1"))
 
       val result = route(application, request).value
 
@@ -122,7 +122,7 @@ class RepresentativeAgentNameControllerSpec extends SpecBase with MockitoSugar {
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[RepresentativeAgentNameView]
+      val view = application.injector.instanceOf[RepresentativeDeclarantAndBusinessNameView]
 
       val result = route(application, request).value
 

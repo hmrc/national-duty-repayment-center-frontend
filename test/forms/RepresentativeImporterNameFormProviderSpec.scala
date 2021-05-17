@@ -21,17 +21,16 @@ import play.api.data.FormError
 
 class RepresentativeImporterNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredFirstNameKey = "representative.importer.firstName.error.required"
-  val requiredLastNameKey = "representative.importer.lastName.error.required"
-  val lengthFirstNameKey = "representative.importer.firstName.error.length"
-  val lengthLastNameNameKey = "representative.importer.lastName.error.length"
-  val maxLength = 255
+  val requiredNameNameKey = "representative.importer.importerName.error.required"
+  val lengthFirstNameKey = "representative.importer.importerName.error.length"
+  val invalidKey = "representative.importer.importerName.error.invalid"
+  val maxLength = 512
 
   val form = new RepresentativeImporterNameFormProvider()()
 
-  ".firstName" must {
+  ".importerName" must {
 
-    val fieldName = "firstName"
+    val fieldName = "importerName"
 
     behave like fieldThatBindsValidData(
       form,
@@ -45,23 +44,12 @@ class RepresentativeImporterNameFormProviderSpec extends StringFieldBehaviours {
       maxLength = maxLength,
       lengthError = FormError(fieldName, lengthFirstNameKey, Seq(maxLength))
     )
-  }
 
-  ".lastName" must {
-
-    val fieldName = "lastName"
-
-    behave like fieldThatBindsValidData(
+    behave like fieldThatPreventsUnsafeInput(
       form,
       fieldName,
-      stringsWithMaxLengthAlpha(maxLength)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthLastNameNameKey, Seq(maxLength))
+      unsafeInputsWithMaxLength(maxLength),
+      FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
     )
   }
 }
