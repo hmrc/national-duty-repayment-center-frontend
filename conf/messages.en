@@ -808,3 +808,7 @@ representative.importer.lastName.error.required = Enter your last name
 representative.importer.firstName.error.length= First name must be 255 characters or less
 representative.importer.lastName.error.length= Last name must be 255 characters or less
 
+# BETA Banner
+feedback.before = This is a new service - your
+feedback.link = feedback
+feedback.after = will help us to improve it.

@@ -28,6 +28,7 @@
         govukBackLink: GovukBackLink,
         hmrcHeader: HmrcHeader,
         siteHeader: components.siteHeader,
+        phaseBanner: components.phaseBanner,
         link: components.link,
         hmrcTimeoutDialog : HmrcTimeoutDialog,
         reportAProblemLink: ReportAProblemLink,
@@ -73,6 +74,8 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @beforeContentBlock = {
+
+    @phaseBanner("beta")
 
     @languageSelection(
         appConfig.languageMap,
