@@ -38,26 +38,17 @@
         ) {
             @forms.inputText(
                 form = form,
-                id = "firstName",
-                name = "firstName",
+                id = "importerName",
+                name = "importerName",
                 inputType = "text",
-                label = "representative.importer.firstName",
+                label = "",
                 isPageHeading = false,
                 isInFieldset = false,
-                attributes = Map("autocomplete" -> "off")
-            )
-
-            @forms.inputText(
-                form = form,
-                id = "lastName",
-                name = "lastName",
-                inputType = "text",
-                label = "representative.importer.lastName",
-                isPageHeading = false,
-                isInFieldset = false,
+                hint = Some(messages("representative.importer.hint")),
                 attributes = Map("autocomplete" -> "off")
             )
         }
+
 
         @html.button("site.continue")
     }

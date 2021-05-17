@@ -23,13 +23,13 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{RepresentativeAgentNamePage, RepresentativeImporterNamePage}
+import pages.RepresentativeImporterNamePage
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.{RepresentativeAgentNameView, RepresentativeImporterNameView}
+import views.html.RepresentativeImporterNameView
 
 import scala.concurrent.Future
 
@@ -41,10 +41,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
   private val userAnswersDummy = UserAnswers(
     userAnswersId,
     Json.obj(
-      RepresentativeImporterNamePage.toString -> Json.obj(
-        "firstName" -> "Joe",
-        "lastName" -> "Bloggs"
-      )
+      RepresentativeImporterNamePage.toString -> "Joe Bloggs"
     ))
 
   val form = formProvider()
@@ -84,7 +81,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(models.Name("Joe", "Bloggs")), NormalMode)(request, messages).toString
+        view(form.fill(models.UserName("Joe Bloggs")), NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -102,7 +99,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
 
       val request =
         FakeRequest(POST, importerNameRoute)
-          .withFormUrlEncodedBody(("firstName", "Joe"), ("lastName", "Bloggs"))
+          .withFormUrlEncodedBody(("importerName", "Joe Bloggs"))
 
       val result = route(application, request).value
 

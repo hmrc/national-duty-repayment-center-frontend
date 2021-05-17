@@ -65,6 +65,14 @@ trait ModelGenerators {
       Gen.oneOf(ContactType.values)
     }
 
+  implicit lazy val arbitraryRepresentativeDeclarantAndBusinessName: Arbitrary[RepresentativeDeclarantAndBusinessName] =
+    Arbitrary {
+      for {
+        dec <- arbitrary[String]
+        agentName <- arbitrary[String]
+      } yield RepresentativeDeclarantAndBusinessName(dec, agentName)
+    }
+
   implicit lazy val arbitraryEvidenceSupportingDocs: Arbitrary[EvidenceSupportingDocs] =
     Arbitrary {
       Gen.oneOf(EvidenceSupportingDocs.values)
