@@ -41,7 +41,7 @@ class ImporterAddressControllerSpec extends SpecBase with MockitoSugar {
   private val addressForm = (new ImporterAddressFormProvider) ()
   private val selectionForm = (new AddressSelectionFormProvider) ()
 
-  def onwardRoute: Call = Call("GET", "/national-duty-repayment-center/enter-importer-address")
+  def onwardRoute: Call = Call("GET", "/national-duty-repayment-centre/enter-importer-address")
 
   "ImporterAddressController" must {
     "return OK and the correct view for a GET on the postcode page" in {
