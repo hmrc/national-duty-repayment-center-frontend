@@ -804,6 +804,19 @@ representative.declarantAndBusinessName.agentName.error.invalid = Your business 
 representative.importer.title = Who is the importer?
 representative.importer.heading = Who is the importer?
 representative.importer.checkYourAnswersLabel = Importer name
+
+representative.importer.firstName = First Name
+representative.importer.lastName = Last Name
+representative.importer.firstName.error.required = Enter your first name
+representative.importer.lastName.error.required = Enter your last name
+representative.importer.firstName.error.length= First name must be 255 characters or less
+representative.importer.lastName.error.length= Last name must be 255 characters or less
+
+# BETA Banner
+feedback.before = This is a new service - your
+feedback.link = feedback
+feedback.after = will help us to improve it.
+
 representative.importer.hint = This must match the information on the import documents.
 representative.importer.importerName.error.required = Enter the importer''s name
 representative.importer.importerName.error.length= Importer name must be 512 characters or less

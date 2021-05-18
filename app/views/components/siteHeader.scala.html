@@ -15,10 +15,13 @@
  *@
 
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.header.Header
-
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import config.FrontendAppConfig
 @this(
     hmrcHeader: HmrcHeader,
-    govukBackLink: GovukBackLink
+    govukBackLink: GovukBackLink,
+    govukPhaseBanner : GovukPhaseBanner,
+    appConfig:FrontendAppConfig
 )
 
 @(showSignOut: Boolean = true)(implicit messages: Messages)
