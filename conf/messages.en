@@ -761,7 +761,7 @@ isContactProvided.01 = Email
 isContactProvided.02 = Phone
 phoneNumber.02.hint = Phone number
 
-createOrAmendCase.title = What do you want to do? - Apply for repayment of import duties and import VAT - GOV.UK
+createOrAmendCase.title = What do you want to do?
 createOrAmendCase.heading = What do you want to do?
 createOrAmendCase.01 = Start a new application
 createOrAmendCase.02 = Amend an existing application
