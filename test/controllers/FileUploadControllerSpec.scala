@@ -394,7 +394,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
           status(result) mustEqual 200
           contentAsString(result) must include(htmlEscapedMessage("view.upload-file.heading"))
           contentAsString(result) must include("https://foo.bar/callback-new")
-          contentAsString(result) must include("/national-duty-repayment-center/file-verification/foo-bar-ref-new/status")
+          contentAsString(result) must include("/national-duty-repayment-centre/file-verification/foo-bar-ref-new/status")
         }
         application.stop()
     }

@@ -49,7 +49,7 @@ This will start all the required services
 
 Open your browser and navigate to the following url:
 
-`http://localhost:9949/auth-login-stub/gg-sign-in` and enter `http://localhost:8450/national-duty-repayment-center/what-do-you-want-to-do` in the Redirect URL field.
+`http://localhost:9949/auth-login-stub/gg-sign-in` and enter `http://localhost:8450/national-duty-repayment-centre/what-do-you-want-to-do` in the Redirect URL field.
 
 
 ## Technical information

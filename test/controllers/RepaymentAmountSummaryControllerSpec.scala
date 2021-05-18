@@ -37,13 +37,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(Html(
         "Customs Duty that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/repay-customs-duty-overpayment"),
+        Some("/national-duty-repayment-centre/repay-customs-duty-overpayment"),
         Some("customs-duty-overpayment")
       ),
       AnswerRow(
         Html("Customs Duty that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/repay-customs-duty-overpayment"),
+        Some("/national-duty-repayment-centre/repay-customs-duty-overpayment"),
         Some("customs-duty-overpayment")
       ),
       AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -52,13 +52,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Import VAT that was paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/repay-import-vat-overpayment"),
+        Some("/national-duty-repayment-centre/repay-import-vat-overpayment"),
         Some("change-import-vat-overpayment")
       ),
       AnswerRow(
         Html("Import VAT that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/repay-import-vat-overpayment"),
+        Some("/national-duty-repayment-centre/repay-import-vat-overpayment"),
         Some("change-import-vat-overpayment")
       ),
       AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -67,13 +67,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       AnswerRow(
         Html("Other duties that were paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/repay-other-duties-overpayment"),
+        Some("/national-duty-repayment-centre/repay-other-duties-overpayment"),
         Some("other-duties-overpayment")
       ),
       AnswerRow(
         Html("Other duties that should have been paid"),
         Html("£0.00"),
-        Some("/national-duty-repayment-center/repay-other-duties-overpayment"),
+        Some("/national-duty-repayment-centre/repay-other-duties-overpayment"),
         Some("other-duties-overpayment")
       ),
       AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
