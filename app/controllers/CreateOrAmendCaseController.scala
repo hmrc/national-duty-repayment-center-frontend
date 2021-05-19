@@ -22,6 +22,7 @@ import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import navigation.Navigator
 import pages.CreateOrAmendCasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -43,7 +44,7 @@ class CreateOrAmendCaseController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(CreateOrAmendCasePage) match {
@@ -51,22 +52,21 @@ class CreateOrAmendCaseController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm))
+      Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
+          Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
             for {
-              userAnswers <- Future.fromTry (request.userAnswers.getOrElse(UserAnswers(request.internalId)).
-                set(CreateOrAmendCasePage, value))
-              res <- sessionRepository.set(userAnswers)
-              if(res)
-            } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, NormalMode, userAnswers))
+              userAnswers <- Future.successful(request.userAnswers.getOrElse(UserAnswers(request.internalId)))
+              updatedUserAnswers <-  Future.fromTry(userAnswers.copy(id = request.internalId, fileUploadState = None, data = Json.obj()).set(CreateOrAmendCasePage, value))
+              res <- sessionRepository.resetData(userAnswers).flatMap(_ => sessionRepository.set(updatedUserAnswers))
+              if res
+            } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, mode, updatedUserAnswers))
       )
   }
 }
