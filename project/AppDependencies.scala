@@ -9,7 +9,7 @@ object AppDependencies {
     "uk.gov.hmrc"       %% "govuk-template"                 % "5.65.0-play-26",
     "uk.gov.hmrc"       %% "play-ui"                        % "9.1.0-play-26",
     "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.6.0-play-26",
-    "uk.gov.hmrc"       %% "bootstrap-play-26"              % "3.2.0",
+    "uk.gov.hmrc"       %% "bootstrap-play-26"              % "4.0.0",
     "uk.gov.hmrc"       %% "play-whitelist-filter"          % "3.4.0-play-26",
     "uk.gov.hmrc"       %% "play-frontend-hmrc"             % "0.58.0-play-26",
     "com.sun.mail"      % "javax.mail"                      % "1.6.2",
