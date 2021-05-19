@@ -33,22 +33,18 @@
     @forms.formWithCSRF(action = RepresentativeImporterNameController.onSubmit(mode), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
-        @forms.fieldset(
-            legend = messages("representative.importer.heading")
-        ) {
+
             @forms.inputText(
                 form = form,
                 id = "importerName",
                 name = "importerName",
                 inputType = "text",
-                label = "",
-                isPageHeading = false,
+                label = "representative.importer.heading",
+                isPageHeading = true,
                 isInFieldset = false,
                 hint = Some(messages("representative.importer.hint")),
                 attributes = Map("autocomplete" -> "off")
             )
-        }
-
 
         @html.button("site.continue")
     }
