@@ -17,7 +17,7 @@ lazy val root = (project in file("."))
   .settings(majorVersion := 0)
   .settings(
     name := appName,
-    scalaVersion := "2.12.11",
+    scalaVersion := "2.12.12",
     RoutesKeys.routesImport += "models._",
     TwirlKeys.templateImports ++= Seq(
       "play.twirl.api.HtmlFormat",
@@ -47,10 +47,7 @@ lazy val root = (project in file("."))
     retrieveManaged := true,
     evictionWarningOptions in update :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    resolvers ++= Seq(
-      Resolver.bintrayRepo("hmrc", "releases"),
-      Resolver.jcenterRepo
-    ),
+    resolvers += "third-party-maven-releases" at "https://artefacts.tax.service.gov.uk/artifactory/third-party-maven-releases/",
     // concatenate js
     Concat.groups := Seq(
       "javascripts/application.js" ->
