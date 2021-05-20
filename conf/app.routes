@@ -276,10 +276,8 @@ POST        /contact                                                            
 GET         /change-contact                                                            controllers.EmailAddressAndPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-contact                                                            controllers.EmailAddressAndPhoneNumberController.onSubmit(mode: Mode = CheckMode)
 
-GET         /what-do-you-want-to-do                                                    controllers.CreateOrAmendCaseController.onPageLoad(mode: Mode = NormalMode)
-POST        /what-do-you-want-to-do                                                    controllers.CreateOrAmendCaseController.onSubmit(mode: Mode = NormalMode)
-GET         /change-what-do-you-want-to-do                                             controllers.CreateOrAmendCaseController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-what-do-you-want-to-do                                             controllers.CreateOrAmendCaseController.onSubmit(mode: Mode = CheckMode)
+GET         /what-do-you-want-to-do                                                    controllers.CreateOrAmendCaseController.onPageLoad
+POST        /what-do-you-want-to-do                                                    controllers.CreateOrAmendCaseController.onSubmit
 
 GET         /enter-your-name                                                           controllers.DeclarantNameController.onPageLoad(mode: Mode = NormalMode)
 POST        /enter-your-name                                                           controllers.DeclarantNameController.onSubmit(mode: Mode = NormalMode)

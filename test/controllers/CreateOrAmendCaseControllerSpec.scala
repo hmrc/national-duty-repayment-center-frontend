@@ -36,7 +36,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  lazy val createOrAmendCaseRoute = routes.CreateOrAmendCaseController.onPageLoad(NormalMode).url
+  lazy val createOrAmendCaseRoute = routes.CreateOrAmendCaseController.onPageLoad.url
 
   val formProvider = new CreateOrAmendCaseFormProvider()
   val form = formProvider()
@@ -56,7 +56,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
@@ -76,7 +76,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(CreateOrAmendCase.values.head), NormalMode)(request, messages).toString
+        view(form.fill(CreateOrAmendCase.values.head))(request, messages).toString
 
       application.stop()
     }
@@ -124,7 +124,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }

@@ -24,14 +24,14 @@
   html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("createOrAmendCase.title"))}"),
     backLink = false
 ) {
 
-  @forms.formWithCSRF(action = CreateOrAmendCaseController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+  @forms.formWithCSRF(action = CreateOrAmendCaseController.onSubmit, args = 'novalidate -> "novalidate") {
 
     @components.error_summary(form.errors)
 
