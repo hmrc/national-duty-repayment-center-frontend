@@ -44,7 +44,7 @@ class Navigator @Inject()() {
     case IsImporterVatRegisteredPage => _ => routes.RepresentativeImporterNameController.onPageLoad(NormalMode)
     case ImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
     case RepresentativeImporterNamePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
-    case DeclarantNamePage => getDeclarantName
+    case DeclarantNamePage => _ => routes.DoYouOwnTheGoodsController.onPageLoad(NormalMode)
     case DoYouOwnTheGoodsPage => doYouOwnTheGoods
     case ImporterManualAddressPage => getImporterManualAddress
     case ImporterHasEoriPage => getEORIConfirmation
@@ -79,11 +79,6 @@ class Navigator @Inject()() {
   private def getImporterManualAddress(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
     case Some(ClaimantType.Importer)  => routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode)
     case _ => routes.ImporterHasEoriController.onPageLoad(NormalMode)
-  }
-
-  private def getDeclarantName(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
-    case Some(ClaimantType.Importer)  =>  routes.DoYouOwnTheGoodsController.onPageLoad(NormalMode)
-    case _ => ???
   }
 
   private def doYouOwnTheGoods(answers: UserAnswers): Call = answers.get(DoYouOwnTheGoodsPage) match {
