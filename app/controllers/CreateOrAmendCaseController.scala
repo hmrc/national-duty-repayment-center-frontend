@@ -43,7 +43,7 @@ class CreateOrAmendCaseController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(CreateOrAmendCasePage) match {
@@ -51,14 +51,14 @@ class CreateOrAmendCaseController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors))),
 
         value =>
             for {
@@ -66,7 +66,7 @@ class CreateOrAmendCaseController @Inject()(
                 set(CreateOrAmendCasePage, value))
               res <- sessionRepository.set(userAnswers)
               if(res)
-            } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, mode, userAnswers))
+            } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, NormalMode, userAnswers))
       )
   }
 }

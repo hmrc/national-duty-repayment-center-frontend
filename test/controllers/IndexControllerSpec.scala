@@ -25,7 +25,7 @@ class IndexControllerSpec extends SpecBase {
 
   "Index Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "redirect to create or amend case controller" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
@@ -33,12 +33,9 @@ class IndexControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[IndexView]
+      status(result) mustEqual SEE_OTHER
 
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view()(request, messages).toString
+      redirectLocation(result).value mustEqual routes.CreateOrAmendCaseController.onPageLoad().url
 
       application.stop()
     }
