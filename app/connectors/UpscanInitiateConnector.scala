@@ -19,7 +19,7 @@ package connectors
 import com.codahale.metrics.MetricRegistry
 import com.kenshoo.play.metrics.Metrics
 import config.FrontendAppConfig
-import play.api.Logger
+import play.Logger
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http._
 

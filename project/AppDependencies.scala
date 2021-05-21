@@ -5,20 +5,20 @@ object AppDependencies {
 
   val compile = Seq(
     play.sbt.PlayImport.ws,
-    "org.reactivemongo" %% "play2-reactivemongo"            % "0.18.6-play26",
-    "uk.gov.hmrc"       %% "govuk-template"                 % "5.65.0-play-26",
-    "uk.gov.hmrc"       %% "play-ui"                        % "9.1.0-play-26",
-    "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.6.0-play-26",
-    "uk.gov.hmrc"       %% "bootstrap-play-26"              % "4.0.0",
-    "uk.gov.hmrc"       %% "play-whitelist-filter"          % "3.4.0-play-26",
-    "uk.gov.hmrc"       %% "play-frontend-hmrc"             % "0.58.0-play-26",
+    "org.reactivemongo" %% "play2-reactivemongo"            % "1.0.4-play28",
+    "uk.gov.hmrc"       %% "govuk-template"                 % "5.66.0-play-27",
+    "uk.gov.hmrc"       %% "play-ui"                        % "9.4.0-play-28",
+    "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.9.0-play-28",
+    "uk.gov.hmrc"       %% "bootstrap-frontend-play-28"     % "5.3.0",
+    "uk.gov.hmrc"       %% "play-whitelist-filter"          % "3.4.0-play-27",
+    "uk.gov.hmrc"       %% "play-frontend-hmrc"             % "0.64.0-play-28",
     "com.sun.mail"      % "javax.mail"                      % "1.6.2",
     "com.typesafe.akka" %% "akka-actor"                     % "12.6.12"
   )
 
   val test = Seq(
-    "org.scalatest"               %% "scalatest"            % "3.0.9",
-    "org.scalatestplus.play"      %% "scalatestplus-play"   % "3.1.3",
+    "org.scalatest"               %% "scalatest"            % "3.2.9",
+    "org.scalatestplus.play"      %% "scalatestplus-play"   % "5.1.0",
     "org.pegdown"                 %  "pegdown"              % "1.6.0",
     "org.jsoup"                   %  "jsoup"                % "1.13.1",
     "com.typesafe.play"           %% "play-test"            % PlayVersion.current,
