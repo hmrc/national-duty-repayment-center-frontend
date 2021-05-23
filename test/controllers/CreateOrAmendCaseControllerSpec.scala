@@ -83,9 +83,12 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to the next page when valid data is submitted" in {
 
+
+
       val userAnswers = UserAnswers(userAnswersId).set(CreateOrAmendCasePage, CreateOrAmendCase.values.head).success.value
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
