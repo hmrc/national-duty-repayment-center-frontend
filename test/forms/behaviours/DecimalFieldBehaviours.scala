@@ -18,6 +18,8 @@ package forms.behaviours
 
 import play.api.data.{Form, FormError}
 
+import scala.math.BigDecimal.RoundingMode
+
 trait DecimalFieldBehaviours extends FieldBehaviours {
 
   def decimalField(form: Form[_],
@@ -43,7 +45,7 @@ trait DecimalFieldBehaviours extends FieldBehaviours {
 
       forAll(decimalsBelowValue(minimum) -> "decimalBelowMin") {
         number: BigDecimal =>
-          val result = form.bind(Map(fieldName -> number.setScale(2).toString)).apply(fieldName)
+          val result = form.bind(Map(fieldName -> number.setScale(2, RoundingMode.FLOOR).toString)).apply(fieldName)
           result.errors shouldEqual Seq(expectedError)
       }
     }
