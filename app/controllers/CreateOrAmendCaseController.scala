@@ -22,6 +22,7 @@ import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import navigation.Navigator
 import pages.CreateOrAmendCasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -61,12 +62,12 @@ class CreateOrAmendCaseController @Inject()(
           Future.successful(BadRequest(view(formWithErrors))),
 
         value =>
-            for {
-              userAnswers <- Future.fromTry (request.userAnswers.getOrElse(UserAnswers(request.internalId)).
-                set(CreateOrAmendCasePage, value))
-              res <- sessionRepository.set(userAnswers)
-              if(res)
-            } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, NormalMode, userAnswers))
+          for {
+            userAnswers <- Future.successful(request.userAnswers.getOrElse(UserAnswers(request.internalId)))
+            updatedUserAnswers <-  Future.fromTry(userAnswers.copy(id = request.internalId, fileUploadState = None, data = Json.obj()).set(CreateOrAmendCasePage, value))
+            res <- sessionRepository.resetData(userAnswers).flatMap(_ => sessionRepository.set(updatedUserAnswers))
+            if res
+          } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, NormalMode, updatedUserAnswers))
       )
   }
 }
