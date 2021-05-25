@@ -1,5 +1,5 @@
 # Add all the application routes to the app.routes file
-->         /national-duty-repayment-centre                    app.Routes
+->         /apply-for-repayment-of-import-duty-and-import-vat                    app.Routes
 ->         /                          health.Routes
 ->     	   /template                  template.Routes
 
