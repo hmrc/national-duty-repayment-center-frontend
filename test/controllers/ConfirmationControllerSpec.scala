@@ -17,12 +17,16 @@
 package controllers
 
 import base.SpecBase
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
 import views.html.ConfirmationView
 
-class confirmationControllerSpec extends SpecBase {
+import scala.concurrent.Future
+
+class ConfirmationControllerSpec extends SpecBase {
 
   "confirmation Controller" must {
 
@@ -34,6 +38,8 @@ class confirmationControllerSpec extends SpecBase {
         .set(ClaimIdQuery, claimId).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
 
       val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
 
@@ -52,6 +58,8 @@ class confirmationControllerSpec extends SpecBase {
     "return INTERNAL_SERVER_ERROR for a GET when claimId cannot be retrieved from user answers" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
 
       running(application) {
 

@@ -17,10 +17,14 @@
 package controllers
 
 import base.SpecBase
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
 import views.html.AmendConfirmationView
+
+import scala.concurrent.Future
 
 class AmendConfirmationControllerSpec extends SpecBase {
 
@@ -28,6 +32,7 @@ class AmendConfirmationControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
       val claimId = "1"
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
 
       val answers = emptyUserAnswers
         .set(ClaimIdQuery, claimId).success.value
