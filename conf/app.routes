@@ -194,24 +194,19 @@ POST        /change-indirect-representative                                     
 
 GET         /signout                                                                   controllers.SignOutController.signOut
 
-GET         /referenceNumber                                                           controllers.ReferenceNumberController.onPageLoad(mode: Mode = NormalMode)
-POST        /referenceNumber                                                           controllers.ReferenceNumberController.onSubmit(mode: Mode = NormalMode)
-GET         /changeReferenceNumber                                                     controllers.ReferenceNumberController.onPageLoad(mode: Mode = CheckMode)
-POST        /changeReferenceNumber                                                     controllers.ReferenceNumberController.onSubmit(mode: Mode = CheckMode)
+GET         /referenceNumber                                                           controllers.ReferenceNumberController.onPageLoad()
+POST        /referenceNumber                                                           controllers.ReferenceNumberController.onSubmit()
 
-GET         /furtherInformation                                                        controllers.FurtherInformationController.onPageLoad(mode: Mode = NormalMode)
-POST        /furtherInformation                                                        controllers.FurtherInformationController.onSubmit(mode: Mode = NormalMode)
-GET         /changeFurtherInformation                                                  controllers.FurtherInformationController.onPageLoad(mode: Mode = CheckMode)
-POST        /changeFurtherInformation                                                  controllers.FurtherInformationController.onSubmit(mode: Mode = CheckMode)
+GET         /furtherInformation                                                        controllers.FurtherInformationController.onPageLoad()
+POST        /furtherInformation                                                        controllers.FurtherInformationController.onSubmit()
 
 GET         /amend-check-your-answers                                                  controllers.AmendCheckYourAnswersController.onPageLoad
 POST        /amend-check-your-answers                                                  controllers.AmendCheckYourAnswersController.onSubmit
+GET         /amend-check-your-answers/change/:page                                     controllers.AmendCheckYourAnswersController.onChange(page)
 
 
-GET         /amendCaseResponseType                                                     controllers.AmendCaseResponseTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /amendCaseResponseType                                                     controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /changeAmendCaseResponseType                                               controllers.AmendCaseResponseTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /changeAmendCaseResponseType                                               controllers.AmendCaseResponseTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /amendCaseResponseType                                                     controllers.AmendCaseResponseTypeController.onPageLoad()
+POST        /amendCaseResponseType                                                     controllers.AmendCaseResponseTypeController.onSubmit()
 
 # File uploads
 GET         /file-upload                                                               controllers.FileUploadController.showFileUpload(mode: Mode = NormalMode)

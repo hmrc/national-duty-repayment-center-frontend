@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+package navigation
 
-case object AmendCheckYourAnswersPage extends Page
+import play.api.mvc.Call
 
-case object AmendConfirmationPage extends Page
-
-case object AmendFileUploadPage extends Page {
-  override def toString: String = "amendFileUpload"
-}
-
-case object AmendFileUploadedPage extends Page {
-  override def toString: String = "amendFileUploaded"
-}
+case class NavigatorBack(maybeCall: Option[Call])

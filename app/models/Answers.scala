@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-case object AmendCheckYourAnswersPage extends Page
-
-case object AmendConfirmationPage extends Page
-
-case object AmendFileUploadPage extends Page {
-  override def toString: String = "amendFileUpload"
-}
-
-case object AmendFileUploadedPage extends Page {
-  override def toString: String = "amendFileUploaded"
+trait Answers {
+  val changePage: String // TODO - should be Option[String] - using String for SPIKE as SessionRepo does not remove top level None fields
 }

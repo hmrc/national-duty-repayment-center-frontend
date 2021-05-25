@@ -61,7 +61,7 @@ class Navigator @Inject()() {
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case AmendCheckYourAnswersPage => _ => routes.AmendConfirmationController.onPageLoad()
-    case ReferenceNumberPage => _ => routes.AmendCaseResponseTypeController.onPageLoad(NormalMode)
+    case ReferenceNumberPage => _ => routes.AmendCaseResponseTypeController.onPageLoad()
     case AmendCaseResponseTypePage => getAmendCaseResponseType
     case AmendCaseSendInformationPage => _ => routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
@@ -73,7 +73,7 @@ class Navigator @Inject()() {
 
   private def getCreateOrAmendCase(answers: UserAnswers): Call = answers.get(CreateOrAmendCasePage) match {
     case Some(CreateOrAmendCase.CreateCase)  => routes.ClaimantTypeController.onPageLoad(NormalMode)
-    case Some(CreateOrAmendCase.AmendCase) => routes.ReferenceNumberController.onPageLoad(NormalMode)
+    case Some(CreateOrAmendCase.AmendCase) => routes.ReferenceNumberController.onPageLoad()
   }
 
   private def getImporterManualAddress(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
@@ -88,7 +88,7 @@ class Navigator @Inject()() {
   private def getAmendCaseResponseType(answers: UserAnswers): Call =
     answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.SupportingDocuments) match {
       case true => routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
-      case  _  => routes.FurtherInformationController.onPageLoad(NormalMode)
+      case  _  => routes.FurtherInformationController.onPageLoad()
     }
 
   private def getRepaymentType(answers: UserAnswers): Call =
@@ -203,7 +203,7 @@ class Navigator @Inject()() {
     (documentSelected, answers.fileUploadState.nonEmpty) match {
       case (true, true) =>  routes.AmendCaseSendInformationController.showFileUploaded(CheckMode)
       case (true, false) => routes.AmendCaseSendInformationController.showFileUpload(CheckMode)
-      case (_, _) => routes.FurtherInformationController.onPageLoad(CheckMode)
+      case (_, _) => routes.FurtherInformationController.onPageLoad()
     }
   }
 

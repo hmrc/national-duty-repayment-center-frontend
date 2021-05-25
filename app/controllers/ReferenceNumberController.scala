@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.ReferenceNumberFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
-import navigation.Navigator
-import pages.ReferenceNumberPage
+import models.{Mode, NormalMode, UserAnswers}
+import navigation.{AmendNavigator, Navigator}
+import pages.{AmendCaseResponseTypePage, Page, ReferenceNumberPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -33,18 +33,20 @@ import scala.concurrent.{ExecutionContext, Future}
 class ReferenceNumberController @Inject()(
                                            override val messagesApi: MessagesApi,
                                            sessionRepository: SessionRepository,
-                                           navigator: Navigator,
+                                           navigatorOld: Navigator,
+                                           val navigator: AmendNavigator,
                                            identify: IdentifierAction,
                                            getData: DataRetrievalAction,
                                            requireData: DataRequiredAction,
                                            formProvider: ReferenceNumberFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
                                            view: ReferenceNumberView
-                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers]{
 
+  override val page: Page = ReferenceNumberPage
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(ReferenceNumberPage) match {
@@ -52,21 +54,21 @@ class ReferenceNumberController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
 
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReferenceNumberPage, value))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ReferenceNumberPage, mode, updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 }

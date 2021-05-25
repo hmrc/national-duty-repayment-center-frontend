@@ -17,6 +17,7 @@
 @import controllers.routes.AmendCaseResponseTypeController
 @import models.{Mode, AmendCaseResponseType}
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -24,13 +25,15 @@
     html: views.components.html
 )
 
-@(form: Form[Set[AmendCaseResponseType]], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[Set[AmendCaseResponseType]], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("amendCaseResponseType.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("amendCaseResponseType.title"))}"),
+    backLink = false,
+    backLinkNew = Some(backLink)
 ) {
 
-@forms.formWithCSRF(action = AmendCaseResponseTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+@forms.formWithCSRF(action = AmendCaseResponseTypeController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 

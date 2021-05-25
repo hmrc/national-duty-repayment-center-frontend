@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package controllers
 
-case object AmendCheckYourAnswersPage extends Page
+import models.UserAnswers
+import navigation.{Navigator2, NavigatorBack}
+import pages.Page
+import play.api.mvc.Call
 
-case object AmendConfirmationPage extends Page
+trait Navigation[T <: UserAnswers] {
+  val navigator: Navigator2[T]
+  val page: Page
 
-case object AmendFileUploadPage extends Page {
-  override def toString: String = "amendFileUpload"
-}
+  def nextPage: T => Call = navigator.nextPage(page, _)
 
-case object AmendFileUploadedPage extends Page {
-  override def toString: String = "amendFileUploaded"
+  def backLink: T => NavigatorBack = navigator.previousPage(page, _)
 }

@@ -19,16 +19,17 @@ import pages._
 import play.api.libs.json._
 import queries.{Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
-
 import java.time.{Instant, LocalDateTime, ZoneOffset}
+
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
                               id: String,
+                              override val changePage: String = "",
                               data: JsObject = Json.obj(),
                               lastUpdated: LocalDateTime = LocalDateTime.now,
                               fileUploadState: Option[FileUploadState] = None
-                            ) {
+                            ) extends Answers {
 
    def fileUploadPath: JsPath = JsPath \ "fileUploadState"
 
@@ -94,27 +95,6 @@ object UserAnswers {
     }
   }
 
-  implicit lazy val reads: Reads[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-    (
-      (__ \ "_id").read[String] and
-      (__ \ "data").read[JsObject] and
-      (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead) and
-        (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
-      ) (UserAnswers.apply _)
-  }
-
-  implicit lazy val writes: OWrites[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-
-    (
-      (__ \ "_id").write[String] and
-      (__ \ "data").write[JsObject] and
-      (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite) and
-        (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
-    ) (unlift(UserAnswers.unapply))
-  }
+  implicit val formats: OFormat[UserAnswers] = Json.format[UserAnswers]
 
 }

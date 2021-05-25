@@ -17,11 +17,12 @@
 package controllers
 
 import java.time.LocalDate
+
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.{Mode, NormalMode, RepaymentType, UserAnswers}
-import navigation.Navigator
-import pages.{AmendCheckYourAnswersPage, FurtherInformationPage, RepaymentTypePage}
+import navigation.{AmendNavigator, Navigator}
+import pages.{AmendCaseResponseTypePage, AmendCheckYourAnswersPage, FurtherInformationPage, Page, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -41,15 +42,37 @@ class AmendCheckYourAnswersController @Inject()(
                                                  requireData: DataRequiredAction,
                                                  sessionRepository: SessionRepository,
                                                  claimService: ClaimService,
-                                                 navigator: Navigator,
+                                                 navigatorOld: Navigator,
+                                                 val navigator: AmendNavigator,
                                                  val controllerComponents: MessagesControllerComponents,
                                                  view: AmendCheckYourAnswersView
-                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers]{
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  override val page: Page = AmendCheckYourAnswersPage
+
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-      Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections))
+
+      navigator.firstMissingAnswer(request.userAnswers) match {
+        case Some(call) => {
+          // TODO - render "missing" version of CYA page
+          Future(Redirect(call))
+        }
+        case None => {
+          val updatedAnswers = request.userAnswers.copy(changePage = "")
+          sessionRepository.set(updatedAnswers) map { _ =>
+            val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
+            Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink(updatedAnswers)))
+          }
+        }
+      }
+  }
+
+  def onChange(page: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      sessionRepository.set(request.userAnswers.copy(changePage = page)) map { _ =>
+        Redirect(navigator.gotoPage(page))
+      }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,6 +83,6 @@ class AmendCheckYourAnswersController @Inject()(
         updatedClaimId <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
         _ <- sessionRepository.set(updatedClaimDate)
-      } yield Redirect(navigator.nextPage(AmendCheckYourAnswersPage, NormalMode, request.userAnswers))
+      } yield Redirect(nextPage(request.userAnswers))
   }
 }

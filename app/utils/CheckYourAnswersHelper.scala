@@ -59,32 +59,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def amendCaseResponseTypeNormal: Option[AnswerRow] = amendCaseResponseTypePage map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("amendCaseResponseType.checkYourAnswersLabel")),
-        Html(x.map(value => HtmlFormat.escape(messages(s"amendCaseResponseType.$value")).toString).mkString(",<br>")),
-        Some(routes.AmendCaseResponseTypeController.onPageLoad(CheckMode).url)
-      )
-  }
-
-  def furtherInformationNormal: Option[AnswerRow] = furtherInformationPage map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("furtherInformation.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.FurtherInformationController.onPageLoad(CheckMode).url)
-      )
-  }
-
-  def referenceNumberNormal: Option[AnswerRow] = referenceNumberPage map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("referenceNumber.checkYourAnswersLabel")),
-        HtmlFormat.escape(x),
-        Some(routes.ReferenceNumberController.onPageLoad(CheckMode).url)
-      )
-  }
 
   def bulkFileUpload: Option[AnswerRow] = {
     fileUploadState.map(_.fileUploads.files.filter(_.fileType.contains(Bulk))).flatMap(_.headOption.map(_ match {
@@ -695,7 +669,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("amendCaseResponseType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(message)),
-        Some(routes.AmendCaseResponseTypeController.onPageLoad(CheckMode).url)
+        Some(routes.AmendCheckYourAnswersController.onChange(AmendCaseResponseTypePage).url)
       )
   }
 
@@ -704,7 +678,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("furtherInformation.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.FurtherInformationController.onPageLoad(CheckMode).url)
+        Some(routes.AmendCheckYourAnswersController.onChange(FurtherInformationPage).url)
       )
   }
 
@@ -713,7 +687,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("referenceNumber.checkYourAnswersLabel")),
         HtmlFormat.escape(x),
-        Some(routes.ReferenceNumberController.onPageLoad(CheckMode).url)
+        Some(routes.AmendCheckYourAnswersController.onChange(ReferenceNumberPage).url)
       )
   }
 
@@ -726,7 +700,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       else
         HtmlFormat.escape(messages("view.amend-upload-file.documents.added", noOfDocuments))
       ,
-      Some(routes.AmendCaseSendInformationController.showFileUploaded(CheckMode).url)
+      Some(routes.AmendCheckYourAnswersController.onChange(AmendFileUploadedPage).url)
     )
   }
 
