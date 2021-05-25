@@ -6,9 +6,9 @@ object AppDependencies {
   val compile = Seq(
     play.sbt.PlayImport.ws,
     "org.reactivemongo" %% "play2-reactivemongo"            % "0.18.6-play26",
-    "uk.gov.hmrc"       %% "govuk-template"                 % "5.65.0-play-26",
-    "uk.gov.hmrc"       %% "play-ui"                        % "9.1.0-play-26",
-    "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.6.0-play-26",
+    "uk.gov.hmrc"       %% "govuk-template"                 % "5.66.0-play-26",
+    "uk.gov.hmrc"       %% "play-ui"                        % "9.4.0-play-26",
+    "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.9.0-play-26",
     "uk.gov.hmrc"       %% "bootstrap-play-26"              % "4.0.0",
     "uk.gov.hmrc"       %% "play-whitelist-filter"          % "3.4.0-play-26",
     "uk.gov.hmrc"       %% "play-frontend-hmrc"             % "0.58.0-play-26",
