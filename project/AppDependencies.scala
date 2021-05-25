@@ -11,7 +11,7 @@ object AppDependencies {
     "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.9.0-play-26",
     "uk.gov.hmrc"       %% "bootstrap-play-26"              % "4.0.0",
     "uk.gov.hmrc"       %% "play-whitelist-filter"          % "3.4.0-play-26",
-    "uk.gov.hmrc"       %% "play-frontend-hmrc"             % "0.58.0-play-26",
+    "uk.gov.hmrc"       %% "play-frontend-hmrc"             % "0.66.0-play-26",
     "com.sun.mail"      % "javax.mail"                      % "1.6.2",
     "com.typesafe.akka" %% "akka-actor"                     % "12.6.12"
   )
