@@ -22,6 +22,7 @@
 @import views.components.FooterLinks
 @import config.FrontendAppConfig
 @import navigation.NavigatorBack
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcScripts
 
 @this(
         govukLayout: GovukLayout,
@@ -32,6 +33,7 @@
         phaseBanner: components.phaseBanner,
         link: components.link,
         hmrcTimeoutDialog : HmrcTimeoutDialog,
+        hmrcScripts: HmrcScripts,
         reportAProblemLink: ReportAProblemLink,
         appConfig: config.FrontendAppConfig,
         languageSelection: components.languageSelection,
@@ -72,7 +74,10 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @scripts = {
+    @hmrcScripts()
+    <!--
   <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
+    -->
 }
 
 @beforeContentBlock = {
@@ -91,7 +96,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
     @backLinkNew.flatMap(_.maybeCall.map( call =>
         govukBackLink(BackLink(
             attributes = Map("id"->"back-link"),
-            classes = "govuk-!-display-none-print",
+            classes = "govuk-!-display-none-print app-back-link",
             href = call.url,
             content = Text(messages("site.back"))
         ))
