@@ -65,8 +65,8 @@
             }
                 <p>@html.a(
                     link = mode match {
-                        case NormalMode => "importerManualAddress"
-                        case CheckMode => "changeImporterManualAddress"
+                        case NormalMode => "enter-importer-address"
+                        case CheckMode => "change-enter-importer-address"
                     },
                     messageKey = messages("importerAddress.manual"),
                     id = Some("enter-address-manually")

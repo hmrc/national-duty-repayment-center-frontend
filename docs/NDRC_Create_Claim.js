@@ -123,16 +123,16 @@ function completePage() {
         document.getElementById("value").checked = true;
         submit();
     }
-    if (currentPageIs("/representative-importer-name")) {
+    if (currentPageIs("/importer-name")) {
         document.getElementById("importerName").value = "ACME Importer Ltc";
         submit();
     }
-    if (currentPageIs("/representative-agent-name")) {
+    if (currentPageIs("/your-details")) {
         document.getElementById("declarantName").value = "Tim Tester";
         document.getElementById("agentName").value = "Tester Import Agents";
         submit();
     }
-    if (currentPageIs("/enter-your-name")) {
+    if (currentPageIs("/your-name")) {
         document.getElementById("firstName").value = "Tim";
         document.getElementById("lastName").value = "Tester";
         submit();
@@ -149,7 +149,7 @@ function completePage() {
         document.getElementById("PostalCode").value = "AA000AA";
         submit();
     }
-    if (currentPageIs("/importerManualAddress")) {
+    if (currentPageIs("/enter-importer-address")) {
         document.getElementById("AddressLine1").value = "Unit 42";
         document.getElementById("AddressLine2").value = "West Industrial Estate";
         document.getElementById("City").value = "Walsall";
@@ -157,7 +157,7 @@ function completePage() {
         document.getElementById("CountryCode").getElementsByTagName("option")[1].selected = "selected";
         submit();
     }
-    if (currentPageIs("/agentImporterManualAddress")) {
+    if (currentPageIs("/enter-your-business-address")) {
         document.getElementById("AddressLine1").value = "Unit 42";
         document.getElementById("AddressLine2").value = "Importer Estate";
         document.getElementById("City").value = "Walsall";
@@ -195,15 +195,15 @@ function completePage() {
     }
 
     /* AMEND */
-    if (currentPageIs("/referenceNumber")) {
+    if (currentPageIs("/amend/importer-or-representative")) {
         document.getElementById("value").value = "NDRC000A00AB0ABCABC0AB0";
         submit();
     }
-    if (currentPageIs("/amendCaseResponseType")) {
+    if (currentPageIs("/amend/what-do-you-need-to-do")) {
         document.getElementById("furtherInformation").checked = true;
         submit();
     }
-    if (currentPageIs("/furtherInformation")) {
+    if (currentPageIs("/amend/further-information")) {
         document.getElementById("value").value = "Some further information";
         submit();
     }

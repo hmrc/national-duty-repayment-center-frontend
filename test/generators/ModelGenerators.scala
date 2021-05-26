@@ -60,11 +60,6 @@ trait ModelGenerators {
       Gen.oneOf(RepaymentType.values)
     }
 
-  implicit lazy val arbitraryContactType: Arbitrary[ContactType] =
-    Arbitrary {
-      Gen.oneOf(ContactType.values)
-    }
-
   implicit lazy val arbitraryRepresentativeDeclarantAndBusinessName: Arbitrary[RepresentativeDeclarantAndBusinessName] =
     Arbitrary {
       for {

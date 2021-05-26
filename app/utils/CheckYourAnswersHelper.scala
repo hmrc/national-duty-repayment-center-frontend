@@ -320,15 +320,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(changeToYesNo(No.toString)), Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)))
     }
 
-  def contactType: Option[AnswerRow] = userAnswers.get(ContactTypePage) map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("contactType.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"contactType.$x")),
-        Some(routes.ContactTypeController.onPageLoad(CheckMode).url)
-      )
-  }
-
   def declarantName: Option[AnswerRow] = userAnswers.get(DeclarantNamePage) map {
     x =>
       AnswerRow(
