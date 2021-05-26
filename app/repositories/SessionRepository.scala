@@ -129,7 +129,7 @@ class DefaultSessionRepository @Inject()(
 
 class PlayMongoSessionRepository @Inject()(mongoComponent: MongoComponent, config: Configuration)(implicit ec: ExecutionContext)
   extends PlayMongoRepository[UserAnswers](
-    collectionName = "user-answers2",
+    collectionName = "user-answers",
     mongoComponent = mongoComponent,
     domainFormat = UserAnswers.formats,
     indexes = Seq(

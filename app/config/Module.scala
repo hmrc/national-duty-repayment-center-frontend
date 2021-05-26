@@ -47,6 +47,7 @@ class Module extends AbstractModule with AkkaGuiceSupport {
     // For session based storage instead of cred based, change to SessionIdentifierAction
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
 
+//    bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
     bind(classOf[SessionRepository]).to(classOf[PlayMongoSessionRepository]).asEagerSingleton()
 
   }
