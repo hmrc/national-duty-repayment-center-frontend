@@ -59,7 +59,7 @@ class AmendCheckYourAnswersController @Inject()(
           Future(Redirect(call))
         }
         case None => {
-          val updatedAnswers = request.userAnswers.copy(changePage = "")
+          val updatedAnswers = request.userAnswers.copy(changePage = None)
           sessionRepository.set(updatedAnswers) map { _ =>
             val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
             Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink(updatedAnswers)))
@@ -70,7 +70,7 @@ class AmendCheckYourAnswersController @Inject()(
 
   def onChange(page: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      sessionRepository.set(request.userAnswers.copy(changePage = page)) map { _ =>
+      sessionRepository.set(request.userAnswers.copy(changePage = Some(page))) map { _ =>
         Redirect(navigator.gotoPage(page))
       }
   }

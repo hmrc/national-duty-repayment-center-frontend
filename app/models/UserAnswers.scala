@@ -15,25 +15,28 @@
  */
 
 package models
+
+import java.time.Instant
+
 import pages._
 import play.api.libs.json._
 import queries.{Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
-import java.time.{Instant, LocalDateTime, ZoneOffset}
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
                               id: String,
-                              override val changePage: String = "",
+                              changePage: Option[String] = None,
                               data: JsObject = Json.obj(),
-                              lastUpdated: LocalDateTime = LocalDateTime.now,
+                              lastUpdated: Instant = Instant.now,
                               fileUploadState: Option[FileUploadState] = None
                             ) extends Answers {
 
-   def fileUploadPath: JsPath = JsPath \ "fileUploadState"
+  def fileUploadPath: JsPath = JsPath \ "fileUploadState"
 
-   def dataPath: JsPath = JsPath \ "data"
+  def dataPath: JsPath = JsPath \ "data"
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
@@ -49,7 +52,7 @@ final case class UserAnswers(
 
     updatedData.flatMap {
       d =>
-        val updatedAnswers = copy (data = d)
+        val updatedAnswers = copy(data = d)
         page.cleanup(Some(value), updatedAnswers)
     }
   }
@@ -65,20 +68,22 @@ final case class UserAnswers(
 
     updatedData.flatMap {
       d =>
-        val updatedAnswers = copy (data = d)
+        val updatedAnswers = copy(data = d)
         page.cleanup(None, updatedAnswers)
     }
   }
 }
 
 object UserAnswers {
+
   import services.UploadFile
+
   implicit def uploadReads: Reads[FileUploadState] = {
     //TODO error cases
     Reads {
       case jsObject: JsObject if (jsObject \ "acknowledged").isDefined =>
         FileUploaded.formatter.reads(jsObject)
-      case jsObject: JsObject  => services.UploadFile.formatter.reads(jsObject)
+      case jsObject: JsObject => services.UploadFile.formatter.reads(jsObject)
     }
   }
 
@@ -95,6 +100,7 @@ object UserAnswers {
     }
   }
 
+  implicit val formatInstant = MongoJavatimeFormats.instantFormats
   implicit val formats: OFormat[UserAnswers] = Json.format[UserAnswers]
 
 }

@@ -17,5 +17,5 @@
 package models
 
 trait Answers {
-  val changePage: String // TODO - should be Option[String] - using String for SPIKE as SessionRepo does not remove top level None fields
+  val changePage: Option[String]
 }

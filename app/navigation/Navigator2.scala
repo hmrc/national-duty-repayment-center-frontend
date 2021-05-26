@@ -39,9 +39,9 @@ trait Navigator2[T <: Answers] {
   }
 
   def nextPage(currentPage: Page, userAnswers: T): Call = userAnswers.changePage match {
-    case "" =>
+    case None =>
       viewFor(pageOrder, nextPageFor(pageOrder, currentPage, userAnswers)).getOrElse(pageOrder.head.destination())
-    case _ =>
+    case Some(_) =>
       viewFor(pageOrder, nextPageAfterChangeFor(pageOrder, currentPage, userAnswers)).getOrElse(checkYourAnswersPage)
   }
 
