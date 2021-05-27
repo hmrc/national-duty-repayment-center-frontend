@@ -33,7 +33,7 @@
                                                             })}")
 ) {
 
-    @forms.formWithCSRF(action = ImporterAddressController.postcodeSubmit(mode)) {
+    @forms.formWithCSRF(action = ImporterAddressController.postcodeSubmit(mode), 'autoComplete -> "on") {
 
             @components.error_summary(form.errors)
 
@@ -60,7 +60,7 @@
                     label = "importerAddress.postCode",
                     isPageHeading = false,
                     isInFieldset = false,
-                    attributes = Map("autocomplete" -> "off")
+                    autocomplete = Some("postal-code")
                     )
             }
                 <p>@html.a(

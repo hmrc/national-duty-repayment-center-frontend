@@ -30,7 +30,7 @@
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("declarantName.title"))}")
 ) {
 
-    @forms.formWithCSRF(action = DeclarantNameController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = DeclarantNameController.onSubmit(mode), args = 'novalidate -> "novalidate", 'autoComplete -> "on") {
 
         @components.error_summary(form.errors)
         @forms.fieldset(
@@ -44,7 +44,7 @@
                 label = "declarantName.firstName",
                 isPageHeading = false,
                 isInFieldset = false,
-                attributes = Map("autocomplete" -> "off")
+                autocomplete = Some("given-name")
             )
 
             @forms.inputText(
@@ -55,7 +55,7 @@
                 label = "declarantName.lastName",
                 isPageHeading = false,
                 isInFieldset = false,
-                attributes = Map("autocomplete" -> "off")
+                autocomplete = Some("family-name")
             )
         }
 

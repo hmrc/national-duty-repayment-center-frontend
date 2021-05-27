@@ -30,7 +30,7 @@
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("representative.declarantAndBusinessName.title"))}")
 ) {
 
-    @forms.formWithCSRF(action = RepresentativeDeclarantAndBusinessNameController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = RepresentativeDeclarantAndBusinessNameController.onSubmit(mode), args = 'novalidate -> "novalidate", 'autoComplete -> "on") {
 
         @components.error_summary(form.errors)
         @forms.fieldset(
@@ -44,7 +44,7 @@
                 label = "representative.declarantAndBusinessName.declarantName",
                 isPageHeading = false,
                 isInFieldset = false,
-                attributes = Map("autocomplete" -> "off")
+                autocomplete = Some("given-name")
             )
 
             @forms.inputText(
@@ -55,7 +55,7 @@
                 label = "representative.declarantAndBusinessName.agentName",
                 isPageHeading = false,
                 isInFieldset = false,
-                attributes = Map("autocomplete" -> "off")
+                autocomplete = Some("agent-name")
             )
         }
 
