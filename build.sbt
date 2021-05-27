@@ -1,4 +1,4 @@
-import JavaScriptBuild.{javaScriptDirectory, javaScriptSettings}
+//import JavaScriptBuild.{javaScriptDirectory, javaScriptSettings}
 import play.sbt.routes.RoutesKeys
 import sbt.Def
 import scoverage.ScoverageKeys
@@ -31,9 +31,7 @@ lazy val root = (project in file("."))
       "models.Mode",
       "controllers.routes._"
     ),
-    PlayKeys.playDefaultPort := 9000,
-    PlayKeys.playRunHooks += Webpack(javaScriptDirectory.value),
-    javaScriptSettings,
+    PlayKeys.playDefaultPort := 8450,
     ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;.*repositories.*;" +
       ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;" +
       ".*ControllerConfiguration;.*LanguageSwitchController",

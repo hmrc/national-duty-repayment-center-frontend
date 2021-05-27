@@ -16,20 +16,25 @@
 
 package controllers
 
+import akka.actor.Status.Success
 import controllers.actions._
 import forms.BankDetailsFormProvider
+import models.bars.BARSResult
 
 import javax.inject.Inject
-import models.{ClaimantType, Mode, RepaymentType, UserAnswers, WhomToPay}
+import models.{BankDetails, ClaimantType, Mode, RepaymentType, UserAnswers, WhomToPay}
 import navigation.Navigator
 import pages.{BankDetailsPage, ClaimantTypePage, IndirectRepresentativePage, RepaymentTypePage, WhomToPayPage}
+import play.api.data.FormError
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.BankAccountReputationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.BankDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 class BankDetailsController @Inject()(
                                         override val messagesApi: MessagesApi,
@@ -37,6 +42,7 @@ class BankDetailsController @Inject()(
                                         navigator: Navigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
+                                        bankAccountReputationService: BankAccountReputationService,
                                         requireData: DataRequiredAction,
                                         formProvider: BankDetailsFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
@@ -63,18 +69,55 @@ class BankDetailsController @Inject()(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(BankDetailsPage, value))
-            removeCMA <-
-              Future.fromTry(updatedAnswers.get(RepaymentTypePage) match {
-                case Some(RepaymentType.CMA) =>
-                  updatedAnswers.remove(RepaymentTypePage)
-                case _ =>
-                  updatedAnswers.set(BankDetailsPage, value)
-              })
-            _              <- sessionRepository.set(removeCMA)
-          } yield Redirect(navigator.nextPage(BankDetailsPage, mode, removeCMA))
+        value => {
+          val triedAnswers = request.userAnswers.set(BankDetailsPage, value).get
+          sessionRepository.set(triedAnswers)
+          Future(Redirect(navigator.nextPage(BankDetailsPage, mode, triedAnswers)))
+        }
+
+
+
+
+
+
+
+
+
+        //          for {
+        //            updatedAnswers <- Future.fromTry(request.userAnswers.set(BankDetailsPage, value))
+        //            removeCMA <-
+        //              Future.fromTry(updatedAnswers.get(RepaymentTypePage) match {
+        //                case Some(RepaymentType.CMA) =>
+        //                  updatedAnswers.remove(RepaymentTypePage)
+        //                case _ =>
+        //                  updatedAnswers.set(BankDetailsPage, value)
+        //              })
+        //            _              <- sessionRepository.set(removeCMA)
+        //          } yield Redirect(navigator.nextPage(BankDetailsPage, mode, removeCMA))
       )
+  }
+
+  private def processBarsFailure(bankDetails: BankDetails, barsResult: BARSResult) = {
+
+    val formWithErrors = form.fill(bankDetails).copy(errors = barsResult match {
+
+      case bars if !bars.sortcodeExists =>
+        Seq(FormError("sortCode", "bankDetails.bars.validation.sortcodeNotFound"))
+
+      case bars if !bars.validAccountAndSortCode =>
+        Seq(FormError("accountNumber", "bankDetails.bars.validation.modCheckFailed"))
+
+      case bars if !bars.sortcodeAcceptsDirectCredit =>
+        Seq(FormError("sortCode", "bankDetails.bars.validation.bacsNotSupported"))
+
+      case bars if !bars.rollNotRequired => Seq(FormError("sortCode", "bankDetails.bars.validation.rollRequired"))
+
+      case bars if !bars.accountValid => Seq(FormError("accountNumber", "bankDetails.bars.validation.accountInvalid"))
+
+      case bars if !bars.companyNameValid =>
+        Seq(FormError("accountName", "bankDetails.bars.validation.companyNameInvalid"))
+
+      case _ => Seq(FormError("", "bankDetails.bars.validation.failed"))
+    })
   }
 }

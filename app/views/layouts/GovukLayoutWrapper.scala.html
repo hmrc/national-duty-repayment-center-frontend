@@ -21,6 +21,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcReportTechnicalIssueHelper
 @import views.components.FooterLinks
 @import config.FrontendAppConfig
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcScripts
 
 @this(
         govukLayout: GovukLayout,
@@ -31,6 +32,7 @@
         phaseBanner: components.phaseBanner,
         link: components.link,
         hmrcTimeoutDialog : HmrcTimeoutDialog,
+        hmrcScripts: HmrcScripts,
         reportAProblemLink: ReportAProblemLink,
         appConfig: config.FrontendAppConfig,
         languageSelection: components.languageSelection,
@@ -70,7 +72,9 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @scripts = {
-  <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
+    @hmrcScripts()
+<!--
+  <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script> -->
 }
 
 @beforeContentBlock = {

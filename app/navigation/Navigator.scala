@@ -35,7 +35,7 @@ class Navigator @Inject()() {
     case ArticleTypePage => getReasonForRepayment
     case UkRegulationTypePage => getReasonForRepayment
     case EntryDetailsPage => _ => routes.ClaimReasonTypeController.onPageLoad(NormalMode)
-    case ClaimReasonTypePage => _ => routes.ReasonForOverpaymentController.onPageLoad(NormalMode)
+    case ClaimReasonTypePage => _ => routes.ImporterAddressController.onPageLoad(NormalMode)
     case ReasonForOverpaymentPage => _ => routes.ClaimRepaymentTypeController.onPageLoad(NormalMode)
     case CustomsDutyPaidPage =>  getVATRepaymentType
     case VATPaidPage => getOtherRepaymentType
@@ -274,7 +274,8 @@ class Navigator @Inject()() {
     case true => routes.CheckYourAnswersController.onPageLoad()
   }
 
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
+  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = {
+    println(s"page ${page} mode ${mode} fileUploadState ${userAnswers.fileUploadState}")
     mode match {
       case NormalMode =>
         normalRoutes(page)(userAnswers)
@@ -285,4 +286,5 @@ class Navigator @Inject()() {
       case RepayCheckMode =>
         repayRouteMap(CheckMode)(page)(userAnswers)
     }
+  }
 }
