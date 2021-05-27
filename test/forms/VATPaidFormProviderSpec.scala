@@ -91,7 +91,7 @@ class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBeh
     behave like decimalFieldWithMinimum(
       form,
       fieldName,
-      0.01,
+      -0.01,
       expectedError = FormError(fieldName, "vatPaid.shouldhavepaid.error.greaterThanZero")
 
     )

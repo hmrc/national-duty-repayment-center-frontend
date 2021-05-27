@@ -96,7 +96,7 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with String
     behave like decimalFieldWithMinimum(
       form,
       fieldName,
-      minimum,
+      -0.01,
       expectedError = FormError(fieldName, "customsDutyPaid.shouldhavepaid.error.greaterThanZero")
 
     )
