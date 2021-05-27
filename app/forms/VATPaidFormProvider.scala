@@ -45,7 +45,7 @@ class VATPaidFormProvider @Inject() extends Mappings {
           .verifying(
             firstError(
               regexp(monetaryPattern, "vatPaid.shouldhavepaid.error.decimalPlaces")) ,
-            greaterThanZero("vatPaid.shouldhavepaid.error.greaterThanZero")
+            greaterThanOrEqualZero("vatPaid.shouldhavepaid.error.greaterThanZero")
           ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
           .verifying(maximumValue[BigDecimal](99999999999.99, "vatPaid.actualamountpaid.error.length"))
           .transform[String](

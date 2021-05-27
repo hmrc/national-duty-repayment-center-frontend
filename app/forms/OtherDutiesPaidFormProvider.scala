@@ -45,7 +45,7 @@ class OtherDutiesPaidFormProvider @Inject() extends Mappings {
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "otherDutiesPaid.shouldhavepaid.error.decimalPlaces"),
-            greaterThanZero("otherDutiesPaid.shouldhavepaid.error.greaterThanZero"),
+            greaterThanOrEqualZero("otherDutiesPaid.shouldhavepaid.error.greaterThanZero"),
             maximumValue("99999999999.99", "otherDutiesPaid.shouldhavepaid.error.length")
           )
         ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)

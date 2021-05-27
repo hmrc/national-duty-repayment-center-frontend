@@ -136,4 +136,14 @@ trait Constraints {
           case _ => Invalid(errorKey)
         }
     }
+
+
+  protected def greaterThanOrEqualZero(errorKey: String): Constraint[String] =
+    Constraint {
+      input =>
+        Try(BigDecimal(input)) match {
+          case Success(value) if value >= 0 => Valid
+          case _ => Invalid(errorKey)
+        }
+    }
 }

@@ -45,7 +45,7 @@ class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "customsDutyPaid.shouldhavepaid.error.decimalPlaces"),
-            greaterThanZero("customsDutyPaid.shouldhavepaid.error.greaterThanZero")
+            greaterThanOrEqualZero("customsDutyPaid.shouldhavepaid.error.greaterThanZero")
           )
         )
         .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
