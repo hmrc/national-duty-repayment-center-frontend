@@ -69,31 +69,15 @@ class BankDetailsController @Inject()(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
-        value => {
-          val triedAnswers = request.userAnswers.set(BankDetailsPage, value).get
-          sessionRepository.set(triedAnswers)
-          Future(Redirect(navigator.nextPage(BankDetailsPage, mode, triedAnswers)))
+        {
+          case value@bankDetails if bankAccountReputationService.validate(bankDetails).isValid =>
+            val triedAnswers = request.userAnswers.set(BankDetailsPage, value).get
+            sessionRepository.set(triedAnswers)
+            Future(Redirect(navigator.nextPage(BankDetailsPage, mode, triedAnswers)))
+          case bankDetails =>
+            Future.successful(BadRequest(view(form.fill(bankDetails).copy(errors = Seq(FormError("SortCode", "Bad"))), mode)))
         }
 
-
-
-
-
-
-
-
-
-        //          for {
-        //            updatedAnswers <- Future.fromTry(request.userAnswers.set(BankDetailsPage, value))
-        //            removeCMA <-
-        //              Future.fromTry(updatedAnswers.get(RepaymentTypePage) match {
-        //                case Some(RepaymentType.CMA) =>
-        //                  updatedAnswers.remove(RepaymentTypePage)
-        //                case _ =>
-        //                  updatedAnswers.set(BankDetailsPage, value)
-        //              })
-        //            _              <- sessionRepository.set(removeCMA)
-        //          } yield Redirect(navigator.nextPage(BankDetailsPage, mode, removeCMA))
       )
   }
 
