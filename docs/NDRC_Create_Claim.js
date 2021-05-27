@@ -195,7 +195,7 @@ function completePage() {
     }
 
     /* AMEND */
-    if (currentPageIs("/amend/importer-or-representative")) {
+    if (currentPageIs("/amend/application-reference-number")) {
         document.getElementById("value").value = "NDRC000A00AB0ABCABC0AB0";
         submit();
     }

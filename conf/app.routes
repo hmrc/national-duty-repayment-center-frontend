@@ -189,10 +189,10 @@ POST        /change-indirect-representative                                     
 
 GET         /signout                                                                   controllers.SignOutController.signOut
 
-GET         /amend/importer-or-representative                                          controllers.ReferenceNumberController.onPageLoad(mode: Mode = NormalMode)
-POST        /amend/importer-or-representative                                          controllers.ReferenceNumberController.onSubmit(mode: Mode = NormalMode)
-GET         /amend/change-importer-or-representative                                   controllers.ReferenceNumberController.onPageLoad(mode: Mode = CheckMode)
-POST        /amend/change-importer-or-representative                                   controllers.ReferenceNumberController.onSubmit(mode: Mode = CheckMode)
+GET         /amend/application-reference-number                                        controllers.ReferenceNumberController.onPageLoad(mode: Mode = NormalMode)
+POST        /amend/application-reference-number                                        controllers.ReferenceNumberController.onSubmit(mode: Mode = NormalMode)
+GET         /amend/change-application-reference-number                                 controllers.ReferenceNumberController.onPageLoad(mode: Mode = CheckMode)
+POST        /amend/change-application-reference-number                                 controllers.ReferenceNumberController.onSubmit(mode: Mode = CheckMode)
 
 GET         /amend/further-information                                                 controllers.FurtherInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /amend/further-information                                                 controllers.FurtherInformationController.onSubmit(mode: Mode = NormalMode)
