@@ -31,7 +31,7 @@
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterManualAddress.title"))}")
 ) {
 
-    @forms.formWithCSRF(action = AgentImporterManualAddressController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = AgentImporterManualAddressController.onSubmit(mode), args = 'novalidate -> "novalidate", 'autoComplete -> "on") {
 
     @components.error_summary(form.errors)
 
@@ -51,7 +51,7 @@
             label = "agentImporterManualAddress.line1.heading",
             isPageHeading = false,
             isInFieldset = true,
-            attributes = Map("autocomplete" -> "off")
+            autocomplete = Some("address-line1")
         )
 
         @forms.inputText(
@@ -63,7 +63,7 @@
             labelHidden = true,
             isPageHeading = false,
             isInFieldset = true,
-            attributes = Map("autocomplete" -> "off")
+            autocomplete = Some("address-line2")
         )
 
         @forms.inputText(
@@ -75,7 +75,7 @@
             classes = Some("govuk-!-width-two-thirds"),
             isPageHeading = false,
             isInFieldset = true,
-            attributes = Map("autocomplete" -> "off")
+            autocomplete = Some("address-level1")
         )
 
         @forms.inputText(
@@ -87,7 +87,7 @@
             classes = Some("govuk-!-width-two-thirds"),
             isPageHeading = false,
             isInFieldset = true,
-            attributes = Map("autocomplete" -> "off")
+            autocomplete = Some("county")
         )
 
         @forms.inputText(
@@ -99,7 +99,7 @@
             classes = Some("govuk-input--width-10"),
             isPageHeading = false,
             isInFieldset = true,
-            attributes = Map("autocomplete" -> "off")
+            autocomplete = Some("postal-code")
         )
 
         <div class="govuk-!-width-two-thirds">

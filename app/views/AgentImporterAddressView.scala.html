@@ -30,7 +30,7 @@
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterAddress.title"))}")
 ) {
 
-    @forms.formWithCSRF(action = AgentImporterAddressController.postcodeSubmit(mode)) {
+    @forms.formWithCSRF(action = AgentImporterAddressController.postcodeSubmit(mode), 'autoComplete -> "on") {
 
         @components.error_summary(form.errors)
 
@@ -50,7 +50,7 @@
                 label = "importerAddress.postCode",
                 isPageHeading = false,
                 isInFieldset = false,
-                attributes = Map("autocomplete" -> "off")
+                autocomplete = Some("postal-code")
             )
         }
             <p>@html.a(
