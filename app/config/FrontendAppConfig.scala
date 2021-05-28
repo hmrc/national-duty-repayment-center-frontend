@@ -116,12 +116,6 @@ class FrontendAppConfigImpl @Inject()(configuration: Configuration) extends Fron
   override val routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
 
-  private val barsBaseUrl: String = "bars-stub"
-
-  val barsBusinessAssessUrl: String =
-    s"${barsBaseUrl}businessAssess"
-
-
   private def loadConfig(key: String): String = configuration.getOptional[String](key).getOrElse(throw new Exception
   (s"Missing configuration key: $key"))
 }

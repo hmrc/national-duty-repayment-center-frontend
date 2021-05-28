@@ -36,9 +36,4 @@ class BankAccountReputationService @Inject()(connector: BARSConnector)(implicit 
     }
   }
 
-
-  //    connector.assessBusinessBankDetails(AssessBusinessBankDetailsRequest(bankDetails)) map { assessment =>
-//      BARSResult(assessment)
-//    }
-
 }
