@@ -83,7 +83,10 @@ class BankDetailsController @Inject()(
               BadRequest(view(form.fill(value).copy(errors = Seq(FormError("SortCode", "Sort Code does not exist"))), mode))
 
             case barsResult if !barsResult.validAccountAndSortCode =>
-              BadRequest(view(form.fill(value).copy(errors = Seq(FormError("SortCode", "Sort Code does not match Account Code"))), mode))
+              BadRequest(view(form.fill(value).copy(errors = Seq(FormError("AccountNumber", "Sort Code does not match Account Code"))), mode))
+
+            case barsResult if !barsResult.isValid =>
+              BadRequest(view(form.fill(value).copy(errors = Seq(FormError("SortCode", "BARS Assesment failed"))), mode))
           }
       )
   }
