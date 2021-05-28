@@ -49,7 +49,6 @@ trait UserAnswersGenerator extends TryValues {
       arbitrary[(RepaymentTypePage.type, JsValue)] ::
       arbitrary[(RepresentativeDeclarantAndBusinessNamePage.type, JsValue)] ::
       arbitrary[(EmailAddressAndPhoneNumberPage.type, JsValue)] ::
-      arbitrary[(ContactTypePage.type, JsValue)] ::
       arbitrary[(ImporterNamePage.type, JsValue)] ::
       arbitrary[(EvidenceSupportingDocsPage.type, JsValue)] ::
       arbitrary[(ClaimRepaymentTypePage.type, JsValue)] ::

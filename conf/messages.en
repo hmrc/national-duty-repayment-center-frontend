@@ -238,14 +238,6 @@ evidenceSupportingDocs.bullet5 = .xls
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
 
-contactType.title = How should we contact you?
-contactType.heading = How should we contact you?
-contactType.01 = Email
-contactType.02 = Phone
-contactType.checkYourAnswersLabel = How should we contact you?
-contactType.error.required = Select Contact Type
-contactType.hint = We will only use these details if we need more information to complete your application.
-
 declarantReferenceNumber.title = Do you want to create a declarant reference number?
 declarantReferenceNumber.heading = Do you want to create a declarant reference number?
 declarantReferenceNumber.hint1 = This will only be used for your own records.
