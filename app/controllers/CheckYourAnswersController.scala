@@ -16,23 +16,22 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{ClaimantType, Mode, NormalMode, RepaymentType, UserAnswers}
+import models.NormalMode
 import navigation.Navigator
-import pages.{CheckYourAnswersPage, ClaimantTypePage, RepaymentTypePage}
+import pages.CheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
 import repositories.SessionRepository
 import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import viewmodels.AnswerSection
 import views.html.CheckYourAnswersView
+import play.api.libs.json.{JsDefined, JsNull, JsObject, Json}
 
+import java.time.LocalDate
 import scala.concurrent.{ExecutionContext, Future}
 
 class CheckYourAnswersController @Inject()(
@@ -51,7 +50,9 @@ class CheckYourAnswersController @Inject()(
     implicit request =>
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-
+      if(request.userAnswers.data.fields.isEmpty && request.userAnswers.fileUploadState.isEmpty)
+        Redirect(routes.CreateOrAmendCaseController.onPageLoad())
+      else
       Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections))
   }
 

@@ -343,7 +343,7 @@ vatPaid.actualamountpaid.error.decimalPlaces = The amount of import VAT that was
 
 vatPaid.shouldhavepaid.heading = Amount of import VAT that should have been paid
 vatPaid.shouldhavepaid.error.required = Enter the amount of import VAT that should have been paid
-vatPaid.shouldhavepaid.error.greaterThanZero = The amount of import VAT that should have been paid must be more than £0
+vatPaid.shouldhavepaid.error.greaterThanZero = The amount cannot be a negative number
 vatPaid.shouldhavepaid.error.length = The amount of import VAT that should have been paid must £99,999,999,999.99 or less
 vatPaid.shouldhavepaid.error.decimalPlaces = The amount of import VAT that should have been paid must be an amount of money, like £123.45 or £248
 vatPaid.shouldhavepaid.error.notANumber = The amount of import VAT that should have been paid must be a number
@@ -366,7 +366,7 @@ customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of 
 
 customsDutyPaid.shouldhavepaid.heading = Amount of Customs Duty that should have been paid
 customsDutyPaid.shouldhavepaid.error.required = Enter the amount of Customs Duty that should have been paid
-customsDutyPaid.shouldhavepaid.error.greaterThanZero = The amount of Customs Duty that should have been paid must be more than £0
+customsDutyPaid.shouldhavepaid.error.greaterThanZero = The amount cannot be a negative number
 customsDutyPaid.shouldhavepaid.error.notANumber = The amount of Customs Duty that should have been paid must be a number
 customsDutyPaid.shouldhavepaid.error.length = The amount of Customs Duty that should have been paid must £99,999,999,999.99 or less
 customsDutyPaid.shouldhavepaid.error.decimalPlaces = The amount of Customs Duty that should have been paid must be an amount of money, like £123.45 or £248
@@ -387,7 +387,7 @@ otherDutiesPaid.actualamountpaid.error.decimalPlaces = The amount of other dutie
 
 otherDutiesPaid.shouldhavepaid.heading = Amount of other duties that should have been paid
 otherDutiesPaid.shouldhavepaid.error.required = Enter the amount of other duties that should have been paid
-otherDutiesPaid.shouldhavepaid.error.greaterThanZero = The amount of other duties that should have been paid must be more than £0
+otherDutiesPaid.shouldhavepaid.error.greaterThanZero = The amount cannot be a negative number
 otherDutiesPaid.shouldhavepaid.error.notANumber = The amount of other duties that should have been paid must be a number
 otherDutiesPaid.shouldhavepaid.error.length = The amount of other duties that should have been paid must £99,999,999,999.99 or less
 otherDutiesPaid.shouldhavepaid.error.decimalPlaces = The amount of other duties that should have been paid must be an amount of money, like £123.45 or £248

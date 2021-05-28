@@ -17,19 +17,22 @@
 package controllers
 
 import controllers.actions._
+
 import javax.inject.Inject
 import org.slf4j.LoggerFactory
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.ClaimIdQuery
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AmendConfirmationView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class AmendConfirmationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: IdentifierAction,
+                                       sessionRepository: SessionRepository,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
@@ -37,16 +40,17 @@ class AmendConfirmationController @Inject()(
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
-
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val successfulResult = for {
-        id <- request.userAnswers.get(ClaimIdQuery)
-      } yield Ok(view(id))
-
-      successfulResult getOrElse {
-        logger.warn("Could not find the registrationId or registrationDate in user answers")
-        InternalServerError
+      for {
+        id <- Future.successful(request.userAnswers.get(ClaimIdQuery))
+        res <- sessionRepository.resetData(request.userAnswers)
+        if res
+      } yield {
+        id.map(i => Ok(view(i))).getOrElse {
+          logger.warn("Could not find the registrationId or registrationDate in user answers")
+          InternalServerError
+        }
       }
   }
 }

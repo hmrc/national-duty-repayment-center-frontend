@@ -49,6 +49,9 @@ class AmendCheckYourAnswersController @Inject()(
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+      if(request.userAnswers.data.fields.isEmpty && request.userAnswers.fileUploadState.isEmpty)
+        Redirect(routes.CreateOrAmendCaseController.onPageLoad())
+      else
       Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections))
   }
 
