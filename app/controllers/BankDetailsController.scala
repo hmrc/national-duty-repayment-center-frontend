@@ -69,39 +69,22 @@ class BankDetailsController @Inject()(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode))),
 
-        {
-          case value@bankDetails if bankAccountReputationService.validate(bankDetails).isValid =>
-            val triedAnswers = request.userAnswers.set(BankDetailsPage, value).get
-            sessionRepository.set(triedAnswers)
-            Future(Redirect(navigator.nextPage(BankDetailsPage, mode, triedAnswers)))
-          case bankDetails =>
-            Future.successful(BadRequest(view(form.fill(bankDetails).copy(errors = Seq(FormError("SortCode", "Bad"))), mode)))
-        }
+        value =>
+            bankAccountReputationService.validate(value) map {
 
+              case barsResult if barsResult.isValid => {
+
+                val triedAnswers = request.userAnswers.set(BankDetailsPage, value).get
+                sessionRepository.set(triedAnswers)
+                Redirect(navigator.nextPage(BankDetailsPage, mode, triedAnswers))
+              }
+
+            case barsResult if !barsResult.sortcodeExists =>
+              BadRequest(view(form.fill(value).copy(errors = Seq(FormError("SortCode", "Sort Code does not exist"))), mode))
+
+            case barsResult if !barsResult.validAccountAndSortCode =>
+              BadRequest(view(form.fill(value).copy(errors = Seq(FormError("SortCode", "Sort Code does not match Account Code"))), mode))
+          }
       )
-  }
-
-  private def processBarsFailure(bankDetails: BankDetails, barsResult: BARSResult) = {
-
-    val formWithErrors = form.fill(bankDetails).copy(errors = barsResult match {
-
-      case bars if !bars.sortcodeExists =>
-        Seq(FormError("sortCode", "bankDetails.bars.validation.sortcodeNotFound"))
-
-      case bars if !bars.validAccountAndSortCode =>
-        Seq(FormError("accountNumber", "bankDetails.bars.validation.modCheckFailed"))
-
-      case bars if !bars.sortcodeAcceptsDirectCredit =>
-        Seq(FormError("sortCode", "bankDetails.bars.validation.bacsNotSupported"))
-
-      case bars if !bars.rollNotRequired => Seq(FormError("sortCode", "bankDetails.bars.validation.rollRequired"))
-
-      case bars if !bars.accountValid => Seq(FormError("accountNumber", "bankDetails.bars.validation.accountInvalid"))
-
-      case bars if !bars.companyNameValid =>
-        Seq(FormError("accountName", "bankDetails.bars.validation.companyNameInvalid"))
-
-      case _ => Seq(FormError("", "bankDetails.bars.validation.failed"))
-    })
   }
 }

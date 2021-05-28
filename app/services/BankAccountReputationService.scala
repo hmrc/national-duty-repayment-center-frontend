@@ -27,13 +27,12 @@ import scala.util.{Failure, Success, Try}
 
 class BankAccountReputationService @Inject()(connector: BARSConnector)(implicit ec: ExecutionContext) {
 
-  def validate(bankDetails: BankDetails)(implicit hc: HeaderCarrier): BARSResult = {
+  def validate(bankDetails: BankDetails)(implicit hc: HeaderCarrier): Future[BARSResult] = {
 
-    bankDetails match {
-      case (accountDetails) if accountDetails.AccountNumber == "87654321" =>
-        BARSResult(assessBusinessBankDetailsResponse = AssessBusinessBankDetailsResponse("no", "yes", "yes", "no", "yes", "yes"))
-      case _ =>
-        BARSResult(assessBusinessBankDetailsResponse = AssessBusinessBankDetailsResponse("yes", "yes", "no", "yes", "yes", "yes"))
+    connector.assessBusinessBankDetails(AssessBusinessBankDetailsRequest(bankDetails)) map  {
+      assesment =>
+        BARSResult(assesment)
+
     }
   }
 
