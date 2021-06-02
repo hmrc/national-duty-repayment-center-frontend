@@ -21,8 +21,8 @@ import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsString, Json}
 
-class BankDetailsSpec extends WordSpec with MustMatchers with Generators with ScalaCheckPropertyChecks  with OptionValues {
-
+class BankDetailsSpec
+    extends WordSpec with MustMatchers with Generators with ScalaCheckPropertyChecks with OptionValues {
 
   "Bank Details" must {
     "must serialise" in {
@@ -35,10 +35,6 @@ class BankDetailsSpec extends WordSpec with MustMatchers with Generators with Sc
 
     }
 
-
   }
-
-
-
 
 }

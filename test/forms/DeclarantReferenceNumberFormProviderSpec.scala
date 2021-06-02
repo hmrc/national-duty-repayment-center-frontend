@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.{OptionFieldBehaviours, StringFieldBehaviours}
-import models.{DeclarantReferenceType, DeclarantReferenceNumber}
+import models.{DeclarantReferenceNumber, DeclarantReferenceType}
 import play.api.data.FormError
 
 class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours with StringFieldBehaviours {
@@ -25,8 +25,8 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
   val form = new DeclarantReferenceNumberFormProvider()()
 
   val radioFieldName = "value"
-  val minLength = 1
-  val maxLength = 50
+  val minLength      = 1
+  val maxLength      = 50
 
   ".value" must {
 
@@ -35,31 +35,28 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
     behave like optionsField[DeclarantReferenceNumber](
       form,
       radioFieldName,
-      validValues = Seq(DeclarantReferenceNumber.apply(DeclarantReferenceType.Yes, None),
-        DeclarantReferenceNumber.apply(DeclarantReferenceType.No, Some(stringsWithMinAndMaxLength(minLength, maxLength).toString))),
+      validValues = Seq(
+        DeclarantReferenceNumber.apply(DeclarantReferenceType.Yes, None),
+        DeclarantReferenceNumber.apply(
+          DeclarantReferenceType.No,
+          Some(stringsWithMinAndMaxLength(minLength, maxLength).toString)
+        )
+      ),
       invalidError = FormError(radioFieldName, "error.invalid")
     )
 
-    behave like mandatoryField(
-      form,
-      radioFieldName,
-      requiredError = FormError(radioFieldName, requiredKey)
-    )
+    behave like mandatoryField(form, radioFieldName, requiredError = FormError(radioFieldName, requiredKey))
   }
 
   ".declarantReferenceNumber" must {
 
-    val fieldName = "declarantReferenceNumber"
+    val fieldName   = "declarantReferenceNumber"
     val requiredKey = "declarantReferenceNumber.error.required.declarantReferenceNumber"
-    val invalidKey = "declarantReferenceNumber.error.invalid"
-    val maxLength = 50
-    val minLength = 1
+    val invalidKey  = "declarantReferenceNumber.error.invalid"
+    val maxLength   = 50
+    val minLength   = 1
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMinAndMaxLength(minLength, maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMinAndMaxLength(minLength, maxLength))
 
     behave like declarantReferencePreventsUnsafeInput(
       form,
@@ -87,10 +84,10 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
     }
 
     "fail to bind a value" in {
-      val result = form.bind(Map(radioFieldName -> "01")).bind(Map(fieldName -> "")).apply(fieldName)
+      val result        = form.bind(Map(radioFieldName -> "01")).bind(Map(fieldName -> "")).apply(fieldName)
       val expectedError = error(fieldName, requiredKey)
 
-      result.errors shouldEqual (expectedError)
+      result.errors shouldEqual expectedError
     }
   }
 }

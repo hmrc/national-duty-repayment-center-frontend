@@ -22,10 +22,7 @@ import scala.math.BigDecimal.RoundingMode
 
 trait DecimalFieldBehaviours extends FieldBehaviours {
 
-  def decimalField(form: Form[_],
-                   fieldName: String,
-                   nonNumericError: FormError): Unit = {
-
+  def decimalField(form: Form[_], fieldName: String, nonNumericError: FormError): Unit =
     "not bind non-numeric numbers" in {
 
       forAll(nonNumerics -> "nonNumeric") {
@@ -34,13 +31,8 @@ trait DecimalFieldBehaviours extends FieldBehaviours {
           result.errors shouldEqual Seq(nonNumericError)
       }
     }
-  }
 
-  def decimalFieldWithMinimum(form: Form[_],
-                              fieldName: String,
-                              minimum: Double,
-                              expectedError: FormError): Unit = {
-
+  def decimalFieldWithMinimum(form: Form[_], fieldName: String, minimum: Double, expectedError: FormError): Unit =
     s"not bind numbers below $minimum" in {
 
       forAll(decimalsBelowValue(minimum) -> "decimalBelowMin") {
@@ -49,13 +41,8 @@ trait DecimalFieldBehaviours extends FieldBehaviours {
           result.errors shouldEqual Seq(expectedError)
       }
     }
-  }
 
-  def decimalFieldWithMaximum(form: Form[_],
-                              fieldName: String,
-                              maximum: Double,
-                              expectedError: FormError): Unit = {
-
+  def decimalFieldWithMaximum(form: Form[_], fieldName: String, maximum: Double, expectedError: FormError): Unit =
     s"not bind numbers above $maximum" in {
 
       forAll(decimalsAboveValue(maximum) -> "decimalAboveMax") {
@@ -64,14 +51,14 @@ trait DecimalFieldBehaviours extends FieldBehaviours {
           result.errors shouldEqual Seq(expectedError)
       }
     }
-  }
 
-  def decimalsFieldWithRange(form: Form[_],
-                             fieldName: String,
-                             minimum: Double,
-                             maximum: Double,
-                             expectedError: FormError): Unit = {
-
+  def decimalsFieldWithRange(
+    form: Form[_],
+    fieldName: String,
+    minimum: Double,
+    maximum: Double,
+    expectedError: FormError
+  ): Unit =
     s"not bind numbers outside the range $minimum to $maximum" in {
 
       forAll(decimalsOutsideRange(minimum, maximum) -> "intOutsideRange") {
@@ -80,5 +67,5 @@ trait DecimalFieldBehaviours extends FieldBehaviours {
           result.errors shouldEqual Seq(expectedError)
       }
     }
-  }
+
 }

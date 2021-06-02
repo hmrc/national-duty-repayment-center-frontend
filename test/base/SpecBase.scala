@@ -33,7 +33,7 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.inject.{Injector, bind}
+import play.api.inject.{bind, Injector}
 import play.api.libs.json.{JsArray, JsNull, Json}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
@@ -44,8 +44,9 @@ import uk.gov.hmrc.http.HeaderCarrier
 import java.time.{LocalDate, ZoneId, ZonedDateTime}
 import scala.concurrent.{ExecutionContext, Future}
 
-
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience with MockitoSugar {
+trait SpecBase
+    extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience
+    with MockitoSugar {
 
   val userAnswersId = "id"
 
@@ -55,9 +56,9 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
 
   def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
 
-  val metrics: Metrics = mock[Metrics]
-  val registry:MetricRegistry = metrics.defaultRegistry
-  val metricFilter = mock[MetricsFilterImpl]
+  val metrics: Metrics         = mock[Metrics]
+  val registry: MetricRegistry = metrics.defaultRegistry
+  val metricFilter             = mock[MetricsFilterImpl]
   when(metricFilter.registry).thenReturn(registry)
 
   val mockAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
@@ -69,34 +70,30 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 
   val upscanMock = mock[UpscanInitiateConnector]
+
   val uscanResponse =
     UpscanInitiateResponse(
       reference = "foo-bar-ref-new",
       uploadRequest =
         UploadRequest(href = "https://s3.bucket", fields = Map("callbackUrl" -> "https://foo.bar/callback-new"))
     )
+
   when(upscanMock.initiate(any[UpscanInitiateRequest])(any[HeaderCarrier], any[ExecutionContext]))
     .thenReturn(Future.successful(uscanResponse))
 
   val mockSessionRepository = mock[SessionRepository]
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder = {
+  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
-      .configure(
-        "metrics.enabled" -> false,
-        "auditing.enabled" -> false,
-        "metrics.jvm" -> false
-      ).overrides(
-      bind[DataRequiredAction].to[DataRequiredActionImpl],
-      bind[IdentifierAction].to[FakeIdentifierAction],
-      bind[DataRequiredAction].to[DataRequiredActionImpl],
-      bind[UpscanInitiateConnector].toInstance(upscanMock),
-      bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
-      bind[SessionRepository].toInstance(mockSessionRepository),
-      bind[Metrics].to[MetricsImpl]
-    )
-  }
-
+      .configure("metrics.enabled" -> false, "auditing.enabled" -> false, "metrics.jvm" -> false).overrides(
+        bind[DataRequiredAction].to[DataRequiredActionImpl],
+        bind[IdentifierAction].to[FakeIdentifierAction],
+        bind[DataRequiredAction].to[DataRequiredActionImpl],
+        bind[UpscanInitiateConnector].toInstance(upscanMock),
+        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
+        bind[SessionRepository].toInstance(mockSessionRepository),
+        bind[Metrics].to[MetricsImpl]
+      )
 
   val claimDetails = ClaimDetails(
     FormType = FormType("01"),
@@ -117,7 +114,8 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
     DeclarantName = "DummyData"
   )
 
-  val address = Address(AddressLine1 = "line 1",
+  val address = Address(
+    AddressLine1 = "line 1",
     AddressLine2 = Some("line 2"),
     City = "city",
     Region = Some("region"),
@@ -148,40 +146,48 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   val documentList = Seq(
     DocumentList(EvidenceSupportingDocs.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
     DocumentList(EvidenceSupportingDocs.Invoice, Some(DocumentDescription("this is an invoice"))),
-    DocumentList(EvidenceSupportingDocs.PackingList, Some(DocumentDescription("this is a packing list"))),
+    DocumentList(EvidenceSupportingDocs.PackingList, Some(DocumentDescription("this is a packing list")))
   )
 
   val dutyTypeTaxDetails = DutyTypeTaxDetails(dutyTypeTaxList)
 
-  val uploadedFiles = Seq(UploadedFile(
-    "ref-123",
-    downloadUrl = "/bucket/test1.jpeg",
-    uploadTimestamp = ZonedDateTime.of(2020, 10, 10, 10, 10, 10, 0, ZoneId.of("UTC")),
-    checksum = "f55a741917d512ab4c547ea97bdfdd8df72bed5fe51b6a248e0a5a0ae58061c8",
-    fileName = "test1.jpeg",
-    fileMimeType = "image/jpeg"
-  ))
+  val uploadedFiles = Seq(
+    UploadedFile(
+      "ref-123",
+      downloadUrl = "/bucket/test1.jpeg",
+      uploadTimestamp = ZonedDateTime.of(2020, 10, 10, 10, 10, 10, 0, ZoneId.of("UTC")),
+      checksum = "f55a741917d512ab4c547ea97bdfdd8df72bed5fe51b6a248e0a5a0ae58061c8",
+      fileName = "test1.jpeg",
+      fileMimeType = "image/jpeg"
+    )
+  )
 
   val createClaimRequest = CreateClaimRequest(
-    Content(claimDetails,
+    Content(
+      claimDetails,
       AgentDetails = Some(userDetails),
       ImporterDetails = userDetails,
       BankDetails = Some(bankDetails),
       DutyTypeTaxDetails = dutyTypeTaxDetails,
-      DocumentList = documentList), uploadedFiles
+      DocumentList = documentList
+    ),
+    uploadedFiles
   )
 
   val amendClaimRequest = AmendClaimRequest(
-    AmendContent(CaseID = "Risk-2507",
+    AmendContent(
+      CaseID = "Risk-2507",
       Description = "update request for Risk-2507",
-      TypeOfAmendments = Seq(FurtherInformation)), Nil
+      TypeOfAmendments = Seq(FurtherInformation)
+    ),
+    Nil
   )
 
   val amendJson = Json.obj(
     "Content" -> Json.obj(
-      "CaseID" -> "Risk-2507",
-      "Description" -> "update request for Risk-2507",
-      "TypeOfAmendments" -> JsArray(Seq(Json.toJson(FurtherInformation.toString))),
+      "CaseID"           -> "Risk-2507",
+      "Description"      -> "update request for Risk-2507",
+      "TypeOfAmendments" -> JsArray(Seq(Json.toJson(FurtherInformation.toString)))
     ),
     "uploadedFiles" -> JsArray()
   )
@@ -189,106 +195,78 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   val json = Json.obj(
     "Content" -> Json.obj(
       "ClaimDetails" -> Json.obj(
-        "FormType" -> "01",
+        "FormType"             -> "01",
         "CustomRegulationType" -> "02",
-        "ClaimedUnderArticle" -> "120",
-        "Claimant" -> "02",
-        "ClaimType" -> "02",
-        "NoOfEntries" -> "10",
-        "EntryDetails" -> Json.obj(
-          "EPU" -> "account name",
-          "EntryNumber" -> "123456",
-          "EntryDate" -> "2020-08-05"
-        ),
-        "EntryNumber" -> "123456A",
-        "EntryDate" -> "20200101",
-        "ClaimReason" -> "06",
-        "ClaimDescription" -> "this is a claim description",
-        "DateReceived" -> "20200805",
-        "ClaimDate" -> "20200805",
-        "PayeeIndicator" -> "01",
-        "PaymentMethod" -> "02",
+        "ClaimedUnderArticle"  -> "120",
+        "Claimant"             -> "02",
+        "ClaimType"            -> "02",
+        "NoOfEntries"          -> "10",
+        "EntryDetails"         -> Json.obj("EPU" -> "account name", "EntryNumber" -> "123456", "EntryDate" -> "2020-08-05"),
+        "EntryNumber"          -> "123456A",
+        "EntryDate"            -> "20200101",
+        "ClaimReason"          -> "06",
+        "ClaimDescription"     -> "this is a claim description",
+        "DateReceived"         -> "20200805",
+        "ClaimDate"            -> "20200805",
+        "PayeeIndicator"       -> "01",
+        "PaymentMethod"        -> "02"
       ),
       "AgentDetails" -> Json.obj(
         "VATNumber" -> "123456789",
-        "EORI" -> "GB123456789123456",
-        "Name" -> "Joe Bloggs",
+        "EORI"      -> "GB123456789123456",
+        "Name"      -> "Joe Bloggs",
         "Address" -> Json.obj(
           "AddressLine1" -> "line 1",
           "AddressLine2" -> "line 2",
-          "City" -> "city",
-          "Region" -> "region",
-          "CountryCode" -> "GB",
-          "PostalCode" -> "ZZ111ZZ"
+          "City"         -> "city",
+          "Region"       -> "region",
+          "CountryCode"  -> "GB",
+          "PostalCode"   -> "ZZ111ZZ"
         )
       ),
       "ImporterDetails" -> Json.obj(
         "VATNumber" -> "123456789",
-        "EORI" -> "GB123456789123456",
-        "Name" -> "Joe Bloggs",
+        "EORI"      -> "GB123456789123456",
+        "Name"      -> "Joe Bloggs",
         "Address" -> Json.obj(
           "AddressLine1" -> "line 1",
           "AddressLine2" -> "line 2",
-          "City" -> "city",
-          "Region" -> "region",
-          "CountryCode" -> "GB",
-          "PostalCode" -> "ZZ111ZZ"
+          "City"         -> "city",
+          "Region"       -> "region",
+          "CountryCode"  -> "GB",
+          "PostalCode"   -> "ZZ111ZZ"
         )
       ),
       "BankDetails" -> Json.obj(
         "ImporterBankDetails" -> Json.obj(
-          "AccountName" -> "account name",
-          "SortCode" -> "123456",
+          "AccountName"   -> "account name",
+          "SortCode"      -> "123456",
           "AccountNumber" -> "12345678"
         ),
         "AgentBankDetails" -> Json.obj(
-          "AccountName" -> "account name",
-          "SortCode" -> "123456",
+          "AccountName"   -> "account name",
+          "SortCode"      -> "123456",
           "AccountNumber" -> "12345678"
         )
       ),
       "DutyTypeTaxDetails" -> Json.obj(
         "DutyTypeTaxList" -> Json.arr(
-          Json.obj(
-            "Type" -> "01",
-            "PaidAmount" -> "100.00",
-            "DueAmount" -> "50.00",
-            "ClaimAmount" -> "50.00"
-          ),
-          Json.obj(
-            "Type" -> "02",
-            "PaidAmount" -> "100.00",
-            "DueAmount" -> "50.00",
-            "ClaimAmount" -> "50.00"
-          ),
-          Json.obj(
-            "Type" -> "03",
-            "PaidAmount" -> "100.00",
-            "DueAmount" -> "50.00",
-            "ClaimAmount" -> "50.00"
-          )
+          Json.obj("Type" -> "01", "PaidAmount" -> "100.00", "DueAmount" -> "50.00", "ClaimAmount" -> "50.00"),
+          Json.obj("Type" -> "02", "PaidAmount" -> "100.00", "DueAmount" -> "50.00", "ClaimAmount" -> "50.00"),
+          Json.obj("Type" -> "03", "PaidAmount" -> "100.00", "DueAmount" -> "50.00", "ClaimAmount" -> "50.00")
         )
       ),
       "DocumentList" -> Json.arr(
-        Json.obj(
-          "Type" -> "03",
-          "Description" -> "this is a copy of c88"
-        ),
-        Json.obj(
-          "Type" -> "01",
-          "Description" -> "this is an invoice"
-        ),
-        Json.obj(
-          "Type" -> "04",
-          "Description" -> "this is a packing list"
-        )
+        Json.obj("Type" -> "03", "Description" -> "this is a copy of c88"),
+        Json.obj("Type" -> "01", "Description" -> "this is an invoice"),
+        Json.obj("Type" -> "04", "Description" -> "this is a packing list")
       )
     )
   )
-  def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] = {
+
+  def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(method, path)
       .withCSRFToken
       .asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
-  }
 
 }

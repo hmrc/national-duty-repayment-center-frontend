@@ -32,7 +32,6 @@ class UkRegulationTypeSpec extends WordSpec with MustMatchers with ScalaCheckPro
 
       forAll(gen) {
         ukRegulationType =>
-
           JsString(ukRegulationType.toString).validate[UkRegulationType].asOpt.value mustEqual ukRegulationType
       }
     }
@@ -43,7 +42,6 @@ class UkRegulationTypeSpec extends WordSpec with MustMatchers with ScalaCheckPro
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[UkRegulationType] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class UkRegulationTypeSpec extends WordSpec with MustMatchers with ScalaCheckPro
 
       forAll(gen) {
         ukRegulationType =>
-
           Json.toJson(ukRegulationType) mustEqual JsString(ukRegulationType.toString)
       }
     }

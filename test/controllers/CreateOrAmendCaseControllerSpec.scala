@@ -39,7 +39,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
   lazy val createOrAmendCaseRoute = routes.CreateOrAmendCaseController.onPageLoad.url
 
   val formProvider = new CreateOrAmendCaseFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "CreateOrAmendCase Controller" must {
 
@@ -63,7 +63,8 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CreateOrAmendCasePage, CreateOrAmendCase.values.head).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(CreateOrAmendCasePage, CreateOrAmendCase.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -83,18 +84,15 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to the next page when valid data is submitted" in {
 
-
-
-      val userAnswers = UserAnswers(userAnswersId).set(CreateOrAmendCasePage, CreateOrAmendCase.values.head).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(CreateOrAmendCasePage, CreateOrAmendCase.values.head).success.value
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

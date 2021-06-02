@@ -26,20 +26,16 @@ class CustomsRegulationTypeFormProviderSpec extends OptionFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "customsRegulationType.error.required"
 
     behave like optionsField[CustomsRegulationType](
       form,
       fieldName,
-      validValues  = CustomsRegulationType.values,
+      validValues = CustomsRegulationType.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

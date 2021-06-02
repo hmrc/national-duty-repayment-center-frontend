@@ -38,7 +38,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ImporterHasEoriFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val importerHasEoriRoute = routes.ImporterHasEoriController.onPageLoad(NormalMode).url
 
@@ -66,7 +66,10 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value.set(ImporterHasEoriPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, Importer).success.value.set(
+        ImporterHasEoriPage,
+        true
+      ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -75,7 +78,6 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       val view = application.injector.instanceOf[ImporterHasEoriView]
 
       val result = route(application, request).value
-
 
       status(result) mustEqual OK
 
@@ -91,9 +93,7 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

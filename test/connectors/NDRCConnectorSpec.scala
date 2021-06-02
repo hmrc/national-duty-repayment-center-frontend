@@ -21,7 +21,6 @@ package connectors
  *
  */
 
-
 import org.scalatest.MustMatchers
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -35,24 +34,19 @@ import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
 
 import java.time.LocalDateTime
 
-class NDRCConnectorSpec extends SpecBase
-
-  with WireMockHelper
-  with MustMatchers {
+class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
   implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 
   private def application: Application =
     new GuiceApplicationBuilder()
-      .configure(
-        "microservice.services.national-duty-repayment-center.port" -> server.port
-      )
+      .configure("microservice.services.national-duty-repayment-center.port" -> server.port)
       .build()
 
   "SubmitClaim" must {
 
     "must return a result when the server responds with OK" in {
-      val app = application
+      val app         = application
       val generatedAt = LocalDateTime.now
       running(app) {
 
@@ -74,7 +68,10 @@ class NDRCConnectorSpec extends SpecBase
 
         val result = connector.submitClaim(createClaimRequest).futureValue
 
-        result mustEqual ClientClaimSuccessResponse(correlationId = "111", result = Some(NDRCFileTransferResult("1", generatedAt)))
+        result mustEqual ClientClaimSuccessResponse(
+          correlationId = "111",
+          result = Some(NDRCFileTransferResult("1", generatedAt))
+        )
       }
     }
 
@@ -97,7 +94,7 @@ class NDRCConnectorSpec extends SpecBase
   "SubmitAmendClaim" must {
 
     "must return a result when the server responds with OK" in {
-      val app = application
+      val app         = application
       val generatedAt = LocalDateTime.now
 
       running(app) {
@@ -119,7 +116,10 @@ class NDRCConnectorSpec extends SpecBase
 
         val result = connector.submitAmendClaim(amendClaimRequest).futureValue
 
-        result mustEqual ClientClaimSuccessResponse(correlationId = "111", result = Some(NDRCFileTransferResult("1", generatedAt)))
+        result mustEqual ClientClaimSuccessResponse(
+          correlationId = "111",
+          result = Some(NDRCFileTransferResult("1", generatedAt))
+        )
       }
     }
 

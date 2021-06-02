@@ -22,7 +22,8 @@ import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
 
-class AmendCaseUploadAnotherFileSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class AmendCaseUploadAnotherFileSpec
+    extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   "AmendCaseUploadAnotherFile" must {
 
@@ -32,8 +33,9 @@ class AmendCaseUploadAnotherFileSpec extends WordSpec with MustMatchers with Sca
 
       forAll(gen) {
         amendCaseUploadAnotherFile =>
-
-          JsString(amendCaseUploadAnotherFile.toString).validate[AmendCaseUploadAnotherFile].asOpt.value mustEqual amendCaseUploadAnotherFile
+          JsString(amendCaseUploadAnotherFile.toString).validate[
+            AmendCaseUploadAnotherFile
+          ].asOpt.value mustEqual amendCaseUploadAnotherFile
       }
     }
 
@@ -43,7 +45,6 @@ class AmendCaseUploadAnotherFileSpec extends WordSpec with MustMatchers with Sca
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[AmendCaseUploadAnotherFile] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +55,6 @@ class AmendCaseUploadAnotherFileSpec extends WordSpec with MustMatchers with Sca
 
       forAll(gen) {
         amendCaseUploadAnotherFile =>
-
           Json.toJson(amendCaseUploadAnotherFile) mustEqual JsString(amendCaseUploadAnotherFile.toString)
       }
     }

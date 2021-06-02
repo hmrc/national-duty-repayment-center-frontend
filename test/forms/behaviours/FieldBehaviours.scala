@@ -24,10 +24,7 @@ import play.api.data.{Form, FormError}
 
 trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Generators {
 
-  def fieldThatBindsValidData(form: Form[_],
-                              fieldName: String,
-                              validDataGenerator: Gen[String]): Unit = {
-
+  def fieldThatBindsValidData(form: Form[_], fieldName: String, validDataGenerator: Gen[String]): Unit =
     "bind valid data" in {
 
       forAll(validDataGenerator -> "validDataItem") {
@@ -36,11 +33,8 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
           result.value.value shouldBe dataItem
       }
     }
-  }
 
-  def mandatoryField(form: Form[_],
-                     fieldName: String,
-                     requiredError: FormError): Unit = {
+  def mandatoryField(form: Form[_], fieldName: String, requiredError: FormError): Unit = {
 
     "not bind when key is not present at all" in {
 
@@ -55,8 +49,7 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
     }
   }
 
-  def optionalField(form: Form[_],
-                    fieldName: String): Unit = {
+  def optionalField(form: Form[_], fieldName: String): Unit = {
 
     "bind when key is not present" in {
 
@@ -71,10 +64,12 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
     }
   }
 
-  def fieldThatPreventsUnsafeInput(form: Form[_],
-                                   fieldName: String,
-                                   unsafeInputs: Gen[String],
-                                   invalidError: FormError): Unit = {
+  def fieldThatPreventsUnsafeInput(
+    form: Form[_],
+    fieldName: String,
+    unsafeInputs: Gen[String],
+    invalidError: FormError
+  ): Unit =
     "prevent unsafe inputs" in {
 
       forAll(unsafeInputs) {
@@ -83,12 +78,13 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
           result.errors shouldEqual Seq(invalidError)
       }
     }
-  }
 
-  def declarantReferencePreventsUnsafeInput(form: Form[_],
-                                   fieldName: String,
-                                   unsafeInputs: Gen[String],
-                                   invalidError: FormError): Unit = {
+  def declarantReferencePreventsUnsafeInput(
+    form: Form[_],
+    fieldName: String,
+    unsafeInputs: Gen[String],
+    invalidError: FormError
+  ): Unit =
     "prevent unsafe inputs" in {
 
       forAll(unsafeInputs) {
@@ -97,5 +93,5 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
           result.errors shouldEqual Seq(invalidError)
       }
     }
-  }
+
 }

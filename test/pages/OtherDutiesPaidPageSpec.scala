@@ -19,7 +19,6 @@ package pages
 import models.RepaymentAmounts
 import pages.behaviours.PageBehaviours
 
-
 class OtherDutiesPaidPageSpec extends PageBehaviours {
 
   "OtherDutiesPaidPage" must {

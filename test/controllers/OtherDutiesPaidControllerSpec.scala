@@ -38,17 +38,14 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
   private val userAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
-      OtherDutiesPaidPage.toString -> Json.obj(
-        "ActualPaidAmount"   -> "100.00",
-        "ShouldHavePaidAmount"      -> "50.00"
-      )
+      OtherDutiesPaidPage.toString -> Json.obj("ActualPaidAmount" -> "100.00", "ShouldHavePaidAmount" -> "50.00")
     )
   )
 
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new OtherDutiesPaidFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val otherDutiesPaidRoute = routes.OtherDutiesPaidController.onPageLoad(NormalMode).url
 
@@ -56,8 +53,10 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
-        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        ClaimRepaymentTypePage,
+        ClaimRepaymentType.values.toSet
+      ).success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +77,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswersFull = userAnswers.set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-                            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
@@ -102,17 +101,12 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
         FakeRequest(POST, otherDutiesPaidRoute)
-          .withFormUrlEncodedBody(
-            ("ActualPaidAmount", "100.00"),
-            ("ShouldHavePaidAmount", "50.00")
-          )
+          .withFormUrlEncodedBody(("ActualPaidAmount", "100.00"), ("ShouldHavePaidAmount", "50.00"))
 
       val result = route(application, request).value
 
@@ -124,8 +118,10 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
-        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        ClaimRepaymentTypePage,
+        ClaimRepaymentType.values.toSet
+      ).success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ArticleTypeFormProvider
-import models.{NormalMode, ArticleType, UserAnswers}
+import models.{ArticleType, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -39,7 +39,7 @@ class ArticleTypeControllerSpec extends SpecBase with MockitoSugar {
   lazy val articleTypeRoute = routes.ArticleTypeController.onPageLoad(NormalMode).url
 
   val formProvider = new ArticleTypeFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "ArticleType Controller" must {
 
@@ -87,9 +87,7 @@ class ArticleTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

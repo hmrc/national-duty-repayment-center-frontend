@@ -24,14 +24,16 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
 
   val form = new NumberOfEntriesTypeFormProvider()()
 
-  def buildFormDataWithSpaces(value: Option[String] = Some("02"),
-                              entries: Option[String] = Some(" 1 2 ")): Map[String, String] =
+  def buildFormDataWithSpaces(
+    value: Option[String] = Some("02"),
+    entries: Option[String] = Some(" 1 2 ")
+  ): Map[String, String] =
     (
       value.map(_ => "value" -> value.get) ++
         entries.map(_ => "entries" -> entries.get)
-      ).toMap
+    ).toMap
 
-  val requiredKey = "numberOfEntriesType.error.required"
+  val requiredKey    = "numberOfEntriesType.error.required"
   val radioFieldName = "value"
 
   ".value" must {
@@ -41,29 +43,23 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
     behave like optionsField[Entries](
       form,
       radioFieldName,
-      validValues  = Seq(Entries.apply(NumberOfEntriesType.Single,None),
-        Entries.apply(NumberOfEntriesType.Multiple,Some(intsAboveValue(1).toString))),
+      validValues = Seq(
+        Entries.apply(NumberOfEntriesType.Single, None),
+        Entries.apply(NumberOfEntriesType.Multiple, Some(intsAboveValue(1).toString))
+      ),
       invalidError = FormError(radioFieldName, "error.invalid")
     )
 
-    behave like mandatoryField(
-      form,
-      radioFieldName,
-      requiredError = FormError(radioFieldName, requiredKey)
-    )
+    behave like mandatoryField(form, radioFieldName, requiredError = FormError(radioFieldName, requiredKey))
   }
 
   ".entries" must {
 
-    val fieldName = "entries"
+    val fieldName   = "entries"
     val requiredKey = "howManyEntries.error.required"
-    val maxLength = 999999
+    val maxLength   = 999999
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      Validation.numberOfEntries
-    )
+    behave like fieldThatBindsValidData(form, fieldName, Validation.numberOfEntries)
 
     behave like mandatoryField(
       form.bind(Map(radioFieldName -> "02")),
@@ -75,9 +71,9 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
       val results = List(
         form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "1")).apply(fieldName),
         form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "abcjf")).apply(fieldName),
-        form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> (maxLength+1).toString)).apply(fieldName)
+        form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> (maxLength + 1).toString)).apply(fieldName)
       )
-      val expectedError = FormError(fieldName, requiredKey , Seq())
+      val expectedError = FormError(fieldName, requiredKey, Seq())
       results.foreach {
         result =>
           result.errors shouldEqual Seq(expectedError)
@@ -85,15 +81,15 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
     }
 
     "fail to bind a value" in {
-      val result = form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "")).apply(fieldName)
+      val result        = form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "")).apply(fieldName)
       val expectedError = error(fieldName, requiredKey)
 
-      result.errors shouldEqual(expectedError)
+      result.errors shouldEqualexpectedError
     }
 
     "trim white spaces in number of entries" in {
       val result = new NumberOfEntriesTypeFormProvider().apply().bind(buildFormDataWithSpaces())
-      result.get shouldBe Entries(NumberOfEntriesType.Multiple,Some("12"))
+      result.get shouldBe Entries(NumberOfEntriesType.Multiple, Some("12"))
       result.errors shouldBe List.empty
     }
   }

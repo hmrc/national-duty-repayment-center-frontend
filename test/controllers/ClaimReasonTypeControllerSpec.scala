@@ -39,7 +39,7 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
   lazy val claimReasonTypeRoute = routes.ClaimReasonTypeController.onPageLoad(NormalMode).url
 
   val formProvider = new ClaimReasonTypeFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "ClaimReasonType Controller" must {
 
@@ -87,9 +87,7 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

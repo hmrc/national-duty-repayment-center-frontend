@@ -26,20 +26,16 @@ class ClaimRepaymentTypeFormProviderSpec extends CheckboxFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "claimRepaymentType.error.required"
 
     behave like checkboxField[ClaimRepaymentType](
       form,
       fieldName,
-      validValues  = ClaimRepaymentType.values,
+      validValues = ClaimRepaymentType.values,
       invalidError = FormError(s"$fieldName[0]", "error.invalid")
     )
 
-    behave like mandatoryCheckboxField(
-      form,
-      fieldName,
-      requiredKey
-    )
+    behave like mandatoryCheckboxField(form, fieldName, requiredKey)
   }
 }

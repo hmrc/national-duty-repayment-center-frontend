@@ -21,13 +21,13 @@ import play.api.data.FormError
 
 class DeclarantNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredFirstNameKey = "declarantName.firstName.error.required"
-  val requiredLastNameKey = "declarantName.lastName.error.required"
-  val lengthFirstNameKey = "declarantName.firstName.error.length"
+  val requiredFirstNameKey  = "declarantName.firstName.error.required"
+  val requiredLastNameKey   = "declarantName.lastName.error.required"
+  val lengthFirstNameKey    = "declarantName.firstName.error.length"
   val lengthLastNameNameKey = "declarantName.lastName.error.length"
-  val firstNameInvalidKey = "declarantName.firstName.error.invalid"
-  val lastNameInvalidKey = "declarantName.lastName.error.invalid"
-  val maxLength = 255
+  val firstNameInvalidKey   = "declarantName.firstName.error.invalid"
+  val lastNameInvalidKey    = "declarantName.lastName.error.invalid"
+  val maxLength             = 255
 
   val form = new DeclarantNameFormProvider()()
 
@@ -35,11 +35,7 @@ class DeclarantNameFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "firstName"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLengthAlpha(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMaxLengthAlpha(maxLength))
 
     behave like fieldWithMaxLength(
       form,
@@ -48,11 +44,7 @@ class DeclarantNameFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthFirstNameKey, Seq(maxLength))
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredFirstNameKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredFirstNameKey))
 
     behave like fieldThatPreventsUnsafeInput(
       form,
@@ -66,11 +58,7 @@ class DeclarantNameFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "lastName"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLengthAlpha(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMaxLengthAlpha(maxLength))
 
     behave like fieldWithMaxLength(
       form,
@@ -79,11 +67,7 @@ class DeclarantNameFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthLastNameNameKey, Seq(maxLength))
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredLastNameKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredLastNameKey))
 
     behave like fieldThatPreventsUnsafeInput(
       form,

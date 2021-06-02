@@ -22,8 +22,8 @@ import play.api.data.FormError
 class FurtherInformationFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "furtherInformation.error.required"
-  val lengthKey = "furtherInformation.error.length"
-  val maxLength = 1500
+  val lengthKey   = "furtherInformation.error.length"
+  val maxLength   = 1500
 
   val form = new FurtherInformationFormProvider()()
 
@@ -31,11 +31,7 @@ class FurtherInformationFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "value"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMaxLength(maxLength))
 
     behave like fieldWithMaxLength(
       form,
@@ -44,10 +40,6 @@ class FurtherInformationFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

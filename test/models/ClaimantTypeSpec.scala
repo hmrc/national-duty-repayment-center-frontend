@@ -32,7 +32,6 @@ class ClaimantTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropert
 
       forAll(gen) {
         claimantType =>
-
           JsString(claimantType.toString).validate[ClaimantType].asOpt.value mustEqual claimantType
       }
     }
@@ -43,7 +42,6 @@ class ClaimantTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropert
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[ClaimantType] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class ClaimantTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropert
 
       forAll(gen) {
         claimantType =>
-
           Json.toJson(claimantType) mustEqual JsString(claimantType.toString)
       }
     }

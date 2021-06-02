@@ -32,8 +32,9 @@ class AmendCaseResponseTypeSpec extends WordSpec with MustMatchers with ScalaChe
 
       forAll(gen) {
         amendCaseResponseType =>
-
-          JsString(amendCaseResponseType.toString).validate[AmendCaseResponseType].asOpt.value mustEqual amendCaseResponseType
+          JsString(amendCaseResponseType.toString).validate[
+            AmendCaseResponseType
+          ].asOpt.value mustEqual amendCaseResponseType
       }
     }
 
@@ -43,7 +44,6 @@ class AmendCaseResponseTypeSpec extends WordSpec with MustMatchers with ScalaChe
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[AmendCaseResponseType] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +54,6 @@ class AmendCaseResponseTypeSpec extends WordSpec with MustMatchers with ScalaChe
 
       forAll(gen) {
         amendCaseResponseType =>
-
           Json.toJson(amendCaseResponseType) mustEqual JsString(amendCaseResponseType.toString)
       }
     }

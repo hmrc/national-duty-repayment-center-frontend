@@ -37,7 +37,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new IsVATRegisteredFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val isVatRegisteredRoute = routes.IsVATRegisteredController.onPageLoad(NormalMode).url
 
@@ -87,9 +87,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

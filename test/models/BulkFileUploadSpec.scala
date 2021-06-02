@@ -22,7 +22,7 @@ import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
 
-class BulkFileUploadSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues  {
+class BulkFileUploadSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   "BulkFileUpload" must {
 
@@ -32,7 +32,6 @@ class BulkFileUploadSpec extends WordSpec with MustMatchers with ScalaCheckPrope
 
       forAll(gen) {
         bulkFileUpload =>
-
           JsString(bulkFileUpload.toString).validate[BulkFileUpload].asOpt.value mustEqual bulkFileUpload
       }
     }
@@ -43,7 +42,6 @@ class BulkFileUploadSpec extends WordSpec with MustMatchers with ScalaCheckPrope
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[BulkFileUpload] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class BulkFileUploadSpec extends WordSpec with MustMatchers with ScalaCheckPrope
 
       forAll(gen) {
         bulkFileUpload =>
-
           Json.toJson(bulkFileUpload) mustEqual JsString(bulkFileUpload.toString)
       }
     }

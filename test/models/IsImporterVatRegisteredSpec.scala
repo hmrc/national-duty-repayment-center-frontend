@@ -32,8 +32,9 @@ class IsImporterVatRegisteredSpec extends WordSpec with MustMatchers with ScalaC
 
       forAll(gen) {
         isImporterVatRegistered =>
-
-          JsString(isImporterVatRegistered.toString).validate[IsImporterVatRegistered].asOpt.value mustEqual isImporterVatRegistered
+          JsString(isImporterVatRegistered.toString).validate[
+            IsImporterVatRegistered
+          ].asOpt.value mustEqual isImporterVatRegistered
       }
     }
 
@@ -43,7 +44,6 @@ class IsImporterVatRegisteredSpec extends WordSpec with MustMatchers with ScalaC
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[IsImporterVatRegistered] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +54,6 @@ class IsImporterVatRegisteredSpec extends WordSpec with MustMatchers with ScalaC
 
       forAll(gen) {
         isImporterVatRegistered =>
-
           Json.toJson(isImporterVatRegistered) mustEqual JsString(isImporterVatRegistered.toString)
       }
     }

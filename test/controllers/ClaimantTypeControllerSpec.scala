@@ -40,7 +40,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
   lazy val claimantTypeRoute = routes.ClaimantTypeController.onPageLoad(NormalMode).url
 
   val formProvider = new ClaimantTypeFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "ClaimantType Controller" must {
 
@@ -90,9 +90,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

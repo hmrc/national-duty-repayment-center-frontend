@@ -18,7 +18,6 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
-
 class ReferenceNumberPageSpec extends PageBehaviours {
 
   "ReferenceNumberPage" must {

@@ -19,7 +19,6 @@ package pages
 import models.EntryDetails
 import pages.behaviours.PageBehaviours
 
-
 class EntryDetailsPageSpec extends PageBehaviours {
 
   "EntryDetailsPage" must {

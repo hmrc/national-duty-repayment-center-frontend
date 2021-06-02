@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.AgentImporterHasEORIFormProvider
-import models.{NormalMode, AgentImporterHasEORI, UserAnswers}
+import models.{AgentImporterHasEORI, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -34,13 +34,12 @@ import scala.concurrent.Future
 
 class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
-
   def onwardRoute = Call("GET", "/foo")
 
   lazy val agentImporterHasEORIRoute = routes.AgentImporterHasEORIController.onPageLoad(NormalMode).url
 
   val formProvider = new AgentImporterHasEORIFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "AgentImporterHasEORI Controller" must {
 
@@ -64,7 +63,8 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -88,9 +88,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
