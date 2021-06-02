@@ -18,11 +18,10 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import models.AmendCaseResponseType.FurtherInformation
+import forms.EmailAndPhoneNumber
 import models.ClaimRepaymentType.{Customs, Other, Vat}
 import models._
 import pages._
-import forms.EmailAndPhoneNumber
 import views.behaviours.ViewBehaviours
 
 class NavigatorSpec extends SpecBase with ViewBehaviours {
@@ -261,16 +260,6 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(NormalMode))
       }
 
-      "go to AmendCheckYourAnswers page after FurtherInformation page " in {
-        navigator.nextPage(FurtherInformationPage, NormalMode, emptyUserAnswers)
-          .mustBe(routes.AmendCheckYourAnswersController.onPageLoad)
-      }
-
-      "go to AmendConfirmationAnswers page after AmendCheckYourAnswersPage page " in {
-        navigator.nextPage(AmendCheckYourAnswersPage, NormalMode, emptyUserAnswers)
-          .mustBe(routes.AmendConfirmationController.onPageLoad)
-      }
-
       "go to BankDetails page after DeclarantReferenceNumberPage page when the claimant is importer and has selected multiple entries" in {
         val answers =
           emptyUserAnswers
@@ -333,24 +322,6 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
     }
 
     "in Check mode" must {
-      "go to CheckYourAnswers from a page that doesn't exist in the edit route map and it's not an amend journey" in {
-        case object UnknownPage extends Page
-        val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
-        val userAnswers                        = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
-
-        navigator.nextPage(
-          UnknownPage,
-          CheckMode,
-          userAnswers
-        ) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
-      }
-      "go to Amend Check your answers page when Further information is added no Documents selected" in {
-        val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
-        val userAnswers                        = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
-
-        navigator.nextPage(FurtherInformationPage, CheckMode, userAnswers)
-          .mustBe(routes.AmendCheckYourAnswersController.onPageLoad())
-      }
       "go to Repayment Amount Summary page after the Customs Duty Paid page when VAT and Other Duties is not selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs)
         val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value

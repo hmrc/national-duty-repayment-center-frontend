@@ -16,4 +16,6 @@
 
 package pages
 
-case object AmendFileUploadPage extends Page
+case object AmendFileUploadPage extends Page {
+  override def toString: String = "amendFileUploadPage"
+}

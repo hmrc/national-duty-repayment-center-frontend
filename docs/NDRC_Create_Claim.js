@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NDRC AutoComplete
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 
 // @description  NDRC AutoComplete
 // @author       NDRC Team
@@ -123,16 +123,16 @@ function completePage() {
         document.getElementById("value").checked = true;
         submit();
     }
-    if (currentPageIs("/importer-name")) {
+    if (currentPageIs("/representative-importer-name")) {
         document.getElementById("importerName").value = "ACME Importer Ltc";
         submit();
     }
-    if (currentPageIs("/your-details")) {
+    if (currentPageIs("/representative-agent-name")) {
         document.getElementById("declarantName").value = "Tim Tester";
         document.getElementById("agentName").value = "Tester Import Agents";
         submit();
     }
-    if (currentPageIs("/your-name")) {
+    if (currentPageIs("/enter-your-name")) {
         document.getElementById("firstName").value = "Tim";
         document.getElementById("lastName").value = "Tester";
         submit();
@@ -149,7 +149,7 @@ function completePage() {
         document.getElementById("PostalCode").value = "AA000AA";
         submit();
     }
-    if (currentPageIs("/enter-importer-address")) {
+    if (currentPageIs("/importerManualAddress")) {
         document.getElementById("AddressLine1").value = "Unit 42";
         document.getElementById("AddressLine2").value = "West Industrial Estate";
         document.getElementById("City").value = "Walsall";
@@ -157,7 +157,7 @@ function completePage() {
         document.getElementById("CountryCode").getElementsByTagName("option")[1].selected = "selected";
         submit();
     }
-    if (currentPageIs("/enter-your-business-address")) {
+    if (currentPageIs("/agentImporterManualAddress")) {
         document.getElementById("AddressLine1").value = "Unit 42";
         document.getElementById("AddressLine2").value = "Importer Estate";
         document.getElementById("City").value = "Walsall";
@@ -211,4 +211,5 @@ function completePage() {
         document.getElementById("uploadAnotherFile-2").checked = true;
         submit();
     }
+
 }

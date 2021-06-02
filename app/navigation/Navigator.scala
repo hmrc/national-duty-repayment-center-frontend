@@ -16,13 +16,13 @@
 
 package navigation
 
-import javax.inject.{Inject, Singleton}
-import play.api.mvc.Call
 import controllers.routes
+import javax.inject.{Inject, Singleton}
 import models.ClaimantType.Representative
 import models.RepaymentType.BACS
-import pages._
 import models._
+import pages._
+import play.api.mvc.Call
 
 @Singleton
 class Navigator @Inject() () {
@@ -60,9 +60,6 @@ class Navigator @Inject() () {
     case IndirectRepresentativePage                 => indirectRepresentativeRoute
     case ProofOfAuthorityPage                       => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case CheckYourAnswersPage                       => _ => routes.ConfirmationController.onPageLoad()
-    case AmendCheckYourAnswersPage                  => _ => routes.AmendConfirmationController.onPageLoad()
-    case AmendCaseSendInformationPage               => _ => routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
-    case FurtherInformationPage                     => _ => routes.AmendCheckYourAnswersController.onPageLoad
     case OtherDutiesPaidPage                        => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
     case ClaimRepaymentTypePage                     => getClaimRepaymentType
     case RepresentativeDeclarantAndBusinessNamePage => _ => routes.AgentImporterAddressController.onPageLoad(NormalMode)
@@ -265,19 +262,14 @@ class Navigator @Inject() () {
     case IndirectRepresentativePage => getIndirectRepresentativeWithCheckMode
     case RepaymentTypePage          => getRepaymentTypeWithCheckMode
     case DoYouOwnTheGoodsPage       => doYouOwnTheGoodsWithCheckMode
-    case _                          => getCheckYourAnswers
+    case _                          => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
   private def repayRouteMap(mode: Mode): Page => UserAnswers => Call = {
     case CustomsDutyPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(mode)
     case VATPaidPage         => _ => routes.RepaymentAmountSummaryController.onPageLoad(mode)
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(mode)
-    case _                   => getCheckYourAnswers
-  }
-
-  private def getCheckYourAnswers(answers: UserAnswers): Call = answers.get(AmendCaseResponseTypePage).isEmpty match {
-    case false => routes.AmendCheckYourAnswersController.onPageLoad()
-    case true  => routes.CheckYourAnswersController.onPageLoad()
+    case _                   => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
