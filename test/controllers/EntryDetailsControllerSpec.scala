@@ -39,7 +39,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new EntryDetailsFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   val validDateAnswer: LocalDate = LocalDate.parse("0900-01-01")
 
@@ -48,11 +48,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
   private val userAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
-      EntryDetailsPage.toString -> Json.obj(
-        "EPU"   -> "123",
-        "EntryNumber"      -> "123456Q",
-        "EntryDate" -> "09000101"
-      )
+      EntryDetailsPage.toString -> Json.obj("EPU" -> "123", "EntryNumber" -> "123456Q", "EntryDate" -> "09000101")
     )
   )
 
@@ -60,7 +56,10 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        NumberOfEntriesTypePage,
+        Entries(NumberOfEntriesType.Multiple, Some("2"))
+      ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -73,16 +72,16 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-      view(form, NormalMode, false, false)(request, messages).toString
-
+        view(form, NormalMode, false, false)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers.set(NumberOfEntriesTypePage,
-        Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value)).build()
+      val application = applicationBuilder(userAnswers =
+        Some(userAnswers.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value)
+      ).build()
 
       val request = FakeRequest(GET, entryDetailsRoute)
 
@@ -93,8 +92,10 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-      view(form.fill(EntryDetails("123","123456Q", validDateAnswer)), NormalMode, false, false)(request, messages).toString
-
+        view(form.fill(EntryDetails("123", "123456Q", validDateAnswer)), NormalMode, false, false)(
+          request,
+          messages
+        ).toString
 
       application.stop()
     }
@@ -107,9 +108,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -132,7 +131,10 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        NumberOfEntriesTypePage,
+        Entries(NumberOfEntriesType.Multiple, Some("2"))
+      ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -149,8 +151,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-      view(boundForm, NormalMode, false, false)(request, messages).toString
-
+        view(boundForm, NormalMode, false, false)(request, messages).toString
 
       application.stop()
     }

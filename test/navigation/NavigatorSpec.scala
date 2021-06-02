@@ -25,11 +25,9 @@ import pages._
 import forms.EmailAndPhoneNumber
 import views.behaviours.ViewBehaviours
 
-
 class NavigatorSpec extends SpecBase with ViewBehaviours {
 
   val navigator = new Navigator
-
 
   "Navigator" when {
 
@@ -54,7 +52,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to UK Regulations page after Customs Regulation Type page when selected UKCustomsCodeRegulation and one entry journey " in {
         val answers =
           emptyUserAnswers
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
             .set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
 
         navigator.nextPage(CustomsRegulationTypePage, NormalMode, answers)
@@ -66,7 +64,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
             .set(WhomToPayPage, WhomToPay.Importer).success.value
 
         navigator.nextPage(WhomToPayPage, NormalMode, answers)
@@ -144,8 +142,10 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to DeclarantReferenceNumber page after EmailAddressAndPhoneNumberPage page when the Representative's multiple entry journeys is selected " in {
         val answers =
           emptyUserAnswers
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value.
-            set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value.set(
+              ClaimantTypePage,
+              ClaimantType.Representative
+            ).success.value
         navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
           .mustBe(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode))
       }
@@ -153,7 +153,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to DeclarantReferenceNumber page after EmailAddressAndPhoneNumberPage page when Importers/Representative single entry journeys selected " in {
         val answers =
           emptyUserAnswers
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
         navigator.nextPage(EmailAddressAndPhoneNumberPage, NormalMode, answers)
           .mustBe(routes.DeclarantReferenceNumberController.onPageLoad(NormalMode))
       }
@@ -161,11 +161,10 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       "go to RepaymentType page after DeclarantReferenceNumber page when Importers/Representative single entry journeys selected " in {
         val answers =
           emptyUserAnswers
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
         navigator.nextPage(DeclarantReferenceNumberPage, NormalMode, answers)
           .mustBe(routes.RepaymentTypeController.onPageLoad(NormalMode))
       }
-
 
       "go to EnterAgentEORI page after agentImporterHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
         val answers =
@@ -299,7 +298,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         val answers =
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
         navigator.nextPage(DeclarantReferenceNumberPage, NormalMode, answers)
           .mustBe(routes.BankDetailsController.onPageLoad(NormalMode))
       }
@@ -356,91 +355,95 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       }
     }
 
-
     "in Check mode" must {
       "go to CheckYourAnswers from a page that doesn't exist in the edit route map and it's not an amend journey" in {
         case object UnknownPage extends Page
         val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
-        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
+        val userAnswers                        = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
 
-        navigator.nextPage(UnknownPage, CheckMode, userAnswers) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
+        navigator.nextPage(
+          UnknownPage,
+          CheckMode,
+          userAnswers
+        ) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
       }
       "go to File upload page" in {
-        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).success.value
+        val userAnswers =
+          UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).success.value
 
         navigator.nextPage(AmendCaseResponseTypePage, CheckMode, userAnswers)
           .mustBe(routes.AmendCaseSendInformationController.showFileUpload(CheckMode))
       }
       "go to Further Information page" in {
         val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
-        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
+        val userAnswers                        = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
 
         navigator.nextPage(AmendCaseResponseTypePage, CheckMode, userAnswers)
           .mustBe(routes.FurtherInformationController.onPageLoad(CheckMode))
       }
       "go to Amend Check your answers page when Further information is added no Documents selected" in {
         val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
-        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
+        val userAnswers                        = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
 
         navigator.nextPage(FurtherInformationPage, CheckMode, userAnswers)
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad())
       }
       "go to Repayment Amount Summary page after the Customs Duty Paid page when VAT and Other Duties is not selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs)
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
       "go to Vat Paid page after the Customs Duty Paid page when VAT is selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs, Vat)
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
           .mustBe(routes.VATPaidController.onPageLoad(CheckMode))
       }
       "go to Other Duties Paid page after the Customs Duty Paid page when VAT is not selected and Other Duties is selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs, Other)
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
           .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
       }
       "go to Repayment Amount Summary page after the VAT Paid page when Other Duties is not selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Vat)
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(VATPaidPage, CheckMode, userAnswers)
-        .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
       "go to Other Duties page after the VAT Paid page when Other Duties is selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Other)
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(VATPaidPage, CheckMode, userAnswers)
-        .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
+          .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
       }
       "go to Repayment Amount Summary page after the Other Duties Paid page" in {
         navigator.nextPage(OtherDutiesPaidPage, CheckMode, UserAnswers("id"))
-        .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
       }
       "go to Customs Duty Paid page when Customs is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs)
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
           .mustBe(routes.CustomsDutyPaidController.onPageLoad(CheckMode))
       }
       "go to Vat Paid page when Vat is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Vat)
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
           .mustBe(routes.VATPaidController.onPageLoad(CheckMode))
       }
       "go to Other Duties Paid page when Other is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Other)
-        val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
           .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
@@ -469,7 +472,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         val userAnswers = UserAnswers(userAnswersId).set(RepaymentTypePage, RepaymentType.BACS).success.value
 
         navigator.nextPage(RepaymentTypePage, CheckMode, userAnswers)
-        .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
+          .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
       }
       "go to the Whom is to be paid page after the repayment type page when in agent journey and BACS is selected" in {
         val userAnswers = UserAnswers(userAnswersId)
@@ -499,17 +502,27 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
       }
       "go to the Check your answers page after the Declarant Reference page" in {
         val userAnswers = UserAnswers(userAnswersId)
-          .set(DeclarantReferenceNumberPage, DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("this is a reference"))).success.value
+          .set(
+            DeclarantReferenceNumberPage,
+            DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("this is a reference"))
+          ).success.value
 
         navigator.nextPage(DeclarantReferenceNumberPage, CheckMode, userAnswers)
           .mustBe(routes.CheckYourAnswersController.onPageLoad())
       }
       "go to the Check your answers page after the How can we contact you" in {
-         val userAnswers = UserAnswers(userAnswersId)
-           .set(EmailAddressAndPhoneNumberPage, EmailAndPhoneNumber(Set(IsContactProvided.Email, IsContactProvided.Phone), Some("abc@gmail.com"), Some("01632 960 001"))).success.value
+        val userAnswers = UserAnswers(userAnswersId)
+          .set(
+            EmailAddressAndPhoneNumberPage,
+            EmailAndPhoneNumber(
+              Set(IsContactProvided.Email, IsContactProvided.Phone),
+              Some("abc@gmail.com"),
+              Some("01632 960 001")
+            )
+          ).success.value
 
-           navigator.nextPage(EmailAddressAndPhoneNumberPage, CheckMode, userAnswers)
-             .mustBe(routes.CheckYourAnswersController.onPageLoad())
+        navigator.nextPage(EmailAddressAndPhoneNumberPage, CheckMode, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
       }
 
       "go to Check Your Answers page after the Customs Duty Paid Page with RepayCheckMode" in {

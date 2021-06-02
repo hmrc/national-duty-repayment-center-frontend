@@ -32,7 +32,6 @@ class CreateOrAmendCaseSpec extends WordSpec with MustMatchers with ScalaCheckPr
 
       forAll(gen) {
         createOrAmendCase =>
-
           JsString(createOrAmendCase.toString).validate[CreateOrAmendCase].asOpt.value mustEqual createOrAmendCase
       }
     }
@@ -43,7 +42,6 @@ class CreateOrAmendCaseSpec extends WordSpec with MustMatchers with ScalaCheckPr
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[CreateOrAmendCase] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class CreateOrAmendCaseSpec extends WordSpec with MustMatchers with ScalaCheckPr
 
       forAll(gen) {
         createOrAmendCase =>
-
           Json.toJson(createOrAmendCase) mustEqual JsString(createOrAmendCase.toString)
       }
     }

@@ -38,27 +38,17 @@ import utils.WireMockHelper
 import uk.gov.hmrc.http.HeaderCarrier
 
 class AddressLookupConnectorSpec
-  extends FreeSpec
-    with MustMatchers
-    with WireMockHelper
-    with ScalaFutures
-    with EitherValues
-    with IntegrationPatience
+    extends FreeSpec with MustMatchers with WireMockHelper with ScalaFutures with EitherValues with IntegrationPatience
     with MockitoSugar {
 
   implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 
   implicit private lazy val idRequest: IdentifierRequest[AnyContentAsEmpty.type] =
-    IdentifierRequest(
-      FakeRequest("", "").withHeaders(HeaderNames.USER_AGENT -> "User Agent"),
-      "identifier"
-    )
+    IdentifierRequest(FakeRequest("", "").withHeaders(HeaderNames.USER_AGENT -> "User Agent"), "identifier")
 
   private def application: Application =
     new GuiceApplicationBuilder()
-      .configure(
-        "microservice.services.address-lookup.port" -> server.port
-      )
+      .configure("microservice.services.address-lookup.port" -> server.port)
       .build()
 
   def addressJson(id: String): String =
@@ -112,18 +102,38 @@ class AddressLookupConnectorSpec
 
             val connector = app.injector.instanceOf[AddressLookupConnector]
 
-            server.stubFor(
-              get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(ok(happyJson))
-            )
+            server.stubFor(get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(ok(happyJson)))
 
             val result = connector.addressLookup(PostcodeLookup("AA11ZZ")).futureValue
 
             val expectedAddress = LookedUpAddress(Seq("line 1", "line 2"), "ABC Town", Some("ABC County"), "ZZ99 1AA")
-            result mustBe Right(AddressLookupResponseModel(Seq(
-              LookedUpAddressWrapper("GB200000706253", Uprn(200000706253L), expectedAddress, "en", Some(Location(50.9986451, -1.4690977))),
-              LookedUpAddressWrapper("GB200000706254", Uprn(200000706253L), expectedAddress, "en", Some(Location(50.9986451, -1.4690977))),
-              LookedUpAddressWrapper("GB200000706255", Uprn(200000706253L), expectedAddress, "en", Some(Location(50.9986451, -1.4690977))),
-            )))
+            result mustBe Right(
+              AddressLookupResponseModel(
+                Seq(
+                  LookedUpAddressWrapper(
+                    "GB200000706253",
+                    Uprn(200000706253L),
+                    expectedAddress,
+                    "en",
+                    Some(Location(50.9986451, -1.4690977))
+                  ),
+                  LookedUpAddressWrapper(
+                    "GB200000706254",
+                    Uprn(200000706253L),
+                    expectedAddress,
+                    "en",
+                    Some(Location(50.9986451, -1.4690977))
+                  ),
+                  LookedUpAddressWrapper(
+                    "GB200000706255",
+                    Uprn(200000706253L),
+                    expectedAddress,
+                    "en",
+                    Some(Location(50.9986451, -1.4690977))
+                  )
+                )
+              )
+            )
 
           }
         }
@@ -139,9 +149,7 @@ class AddressLookupConnectorSpec
             val connector = app.injector.instanceOf[AddressLookupConnector]
 
             val invalidJson = """{"foo" : "bar"}"""
-            server.stubFor(
-              get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(ok(invalidJson))
-            )
+            server.stubFor(get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(ok(invalidJson)))
 
             val result = connector.addressLookup(PostcodeLookup("AA11ZZ")).futureValue
 
@@ -159,9 +167,7 @@ class AddressLookupConnectorSpec
 
             val connector = app.injector.instanceOf[AddressLookupConnector]
 
-            server.stubFor(
-              get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(serverError())
-            )
+            server.stubFor(get(urlEqualTo("/v2/uk/addresses?postcode=AA11ZZ")).willReturn(serverError()))
 
             val result = connector.addressLookup(PostcodeLookup("AA11ZZ")).futureValue
 

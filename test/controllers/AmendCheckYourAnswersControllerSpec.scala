@@ -15,6 +15,7 @@
  */
 
 package controllers
+
 import play.twirl.api.HtmlFormat
 import base.SpecBase
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
@@ -69,11 +70,11 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
       contentAsString(result) must contain
-        view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
+      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels mustNot contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels must contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
+      labels must contain(htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
       application.stop()
     }
 
@@ -100,7 +101,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels mustNot contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
+      labels mustNot contain(htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
 
       application.stop()
     }
@@ -143,7 +144,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels must contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
+      labels must contain(htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
       application.stop()
     }
 

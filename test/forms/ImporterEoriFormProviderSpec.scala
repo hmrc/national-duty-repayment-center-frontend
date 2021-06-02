@@ -23,7 +23,7 @@ import play.api.data.FormError
 class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
 
   val invalidKey = "importerEori.error.invalid"
-  val maxLength = 17
+  val maxLength  = 17
 
   val form = new ImporterEoriFormProvider()()
 
@@ -33,21 +33,12 @@ class ImporterEoriFormProviderSpec extends StringFieldBehaviours {
 
     val validData = for {
       firstChars <- Gen.listOfN(2, "GB").map(_.mkString)
-      numDigits   <- Gen.choose(1, 12)
+      numDigits  <- Gen.choose(1, 12)
     } yield s"$firstChars$numDigits"
 
+    behave like fieldThatBindsValidData(form, fieldName, validData)
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      validData
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, invalidKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, invalidKey))
 
     "bind values with eori expression" in {
 

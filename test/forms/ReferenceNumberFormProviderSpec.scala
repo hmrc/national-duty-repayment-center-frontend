@@ -21,9 +21,9 @@ import play.api.data.FormError
 
 class ReferenceNumberFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "referenceNumber.error.required"
-  val lengthKey = "referenceNumber.error.length"
-  val invalidChars = "referenceNumber.error.invalid.chars"
+  val requiredKey   = "referenceNumber.error.required"
+  val lengthKey     = "referenceNumber.error.length"
+  val invalidChars  = "referenceNumber.error.invalid.chars"
   val ndrcPrefixKey = "referenceNumber.error.prefix"
 
   val maxLength = 23
@@ -47,30 +47,26 @@ class ReferenceNumberFormProviderSpec extends StringFieldBehaviours {
       forAll(stringsLongerThanAlpha(maxLength - 4) -> "longString") {
         string =>
           val result = form.bind(Map(fieldName -> ("ndrc" + string))).apply(fieldName)
-          result.errors shouldEqual Seq( FormError(fieldName, lengthKey, Seq(maxLength)))
+          result.errors shouldEqual Seq(FormError(fieldName, lengthKey, Seq(maxLength)))
       }
     }
 
     s"not bind strings with special characters" in {
       forAll(stringsWithMaxLength(maxLength) -> "specialCharStrings") {
         string =>
-          val result = form.bind(Map(fieldName -> (string))).apply(fieldName)
-          result.errors shouldEqual Seq( FormError(fieldName, invalidChars, Seq("^[a-zA-Z0-9]*$")))
+          val result = form.bind(Map(fieldName -> string)).apply(fieldName)
+          result.errors shouldEqual Seq(FormError(fieldName, invalidChars, Seq("^[a-zA-Z0-9]*$")))
       }
     }
 
     s"not bind strings without ndrc prefix" in {
       forAll(stringsWithMaxLengthAlpha(maxLength) -> "invalidFormat") {
         string =>
-          val result = form.bind(Map(fieldName -> (string))).apply(fieldName)
-          result.errors shouldEqual Seq( FormError(fieldName, ndrcPrefixKey))
+          val result = form.bind(Map(fieldName -> string)).apply(fieldName)
+          result.errors shouldEqual Seq(FormError(fieldName, ndrcPrefixKey))
       }
     }
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

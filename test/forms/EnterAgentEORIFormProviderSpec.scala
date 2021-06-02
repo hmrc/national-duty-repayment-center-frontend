@@ -24,7 +24,7 @@ import play.api.data.{Form, FormError}
 class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "enterAgentEORI.error.required"
-  val lengthKey = "enterAgentEORI.error.valid"
+  val lengthKey   = "enterAgentEORI.error.valid"
 
   val form: Form[EORI] = new EnterAgentEORIFormProvider()()
 
@@ -34,21 +34,12 @@ class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {
 
     val validData = for {
       firstChars <- Gen.listOfN(2, "GB").map(_.mkString)
-      numDigits   <- Gen.choose(1, 12)
+      numDigits  <- Gen.choose(1, 12)
     } yield s"$firstChars$numDigits"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      validData
-    )
+    behave like fieldThatBindsValidData(form, fieldName, validData)
 
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
 
     "bind values with eori expression" in {
 

@@ -26,20 +26,16 @@ class ClaimantTypeFormProviderSpec extends OptionFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "claimantType.error.required"
 
     behave like optionsField[ClaimantType](
       form,
       fieldName,
-      validValues  = ClaimantType.values,
+      validValues = ClaimantType.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

@@ -22,8 +22,8 @@ import play.api.data.FormError
 class ReasonForOverpaymentFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "reasonForOverpayment.error.required"
-  val lengthKey = "reasonForOverpayment.error.length"
-  val maxLength = 1500
+  val lengthKey   = "reasonForOverpayment.error.length"
+  val maxLength   = 1500
 
   val form = new ReasonForOverpaymentFormProvider()()
 
@@ -31,11 +31,7 @@ class ReasonForOverpaymentFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "value"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMaxLength(maxLength))
 
     behave like fieldWithMaxLength(
       form,
@@ -44,10 +40,6 @@ class ReasonForOverpaymentFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

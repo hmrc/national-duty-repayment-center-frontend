@@ -22,12 +22,12 @@ import play.api.data.FormError
 class RepresentativeDeclarantAndBusinessNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredDeclarantNameKey = "representative.declarantAndBusinessName.declarantName.error.required"
-  val lengthDeclarantNameKey = "representative.declarantAndBusinessName.declarantName.error.length"
-  val invalidDeclarantNameKey = "representative.declarantAndBusinessName.declarantName.error.invalid"
+  val lengthDeclarantNameKey   = "representative.declarantAndBusinessName.declarantName.error.length"
+  val invalidDeclarantNameKey  = "representative.declarantAndBusinessName.declarantName.error.invalid"
 
   val requiredAgentNameKey = "representative.declarantAndBusinessName.agentName.error.required"
-  val lengthAgentNameKey = "representative.declarantAndBusinessName.agentName.error.length"
-  val invalidAgentNameKey = "representative.declarantAndBusinessName.agentName.error.invalid"
+  val lengthAgentNameKey   = "representative.declarantAndBusinessName.agentName.error.length"
+  val invalidAgentNameKey  = "representative.declarantAndBusinessName.agentName.error.invalid"
 
   val maxLength = 512
 
@@ -37,17 +37,9 @@ class RepresentativeDeclarantAndBusinessNameFormProviderSpec extends StringField
 
     val fieldName = "declarantName"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLengthAlpha(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMaxLengthAlpha(maxLength))
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredDeclarantNameKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredDeclarantNameKey))
 
     behave like fieldWithMaxLength(
       form,
@@ -68,17 +60,9 @@ class RepresentativeDeclarantAndBusinessNameFormProviderSpec extends StringField
 
     val fieldName = "agentName"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLengthAlpha(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMaxLengthAlpha(maxLength))
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredAgentNameKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredAgentNameKey))
 
     behave like fieldWithMaxLength(
       form,

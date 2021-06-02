@@ -18,7 +18,7 @@ package models
 
 import base.{JsonFormatTest, SpecBase}
 
-class FileUploadFailureFormatSpec extends SpecBase{
+class FileUploadFailureFormatSpec extends SpecBase {
 
   "FileUploadFailure format" should {
 

@@ -15,14 +15,31 @@
  */
 
 package controllers
+
 import base.SpecBase
-import models.{CustomsRegulationType, FileUpload, FileUploads, NormalMode, SessionState, UpscanNotification, UserAnswers}
+import models.{
+  CustomsRegulationType,
+  FileUpload,
+  FileUploads,
+  NormalMode,
+  SessionState,
+  UpscanNotification,
+  UserAnswers
+}
 import org.mockito.Matchers.anyObject
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CustomsRegulationTypePage
 import play.api.i18n.Messages
-import play.api.test.Helpers.{GET, contentAsString, defaultAwaitTimeout, route, running, status, writeableOf_AnyContentAsEmpty}
+import play.api.test.Helpers.{
+  contentAsString,
+  defaultAwaitTimeout,
+  route,
+  running,
+  status,
+  writeableOf_AnyContentAsEmpty,
+  GET
+}
 import play.twirl.api.HtmlFormat
 import services.FileUploaded
 
@@ -38,10 +55,12 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .build()
       running(application) {
-        when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(Future.successful(SessionState(None, Some(emptyUserAnswers))))
+        when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
+          Future.successful(SessionState(None, Some(emptyUserAnswers)))
+        )
         when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
         val request = buildRequest(GET, fileUploadUrl)
-        val result = route(application, request).value
+        val result  = route(application, request).value
         status(result) mustEqual 200
         contentAsString(result) must include(htmlEscapedMessage("view.upload-file.heading"))
       }
@@ -51,7 +70,8 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
 
   "GET /file-verification/:reference/status" should {
     "return file verification status" in {
-      def fileVerificationUrl(reference: String) = s"${routes.ProofOfAuthorityController.checkFileVerificationStatus(reference).url}"
+      def fileVerificationUrl(reference: String) =
+        s"${routes.ProofOfAuthorityController.checkFileVerificationStatus(reference).url}"
 
       val fileUploadState = FileUploaded(
         FileUploads(files =
@@ -75,7 +95,10 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = false
       )
-      val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value.copy(fileUploadState = Some(fileUploadState))
+      val userAnswers = UserAnswers(userAnswersId).set(
+        CustomsRegulationTypePage,
+        CustomsRegulationType.UKCustomsCodeRegulation
+      ).success.value.copy(fileUploadState = Some(fileUploadState))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .build()
@@ -84,22 +107,22 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
 
         val request = buildRequest(GET, fileVerificationUrl("11370e18-6e24-453e-b45a-76d3e32ea33d"))
-        val result = route(application, request).value
+        val result  = route(application, request).value
         status(result) mustEqual 200
         contentAsString(result) mustEqual """{"fileStatus":"NOT_UPLOADED"}"""
 
         val request2 = buildRequest(GET, fileVerificationUrl("f029444f-415c-4dec-9cf2-36774ec63ab8"))
-        val result2 = route(application, request2).value
+        val result2  = route(application, request2).value
         status(result2) mustEqual 200
         contentAsString(result2) mustEqual """{"fileStatus":"ACCEPTED"}"""
 
         val request3 = buildRequest(GET, fileVerificationUrl("4b1e15a4-4152-4328-9448-4924d9aee6e2"))
-        val result3 = route(application, request3).value
+        val result3  = route(application, request3).value
         status(result3) mustEqual 200
         contentAsString(result3) mustEqual """{"fileStatus":"FAILED"}"""
 
         val request4 = buildRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0114c"))
-        val result4 = route(application, request4).value
+        val result4  = route(application, request4).value
         status(result4) mustEqual 404
       }
       application.stop()

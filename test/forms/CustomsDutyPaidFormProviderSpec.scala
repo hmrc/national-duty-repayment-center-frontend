@@ -23,17 +23,19 @@ import play.api.data.{Form, FormError}
 class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBehaviours {
 
   val actualAmountPaidRequiredKey = "customsDutyPaid.actualamountpaid.error.required"
-  val shouldHavePaidRequiredKey = "customsDutyPaid.shouldhavepaid.error.required"
-  val maxLength = 14
-  val minimum = 0.01
-  var maximum = 99999999999.99
+  val shouldHavePaidRequiredKey   = "customsDutyPaid.shouldhavepaid.error.required"
+  val maxLength                   = 14
+  val minimum                     = 0.01
+  var maximum                     = 99999999999.99
 
-  def buildFormDataWithSpaces(ActualPaidAmount: Option[String] = Some(" 2 2 2 "),
-                              ShouldHavePaidAmount: Option[String] = Some(" 1 1 1 ")): Map[String, String] =
+  def buildFormDataWithSpaces(
+    ActualPaidAmount: Option[String] = Some(" 2 2 2 "),
+    ShouldHavePaidAmount: Option[String] = Some(" 1 1 1 ")
+  ): Map[String, String] =
     (
       ActualPaidAmount.map(_ => "ActualPaidAmount" -> ActualPaidAmount.get) ++
         ShouldHavePaidAmount.map(_ => "ShouldHavePaidAmount" -> ShouldHavePaidAmount.get)
-      ).toMap
+    ).toMap
 
   val validDataGenerator = decimalInRangeWithCommas(minimum.toDouble, maximum)
 
@@ -43,16 +45,12 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with String
 
     val fieldName = "ActualPaidAmount"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      validDataGenerator
-    )
+    behave like fieldThatBindsValidData(form, fieldName, validDataGenerator)
 
     behave like decimalField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "customsDutyPaid.actualamountpaid.error.notANumber")
+      nonNumericError = FormError(fieldName, "customsDutyPaid.actualamountpaid.error.notANumber")
     )
 
     behave like decimalFieldWithMinimum(
@@ -60,37 +58,32 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with String
       fieldName,
       minimum,
       expectedError = FormError(fieldName, "customsDutyPaid.actualamountpaid.error.greaterThanZero")
-
     )
 
     "not bind decimals with 3 decimal place" in {
       val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
       result.errors shouldEqual Seq(
-        FormError(fieldName, "customsDutyPaid.actualamountpaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+        FormError(
+          fieldName,
+          "customsDutyPaid.actualamountpaid.error.decimalPlaces",
+          List(forms.Validation.monetaryPattern)
+        )
       )
     }
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, actualAmountPaidRequiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, actualAmountPaidRequiredKey))
   }
 
   ".ShouldHavePaidAmount" must {
 
     val fieldName = "ShouldHavePaidAmount"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      validDataGenerator
-    )
+    behave like fieldThatBindsValidData(form, fieldName, validDataGenerator)
 
     behave like decimalField(
       form,
       fieldName,
-      nonNumericError  = FormError(fieldName, "customsDutyPaid.shouldhavepaid.error.notANumber")
+      nonNumericError = FormError(fieldName, "customsDutyPaid.shouldhavepaid.error.notANumber")
     )
 
     behave like decimalFieldWithMinimum(
@@ -98,26 +91,25 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with String
       fieldName,
       -0.01,
       expectedError = FormError(fieldName, "customsDutyPaid.shouldhavepaid.error.greaterThanZero")
-
     )
 
     "not bind decimals with 3 decimal place" in {
       val result = form.bind(Map(fieldName -> "1.111"))(fieldName)
       result.errors shouldEqual Seq(
-        FormError(fieldName, "customsDutyPaid.shouldhavepaid.error.decimalPlaces", List(forms.Validation.monetaryPattern))
+        FormError(
+          fieldName,
+          "customsDutyPaid.shouldhavepaid.error.decimalPlaces",
+          List(forms.Validation.monetaryPattern)
+        )
       )
     }
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, shouldHavePaidRequiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, shouldHavePaidRequiredKey))
   }
 
   "trim white spaces in CustomDuty Amounts" in {
     val result = new CustomsDutyPaidFormProvider().apply().bind(buildFormDataWithSpaces())
-    result.get shouldBe RepaymentAmounts("222","111")
+    result.get shouldBe RepaymentAmounts("222", "111")
     result.errors shouldBe List.empty
   }
 }

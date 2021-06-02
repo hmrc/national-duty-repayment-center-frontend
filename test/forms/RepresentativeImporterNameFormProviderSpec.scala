@@ -22,9 +22,9 @@ import play.api.data.FormError
 class RepresentativeImporterNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredNameNameKey = "representative.importer.importerName.error.required"
-  val lengthFirstNameKey = "representative.importer.importerName.error.length"
-  val invalidKey = "representative.importer.importerName.error.invalid"
-  val maxLength = 512
+  val lengthFirstNameKey  = "representative.importer.importerName.error.length"
+  val invalidKey          = "representative.importer.importerName.error.invalid"
+  val maxLength           = 512
 
   val form = new RepresentativeImporterNameFormProvider()()
 
@@ -32,11 +32,7 @@ class RepresentativeImporterNameFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "importerName"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLengthAlpha(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMaxLengthAlpha(maxLength))
 
     behave like fieldWithMaxLength(
       form,

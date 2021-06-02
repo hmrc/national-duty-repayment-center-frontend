@@ -32,7 +32,6 @@ class ArticleTypeSpec extends WordSpec with MustMatchers with ScalaCheckProperty
 
       forAll(gen) {
         articleType =>
-
           JsString(articleType.toString).validate[ArticleType].asOpt.value mustEqual articleType
       }
     }
@@ -43,7 +42,6 @@ class ArticleTypeSpec extends WordSpec with MustMatchers with ScalaCheckProperty
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[ArticleType] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class ArticleTypeSpec extends WordSpec with MustMatchers with ScalaCheckProperty
 
       forAll(gen) {
         articleType =>
-
           Json.toJson(articleType) mustEqual JsString(articleType.toString)
       }
     }

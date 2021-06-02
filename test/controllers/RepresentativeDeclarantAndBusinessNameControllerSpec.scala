@@ -38,14 +38,16 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new RepresentativeDeclarantAndBusinessNameFormProvider()
+
   private val userAnswersDummy = UserAnswers(
     userAnswersId,
     Json.obj(
       RepresentativeDeclarantAndBusinessNamePage.toString -> Json.obj(
         "declarantName" -> "dec name",
-        "agentName" -> "agent name"
+        "agentName"     -> "agent name"
       )
-    ))
+    )
+  )
 
   val form = formProvider()
 
@@ -84,7 +86,10 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(RepresentativeDeclarantAndBusinessName("dec name", "agent name")), NormalMode)(request, messages).toString
+        view(form.fill(RepresentativeDeclarantAndBusinessName("dec name", "agent name")), NormalMode)(
+          request,
+          messages
+        ).toString
 
       application.stop()
     }
@@ -95,9 +100,7 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

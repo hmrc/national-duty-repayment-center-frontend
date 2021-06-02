@@ -26,20 +26,16 @@ class UkRegulationTypeFormProviderSpec extends OptionFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "ukRegulationType.error.required"
 
     behave like optionsField[UkRegulationType](
       form,
       fieldName,
-      validValues  = UkRegulationType.values,
+      validValues = UkRegulationType.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

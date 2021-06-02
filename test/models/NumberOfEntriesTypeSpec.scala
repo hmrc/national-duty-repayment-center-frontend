@@ -32,7 +32,6 @@ class NumberOfEntriesTypeSpec extends WordSpec with MustMatchers with ScalaCheck
 
       forAll(gen) {
         numberOfEntriesType =>
-
           JsString(numberOfEntriesType.toString).validate[NumberOfEntriesType].asOpt.value mustEqual numberOfEntriesType
       }
     }
@@ -43,7 +42,6 @@ class NumberOfEntriesTypeSpec extends WordSpec with MustMatchers with ScalaCheck
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[NumberOfEntriesType] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class NumberOfEntriesTypeSpec extends WordSpec with MustMatchers with ScalaCheck
 
       forAll(gen) {
         numberOfEntriesType =>
-
           Json.toJson(numberOfEntriesType) mustEqual JsString(numberOfEntriesType.toString)
       }
     }

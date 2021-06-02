@@ -19,7 +19,6 @@ package pages
 import models.RepresentativeDeclarantAndBusinessName
 import pages.behaviours.PageBehaviours
 
-
 class RepresentativeAgentNamePageSpec extends PageBehaviours {
 
   "RepresentativeDeclarantAndAgentNamePage" must {

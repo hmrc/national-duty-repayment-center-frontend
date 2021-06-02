@@ -19,7 +19,6 @@ package pages
 import models.ClaimDescription
 import pages.behaviours.PageBehaviours
 
-
 class ReasonForOverpaymentPageSpec extends PageBehaviours {
 
   "ReasonForOverpaymentPage" must {

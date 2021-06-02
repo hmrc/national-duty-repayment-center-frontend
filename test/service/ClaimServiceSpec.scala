@@ -39,98 +39,106 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
     "should return caseID when create case is successful" in {
       val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
 
-      implicit val hc = HeaderCarrier()
+      implicit val hc      = HeaderCarrier()
       implicit val request = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest = DataRequest(request, "12", testUserAnswers)
+      val dataRequest      = DataRequest(request, "12", testUserAnswers)
 
       val claimRequest = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-      val connector = mock[NDRCConnector]
+      val connector    = mock[NDRCConnector]
       when(connector.submitClaim(claimRequest.get))
-        .thenReturn(Future.successful(ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))))
+        .thenReturn(
+          Future.successful(
+            ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))
+          )
+        )
 
       val service = new ClaimService(connector)(ExecutionContext.global)
-      val result = service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
+      val result  = service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
       result mustBe "caseId"
     }
 
     "should throw error when duplicate caseID is submitted" in {
       val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
 
-      implicit val hc = HeaderCarrier()
+      implicit val hc      = HeaderCarrier()
       implicit val request = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest = DataRequest(request, "12", testUserAnswers)
+      val dataRequest      = DataRequest(request, "12", testUserAnswers)
 
       val claimRequest = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-      val connector = mock[NDRCConnector]
+      val connector    = mock[NDRCConnector]
       when(connector.submitClaim(claimRequest.get))
         .thenReturn(Future.successful(ClientClaimSuccessResponse("1", Some(ApiError("409", Some("Aa"))), None)))
 
       val service = new ClaimService(connector)(ExecutionContext.global)
-      val thrown = intercept[RuntimeException]  {
+      val thrown = intercept[RuntimeException] {
         service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
       }
-      thrown.getMessage contains("Case already exists Aa")
+      thrown.getMessage contains "Case already exists Aa"
     }
 
     "should throw exception when unknown error returned" in {
       val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
 
-      implicit val hc = HeaderCarrier()
+      implicit val hc      = HeaderCarrier()
       implicit val request = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest = DataRequest(request, "12", testUserAnswers)
+      val dataRequest      = DataRequest(request, "12", testUserAnswers)
 
       val claimRequest = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-      val connector = mock[NDRCConnector]
-      val response = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
+      val connector    = mock[NDRCConnector]
+      val response     = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
       when(connector.submitClaim(claimRequest.get))
         .thenReturn(Future.successful(response))
       val message = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
         response.error.map(_.errorMessage).getOrElse("")
 
       val service = new ClaimService(connector)(ExecutionContext.global)
-      val thrown = intercept[RuntimeException]  {
+      val thrown = intercept[RuntimeException] {
         service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
       }
-      thrown.getMessage contains(message)
+      thrown.getMessage contains message
     }
 
     "should return caseID when amend case is successful" in {
       val testUserAnswers = populateUserAnswersWithAmendData(emptyUserAnswers)
 
-      implicit val hc = HeaderCarrier()
+      implicit val hc      = HeaderCarrier()
       implicit val request = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest = DataRequest(request, "12", testUserAnswers)
+      val dataRequest      = DataRequest(request, "12", testUserAnswers)
 
       val claimRequest = AmendClaimRequest.buildValidAmendRequest(testUserAnswers)
-      val connector = mock[NDRCConnector]
+      val connector    = mock[NDRCConnector]
       when(connector.submitAmendClaim(claimRequest.get))
-        .thenReturn(Future.successful(ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))))
+        .thenReturn(
+          Future.successful(
+            ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))
+          )
+        )
 
       val service = new ClaimService(connector)(ExecutionContext.global)
-      val result = service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
+      val result  = service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
       result mustBe "caseId"
     }
 
     "should throw exception when unknown error returned for amend case" in {
       val testUserAnswers = populateUserAnswersWithAmendData(emptyUserAnswers)
 
-      implicit val hc = HeaderCarrier()
+      implicit val hc      = HeaderCarrier()
       implicit val request = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest = DataRequest(request, "12", testUserAnswers)
+      val dataRequest      = DataRequest(request, "12", testUserAnswers)
 
       val claimRequest = AmendClaimRequest.buildValidAmendRequest(testUserAnswers)
-      val connector = mock[NDRCConnector]
-      val response = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
+      val connector    = mock[NDRCConnector]
+      val response     = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
       when(connector.submitAmendClaim(claimRequest.get))
         .thenReturn(Future.successful(response))
       val message = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
         response.error.map(_.errorMessage).getOrElse("")
 
       val service = new ClaimService(connector)(ExecutionContext.global)
-      val thrown = intercept[RuntimeException]  {
+      val thrown = intercept[RuntimeException] {
         service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
       }
-      thrown.getMessage contains(message)
+      thrown.getMessage contains message
     }
   }
 }

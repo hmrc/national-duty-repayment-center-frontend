@@ -32,7 +32,6 @@ class WhomToPaySpec extends WordSpec with MustMatchers with ScalaCheckPropertyCh
 
       forAll(gen) {
         whomToPay =>
-
           JsString(whomToPay.toString).validate[WhomToPay].asOpt.value mustEqual whomToPay
       }
     }
@@ -43,7 +42,6 @@ class WhomToPaySpec extends WordSpec with MustMatchers with ScalaCheckPropertyCh
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[WhomToPay] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class WhomToPaySpec extends WordSpec with MustMatchers with ScalaCheckPropertyCh
 
       forAll(gen) {
         whomToPay =>
-
           Json.toJson(whomToPay) mustEqual JsString(whomToPay.toString)
       }
     }

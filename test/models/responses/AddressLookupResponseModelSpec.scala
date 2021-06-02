@@ -30,29 +30,49 @@ class AddressLookupResponseModelSpec extends FreeSpec with MustMatchers {
 
       val expectedAddress = LookedUpAddress(Seq("line 1", "line 2"), "ABC Town", Some("ABC County"), "ZZ99 1AA")
 
-      val expectedAddressLookupResponseModel = AddressLookupResponseModel(Seq(
-        LookedUpAddressWrapper("GB200000706253", Uprn(200000706253L), expectedAddress, "en", Some(Location(50.9986451, -1.4690977))),
-        LookedUpAddressWrapper("GB200000706254", Uprn(200000706253L), expectedAddress, "en", Some(Location(50.9986451, -1.4690977))),
-        LookedUpAddressWrapper("GB200000706255", Uprn(200000706253L), expectedAddress, "en", Some(Location(50.9986451, -1.4690977))),
-      ))
+      val expectedAddressLookupResponseModel = AddressLookupResponseModel(
+        Seq(
+          LookedUpAddressWrapper(
+            "GB200000706253",
+            Uprn(200000706253L),
+            expectedAddress,
+            "en",
+            Some(Location(50.9986451, -1.4690977))
+          ),
+          LookedUpAddressWrapper(
+            "GB200000706254",
+            Uprn(200000706253L),
+            expectedAddress,
+            "en",
+            Some(Location(50.9986451, -1.4690977))
+          ),
+          LookedUpAddressWrapper(
+            "GB200000706255",
+            Uprn(200000706253L),
+            expectedAddress,
+            "en",
+            Some(Location(50.9986451, -1.4690977))
+          )
+        )
+      )
 
-      Json.parse(testJson).as[AddressLookupResponseModel] must be (expectedAddressLookupResponseModel)
+      Json.parse(testJson).as[AddressLookupResponseModel] must be(expectedAddressLookupResponseModel)
     }
   }
 
   "Uprn serialisation" - {
     "serialises correctly to JSON number" in {
-      val testUprn = Uprn(200000706253L)
+      val testUprn     = Uprn(200000706253L)
       val expectedJson = "200000706253"
 
-      Json.prettyPrint(Json.toJson(testUprn)) must be (expectedJson)
+      Json.prettyPrint(Json.toJson(testUprn)) must be(expectedJson)
     }
 
     "deserialises correctly from a JSON number" in {
-      val testJson = "200000706253"
+      val testJson     = "200000706253"
       val expectedUprn = Uprn(200000706253L)
 
-      Json.parse(testJson).as[Uprn] must be (expectedUprn)
+      Json.parse(testJson).as[Uprn] must be(expectedUprn)
     }
   }
 
@@ -64,24 +84,24 @@ class AddressLookupResponseModelSpec extends FreeSpec with MustMatchers {
                            |  "longitude" : -1.4690977
                            |}""".stripMargin
 
-      Json.prettyPrint(Json.toJson(testLocation)) must be (expectedJson)
+      Json.prettyPrint(Json.toJson(testLocation)) must be(expectedJson)
     }
 
     "deserialises correctly from a JSON object" in {
-      val testJson = """{
+      val testJson         = """{
                        |  "latitude" : 50.9986451,
                        |  "longitude" : -1.4690977
                        |}""".stripMargin
       val expectedLocation = Location(50.9986451, -1.4690977)
 
-      Json.parse(testJson).as[Location] must be (expectedLocation)
+      Json.parse(testJson).as[Location] must be(expectedLocation)
     }
 
     "deserialises correctly from a JSON array" in {
-      val testJson = """[ 50.9986451, -1.4690977 ]"""
+      val testJson         = """[ 50.9986451, -1.4690977 ]"""
       val expectedLocation = Location(50.9986451, -1.4690977)
 
-      Json.parse(testJson).as[Location] must be (expectedLocation)
+      Json.parse(testJson).as[Location] must be(expectedLocation)
     }
   }
 
@@ -116,4 +136,5 @@ class AddressLookupResponseModelSpec extends FreeSpec with MustMatchers {
        |    ],
        |    "language": "en"
        |}""".stripMargin
+
 }

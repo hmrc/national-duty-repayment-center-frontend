@@ -19,7 +19,6 @@ package pages
 import models.Name
 import pages.behaviours.PageBehaviours
 
-
 class DeclarantNamePageSpec extends PageBehaviours {
 
   "DeclarantNamePage" must {

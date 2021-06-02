@@ -39,7 +39,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
   lazy val numberOfEntriesTypeRoute = routes.NumberOfEntriesTypeController.onPageLoad(NormalMode).url
 
   val formProvider = new NumberOfEntriesTypeFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "NumberOfEntriesType Controller" must {
 
@@ -63,7 +63,10 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        NumberOfEntriesTypePage,
+        Entries(NumberOfEntriesType.Multiple, Some("2"))
+      ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -76,7 +79,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Entries(NumberOfEntriesType.Multiple,Some("2"))), NormalMode)(request, messages).toString
+        view(form.fill(Entries(NumberOfEntriesType.Multiple, Some("2"))), NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -87,9 +90,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

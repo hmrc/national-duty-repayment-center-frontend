@@ -39,7 +39,7 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
   lazy val repaymentTypeRoute = routes.RepaymentTypeController.onPageLoad(NormalMode).url
 
   val formProvider = new RepaymentTypeFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "RepaymentType Controller" must {
 
@@ -87,9 +87,7 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

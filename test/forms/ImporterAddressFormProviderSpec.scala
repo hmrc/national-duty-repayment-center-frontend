@@ -25,17 +25,13 @@ class ImporterAddressFormProviderSpec extends StringFieldBehaviours {
 
   ".AddressLine1" must {
 
-    val fieldName = "AddressLine1"
+    val fieldName   = "AddressLine1"
     val requiredKey = "importerAddress.line1.error.required"
-    val lengthKey = "importerAddress.line1.error.length"
-    val invalidKey = "importerAddress.line1.error.invalid"
-    val maxLength = 128
+    val lengthKey   = "importerAddress.line1.error.length"
+    val invalidKey  = "importerAddress.line1.error.invalid"
+    val maxLength   = 128
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      safeInputsWithMaxLength(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
     behave like fieldThatPreventsUnsafeInput(
       form,
@@ -51,25 +47,17 @@ class ImporterAddressFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 
   ".AddressLine2" must {
 
-    val fieldName = "AddressLine2"
-    val lengthKey = "importerAddress.line2.error.length"
+    val fieldName  = "AddressLine2"
+    val lengthKey  = "importerAddress.line2.error.length"
     val invalidKey = "importerAddress.line2.error.invalid"
-    val maxLength = 128
+    val maxLength  = 128
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      safeInputsWithMaxLength(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
     behave like fieldThatPreventsUnsafeInput(
       form,
@@ -85,25 +73,18 @@ class ImporterAddressFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
-    behave like optionalField(
-      form,
-      fieldName
-    )
+    behave like optionalField(form, fieldName)
   }
 
   ".City" must {
 
-    val fieldName = "City"
+    val fieldName   = "City"
     val requiredKey = "importerAddress.city.error.required"
-    val lengthKey = "importerAddress.city.error.length"
-    val invalidKey = "importerAddress.city.error.invalid"
-    val maxLength = 64
+    val lengthKey   = "importerAddress.city.error.length"
+    val invalidKey  = "importerAddress.city.error.invalid"
+    val maxLength   = 64
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      safeInputsWithMaxLength(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
     behave like fieldThatPreventsUnsafeInput(
       form,
@@ -119,25 +100,17 @@ class ImporterAddressFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 
   ".Region" must {
 
-    val fieldName = "Region"
-    val lengthKey = "importerAddress.region.error.length"
+    val fieldName  = "Region"
+    val lengthKey  = "importerAddress.region.error.length"
     val invalidKey = "importerAddress.region.error.invalid"
-    val maxLength = 64
+    val maxLength  = 64
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      safeInputsWithMaxLength(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
     behave like fieldThatPreventsUnsafeInput(
       form,
@@ -156,23 +129,15 @@ class ImporterAddressFormProviderSpec extends StringFieldBehaviours {
 
   ".CountryCode" must {
 
-    val fieldName = "CountryCode"
+    val fieldName   = "CountryCode"
     val requiredKey = "importerAddress.countryCode.error.required"
-    val lengthKey = "importerAddress.countryCode.error.length"
-    val invalidKey = "importerAddress.countryCode.error.invalid"
-    val maxLength = 2
+    val lengthKey   = "importerAddress.countryCode.error.length"
+    val invalidKey  = "importerAddress.countryCode.error.invalid"
+    val maxLength   = 2
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      safeInputsWithMaxLength(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
 
     behave like fieldWithMaxLength(
       form,
@@ -195,10 +160,6 @@ class ImporterAddressFormProviderSpec extends StringFieldBehaviours {
     val maxLength = 10
     val minLength = 2
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMinAndMaxLength(minLength, maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMinAndMaxLength(minLength, maxLength))
   }
 }

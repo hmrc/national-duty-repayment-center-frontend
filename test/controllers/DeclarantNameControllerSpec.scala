@@ -38,15 +38,12 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new DeclarantNameFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
+
   private val userAnswersDummy = UserAnswers(
     userAnswersId,
-    Json.obj(
-      DeclarantNamePage.toString -> Json.obj(
-        "firstName"   -> "Joe",
-        "lastName"      -> "Bloggs"
-      )
-    ))
+    Json.obj(DeclarantNamePage.toString -> Json.obj("firstName" -> "Joe", "lastName" -> "Bloggs"))
+  )
 
   lazy val declarantNameRoute = routes.DeclarantNameController.onPageLoad(NormalMode).url
 
@@ -94,9 +91,7 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

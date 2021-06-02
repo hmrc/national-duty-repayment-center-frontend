@@ -24,8 +24,8 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, WordSpec}
 import play.api.data.validation.{Invalid, Valid}
 
-class ConstraintsSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with Generators  with Constraints {
-
+class ConstraintsSpec
+    extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with Generators with Constraints {
 
   "firstError" must {
 
@@ -133,7 +133,6 @@ class ConstraintsSpec extends WordSpec with MustMatchers with ScalaCheckProperty
 
       forAll(gen) {
         case (max, date) =>
-
           val result = maxDate(max, "error.future")(date)
           result mustEqual Valid
       }
@@ -148,7 +147,6 @@ class ConstraintsSpec extends WordSpec with MustMatchers with ScalaCheckProperty
 
       forAll(gen) {
         case (max, date) =>
-
           val result = maxDate(max, "error.future", "foo")(date)
           result mustEqual Invalid("error.future", "foo")
       }
@@ -166,7 +164,6 @@ class ConstraintsSpec extends WordSpec with MustMatchers with ScalaCheckProperty
 
       forAll(gen) {
         case (min, date) =>
-
           val result = minDate(min, "error.past", "foo")(date)
           result mustEqual Valid
       }
@@ -181,7 +178,6 @@ class ConstraintsSpec extends WordSpec with MustMatchers with ScalaCheckProperty
 
       forAll(gen) {
         case (min, date) =>
-
           val result = minDate(min, "error.past", "foo")(date)
           result mustEqual Invalid("error.past", "foo")
       }

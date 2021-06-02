@@ -19,7 +19,6 @@ package pages
 import models.Address
 import pages.behaviours.PageBehaviours
 
-
 class ImporterAddressPageSpec extends PageBehaviours {
 
   "ImporterAddressPage" must {
