@@ -95,7 +95,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       val thrown = intercept[RuntimeException] {
         service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
       }
-      thrown.getMessage containsmessage
+      thrown.getMessage contains message
     }
 
     "should return caseID when amend case is successful" in {
@@ -138,7 +138,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       val thrown = intercept[RuntimeException] {
         service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
       }
-      thrown.getMessage containsmessage
+      thrown.getMessage contains message
     }
   }
 }
