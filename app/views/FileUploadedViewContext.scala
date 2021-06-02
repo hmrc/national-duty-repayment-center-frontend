@@ -15,6 +15,7 @@
  */
 
 package views
+
 import models.FileType.SupportingEvidence
 import models._
 import play.api.data.Form
@@ -43,12 +44,9 @@ class FileUploadedViewContext extends RadioItemsHelper with SummaryListRowHelper
       )
     )
 
-  def summaryListOfFileUploads(
-                                fileUploads: FileUploads,
-                                removeFileCall: String => Call
-                              )(implicit
-                                messages: Messages
-                              ): SummaryList = {
+  def summaryListOfFileUploads(fileUploads: FileUploads, removeFileCall: String => Call)(implicit
+    messages: Messages
+  ): SummaryList = {
 
     def fileUploadRow(fileUpload: FileUpload.Accepted, index: Int) =
       summaryListRow(
@@ -61,18 +59,16 @@ class FileUploadedViewContext extends RadioItemsHelper with SummaryListRowHelper
       )
 
     SummaryList(
-      rows = fileUploads.files.collect { case a: FileUpload.Accepted if(a.fileType.contains(SupportingEvidence)) => a }.zipWithIndex.map {
+      rows = fileUploads.files.collect {
+        case a: FileUpload.Accepted if a.fileType.contains(SupportingEvidence) => a
+      }.zipWithIndex.map {
         case (file, index) => fileUploadRow(file, index + 1)
       },
       classes = """govuk-summary-list govuk-!-margin-bottom-9"""
     )
   }
 
-  def summaryListOfFileUploads(
-    fileUploads: FileUploads,
-    removeFileCall: (String, Mode) => Call,
-    mode: Mode
-  )(implicit
+  def summaryListOfFileUploads(fileUploads: FileUploads, removeFileCall: (String, Mode) => Call, mode: Mode)(implicit
     messages: Messages
   ): SummaryList = {
 
@@ -87,10 +83,13 @@ class FileUploadedViewContext extends RadioItemsHelper with SummaryListRowHelper
       )
 
     SummaryList(
-      rows = fileUploads.files.collect { case a: FileUpload.Accepted if(a.fileType.contains(SupportingEvidence)) => a }.zipWithIndex.map {
+      rows = fileUploads.files.collect {
+        case a: FileUpload.Accepted if a.fileType.contains(SupportingEvidence) => a
+      }.zipWithIndex.map {
         case (file, index) => fileUploadRow(file, index + 1)
       },
       classes = """govuk-summary-list govuk-!-margin-bottom-9"""
     )
   }
+
 }

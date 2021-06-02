@@ -18,7 +18,10 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class DeclarantReferenceNumber(declarantReferenceType : DeclarantReferenceType, declarantReferenceNumber: Option[String])
+case class DeclarantReferenceNumber(
+  declarantReferenceType: DeclarantReferenceType,
+  declarantReferenceNumber: Option[String]
+)
 
 object DeclarantReferenceNumber {
   implicit val format: OFormat[DeclarantReferenceNumber] = Json.format[DeclarantReferenceNumber]

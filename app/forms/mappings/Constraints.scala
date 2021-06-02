@@ -36,40 +36,34 @@ trait Constraints {
   protected def minimumValue[A](minimum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
     Constraint {
       input =>
-
         import ev._
 
-        if (input >= minimum) {
+        if (input >= minimum)
           Valid
-        } else {
+        else
           Invalid(errorKey, minimum)
-        }
     }
 
   protected def maximumValue[A](maximum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
     Constraint {
       input =>
-
         import ev._
 
-        if (input <= maximum) {
+        if (input <= maximum)
           Valid
-        } else {
+        else
           Invalid(errorKey, maximum)
-        }
     }
 
   protected def inRange[A](minimum: A, maximum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
     Constraint {
       input =>
-
         import ev._
 
-        if (input >= minimum && input <= maximum) {
+        if (input >= minimum && input <= maximum)
           Valid
-        } else {
+        else
           Invalid(errorKey, minimum, maximum)
-        }
     }
 
   protected def regexp(regex: String, errorKey: String): Constraint[String] =
@@ -98,7 +92,7 @@ trait Constraints {
 
   protected def startsWith(errorKey: String): Constraint[String] =
     Constraint {
-      case str if str.trim.toUpperCase.startsWith("NDRC")  =>
+      case str if str.trim.toUpperCase.startsWith("NDRC") =>
         Valid
       case _ =>
         Invalid(errorKey)
@@ -133,17 +127,17 @@ trait Constraints {
       input =>
         Try(BigDecimal(input)) match {
           case Success(value) if value > 0 => Valid
-          case _ => Invalid(errorKey)
+          case _                           => Invalid(errorKey)
         }
     }
-
 
   protected def greaterThanOrEqualZero(errorKey: String): Constraint[String] =
     Constraint {
       input =>
         Try(BigDecimal(input)) match {
           case Success(value) if value >= 0 => Valid
-          case _ => Invalid(errorKey)
+          case _                            => Invalid(errorKey)
         }
     }
+
 }

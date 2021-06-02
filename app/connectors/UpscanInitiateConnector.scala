@@ -35,9 +35,9 @@ import javax.inject.{Inject, Singleton}
 class UpscanInitiateConnector @Inject() (appConfig: FrontendAppConfig, http: HttpGet with HttpPost, metrics: Metrics)
     extends HttpAPIMonitor {
 
-  val baseUrl: String = appConfig.upscanInitiateBaseUrl
-  val upscanInitiatev2Path = "/upscan/v2/initiate"
-  val userAgent = "national-duty-repayment-center-frontend"
+  val baseUrl: String                          = appConfig.upscanInitiateBaseUrl
+  val upscanInitiatev2Path                     = "/upscan/v2/initiate"
+  val userAgent                                = "national-duty-repayment-center-frontend"
   override val kenshooRegistry: MetricRegistry = metrics.defaultRegistry
 
   def initiate(

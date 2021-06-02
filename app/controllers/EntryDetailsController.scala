@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.EntryDetailsFormProvider
 import javax.inject.Inject
-import models.{ClaimantType,  CustomsRegulationType, Mode, NumberOfEntriesType, UserAnswers}
+import models.{ClaimantType, CustomsRegulationType, Mode, NumberOfEntriesType, UserAnswers}
 import pages._
 import navigation.Navigator
 import pages.{CustomsRegulationTypePage, EntryDetailsPage, NumberOfEntriesTypePage}
@@ -31,25 +31,25 @@ import views.html.EntryDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EntryDetailsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: EntryDetailsFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: EntryDetailsView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class EntryDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: EntryDetailsFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: EntryDetailsView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(EntryDetailsPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -59,12 +59,13 @@ class EntryDetailsController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers), isSingleEntry(request.userAnswers)))),
-
-
+          Future.successful(
+            BadRequest(
+              view(formWithErrors, mode, isImporterJourney(request.userAnswers), isSingleEntry(request.userAnswers))
+            )
+          ),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
@@ -73,18 +74,16 @@ class EntryDetailsController @Inject()(
       )
   }
 
-  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
-        userAnswers.get(ClaimantTypePage) match {
-          case Some(ClaimantType.Importer) => true
-          case _ => false
-        }
-      }
-
-  def isSingleEntry(userAnswers: UserAnswers): Boolean = {
-    userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Single => true
-      case NumberOfEntriesType.Multiple  => false
+  def isImporterJourney(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => true
+      case _                           => false
     }
-  }
+
+  def isSingleEntry(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Single   => true
+      case NumberOfEntriesType.Multiple => false
+    }
 
 }

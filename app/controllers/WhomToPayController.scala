@@ -31,25 +31,25 @@ import views.html.WhomToPayView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhomToPayController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: WhomToPayFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: WhomToPayView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class WhomToPayController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: WhomToPayFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: WhomToPayView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(WhomToPayPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,20 +58,18 @@ class WhomToPayController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
             updatedAnswersCleaned <- request.userAnswers.get(WhomToPayPage) match {
               case Some(Importer) => Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage))
-              case _ => Future.successful(updatedAnswers)
+              case _              => Future.successful(updatedAnswers)
             }
-            _              <- sessionRepository.set(updatedAnswers)
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(WhomToPayPage, mode, updatedAnswersCleaned))
       )
   }
+
 }

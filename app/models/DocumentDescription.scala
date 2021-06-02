@@ -21,6 +21,8 @@ import play.api.libs.json.Format
 case class DocumentDescription(value: String)
 
 object DocumentDescription {
+
   implicit val format: Format[DocumentDescription] =
     JsonFormatUtils.stringFormat(DocumentDescription.apply)(_.value)
+
 }

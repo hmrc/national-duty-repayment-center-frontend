@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ClaimRepaymentTypeFormProvider
 
 import javax.inject.Inject
-import models.{CheckMode, ClaimantType, ClaimRepaymentType, Mode, UserAnswers}
+import models.{CheckMode, ClaimRepaymentType, ClaimantType, Mode, UserAnswers}
 import navigation.Navigator
 import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,25 +31,25 @@ import views.html.ClaimRepaymentTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimRepaymentTypeController @Inject()(
-                                              override val messagesApi: MessagesApi,
-                                              sessionRepository: SessionRepository,
-                                              navigator: Navigator,
-                                              identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              formProvider: ClaimRepaymentTypeFormProvider,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: ClaimRepaymentTypeView
-                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ClaimRepaymentTypeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ClaimRepaymentTypeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ClaimRepaymentTypeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ClaimRepaymentTypePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -61,45 +61,46 @@ class ClaimRepaymentTypeController @Inject()(
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
-
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimRepaymentTypePage, value))
             removeCustomsPaid <-
               Future.fromTry(updatedAnswers.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Customs) match {
                 case false => updatedAnswers.remove(CustomsDutyPaidPage)
-                case true => updatedAnswers.set(ClaimRepaymentTypePage, value)
+                case true  => updatedAnswers.set(ClaimRepaymentTypePage, value)
               })
             removeVATDue <-
               Future.fromTry(removeCustomsPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
                 case false => removeCustomsPaid.remove(VATPaidPage)
-                case true => removeCustomsPaid.set(ClaimRepaymentTypePage, value)
+                case true  => removeCustomsPaid.set(ClaimRepaymentTypePage, value)
               })
             removeVATPaid <-
               Future.fromTry(removeVATDue.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Vat) match {
                 case false => removeVATDue.remove(VATPaidPage)
-                case true => removeVATDue.set(ClaimRepaymentTypePage, value)
+                case true  => removeVATDue.set(ClaimRepaymentTypePage, value)
               })
             removeOtherDutiesPaid <-
               Future.fromTry(removeVATPaid.get(ClaimRepaymentTypePage).get.contains(ClaimRepaymentType.Other) match {
                 case false => removeVATPaid.remove(OtherDutiesPaidPage)
-                case true => removeVATPaid.set(ClaimRepaymentTypePage, value)
+                case true  => removeVATPaid.set(ClaimRepaymentTypePage, value)
               })
             _ <- sessionRepository.set(removeOtherDutiesPaid)
-          } yield {
-            if(request.userAnswers.get(ClaimRepaymentTypePage).nonEmpty &&
+          } yield
+            if (
+              request.userAnswers.get(ClaimRepaymentTypePage).nonEmpty &&
               request.userAnswers.get(ClaimRepaymentTypePage).get == value
-              && mode.equals(CheckMode) ) {
+              && mode.equals(CheckMode)
+            )
               Redirect(routes.CheckYourAnswersController.onPageLoad())
-            } else
-                Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaid))
-          }
+            else
+              Redirect(navigator.nextPage(ClaimRepaymentTypePage, mode, removeOtherDutiesPaid))
       )
   }
-  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
-        userAnswers.get(ClaimantTypePage) match {
-          case Some(ClaimantType.Importer) => true
-          case _ => false
-        }
-      }
+
+  def isImporterJourney(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => true
+      case _                           => false
+    }
+
 }

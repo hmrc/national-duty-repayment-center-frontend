@@ -25,7 +25,6 @@ import models.ClaimReasonType
 class ClaimReasonTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[ClaimReasonType] =
-    Form(
-      "value" -> enumerable[ClaimReasonType]("claimReasonType.error.required")
-    )
+    Form("value" -> enumerable[ClaimReasonType]("claimReasonType.error.required"))
+
 }

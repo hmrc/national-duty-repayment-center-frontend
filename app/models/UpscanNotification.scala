@@ -16,7 +16,6 @@
 
 package models
 
-
 import java.time.ZonedDateTime
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
@@ -92,17 +91,9 @@ object UpscanNotification {
     * @param fileMimeType Detected MIME type of the file. Please note that this refers to actual contents
     * of the file, not to the name (if user uploads PDF document named data.png, it will be detected as a application/pdf)
     */
-  case class UploadDetails(
-    uploadTimestamp: ZonedDateTime,
-    checksum: String,
-    fileName: String,
-    fileMimeType: String
-  )
+  case class UploadDetails(uploadTimestamp: ZonedDateTime, checksum: String, fileName: String, fileMimeType: String)
 
-  case class FailureDetails(
-    failureReason: FailureReason,
-    message: String
-  )
+  case class FailureDetails(failureReason: FailureReason, message: String)
 
   /**
     * File check failure reason enum,
@@ -134,6 +125,7 @@ object UpscanNotification {
 
     def decodeMimeEncodedWord(word: String): String =
       Try(MimeUtility.decodeText(word)).getOrElse(word)
+
   }
 
   object FailureDetails {
@@ -146,10 +138,10 @@ object UpscanNotification {
   }
 
   val fileStatus = "fileStatus"
-  val READY = "READY"
-  val FAILED = "FAILED"
+  val READY      = "READY"
+  val FAILED     = "FAILED"
 
-  val upscanFileReadyFormat: Format[UpscanFileReady] = Json.format[UpscanFileReady]
+  val upscanFileReadyFormat: Format[UpscanFileReady]   = Json.format[UpscanFileReady]
   val upscanFileFailedFormat: Format[UpscanFileFailed] = Json.format[UpscanFileFailed]
 
   implicit def reads: Reads[UpscanNotification] =
@@ -169,6 +161,7 @@ object UpscanNotification {
 
   implicit def writes: Writes[UpscanNotification] =
     new Writes[UpscanNotification] {
+
       override def writes(o: UpscanNotification): JsValue =
         o match {
           case i: UpscanFileReady =>
@@ -176,6 +169,7 @@ object UpscanNotification {
           case i: UpscanFileFailed =>
             upscanFileFailedFormat.transform(addFileStatus(FAILED)).writes(i)
         }
+
     }
 
 }

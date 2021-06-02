@@ -26,11 +26,9 @@ sealed trait AgentImporterHasEORI
 object AgentImporterHasEORI extends Enumerable.Implicits {
 
   case object Yes extends WithName("01") with AgentImporterHasEORI
-  case object No extends WithName("02") with AgentImporterHasEORI
+  case object No  extends WithName("02") with AgentImporterHasEORI
 
-  val values: Seq[AgentImporterHasEORI] = Seq(
-    Yes, No
-  )
+  val values: Seq[AgentImporterHasEORI] = Seq(Yes, No)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -43,4 +41,5 @@ object AgentImporterHasEORI extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[AgentImporterHasEORI] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

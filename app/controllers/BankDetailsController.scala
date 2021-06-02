@@ -31,25 +31,25 @@ import views.html.BankDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class BankDetailsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: BankDetailsFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: BankDetailsView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class BankDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: BankDetailsFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: BankDetailsView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(BankDetailsPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,11 +58,8 @@ class BankDetailsController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(BankDetailsPage, value))
@@ -73,8 +70,9 @@ class BankDetailsController @Inject()(
                 case _ =>
                   updatedAnswers.set(BankDetailsPage, value)
               })
-            _              <- sessionRepository.set(removeCMA)
+            _ <- sessionRepository.set(removeCMA)
           } yield Redirect(navigator.nextPage(BankDetailsPage, mode, removeCMA))
       )
   }
+
 }

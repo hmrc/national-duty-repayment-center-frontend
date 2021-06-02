@@ -18,10 +18,7 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class BankDetails(
-                              AccountName: String,
-                              SortCode: String,
-                              AccountNumber: String) {
+final case class BankDetails(AccountName: String, SortCode: String, AccountNumber: String) {
 
   val sortCodeTrimmed: String =
     SortCode
@@ -35,6 +32,7 @@ final case class BankDetails(
       .replaceAll(" ", "")
       .replaceAll("-", "")
       .reverse.padTo(accountNumberLength, '0').reverse
+
 }
 
 object BankDetails {

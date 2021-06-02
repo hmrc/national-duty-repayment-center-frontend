@@ -25,7 +25,6 @@ import javax.inject.Inject
 class DoYouOwnTheGoodsFormProvider @Inject() extends Mappings {
 
   def apply(): Form[DoYouOwnTheGoods] =
-    Form(
-      "value" -> enumerable[DoYouOwnTheGoods]("doYouOwnTheGoods.error.required")
-    )
+    Form("value" -> enumerable[DoYouOwnTheGoods]("doYouOwnTheGoods.error.required"))
+
 }

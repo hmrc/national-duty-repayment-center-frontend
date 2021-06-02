@@ -23,10 +23,9 @@ object IsContactProvided extends Enumerable.Implicits {
   case object Email extends WithName("01") with IsContactProvided
   case object Phone extends WithName("02") with IsContactProvided
 
-  val values: Seq[IsContactProvided] = Seq(
-    Email, Phone
-  )
+  val values: Seq[IsContactProvided] = Seq(Email, Phone)
 
   implicit val enumerable: Enumerable[IsContactProvided] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

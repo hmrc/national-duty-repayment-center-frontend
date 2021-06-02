@@ -25,12 +25,10 @@ sealed trait ClaimantType
 
 object ClaimantType extends Enumerable.Implicits {
 
-  case object Importer extends WithName("01") with ClaimantType
+  case object Importer       extends WithName("01") with ClaimantType
   case object Representative extends WithName("02") with ClaimantType
 
-  val values: Seq[ClaimantType] = Seq(
-    Importer, Representative
-  )
+  val values: Seq[ClaimantType] = Seq(Importer, Representative)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -43,4 +41,5 @@ object ClaimantType extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[ClaimantType] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

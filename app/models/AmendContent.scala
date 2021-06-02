@@ -18,11 +18,7 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-
-final case class AmendContent(CaseID: String,
-                              Description: String,
-                              TypeOfAmendments: Seq[AmendCaseResponseType]
-                        )
+final case class AmendContent(CaseID: String, Description: String, TypeOfAmendments: Seq[AmendCaseResponseType])
 
 object AmendContent {
   implicit val format: OFormat[AmendContent] = Json.format[AmendContent]

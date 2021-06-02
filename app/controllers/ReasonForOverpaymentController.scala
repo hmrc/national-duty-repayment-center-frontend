@@ -30,25 +30,25 @@ import views.html.ReasonForOverpaymentView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ReasonForOverpaymentController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ReasonForOverpaymentFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ReasonForOverpaymentView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ReasonForOverpaymentController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ReasonForOverpaymentFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ReasonForOverpaymentView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ReasonForOverpaymentPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -57,11 +57,8 @@ class ReasonForOverpaymentController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReasonForOverpaymentPage, value))
@@ -69,4 +66,5 @@ class ReasonForOverpaymentController @Inject()(
           } yield Redirect(navigator.nextPage(ReasonForOverpaymentPage, mode, updatedAnswers))
       )
   }
+
 }

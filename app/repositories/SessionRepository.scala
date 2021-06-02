@@ -32,11 +32,10 @@ import services.FileUploadState
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultSessionRepository @Inject()(
-                                          mongo: ReactiveMongoApi,
-                                          config: Configuration
-                                        )(implicit ec: ExecutionContext, m: Materializer) extends SessionRepository {
-
+class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Configuration)(implicit
+  ec: ExecutionContext,
+  m: Materializer
+) extends SessionRepository {
 
   private val collectionName: String = "user-answers"
 
@@ -46,8 +45,8 @@ class DefaultSessionRepository @Inject()(
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
   private val lastUpdatedIndex = Index(
-    key     = Seq("lastUpdated" -> IndexType.Ascending),
-    name    = Some("user-answers-last-updated-index"),
+    key = Seq("lastUpdated" -> IndexType.Ascending),
+    name = Some("user-answers-last-updated-index"),
     options = BSONDocument("expireAfterSeconds" -> cacheTtl)
   )
 
@@ -61,60 +60,57 @@ class DefaultSessionRepository @Inject()(
 
   def resetData(userAnswers: UserAnswers): Future[Boolean] = {
 
-    val selector = Json.obj(
-      "_id" -> userAnswers.id
-    )
+    val selector = Json.obj("_id" -> userAnswers.id)
 
-    val modifier = {
-        Json.obj(
-      "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).
-        as[JsObject].setObject(userAnswers.dataPath, Json.obj()).get.
-        setObject(userAnswers.fileUploadPath, JsNull).get
+    val modifier =
+      Json.obj(
+        "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(
+          userAnswers.dataPath,
+          Json.obj()
+        ).get.setObject(userAnswers.fileUploadPath, JsNull).get
       )
-    }
     collection.flatMap {
       _.update(ordered = false)
         .one(selector, modifier, upsert = true).map {
-        lastError =>
-          lastError.ok
-      }
+          lastError =>
+            lastError.ok
+        }
     }
-}
+  }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
 
-    val selector = Json.obj(
-      "_id" -> userAnswers.id
-    )
+    val selector = Json.obj("_id" -> userAnswers.id)
 
     val modifier = {
-      if(userAnswers.fileUploadState.isEmpty)
-      Json.obj(
-      "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(userAnswers.fileUploadPath, JsNull).get
-    ) else
+      if (userAnswers.fileUploadState.isEmpty)
         Json.obj(
-          "$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now))
+          "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(
+            userAnswers.fileUploadPath,
+            JsNull
+          ).get
         )
+      else
+        Json.obj("$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now)))
     }
     collection.flatMap {
       _.update(ordered = false)
         .one(selector, modifier, upsert = true).map {
           lastError =>
             lastError.ok
-      }
+        }
     }
   }
-  override def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean] = {
+
+  override def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean] =
     if (userAnswers.nonEmpty)
       set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
     else Future.successful(true)
-  }
 
-  override def getFileUploadState(id: String): Future[SessionState] = {
+  override def getFileUploadState(id: String): Future[SessionState] =
     for {
       u <- get(id)
     } yield (SessionState(u.flatMap(_.fileUploadState), u))
-  }
 
 }
 

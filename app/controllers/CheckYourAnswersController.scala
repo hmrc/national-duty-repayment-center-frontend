@@ -34,36 +34,36 @@ import play.api.libs.json.{JsDefined, JsNull, JsObject, Json}
 import java.time.LocalDate
 import scala.concurrent.{ExecutionContext, Future}
 
-class CheckYourAnswersController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            sessionRepository: SessionRepository,
-                                            claimService: ClaimService,
-                                            navigator: Navigator,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: CheckYourAnswersView
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  claimService: ClaimService,
+  navigator: Navigator,
+  val controllerComponents: MessagesControllerComponents,
+  view: CheckYourAnswersView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-      if(request.userAnswers.data.fields.isEmpty && request.userAnswers.fileUploadState.isEmpty)
+      if (request.userAnswers.data.fields.isEmpty && request.userAnswers.fileUploadState.isEmpty)
         Redirect(routes.CreateOrAmendCaseController.onPageLoad())
       else
-      Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections))
+        Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
-        claimId <- claimService.submitClaim(request.userAnswers)
-        updatedClaimId <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
+        claimId          <- claimService.submitClaim(request.userAnswers)
+        updatedClaimId   <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
-        _ <- sessionRepository.set(updatedClaimDate)
+        _                <- sessionRepository.set(updatedClaimDate)
       } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, request.userAnswers))
   }
-}
 
+}

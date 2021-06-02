@@ -26,9 +26,8 @@ class ImporterEoriFormProvider @Inject() extends Mappings {
   def apply(): Form[EORI] =
     Form(
       "value" -> textNoSpaces("importerEori.error.invalid")
-        .verifying(firstError(
-          regexp(Validation.eoriPattern.toString, "importerEori.error.invalid")
-        ))
+        .verifying(firstError(regexp(Validation.eoriPattern.toString, "importerEori.error.invalid")))
         .transform[EORI](EORI.apply, _.value)
     )
+
 }

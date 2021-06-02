@@ -18,10 +18,7 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class DocumentList(
-                               Type: EvidenceSupportingDocs,
-                               Description: Option[DocumentDescription]
-                             )
+final case class DocumentList(Type: EvidenceSupportingDocs, Description: Option[DocumentDescription])
 
 object DocumentList {
   implicit val format: OFormat[DocumentList] = Json.format[DocumentList]

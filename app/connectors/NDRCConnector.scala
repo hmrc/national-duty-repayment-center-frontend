@@ -26,13 +26,8 @@ import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
 
-
-class NDRCConnector @Inject()(
-                               config: Configuration,
-                               httpClient: HttpClient
-                             )(
-                               implicit ec: ExecutionContext
-                             ) extends HttpErrorFunctions {
+class NDRCConnector @Inject() (config: Configuration, httpClient: HttpClient)(implicit ec: ExecutionContext)
+    extends HttpErrorFunctions {
 
   private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center")
 
@@ -41,5 +36,5 @@ class NDRCConnector @Inject()(
 
   def submitAmendClaim(request: AmendClaimRequest)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
     httpClient.POST[AmendClaimRequest, ClientClaimSuccessResponse](s"$baseUrl/amend-case", request)
-}
 
+}

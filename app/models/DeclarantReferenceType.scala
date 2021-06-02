@@ -29,15 +29,13 @@ sealed trait DeclarantReferenceType
 object DeclarantReferenceType extends Enumerable.Implicits {
 
   case object Yes extends WithName("01") with DeclarantReferenceType
-  case object No extends WithName("02") with DeclarantReferenceType
+  case object No  extends WithName("02") with DeclarantReferenceType
 
   private val govukErrorMessage: govukErrorMessage = new govukErrorMessage()
-  private val govukHint: govukHint = new govukHint()
-  private val govukLabel: govukLabel = new govukLabel()
+  private val govukHint: govukHint                 = new govukHint()
+  private val govukLabel: govukLabel               = new govukLabel()
 
-  val values: Seq[DeclarantReferenceType] = Seq(
-    Yes, No
-  )
+  val values: Seq[DeclarantReferenceType] = Seq(Yes, No)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -45,29 +43,35 @@ object DeclarantReferenceType extends Enumerable.Implicits {
         value = Some(value.toString),
         content = Text(messages(s"declarantReferenceNumber.${value.toString}")),
         checked = form.value.isEmpty match {
-          case true => form("value").value.contains(value.toString)
+          case true  => form("value").value.contains(value.toString)
           case false => form.value.head.asInstanceOf[DeclarantReferenceNumber].declarantReferenceType == value
         },
-        conditionalHtml = if(value.toString.equals("01")) Some(new govukInput(govukErrorMessage, govukHint, govukLabel)
-        (Input(id="declarantReferenceNumber", value = form("declarantReferenceNumber").value,label= Label(
-          content=Text(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
-          isPageHeading = false
-        ),
-          errorMessage = if(form("declarantReferenceNumber").hasErrors){
-            Some(ErrorMessage(
-              content = Text(messages(form("declarantReferenceNumber").errors.head.message))
-            ))
-          } else { None },
-          name="declarantReferenceNumber", classes = "",attributes = Map(
-            "autocomplete" -> "off",
-            "inputmode" -> "numeric",
-            "pattern" -> "[0-9]*"
-          ))))
-        else None
+        conditionalHtml =
+          if (value.toString.equals("01"))
+            Some(
+              new govukInput(govukErrorMessage, govukHint, govukLabel)(
+                Input(
+                  id = "declarantReferenceNumber",
+                  value = form("declarantReferenceNumber").value,
+                  label = Label(
+                    content = Text(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
+                    isPageHeading = false
+                  ),
+                  errorMessage =
+                    if (form("declarantReferenceNumber").hasErrors)
+                      Some(ErrorMessage(content = Text(messages(form("declarantReferenceNumber").errors.head.message))))
+                    else None,
+                  name = "declarantReferenceNumber",
+                  classes = "",
+                  attributes = Map("autocomplete" -> "off", "inputmode" -> "numeric", "pattern" -> "[0-9]*")
+                )
+              )
+            )
+          else None
       )
   }
 
-
   implicit val enumerable: Enumerable[DeclarantReferenceType] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

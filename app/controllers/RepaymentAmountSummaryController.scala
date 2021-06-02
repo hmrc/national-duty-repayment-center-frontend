@@ -28,26 +28,24 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.{CheckYourAnswersHelper, RepaymentAmountSummaryAnswersHelper}
 import views.html.RepaymentAmountSummaryView
 
-class RepaymentAmountSummaryController @Inject()(
-                                                  override val messagesApi: MessagesApi,
-                                                  sessionRepository: SessionRepository,
-                                                  identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                  val controllerComponents: MessagesControllerComponents,
-                                                  view: RepaymentAmountSummaryView
-                                                ) extends FrontendBaseController with I18nSupport {
+class RepaymentAmountSummaryController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: RepaymentAmountSummaryView
+) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers, mode)
 
-      val sections = Seq(
-        helper.getSections(),
-        Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)
-      ).flatten
+      val sections =
+        Seq(helper.getSections(), Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)).flatten
 
       Ok(view(sections, mode))
   }
+
 }

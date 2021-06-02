@@ -21,15 +21,14 @@ import play.api.libs.json.Format
 import play.api.libs.json.Json
 
 case class UploadedFile(
-                         upscanReference: String,
-                         downloadUrl: String,
-                         uploadTimestamp: ZonedDateTime,
-                         checksum: String,
-                         fileName: String,
-                         fileMimeType: String
-                       )
+  upscanReference: String,
+  downloadUrl: String,
+  uploadTimestamp: ZonedDateTime,
+  checksum: String,
+  fileName: String,
+  fileMimeType: String
+)
 
 object UploadedFile {
   implicit val formats: Format[UploadedFile] = Json.format[UploadedFile]
 }
-

@@ -25,7 +25,6 @@ import models.WhomToPay
 class WhomToPayFormProvider @Inject() extends Mappings {
 
   def apply(): Form[WhomToPay] =
-    Form(
-      "value" -> enumerable[WhomToPay]("whomToPay.error.required")
-    )
+    Form("value" -> enumerable[WhomToPay]("whomToPay.error.required"))
+
 }

@@ -41,4 +41,5 @@ trait AverageResponseTimer {
 
   private def timerName[T](serviceName: String): String =
     s"Timer-$serviceName"
+
 }

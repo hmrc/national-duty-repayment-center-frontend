@@ -25,7 +25,6 @@ import models.AgentImporterHasEORI
 class AgentImporterHasEORIFormProvider @Inject() extends Mappings {
 
   def apply(): Form[AgentImporterHasEORI] =
-    Form(
-      "value" -> enumerable[AgentImporterHasEORI]("agentImporterHasEORI.error.required")
-    )
+    Form("value" -> enumerable[AgentImporterHasEORI]("agentImporterHasEORI.error.required"))
+
 }

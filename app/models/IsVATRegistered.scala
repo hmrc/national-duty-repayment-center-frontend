@@ -26,11 +26,9 @@ sealed trait IsVATRegistered
 object IsVATRegistered extends Enumerable.Implicits {
 
   case object Yes extends WithName("01") with IsVATRegistered
-  case object No extends WithName("02") with IsVATRegistered
+  case object No  extends WithName("02") with IsVATRegistered
 
-  val values: Seq[IsVATRegistered] = Seq(
-    Yes, No
-  )
+  val values: Seq[IsVATRegistered] = Seq(Yes, No)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -43,5 +41,5 @@ object IsVATRegistered extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[IsVATRegistered] =
     Enumerable(values.map(v => v.toString -> v): _*)
-}
 
+}

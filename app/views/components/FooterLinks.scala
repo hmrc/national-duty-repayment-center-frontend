@@ -22,40 +22,24 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.footer.FooterItem
 
 object FooterLinks {
 
-  val cookies = "/help/cookies"
-  val privacy = "/help/privacy"
+  val cookies         = "/help/cookies"
+  val privacy         = "/help/privacy"
   val termsConditions = "/help/terms-and-conditions"
-  val govukHelp = "https://www.gov.uk/help"
+  val govukHelp       = "https://www.gov.uk/help"
 
   def cookieLink(implicit messages: Messages) =
-    FooterItem(
-      Some(messages("footer.cookies")),
-      Some(cookies)
-    )
+    FooterItem(Some(messages("footer.cookies")), Some(cookies))
 
   def privacyLink(implicit messages: Messages) =
-    FooterItem(
-      Some(messages("footer.privacy")),
-      Some(privacy)
-    )
+    FooterItem(Some(messages("footer.privacy")), Some(privacy))
 
   def termsConditionsLink(implicit messages: Messages) =
-    FooterItem(
-      Some(messages("footer.termsConditions")),
-      Some(termsConditions)
-    )
+    FooterItem(Some(messages("footer.termsConditions")), Some(termsConditions))
 
   def govukHelpLink(implicit messages: Messages) =
-    FooterItem(
-      Some(messages("footer.govukHelp")),
-      Some(govukHelp)
-    )
+    FooterItem(Some(messages("footer.govukHelp")), Some(govukHelp))
 
   def items(implicit messages: Messages, request: Request[_]) =
-    Seq(
-      cookieLink,
-      privacyLink,
-      termsConditionsLink,
-      govukHelpLink
-    )
+    Seq(cookieLink, privacyLink, termsConditionsLink, govukHelpLink)
+
 }

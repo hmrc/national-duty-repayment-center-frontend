@@ -22,19 +22,22 @@ import java.time.format.DateTimeFormatter
 object CommonUtilsHelper {
 
   implicit class DateTimeUtilities(s: LocalDateTime) {
+
     def ddMMYYYYAtTimeFormat = {
       val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy 'at' HH:mm")
       formatter.format(s)
     }
+
   }
 
   /**
-   * Mapping, folding and getOrElse on Option[String] for non-empty strings.
-   * Commonly used in the Twirl components.
-   *
+    * Mapping, folding and getOrElse on Option[String] for non-empty strings.
+    * Commonly used in the Twirl components.
+    *
    * @param optString
-   */
+    */
   implicit class RichOptionString(optString: Option[String]) {
+
     def mapNonEmpty[T](f: String => T): Option[T] =
       optString.filter(_.nonEmpty).map(f)
 
@@ -43,6 +46,7 @@ object CommonUtilsHelper {
 
     def getNonEmptyOrElse[B >: String](default: => B): B =
       optString.filter(_.nonEmpty).getOrElse(default)
+
   }
 
 }

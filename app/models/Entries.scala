@@ -18,10 +18,8 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class Entries(numberOfEntriesType : NumberOfEntriesType, entries: Option[String])
+case class Entries(numberOfEntriesType: NumberOfEntriesType, entries: Option[String])
 
 object Entries {
   implicit val format: OFormat[Entries] = Json.format[Entries]
 }
-
-

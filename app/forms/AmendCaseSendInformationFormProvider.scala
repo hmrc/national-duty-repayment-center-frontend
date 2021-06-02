@@ -28,4 +28,5 @@ class AmendCaseSendInformationFormProvider @Inject() extends Mappings {
       "value" -> text("amendCaseSendInformation.error.required")
         .verifying(maxLength(1000, "amendCaseSendInformation.error.length"))
     )
+
 }

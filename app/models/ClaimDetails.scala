@@ -24,23 +24,23 @@ import play.api.libs.json._
 import scala.util.{Failure, Success, Try}
 
 final case class ClaimDetails(
-                               FormType: FormType,
-                               CustomRegulationType: CustomsRegulationType,
-                               ClaimedUnderArticle: Option[ArticleType],
-                               ClaimedUnderRegulation: Option[UkRegulationType],
-                               Claimant: ClaimantType,
-                               ClaimType: NumberOfEntriesType,
-                               NoOfEntries: Option[String],
-                               EntryDetails: EntryDetails,
-                               ClaimReason: ClaimReasonType,
-                               ClaimDescription: ClaimDescription,
-                               DateReceived: LocalDate,
-                               ClaimDate: LocalDate,
-                               PayeeIndicator: WhomToPay,
-                               PaymentMethod: RepaymentType,
-                               DeclarantRefNumber: String,
-                               DeclarantName: String
-                             )
+  FormType: FormType,
+  CustomRegulationType: CustomsRegulationType,
+  ClaimedUnderArticle: Option[ArticleType],
+  ClaimedUnderRegulation: Option[UkRegulationType],
+  Claimant: ClaimantType,
+  ClaimType: NumberOfEntriesType,
+  NoOfEntries: Option[String],
+  EntryDetails: EntryDetails,
+  ClaimReason: ClaimReasonType,
+  ClaimDescription: ClaimDescription,
+  DateReceived: LocalDate,
+  ClaimDate: LocalDate,
+  PayeeIndicator: WhomToPay,
+  PaymentMethod: RepaymentType,
+  DeclarantRefNumber: String,
+  DeclarantName: String
+)
 
 object ClaimDetails {
 
@@ -52,12 +52,13 @@ object ClaimDetails {
     override def reads(json: JsValue): JsResult[LocalDate] = json match {
       case JsString(s) ⇒
         Try(LocalDate.parse(s, formatter)) match {
-          case Success(date) ⇒ JsSuccess(date)
+          case Success(date)  ⇒ JsSuccess(date)
           case Failure(error) ⇒ JsError(s"Could not parse date as yyyyMMdd: ${error.getMessage}")
         }
 
       case other ⇒ JsError(s"Expected string but got $other")
     }
+
   }
 
   implicit val format: OFormat[ClaimDetails] = Json.format[ClaimDetails]

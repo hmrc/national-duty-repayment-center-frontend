@@ -23,13 +23,10 @@ import play.api.libs.json.{Format, JsError, JsResult, JsString, JsSuccess, JsVal
 
 import scala.util.{Failure, Success, Try}
 
-final case class EntryDetails(
-                              EPU: String,
-                              EntryNumber: String,
-                              EntryDate: LocalDate) {
-}
+final case class EntryDetails(EPU: String, EntryNumber: String, EntryDate: LocalDate) {}
 
 object EntryDetails {
+
   implicit val dateFormat: Format[LocalDate] = new Format[LocalDate] {
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
 
@@ -38,13 +35,14 @@ object EntryDetails {
     override def reads(json: JsValue): JsResult[LocalDate] = json match {
       case JsString(s) ⇒
         Try(LocalDate.parse(s, formatter)) match {
-          case Success(date) ⇒ JsSuccess(date)
+          case Success(date)  ⇒ JsSuccess(date)
           case Failure(error) ⇒ JsError(s"Could not parse date as yyyyMMdd: ${error.getMessage}")
         }
 
       case other ⇒ JsError(s"Expected string but got $other")
     }
+
   }
+
   implicit val format: OFormat[EntryDetails] = Json.format[EntryDetails]
 }
-

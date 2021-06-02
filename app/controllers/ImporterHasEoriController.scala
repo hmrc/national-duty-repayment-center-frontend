@@ -31,25 +31,25 @@ import views.html.ImporterHasEoriView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ImporterHasEoriController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: ImporterHasEoriFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: ImporterHasEoriView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ImporterHasEoriController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ImporterHasEoriFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ImporterHasEoriView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ImporterHasEoriPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -63,33 +63,30 @@ class ImporterHasEoriController @Inject()(
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
-
         value =>
           for {
-            setEORINumber <- Future.fromTry (request.userAnswers.set(ImporterHasEoriPage, value))
-            updatedAnswers <- {
+            setEORINumber <- Future.fromTry(request.userAnswers.set(ImporterHasEoriPage, value))
+            updatedAnswers <-
               Future.fromTry(setEORINumber.get(ImporterHasEoriPage).get match {
-                  case false => setEORINumber.remove(ImporterEoriPage)
-                  case true => setEORINumber.set(ImporterHasEoriPage, value)
-                })
-            }
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield {
-            if(mode.equals(CheckMode) ) {
+                case false => setEORINumber.remove(ImporterEoriPage)
+                case true  => setEORINumber.set(ImporterHasEoriPage, value)
+              })
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield
+            if (mode.equals(CheckMode))
               (oldEORI, value) match {
                 case (false, true) => Redirect(navigator.nextPage(ImporterHasEoriPage, CheckMode, updatedAnswers))
-                case _ => Redirect(routes.CheckYourAnswersController.onPageLoad())
+                case _             => Redirect(routes.CheckYourAnswersController.onPageLoad())
               }
-            } else
-                Redirect(navigator.nextPage(ImporterHasEoriPage, mode, updatedAnswers))
-          }
+            else
+              Redirect(navigator.nextPage(ImporterHasEoriPage, mode, updatedAnswers))
       )
   }
 
-  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
-        userAnswers.get(ClaimantTypePage) match {
-          case Some(ClaimantType.Importer) => true
-          case _ => false
-        }
-      }
+  def isImporterJourney(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => true
+      case _                           => false
+    }
+
 }

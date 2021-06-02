@@ -22,5 +22,11 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.ActionItem
 object ActionItemBuilder {
 
   def actionItem(href: String, content: Content, visuallyHiddenText: Option[String]) =
-    ActionItem(href = href, content = content, visuallyHiddenText = visuallyHiddenText, classes = "govuk-link--no-visited-state")
+    ActionItem(
+      href = href,
+      content = content,
+      visuallyHiddenText = visuallyHiddenText,
+      classes = "govuk-link--no-visited-state"
+    )
+
 }

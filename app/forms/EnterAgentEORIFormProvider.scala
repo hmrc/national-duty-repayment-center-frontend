@@ -26,9 +26,8 @@ class EnterAgentEORIFormProvider @Inject() extends Mappings {
   def apply(): Form[EORI] =
     Form(
       "value" -> textNoSpaces("enterAgentEORI.error.required")
-        .verifying(firstError(
-          regexp(Validation.eoriPattern.toString, "enterAgentEORI.error.valid")
-        ))
+        .verifying(firstError(regexp(Validation.eoriPattern.toString, "enterAgentEORI.error.valid")))
         .transform[EORI](EORI.apply, _.value)
     )
+
 }

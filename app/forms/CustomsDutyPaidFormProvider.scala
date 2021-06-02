@@ -22,12 +22,14 @@ import models.RepaymentAmounts
 import play.api.data.Form
 import play.api.data.Forms._
 
-class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
+class CustomsDutyPaidFormProvider @Inject() extends Mappings {
 
   def apply(): Form[RepaymentAmounts] = Form(
     mapping(
-      "ActualPaidAmount" -> decimal("customsDutyPaid.actualamountpaid.error.required",
-        "customsDutyPaid.actualamountpaid.error.notANumber")
+      "ActualPaidAmount" -> decimal(
+        "customsDutyPaid.actualamountpaid.error.required",
+        "customsDutyPaid.actualamountpaid.error.notANumber"
+      )
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "customsDutyPaid.actualamountpaid.error.decimalPlaces"),
@@ -36,12 +38,11 @@ class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
         )
         .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
         .verifying(maximumValue[BigDecimal](99999999999.99, "customsDutyPaid.actualamountpaid.error.length"))
-        .transform[String](
-          d => d.toString,
-          i => i.toDouble
-        ),
-      "ShouldHavePaidAmount" -> decimal("customsDutyPaid.shouldhavepaid.error.required",
-        "customsDutyPaid.shouldhavepaid.error.notANumber")
+        .transform[String](d => d.toString, i => i.toDouble),
+      "ShouldHavePaidAmount" -> decimal(
+        "customsDutyPaid.shouldhavepaid.error.required",
+        "customsDutyPaid.shouldhavepaid.error.notANumber"
+      )
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "customsDutyPaid.shouldhavepaid.error.decimalPlaces"),
@@ -50,12 +51,10 @@ class CustomsDutyPaidFormProvider @Inject() extends Mappings  {
         )
         .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
         .verifying(maximumValue[BigDecimal](99999999999.99, "customsDutyPaid.shouldhavepaid.error.length"))
-        .transform[String](
-          d => d.toString,
-          i => i.toDouble
-        )
+        .transform[String](d => d.toString, i => i.toDouble)
     )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
       .verifying("customsDutyPaid.amounts.error.same", duty => duty.dueAmount != 0)
       .verifying("customsDutyPaid.amounts.error.greater", duty => duty.dueAmount >= 0)
   )
+
 }

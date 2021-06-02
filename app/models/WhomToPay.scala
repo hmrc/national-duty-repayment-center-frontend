@@ -25,13 +25,11 @@ sealed trait WhomToPay
 
 object WhomToPay extends Enumerable.Implicits {
 
-  case object Importer extends WithName("01") with WhomToPay
+  case object Importer       extends WithName("01") with WhomToPay
   case object Representative extends WithName("02") with WhomToPay
-  case object CMA extends WithName("03") with WhomToPay
+  case object CMA            extends WithName("03") with WhomToPay
 
-  val values: Seq[WhomToPay] = Seq(
-    Importer, Representative
-  )
+  val values: Seq[WhomToPay] = Seq(Importer, Representative)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -44,4 +42,5 @@ object WhomToPay extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[WhomToPay] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

@@ -41,6 +41,7 @@ trait SealedTraitFormats[A] {
 
     def reads(json: JsValue): JsResult[A] =
       format.reads(json).map(_.asInstanceOf[A])
+
   }
 
   implicit val format: Format[A] = Format(
@@ -50,9 +51,7 @@ trait SealedTraitFormats[A] {
           (key, value) <- o.fields.headOption
           format       <- formatMap.get(key)
         } yield format.reads(value).map(_.asInstanceOf[A]))
-          .getOrElse(
-            JsError(s"Failure de-serializing ${Json.stringify(o)}")
-          )
+          .getOrElse(JsError(s"Failure de-serializing ${Json.stringify(o)}"))
 
       case json => JsError(s"Expected json object but got ${json.getClass.getSimpleName}")
     },

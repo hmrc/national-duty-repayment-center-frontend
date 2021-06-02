@@ -24,7 +24,6 @@ import play.api.data.Form
 class IndirectRepresentativeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("indirectRepresentative.error.required")
-    )
+    Form("value" -> boolean("indirectRepresentative.error.required"))
+
 }

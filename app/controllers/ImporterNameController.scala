@@ -30,25 +30,25 @@ import views.html.ImporterNameView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ImporterNameController @Inject()(
-                                             override val messagesApi: MessagesApi,
-                                             sessionRepository: SessionRepository,
-                                             navigator: Navigator,
-                                             identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             formProvider: ImporterNameFormProvider,
-                                             val controllerComponents: MessagesControllerComponents,
-                                             view: ImporterNameView
-                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ImporterNameController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ImporterNameFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ImporterNameView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ImporterNamePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -57,16 +57,14 @@ class ImporterNameController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterNamePage, value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(ImporterNamePage, mode, updatedAnswers))
       )
   }
+
 }
