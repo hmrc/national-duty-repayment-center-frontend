@@ -18,14 +18,13 @@ package controllers
 
 import controllers.actions._
 import forms.AmendCaseResponseTypeFormProvider
-import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
-
 import javax.inject.Inject
-import models.{AmendCaseResponseType, Mode, UserAnswers}
-import navigation.Navigator
-import pages.{AmendCaseResponseTypePage, FurtherInformationPage}
+import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
+import models.UserAnswers
+import navigation.AmendNavigator
+import pages.{AmendCaseResponseTypePage, FurtherInformationPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AmendCaseResponseTypeView
@@ -33,20 +32,21 @@ import views.html.AmendCaseResponseTypeView
 import scala.concurrent.{ExecutionContext, Future}
 
 class AmendCaseResponseTypeController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: AmendCaseResponseTypeFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: AmendCaseResponseTypeView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                 override val messagesApi: MessagesApi,
+                                                 sessionRepository: SessionRepository,
+                                                 val navigator: AmendNavigator,
+                                                 identify: IdentifierAction,
+                                                 getData: DataRetrievalAction,
+                                                 requireData: DataRequiredAction,
+                                                 formProvider: AmendCaseResponseTypeFormProvider,
+                                                 val controllerComponents: MessagesControllerComponents,
+                                                 view: AmendCaseResponseTypeView
+                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
+  override val page: Page = AmendCaseResponseTypePage
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(AmendCaseResponseTypePage) match {
@@ -54,29 +54,29 @@ class AmendCaseResponseTypeController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
+          Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
 
         value =>
           for {
             ua <- {
-              if(!value.contains(FurtherInformation))
+              if (!value.contains(FurtherInformation))
                 Future.fromTry(request.userAnswers.remove(FurtherInformationPage))
-              else if(!value.contains(SupportingDocuments))
+              else if (!value.contains(SupportingDocuments))
                 Future.successful(request.userAnswers.copy(fileUploadState = None))
               else Future.successful(request.userAnswers)
             }
             updatedAnswers <- Future.fromTry(ua.set(AmendCaseResponseTypePage, value))
-            res   <- sessionRepository.set(updatedAnswers)
+            res <- sessionRepository.set(updatedAnswers)
             if res
-          } yield Redirect(navigator.nextPage(AmendCaseResponseTypePage, mode, updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 }

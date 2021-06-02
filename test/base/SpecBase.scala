@@ -16,6 +16,8 @@
 
 package base
 
+import java.time.{LocalDate, ZoneId, ZonedDateTime}
+
 import com.codahale.metrics.MetricRegistry
 import com.kenshoo.play.metrics.{Metrics, MetricsFilterImpl, MetricsImpl}
 import config.FrontendAppConfig
@@ -34,14 +36,13 @@ import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
-import play.api.libs.json.{JsArray, JsNull, Json}
+import play.api.libs.json.{JsArray, Json}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
-import java.time.{LocalDate, ZoneId, ZonedDateTime}
 import scala.concurrent.{ExecutionContext, Future}
 
 
@@ -56,7 +57,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
   def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
 
   val metrics: Metrics = mock[Metrics]
-  val registry:MetricRegistry = metrics.defaultRegistry
+  val registry: MetricRegistry = metrics.defaultRegistry
   val metricFilter = mock[MetricsFilterImpl]
   when(metricFilter.registry).thenReturn(registry)
 
@@ -285,6 +286,7 @@ trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with TryValues with Sca
       )
     )
   )
+
   def buildRequest(method: String, path: String): FakeRequest[AnyContentAsEmpty.type] = {
     FakeRequest(method, path)
       .withCSRFToken

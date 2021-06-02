@@ -207,4 +207,8 @@ function completePage() {
         document.getElementById("value").value = "Some further information";
         submit();
     }
+    if (currentPageIs("/amend/file-uploaded")) {
+        document.getElementById("uploadAnotherFile-2").checked = true;
+        submit();
+    }
 }

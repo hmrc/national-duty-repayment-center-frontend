@@ -61,8 +61,6 @@ class Navigator @Inject()() {
     case ProofOfAuthorityPage => _ => routes.BankDetailsController.onPageLoad(NormalMode)
     case CheckYourAnswersPage => _ => routes.ConfirmationController.onPageLoad()
     case AmendCheckYourAnswersPage => _ => routes.AmendConfirmationController.onPageLoad()
-    case ReferenceNumberPage => _ => routes.AmendCaseResponseTypeController.onPageLoad(NormalMode)
-    case AmendCaseResponseTypePage => getAmendCaseResponseType
     case AmendCaseSendInformationPage => _ => routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
     case FurtherInformationPage => _ => routes.AmendCheckYourAnswersController.onPageLoad
     case OtherDutiesPaidPage => _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
@@ -73,7 +71,7 @@ class Navigator @Inject()() {
 
   private def getCreateOrAmendCase(answers: UserAnswers): Call = answers.get(CreateOrAmendCasePage) match {
     case Some(CreateOrAmendCase.CreateCase)  => routes.ClaimantTypeController.onPageLoad(NormalMode)
-    case Some(CreateOrAmendCase.AmendCase) => routes.ReferenceNumberController.onPageLoad(NormalMode)
+    case Some(CreateOrAmendCase.AmendCase) => routes.ReferenceNumberController.onPageLoad()
   }
 
   private def getImporterManualAddress(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
@@ -85,11 +83,6 @@ class Navigator @Inject()() {
     case Some(DoYouOwnTheGoods.Yes)  => routes.ImporterAddressController.onPageLoad(NormalMode)
     case _ => routes.ImporterNameController.onPageLoad(NormalMode)
   }
-  private def getAmendCaseResponseType(answers: UserAnswers): Call =
-    answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.SupportingDocuments) match {
-      case true => routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
-      case  _  => routes.FurtherInformationController.onPageLoad(NormalMode)
-    }
 
   private def getRepaymentType(answers: UserAnswers): Call =
     (answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType, answers.get(ClaimantTypePage)) match {
@@ -197,16 +190,6 @@ class Navigator @Inject()() {
     case _ => routes.RepaymentAmountSummaryController.onPageLoad(NormalMode)
   }
 
-  private def getAmendCaseResponseTypeCheckMode(answers: UserAnswers): Call = {
-    def documentSelected = answers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.SupportingDocuments)
-
-    (documentSelected, answers.fileUploadState.nonEmpty) match {
-      case (true, true) =>  routes.AmendCaseSendInformationController.showFileUploaded(CheckMode)
-      case (true, false) => routes.AmendCaseSendInformationController.showFileUpload(CheckMode)
-      case (_, _) => routes.FurtherInformationController.onPageLoad(CheckMode)
-    }
-  }
-
   private def getWhomToPayCheckMode(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
     case Some(WhomToPay.Representative) => routes.IndirectRepresentativeController.onPageLoad(CheckMode)
     case Some(WhomToPay.Importer) => answers.get(BankDetailsPage).isEmpty match {
@@ -247,7 +230,6 @@ class Navigator @Inject()() {
     case false => routes.CheckYourAnswersController.onPageLoad()
   }
   private val checkRouteMap: Page => UserAnswers => Call = {
-    case AmendCaseResponseTypePage => getAmendCaseResponseTypeCheckMode
     case CustomsDutyPaidPage => getCustomsDutyCheckMode
     case CustomsRegulationTypePage => getEntryDetailsWithCheckMode
     case VATPaidPage => getVatPaidCheckMode

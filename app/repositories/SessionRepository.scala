@@ -17,8 +17,8 @@
 package repositories
 
 import java.time.LocalDateTime
-import akka.stream.Materializer
 
+import akka.stream.Materializer
 import javax.inject.Inject
 import models.{RichJsObject, SessionState, UserAnswers}
 import play.api.Configuration
@@ -46,8 +46,8 @@ class DefaultSessionRepository @Inject()(
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
   private val lastUpdatedIndex = Index(
-    key     = Seq("lastUpdated" -> IndexType.Ascending),
-    name    = Some("user-answers-last-updated-index"),
+    key = Seq("lastUpdated" -> IndexType.Ascending),
+    name = Some("user-answers-last-updated-index"),
     options = BSONDocument("expireAfterSeconds" -> cacheTtl)
   )
 
@@ -66,10 +66,10 @@ class DefaultSessionRepository @Inject()(
     )
 
     val modifier = {
-        Json.obj(
-      "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).
-        as[JsObject].setObject(userAnswers.dataPath, Json.obj()).get.
-        setObject(userAnswers.fileUploadPath, JsNull).get
+      Json.obj(
+        "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).
+          as[JsObject].setObject(userAnswers.dataPath, Json.obj()).get.
+          setObject(userAnswers.fileUploadPath, JsNull).get
       )
     }
     collection.flatMap {
@@ -79,7 +79,7 @@ class DefaultSessionRepository @Inject()(
           lastError.ok
       }
     }
-}
+  }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
 
@@ -99,11 +99,36 @@ class DefaultSessionRepository @Inject()(
     collection.flatMap {
       _.update(ordered = false)
         .one(selector, modifier, upsert = true).map {
-          lastError =>
-            lastError.ok
+        lastError =>
+          lastError.ok
       }
     }
   }
+
+  override def clearChangePage(userAnswers: UserAnswers): Future[Boolean] = {
+
+    val selector = Json.obj(
+      "_id" -> userAnswers.id
+    )
+
+    val modifier = {
+      if(userAnswers.changePage.isEmpty)
+        Json.obj(
+          "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(userAnswers.changePagePath, JsNull).get
+        ) else
+        Json.obj(
+          "$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now))
+        )
+    }
+    collection.flatMap {
+      _.update(ordered = false)
+        .one(selector, modifier, upsert = true).map {
+        lastError =>
+          lastError.ok
+      }
+    }
+  }
+
   override def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean] = {
     if (userAnswers.nonEmpty)
       set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
@@ -125,6 +150,9 @@ trait SessionRepository {
   def get(id: String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
+
+  // TODO - drop this method once optional fields properly supported
+  def clearChangePage(userAnswers: UserAnswers): Future[Boolean]
 
   def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean]
 

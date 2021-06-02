@@ -262,29 +262,6 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(NormalMode))
       }
 
-      "go to AmendCaseResponseType page after ReferenceNumber page " in {
-        navigator.nextPage(ReferenceNumberPage, NormalMode, emptyUserAnswers)
-          .mustBe(routes.AmendCaseResponseTypeController.onPageLoad(NormalMode))
-      }
-
-      "go to FurtherInformation page after ReferenceType page as Further Information " in {
-        val values: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.FurtherInformation)
-        val answers =
-          emptyUserAnswers
-            .set(AmendCaseResponseTypePage, values).success.value
-        navigator.nextPage(AmendCaseResponseTypePage, NormalMode, answers)
-          .mustBe(routes.FurtherInformationController.onPageLoad(NormalMode))
-      }
-
-      "go to SupportingDocuments page after ReferenceType page as Supporting documents " in {
-        val values: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
-        val answers =
-          emptyUserAnswers
-            .set(AmendCaseResponseTypePage, values).success.value
-        navigator.nextPage(AmendCaseResponseTypePage, NormalMode, answers)
-          .mustBe(routes.AmendCaseSendInformationController.showFileUpload(NormalMode))
-      }
-
       "go to AmendCheckYourAnswers page after FurtherInformation page " in {
         navigator.nextPage(FurtherInformationPage, NormalMode, emptyUserAnswers)
           .mustBe(routes.AmendCheckYourAnswersController.onPageLoad)
@@ -337,7 +314,7 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
             .set(CreateOrAmendCasePage, CreateOrAmendCase.AmendCase).success.value
 
         navigator.nextPage(CreateOrAmendCasePage, NormalMode, answers)
-          .mustBe(routes.ReferenceNumberController.onPageLoad(NormalMode))
+          .mustBe(routes.ReferenceNumberController.onPageLoad())
       }
 
       "go to EvidenceSupportingDocs page after the Customs Duty Paid Page with RepayNormalMode" in {
@@ -364,19 +341,6 @@ class NavigatorSpec extends SpecBase with ViewBehaviours {
         val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
 
         navigator.nextPage(UnknownPage, CheckMode, userAnswers) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
-      }
-      "go to File upload page" in {
-        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, AmendCaseResponseType.values.toSet).success.value
-
-        navigator.nextPage(AmendCaseResponseTypePage, CheckMode, userAnswers)
-          .mustBe(routes.AmendCaseSendInformationController.showFileUpload(CheckMode))
-      }
-      "go to Further Information page" in {
-        val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
-        val userAnswers = UserAnswers(userAnswersId).set(AmendCaseResponseTypePage, values.toSet).success.value
-
-        navigator.nextPage(AmendCaseResponseTypePage, CheckMode, userAnswers)
-          .mustBe(routes.FurtherInformationController.onPageLoad(CheckMode))
       }
       "go to Amend Check your answers page when Further information is added no Documents selected" in {
         val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)

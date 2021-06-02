@@ -16,29 +16,22 @@
 
 package controllers
 
+import java.time.ZonedDateTime
+
 import base.SpecBase
-import com.kenshoo.play.metrics.{Metrics, MetricsImpl}
-import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
-import controllers.actions._
 import models.FileType.SupportingEvidence
-import models.requests.UploadRequest
-import models.{AgentImporterHasEORI, AmendCaseResponseType, CheckMode, FileUpload, FileUploads, NormalMode, SessionState, UpscanNotification, UserAnswers}
-import org.mockito.Matchers.{any, anyObject}
+import models.{AmendCaseResponseType, CheckMode, FileUpload, FileUploads, NormalMode, SessionState, UpscanNotification, UserAnswers}
+import org.mockito.Matchers.anyObject
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{AgentImporterHasEORIPage, AmendCaseResponseTypePage}
+import pages.AmendCaseResponseTypePage
 import play.api.i18n.Messages
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
 import services.FileUploaded
-import uk.gov.hmrc.http.HeaderCarrier
 
-import java.time.ZonedDateTime
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar {
   val id = "1"
@@ -131,7 +124,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
       val result = route(application, request).value
 
-      redirectLocation(result) mustEqual Some(routes.FurtherInformationController.onPageLoad(NormalMode).url)
+      redirectLocation(result) mustEqual Some(routes.FurtherInformationController.onPageLoad().url)
 
       application.stop()
     }
@@ -287,7 +280,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
       val result = route(application, request).value
 
-      redirectLocation(result) mustEqual Some(routes.FurtherInformationController.onPageLoad(CheckMode).url)
+      redirectLocation(result) mustEqual Some(routes.FurtherInformationController.onPageLoad().url)
 
       application.stop()
     }
@@ -334,6 +327,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
   "GET /file-verification/:reference/status" should {
     "return file verification status" in {
       def fileVerificationUrl(reference: String) = s"${routes.AmendCaseSendInformationController.checkFileVerificationStatus(reference).url}"
+
       val fileUploadState = FileUploaded(
         FileUploads(files =
           Seq(

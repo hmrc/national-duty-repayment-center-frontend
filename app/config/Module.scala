@@ -51,23 +51,25 @@ class Module extends AbstractModule with AkkaGuiceSupport {
 
   }
 }
+
 @Singleton
-class CustomHttpAuditing @Inject() (
-                                     val auditConnector: AuditConnector,
-                                     @Named("appName") val appName: String
-                                   ) extends HttpAuditing {
+class CustomHttpAuditing @Inject()(
+                                    val auditConnector: AuditConnector,
+                                    @Named("appName") val appName: String
+                                  ) extends HttpAuditing {
 
   override val auditDisabledForPattern: Regex =
     """.*?\/auth\/authorise$""".r
 
 }
+
 @Singleton
-class CustomHttpClient @Inject() (
-                                   config: Configuration,
-                                   val httpAuditing: CustomHttpAuditing,
-                                   override val wsClient: WSClient,
-                                   override protected val actorSystem: ActorSystem
-                                 ) extends uk.gov.hmrc.http.HttpClient with WSHttp {
+class CustomHttpClient @Inject()(
+                                  config: Configuration,
+                                  val httpAuditing: CustomHttpAuditing,
+                                  override val wsClient: WSClient,
+                                  override protected val actorSystem: ActorSystem
+                                ) extends uk.gov.hmrc.http.HttpClient with WSHttp {
 
   override lazy val configuration: Config = config.underlying
 

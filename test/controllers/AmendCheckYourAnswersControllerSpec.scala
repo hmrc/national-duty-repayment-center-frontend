@@ -15,27 +15,36 @@
  */
 
 package controllers
-import play.twirl.api.HtmlFormat
+
+import java.time.ZonedDateTime
+
 import base.SpecBase
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
-import models.{AmendCaseResponseType, FileUpload, FileUploads, NormalMode, UserAnswers}
+import models.FileType.SupportingEvidence
+import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
+import navigation.NavigatorBack
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.twirl.api.HtmlFormat.escape
+import play.twirl.api.HtmlFormat
 import services.FileUploaded
 import utils.CheckYourAnswersHelper
 import views.html.AmendCheckYourAnswersView
 
-import java.time.ZonedDateTime
+import scala.concurrent.Future
 
 class AmendCheckYourAnswersControllerSpec extends SpecBase {
   def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString
 
+  val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad))
+
   "Amend Check Your Answers Controller" must {
 
     "return OK and the correct view for a GET when only Documents are selected" in {
+      when(mockSessionRepository.clearChangePage(any())) thenReturn Future.successful(true)
       val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments)
 
       val fileUploadedState = FileUploaded(
@@ -48,7 +57,8 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         ),
@@ -69,15 +79,16 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
       contentAsString(result) must contain
-        view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
+      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink)(request, messages).toString
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels mustNot contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels must contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
+      labels must contain(htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
       application.stop()
     }
 
     "return OK and the correct view for a GET when further information is provided" in {
+      when(mockSessionRepository.clearChangePage(any())) thenReturn Future.successful(true)
       val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
 
       val userAnswers = UserAnswers(userAnswersId).set(ReferenceNumberPage, "1234").success.value
@@ -96,15 +107,16 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
       contentAsString(result) must contain
-      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
+      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink)(request, messages).toString
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels mustNot contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
+      labels mustNot contain(htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
 
       application.stop()
     }
     "return OK and the correct view for a GET when both Documents are Further information are selected" in {
+      when(mockSessionRepository.clearChangePage(any())) thenReturn Future.successful(true)
       val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments, FurtherInformation)
 
       val fileUploadedState = FileUploaded(
@@ -117,7 +129,8 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         ),
@@ -139,11 +152,11 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
 
       status(result) mustEqual OK
       contentAsString(result) must contain
-      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
+      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink)(request, messages).toString
 
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
-      labels must contain (htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
+      labels must contain(htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
       application.stop()
     }
 

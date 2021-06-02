@@ -20,6 +20,7 @@
 @import views.ViewHelpers.pageTitle
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
         govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -31,10 +32,12 @@
         appConfig: FrontendAppConfig,
         context : UploadFileViewContext
 )
-@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
     @govukLayout(
-        pageTitle = Some(s"${titleNoForm(if(fileUploads.isEmpty)messages("view.amend-upload-file.title") else messages("view.amend-upload-file.next.title", maybeUploadError.isDefined))}")
+        pageTitle = Some(s"${titleNoForm(if(fileUploads.isEmpty)messages("view.amend-upload-file.title") else messages("view.amend-upload-file.next.title", maybeUploadError.isDefined))}"),
+        backLink = false,
+        backLinkNav = Some(backLink)
     ) {
 
         @html.h1(messages(if(fileUploads.isEmpty) "view.amend-upload-file.heading" else "view.amend-upload-file.next.heading"), classes = "govuk-heading-l")

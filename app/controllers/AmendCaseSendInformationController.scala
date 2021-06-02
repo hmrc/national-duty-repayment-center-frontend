@@ -16,6 +16,8 @@
 
 package controllers
 
+import java.time.LocalDateTime
+
 import akka.actor.ActorRef
 import akka.pattern.ask
 import akka.util.Timeout
@@ -24,9 +26,12 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
 import controllers.actions._
 import forms.{AdditionalFileUploadFormProvider, UpscanS3ErrorFormProvider}
+import javax.inject.{Inject, Named}
 import models.FileType.SupportingEvidence
-import models.{AmendCaseResponseType, Mode, NormalMode, UpscanNotification, UserAnswers}
-import pages.AmendCaseResponseTypePage
+import models.requests.DataRequest
+import models.{AmendCaseResponseType, Mode, UpscanNotification, UserAnswers}
+import navigation.AmendNavigator
+import pages.{AmendCaseResponseTypePage, AmendFileUploadPage, AmendFileUploadedPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -35,8 +40,6 @@ import services._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.{AmendCaseSendInformationView, AmendCaseUploadAnotherFileView}
 
-import java.time.LocalDateTime
-import javax.inject.{Inject, Named}
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -46,6 +49,7 @@ class AmendCaseSendInformationController @Inject()(
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     sessionRepository: SessionRepository,
+                                                    navigator: AmendNavigator,
                                                     additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
                                                     appConfig: FrontendAppConfig,
                                                     upscanInitiateConnector: UpscanInitiateConnector,
@@ -88,10 +92,10 @@ class AmendCaseSendInformationController @Inject()(
           val removeState = FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
           val sessionState = ss.copy(state = Some(removeState))
           fileUtils.applyTransition(removeFileUploadBy(reference)(upscanRequest(request.internalId, mode))(upscanInitiateConnector.initiate(_))(_), removeState, sessionState).map {
-          case _@FileUploaded(_, _) => Redirect(controller.showFileUploaded(mode))
-          case _@UploadFile(_, _, _, _) => Redirect(controller.showFileUpload(mode))
-          case s@_ => renderState(fileUploadState = s, mode = mode)
-        }
+            case _@FileUploaded(_, _) => Redirect(controller.showFileUploaded(mode))
+            case _@UploadFile(_, _, _, _) => Redirect(controller.showFileUpload(mode))
+            case s@_ => renderState(fileUploadState = s, mode = mode)
+          }
         case None => Future.successful(fileStateErrror)
       }
     }
@@ -124,7 +128,8 @@ class AmendCaseSendInformationController @Inject()(
         s.get.fileUploads,
         controller.submitUploadAnotherFileChoice(mode),
         controller.removeFileUploadByReference,
-        mode
+        mode,
+        navigator.previousPage(AmendFileUploadedPage, request.userAnswers)
       ))
     }
   }
@@ -140,7 +145,8 @@ class AmendCaseSendInformationController @Inject()(
           request.userAnswers.fileUploadState.get.fileUploads,
           controller.submitUploadAnotherFileChoice(mode),
           controller.removeFileUploadByReference,
-          mode
+          mode,
+          navigator.previousPage(AmendFileUploadedPage, request.userAnswers)
         ))),
         value =>
           sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
@@ -148,7 +154,7 @@ class AmendCaseSendInformationController @Inject()(
               case Some(s) if value =>
                 fileUtils.applyTransition(submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(_), s, ss)
                   .map(_ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
-              case Some(_) => Future.successful(Redirect(getAmendCaseUploadAnotherFile(request.userAnswers, mode)))
+              case Some(_) => Future.successful(Redirect(navigator.nextPage(AmendFileUploadedPage, request.userAnswers)))
               case None => Future.successful(fileStateErrror)
             }
           }
@@ -157,12 +163,6 @@ class AmendCaseSendInformationController @Inject()(
 
   }
 
-  private def getAmendCaseUploadAnotherFile(answers: UserAnswers, mode: Mode): Call = {
-    if (hasFurtherInformation(answers))
-      routes.FurtherInformationController.onPageLoad(mode)
-    else
-      routes.AmendCheckYourAnswersController.onPageLoad()
-  }
 
   def hasFurtherInformation(userAnswers: UserAnswers): Boolean = {
     userAnswers.get(AmendCaseResponseTypePage) match {
@@ -206,7 +206,7 @@ class AmendCaseSendInformationController @Inject()(
     )
   }
 
-  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None, mode: Mode)(implicit request: Request[_]): Result = {
+  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None, mode: Mode)(implicit request: DataRequest[_]): Result = {
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) => {
         Ok(
@@ -216,7 +216,8 @@ class AmendCaseSendInformationController @Inject()(
             maybeUploadError,
             successAction = controller.showFileUploaded(mode),
             failureAction = controller.showFileUpload(mode),
-            checkStatusAction = controller.checkFileVerificationStatus(reference))
+            checkStatusAction = controller.checkFileVerificationStatus(reference),
+            backLink = navigator.previousPage(AmendFileUploadPage, request.userAnswers))
         )
       }
 
@@ -227,7 +228,8 @@ class AmendCaseSendInformationController @Inject()(
           fileUploads,
           controller.submitUploadAnotherFileChoice(mode),
           controller.removeFileUploadByReference,
-          mode
+          mode,
+          navigator.previousPage(AmendFileUploadedPage, request.userAnswers)
         ))
     }
   }
