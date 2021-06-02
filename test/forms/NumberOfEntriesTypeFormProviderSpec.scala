@@ -84,7 +84,7 @@ class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with Str
       val result        = form.bind(Map(radioFieldName -> "02")).bind(Map(fieldName -> "")).apply(fieldName)
       val expectedError = error(fieldName, requiredKey)
 
-      result.errors shouldEqualexpectedError
+      result.errors shouldEqual expectedError
     }
 
     "trim white spaces in number of entries" in {
