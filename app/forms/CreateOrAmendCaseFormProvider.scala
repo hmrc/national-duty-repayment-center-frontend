@@ -25,7 +25,6 @@ import javax.inject.Inject
 class CreateOrAmendCaseFormProvider @Inject() extends Mappings {
 
   def apply(): Form[CreateOrAmendCase] =
-    Form(
-      "value" -> enumerable[CreateOrAmendCase]("createOrAmendCase.error.required")
-    )
+    Form("value" -> enumerable[CreateOrAmendCase]("createOrAmendCase.error.required"))
+
 }

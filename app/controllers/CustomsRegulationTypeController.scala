@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
 
 import javax.inject.Inject
-import models.{CheckMode, Mode, ClaimantType, NormalMode, NumberOfEntriesType, UserAnswers}
+import models.{CheckMode, ClaimantType, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
 import navigation.Navigator
 import pages.{ArticleTypePage, ClaimantTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,25 +31,25 @@ import views.html.CustomsRegulationTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CustomsRegulationTypeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: CustomsRegulationTypeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: CustomsRegulationTypeView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CustomsRegulationTypeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: CustomsRegulationTypeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: CustomsRegulationTypeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(CustomsRegulationTypePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,24 +58,21 @@ class CustomsRegulationTypeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
-
         value =>
           for {
-              userAnswers <- Future.fromTry (request.userAnswers.set(CustomsRegulationTypePage, value))
-              _ <- sessionRepository.set(userAnswers)
-            } yield
-                Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, userAnswers))
+            userAnswers <- Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
+            _           <- sessionRepository.set(userAnswers)
+          } yield Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, userAnswers))
       )
   }
 
-  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
-      userAnswers.get(ClaimantTypePage) match {
-        case Some(ClaimantType.Importer) => true
-        case _ => false
-      }
+  def isImporterJourney(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => true
+      case _                           => false
     }
+
 }

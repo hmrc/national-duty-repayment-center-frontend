@@ -26,8 +26,10 @@ class OtherDutiesPaidFormProvider @Inject() extends Mappings {
 
   def apply(): Form[RepaymentAmounts] = Form(
     mapping(
-      "ActualPaidAmount" -> decimal("otherDutiesPaid.actualamountpaid.error.required",
-        "otherDutiesPaid.actualamountpaid.error.notANumber")
+      "ActualPaidAmount" -> decimal(
+        "otherDutiesPaid.actualamountpaid.error.required",
+        "otherDutiesPaid.actualamountpaid.error.notANumber"
+      )
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "otherDutiesPaid.actualamountpaid.error.decimalPlaces"),
@@ -36,12 +38,11 @@ class OtherDutiesPaidFormProvider @Inject() extends Mappings {
           )
         ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
         .verifying(maximumValue[BigDecimal](99999999999.99, "otherDutiesPaid.actualamountpaid.error.length"))
-        .transform[String](
-          d => d.toString,
-          i => i.toDouble
-        ),
-      "ShouldHavePaidAmount" -> decimal("otherDutiesPaid.shouldhavepaid.error.required",
-        "otherDutiesPaid.shouldhavepaid.error.notANumber")
+        .transform[String](d => d.toString, i => i.toDouble),
+      "ShouldHavePaidAmount" -> decimal(
+        "otherDutiesPaid.shouldhavepaid.error.required",
+        "otherDutiesPaid.shouldhavepaid.error.notANumber"
+      )
         .verifying(
           firstError(
             regexp(Validation.monetaryPattern, "otherDutiesPaid.shouldhavepaid.error.decimalPlaces"),
@@ -50,12 +51,10 @@ class OtherDutiesPaidFormProvider @Inject() extends Mappings {
           )
         ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
         .verifying(maximumValue[BigDecimal](99999999999.99, "otherDutiesPaid.shouldhavepaid.error.length"))
-        .transform[String](
-          d => d.toString,
-          i => i.toDouble
-        )
+        .transform[String](d => d.toString, i => i.toDouble)
     )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
       .verifying("otherDutiesPaid.amounts.error.same", duty => duty.dueAmount != 0)
       .verifying("otherDutiesPaid.amounts.error.greater", duty => duty.dueAmount >= 0)
   )
+
 }

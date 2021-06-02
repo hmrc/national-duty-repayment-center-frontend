@@ -28,9 +28,9 @@ object AddressLookupHttpParser {
 
   type AddressLookupResponse = Either[ConnectorErrorResult, AddressLookupResponseModel]
 
-  implicit object AddressLookupReads extends HttpReads[(AddressLookupResponse, HttpResponse)]{
+  implicit object AddressLookupReads extends HttpReads[(AddressLookupResponse, HttpResponse)] {
 
-    def read(method: String, url: String, response: HttpResponse): (AddressLookupResponse, HttpResponse) = {
+    def read(method: String, url: String, response: HttpResponse): (AddressLookupResponse, HttpResponse) =
       (response.status match {
         case OK =>
           response.json.validate[AddressLookupResponseModel] match {
@@ -44,6 +44,7 @@ object AddressLookupHttpParser {
           logger.warn(s"Unexpected response, status $status returned")
           Left(UnexpectedResponseStatus(status, s"Unexpected response, status $status returned"))
       }) -> response
-    }
+
   }
+
 }

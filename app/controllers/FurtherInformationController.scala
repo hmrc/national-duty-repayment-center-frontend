@@ -32,24 +32,25 @@ import views.html.FurtherInformationView
 import scala.collection.Set
 import scala.concurrent.{ExecutionContext, Future}
 
-class FurtherInformationController @Inject()(
-                                              override val messagesApi: MessagesApi,
-                                              sessionRepository: SessionRepository,
-                                              navigator: Navigator,
-                                              identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              formProvider: FurtherInformationFormProvider,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: FurtherInformationView
-                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class FurtherInformationController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: FurtherInformationFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: FurtherInformationView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(FurtherInformationPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,23 +59,20 @@ class FurtherInformationController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(FurtherInformationPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(FurtherInformationPage, mode, updatedAnswers))
       )
   }
 
-  def hasSupportingDocs(userAnswers: UserAnswers): Boolean  = {
+  def hasSupportingDocs(userAnswers: UserAnswers): Boolean =
     userAnswers.get(AmendCaseResponseTypePage) match {
       case Some(s) => s.contains(AmendCaseResponseType.SupportingDocuments)
-      case _ => false
+      case _       => false
     }
-  }
+
 }

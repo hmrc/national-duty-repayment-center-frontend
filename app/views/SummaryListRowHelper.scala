@@ -33,10 +33,7 @@ trait SummaryListRowHelper {
     url: Option[String] = None
   )(implicit messages: Messages): SummaryListRow =
     SummaryListRow(
-      key = Key(
-        content = Text(messages(label)),
-        classes = keyClasses.getOrElse("govuk-!-width-one-third")
-      ),
+      key = Key(content = Text(messages(label)), classes = keyClasses.getOrElse("govuk-!-width-one-third")),
       value = Value(
         content = HtmlContent(
           if (url.nonEmpty)
@@ -67,14 +64,9 @@ trait SummaryListRowHelper {
     valueClasses: Option[String] = None
   )(implicit messages: Messages): SummaryListRow =
     SummaryListRow(
-      key = Key(
-        content = Text(messages(label)),
-        classes = keyClasses.getOrElse("govuk-!-width-one-third")
-      ),
-      value = Value(
-        content = HtmlContent(value),
-        classes = valueClasses.getOrElse("govuk-!-width-two-thirds")
-      ),
+      key = Key(content = Text(messages(label)), classes = keyClasses.getOrElse("govuk-!-width-one-third")),
+      value = Value(content = HtmlContent(value), classes = valueClasses.getOrElse("govuk-!-width-two-thirds")),
       actions = None
     )
+
 }

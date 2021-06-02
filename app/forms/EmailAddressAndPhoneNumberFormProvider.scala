@@ -22,7 +22,12 @@ import play.api.data.{Form, Mapping}
 import play.api.data.Forms.{mapping, set}
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.voa.play.form.{Condition, ConditionalMapping, MandatoryOptionalMapping}
-import uk.gov.voa.play.form.ConditionalMappings.{mandatoryAndOnlyIfAnyOf, mandatoryIfEqual, mandatoryIfEqualToAny, mandatoryIfTrue}
+import uk.gov.voa.play.form.ConditionalMappings.{
+  mandatoryAndOnlyIfAnyOf,
+  mandatoryIfEqual,
+  mandatoryIfEqualToAny,
+  mandatoryIfTrue
+}
 
 import javax.inject.Inject
 
@@ -43,20 +48,32 @@ class EmailAddressAndPhoneNumberFormProvider @Inject() extends Mappings {
     ConditionalMapping(condition, MandatoryOptionalMapping(mapping, Nil), None, Seq.empty)
 
   def apply(): Form[EmailAndPhoneNumber] =
-    Form( mapping(
-      "value" -> set(enumerable[IsContactProvided]("isContactProvided.error.required")).verifying(nonEmptySet("isContactProvided.error.required")),
-      "email" ->  mandatoryIfContains(contains("value", "01"), textNoSpaces("emailAddress.error.required")
-        .verifying(firstError(
-          maxLength(85, "emailAddress.error.length"),
-          regexp(Validation.emailRegex,"emailAddress.error.invalid")
-        ))
-      ),
-
-      "phone" ->  mandatoryIfContains(contains("value","02"), textNoSpaces("phoneNumber.error.required")
-        .verifying(firstError(
-          maxLength(11, "phoneNumber.error.length"),
-          regexp(Validation.phoneNumberPattern,"phoneNumber.error.invalid")
-        )))
-    )(EmailAndPhoneNumber.apply)(EmailAndPhoneNumber.unapply)
+    Form(
+      mapping(
+        "value" -> set(enumerable[IsContactProvided]("isContactProvided.error.required")).verifying(
+          nonEmptySet("isContactProvided.error.required")
+        ),
+        "email" -> mandatoryIfContains(
+          contains("value", "01"),
+          textNoSpaces("emailAddress.error.required")
+            .verifying(
+              firstError(
+                maxLength(85, "emailAddress.error.length"),
+                regexp(Validation.emailRegex, "emailAddress.error.invalid")
+              )
+            )
+        ),
+        "phone" -> mandatoryIfContains(
+          contains("value", "02"),
+          textNoSpaces("phoneNumber.error.required")
+            .verifying(
+              firstError(
+                maxLength(11, "phoneNumber.error.length"),
+                regexp(Validation.phoneNumberPattern, "phoneNumber.error.invalid")
+              )
+            )
+        )
+      )(EmailAndPhoneNumber.apply)(EmailAndPhoneNumber.unapply)
     )
+
 }

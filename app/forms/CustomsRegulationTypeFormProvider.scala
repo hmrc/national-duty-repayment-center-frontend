@@ -25,7 +25,6 @@ import models.CustomsRegulationType
 class CustomsRegulationTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[CustomsRegulationType] =
-    Form(
-      "value" -> enumerable[CustomsRegulationType]("customsRegulationType.error.required")
-    )
+    Form("value" -> enumerable[CustomsRegulationType]("customsRegulationType.error.required"))
+
 }

@@ -30,4 +30,5 @@ class ClaimRepaymentTypeFormProvider @Inject() extends Mappings {
       "value" -> set(enumerable[ClaimRepaymentType]("claimRepaymentType.error.required"))
         .verifying(nonEmptySet("claimRepaymentType.error.required"))
     )
+
 }

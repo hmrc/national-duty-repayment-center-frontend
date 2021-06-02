@@ -32,25 +32,25 @@ import views.html.AmendCaseResponseTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AmendCaseResponseTypeController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: AmendCaseResponseTypeFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: AmendCaseResponseTypeView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class AmendCaseResponseTypeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: AmendCaseResponseTypeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: AmendCaseResponseTypeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(AmendCaseResponseTypePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -59,24 +59,22 @@ class AmendCaseResponseTypeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             ua <- {
-              if(!value.contains(FurtherInformation))
+              if (!value.contains(FurtherInformation))
                 Future.fromTry(request.userAnswers.remove(FurtherInformationPage))
-              else if(!value.contains(SupportingDocuments))
+              else if (!value.contains(SupportingDocuments))
                 Future.successful(request.userAnswers.copy(fileUploadState = None))
               else Future.successful(request.userAnswers)
             }
             updatedAnswers <- Future.fromTry(ua.set(AmendCaseResponseTypePage, value))
-            res   <- sessionRepository.set(updatedAnswers)
+            res            <- sessionRepository.set(updatedAnswers)
             if res
           } yield Redirect(navigator.nextPage(AmendCaseResponseTypePage, mode, updatedAnswers))
       )
   }
+
 }

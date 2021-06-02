@@ -27,25 +27,24 @@ import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AddressLookupConnector @Inject()(httpClient: HttpClient)
-                                      (implicit appConfig: FrontendAppConfig,
-                                       ec: ExecutionContext) {
+class AddressLookupConnector @Inject() (httpClient: HttpClient)(implicit
+  appConfig: FrontendAppConfig,
+  ec: ExecutionContext
+) {
 
-  def addressLookup(query: PostcodeLookup)
-                   (implicit hc: HeaderCarrier): Future[AddressLookupResponse] = {
+  def addressLookup(query: PostcodeLookup)(implicit hc: HeaderCarrier): Future[AddressLookupResponse] = {
     lazy val url = appConfig.addressLookupServiceUrl + "/v2/uk/addresses"
 
-    val urlParams = Seq(
-      Some("postcode" -> query.postCodeTrimmed)
-    ).collect { case Some(x) => x }
+    val urlParams = Seq(Some("postcode" -> query.postCodeTrimmed)).collect { case Some(x) => x }
 
-    httpClient.GET(
-      url = url,
-      queryParams = urlParams,
-      headers = Seq(HeaderNames.USER_AGENT -> appConfig.appName)
-    )(AddressLookupHttpParser.AddressLookupReads, hc, ec).map {
+    httpClient.GET(url = url, queryParams = urlParams, headers = Seq(HeaderNames.USER_AGENT -> appConfig.appName))(
+      AddressLookupHttpParser.AddressLookupReads,
+      hc,
+      ec
+    ).map {
       case (connectorResponse, _) =>
         connectorResponse
     }
   }
+
 }

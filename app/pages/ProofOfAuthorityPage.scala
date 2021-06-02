@@ -32,7 +32,6 @@
 
 package pages
 
-
 case object ProofOfAuthorityPage extends Page {
 
   override def toString: String = "proofOfAuthority"

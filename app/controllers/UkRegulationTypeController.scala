@@ -31,25 +31,25 @@ import views.html.UkRegulationTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class UkRegulationTypeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: UkRegulationTypeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: UkRegulationTypeView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class UkRegulationTypeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: UkRegulationTypeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UkRegulationTypeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(UkRegulationTypePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,17 +58,14 @@ class UkRegulationTypeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             userAnswers <- Future.fromTry(request.userAnswers.set(UkRegulationTypePage, value))
-            _ <- sessionRepository.set(userAnswers)
-          } yield
-              Redirect(navigator.nextPage(UkRegulationTypePage, mode, userAnswers))
+            _           <- sessionRepository.set(userAnswers)
+          } yield Redirect(navigator.nextPage(UkRegulationTypePage, mode, userAnswers))
       )
   }
+
 }

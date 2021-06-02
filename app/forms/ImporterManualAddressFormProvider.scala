@@ -24,48 +24,77 @@ import play.api.data.Forms.{mapping, optional}
 
 class ImporterManualAddressFormProvider @Inject() extends Mappings {
 
-  private val maxLineLength = 128
-  private val maxCityLength = 64
+  private val maxLineLength   = 128
+  private val maxCityLength   = 64
   private val maxRegionLength = 64
-  private val maxCCLength = 2
+  private val maxCCLength     = 2
 
   def apply(): Form[Address] = Form(
     mapping(
       "AddressLine1" ->
         text("importerAddress.line1.error.required")
-          .verifying(firstError(
-            maxLength(maxLineLength, "importerAddress.line1.error.length"),
-            regexp(Validation.safeInputPattern,"importerAddress.line1.error.invalid")
-          )),
+          .verifying(
+            firstError(
+              maxLength(maxLineLength, "importerAddress.line1.error.length"),
+              regexp(Validation.safeInputPattern, "importerAddress.line1.error.invalid")
+            )
+          ),
       "AddressLine2" ->
-        optional(Forms.text
-          .verifying(firstError(
-            maxLength(maxLineLength, "importerAddress.line2.error.length"),
-            regexp(Validation.safeInputPattern,"importerAddress.line2.error.invalid")
-          ))),
+        optional(
+          Forms.text
+            .verifying(
+              firstError(
+                maxLength(maxLineLength, "importerAddress.line2.error.length"),
+                regexp(Validation.safeInputPattern, "importerAddress.line2.error.invalid")
+              )
+            )
+        ),
       "City" ->
         text("importerAddress.city.error.required")
-          .verifying(firstError(
-            maxLength(maxCityLength, "importerAddress.city.error.length"),
-            regexp(Validation.safeInputPattern,"importerAddress.city.error.invalid")
-          )),
+          .verifying(
+            firstError(
+              maxLength(maxCityLength, "importerAddress.city.error.length"),
+              regexp(Validation.safeInputPattern, "importerAddress.city.error.invalid")
+            )
+          ),
       "Region" ->
-        optional(Forms.text
-          .verifying(firstError(
-            maxLength(maxRegionLength, "importerAddress.region.error.length"),
-            regexp(Validation.safeInputPattern,"importerAddress.region.error.invalid")
-          ))),
+        optional(
+          Forms.text
+            .verifying(
+              firstError(
+                maxLength(maxRegionLength, "importerAddress.region.error.length"),
+                regexp(Validation.safeInputPattern, "importerAddress.region.error.invalid")
+              )
+            )
+        ),
       "CountryCode" ->
         text("importerAddress.countryCode.error.required")
-          .verifying(firstError(
-            maxLength(maxCCLength, "importerAddress.countryCode.error.length"),
-            regexp(Validation.safeInputPattern,"importerAddress.countryCode.error.invalid")
-          )),
+          .verifying(
+            firstError(
+              maxLength(maxCCLength, "importerAddress.countryCode.error.length"),
+              regexp(Validation.safeInputPattern, "importerAddress.countryCode.error.invalid")
+            )
+          ),
       "PostalCode" -> textNoSpaces("importerAddress.postalCode.error.invalid")
-          .verifying(firstError(
+        .verifying(
+          firstError(
             minLength(2, "importerAddress.postalCode.error.invalid"),
             maxLength(10, "importerAddress.postalCode.error.invalid")
-          ))
-    )(Address.apply)(importerAddress => Some((importerAddress.AddressLine1, importerAddress.AddressLine2, importerAddress.City, importerAddress.Region, importerAddress.CountryCode, importerAddress.PostalCode)))
+          )
+        )
+    )(Address.apply)(
+      importerAddress =>
+        Some(
+          (
+            importerAddress.AddressLine1,
+            importerAddress.AddressLine2,
+            importerAddress.City,
+            importerAddress.Region,
+            importerAddress.CountryCode,
+            importerAddress.PostalCode
+          )
+        )
+    )
   )
+
 }

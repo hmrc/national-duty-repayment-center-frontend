@@ -24,7 +24,6 @@ import play.api.data.Form
 class IsVATRegisteredFormProvider @Inject() extends Mappings {
 
   def apply(): Form[IsVATRegistered] =
-    Form(
-      "value" -> enumerable[IsVATRegistered]("isVATRegistered.error.required")
-    )
+    Form("value" -> enumerable[IsVATRegistered]("isVATRegistered.error.required"))
+
 }

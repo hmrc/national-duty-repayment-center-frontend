@@ -32,56 +32,68 @@ import views.html.ImporterManualAddressView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ImporterManualAddressController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 sessionRepository: SessionRepository,
-                                                 navigator: Navigator,
-                                                 identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 formProvider: ImporterManualAddressFormProvider,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: ImporterManualAddressView
-                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ImporterManualAddressController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ImporterManualAddressFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ImporterManualAddressView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ImporterManualAddressPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers),
-        Seq(SelectItem(text = "United Kingdom", value = Some("GB")))))
+      Ok(
+        view(
+          preparedForm,
+          mode,
+          isImporterJourney(request.userAnswers),
+          Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
+        )
+      )
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers),
-            Seq(SelectItem(text = "United Kingdom", value = Some("GB")))))),
-
+          Future.successful(
+            BadRequest(
+              view(
+                formWithErrors,
+                mode,
+                isImporterJourney(request.userAnswers),
+                Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
+              )
+            )
+          ),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterManualAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield {
-            if(mode.equals(NormalMode))
+          } yield
+            if (mode.equals(NormalMode))
               Redirect(navigator.nextPage(ImporterManualAddressPage, mode, updatedAnswers))
             else
               Redirect(routes.CheckYourAnswersController.onPageLoad)
-          }
       )
   }
 
-  def isImporterJourney(userAnswers: UserAnswers): Boolean = {
+  def isImporterJourney(userAnswers: UserAnswers): Boolean =
     userAnswers.get(ClaimantTypePage) match {
       case Some(ClaimantType.Importer) => true
-      case _ => false
+      case _                           => false
     }
-  }
+
 }

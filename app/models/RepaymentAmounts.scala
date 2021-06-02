@@ -18,9 +18,7 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-final case class RepaymentAmounts(
-                                  ActualPaidAmount: String,
-                                  ShouldHavePaidAmount: String) {
+final case class RepaymentAmounts(ActualPaidAmount: String, ShouldHavePaidAmount: String) {
   val dueAmount: BigDecimal = BigDecimal.apply(ActualPaidAmount) - BigDecimal.apply(ShouldHavePaidAmount)
 }
 

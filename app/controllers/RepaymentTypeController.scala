@@ -32,25 +32,25 @@ import views.html.RepaymentTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RepaymentTypeController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: RepaymentTypeFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: RepaymentTypeView
-                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class RepaymentTypeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: RepaymentTypeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: RepaymentTypeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(RepaymentTypePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -59,24 +59,21 @@ class RepaymentTypeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.set(RepaymentTypePage, value))
             updatesAnswersWithWhomToPay <- {
               request.userAnswers.get(ClaimantTypePage) match {
                 case Some(Importer) => Future.fromTry(updatedAnswers.set(WhomToPayPage, models.WhomToPay.Importer))
-                case _ => Future.successful(updatedAnswers)
+                case _              => Future.successful(updatedAnswers)
               }
             }
             updatedAnswersWithCMA <- {
               request.userAnswers.get(RepaymentTypePage) match {
                 case Some(CMA) => Future.fromTry(updatesAnswersWithWhomToPay.remove(BankDetailsPage))
-                case _ => Future.successful(updatesAnswersWithWhomToPay)
+                case _         => Future.successful(updatesAnswersWithWhomToPay)
               }
             }
             _ <- sessionRepository.set(updatedAnswersWithCMA)
@@ -84,4 +81,5 @@ class RepaymentTypeController @Inject()(
           } yield Redirect(navigator.nextPage(RepaymentTypePage, mode, updatedAnswersWithCMA))
       )
   }
+
 }

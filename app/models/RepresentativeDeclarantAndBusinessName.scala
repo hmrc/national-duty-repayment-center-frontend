@@ -18,10 +18,11 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class RepresentativeDeclarantAndBusinessName(declarantName: String,
-                                                  agentName:String)
+case class RepresentativeDeclarantAndBusinessName(declarantName: String, agentName: String)
 
 object RepresentativeDeclarantAndBusinessName {
-  implicit val format: OFormat[RepresentativeDeclarantAndBusinessName] = Json.format[RepresentativeDeclarantAndBusinessName]
-}
 
+  implicit val format: OFormat[RepresentativeDeclarantAndBusinessName] =
+    Json.format[RepresentativeDeclarantAndBusinessName]
+
+}

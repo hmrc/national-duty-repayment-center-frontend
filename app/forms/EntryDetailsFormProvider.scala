@@ -28,25 +28,27 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
 
   def apply(): Form[EntryDetails] = {
 
-    val limitDate = LocalDate.now
+    val limitDate    = LocalDate.now
     val minDateLimit = LocalDate.parse("1900-01-01")
 
     Form(
       mapping(
         "EPU" -> textNoSpaces("entryDetails.claimEpu.error.required")
-          .verifying(
-            regexp(Validation.epu, "entryDetails.claimEpu.error.valid")
-          ),
+          .verifying(regexp(Validation.epu, "entryDetails.claimEpu.error.valid")),
         "EntryNumber" -> textNoSpaces("entryDetails.entryNumber.error.required")
-          .verifying(regexp(
-            Validation.epuEntryNumber, "entryDetails.entryNumber.error.valid")
-          ),
-
-        "EntryDate" -> localDate(invalidKey = "entryDetails.claimEntryDate.error.invalid", requiredKey = "entryDetails.claimEntryDate.error.required")
-          .verifying(maxDate(limitDate, "entryDetails.claimEntryDate.error.invalid_future", Format.formattedDate(limitDate)))
-          .verifying(minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid", Format.formattedDate(minDateLimit)))
-
+          .verifying(regexp(Validation.epuEntryNumber, "entryDetails.entryNumber.error.valid")),
+        "EntryDate" -> localDate(
+          invalidKey = "entryDetails.claimEntryDate.error.invalid",
+          requiredKey = "entryDetails.claimEntryDate.error.required"
+        )
+          .verifying(
+            maxDate(limitDate, "entryDetails.claimEntryDate.error.invalid_future", Format.formattedDate(limitDate))
+          )
+          .verifying(
+            minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid", Format.formattedDate(minDateLimit))
+          )
       )(EntryDetails.apply)(EntryDetails.unapply)
     )
   }
+
 }

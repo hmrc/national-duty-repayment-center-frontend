@@ -26,14 +26,10 @@ sealed trait ClaimRepaymentType
 object ClaimRepaymentType extends Enumerable.Implicits {
 
   case object Customs extends WithName("01") with ClaimRepaymentType
-  case object Vat extends WithName("02") with ClaimRepaymentType
-  case object Other extends WithName("03") with ClaimRepaymentType
+  case object Vat     extends WithName("02") with ClaimRepaymentType
+  case object Other   extends WithName("03") with ClaimRepaymentType
 
-  val values: Seq[ClaimRepaymentType] = Seq(
-    Customs,
-    Vat,
-    Other
-  )
+  val values: Seq[ClaimRepaymentType] = Seq(Customs, Vat, Other)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {
     value =>
@@ -48,4 +44,5 @@ object ClaimRepaymentType extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[ClaimRepaymentType] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

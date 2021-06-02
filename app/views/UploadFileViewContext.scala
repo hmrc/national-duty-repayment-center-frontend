@@ -18,13 +18,20 @@ package views
 
 import com.google.inject.Inject
 import config.FrontendAppConfig
-import models.{DuplicateFileUpload, FileTransmissionFailed, FileUploadError, FileVerificationFailed, S3UploadError, UpscanNotification}
+import models.{
+  DuplicateFileUpload,
+  FileTransmissionFailed,
+  FileUploadError,
+  FileVerificationFailed,
+  S3UploadError,
+  UpscanNotification
+}
 import play.api.data.FormError
 
 import javax.inject.Singleton
 
 @Singleton
-class UploadFileViewContext @Inject()(appConfig: FrontendAppConfig) {
+class UploadFileViewContext @Inject() (appConfig: FrontendAppConfig) {
 
   def toFormError(error: FileUploadError): FormError =
     error match {
@@ -53,4 +60,5 @@ class UploadFileViewContext @Inject()(appConfig: FrontendAppConfig) {
       case UpscanNotification.REJECTED   => "error.file-upload.invalid-type"
       case UpscanNotification.UNKNOWN    => "error.file-upload.unknown"
     }
+
 }

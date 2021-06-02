@@ -24,8 +24,9 @@ import play.api.libs.json.{JsObject, Json}
 class AddressSelectionFormProvider extends Mappings {
 
   def apply(): Form[JsObject] = Form(
-    mapping (
-      "field-name" -> text("addressFound.error")
-    )(s => Json.parse(s).as[JsObject])((js:JsObject) => Some(js.toString))
+    mapping("field-name" -> text("addressFound.error"))(s => Json.parse(s).as[JsObject])(
+      (js: JsObject) => Some(js.toString)
+    )
   )
+
 }

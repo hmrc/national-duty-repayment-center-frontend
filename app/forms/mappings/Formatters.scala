@@ -32,11 +32,12 @@ trait Formatters extends TrimWhitespace {
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
       data.get(key) match {
         case None | Some("") => Left(Seq(FormError(key, errorKey)))
-        case Some(s) => Right(s.trim)
+        case Some(s)         => Right(s.trim)
       }
 
     override def unbind(key: String, value: String): Map[String, String] =
       Map(key -> value.trim)
+
   }
 
   private[mappings] def stringFormatterNoSpaces(errorKey: String): Formatter[String] = new Formatter[String] {
@@ -44,11 +45,12 @@ trait Formatters extends TrimWhitespace {
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
       data.get(key) match {
         case None | Some("") => Left(Seq(FormError(key, errorKey)))
-        case Some(s) => Right(trimWhitespace(s))
+        case Some(s)         => Right(trimWhitespace(s))
       }
 
     override def unbind(key: String, value: String): Map[String, String] =
       Map(key -> trimWhitespace(value))
+
   }
 
   private[mappings] def booleanFormatter(requiredKey: String, invalidKey: String): Formatter[Boolean] =
@@ -60,15 +62,20 @@ trait Formatters extends TrimWhitespace {
         baseFormatter
           .bind(key, data)
           .right.flatMap {
-          case "true" => Right(true)
-          case "false" => Right(false)
-          case _ => Left(Seq(FormError(key, invalidKey)))
-        }
+            case "true"  => Right(true)
+            case "false" => Right(false)
+            case _       => Left(Seq(FormError(key, invalidKey)))
+          }
 
       def unbind(key: String, value: Boolean) = Map(key -> value.toString)
     }
 
-  private[mappings] def intFormatter(requiredKey: String, wholeNumberKey: String, nonNumericKey: String, args: Seq[String] = Seq.empty): Formatter[Int] =
+  private[mappings] def intFormatter(
+    requiredKey: String,
+    wholeNumberKey: String,
+    nonNumericKey: String,
+    args: Seq[String] = Seq.empty
+  ): Formatter[Int] =
     new Formatter[Int] {
 
       val decimalRegexp = """^-?(\d*\.\d*)$"""
@@ -80,20 +87,22 @@ trait Formatters extends TrimWhitespace {
           .bind(key, data)
           .right.map(_.replace(",", ""))
           .right.flatMap {
-          case s if trimWhitespace(s).matches(decimalRegexp) =>
-            Left(Seq(FormError(key, wholeNumberKey, args)))
-          case s =>
-            nonFatalCatch
-              .either(trimWhitespace(s).toInt)
-              .left.map(_ => Seq(FormError(key, nonNumericKey, args)))
-        }
+            case s if trimWhitespace(s).matches(decimalRegexp) =>
+              Left(Seq(FormError(key, wholeNumberKey, args)))
+            case s =>
+              nonFatalCatch
+                .either(trimWhitespace(s).toInt)
+                .left.map(_ => Seq(FormError(key, nonNumericKey, args)))
+          }
 
       override def unbind(key: String, value: Int) =
         baseFormatter.unbind(key, value.toString)
+
     }
 
-
-  private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String)(implicit ev: Enumerable[A]): Formatter[A] =
+  private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String)(implicit
+    ev: Enumerable[A]
+  ): Formatter[A] =
     new Formatter[A] {
 
       private val baseFormatter = stringFormatter(requiredKey)
@@ -106,6 +115,7 @@ trait Formatters extends TrimWhitespace {
 
       override def unbind(key: String, value: A): Map[String, String] =
         baseFormatter.unbind(key, value.toString)
+
     }
 
   private[mappings] def decimalFormatter(requiredKey: String, nonNumericKey: String): Formatter[String] =
@@ -118,47 +128,54 @@ trait Formatters extends TrimWhitespace {
           .right.map(_.replace(",", ""))
           .right.map(_.replace("£", ""))
           .right.flatMap {
-          s =>
-            val valueNoSpaces = trimWhitespace(s)
-            Try(valueNoSpaces.toDouble) match {
-              case Success(_) => Right(valueNoSpaces)
-              case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
-            }
-        }
+            s =>
+              val valueNoSpaces = trimWhitespace(s)
+              Try(valueNoSpaces.toDouble) match {
+                case Success(_) => Right(valueNoSpaces)
+                case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
+              }
+          }
 
       override def unbind(key: String, value: String): Map[String, String] =
         baseFormatter.unbind(key, value)
+
     }
 
-  def emailAddressMapping(keyLength: String, keyInvalid: String, keyRequired: String, keySelectionRequired: String): Mapping[Option[String]] = {
+  def emailAddressMapping(
+    keyLength: String,
+    keyInvalid: String,
+    keyRequired: String,
+    keySelectionRequired: String
+  ): Mapping[Option[String]] = {
 
-    val emailFieldName = "email"
+    val emailFieldName     = "email"
     val selectionFieldName = "value"
-
 
     def bind(data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
 
       val emailAddress = data.get(emailFieldName)
-      val useEmail = data.get("value")
+      val useEmail     = data.get("value")
 
       val maxLengthEmailAddress = 85
 
       (emailAddress, useEmail) match {
         case (Some(""), Some("01")) => Left(Seq(FormError(emailFieldName, keyRequired)))
-        case (_, None) => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
-        case (Some(email), Some("01")) if email.length > 0 && email.length > maxLengthEmailAddress => Left(Seq(FormError(emailFieldName, keyLength)))
-        case (Some(email), Some("01")) if !email.matches(Validation.emailRegex) => Left(Seq(FormError(emailFieldName, keyInvalid)))
+        case (_, None)              => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
+        case (Some(email), Some("01")) if email.length > 0 && email.length > maxLengthEmailAddress =>
+          Left(Seq(FormError(emailFieldName, keyLength)))
+        case (Some(email), Some("01")) if !email.matches(Validation.emailRegex) =>
+          Left(Seq(FormError(emailFieldName, keyInvalid)))
         case (Some(email), Some("01")) => Right(Some(email))
-        case _ => Right(None)
+        case _                         => Right(None)
       }
 
     }
 
-    def unbind(value: Option[String]): Map[String, String] = {
+    def unbind(value: Option[String]): Map[String, String] =
       Map(emailFieldName -> value.getOrElse(""))
-    }
 
     new CustomBindMapping(emailFieldName, bind, unbind)
 
   }
+
 }

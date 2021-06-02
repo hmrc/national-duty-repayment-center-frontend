@@ -25,7 +25,6 @@ import models.ArticleType
 class ArticleTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[ArticleType] =
-    Form(
-      "value" -> enumerable[ArticleType]("articleType.error.required")
-    )
+    Form("value" -> enumerable[ArticleType]("articleType.error.required"))
+
 }

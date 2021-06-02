@@ -21,6 +21,8 @@ import play.api.libs.json.Format
 case class EntryNumber(value: String)
 
 object EntryNumber {
+
   implicit val format: Format[EntryNumber] =
     JsonFormatUtils.stringFormat(EntryNumber.apply)(_.value)
+
 }

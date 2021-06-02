@@ -20,16 +20,20 @@ import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
+
 class ReferenceNumberFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
       "value" -> textNoSpaces("referenceNumber.error.required")
-        .verifying(firstError(
-          regexp(Validation.referenceNumberPattern,"referenceNumber.error.invalid.chars"),
-          startsWith("referenceNumber.error.prefix"),
-          minLength(23, "referenceNumber.error.length"),
-          maxLength(23, "referenceNumber.error.length")
-        ))
+        .verifying(
+          firstError(
+            regexp(Validation.referenceNumberPattern, "referenceNumber.error.invalid.chars"),
+            startsWith("referenceNumber.error.prefix"),
+            minLength(23, "referenceNumber.error.length"),
+            maxLength(23, "referenceNumber.error.length")
+          )
+        )
     )
+
 }

@@ -29,28 +29,29 @@ import views.html.AmendConfirmationView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AmendConfirmationController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: IdentifierAction,
-                                       sessionRepository: SessionRepository,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: AmendConfirmationView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class AmendConfirmationController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  sessionRepository: SessionRepository,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: AmendConfirmationView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
+
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
-        id <- Future.successful(request.userAnswers.get(ClaimIdQuery))
+        id  <- Future.successful(request.userAnswers.get(ClaimIdQuery))
         res <- sessionRepository.resetData(request.userAnswers)
         if res
-      } yield {
-        id.map(i => Ok(view(i))).getOrElse {
-          logger.warn("Could not find the registrationId or registrationDate in user answers")
-          InternalServerError
-        }
+      } yield id.map(i => Ok(view(i))).getOrElse {
+        logger.warn("Could not find the registrationId or registrationDate in user answers")
+        InternalServerError
       }
   }
+
 }

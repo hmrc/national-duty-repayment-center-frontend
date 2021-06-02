@@ -24,7 +24,6 @@ import play.api.data.Form
 class ImporterHasEoriFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("importerHasEori.error.required")
-    )
+    Form("value" -> boolean("importerHasEori.error.required"))
+
 }

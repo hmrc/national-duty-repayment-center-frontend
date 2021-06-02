@@ -29,119 +29,123 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers, mode: Mode)(
     def format2d = "%.2f".format(s)
   }
 
-  def displayDuty(index: String, amount: Double, dutyType: String) : Option[AnswerRow] = {
+  def displayDuty(index: String, amount: Double, dutyType: String): Option[AnswerRow] =
     getAnswerRow(index, amount, dutyType)
-  }
 
-  private def getAnswerRow(index: String, amount: Double, dutyType: String) : Option[AnswerRow] =
+  private def getAnswerRow(index: String, amount: Double, dutyType: String): Option[AnswerRow] =
     userAnswers.get(ClaimRepaymentTypePage).map {
 
-    val isCustomDutyExists = dutyType.equals("repaymentAmountSummary.customsduty")
-    val isVATExists = dutyType.equals("repaymentAmountSummary.vat")
-    val isOtherDutiesExists = dutyType.equals("repaymentAmountSummary.otherduties")
-      val isNormalMode = mode == NormalMode
-      val isCheckMode = mode == CheckMode
+      val isCustomDutyExists  = dutyType.equals("repaymentAmountSummary.customsduty")
+      val isVATExists         = dutyType.equals("repaymentAmountSummary.vat")
+      val isOtherDutiesExists = dutyType.equals("repaymentAmountSummary.otherduties")
+      val isNormalMode        = mode == NormalMode
+      val isCheckMode         = mode == CheckMode
 
-    val message : String = dutyType match {
-      case y if isCustomDutyExists => messages(s"$dutyType.$index")
-      case y if isVATExists => messages(s"$dutyType.$index")
-      case y if isOtherDutiesExists => messages(s"$dutyType.$index")
-      case _ => messages(s"$dutyType")
+      val message: String = dutyType match {
+        case y if isCustomDutyExists  => messages(s"$dutyType.$index")
+        case y if isVATExists         => messages(s"$dutyType.$index")
+        case y if isOtherDutiesExists => messages(s"$dutyType.$index")
+        case _                        => messages(s"$dutyType")
+      }
+
+      def formattedAmount: String = index match {
+        case "2" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
+        case "0" if dutyType == "repaymentAmountSummary.total.amount" =>
+          "<span class=\"bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
+        case _ => HtmlFormat.escape("£" + amount.format2d).toString()
+      }
+
+      x =>
+        AnswerRow(
+          Html(x.map(value => HtmlFormat.escape(message).toString).mkString("")),
+          Html(x.map(value => formattedAmount).mkString("")),
+          index match {
+            case "0" if isCustomDutyExists && isNormalMode =>
+              Some(routes.CustomsDutyPaidController.onPageLoad(RepayNormalMode).url)
+            case "1" if isCustomDutyExists && isNormalMode =>
+              Some(routes.CustomsDutyPaidController.onPageLoad(RepayNormalMode).url)
+            case "0" if isVATExists && isNormalMode => Some(routes.VATPaidController.onPageLoad(RepayNormalMode).url)
+            case "1" if isVATExists && isNormalMode => Some(routes.VATPaidController.onPageLoad(RepayNormalMode).url)
+            case "0" if isOtherDutiesExists && isNormalMode =>
+              Some(routes.OtherDutiesPaidController.onPageLoad(RepayNormalMode).url)
+            case "1" if isOtherDutiesExists && isNormalMode =>
+              Some(routes.OtherDutiesPaidController.onPageLoad(RepayNormalMode).url)
+
+            case "0" if isCustomDutyExists && isCheckMode =>
+              Some(routes.CustomsDutyPaidController.onPageLoad(RepayCheckMode).url)
+            case "1" if isCustomDutyExists && isCheckMode =>
+              Some(routes.CustomsDutyPaidController.onPageLoad(RepayCheckMode).url)
+            case "0" if isVATExists && isCheckMode => Some(routes.VATPaidController.onPageLoad(RepayCheckMode).url)
+            case "1" if isVATExists && isCheckMode => Some(routes.VATPaidController.onPageLoad(RepayCheckMode).url)
+            case "0" if isOtherDutiesExists && isCheckMode =>
+              Some(routes.OtherDutiesPaidController.onPageLoad(RepayCheckMode).url)
+            case "1" if isOtherDutiesExists && isCheckMode =>
+              Some(routes.OtherDutiesPaidController.onPageLoad(RepayCheckMode).url)
+            case _ => None
+          },
+          index match {
+            case "0" if isCustomDutyExists  => Some("customs-duty-overpayment")
+            case "1" if isCustomDutyExists  => Some("customs-duty-overpayment")
+            case "0" if isVATExists         => Some("change-import-vat-overpayment")
+            case "1" if isVATExists         => Some("change-import-vat-overpayment")
+            case "0" if isOtherDutiesExists => Some("other-duties-overpayment")
+            case "1" if isOtherDutiesExists => Some("other-duties-overpayment")
+            case _                          => None
+          }
+        )
     }
-
-    def formattedAmount: String = index match {
-      case "2" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
-      case "0" if dutyType == "repaymentAmountSummary.total.amount" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
-      case _ => HtmlFormat.escape("£" + amount.format2d).toString()
-    }
-
-    x =>
-      AnswerRow(
-        Html(x.map(value => HtmlFormat.escape(message).toString).mkString("")),
-        Html(x.map(value => formattedAmount).mkString("")),
-        index match {
-        case "0" if isCustomDutyExists && isNormalMode => Some (routes.CustomsDutyPaidController.onPageLoad (RepayNormalMode).url)
-        case "1" if isCustomDutyExists && isNormalMode => Some (routes.CustomsDutyPaidController.onPageLoad (RepayNormalMode).url)
-        case "0" if isVATExists && isNormalMode => Some (routes.VATPaidController.onPageLoad (RepayNormalMode).url)
-        case "1" if isVATExists && isNormalMode => Some (routes.VATPaidController.onPageLoad (RepayNormalMode).url)
-        case "0" if isOtherDutiesExists && isNormalMode => Some (routes.OtherDutiesPaidController.onPageLoad (RepayNormalMode).url)
-        case "1" if isOtherDutiesExists && isNormalMode => Some (routes.OtherDutiesPaidController.onPageLoad (RepayNormalMode).url)
-
-        case "0" if isCustomDutyExists && isCheckMode => Some(routes.CustomsDutyPaidController.onPageLoad(RepayCheckMode).url)
-        case "1" if isCustomDutyExists && isCheckMode => Some(routes.CustomsDutyPaidController.onPageLoad(RepayCheckMode).url)
-        case "0" if isVATExists && isCheckMode => Some(routes.VATPaidController.onPageLoad(RepayCheckMode).url)
-        case "1" if isVATExists && isCheckMode => Some(routes.VATPaidController.onPageLoad(RepayCheckMode).url)
-        case "0" if isOtherDutiesExists && isCheckMode => Some(routes.OtherDutiesPaidController.onPageLoad(RepayCheckMode).url)
-        case "1" if isOtherDutiesExists && isCheckMode => Some(routes.OtherDutiesPaidController.onPageLoad(RepayCheckMode).url)
-        case _ => None
-        },
-        index match {
-          case "0" if isCustomDutyExists => Some("customs-duty-overpayment")
-          case "1" if isCustomDutyExists => Some("customs-duty-overpayment")
-          case "0" if isVATExists => Some("change-import-vat-overpayment")
-          case "1" if isVATExists => Some("change-import-vat-overpayment")
-          case "0" if isOtherDutiesExists => Some("other-duties-overpayment")
-          case "1" if isOtherDutiesExists => Some("other-duties-overpayment")
-          case _ => None
-        }
-      )
-  }
 
   def getSections(): Seq[AnswerSection] = {
 
     val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
-    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val customDutyDue = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
-    val vatPaid = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val vatDue = userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
-    val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val otherDutiesDue = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val customDutyPaid                              = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val customDutyDue                               = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val vatPaid                                     = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val vatDue                                      = userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val otherDutiesPaid                             = userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val otherDutiesDue                              = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
 
     val sections: Seq[AnswerSection] = claimRepaymentType.map {
-      case ClaimRepaymentType.Customs => getAnswerSection("repaymentAmountSummary.customsduty"
-        , customDutyPaid, customDutyDue)
-      case ClaimRepaymentType.Vat => getAnswerSection("repaymentAmountSummary.vat"
-        , vatPaid, vatDue)
-      case ClaimRepaymentType.Other => getAnswerSection("repaymentAmountSummary.otherduties"
-        , otherDutiesPaid, otherDutiesDue)
+      case ClaimRepaymentType.Customs =>
+        getAnswerSection("repaymentAmountSummary.customsduty", customDutyPaid, customDutyDue)
+      case ClaimRepaymentType.Vat => getAnswerSection("repaymentAmountSummary.vat", vatPaid, vatDue)
+      case ClaimRepaymentType.Other =>
+        getAnswerSection("repaymentAmountSummary.otherduties", otherDutiesPaid, otherDutiesDue)
     }.toSeq
 
     sections
   }
 
   def getTotalAmount(): Double = {
-    val customDutyPaid = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val customDutyDue = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
-    val vatPaid = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val vatDue = userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val customDutyPaid  = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val customDutyDue   = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val vatPaid         = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val vatDue          = userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
     val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val otherDutiesDue = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val otherDutiesDue  = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
 
     (customDutyPaid - customDutyDue + vatPaid - vatDue +
       otherDutiesPaid - otherDutiesDue)
   }
 
-  def getTotalSection(): AnswerSection = {
-
-      getAnswerSection("repaymentAmountSummary.total",
-        getTotalAmount(), 0.0)
-  }
+  def getTotalSection(): AnswerSection =
+    getAnswerSection("repaymentAmountSummary.total", getTotalAmount(), 0.0)
 
   private def getAnswerSection(dutyType: String, dutyPaid: Double, dutyDue: Double): AnswerSection = {
-    val answerSection : AnswerSection = dutyType match {
+    val answerSection: AnswerSection = dutyType match {
       case "repaymentAmountSummary.total" =>
-         AnswerSection(Some(dutyType), Seq(
-          displayDuty("0",dutyPaid, "repaymentAmountSummary.total.amount").get
-        ))
+        AnswerSection(Some(dutyType), Seq(displayDuty("0", dutyPaid, "repaymentAmountSummary.total.amount").get))
       case _ =>
-         AnswerSection(Some(dutyType), Seq(
-          displayDuty("0", dutyPaid, dutyType).get,
-          displayDuty("1", dutyDue, dutyType).get,
-          displayDuty("2", (dutyPaid - dutyDue), dutyType).get
-        ))
+        AnswerSection(
+          Some(dutyType),
+          Seq(
+            displayDuty("0", dutyPaid, dutyType).get,
+            displayDuty("1", dutyDue, dutyType).get,
+            displayDuty("2", (dutyPaid - dutyDue), dutyType).get
+          )
+        )
     }
     answerSection
   }
+
 }
-
-

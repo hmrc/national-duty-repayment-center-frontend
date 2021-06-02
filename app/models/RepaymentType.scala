@@ -26,11 +26,9 @@ sealed trait RepaymentType
 object RepaymentType extends Enumerable.Implicits {
 
   case object BACS extends WithName("02") with RepaymentType
-  case object CMA extends WithName("01") with RepaymentType
+  case object CMA  extends WithName("01") with RepaymentType
 
-  val values: Seq[RepaymentType] = Seq(
-    BACS, CMA
-  )
+  val values: Seq[RepaymentType] = Seq(BACS, CMA)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -43,4 +41,5 @@ object RepaymentType extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[RepaymentType] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

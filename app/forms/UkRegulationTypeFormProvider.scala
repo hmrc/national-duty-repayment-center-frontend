@@ -24,7 +24,6 @@ import play.api.data.Form
 class UkRegulationTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[UkRegulationType] =
-    Form(
-      "value" -> enumerable[UkRegulationType]("ukRegulationType.error.required")
-    )
+    Form("value" -> enumerable[UkRegulationType]("ukRegulationType.error.required"))
+
 }

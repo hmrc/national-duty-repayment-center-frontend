@@ -31,26 +31,27 @@ import views.html.CreateOrAmendCaseView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CreateOrAmendCaseController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       formProvider: CreateOrAmendCaseFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: CreateOrAmendCaseView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CreateOrAmendCaseController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  formProvider: CreateOrAmendCaseFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: CreateOrAmendCaseView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-
-      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(CreateOrAmendCasePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+      val preparedForm =
+        request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(CreateOrAmendCasePage) match {
+          case None        => form
+          case Some(value) => form.fill(value)
+        }
 
       Ok(view(preparedForm))
   }
@@ -58,16 +59,20 @@ class CreateOrAmendCaseController @Inject()(
   def onSubmit(): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
             userAnswers <- Future.successful(request.userAnswers.getOrElse(UserAnswers(request.internalId)))
-            updatedUserAnswers <-  Future.fromTry(userAnswers.copy(id = request.internalId, fileUploadState = None, data = Json.obj()).set(CreateOrAmendCasePage, value))
+            updatedUserAnswers <- Future.fromTry(
+              userAnswers.copy(id = request.internalId, fileUploadState = None, data = Json.obj()).set(
+                CreateOrAmendCasePage,
+                value
+              )
+            )
             res <- sessionRepository.resetData(userAnswers).flatMap(_ => sessionRepository.set(updatedUserAnswers))
             if res
           } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, NormalMode, updatedUserAnswers))
       )
   }
+
 }

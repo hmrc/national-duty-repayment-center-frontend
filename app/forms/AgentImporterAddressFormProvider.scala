@@ -24,10 +24,10 @@ import play.api.data.Forms.{mapping, optional}
 
 class AgentImporterAddressFormProvider @Inject() extends Mappings {
 
-  private val maxLineLength = 128
-  private val maxCityLength = 64
-  private val maxRegionLength = 64
-  private val maxCCLength = 2
+  private val maxLineLength       = 128
+  private val maxCityLength       = 64
+  private val maxRegionLength     = 64
+  private val maxCCLength         = 2
   private val minPostalCodeLength = 2
   private val maxPostalCodeLength = 10
 
@@ -35,39 +35,68 @@ class AgentImporterAddressFormProvider @Inject() extends Mappings {
     mapping(
       "AddressLine1" ->
         text("agentImporterAddress.line1.error.required")
-          .verifying(firstError(
-            maxLength(maxLineLength, "agentImporterAddress.line1.error.length"),
-            regexp(Validation.safeInputPattern,"agentImporterAddress.line1.error.invalid")
-          )),
+          .verifying(
+            firstError(
+              maxLength(maxLineLength, "agentImporterAddress.line1.error.length"),
+              regexp(Validation.safeInputPattern, "agentImporterAddress.line1.error.invalid")
+            )
+          ),
       "AddressLine2" ->
-        optional(Forms.text
-          .verifying(firstError(
-            maxLength(maxLineLength, "agentImporterAddress.line2.error.length"),
-            regexp(Validation.safeInputPattern,"agentImporterAddress.line2.error.invalid")
-          ))),
+        optional(
+          Forms.text
+            .verifying(
+              firstError(
+                maxLength(maxLineLength, "agentImporterAddress.line2.error.length"),
+                regexp(Validation.safeInputPattern, "agentImporterAddress.line2.error.invalid")
+              )
+            )
+        ),
       "City" ->
         text("agentImporterAddress.city.error.required")
-          .verifying(firstError(
-            maxLength(maxCityLength, "agentImporterAddress.city.error.length"),
-            regexp(Validation.safeInputPattern,"agentImporterAddress.city.error.invalid")
-          )),
+          .verifying(
+            firstError(
+              maxLength(maxCityLength, "agentImporterAddress.city.error.length"),
+              regexp(Validation.safeInputPattern, "agentImporterAddress.city.error.invalid")
+            )
+          ),
       "Region" ->
-        optional(Forms.text
-          .verifying(firstError(
-            maxLength(maxRegionLength, "agentImporterAddress.region.error.length"),
-            regexp(Validation.safeInputPattern,"agentImporterAddress.region.error.invalid")
-          ))),
+        optional(
+          Forms.text
+            .verifying(
+              firstError(
+                maxLength(maxRegionLength, "agentImporterAddress.region.error.length"),
+                regexp(Validation.safeInputPattern, "agentImporterAddress.region.error.invalid")
+              )
+            )
+        ),
       "CountryCode" ->
         text("agentImporterAddress.countryCode.error.required")
-          .verifying(firstError(
-            maxLength(maxCCLength, "agentImporterAddress.countryCode.error.length"),
-            regexp(Validation.safeInputPattern,"agentImporterAddress.countryCode.error.invalid")
-          )),
+          .verifying(
+            firstError(
+              maxLength(maxCCLength, "agentImporterAddress.countryCode.error.length"),
+              regexp(Validation.safeInputPattern, "agentImporterAddress.countryCode.error.invalid")
+            )
+          ),
       "PostalCode" -> textNoSpaces("agentImporterAddress.postalCode.error.invalid")
-          .verifying(firstError(
+        .verifying(
+          firstError(
             minLength(minPostalCodeLength, "agentImporterAddress.postalCode.error.invalid"),
             maxLength(maxPostalCodeLength, "agentImporterAddress.postalCode.error.invalid")
-          ))
-    )(Address.apply)(agentImporterAddress => Some((agentImporterAddress.AddressLine1, agentImporterAddress.AddressLine2, agentImporterAddress.City, agentImporterAddress.Region, agentImporterAddress.CountryCode, agentImporterAddress.PostalCode)))
+          )
+        )
+    )(Address.apply)(
+      agentImporterAddress =>
+        Some(
+          (
+            agentImporterAddress.AddressLine1,
+            agentImporterAddress.AddressLine2,
+            agentImporterAddress.City,
+            agentImporterAddress.Region,
+            agentImporterAddress.CountryCode,
+            agentImporterAddress.PostalCode
+          )
+        )
+    )
   )
+
 }

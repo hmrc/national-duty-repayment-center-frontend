@@ -21,6 +21,8 @@ import play.api.libs.json.{Format, Json}
 case class UploadRequest(href: String, fields: Map[String, String])
 
 object UploadRequest {
+
   implicit val formats: Format[UploadRequest] =
     Json.format[UploadRequest]
+
 }

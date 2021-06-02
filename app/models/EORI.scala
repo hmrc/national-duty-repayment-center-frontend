@@ -21,6 +21,8 @@ import play.api.libs.json.Format
 case class EORI(value: String)
 
 object EORI {
+
   implicit val format: Format[EORI] =
     JsonFormatUtils.stringFormat(EORI.apply)(_.value)
+
 }

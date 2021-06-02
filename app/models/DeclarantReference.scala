@@ -21,6 +21,8 @@ import play.api.libs.json.Format
 case class DeclarantReference(value: String)
 
 object DeclarantReference {
+
   implicit val format: Format[DeclarantReference] =
     JsonFormatUtils.stringFormat(DeclarantReference.apply)(_.value)
+
 }

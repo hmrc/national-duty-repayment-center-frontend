@@ -26,9 +26,9 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRetrievalActionImpl @Inject()(
-                                         val sessionRepository: SessionRepository
-                                       )(implicit val executionContext: ExecutionContext) extends DataRetrievalAction {
+class DataRetrievalActionImpl @Inject() (val sessionRepository: SessionRepository)(implicit
+  val executionContext: ExecutionContext
+) extends DataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
 
@@ -41,6 +41,7 @@ class DataRetrievalActionImpl @Inject()(
         OptionalDataRequest(request.request, request.identifier, Some(userAnswers))
     }
   }
+
 }
 
 trait DataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalDataRequest]

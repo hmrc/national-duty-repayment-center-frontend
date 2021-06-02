@@ -30,17 +30,17 @@ import scala.concurrent.Future
 
 case class FileUploadException(message: String) extends RuntimeException(message)
 
-case class FileUploadUtils @Inject()(sessionRepository: SessionRepository) {
+case class FileUploadUtils @Inject() (sessionRepository: SessionRepository) {
 
   implicit val ec = scala.concurrent.ExecutionContext.global
 
-  def applyTransition(f: ConvertStateApi, s: FileUploadState,  ss: SessionState):  Future[FileUploadState] = {
+  def applyTransition(f: ConvertStateApi, s: FileUploadState, ss: SessionState): Future[FileUploadState] =
     for {
       newState <- f(s)
-      res <- sessionRepository.updateSession(newState, ss.userAnswers)
+      res      <- sessionRepository.updateSession(newState, ss.userAnswers)
       if res
     } yield newState
-  }
+
 }
 
 object FileUploadUtils {
@@ -48,26 +48,22 @@ object FileUploadUtils {
   def fileStateErrror = throw FileUploadException("File upload state error")
   type ConvertStateApi = (FileUploadState) => Future[FileUploadState]
 
-  def acknowledgeFileUploadRedirect(state: FileUploadState)(
-    implicit request: Request[_]
-  ): Result =
+  def acknowledgeFileUploadRedirect(state: FileUploadState)(implicit request: Request[_]): Result =
     (state match {
       case _: FileUploaded => Created
-      case _ => NoContent
+      case _               => NoContent
     }).withHeaders(HeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN -> "*")
 
-
-  def renderFileVerificationStatus(
-                                    reference: String, state: Option[FileUploadState])(implicit request: Request[_]
-                                  ): Result = {
-
+  def renderFileVerificationStatus(reference: String, state: Option[FileUploadState])(implicit
+    request: Request[_]
+  ): Result =
     state match {
       case Some(s: FileUploadState) =>
         s.fileUploads.files.find(_.reference == reference) match {
           case Some(f) => Ok(Json.toJson(FileVerificationStatus(f)))
-          case None => NotFound
+          case None    => NotFound
         }
       case _ => NotFound
     }
-  }
+
 }

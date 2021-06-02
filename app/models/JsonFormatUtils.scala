@@ -21,21 +21,25 @@ import play.api.libs.json._
 import scala.util.{Failure, Success, Try}
 
 object JsonFormatUtils {
+
   def stringFormat[A](fromString: String => A)(makeString: A => String): Format[A] = new Format[A] {
+
     def reads(json: JsValue): JsResult[A] = json match {
       case JsString(str) => JsSuccess(fromString(str))
-      case _ => JsError(s"Expected JSON string type")
+      case _             => JsError(s"Expected JSON string type")
     }
 
     def writes(o: A): JsValue = JsString(makeString(o))
   }
 
   def intFormat[A](fromInt: Int => A)(makeInt: A => Int): Format[A] = new Format[A] {
+
     def reads(json: JsValue): JsResult[A] = json match {
-      case JsNumber(num) => Try(num.toIntExact) match {
-        case Failure(_) => JsError("Expected number to be an integer")
-        case Success(value) => JsSuccess(fromInt(value))
-      }
+      case JsNumber(num) =>
+        Try(num.toIntExact) match {
+          case Failure(_)     => JsError("Expected number to be an integer")
+          case Success(value) => JsSuccess(fromInt(value))
+        }
       case _ => JsError("Expected JSON number type")
     }
 
@@ -43,14 +47,17 @@ object JsonFormatUtils {
   }
 
   def longFormat[A](fromLong: Long => A)(makeLong: A => Long): Format[A] = new Format[A] {
+
     def reads(json: JsValue): JsResult[A] = json match {
-      case JsNumber(num) => Try(num.toLongExact) match {
-        case Failure(_) => JsError("Expected number to be a long")
-        case Success(value) => JsSuccess(fromLong(value))
-      }
+      case JsNumber(num) =>
+        Try(num.toLongExact) match {
+          case Failure(_)     => JsError("Expected number to be a long")
+          case Success(value) => JsSuccess(fromLong(value))
+        }
       case _ => JsError("Expected JSON number type")
     }
 
     def writes(o: A): JsValue = JsNumber(makeLong(o))
   }
+
 }

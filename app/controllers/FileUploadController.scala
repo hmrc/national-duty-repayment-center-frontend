@@ -39,145 +39,195 @@ import java.time.LocalDateTime
 import javax.inject.{Inject, Named}
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
-class FileUploadController @Inject()(
-                                      override val messagesApi: MessagesApi,
-                                      appConfig: FrontendAppConfig,
-                                      identify: IdentifierAction,
-                                      getData: DataRetrievalAction,
-                                      sessionRepository: SessionRepository,
-                                      upscanInitiateConnector: UpscanInitiateConnector,
-                                      val controllerComponents: MessagesControllerComponents,
-                                      additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
-                                      val upscanS3ErrorFormProvider: UpscanS3ErrorFormProvider,
-                                      val fileUtils: FileUploadUtils,
-                                      fileUploadedView: FileUploadedView,
-                                      requireData: DataRequiredAction,
-                                      @Named("check-state-actor") checkStateActor: ActorRef,
-                                      fileUploadView: FileUploadView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with FileUploadService {
 
-  final val controller = routes.FileUploadController
+class FileUploadController @Inject() (
+  override val messagesApi: MessagesApi,
+  appConfig: FrontendAppConfig,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  sessionRepository: SessionRepository,
+  upscanInitiateConnector: UpscanInitiateConnector,
+  val controllerComponents: MessagesControllerComponents,
+  additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
+  val upscanS3ErrorFormProvider: UpscanS3ErrorFormProvider,
+  val fileUtils: FileUploadUtils,
+  fileUploadedView: FileUploadedView,
+  requireData: DataRequiredAction,
+  @Named("check-state-actor") checkStateActor: ActorRef,
+  fileUploadView: FileUploadView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with FileUploadService {
+
+  final val controller      = routes.FileUploadController
   val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
 
   // GET /file-verification
-  final def showWaitingForFileVerification(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    implicit val timeout = Timeout(10 seconds)
-    sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
-      ss.state match {
-        case Some(s) =>
-          (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[FileUploadState].flatMap {
-            case _: FileUploaded => Future.successful(Redirect(routes.FileUploadController.showFileUploaded(mode)))
-            case _: UploadFile => Future.successful(Redirect(routes.FileUploadController.showFileUpload(mode)))
-            case _ => Future.successful(fileStateErrror)
-          }
-        case _ => Future.successful(fileStateErrror)
+  final def showWaitingForFileVerification(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      implicit val timeout = Timeout(10 seconds)
+      sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
+        ss.state match {
+          case Some(s) =>
+            (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[
+              FileUploadState
+            ].flatMap {
+              case _: FileUploaded => Future.successful(Redirect(routes.FileUploadController.showFileUploaded(mode)))
+              case _: UploadFile   => Future.successful(Redirect(routes.FileUploadController.showFileUpload(mode)))
+              case _               => Future.successful(fileStateErrror)
+            }
+          case _ => Future.successful(fileStateErrror)
+        }
       }
     }
-  }
 
   //GET /file-verification/:reference/status
-  final def checkFileVerificationStatus(reference: String): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
-  }
+  final def checkFileVerificationStatus(reference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
+    }
 
-  final def removeFileUploadByReference(reference: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
-      ss.state match {
-        case Some(s) => {
-          val removeState = FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
-          val sessionState = ss.copy(state = Some(removeState))
-          fileUtils.applyTransition(removeFileUploadBy(reference)(upscanRequest(request.internalId, mode))(upscanInitiateConnector.initiate(_))(_), removeState, sessionState).map {
-            case _@FileUploaded(_, _) => Redirect(routes.FileUploadController.showFileUploaded(mode))
-            case _@UploadFile(_, _, _, _) => Redirect(routes.FileUploadController.showFileUpload(mode))
-            case s@_ => renderState(fileUploadState = s, mode = mode)
-          }
+  final def removeFileUploadByReference(reference: String, mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
+        ss.state match {
+          case Some(s) =>
+            val removeState =
+              FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
+            val sessionState = ss.copy(state = Some(removeState))
+            fileUtils.applyTransition(
+              removeFileUploadBy(reference)(upscanRequest(request.internalId, mode))(
+                upscanInitiateConnector.initiate(_)
+              )(_),
+              removeState,
+              sessionState
+            ).map {
+              case _ @FileUploaded(_, _)     => Redirect(routes.FileUploadController.showFileUploaded(mode))
+              case _ @UploadFile(_, _, _, _) => Redirect(routes.FileUploadController.showFileUpload(mode))
+              case s @ _                     => renderState(fileUploadState = s, mode = mode)
+            }
+          case None => Future.successful(fileStateErrror)
         }
-        case None => Future.successful(fileStateErrror)
       }
     }
-  }
 
   //GET /file-upload
-  def showFileUpload(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    for {
-      ss <- sessionRepository.getFileUploadState(request.internalId)
-      s <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
-      fs <- initiateFileUpload(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(s)
-      b <- fs match {
-        case f@UploadFile(_, _, _, _) => sessionRepository.updateSession(f.copy(maybeUploadError = None), ss.userAnswers)
-        case _ => sessionRepository.updateSession(fs, ss.userAnswers)
-      }
-      if b
-    } yield renderState(fs, None, mode)
+  def showFileUpload(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      for {
+        ss <- sessionRepository.getFileUploadState(request.internalId)
+        s  <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
+        fs <- initiateFileUpload(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(
+          upscanInitiateConnector.initiate(_)
+        )(s)
+        b <- fs match {
+          case f @ UploadFile(_, _, _, _) =>
+            sessionRepository.updateSession(f.copy(maybeUploadError = None), ss.userAnswers)
+          case _ => sessionRepository.updateSession(fs, ss.userAnswers)
+        }
+        if b
+      } yield renderState(fs, None, mode)
   }
 
   //GET /file-uploaded
-  def showFileUploaded(mode : Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    for {
-      ss <- sessionRepository.getFileUploadState(request.internalId)
-      s <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
-      if s.nonEmpty
-    } yield {
-      val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(ss.userAnswers.flatMap(_.fileUploadState.map(f => filesInStateAccepted(f.fileUploads.files).size)).getOrElse(0))
-      Ok(fileUploadedView(
-        uploadAnotherFileChoiceForm,
-        s.get.fileUploads,
-        controller.submitUploadAnotherFileChoice(mode),
-        controller.removeFileUploadByReference,
-        mode
-      ))
-    }
+  def showFileUploaded(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      for {
+        ss <- sessionRepository.getFileUploadState(request.internalId)
+        s  <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
+        if s.nonEmpty
+      } yield {
+        val uploadAnotherFileChoiceForm =
+          additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(
+            ss.userAnswers.flatMap(
+              _.fileUploadState.map(f => filesInStateAccepted(f.fileUploads.files).size)
+            ).getOrElse(0)
+          )
+        Ok(
+          fileUploadedView(
+            uploadAnotherFileChoiceForm,
+            s.get.fileUploads,
+            controller.submitUploadAnotherFileChoice(mode),
+            controller.removeFileUploadByReference,
+            mode
+          )
+        )
+      }
   }
 
   // POST /file-uploaded
-  final def submitUploadAnotherFileChoice(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
-      val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(ss.userAnswers.flatMap(_.fileUploadState.map(f => filesInStateAccepted(f.fileUploads.files).size)).getOrElse(0))
-      uploadAnotherFileChoiceForm.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(fileUploadedView(
-          formWithErrors,
-          request.userAnswers.fileUploadState.get.fileUploads,
-          controller.submitUploadAnotherFileChoice(mode),
-          controller.removeFileUploadByReference,
-          mode
-        ))),
-        value =>
-          ss.state match {
-            case Some(s) if value =>
-              fileUtils.applyTransition(submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(upscanInitiateConnector.initiate(_))(_), s, ss)
-                .map(_ => Redirect(routes.FileUploadController.showFileUpload(mode)))
-            case Some(_) => Future.successful(Redirect(additionalFileUploadRoute(request.userAnswers, mode)))
-            case None => Future.successful(fileStateErrror)
+  final def submitUploadAnotherFileChoice(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
+        val uploadAnotherFileChoiceForm =
+          additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(
+            ss.userAnswers.flatMap(
+              _.fileUploadState.map(f => filesInStateAccepted(f.fileUploads.files).size)
+            ).getOrElse(0)
+          )
+        uploadAnotherFileChoiceForm.bindFromRequest().fold(
+          formWithErrors =>
+            Future.successful(
+              BadRequest(
+                fileUploadedView(
+                  formWithErrors,
+                  request.userAnswers.fileUploadState.get.fileUploads,
+                  controller.submitUploadAnotherFileChoice(mode),
+                  controller.removeFileUploadByReference,
+                  mode
+                )
+              )
+            ),
+          value =>
+            ss.state match {
+              case Some(s) if value =>
+                fileUtils.applyTransition(
+                  submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(
+                    upscanInitiateConnector.initiate(_)
+                  )(_),
+                  s,
+                  ss
+                )
+                  .map(_ => Redirect(routes.FileUploadController.showFileUpload(mode)))
+              case Some(_) => Future.successful(Redirect(additionalFileUploadRoute(request.userAnswers, mode)))
+              case None    => Future.successful(fileStateErrror)
+            }
+        )
+      }
+    }
+
+  // GET /file-rejected
+  final def markFileUploadAsRejected(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      UpscanUploadErrorForm.bindFromRequest().fold(
+        _ => Future.successful(BadRequest),
+        s3Error =>
+          sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
+            ss.state match {
+              case Some(s) =>
+                fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
+                  _ => Redirect(routes.FileUploadController.showFileUpload(mode))
+                )
+              case None => Future.successful(fileStateErrror)
+            }
           }
       )
     }
-  }
-
-  // GET /file-rejected
-  final def markFileUploadAsRejected(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    UpscanUploadErrorForm.bindFromRequest().fold(
-      _ => Future.successful(BadRequest),
-      s3Error =>
-        sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
-          ss.state match {
-            case Some(s) => fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(_ => Redirect(routes.FileUploadController.showFileUpload(mode)))
-            case None => Future.successful(fileStateErrror)
-          }
-        }
-    )
-  }
 
   // POST /ndrc/:id/callback-from-upscan
-  final def callbackFromUpscan(id: String): Action[UpscanNotification] = Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
-    sessionRepository.getFileUploadState(id).flatMap { ss =>
-      ss.state match {
-        case Some(s) => fileUtils.applyTransition(upscanCallbackArrived(request.body, SupportingEvidence)(_), s, ss).map(newState => acknowledgeFileUploadRedirect(newState))
-        case None => Future.successful(fileStateErrror)
+  final def callbackFromUpscan(id: String): Action[UpscanNotification] =
+    Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
+      sessionRepository.getFileUploadState(id).flatMap { ss =>
+        ss.state match {
+          case Some(s) =>
+            fileUtils.applyTransition(upscanCallbackArrived(request.body, SupportingEvidence)(_), s, ss).map(
+              newState => acknowledgeFileUploadRedirect(newState)
+            )
+          case None => Future.successful(fileStateErrror)
+        }
       }
     }
-  }
 
-  final def upscanRequest(id: String, mode: Mode): UpscanInitiateRequest = {
+  final def upscanRequest(id: String, mode: Mode): UpscanInitiateRequest =
     UpscanInitiateRequest(
       callbackUrl = appConfig.baseInternalCallbackUrl + controller.callbackFromUpscan(id).url,
       successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification(mode)),
@@ -186,23 +236,21 @@ class FileUploadController @Inject()(
       maximumFileSize = Some(appConfig.fileFormats.maxFileSizeMb * 1024 * 1024),
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
     )
-  }
 
-  private def additionalFileUploadRoute(answers: UserAnswers, mode: Mode): Call = {
-    if(mode.equals(NormalMode)) {
+  private def additionalFileUploadRoute(answers: UserAnswers, mode: Mode): Call =
+    if (mode.equals(NormalMode))
       if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
         routes.ImporterHasEoriController.onPageLoad(NormalMode)
       else
         routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
-    } else
+    else
       routes.CheckYourAnswersController.onPageLoad()
-  }
 
-
-
-  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None, mode: Mode)(implicit request: Request[_]): Result = {
+  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None, mode: Mode)(implicit
+    request: Request[_]
+  ): Result =
     fileUploadState match {
-      case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) => {
+      case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
         Ok(
           fileUploadView(
             uploadRequest,
@@ -210,19 +258,22 @@ class FileUploadController @Inject()(
             maybeUploadError,
             successAction = controller.showFileUploaded(mode),
             failureAction = controller.showFileUpload(mode),
-            checkStatusAction = controller.checkFileVerificationStatus(reference))
+            checkStatusAction = controller.checkFileVerificationStatus(reference)
+          )
         )
-      }
 
       case FileUploaded(fileUploads, _) =>
-        val uploadAnotherFileChoiceForm = additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(filesInStateAccepted(fileUploads.files).size)
-        Ok(fileUploadedView(
-          formWithErrors.getOrElse(uploadAnotherFileChoiceForm),
-          fileUploads,
-          controller.submitUploadAnotherFileChoice(mode),
-          controller.removeFileUploadByReference,
-          mode
-        ))
+        val uploadAnotherFileChoiceForm =
+          additionalFileUploadFormProvider.UploadAnotherFileChoiceForm(filesInStateAccepted(fileUploads.files).size)
+        Ok(
+          fileUploadedView(
+            formWithErrors.getOrElse(uploadAnotherFileChoiceForm),
+            fileUploads,
+            controller.submitUploadAnotherFileChoice(mode),
+            controller.removeFileUploadByReference,
+            mode
+          )
+        )
     }
-  }
+
 }

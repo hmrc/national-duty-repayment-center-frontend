@@ -30,27 +30,31 @@ trait Mappings extends Formatters with Constraints {
   protected def textNoSpaces(errorKey: String = "error.required"): FieldMapping[String] =
     of(stringFormatterNoSpaces(errorKey))
 
-  protected def int(requiredKey: String = "error.required",
-                    wholeNumberKey: String = "error.wholeNumber",
-                    nonNumericKey: String = "error.nonNumeric"): FieldMapping[Int] =
+  protected def int(
+    requiredKey: String = "error.required",
+    wholeNumberKey: String = "error.wholeNumber",
+    nonNumericKey: String = "error.nonNumeric"
+  ): FieldMapping[Int] =
     of(intFormatter(requiredKey, wholeNumberKey, nonNumericKey))
 
-  protected def boolean(requiredKey: String = "error.required",
-                        invalidKey: String = "error.boolean"): FieldMapping[Boolean] =
+  protected def boolean(
+    requiredKey: String = "error.required",
+    invalidKey: String = "error.boolean"
+  ): FieldMapping[Boolean] =
     of(booleanFormatter(requiredKey, invalidKey))
 
-
-  protected def enumerable[A](requiredKey: String = "error.required",
-                              invalidKey: String = "error.invalid")(implicit ev: Enumerable[A]): FieldMapping[A] =
+  protected def enumerable[A](requiredKey: String = "error.required", invalidKey: String = "error.invalid")(implicit
+    ev: Enumerable[A]
+  ): FieldMapping[A] =
     of(enumerableFormatter[A](requiredKey, invalidKey))
 
-  protected def localDate(
-                           invalidKey: String,
-                           requiredKey: String
-                         ): FieldMapping[LocalDate] =
+  protected def localDate(invalidKey: String, requiredKey: String): FieldMapping[LocalDate] =
     of(new LocalDateFormatter(invalidKey, requiredKey))
 
-  protected def decimal(requiredKey: String = "error.required",
-                        nonNumericKey: String = "error.nonNumeric"): FieldMapping[String] =
+  protected def decimal(
+    requiredKey: String = "error.required",
+    nonNumericKey: String = "error.nonNumeric"
+  ): FieldMapping[String] =
     of(decimalFormatter(requiredKey, nonNumericKey))
+
 }

@@ -26,13 +26,17 @@ import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 class NumberOfEntriesTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Entries] =
-    Form(mapping(
-      "value" -> enumerable[NumberOfEntriesType]("numberOfEntriesType.error.required"),
-      "entries" ->
-        mandatoryIfEqual("value","02",
-          decimal("howManyEntries.error.required", "howManyEntries.error.length")
-            .verifying(
-              regexp(Validation.numberOfEntries, "howManyEntries.error.length")))
-    )(Entries.apply)(en => Some(en.numberOfEntriesType, en.entries)))
+    Form(
+      mapping(
+        "value" -> enumerable[NumberOfEntriesType]("numberOfEntriesType.error.required"),
+        "entries" ->
+          mandatoryIfEqual(
+            "value",
+            "02",
+            decimal("howManyEntries.error.required", "howManyEntries.error.length")
+              .verifying(regexp(Validation.numberOfEntries, "howManyEntries.error.length"))
+          )
+      )(Entries.apply)(en => Some(en.numberOfEntriesType, en.entries))
+    )
 
 }

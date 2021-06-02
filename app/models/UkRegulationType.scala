@@ -25,15 +25,20 @@ sealed trait UkRegulationType
 
 object UkRegulationType extends Enumerable.Implicits {
 
-  case object ErrorByCustoms extends WithName("048") with UkRegulationType
-  case object LowerRateWasApplicable extends WithName("049") with UkRegulationType
-  case object OverPaymentOfDutyOrVAT extends WithName("050") with UkRegulationType
-  case object Rejected extends WithName("051") with UkRegulationType
-  case object SpecialCircumstances extends WithName("052") with UkRegulationType
+  case object ErrorByCustoms                 extends WithName("048") with UkRegulationType
+  case object LowerRateWasApplicable         extends WithName("049") with UkRegulationType
+  case object OverPaymentOfDutyOrVAT         extends WithName("050") with UkRegulationType
+  case object Rejected                       extends WithName("051") with UkRegulationType
+  case object SpecialCircumstances           extends WithName("052") with UkRegulationType
   case object WithdrawalOfCustomsDeclaration extends WithName("053") with UkRegulationType
 
   val values: Seq[UkRegulationType] = Seq(
-    ErrorByCustoms, LowerRateWasApplicable, OverPaymentOfDutyOrVAT, Rejected, SpecialCircumstances, WithdrawalOfCustomsDeclaration
+    ErrorByCustoms,
+    LowerRateWasApplicable,
+    OverPaymentOfDutyOrVAT,
+    Rejected,
+    SpecialCircumstances,
+    WithdrawalOfCustomsDeclaration
   )
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
@@ -47,4 +52,5 @@ object UkRegulationType extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[UkRegulationType] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

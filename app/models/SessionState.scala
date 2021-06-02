@@ -19,4 +19,3 @@ package models
 import services.FileUploadState
 
 case class SessionState(state: Option[FileUploadState], userAnswers: Option[UserAnswers])
-

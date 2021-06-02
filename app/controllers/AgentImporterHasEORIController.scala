@@ -31,25 +31,25 @@ import views.html.AgentImporterHasEORIView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AgentImporterHasEORIController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: AgentImporterHasEORIFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: AgentImporterHasEORIView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class AgentImporterHasEORIController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: AgentImporterHasEORIFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: AgentImporterHasEORIView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(AgentImporterHasEORIPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,32 +58,31 @@ class AgentImporterHasEORIController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val oldEORI = if(request.userAnswers.get(AgentImporterHasEORIPage).nonEmpty)
-        request.userAnswers.get(AgentImporterHasEORIPage).get
+      val oldEORI =
+        if (request.userAnswers.get(AgentImporterHasEORIPage).nonEmpty)
+          request.userAnswers.get(AgentImporterHasEORIPage).get
 
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
-            setEORINumber <- Future.fromTry (request.userAnswers.set(AgentImporterHasEORIPage, value))
-            updatedAnswers <- {
+            setEORINumber <- Future.fromTry(request.userAnswers.set(AgentImporterHasEORIPage, value))
+            updatedAnswers <-
               Future.fromTry(setEORINumber.get(AgentImporterHasEORIPage).get match {
-                case AgentImporterHasEORI.No => setEORINumber.remove(EnterAgentEORIPage)
+                case AgentImporterHasEORI.No  => setEORINumber.remove(EnterAgentEORIPage)
                 case AgentImporterHasEORI.Yes => setEORINumber.set(AgentImporterHasEORIPage, value)
               })
-            }
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield {
-            if (mode.equals(CheckMode)) {
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield
+            if (mode.equals(CheckMode))
               (oldEORI, value) match {
-                case (AgentImporterHasEORI.No, AgentImporterHasEORI.Yes) => Redirect(navigator.nextPage(AgentImporterHasEORIPage, CheckMode, updatedAnswers))
+                case (AgentImporterHasEORI.No, AgentImporterHasEORI.Yes) =>
+                  Redirect(navigator.nextPage(AgentImporterHasEORIPage, CheckMode, updatedAnswers))
                 case _ => Redirect(routes.CheckYourAnswersController.onPageLoad())
               }
-            } else
+            else
               Redirect(navigator.nextPage(AgentImporterHasEORIPage, mode, updatedAnswers))
-          }
       )
   }
+
 }

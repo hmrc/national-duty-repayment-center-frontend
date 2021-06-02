@@ -26,11 +26,9 @@ sealed trait CustomsRegulationType
 object CustomsRegulationType extends Enumerable.Implicits {
 
   case object UnionsCustomsCodeRegulation extends WithName("01") with CustomsRegulationType
-  case object UKCustomsCodeRegulation extends WithName("02") with CustomsRegulationType
+  case object UKCustomsCodeRegulation     extends WithName("02") with CustomsRegulationType
 
-  val values: Seq[CustomsRegulationType] = Seq(
-    UKCustomsCodeRegulation, UnionsCustomsCodeRegulation
-  )
+  val values: Seq[CustomsRegulationType] = Seq(UKCustomsCodeRegulation, UnionsCustomsCodeRegulation)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -43,4 +41,5 @@ object CustomsRegulationType extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[CustomsRegulationType] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

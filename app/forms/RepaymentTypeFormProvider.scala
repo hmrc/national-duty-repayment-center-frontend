@@ -25,7 +25,6 @@ import models.RepaymentType
 class RepaymentTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[RepaymentType] =
-    Form(
-      "value" -> enumerable[RepaymentType]("repaymentType.error.required")
-    )
+    Form("value" -> enumerable[RepaymentType]("repaymentType.error.required"))
+
 }

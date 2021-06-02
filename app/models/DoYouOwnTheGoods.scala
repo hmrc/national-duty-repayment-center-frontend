@@ -26,11 +26,9 @@ sealed trait DoYouOwnTheGoods
 object DoYouOwnTheGoods extends Enumerable.Implicits {
 
   case object Yes extends WithName("01") with DoYouOwnTheGoods
-  case object No extends WithName("02") with DoYouOwnTheGoods
+  case object No  extends WithName("02") with DoYouOwnTheGoods
 
-  val values: Seq[DoYouOwnTheGoods] = Seq(
-    Yes, No
-  )
+  val values: Seq[DoYouOwnTheGoods] = Seq(Yes, No)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -43,4 +41,5 @@ object DoYouOwnTheGoods extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[DoYouOwnTheGoods] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

@@ -21,6 +21,7 @@ import play.api.libs.json.Format
 case class NoOfEntries(value: String)
 
 object NoOfEntries {
+
   implicit val format: Format[NoOfEntries] =
     JsonFormatUtils.stringFormat(NoOfEntries.apply)(_.value)
 

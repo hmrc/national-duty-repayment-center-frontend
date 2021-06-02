@@ -29,13 +29,22 @@ class DeclarantReferenceNumberFormProvider @Inject() extends Mappings {
   val maxLength = 50
 
   def apply(): Form[DeclarantReferenceNumber] =
-    Form(mapping(
-      "value" -> enumerable[DeclarantReferenceType]("declarantReferenceNumber.error.required"),
-      "declarantReferenceNumber" ->
-        mandatoryIfEqual("value","01",
-          text("declarantReferenceNumber.error.required.declarantReferenceNumber")
-            .verifying(firstError(
-              maxLength(maxLength, "declarantReferenceNumber.error.invalid.length"),
-              regexp(Validation.safeInputPattern, "declarantReferenceNumber.error.invalid"))))
-    )(DeclarantReferenceNumber.apply)(en => Some(en.declarantReferenceType, en.declarantReferenceNumber)))
+    Form(
+      mapping(
+        "value" -> enumerable[DeclarantReferenceType]("declarantReferenceNumber.error.required"),
+        "declarantReferenceNumber" ->
+          mandatoryIfEqual(
+            "value",
+            "01",
+            text("declarantReferenceNumber.error.required.declarantReferenceNumber")
+              .verifying(
+                firstError(
+                  maxLength(maxLength, "declarantReferenceNumber.error.invalid.length"),
+                  regexp(Validation.safeInputPattern, "declarantReferenceNumber.error.invalid")
+                )
+              )
+          )
+      )(DeclarantReferenceNumber.apply)(en => Some(en.declarantReferenceType, en.declarantReferenceNumber))
+    )
+
 }

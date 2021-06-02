@@ -27,6 +27,9 @@ class AmendCaseResponseTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Set[AmendCaseResponseType]] =
     Form(
-      "value" -> set(enumerable[AmendCaseResponseType]("amendCaseResponseType.error.required")).verifying(nonEmptySet("amendCaseResponseType.error.required"))
+      "value" -> set(enumerable[AmendCaseResponseType]("amendCaseResponseType.error.required")).verifying(
+        nonEmptySet("amendCaseResponseType.error.required")
+      )
     )
+
 }

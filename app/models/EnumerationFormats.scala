@@ -53,14 +53,13 @@ trait EnumerationFormats[A] {
 
       case json => JsError(s"Expected json string but got ${json.getClass.getSimpleName}")
     },
-    Writes.apply(value =>
-      keyOf(value)
-        .map(JsString.apply)
-        .getOrElse(
-          throw new IllegalStateException(
-            s"Unsupported enum value $value, should be one of ${values.mkString(",")}"
+    Writes.apply(
+      value =>
+        keyOf(value)
+          .map(JsString.apply)
+          .getOrElse(
+            throw new IllegalStateException(s"Unsupported enum value $value, should be one of ${values.mkString(",")}")
           )
-        )
     )
   )
 
