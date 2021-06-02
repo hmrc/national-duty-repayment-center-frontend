@@ -26,20 +26,16 @@ class EvidenceSupportingDocsFormProviderSpec extends CheckboxFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "evidenceSupportingDocs.error.required"
 
     behave like checkboxField[EvidenceSupportingDocs](
       form,
       fieldName,
-      validValues  = EvidenceSupportingDocs.values,
+      validValues = EvidenceSupportingDocs.values,
       invalidError = FormError(s"$fieldName[0]", "error.invalid")
     )
 
-    behave like mandatoryCheckboxField(
-      form,
-      fieldName,
-      requiredKey
-    )
+    behave like mandatoryCheckboxField(form, fieldName, requiredKey)
   }
 }

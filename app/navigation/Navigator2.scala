@@ -35,7 +35,7 @@ trait Navigator2[T <: Answers] {
 
   def firstMissingAnswer(userAnswers: T): Option[Call] = {
     val missing = viewFor(pageOrder, nextPageAfterChangeFor(pageOrder, pageOrder.head.page, userAnswers))
-    if(missing == Some(checkYourAnswersPage)) None else missing
+    if (missing == Some(checkYourAnswersPage)) None else missing
   }
 
   def nextPage(currentPage: Page, userAnswers: T): Call = userAnswers.changePage match {

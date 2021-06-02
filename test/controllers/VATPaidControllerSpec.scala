@@ -38,26 +38,23 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new VATPaidFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val vATPaidRoute = routes.VATPaidController.onPageLoad(NormalMode).url
 
   private val userAnswers = UserAnswers(
     userAnswersId,
-    Json.obj(
-      VATPaidPage.toString -> Json.obj(
-        "ActualPaidAmount"    -> "100.00",
-        "ShouldHavePaidAmount"  -> "50.00"
-      )
-    )
+    Json.obj(VATPaidPage.toString -> Json.obj("ActualPaidAmount" -> "100.00", "ShouldHavePaidAmount" -> "50.00"))
   )
 
   "VATPaid Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).
-        success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        ClaimRepaymentTypePage,
+        ClaimRepaymentType.values.toSet
+      ).success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -77,9 +74,8 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-
       val userAnswersFull = userAnswers.set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-         .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
@@ -103,17 +99,12 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
         FakeRequest(POST, vATPaidRoute)
-          .withFormUrlEncodedBody(
-            "ActualPaidAmount"    -> "100.00",
-            "ShouldHavePaidAmount"  -> "50.00"
-          )
+          .withFormUrlEncodedBody("ActualPaidAmount" -> "100.00", "ShouldHavePaidAmount" -> "50.00")
 
       val result = route(application, request).value
 
@@ -125,8 +116,9 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+          .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

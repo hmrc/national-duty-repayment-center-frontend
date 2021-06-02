@@ -20,52 +20,40 @@ import models._
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.libs.json.{Json, OFormat}
 
-final case class AmendClaimRequest(
-                                     Content: AmendContent,
-                                     uploadedFiles: Seq[UploadedFile]
-                                  )
+final case class AmendClaimRequest(Content: AmendContent, uploadedFiles: Seq[UploadedFile])
 
 object AmendClaimRequest {
   implicit val formats: OFormat[AmendClaimRequest] = Json.format[AmendClaimRequest]
 
   def buildValidAmendRequest(userAnswers: UserAnswers): Option[AmendClaimRequest] = {
 
-    def getFurtherInformation(userAnswers: UserAnswers) : Option[String] =
+    def getFurtherInformation(userAnswers: UserAnswers): Option[String] =
       userAnswers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.FurtherInformation) match {
         case true => userAnswers.get(FurtherInformationPage)
-        case _ => Some("Files Uploaded")
-    }
+        case _    => Some("Files Uploaded")
+      }
 
-    def getAmendCaseResponseType(userAnswers: UserAnswers) : Seq[AmendCaseResponseType] = {
+    def getAmendCaseResponseType(userAnswers: UserAnswers): Seq[AmendCaseResponseType] =
       userAnswers.get(AmendCaseResponseTypePage).getOrElse(Nil).toSeq
-    }
-
 
     def getContent(userAnswers: UserAnswers): Option[AmendContent] = for {
-      referenceNumber <- userAnswers.get(ReferenceNumberPage)
+      referenceNumber    <- userAnswers.get(ReferenceNumberPage)
       furtherInformation <- getFurtherInformation(userAnswers)
-    } yield {
-      AmendContent(
-        referenceNumber,
-        furtherInformation,
-        getAmendCaseResponseType(userAnswers)
-      )
-    }
+    } yield AmendContent(referenceNumber, furtherInformation, getAmendCaseResponseType(userAnswers))
 
     for {
       content <- getContent(userAnswers)
-    } yield
-      AmendClaimRequest(
-        content,
-        if(!hasSupportingDocs(userAnswers)) Nil else userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
-
-      )
+    } yield AmendClaimRequest(
+      content,
+      if (!hasSupportingDocs(userAnswers)) Nil
+      else userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
+    )
   }
-  def hasSupportingDocs(userAnswers: UserAnswers): Boolean  = {
+
+  def hasSupportingDocs(userAnswers: UserAnswers): Boolean =
     userAnswers.get(AmendCaseResponseTypePage) match {
       case Some(s) => s.contains(AmendCaseResponseType.SupportingDocuments)
-      case _ => false
+      case _       => false
     }
-  }
-}
 
+}

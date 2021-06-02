@@ -16,4 +16,4 @@
 
 package viewmodels
 
-case class RepeaterAnswerRow (answer: String, changeUrl: String, deleteUrl: String)
+case class RepeaterAnswerRow(answer: String, changeUrl: String, deleteUrl: String)

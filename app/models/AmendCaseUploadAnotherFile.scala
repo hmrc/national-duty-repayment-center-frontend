@@ -26,11 +26,9 @@ sealed trait AmendCaseUploadAnotherFile
 object AmendCaseUploadAnotherFile extends Enumerable.Implicits {
 
   case object Yes extends WithName("01") with AmendCaseUploadAnotherFile
-  case object No extends WithName("02") with AmendCaseUploadAnotherFile
+  case object No  extends WithName("02") with AmendCaseUploadAnotherFile
 
-  val values: Seq[AmendCaseUploadAnotherFile] = Seq(
-    Yes, No
-  )
+  val values: Seq[AmendCaseUploadAnotherFile] = Seq(Yes, No)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -43,4 +41,5 @@ object AmendCaseUploadAnotherFile extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[AmendCaseUploadAnotherFile] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

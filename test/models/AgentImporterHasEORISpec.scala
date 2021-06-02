@@ -32,8 +32,9 @@ class AgentImporterHasEORISpec extends WordSpec with MustMatchers with ScalaChec
 
       forAll(gen) {
         agentImporterHasEORI =>
-
-          JsString(agentImporterHasEORI.toString).validate[AgentImporterHasEORI].asOpt.value mustEqual agentImporterHasEORI
+          JsString(agentImporterHasEORI.toString).validate[
+            AgentImporterHasEORI
+          ].asOpt.value mustEqual agentImporterHasEORI
       }
     }
 
@@ -43,7 +44,6 @@ class AgentImporterHasEORISpec extends WordSpec with MustMatchers with ScalaChec
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[AgentImporterHasEORI] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +54,6 @@ class AgentImporterHasEORISpec extends WordSpec with MustMatchers with ScalaChec
 
       forAll(gen) {
         agentImporterHasEORI =>
-
           Json.toJson(agentImporterHasEORI) mustEqual JsString(agentImporterHasEORI.toString)
       }
     }

@@ -21,7 +21,8 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
-class RadioOptionHelper (values: Seq[Any]) {
+class RadioOptionHelper(values: Seq[Any]) {
+
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
       RadioItem(
@@ -32,14 +33,15 @@ class RadioOptionHelper (values: Seq[Any]) {
       )
   }
 
-  def optionsWithDivider(form: Form[_], dividerMessage: String, insertDividerAfter: Any)(implicit messages: Messages): Seq[RadioItem] = {
+  def optionsWithDivider(form: Form[_], dividerMessage: String, insertDividerAfter: Any)(implicit
+    messages: Messages
+  ): Seq[RadioItem] = {
     val dividerPosition = values.indexOf(insertDividerAfter) + 1
-    val optionsList = options(form)
+    val optionsList     = options(form)
 
-    val divider = RadioItem(
-      divider = Some(dividerMessage)
-    )
+    val divider = RadioItem(divider = Some(dividerMessage))
 
     optionsList.take(dividerPosition) ++ Seq(divider) ++ optionsList.drop(dividerPosition)
   }
+
 }

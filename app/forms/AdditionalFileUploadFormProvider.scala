@@ -21,6 +21,7 @@ import play.api.data.validation._
 import play.api.data.{Form, Mapping}
 
 class AdditionalFileUploadFormProvider {
+
   def constraint[A](fieldName: String, errorType: String, predicate: A => Boolean): Constraint[A] =
     Constraint[A](s"constraint.$fieldName.$errorType") { s =>
       Option(s)
@@ -30,13 +31,18 @@ class AdditionalFileUploadFormProvider {
 
   def booleanMapping(fieldName: String, trueValue: String, falseValue: String, count: Int): Mapping[Boolean] =
     optional(text)
-      .verifying(constraint[Option[String]](fieldName, "required", _.exists(s => s == trueValue || (s == falseValue && count >= 1))))
+      .verifying(
+        constraint[Option[String]](
+          fieldName,
+          "required",
+          _.exists(s => s == trueValue || (s == falseValue && count >= 1))
+        )
+      )
       .transform[Boolean](_.contains(trueValue), b => if (b) Some(trueValue) else Some(falseValue))
 
+  def uploadAnotherFileMapping(count: Int): Mapping[Boolean] = booleanMapping("uploadAnotherFile", "yes", "no", count)
 
-  def uploadAnotherFileMapping(count: Int) : Mapping[Boolean] = booleanMapping("uploadAnotherFile", "yes", "no", count)
+  def UploadAnotherFileChoiceForm(uploadFilesCount: Int) =
+    Form[Boolean](mapping("uploadAnotherFile" -> uploadAnotherFileMapping(uploadFilesCount))(identity)(Option.apply))
 
-  def UploadAnotherFileChoiceForm(uploadFilesCount: Int) = Form[Boolean](
-    mapping("uploadAnotherFile" -> uploadAnotherFileMapping(uploadFilesCount))(identity)(Option.apply)
-  )
 }

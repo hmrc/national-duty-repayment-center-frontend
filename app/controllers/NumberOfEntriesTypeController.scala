@@ -31,25 +31,25 @@ import views.html.NumberOfEntriesTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class NumberOfEntriesTypeController @Inject()(
-                                               override val messagesApi: MessagesApi,
-                                               sessionRepository: SessionRepository,
-                                               navigator: Navigator,
-                                               identify: IdentifierAction,
-                                               getData: DataRetrievalAction,
-                                               requireData: DataRequiredAction,
-                                               formProvider: NumberOfEntriesTypeFormProvider,
-                                               val controllerComponents: MessagesControllerComponents,
-                                               view: NumberOfEntriesTypeView
-                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class NumberOfEntriesTypeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: NumberOfEntriesTypeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: NumberOfEntriesTypeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(NumberOfEntriesTypePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -59,32 +59,32 @@ class NumberOfEntriesTypeController @Inject()(
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
-        value => {
-          if(request.userAnswers.get(NumberOfEntriesTypePage).nonEmpty &&
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        value =>
+          if (
+            request.userAnswers.get(NumberOfEntriesTypePage).nonEmpty &&
             request.userAnswers.get(NumberOfEntriesTypePage).get != value
-            && mode.equals(CheckMode) ) {
+            && mode.equals(CheckMode)
+          ) {
             val claimantType = request.userAnswers.get(ClaimantTypePage).get
             for {
-              _ <- sessionRepository.resetData(request.userAnswers)
+              _           <- sessionRepository.resetData(request.userAnswers)
               sessionData <- sessionRepository.get(request.internalId)
-              userAnswers <- Future.fromTry (sessionData.map(_.copy(id = request.internalId)).
-                getOrElse(UserAnswers(request.internalId)).set(NumberOfEntriesTypePage, value))
-              claimantTypeAnswers <- Future.fromTry (userAnswers.set(ClaimantTypePage, claimantType))
-              res <- sessionRepository.set(claimantTypeAnswers)
-              if(res)
+              userAnswers <- Future.fromTry(
+                sessionData.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.internalId)).set(
+                  NumberOfEntriesTypePage,
+                  value
+                )
+              )
+              claimantTypeAnswers <- Future.fromTry(userAnswers.set(ClaimantTypePage, claimantType))
+              res                 <- sessionRepository.set(claimantTypeAnswers)
             } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, NormalMode, claimantTypeAnswers))
-          } else {
+          } else
             for {
-              userAnswers <- Future.fromTry (request.userAnswers.set(NumberOfEntriesTypePage, value))
-              res <- sessionRepository.set(userAnswers)
-              if(res)
+              userAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
+              res         <- sessionRepository.set(userAnswers)
             } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, userAnswers))
-          }
-        }
       )
   }
-}
 
+}

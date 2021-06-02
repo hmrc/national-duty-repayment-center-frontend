@@ -27,14 +27,15 @@ class ImporterNameFormProvider @Inject() extends Mappings {
 
   def apply(): Form[UserName] =
     Form(
-        mapping (
+      mapping(
         "importerName" -> text("importerName.error.required")
-          .verifying(firstError(
-            maxLength(512,
-              "importerName.error.length"),
-            regexp(Validation.safeInputPattern,"importerName.error.invalid")
-
-          ))
-        )(UserName.apply)(UserName.unapply))
+          .verifying(
+            firstError(
+              maxLength(512, "importerName.error.length"),
+              regexp(Validation.safeInputPattern, "importerName.error.invalid")
+            )
+          )
+      )(UserName.apply)(UserName.unapply)
+    )
 
 }

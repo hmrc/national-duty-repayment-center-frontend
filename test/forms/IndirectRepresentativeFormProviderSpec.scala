@@ -22,7 +22,7 @@ import play.api.data.FormError
 class IndirectRepresentativeFormProviderSpec extends BooleanFieldBehaviours {
 
   val requiredKey = "indirectRepresentative.error.required"
-  val invalidKey = "error.boolean"
+  val invalidKey  = "error.boolean"
 
   val form = new IndirectRepresentativeFormProvider()()
 
@@ -30,16 +30,8 @@ class IndirectRepresentativeFormProviderSpec extends BooleanFieldBehaviours {
 
     val fieldName = "value"
 
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
+    behave like booleanField(form, fieldName, invalidError = FormError(fieldName, invalidKey))
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

@@ -38,11 +38,9 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new RepresentativeImporterNameFormProvider()
-  private val userAnswersDummy = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      RepresentativeImporterNamePage.toString -> "Joe Bloggs"
-    ))
+
+  private val userAnswersDummy =
+    UserAnswers(userAnswersId, Json.obj(RepresentativeImporterNamePage.toString -> "Joe Bloggs"))
 
   val form = formProvider()
 
@@ -92,9 +90,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

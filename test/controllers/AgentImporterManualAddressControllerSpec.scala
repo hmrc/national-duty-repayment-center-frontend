@@ -38,7 +38,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new AgentImporterManualAddressFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val agentImporterManualAddressRoute = routes.AgentImporterManualAddressController.onPageLoad(NormalMode).url
 
@@ -80,9 +80,11 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(
-          Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")
-        ), NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(request, messages).toString
+        view(
+          form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")),
+          NormalMode,
+          Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
+        )(request, messages).toString
 
       application.stop()
     }
@@ -93,9 +95,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -119,7 +119,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)) build ()
 
       val request =
         FakeRequest(POST, agentImporterManualAddressRoute)
@@ -134,7 +134,10 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(request, messages).toString
+        view(boundForm, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
+          request,
+          messages
+        ).toString
 
       application.stop()
     }

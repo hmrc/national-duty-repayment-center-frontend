@@ -48,7 +48,8 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         DeclarantName = "DummyData"
       )
 
-      val address = Address(AddressLine1 = "line 1",
+      val address = Address(
+        AddressLine1 = "line 1",
         AddressLine2 = Some("line 2"),
         City = "city",
         Region = Some("region"),
@@ -79,120 +80,95 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
       val documentList = Seq(
         DocumentList(EvidenceSupportingDocs.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
         DocumentList(EvidenceSupportingDocs.Invoice, Some(DocumentDescription("this is an invoice"))),
-        DocumentList(EvidenceSupportingDocs.PackingList, Some(DocumentDescription("this is a packing list"))),
+        DocumentList(EvidenceSupportingDocs.PackingList, Some(DocumentDescription("this is a packing list")))
       )
 
       val dutyTypeTaxDetails = DutyTypeTaxDetails(dutyTypeTaxList)
 
       val createClaimRequest = CreateClaimRequest(
-        Content(claimDetails,
+        Content(
+          claimDetails,
           AgentDetails = Some(userDetails),
           ImporterDetails = userDetails,
           BankDetails = Some(bankDetails),
           DutyTypeTaxDetails = dutyTypeTaxDetails,
-          DocumentList = documentList), Nil
+          DocumentList = documentList
+        ),
+        Nil
       )
 
       val json = Json.obj(
         "Content" -> Json.obj(
           "ClaimDetails" -> Json.obj(
-            "FormType" -> "01",
-            "CustomRegulationType" -> "02",
+            "FormType"               -> "01",
+            "CustomRegulationType"   -> "02",
             "ClaimedUnderRegulation" -> "051",
-            "Claimant" -> "02",
-            "ClaimType" -> "02",
-            "NoOfEntries" -> "10",
-            "EntryDetails" -> Json.obj(
-              "EPU" -> "123",
-              "EntryNumber" -> "123456Q",
-              "EntryDate" -> "20200805"
-            ),
-            "ClaimReason" -> "06",
-            "ClaimDescription" -> "this is a claim description",
-            "DateReceived" -> "20200805",
-            "ClaimDate" -> "20200805",
-            "PayeeIndicator" -> "01",
-            "PaymentMethod" -> "02",
-            "DeclarantRefNumber" -> "12345",
-            "DeclarantName" -> "DummyData"
-        ),
+            "Claimant"               -> "02",
+            "ClaimType"              -> "02",
+            "NoOfEntries"            -> "10",
+            "EntryDetails"           -> Json.obj("EPU" -> "123", "EntryNumber" -> "123456Q", "EntryDate" -> "20200805"),
+            "ClaimReason"            -> "06",
+            "ClaimDescription"       -> "this is a claim description",
+            "DateReceived"           -> "20200805",
+            "ClaimDate"              -> "20200805",
+            "PayeeIndicator"         -> "01",
+            "PaymentMethod"          -> "02",
+            "DeclarantRefNumber"     -> "12345",
+            "DeclarantName"          -> "DummyData"
+          ),
           "AgentDetails" -> Json.obj(
             "IsVATRegistered" -> "true",
-            "EORI" -> "GB123456789123456",
-            "Name" -> "Joe Bloggs",
+            "EORI"            -> "GB123456789123456",
+            "Name"            -> "Joe Bloggs",
             "Address" -> Json.obj(
               "AddressLine1" -> "line 1",
               "AddressLine2" -> "line 2",
-              "City" -> "city",
-              "Region" -> "region",
-              "CountryCode" -> "GB",
-              "PostalCode" -> "ZZ111ZZ"
+              "City"         -> "city",
+              "Region"       -> "region",
+              "CountryCode"  -> "GB",
+              "PostalCode"   -> "ZZ111ZZ"
             ),
             "TelephoneNumber" -> "12345678",
-            "EmailAddress" -> "example@example.com"
+            "EmailAddress"    -> "example@example.com"
           ),
           "ImporterDetails" -> Json.obj(
             "IsVATRegistered" -> "true",
-            "EORI" -> "GB123456789123456",
-            "Name" -> "Joe Bloggs",
+            "EORI"            -> "GB123456789123456",
+            "Name"            -> "Joe Bloggs",
             "Address" -> Json.obj(
               "AddressLine1" -> "line 1",
               "AddressLine2" -> "line 2",
-              "City" -> "city",
-              "Region" -> "region",
-              "CountryCode" -> "GB",
-              "PostalCode" -> "ZZ111ZZ"
+              "City"         -> "city",
+              "Region"       -> "region",
+              "CountryCode"  -> "GB",
+              "PostalCode"   -> "ZZ111ZZ"
             ),
             "TelephoneNumber" -> "12345678",
-            "EmailAddress" -> "example@example.com"
+            "EmailAddress"    -> "example@example.com"
           ),
           "BankDetails" -> Json.obj(
             "ImporterBankDetails" -> Json.obj(
-              "AccountName" -> "account name",
-              "SortCode" -> "123456",
+              "AccountName"   -> "account name",
+              "SortCode"      -> "123456",
               "AccountNumber" -> "12345678"
             ),
             "AgentBankDetails" -> Json.obj(
-              "AccountName" -> "account name",
-              "SortCode" -> "123456",
+              "AccountName"   -> "account name",
+              "SortCode"      -> "123456",
               "AccountNumber" -> "12345678"
             )
           ),
           "DutyTypeTaxDetails" -> Json.obj(
             "DutyTypeTaxList" -> Json.arr(
-              Json.obj(
-                "Type" -> "01",
-                "PaidAmount" -> "100.00",
-                "DueAmount" -> "50.00",
-                "ClaimAmount" -> "50.00"
-              ),
-              Json.obj(
-                "Type" -> "02",
-                "PaidAmount" -> "100.00",
-                "DueAmount" -> "50.00",
-                "ClaimAmount" -> "50.00"
-              ),
-              Json.obj(
-                "Type" -> "03",
-                "PaidAmount" -> "100.00",
-                "DueAmount" -> "50.00",
-                "ClaimAmount" -> "50.00"
-              )
+              Json.obj("Type" -> "01", "PaidAmount" -> "100.00", "DueAmount" -> "50.00", "ClaimAmount" -> "50.00"),
+              Json.obj("Type" -> "02", "PaidAmount" -> "100.00", "DueAmount" -> "50.00", "ClaimAmount" -> "50.00"),
+              Json.obj("Type" -> "03", "PaidAmount" -> "100.00", "DueAmount" -> "50.00", "ClaimAmount" -> "50.00")
             )
           ),
           "DocumentList" -> Json.arr(
-            Json.obj(
-              "Type" -> "03",
-              "Description" -> "this is a copy of c88"
-            ),
-            Json.obj(
-              "Type" -> "01",
-              "Description" -> "this is an invoice"
-            ),
-            Json.obj(
-              "Type" -> "04",
-              "Description" -> "this is a packing list"
-            )
+            Json.obj("Type" -> "03", "Description" -> "this is a copy of c88"),
+            Json.obj("Type" -> "01", "Description" -> "this is an invoice"),
+            Json.obj("Type" -> "04", "Description" -> "this is a packing list")
           )
         ),
         "uploadedFiles" -> Array.empty[UploadedFile]
@@ -257,7 +233,6 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
 
       result mustBe Some(testCreateClaimRequestWithBankAccountNumberContaining6Digits)
     }
-
 
   }
 }

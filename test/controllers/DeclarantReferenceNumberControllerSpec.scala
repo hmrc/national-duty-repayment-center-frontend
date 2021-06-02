@@ -37,7 +37,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new DeclarantReferenceNumberFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val declarantReferenceNumberRoute = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url
 
@@ -63,7 +63,10 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(DeclarantReferenceNumberPage, DeclarantReferenceNumber(DeclarantReferenceType.Yes,Some("123"))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        DeclarantReferenceNumberPage,
+        DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("123"))
+      ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -76,7 +79,10 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeclarantReferenceNumber(DeclarantReferenceType.Yes,Some("123"))), NormalMode)(request, messages).toString
+        view(form.fill(DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("123"))), NormalMode)(
+          request,
+          messages
+        ).toString
 
       application.stop()
     }
@@ -87,15 +93,12 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
         FakeRequest(POST, declarantReferenceNumberRoute)
           .withFormUrlEncodedBody(("value", "01"), ("declarantReferenceNumber", "01"))
-
 
       val result = route(application, request).value
 

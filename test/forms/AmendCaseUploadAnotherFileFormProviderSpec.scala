@@ -26,20 +26,16 @@ class AmendCaseUploadAnotherFileFormProviderSpec extends OptionFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "amendCaseUploadAnotherFile.error.required"
 
     behave like optionsField[AmendCaseUploadAnotherFile](
       form,
       fieldName,
-      validValues  = AmendCaseUploadAnotherFile.values,
+      validValues = AmendCaseUploadAnotherFile.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

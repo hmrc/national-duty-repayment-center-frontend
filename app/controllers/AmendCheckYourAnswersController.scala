@@ -34,35 +34,33 @@ import views.html.AmendCheckYourAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AmendCheckYourAnswersController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 sessionRepository: SessionRepository,
-                                                 claimService: ClaimService,
-                                                 val navigator: AmendNavigator,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: AmendCheckYourAnswersView
-                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+class AmendCheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  claimService: ClaimService,
+  val navigator: AmendNavigator,
+  val controllerComponents: MessagesControllerComponents,
+  view: AmendCheckYourAnswersView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = AmendCheckYourAnswersPage
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       navigator.firstMissingAnswer(request.userAnswers) match {
-        case Some(call) => {
+        case Some(call) =>
           // TODO - render "missing" version of CYA page
           Future(Redirect(call))
-        }
-        case None => {
+        case None =>
           val updatedAnswers = request.userAnswers.copy(changePage = None)
           sessionRepository.clearChangePage(updatedAnswers) map { _ =>
             val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
             Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink(updatedAnswers)))
           }
-        }
       }
   }
 
@@ -75,12 +73,12 @@ class AmendCheckYourAnswersController @Inject()(
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       for {
-        claimId <- claimService.submitAmendClaim(request.userAnswers)
-        updatedClaimId <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
+        claimId          <- claimService.submitAmendClaim(request.userAnswers)
+        updatedClaimId   <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
-        _ <- sessionRepository.set(updatedClaimDate)
+        _                <- sessionRepository.set(updatedClaimDate)
       } yield Redirect(nextPage(request.userAnswers))
   }
+
 }

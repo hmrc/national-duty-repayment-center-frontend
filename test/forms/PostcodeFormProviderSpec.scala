@@ -15,18 +15,16 @@
  */
 
 package forms
+
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+
 class PostcodeFormProviderSpec extends StringFieldBehaviours {
   val requiredKey = "postcode.error.required"
-  val lengthKey = "postcode.error.length"
-  val form = new PostcodeFormProvider()()
+  val lengthKey   = "postcode.error.length"
+  val form        = new PostcodeFormProvider()()
   ".value" must {
     val fieldName = "PostalCode"
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

@@ -25,9 +25,9 @@ import play.api.test.Helpers._
 class SignOutControllerSpec extends SpecBase with MockitoSugar {
 
   private def signOutRoute: String = controllers.routes.SignOutController.signOut().url
-  private val application = applicationBuilder().build()
+  private val application          = applicationBuilder().build()
 
-  "SignOut Controller"  must  {
+  "SignOut Controller" must {
 
     "Sign in using Government Gateway page" in {
 

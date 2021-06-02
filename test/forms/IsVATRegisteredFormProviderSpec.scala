@@ -26,21 +26,17 @@ class IsVATRegisteredFormProviderSpec extends OptionFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "isVATRegistered.error.required"
-    val invalidKey = "error.invalid"
+    val invalidKey  = "error.invalid"
 
     behave like optionsField[IsVATRegistered](
       form,
       fieldName,
-      validValues  = IsVATRegistered.values,
+      validValues = IsVATRegistered.values,
       invalidError = FormError(fieldName, invalidKey)
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

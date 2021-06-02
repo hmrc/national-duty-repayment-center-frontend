@@ -20,7 +20,8 @@ import org.scalatest.Matchers.convertToAnyShouldWrapper
 import org.scalatest.{Matchers, MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
-class UpscanNotificationUploadDetailsSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues  {
+class UpscanNotificationUploadDetailsSpec
+    extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   "UpscanNotification.UploadDetails" must {
     "decode single mime-encoded word" in {

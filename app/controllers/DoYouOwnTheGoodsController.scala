@@ -32,17 +32,18 @@ import views.html.DoYouOwnTheGoodsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DoYouOwnTheGoodsController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: DoYouOwnTheGoodsFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: DoYouOwnTheGoodsView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class DoYouOwnTheGoodsController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: DoYouOwnTheGoodsFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: DoYouOwnTheGoodsView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
@@ -50,7 +51,7 @@ class DoYouOwnTheGoodsController @Inject()(
     implicit request =>
       val declarantName = request.userAnswers.get(DeclarantNamePage).map(_.toString).getOrElse("")
       val preparedForm = request.userAnswers.get(DoYouOwnTheGoodsPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -64,18 +65,21 @@ class DoYouOwnTheGoodsController @Inject()(
       form.bindFromRequest().fold(
         formWithErrors => {
           val errors: Seq[FormError] =
-            formWithErrors.errors.headOption.map(x => Seq(x.copy(messages = Seq(formWithErrors.errors.head.message), args = Seq(declarantName)))).getOrElse(Nil)
+            formWithErrors.errors.headOption.map(
+              x => Seq(x.copy(messages = Seq(formWithErrors.errors.head.message), args = Seq(declarantName)))
+            ).getOrElse(Nil)
           Future.successful(BadRequest(view(formWithErrors.copy(errors = errors), mode, declarantName)))
         },
         value =>
           for {
-            updatedAnswers <-  {
-              if(value.equals(DoYouOwnTheGoods.Yes))
+            updatedAnswers <- {
+              if (value.equals(DoYouOwnTheGoods.Yes))
                 Future.fromTry(request.userAnswers.remove(ImporterNamePage).flatMap(_.set(DoYouOwnTheGoodsPage, value)))
-              else  Future.fromTry(request.userAnswers.set(DoYouOwnTheGoodsPage, value))
+              else Future.fromTry(request.userAnswers.set(DoYouOwnTheGoodsPage, value))
             }
-            _  <- sessionRepository.set(updatedAnswers)
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(DoYouOwnTheGoodsPage, mode, updatedAnswers))
       )
   }
+
 }

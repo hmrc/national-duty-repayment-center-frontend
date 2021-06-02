@@ -19,7 +19,6 @@ package pages
 import models.EORI
 import pages.behaviours.PageBehaviours
 
-
 class EnterAgentEORIPageSpec extends PageBehaviours {
 
   "EnterAgentEORIPage" must {

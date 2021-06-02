@@ -35,7 +35,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
   val backLink = NavigatorBack(Some(routes.AmendCaseResponseTypeController.onPageLoad))
 
   val formProvider = new FurtherInformationFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val furtherInformationRoute = routes.FurtherInformationController.onPageLoad().url
 

@@ -23,7 +23,7 @@ import play.api.data.FormError
 class IsImporterVatRegisteredFormProviderSpec extends OptionFieldBehaviours {
 
   val requiredKey = "isImporterVatRegistered.error.required"
-  val invalidKey = "error.invalid"
+  val invalidKey  = "error.invalid"
 
   val form = new IsImporterVatRegisteredFormProvider()()
 
@@ -31,17 +31,13 @@ class IsImporterVatRegisteredFormProviderSpec extends OptionFieldBehaviours {
 
     val fieldName = "value"
 
-    behave like  optionsField [IsImporterVatRegistered](
+    behave like optionsField[IsImporterVatRegistered](
       form,
       fieldName,
-      validValues  = IsImporterVatRegistered.values,
+      validValues = IsImporterVatRegistered.values,
       invalidError = FormError(fieldName, invalidKey)
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

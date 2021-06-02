@@ -35,7 +35,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
   val backLink = NavigatorBack(Some(routes.CreateOrAmendCaseController.onPageLoad))
 
   val formProvider = new ReferenceNumberFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val referenceNumberRoute = routes.ReferenceNumberController.onPageLoad().url
 

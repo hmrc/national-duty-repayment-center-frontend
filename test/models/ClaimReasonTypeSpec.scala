@@ -32,7 +32,6 @@ class ClaimReasonTypeSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
       forAll(gen) {
         claimReasonType =>
-
           JsString(claimReasonType.toString).validate[ClaimReasonType].asOpt.value mustEqual claimReasonType
       }
     }
@@ -43,7 +42,6 @@ class ClaimReasonTypeSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[ClaimReasonType] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class ClaimReasonTypeSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
       forAll(gen) {
         claimReasonType =>
-
           Json.toJson(claimReasonType) mustEqual JsString(claimReasonType.toString)
       }
     }

@@ -27,34 +27,45 @@ import java.time.{LocalDate, ZoneId, ZonedDateTime}
 
 object TestData {
 
-  val testClaimantTypeRepresentative: ClaimantType = ClaimantType.Representative
-  val testClaimantTypeImporter: ClaimantType = ClaimantType.Importer
-  val testEntryDetails: EntryDetails = EntryDetails("123", "123456A", LocalDate.parse("2012-12-12"))
-  val testClaimDescription: ClaimDescription = ClaimDescription("this is a claim description")
+  val testClaimantTypeRepresentative: ClaimantType    = ClaimantType.Representative
+  val testClaimantTypeImporter: ClaimantType          = ClaimantType.Importer
+  val testEntryDetails: EntryDetails                  = EntryDetails("123", "123456A", LocalDate.parse("2012-12-12"))
+  val testClaimDescription: ClaimDescription          = ClaimDescription("this is a claim description")
   val testClaimRepaymentType: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
-  val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
-  val referenceNumber: String = "P34567"
-  val testRepaymentAmounts: RepaymentAmounts = RepaymentAmounts("100.00", "50.00")
+
+  val amendCaseResponseType: Set[AmendCaseResponseType] =
+    Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
+
+  val referenceNumber: String                        = "P34567"
+  val testRepaymentAmounts: RepaymentAmounts         = RepaymentAmounts("100.00", "50.00")
   val testAgentImporterHasEORI: AgentImporterHasEORI = AgentImporterHasEORI.Yes
-  val testImporterEORI: EORI = EORI("GB123456123456")
-  val testAgentEORI: EORI = EORI("GB123456123444")
-  val testRepresentativeAgentName: String = "Agent name"
-  val testRepresentativeImporterName: UserName = UserName("ImporterName")
-  val testImporterManualAddress: Address = Address("line 1", Some("line 2"), "City", Some("Region"), "GB", "AA11AA")
-  val testAgentManualAddress: Address = Address("line 1 agent", Some("line 2 agent"), "City agent", Some("Region agent"), "IT", "AA11AA")
-  val testEmailAndPhoneNumber: EmailAndPhoneNumber = EmailAndPhoneNumber(Set(IsContactProvided.Email, IsContactProvided.Phone), Some("test@testing.com"), Some("01234567890"))
-  val testWhomToPay: WhomToPay = WhomToPay.Importer
-  val testWhomToPayRepresentative: WhomToPay = WhomToPay.Representative
-  val testWhomToPayCMA: WhomToPay = WhomToPay.CMA
-  val testBankDetails: BankDetails = BankDetails("account name", "123456", "12345678")
+  val testImporterEORI: EORI                         = EORI("GB123456123456")
+  val testAgentEORI: EORI                            = EORI("GB123456123444")
+  val testRepresentativeAgentName: String            = "Agent name"
+  val testRepresentativeImporterName: UserName       = UserName("ImporterName")
+  val testImporterManualAddress: Address             = Address("line 1", Some("line 2"), "City", Some("Region"), "GB", "AA11AA")
+
+  val testAgentManualAddress: Address =
+    Address("line 1 agent", Some("line 2 agent"), "City agent", Some("Region agent"), "IT", "AA11AA")
+
+  val testEmailAndPhoneNumber: EmailAndPhoneNumber = EmailAndPhoneNumber(
+    Set(IsContactProvided.Email, IsContactProvided.Phone),
+    Some("test@testing.com"),
+    Some("01234567890")
+  )
+
+  val testWhomToPay: WhomToPay                = WhomToPay.Importer
+  val testWhomToPayRepresentative: WhomToPay  = WhomToPay.Representative
+  val testWhomToPayCMA: WhomToPay             = WhomToPay.CMA
+  val testBankDetails: BankDetails            = BankDetails("account name", "123456", "12345678")
   val testBankDetailsWith6Digits: BankDetails = BankDetails("account name", "123456", "123456")
-  val testPaddedBankDetails: BankDetails = BankDetails("account name", "123456", "00123456")
-  val testDocumentList: Seq[DocumentList] = Seq(DocumentList(EvidenceSupportingDocs.Other, None))
-  val furtherInformation: String = "More info for amend"
-  val testDeclarantRefNumber:String = "12345"
-  val testDeclarantName: Name = Name("Declarant", "One")
+  val testPaddedBankDetails: BankDetails      = BankDetails("account name", "123456", "00123456")
+  val testDocumentList: Seq[DocumentList]     = Seq(DocumentList(EvidenceSupportingDocs.Other, None))
+  val furtherInformation: String              = "More info for amend"
+  val testDeclarantRefNumber: String          = "12345"
+  val testDeclarantName: Name                 = Name("Declarant", "One")
   val testRepresentativeDeclarantName: String = "Representative declarant name"
-  val testImporterName: UserName = UserName("Importer One")
+  val testImporterName: UserName              = UserName("Importer One")
 
   val testClaimDetails: ClaimDetails = ClaimDetails(
     FormType("01"),
@@ -179,14 +190,8 @@ object TestData {
     testEmailAndPhoneNumber.email
   )
 
-  val testImporterDetailsRepresentativeJourney: UserDetails = UserDetails(
-    "true",
-    testImporterEORI,
-    testRepresentativeImporterName.value,
-    testImporterManualAddress,
-    None,
-    None
-  )
+  val testImporterDetailsRepresentativeJourney: UserDetails =
+    UserDetails("true", testImporterEORI, testRepresentativeImporterName.value, testImporterManualAddress, None, None)
 
   val testImporterDetails: UserDetails = UserDetails(
     "true",
@@ -201,15 +206,14 @@ object TestData {
     Seq(
       DutyTypeTaxList(ClaimRepaymentType.Customs, "100.00", "50.00", "50.00"),
       DutyTypeTaxList(ClaimRepaymentType.Vat, "0.00", "0.00", "0.00"),
-      DutyTypeTaxList(ClaimRepaymentType.Other, "0.00", "0.00", "0.00"),
-
+      DutyTypeTaxList(ClaimRepaymentType.Other, "0.00", "0.00", "0.00")
     )
   )
 
   def populateUserAnswersWithRepresentativeAndMultipleEntries(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -225,18 +229,28 @@ object TestData {
       .flatMap(_.set(ImporterHasEoriPage, true))
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(RepresentativeImporterNamePage, testRepresentativeImporterName))
-      .flatMap(_.set(RepresentativeDeclarantAndBusinessNamePage, RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)))
+      .flatMap(
+        _.set(
+          RepresentativeDeclarantAndBusinessNamePage,
+          RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)
+        )
+      )
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(WhomToPayPage, testWhomToPay))
       .flatMap(_.set(BankDetailsPage, testBankDetails))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
+      .flatMap(
+        _.set(
+          DeclarantReferenceNumberPage,
+          DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))
+        )
+      )
       .get
 
   def populateUserAnswersRepresentativeWithEmail(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -252,19 +266,29 @@ object TestData {
       .flatMap(_.set(ImporterHasEoriPage, true))
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(RepresentativeImporterNamePage, testRepresentativeImporterName))
-      .flatMap(_.set(RepresentativeDeclarantAndBusinessNamePage, RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)))
+      .flatMap(
+        _.set(
+          RepresentativeDeclarantAndBusinessNamePage,
+          RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)
+        )
+      )
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPay))
       .flatMap(_.set(BankDetailsPage, testBankDetails))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
-        .get
+      .flatMap(
+        _.set(
+          DeclarantReferenceNumberPage,
+          DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))
+        )
+      )
+      .get
 
   def populateUserAnswersWithCMAPaymentMethod(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -280,17 +304,27 @@ object TestData {
       .flatMap(_.set(ImporterHasEoriPage, true))
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(RepresentativeImporterNamePage, testRepresentativeImporterName))
-      .flatMap(_.set(RepresentativeDeclarantAndBusinessNamePage, RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)))
+      .flatMap(
+        _.set(
+          RepresentativeDeclarantAndBusinessNamePage,
+          RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)
+        )
+      )
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
+      .flatMap(
+        _.set(
+          DeclarantReferenceNumberPage,
+          DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))
+        )
+      )
       .get
 
   def populateUserAnswersWithCMAPaymentMethodAndClaimantImporter(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeImporter)
-      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -307,13 +341,18 @@ object TestData {
       .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
       .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
+      .flatMap(
+        _.set(
+          DeclarantReferenceNumberPage,
+          DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))
+        )
+      )
       .get
 
   def populateUserAnswersWithUKCustomsRegulationType(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeImporter)
-      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation))
       .flatMap(_.set(UkRegulationTypePage, UkRegulationType.Rejected))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -330,13 +369,18 @@ object TestData {
       .flatMap(_.set(ImporterManualAddressPage, testImporterManualAddress))
       .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
+      .flatMap(
+        _.set(
+          DeclarantReferenceNumberPage,
+          DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))
+        )
+      )
       .get
 
   def populateUserAnswersWithRepresentativeSinglePayingRepresentativeBacs(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -353,18 +397,28 @@ object TestData {
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(ImporterNamePage, testImporterName))
       .flatMap(_.set(RepresentativeImporterNamePage, testRepresentativeImporterName))
-      .flatMap(_.set(RepresentativeDeclarantAndBusinessNamePage, RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)))
+      .flatMap(
+        _.set(
+          RepresentativeDeclarantAndBusinessNamePage,
+          RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)
+        )
+      )
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
+      .flatMap(
+        _.set(
+          DeclarantReferenceNumberPage,
+          DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))
+        )
+      )
       .get
 
   def populateUserAnswersWithBankAccountNumberContaining6Digits(userAnswers: UserAnswers): UserAnswers =
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
-      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single,None)))
+      .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
@@ -381,13 +435,23 @@ object TestData {
       .flatMap(_.set(ImporterEoriPage, testAgentEORI))
       .flatMap(_.set(ImporterNamePage, testImporterName))
       .flatMap(_.set(RepresentativeImporterNamePage, testRepresentativeImporterName))
-      .flatMap(_.set(RepresentativeDeclarantAndBusinessNamePage, RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)))
+      .flatMap(
+        _.set(
+          RepresentativeDeclarantAndBusinessNamePage,
+          RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)
+        )
+      )
       .flatMap(_.set(AgentImporterManualAddressPage, testAgentManualAddress))
       .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
       .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(_.set(BankDetailsPage, testBankDetailsWith6Digits))
       .flatMap(_.set(WhomToPayPage, testWhomToPayRepresentative))
-      .flatMap(_.set(DeclarantReferenceNumberPage,DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))))
+      .flatMap(
+        _.set(
+          DeclarantReferenceNumberPage,
+          DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))
+        )
+      )
       .get
 
   def populateUserAnswersWithAmendData(userAnswers: UserAnswers): UserAnswers =
@@ -422,7 +486,7 @@ object TestData {
   def populateUserAnswersWithRepresentativeMultipleJourney(userAnswers: UserAnswers): UserAnswers =
     populateUserAnswersWithRepresentativeAndMultipleEntries(userAnswers)
       .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded, bulkFileUploaded)))))
-      .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("3")))
+      .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("3")))
       .get
 
   def populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney(userAnswers: UserAnswers): UserAnswers =
@@ -463,7 +527,9 @@ object TestData {
       testImporterDetailsRepresentativeJourney,
       Some(AllBankDetails(Some(testBankDetails), None)),
       testDutyTypeTaxDetails,
-      testDocumentList), Nil
+      testDocumentList
+    ),
+    Nil
   )
 
   val testCreateClaimRequestWithCMAPaymentMethod: CreateClaimRequest = CreateClaimRequest(
@@ -473,7 +539,9 @@ object TestData {
       testImporterDetailsRepresentativeJourney,
       None,
       testDutyTypeTaxDetails,
-      testDocumentList), Nil
+      testDocumentList
+    ),
+    Nil
   )
 
   val testCreateClaimRequestWithRepresentativeAndMultipleEntries: CreateClaimRequest = CreateClaimRequest(
@@ -483,7 +551,9 @@ object TestData {
       testImporterDetailsRepresentativeJourney,
       Some(AllBankDetails(Some(testBankDetails), None)),
       testDutyTypeTaxDetails,
-      testDocumentList), Nil
+      testDocumentList
+    ),
+    Nil
   )
 
   val testCreateClaimRequestWithCMAPaymentMethodAndClaimantImporter: CreateClaimRequest = CreateClaimRequest(
@@ -493,7 +563,9 @@ object TestData {
       testImporterDetails,
       None,
       testDutyTypeTaxDetails,
-      testDocumentList), Nil
+      testDocumentList
+    ),
+    Nil
   )
 
   val testCreateClaimRequestWithUKCustomsRegulationType: CreateClaimRequest = CreateClaimRequest(
@@ -503,7 +575,9 @@ object TestData {
       testImporterDetails,
       None,
       testDutyTypeTaxDetails,
-      testDocumentList), Nil
+      testDocumentList
+    ),
+    Nil
   )
 
   val testCreateClaimRequestWithRepresentativeSinglePayingRepresentativeBacs: CreateClaimRequest = CreateClaimRequest(
@@ -513,7 +587,9 @@ object TestData {
       testImporterDetailsRepresentativeJourney,
       None,
       testDutyTypeTaxDetails,
-      testDocumentList), Nil
+      testDocumentList
+    ),
+    Nil
   )
 
   val testCreateClaimRequestWithBankAccountNumberContaining6Digits: CreateClaimRequest = CreateClaimRequest(
@@ -523,7 +599,9 @@ object TestData {
       testImporterDetailsRepresentativeJourney,
       Some(AllBankDetails(None, Some(testPaddedBankDetails))),
       testDutyTypeTaxDetails,
-      testDocumentList), Nil
+      testDocumentList
+    ),
+    Nil
   )
 
 }

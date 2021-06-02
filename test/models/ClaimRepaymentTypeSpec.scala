@@ -32,7 +32,6 @@ class ClaimRepaymentTypeSpec extends WordSpec with MustMatchers with ScalaCheckP
 
       forAll(gen) {
         claimRepaymentType =>
-
           JsString(claimRepaymentType.toString).validate[ClaimRepaymentType].asOpt.value mustEqual claimRepaymentType
       }
     }
@@ -43,7 +42,6 @@ class ClaimRepaymentTypeSpec extends WordSpec with MustMatchers with ScalaCheckP
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[ClaimRepaymentType] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +52,6 @@ class ClaimRepaymentTypeSpec extends WordSpec with MustMatchers with ScalaCheckP
 
       forAll(gen) {
         claimRepaymentType =>
-
           Json.toJson(claimRepaymentType) mustEqual JsString(claimRepaymentType.toString)
       }
     }

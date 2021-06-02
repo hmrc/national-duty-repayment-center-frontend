@@ -22,14 +22,14 @@ import play.api.data.Forms.{mapping, nonEmptyText, optional, text}
 
 class UpscanS3ErrorFormProvider {
 
-  def apply(): Form[S3UploadError]
-  = Form[S3UploadError](
+  def apply(): Form[S3UploadError] = Form[S3UploadError](
     mapping(
-      "key" -> nonEmptyText,
-      "errorCode" -> text,
-      "errorMessage" -> text,
+      "key"            -> nonEmptyText,
+      "errorCode"      -> text,
+      "errorMessage"   -> text,
       "errorRequestId" -> optional(text),
-      "errorResource" -> optional(text)
+      "errorResource"  -> optional(text)
     )(S3UploadError.apply)(S3UploadError.unapply)
   )
+
 }

@@ -36,10 +36,13 @@ import scala.concurrent.Future
 
 class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
   private lazy val agentImporterAddressPostcodeRoute = routes.AgentImporterAddressController.onPageLoad(NormalMode).url
-  private lazy val agentImporterAddressSelectRoute = routes.AgentImporterAddressController.addressSelectSubmit(NormalMode).url
-  private val postcodeForm = (new PostcodeFormProvider) ()
-  private val addressForm = (new AgentImporterAddressFormProvider) ()
-  private val selectionForm = (new AddressSelectionFormProvider) ()
+
+  private lazy val agentImporterAddressSelectRoute =
+    routes.AgentImporterAddressController.addressSelectSubmit(NormalMode).url
+
+  private val postcodeForm  = (new PostcodeFormProvider)()
+  private val addressForm   = (new AgentImporterAddressFormProvider)()
+  private val selectionForm = (new AddressSelectionFormProvider)()
 
   def onwardRoute: Call = Call("GET", "/apply-for-repayment-of-import-duty-and-import-vat/enter-agent-importer-address")
 
@@ -107,16 +110,12 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       running(application) {
         val request = buildRequest(POST, agentImporterAddressSelectRoute)
-          .withFormUrlEncodedBody(
-            "field-name" -> """{"line1":"Line1","town":"TOWN","postCode":"AA1 1AA"}"""
-          )
+          .withFormUrlEncodedBody("field-name" -> """{"line1":"Line1","town":"TOWN","postCode":"AA1 1AA"}""")
 
         val result = route(application, request).value
 
@@ -131,23 +130,18 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       running(application) {
         val request = buildRequest(POST, agentImporterAddressSelectRoute)
-          .withFormUrlEncodedBody(
-            "field-name" -> """{}""",
-            "address-postcode" -> "AA1 1AA"
-          )
+          .withFormUrlEncodedBody("field-name" -> """{}""", "address-postcode" -> "AA1 1AA")
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
         val expectedView = application.injector.instanceOf[AgentImporterAddressView]
-        val boundForm = addressForm.bind(Map.empty[String, String])
+        val boundForm    = addressForm.bind(Map.empty[String, String])
         contentAsString(result) mustEqual
           expectedView(boundForm, NormalMode)(request, messages).toString
       }
@@ -158,7 +152,13 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       val addresses = Seq(
-        LookedUpAddressWrapper("1", Uprn(1234567890L), LookedUpAddress(Seq("Line1"), "TOWN", None, "AA1 1AA"), "LA", Some(Location(0, 0)))
+        LookedUpAddressWrapper(
+          "1",
+          Uprn(1234567890L),
+          LookedUpAddress(Seq("Line1"), "TOWN", None, "AA1 1AA"),
+          "LA",
+          Some(Location(0, 0))
+        )
       )
 
       when(addressLookupConnector.addressLookup(any())(any()))
@@ -185,11 +185,15 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedSelectItems = Seq(
           SelectItem(
             text = "Line1  TOWN ",
-            value = Some("""{"AddressLine1":"Line1","City":"TOWN","CountryCode":"GB","PostalCode":"AA1 1AA"}"""))
+            value = Some("""{"AddressLine1":"Line1","City":"TOWN","CountryCode":"GB","PostalCode":"AA1 1AA"}""")
+          )
         )
 
         contentAsString(result) mustEqual
-          expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode)(request, messages).toString
+          expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode)(
+            request,
+            messages
+          ).toString
       }
     }
 

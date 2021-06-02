@@ -28,16 +28,14 @@ sealed trait NumberOfEntriesType
 
 object NumberOfEntriesType extends Enumerable.Implicits {
 
-  case object Single extends WithName("01") with NumberOfEntriesType
+  case object Single   extends WithName("01") with NumberOfEntriesType
   case object Multiple extends WithName("02") with NumberOfEntriesType
 
   private val govukErrorMessage: govukErrorMessage = new govukErrorMessage()
-  private val govukHint: govukHint = new govukHint()
-  private val govukLabel: govukLabel = new govukLabel()
+  private val govukHint: govukHint                 = new govukHint()
+  private val govukLabel: govukLabel               = new govukLabel()
 
-  val values: Seq[NumberOfEntriesType] = Seq(
-    Single, Multiple
-  )
+  val values: Seq[NumberOfEntriesType] = Seq(Single, Multiple)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
@@ -45,29 +43,32 @@ object NumberOfEntriesType extends Enumerable.Implicits {
         value = Some(value.toString),
         content = Text(messages(s"numberOfEntriesType.${value.toString}")),
         checked = form.value.isEmpty match {
-          case true => form("value").value.contains(value.toString)
+          case true  => form("value").value.contains(value.toString)
           case false => form.value.head.asInstanceOf[Entries].numberOfEntriesType == value
         },
-        conditionalHtml = if(value.toString.equals("02")) Some(new govukInput(govukErrorMessage, govukHint, govukLabel)
-        (Input(id="entries", value = form("entries").value,label= Label(
-          content=Text(messages("numberOfEntriesType.02.hint")),
-          isPageHeading = false
-        ),
-          errorMessage = if(form("entries").hasErrors){
-            Some(ErrorMessage(
-              content = Text(messages(form("entries").errors.head.message))
-            ))
-          } else { None },
-          name="entries", classes = "govuk-input--width-4",attributes = Map(
-          "autocomplete" -> "off",
-          "inputmode" -> "numeric",
-          "pattern" -> "[0-9]*"
-        ))))
-        else None
+        conditionalHtml =
+          if (value.toString.equals("02"))
+            Some(
+              new govukInput(govukErrorMessage, govukHint, govukLabel)(
+                Input(
+                  id = "entries",
+                  value = form("entries").value,
+                  label = Label(content = Text(messages("numberOfEntriesType.02.hint")), isPageHeading = false),
+                  errorMessage =
+                    if (form("entries").hasErrors)
+                      Some(ErrorMessage(content = Text(messages(form("entries").errors.head.message))))
+                    else None,
+                  name = "entries",
+                  classes = "govuk-input--width-4",
+                  attributes = Map("autocomplete" -> "off", "inputmode" -> "numeric", "pattern" -> "[0-9]*")
+                )
+              )
+            )
+          else None
       )
   }
 
-
   implicit val enumerable: Enumerable[NumberOfEntriesType] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

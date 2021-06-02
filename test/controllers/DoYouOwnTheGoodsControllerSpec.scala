@@ -37,7 +37,7 @@ class DoYouOwnTheGoodsControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new DoYouOwnTheGoodsFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val doYouOwnTheGoodsRoute = routes.DoYouOwnTheGoodsController.onPageLoad(NormalMode).url
 
@@ -45,9 +45,12 @@ class DoYouOwnTheGoodsControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers
-        .set(DeclarantNamePage, models.Name("Joe", "Bloggs")).success.value
-      )).build()
+      val application = applicationBuilder(userAnswers =
+        Some(
+          emptyUserAnswers
+            .set(DeclarantNamePage, models.Name("Joe", "Bloggs")).success.value
+        )
+      ).build()
       val request = FakeRequest(GET, doYouOwnTheGoodsRoute)
 
       val result = route(application, request).value
@@ -88,9 +91,7 @@ class DoYouOwnTheGoodsControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

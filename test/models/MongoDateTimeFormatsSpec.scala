@@ -29,9 +29,7 @@ class MongoDateTimeFormatsSpec extends FreeSpec with MustMatchers with OptionVal
 
     val dateMillis = 1517443200000L
 
-    val json = Json.obj(
-      "$date" -> dateMillis
-    )
+    val json = Json.obj("$date" -> dateMillis)
 
     "must serialise to json" in {
       val result = Json.toJson(date)

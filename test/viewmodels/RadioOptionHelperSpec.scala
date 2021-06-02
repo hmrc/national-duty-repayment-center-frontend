@@ -26,8 +26,8 @@ class RadioOptionHelperSpec extends SpecBase {
     case object Value1 extends WithName("01")
     case object Value2 extends WithName("02")
 
-    val formProvider = new ClaimReasonTypeFormProvider()
-    val form = formProvider()
+    val formProvider      = new ClaimReasonTypeFormProvider()
+    val form              = formProvider()
     val radioOptionHelper = new RadioOptionHelper(Seq(Value1, Value2))
 
     "correctly create a list of radios from values" in {

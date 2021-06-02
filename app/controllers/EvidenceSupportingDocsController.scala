@@ -27,15 +27,15 @@ import views.html.EvidenceSupportingDocsView
 
 import scala.concurrent.ExecutionContext
 
-class EvidenceSupportingDocsController @Inject()(
-                                                  override val messagesApi: MessagesApi,
-                                                  identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                  val controllerComponents: MessagesControllerComponents,
-                                                  view: EvidenceSupportingDocsView
-                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
+class EvidenceSupportingDocsController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: EvidenceSupportingDocsView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

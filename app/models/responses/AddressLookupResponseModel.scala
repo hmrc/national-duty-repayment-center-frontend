@@ -19,16 +19,24 @@ package models.responses
 import models.JsonFormatUtils
 import play.api.libs.json._
 
-final case class AddressLookupResponseModel(candidateAddresses : Seq[LookedUpAddressWrapper]) {
+final case class AddressLookupResponseModel(candidateAddresses: Seq[LookedUpAddressWrapper]) {
   lazy val noOfHits: Int = candidateAddresses.size
 }
 
 object AddressLookupResponseModel {
+
   implicit val reads: Reads[AddressLookupResponseModel] =
     __.read[Seq[LookedUpAddressWrapper]].map(AddressLookupResponseModel.apply)
+
 }
 
-final case class LookedUpAddressWrapper(id: String, uprn: Uprn, address: LookedUpAddress, language: String, location: Option[Location])
+final case class LookedUpAddressWrapper(
+  id: String,
+  uprn: Uprn,
+  address: LookedUpAddress,
+  language: String,
+  location: Option[Location]
+)
 
 object LookedUpAddressWrapper {
   implicit val reads: Reads[LookedUpAddressWrapper] = Json.reads[LookedUpAddressWrapper]
@@ -49,9 +57,10 @@ object Uprn {
 final case class Location(latitude: BigDecimal, longitude: BigDecimal)
 
 object Location {
+
   private val arrayNumberReads: Reads[Location] = {
     case JsArray(IndexedSeq(JsNumber(lat), JsNumber(long))) => JsSuccess(Location(lat, long))
-    case _ => JsError("Expected exactly two numbers for lat and long in location field")
+    case _                                                  => JsError("Expected exactly two numbers for lat and long in location field")
   }
 
   implicit val format: OFormat[Location] = OFormat(arrayNumberReads orElse Json.reads[Location], Json.writes[Location])

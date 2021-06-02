@@ -15,6 +15,7 @@
  */
 
 package models
+
 import pages._
 import play.api.libs.json._
 import queries.{Gettable, Settable}
@@ -24,17 +25,17 @@ import java.time.{Instant, LocalDateTime, ZoneOffset}
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
-                              id: String,
-                              data: JsObject = Json.obj(),
-                              changePage: Option[String] = None,
-                              lastUpdated: LocalDateTime = LocalDateTime.now,
-                              fileUploadState: Option[FileUploadState] = None
-                            ) extends Answers {
+  id: String,
+  data: JsObject = Json.obj(),
+  changePage: Option[String] = None,
+  lastUpdated: LocalDateTime = LocalDateTime.now,
+  fileUploadState: Option[FileUploadState] = None
+) extends Answers {
 
-   def fileUploadPath: JsPath = JsPath \ "fileUploadState"
-   def changePagePath: JsPath = JsPath \ "changePage"
+  def fileUploadPath: JsPath = JsPath \ "fileUploadState"
+  def changePagePath: JsPath = JsPath \ "changePage"
 
-   def dataPath: JsPath = JsPath \ "data"
+  def dataPath: JsPath = JsPath \ "data"
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
@@ -50,7 +51,7 @@ final case class UserAnswers(
 
     updatedData.flatMap {
       d =>
-        val updatedAnswers = copy (data = d)
+        val updatedAnswers = copy(data = d)
         page.cleanup(Some(value), updatedAnswers)
     }
   }
@@ -66,26 +67,28 @@ final case class UserAnswers(
 
     updatedData.flatMap {
       d =>
-        val updatedAnswers = copy (data = d)
+        val updatedAnswers = copy(data = d)
         page.cleanup(None, updatedAnswers)
     }
   }
+
 }
 
 object UserAnswers {
   import services.UploadFile
-  implicit def uploadReads: Reads[FileUploadState] = {
+
+  implicit def uploadReads: Reads[FileUploadState] =
     //TODO error cases
     Reads {
       case jsObject: JsObject if (jsObject \ "acknowledged").isDefined =>
         FileUploaded.formatter.reads(jsObject)
-      case jsObject: JsObject  => services.UploadFile.formatter.reads(jsObject)
+      case jsObject: JsObject => services.UploadFile.formatter.reads(jsObject)
     }
-  }
 
-  implicit def uploadWrites: Writes[FileUploadState] = {
+  implicit def uploadWrites: Writes[FileUploadState] =
     //TODO error cases
     new Writes[FileUploadState] {
+
       override def writes(o: FileUploadState): JsValue =
         o match {
           case s: services.UploadFile =>
@@ -93,19 +96,19 @@ object UserAnswers {
           case s: services.FileUploaded =>
             FileUploaded.formatter.writes(s)
         }
+
     }
-  }
 
   implicit lazy val reads: Reads[UserAnswers] = {
 
     import play.api.libs.functional.syntax._
     (
       (__ \ "_id").read[String] and
-      (__ \ "data").read[JsObject] and
+        (__ \ "data").read[JsObject] and
         (__ \ "changePage").readNullable[String] and
         (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead) and
         (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
-      ) (UserAnswers.apply _)
+    )(UserAnswers.apply _)
   }
 
   implicit lazy val writes: OWrites[UserAnswers] = {
@@ -114,11 +117,11 @@ object UserAnswers {
 
     (
       (__ \ "_id").write[String] and
-      (__ \ "data").write[JsObject] and
+        (__ \ "data").write[JsObject] and
         (__ \ "changePage").writeNullable[String] and
         (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite) and
         (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
-    ) (unlift(UserAnswers.unapply))
+    )(unlift(UserAnswers.unapply))
   }
 
 }

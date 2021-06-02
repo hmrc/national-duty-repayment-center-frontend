@@ -17,12 +17,14 @@
 package controllers
 
 import base.SpecBase
-import data.TestData.{populateUserAnswersWithImporterInformation,
+import data.TestData.{
+  populateUserAnswersWithImporterInformation,
   populateUserAnswersWithImporterUKCustomsRegulationInformation,
   populateUserAnswersWithRepresentativeMultipleJourney,
   populateUserAnswersWithRepresentativeSingleBACSJourney,
   populateUserAnswersWithRepresentativeSingleCMAJourney,
-  populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney}
+  populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney
+}
 import models._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

@@ -15,6 +15,7 @@
  */
 
 package config
+
 import com.google.inject.{ImplementedBy, Inject}
 import controllers.routes
 import play.api.Configuration
@@ -38,7 +39,6 @@ import javax.inject.Singleton
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 object FrontendAppConfig {
 
@@ -72,50 +72,64 @@ trait FrontendAppConfig {
   def languageMap: Map[String, Lang]
   val routeToSwitchLanguage: String => Call
   val locationCanonicalList: String
-  val feedbackSurvey : String
+  val feedbackSurvey: String
 }
-@Singleton
-class FrontendAppConfigImpl @Inject()(configuration: Configuration) extends FrontendAppConfig {
 
-  override val appName: String = configuration.get[String]("appName")
-  override val contactHost = configuration.get[String]("contact-frontend.host")
+@Singleton
+class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends FrontendAppConfig {
+
+  override val appName: String              = configuration.get[String]("appName")
+  override val contactHost                  = configuration.get[String]("contact-frontend.host")
   override val contactFormServiceIdentifier = "play26frontend"
-  override val analyticsToken: String = configuration.get[String](s"google-analytics.token")
-  override val analyticsHost: String = configuration.get[String](s"google-analytics.host")
-  override val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
-  override val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
-  override val betaFeedbackUrl = s"$contactHost/contact/beta-feedback"
+  override val analyticsToken: String       = configuration.get[String](s"google-analytics.token")
+  override val analyticsHost: String        = configuration.get[String](s"google-analytics.host")
+
+  override val reportAProblemPartialUrl =
+    s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
+
+  override val reportAProblemNonJSUrl =
+    s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
+
+  override val betaFeedbackUrl                = s"$contactHost/contact/beta-feedback"
   override val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
-  override val addressLookupServiceUrl: String = configuration.get[Service]("microservice.services.address-lookup").baseUrl
-  override val timeout: Int = configuration.get[Int]("timeout.timeout")
-  override val countdown: Int = configuration.get[Int]("timeout.countdown")
-  override val authUrl: String = configuration.get[Service]("microservice.services.auth").baseUrl
-  override val loginUrl: String = configuration.get[String]("urls.login")
+
+  override val addressLookupServiceUrl: String =
+    configuration.get[Service]("microservice.services.address-lookup").baseUrl
+
+  override val timeout: Int             = configuration.get[Int]("timeout.timeout")
+  override val countdown: Int           = configuration.get[Int]("timeout.countdown")
+  override val authUrl: String          = configuration.get[Service]("microservice.services.auth").baseUrl
+  override val loginUrl: String         = configuration.get[String]("urls.login")
   override val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
+
   override val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
-  override val signOutUrl: String = configuration.get[String]("urls.logout")
+
+  override val signOutUrl: String       = configuration.get[String]("urls.logout")
   private lazy val feedbackHost: String = configuration.get[String]("feedback-frontend.host")
-  private lazy val feedbackUrl: String = configuration.get[String]("feedback-frontend.url")
-  lazy val feedbackSurvey: String = s"$feedbackHost$feedbackUrl"
+  private lazy val feedbackUrl: String  = configuration.get[String]("feedback-frontend.url")
+  lazy val feedbackSurvey: String       = s"$feedbackHost$feedbackUrl"
+
   override val fileFormats: FrontendAppConfig.FileFormats = FrontendAppConfig.FileFormats(
     maxFileSizeMb = configuration.get[Int]("file-formats.max-file-size-mb"),
     approvedFileExtensions = configuration.get[String]("file-formats.approved-file-extensions"),
     approvedFileTypes = configuration.get[String]("file-formats.approved-file-types")
   )
+
   override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
   override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")
-  override val upscanInitiateBaseUrl: String = configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
+
+  override val upscanInitiateBaseUrl: String =
+    configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
+
   lazy val locationCanonicalList: String = loadConfig("location.canonical.list")
 
-  override def languageMap: Map[String, Lang] = Map(
-    "english" -> Lang("en"),
-    "cymraeg" -> Lang("cy")
-  )
+  override def languageMap: Map[String, Lang] = Map("english" -> Lang("en"), "cymraeg" -> Lang("cy"))
 
   override val routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
 
-  private def loadConfig(key: String): String = configuration.getOptional[String](key).getOrElse(throw new Exception
-  (s"Missing configuration key: $key"))
+  private def loadConfig(key: String): String =
+    configuration.getOptional[String](key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
+
 }

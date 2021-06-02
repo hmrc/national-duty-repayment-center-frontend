@@ -38,17 +38,14 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
   private val userAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
-      CustomsDutyPaidPage.toString -> Json.obj(
-        "ActualPaidAmount"   -> "100.00",
-        "ShouldHavePaidAmount"      -> "50.00"
-      )
+      CustomsDutyPaidPage.toString -> Json.obj("ActualPaidAmount" -> "100.00", "ShouldHavePaidAmount" -> "50.00")
     )
   )
 
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new CustomsDutyPaidFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val CustomsDutyPaidRoute = routes.CustomsDutyPaidController.onPageLoad(NormalMode).url
 
@@ -58,7 +55,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswersFull = UserAnswers(userAnswersId)
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
@@ -67,7 +64,6 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[CustomsDutyPaidView]
-
 
       status(result) mustEqual OK
 
@@ -81,7 +77,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswersFull = userAnswers
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 
@@ -105,17 +101,12 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
         FakeRequest(POST, CustomsDutyPaidRoute)
-          .withFormUrlEncodedBody(
-            ("ActualPaidAmount", "100.00"),
-            ("ShouldHavePaidAmount", "50.00")
-          )
+          .withFormUrlEncodedBody(("ActualPaidAmount", "100.00"), ("ShouldHavePaidAmount", "50.00"))
 
       val result = route(application, request).value
 
@@ -129,7 +120,7 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswersFull = UserAnswers(userAnswersId)
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple,Some("2"))).success.value
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
 

@@ -27,23 +27,21 @@ sealed trait CreateOrAmendCase
 object CreateOrAmendCase extends Enumerable.Implicits {
 
   case object CreateCase extends WithName("01") with CreateOrAmendCase
-  case object AmendCase extends WithName("02") with CreateOrAmendCase
+  case object AmendCase  extends WithName("02") with CreateOrAmendCase
 
-  val values: Seq[CreateOrAmendCase] = Seq(
-    CreateCase, AmendCase
-  )
+  val values: Seq[CreateOrAmendCase] = Seq(CreateCase, AmendCase)
 
   def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
     value =>
       RadioItem(
         value = Option(value.toString),
         content = Text(messages(s"createOrAmendCase.${value.toString}")),
-        hint = Option(
-          Hint(content = Text(messages(s"createOrAmendCase.hint.${value.toString}")))),
+        hint = Option(Hint(content = Text(messages(s"createOrAmendCase.hint.${value.toString}")))),
         checked = form("value").value.contains(value.toString)
       )
   }
 
   implicit val enumerable: Enumerable[CreateOrAmendCase] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

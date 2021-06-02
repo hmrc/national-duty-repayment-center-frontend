@@ -20,9 +20,10 @@ import play.api.data.{FormError, Mapping}
 import play.api.data.validation.Constraint
 
 class CustomBindMapping[T](
-                            fieldName: String,
-                            fBind: (Map[String, String]) => Either[Seq[FormError], T],
-                            fUnbind: (T) => Map[String, String]) extends Mapping[T] {
+  fieldName: String,
+  fBind: (Map[String, String]) => Either[Seq[FormError], T],
+  fUnbind: (T) => Map[String, String]
+) extends Mapping[T] {
 
   override val key: String = fieldName
 
@@ -37,9 +38,8 @@ class CustomBindMapping[T](
   override def unbindAndValidate(value: T): (Map[String, String], Seq[FormError]) =
     throw new UnsupportedOperationException("unbindAndValidate")
 
-  override def withPrefix(prefix: String): Mapping[T] = {
+  override def withPrefix(prefix: String): Mapping[T] =
     new CustomBindMapping(prefix + fieldName, fBind, fUnbind)
-  }
 
   override def verifying(constraints: Constraint[T]*): Mapping[T] =
     throw new UnsupportedOperationException("verifying")

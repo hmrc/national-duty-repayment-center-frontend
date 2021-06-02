@@ -24,7 +24,6 @@ import play.api.data.Form
 class AmendCaseUploadAnotherFileFormProvider @Inject() extends Mappings {
 
   def apply(): Form[AmendCaseUploadAnotherFile] =
-    Form(
-      "value" -> enumerable[AmendCaseUploadAnotherFile]("amendCaseUploadAnotherFile.error.required")
-    )
+    Form("value" -> enumerable[AmendCaseUploadAnotherFile]("amendCaseUploadAnotherFile.error.required"))
+
 }

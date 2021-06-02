@@ -21,6 +21,8 @@ import play.api.libs.json.Format
 case class UserName(value: String)
 
 object UserName {
+
   implicit val format: Format[UserName] =
     JsonFormatUtils.stringFormat(UserName.apply)(_.value)
+
 }

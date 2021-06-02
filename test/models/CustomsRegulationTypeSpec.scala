@@ -32,8 +32,9 @@ class CustomsRegulationTypeSpec extends WordSpec with MustMatchers with ScalaChe
 
       forAll(gen) {
         customsRegulationType =>
-
-          JsString(customsRegulationType.toString).validate[CustomsRegulationType].asOpt.value mustEqual customsRegulationType
+          JsString(customsRegulationType.toString).validate[
+            CustomsRegulationType
+          ].asOpt.value mustEqual customsRegulationType
       }
     }
 
@@ -43,7 +44,6 @@ class CustomsRegulationTypeSpec extends WordSpec with MustMatchers with ScalaChe
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[CustomsRegulationType] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +54,6 @@ class CustomsRegulationTypeSpec extends WordSpec with MustMatchers with ScalaChe
 
       forAll(gen) {
         customsRegulationType =>
-
           Json.toJson(customsRegulationType) mustEqual JsString(customsRegulationType.toString)
       }
     }

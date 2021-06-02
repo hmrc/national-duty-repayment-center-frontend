@@ -33,70 +33,77 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
   }
 
   def answersViewModel = Seq(
-    AnswerSection(Some("Customs Duty"), Seq(
-      AnswerRow(Html(
-        "Customs Duty that was paid"),
-        Html("£0.00"),
-        Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-customs-duty-overpayment"),
-        Some("customs-duty-overpayment")
-      ),
-      AnswerRow(
-        Html("Customs Duty that should have been paid"),
-        Html("£0.00"),
-        Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-customs-duty-overpayment"),
-        Some("customs-duty-overpayment")
-      ),
-      AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
-    )),
-    AnswerSection(Some("Import VAT"), Seq(
-      AnswerRow(
-        Html("Import VAT that was paid"),
-        Html("£0.00"),
-        Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-import-vat-overpayment"),
-        Some("change-import-vat-overpayment")
-      ),
-      AnswerRow(
-        Html("Import VAT that should have been paid"),
-        Html("£0.00"),
-        Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-import-vat-overpayment"),
-        Some("change-import-vat-overpayment")
-      ),
-      AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
-    )),
-    AnswerSection(Some("Other duties"), Seq(
-      AnswerRow(
-        Html("Other duties that were paid"),
-        Html("£0.00"),
-        Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-other-duties-overpayment"),
-        Some("other-duties-overpayment")
-      ),
-      AnswerRow(
-        Html("Other duties that should have been paid"),
-        Html("£0.00"),
-        Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-other-duties-overpayment"),
-        Some("other-duties-overpayment")
-      ),
-      AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
-    )),
-    AnswerSection(Some("Total"), Seq(
-      AnswerRow(Html("Total repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
-    ))
+    AnswerSection(
+      Some("Customs Duty"),
+      Seq(
+        AnswerRow(
+          Html("Customs Duty that was paid"),
+          Html("£0.00"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-customs-duty-overpayment"),
+          Some("customs-duty-overpayment")
+        ),
+        AnswerRow(
+          Html("Customs Duty that should have been paid"),
+          Html("£0.00"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-customs-duty-overpayment"),
+          Some("customs-duty-overpayment")
+        ),
+        AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
+      )
+    ),
+    AnswerSection(
+      Some("Import VAT"),
+      Seq(
+        AnswerRow(
+          Html("Import VAT that was paid"),
+          Html("£0.00"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-import-vat-overpayment"),
+          Some("change-import-vat-overpayment")
+        ),
+        AnswerRow(
+          Html("Import VAT that should have been paid"),
+          Html("£0.00"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-import-vat-overpayment"),
+          Some("change-import-vat-overpayment")
+        ),
+        AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
+      )
+    ),
+    AnswerSection(
+      Some("Other duties"),
+      Seq(
+        AnswerRow(
+          Html("Other duties that were paid"),
+          Html("£0.00"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-other-duties-overpayment"),
+          Some("other-duties-overpayment")
+        ),
+        AnswerRow(
+          Html("Other duties that should have been paid"),
+          Html("£0.00"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-other-duties-overpayment"),
+          Some("other-duties-overpayment")
+        ),
+        AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
+      )
+    ),
+    AnswerSection(
+      Some("Total"),
+      Seq(AnswerRow(Html("Total repayment amount"), Html("<span class=\"bold\">£0.00</span>")))
+    )
   )
 
   "RepaymentAmountSummary Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId, Json.obj(
-        CustomsDutyPaidPage.toString -> Json.obj(
-          "ActualPaidAmount" -> "0.00",
-          "ShouldHavePaidAmount" -> "0.00"
-        ),
-        OtherDutiesPaidPage.toString -> Json.obj(
-          "ActualPaidAmount" -> "0.00",
-          "ShouldHavePaidAmount" -> "0.00"
+      val userAnswers = UserAnswers(
+        userAnswersId,
+        Json.obj(
+          CustomsDutyPaidPage.toString -> Json.obj("ActualPaidAmount" -> "0.00", "ShouldHavePaidAmount" -> "0.00"),
+          OtherDutiesPaidPage.toString -> Json.obj("ActualPaidAmount" -> "0.00", "ShouldHavePaidAmount" -> "0.00")
         )
-      ))
+      )
         .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -110,7 +117,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-      view(answersViewModel, NormalMode)(request, messages).toString
+        view(answersViewModel, NormalMode)(request, messages).toString
 
       application.stop()
     }

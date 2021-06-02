@@ -22,25 +22,17 @@ sealed trait EvidenceSupportingDocs
 
 object EvidenceSupportingDocs extends Enumerable.Implicits {
 
-  case object Invoice extends WithName("01") with EvidenceSupportingDocs
+  case object Invoice            extends WithName("01") with EvidenceSupportingDocs
   case object TransportDocuments extends WithName("02") with EvidenceSupportingDocs
-  case object CopyOfC88 extends WithName("03") with EvidenceSupportingDocs
-  case object PackingList extends WithName("04") with EvidenceSupportingDocs
-  case object ProofOfOrigin extends WithName("05") with EvidenceSupportingDocs
-  case object ProofOfAuthority extends WithName("06") with EvidenceSupportingDocs
-  case object SubstituteEntry extends WithName("07") with EvidenceSupportingDocs
-  case object Other extends WithName("08") with EvidenceSupportingDocs
+  case object CopyOfC88          extends WithName("03") with EvidenceSupportingDocs
+  case object PackingList        extends WithName("04") with EvidenceSupportingDocs
+  case object ProofOfOrigin      extends WithName("05") with EvidenceSupportingDocs
+  case object ProofOfAuthority   extends WithName("06") with EvidenceSupportingDocs
+  case object SubstituteEntry    extends WithName("07") with EvidenceSupportingDocs
+  case object Other              extends WithName("08") with EvidenceSupportingDocs
 
-  val values: Seq[EvidenceSupportingDocs] = Seq(
-    Invoice,
-    TransportDocuments,
-    CopyOfC88,
-    PackingList,
-    ProofOfOrigin,
-    ProofOfAuthority,
-    SubstituteEntry,
-    Other
-  )
+  val values: Seq[EvidenceSupportingDocs] =
+    Seq(Invoice, TransportDocuments, CopyOfC88, PackingList, ProofOfOrigin, ProofOfAuthority, SubstituteEntry, Other)
 
   val options: Seq[RadioOption] = values.map {
     value =>
@@ -49,4 +41,5 @@ object EvidenceSupportingDocs extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[EvidenceSupportingDocs] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

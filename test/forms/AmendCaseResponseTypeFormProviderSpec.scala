@@ -26,20 +26,16 @@ class AmendCaseResponseTypeFormProviderSpec extends CheckboxFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "amendCaseResponseType.error.required"
 
     behave like checkboxField[AmendCaseResponseType](
       form,
       fieldName,
-      validValues  = AmendCaseResponseType.values,
+      validValues = AmendCaseResponseType.values,
       invalidError = FormError(s"$fieldName[0]", "error.invalid")
     )
 
-    behave like mandatoryCheckboxField(
-      form,
-      fieldName,
-      requiredKey
-    )
+    behave like mandatoryCheckboxField(form, fieldName, requiredKey)
   }
 }

@@ -21,17 +21,15 @@ import play.api.libs.json.{Format, Json}
 
 import java.time.ZonedDateTime
 
-case class FileUploads(
-  files: Seq[FileUpload] = Seq.empty
-) {
+case class FileUploads(files: Seq[FileUpload] = Seq.empty) {
 
-  def isEmpty: Boolean = acceptedCount == 0
+  def isEmpty: Boolean  = acceptedCount == 0
   def nonEmpty: Boolean = !isEmpty
   def isSingle: Boolean = acceptedCount == 1
 
   def acceptedCount: Int =
     files
-      .count { case f: FileUpload.Accepted if(f.fileType.contains(SupportingEvidence)) => true; case _ => false }
+      .count { case f: FileUpload.Accepted if f.fileType.contains(SupportingEvidence) => true; case _ => false }
 
   def toUploadedFiles: Seq[UploadedFile] =
     files.collect {
@@ -46,15 +44,16 @@ case class FileUploads(
 object FileUploads {
   implicit val formats: Format[FileUploads] = Json.format[FileUploads]
 }
+
 sealed trait FileType
 
 object FileType extends EnumerationFormats[FileType] {
 
-  case object Bulk extends FileType
+  case object Bulk               extends FileType
   case object SupportingEvidence extends FileType
-  case object ProofOfAuthority extends FileType
+  case object ProofOfAuthority   extends FileType
 
-  val values = Set(Bulk, SupportingEvidence, ProofOfAuthority)
+  val values                = Set(Bulk, SupportingEvidence, ProofOfAuthority)
   val singleUploadFileTypes = Set(Bulk, ProofOfAuthority)
 }
 
@@ -76,31 +75,22 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
     * Status when file upload attributes has been requested from upscan-initiate
     * but the file itself has not been yet transmitted to S3 bucket.
     */
-  case class Initiated(
-                        orderNumber: Int,
-                        reference: String,
-                        fileType: Option[FileType] = None
-                      ) extends FileUpload
+  case class Initiated(orderNumber: Int, reference: String, fileType: Option[FileType] = None) extends FileUpload
 
   /** Status when file transmission has been rejected by AWS S3. */
-  case class Rejected(
-                       orderNumber: Int,
-                       reference: String,
-                       details: S3UploadError,
-                       fileType: Option[FileType] = None
-                     ) extends FileUpload
+  case class Rejected(orderNumber: Int, reference: String, details: S3UploadError, fileType: Option[FileType] = None)
+      extends FileUpload
 
   /** Status when the file has been positively verified and is ready for further actions. */
   case class Accepted(
-
-                       orderNumber: Int,
-                       reference: String,
-                       url: String,
-                       uploadTimestamp: ZonedDateTime,
-                       checksum: String,
-                       fileName: String,
-                       fileMimeType: String,
-                       fileType: Option[FileType] = None
+    orderNumber: Int,
+    reference: String,
+    url: String,
+    uploadTimestamp: ZonedDateTime,
+    checksum: String,
+    fileName: String,
+    fileMimeType: String,
+    fileType: Option[FileType] = None
   ) extends FileUpload {
 
     override def checksumOpt: Option[String] = Some(checksum)
@@ -108,20 +98,20 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
 
   /** Status when the file has failed verification and may not be used. */
   case class Failed(
-                     orderNumber: Int,
-                     reference: String,
-                     details: UpscanNotification.FailureDetails,
-                     fileType: Option[FileType] = None
+    orderNumber: Int,
+    reference: String,
+    details: UpscanNotification.FailureDetails,
+    fileType: Option[FileType] = None
   ) extends FileUpload
 
   /** Status when the file is a duplicate of an existing upload. */
   case class Duplicate(
-                        orderNumber: Int,
-                        reference: String,
-                        checksum: String,
-                        existingFileName: String,
-                        duplicateFileName: String,
-                        fileType: Option[FileType] = None
+    orderNumber: Int,
+    reference: String,
+    checksum: String,
+    existingFileName: String,
+    duplicateFileName: String,
+    fileType: Option[FileType] = None
   ) extends FileUpload
 
   override val formats =

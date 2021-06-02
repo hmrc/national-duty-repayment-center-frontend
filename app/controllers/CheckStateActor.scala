@@ -29,24 +29,28 @@ import scala.concurrent.{ExecutionContext, Future}
 
 case class CheckState(id: String, exitTime: LocalDateTime, state: FileUploadState)
 
-class CheckStateActor @Inject()(sessionRepository: SessionRepository)(implicit ec: ExecutionContext) extends Actor with FileUploadService {
+class CheckStateActor @Inject() (sessionRepository: SessionRepository)(implicit ec: ExecutionContext)
+    extends Actor with FileUploadService {
   implicit val timeout = Timeout(30 seconds)
 
   override def receive: Receive = {
     case CheckState(id, exitTime, state) =>
       if (LocalDateTime.now().isAfter(exitTime) || state.isInstanceOf[FileUploaded])
         Future.successful(state).pipeTo(sender)
-      else {
-        sessionRepository.get(id).flatMap(ss => ss.flatMap(_.fileUploadState) match {
-          case Some(s@FileUploaded(_, _)) =>
-            Future.successful(s)
+      else
+        sessionRepository.get(id).flatMap(
+          ss =>
+            ss.flatMap(_.fileUploadState) match {
+              case Some(s @ FileUploaded(_, _)) =>
+                Future.successful(s)
 
-          case Some(s@UploadFile(_, _, _, _)) =>
-            if (s.maybeUploadError.nonEmpty)
-              Future.successful(s)
-            else
-              (self ? CheckState(id, exitTime, s))
-        }).pipeTo(sender)
-      }
-    }
+              case Some(s @ UploadFile(_, _, _, _)) =>
+                if (s.maybeUploadError.nonEmpty)
+                  Future.successful(s)
+                else
+                  (self ? CheckState(id, exitTime, s))
+            }
+        ).pipeTo(sender)
+  }
+
 }

@@ -31,25 +31,25 @@ import views.html.VATPaidView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class VATPaidController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: VATPaidFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: VATPaidView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class VATPaidController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: VATPaidFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: VATPaidView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(VATPaidPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -59,9 +59,7 @@ class VATPaidController @Inject()(
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(VATPaidPage, value))
@@ -70,10 +68,10 @@ class VATPaidController @Inject()(
       )
   }
 
-  def isSingleEntry(userAnswers: UserAnswers): Boolean = {
+  def isSingleEntry(userAnswers: UserAnswers): Boolean =
     userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Single => true
-      case NumberOfEntriesType.Multiple  => false
+      case NumberOfEntriesType.Single   => true
+      case NumberOfEntriesType.Multiple => false
     }
-  }
+
 }

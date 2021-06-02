@@ -43,7 +43,7 @@ abstract class JsonFormatTest[A: Format] extends Matchers {
   val localPackagePrefix = "class uk.gov.hmrc.traderservices."
 
   def nameOf(entity: A): String = {
-    val s = entity.getClass.toString.replace("$", ".")
+    val s  = entity.getClass.toString.replace("$", ".")
     val s1 = if (s.endsWith(".")) s.dropRight(1) else s
     if (s1.startsWith(localPackagePrefix)) s1.drop(localPackagePrefix.length)
     else s1

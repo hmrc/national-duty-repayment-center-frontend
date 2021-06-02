@@ -30,9 +30,10 @@ class AmendNavigatorSpec extends SpecBase {
 
   private val navigator = injector.instanceOf[AmendNavigator]
 
-  val caseRefAnswer = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
+  val caseRefAnswer                                              = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
   val documentAndInformationResponse: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
-  val responseTypeAnswer = caseRefAnswer.set(AmendCaseResponseTypePage, documentAndInformationResponse).get
+  val responseTypeAnswer                                         = caseRefAnswer.set(AmendCaseResponseTypePage, documentAndInformationResponse).get
+
   val fileUploadedState = FileUploaded(
     FileUploads(files =
       Seq(
@@ -50,10 +51,10 @@ class AmendNavigatorSpec extends SpecBase {
     ),
     acknowledged = true
   )
-  val uploadAnswers = responseTypeAnswer.copy(fileUploadState = Some(fileUploadedState))
-  val furtherInfoAnswer = uploadAnswers.set(FurtherInformationPage, "Further info").get
-  val completeAnswers = furtherInfoAnswer
 
+  val uploadAnswers     = responseTypeAnswer.copy(fileUploadState = Some(fileUploadedState))
+  val furtherInfoAnswer = uploadAnswers.set(FurtherInformationPage, "Further info").get
+  val completeAnswers   = furtherInfoAnswer
 
   "Amend Navigator going forward" should {
 
@@ -68,34 +69,43 @@ class AmendNavigatorSpec extends SpecBase {
       val answers = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
       "documents selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments)
-        val docAnswer = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
-        navigator.nextPage(AmendCaseResponseTypePage, docAnswer) mustBe routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
+        val docAnswer                                         = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        navigator.nextPage(
+          AmendCaseResponseTypePage,
+          docAnswer
+        ) mustBe routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
       }
       "further information selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(FurtherInformation)
-        val docAnswer = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        val docAnswer                                         = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
         navigator.nextPage(AmendCaseResponseTypePage, docAnswer) mustBe routes.FurtherInformationController.onPageLoad()
       }
       "both selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
-        val docAnswer = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
-        navigator.nextPage(AmendCaseResponseTypePage, docAnswer) mustBe routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
+        val docAnswer                                         = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        navigator.nextPage(
+          AmendCaseResponseTypePage,
+          docAnswer
+        ) mustBe routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
       }
     }
     "goto next page after upload document" in {
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments)
-      val answers = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
-      navigator.nextPage(AmendFileUploadPage, answers) mustBe routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
+      val answers                                           = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+      navigator.nextPage(
+        AmendFileUploadPage,
+        answers
+      ) mustBe routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
     }
     "goto next page after uploaded documents" when {
       "there is further info to add" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
-        val answers = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        val answers                                           = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
         navigator.nextPage(AmendFileUploadedPage, answers) mustBe routes.FurtherInformationController.onPageLoad()
       }
       "there is no further info to add" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments)
-        val answers = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        val answers                                           = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
         navigator.nextPage(AmendFileUploadedPage, answers) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
       }
 
@@ -108,22 +118,34 @@ class AmendNavigatorSpec extends SpecBase {
 
   "Amend Navigator going back" should {
     "go back from check your answers" in {
-      navigator.previousPage(AmendCheckYourAnswersPage, completeAnswers).maybeCall mustBe Some(routes.FurtherInformationController.onPageLoad())
+      navigator.previousPage(AmendCheckYourAnswersPage, completeAnswers).maybeCall mustBe Some(
+        routes.FurtherInformationController.onPageLoad()
+      )
     }
     "go back from further information" in {
-      navigator.previousPage(FurtherInformationPage, completeAnswers).maybeCall mustBe Some(routes.AmendCaseSendInformationController.showFileUploaded(NormalMode))
+      navigator.previousPage(FurtherInformationPage, completeAnswers).maybeCall mustBe Some(
+        routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
+      )
     }
     "go back from upload summary" in {
-      navigator.previousPage(AmendFileUploadedPage, completeAnswers).maybeCall mustBe Some(routes.AmendCaseResponseTypeController.onPageLoad())
+      navigator.previousPage(AmendFileUploadedPage, completeAnswers).maybeCall mustBe Some(
+        routes.AmendCaseResponseTypeController.onPageLoad()
+      )
     }
     "go back from upload page" in {
-      navigator.previousPage(AmendFileUploadPage, completeAnswers).maybeCall mustBe Some(routes.AmendCaseResponseTypeController.onPageLoad())
+      navigator.previousPage(AmendFileUploadPage, completeAnswers).maybeCall mustBe Some(
+        routes.AmendCaseResponseTypeController.onPageLoad()
+      )
     }
     "go back from response type" in {
-      navigator.previousPage(AmendCaseResponseTypePage, completeAnswers).maybeCall mustBe Some(routes.ReferenceNumberController.onPageLoad())
+      navigator.previousPage(AmendCaseResponseTypePage, completeAnswers).maybeCall mustBe Some(
+        routes.ReferenceNumberController.onPageLoad()
+      )
     }
     "go back from case reference" in {
-      navigator.previousPage(ReferenceNumberPage, completeAnswers).maybeCall mustBe Some(routes.CreateOrAmendCaseController.onPageLoad())
+      navigator.previousPage(ReferenceNumberPage, completeAnswers).maybeCall mustBe Some(
+        routes.CreateOrAmendCaseController.onPageLoad()
+      )
     }
   }
 }

@@ -19,7 +19,6 @@ package pages
 import models.EORI
 import pages.behaviours.PageBehaviours
 
-
 class ImporterEoriPageSpec extends PageBehaviours {
 
   "ImporterEoriPage" must {

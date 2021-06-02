@@ -39,7 +39,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
   lazy val whomToPayRoute = routes.WhomToPayController.onPageLoad(NormalMode).url
 
   val formProvider = new WhomToPayFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "WhomToPay Controller" must {
 
@@ -87,9 +87,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

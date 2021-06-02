@@ -30,26 +30,26 @@ import views.html.ReferenceNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ReferenceNumberController @Inject()(
-                                           override val messagesApi: MessagesApi,
-                                           sessionRepository: SessionRepository,
-                                           val navigator: AmendNavigator,
-                                           identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           formProvider: ReferenceNumberFormProvider,
-                                           val controllerComponents: MessagesControllerComponents,
-                                           view: ReferenceNumberView
-                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+class ReferenceNumberController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  val navigator: AmendNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ReferenceNumberFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ReferenceNumberView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = ReferenceNumberPage
-  val form = formProvider()
+  val form                = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ReferenceNumberPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -58,16 +58,14 @@ class ReferenceNumberController @Inject()(
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReferenceNumberPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(nextPage(updatedAnswers))
       )
   }
+
 }

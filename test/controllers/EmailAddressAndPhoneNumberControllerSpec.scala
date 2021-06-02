@@ -37,7 +37,7 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new EmailAddressAndPhoneNumberFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val emailAddressRoute = routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url
 
@@ -63,8 +63,10 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(EmailAddressAndPhoneNumberPage,
-        EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(
+        EmailAddressAndPhoneNumberPage,
+        EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))
+      ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -77,7 +79,10 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))), NormalMode)(request, messages).toString
+        view(
+          form.fill(EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))),
+          NormalMode
+        )(request, messages).toString
 
       application.stop()
     }

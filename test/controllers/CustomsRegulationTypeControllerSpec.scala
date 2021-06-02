@@ -39,7 +39,7 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
   lazy val customsRegulationTypeRoute = routes.CustomsRegulationTypeController.onPageLoad(NormalMode).url
 
   val formProvider = new CustomsRegulationTypeFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "CustomsRegulationType Controller" must {
 
@@ -63,7 +63,8 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.values.head).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -87,9 +88,7 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

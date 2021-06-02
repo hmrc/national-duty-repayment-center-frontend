@@ -44,7 +44,7 @@ trait ModelGenerators {
     Arbitrary {
       Gen.oneOf(AgentImporterHasEORI.values)
     }
-  
+
   implicit lazy val arbitraryIsImporterVatRegistered: Arbitrary[IsImporterVatRegistered] =
     Arbitrary {
       Gen.oneOf(IsImporterVatRegistered.values)
@@ -63,7 +63,7 @@ trait ModelGenerators {
   implicit lazy val arbitraryRepresentativeDeclarantAndBusinessName: Arbitrary[RepresentativeDeclarantAndBusinessName] =
     Arbitrary {
       for {
-        dec <- arbitrary[String]
+        dec       <- arbitrary[String]
         agentName <- arbitrary[String]
       } yield RepresentativeDeclarantAndBusinessName(dec, agentName)
     }
@@ -93,25 +93,18 @@ trait ModelGenerators {
       for {
         email <- arbitrary[String]
         phone <- arbitrary[String]
-      } yield EmailAndPhoneNumber(setIsContactProvided,
-        Some(email),
-        Some(phone)
-      )
+      } yield EmailAndPhoneNumber(setIsContactProvided, Some(email), Some(phone))
     }
 
   implicit lazy val setIsContactProvided: Set[IsContactProvided] =
-    Set (
-      IsContactProvided.Email, IsContactProvided.Phone
-    )
+    Set(IsContactProvided.Email, IsContactProvided.Phone)
 
   implicit lazy val arbitraryEntriesType: Arbitrary[Entries] =
     Arbitrary {
       for {
         numberOfEntriesType <- arbitrary[NumberOfEntriesType]
-        entries <- arbitrary[String]
-      } yield Entries(numberOfEntriesType,
-        Some(entries)
-      )
+        entries             <- arbitrary[String]
+      } yield Entries(numberOfEntriesType, Some(entries))
     }
 
   implicit lazy val arbitraryArticleType: Arbitrary[ArticleType] =
@@ -141,19 +134,16 @@ trait ModelGenerators {
 
   implicit val arbitraryBankDetails: Arbitrary[BankDetails] = Arbitrary {
     for {
-      accountName <- arbitrary[String]
-      sortCode <- arbitrary[String]
+      accountName   <- arbitrary[String]
+      sortCode      <- arbitrary[String]
       accountNumber <- arbitrary[String]
-    } yield BankDetails(accountName,
-      sortCode,
-      accountNumber
-    )
+    } yield BankDetails(accountName, sortCode, accountNumber)
   }
 
   implicit val arbitraryRepaymentAmounts: Arbitrary[RepaymentAmounts] = Arbitrary {
     for {
       paid <- Gen.choose(99999.99, 9999999.99)
-      due <- Gen.choose(0.10, 9999.99)
+      due  <- Gen.choose(0.10, 9999.99)
     } yield RepaymentAmounts(paid.toString, due.toString)
   }
 
@@ -175,20 +165,17 @@ trait ModelGenerators {
   implicit lazy val arbitraryEntryDetails: Arbitrary[EntryDetails] =
     Arbitrary {
       for {
-        epu <- arbitrary[String]
+        epu         <- arbitrary[String]
         entryNumber <- arbitrary[String]
-        entryDate <- datesBetween(LocalDate.now, LocalDate.now.plusYears(10))
-      } yield EntryDetails(epu,
-        entryNumber,
-        entryDate
-      )
+        entryDate   <- datesBetween(LocalDate.now, LocalDate.now.plusYears(10))
+      } yield EntryDetails(epu, entryNumber, entryDate)
     }
 
   implicit lazy val arbitraryName: Arbitrary[Name] =
     Arbitrary {
       for {
         firstName <- self.stringsWithMaxLength(512)
-        lastName <- self.stringsWithMaxLength(512)
+        lastName  <- self.stringsWithMaxLength(512)
       } yield Name(firstName, lastName)
     }
 
@@ -201,17 +188,11 @@ trait ModelGenerators {
     for {
       addressLine1 <- self.stringsWithMaxLength(128)
       addressLine2 <- Gen.option(self.stringsWithMaxLength(128))
-      city <- self.stringsWithMaxLength(64)
-      region <- self.stringsWithMaxLength(64)
-      countryCode <- Gen.pick(2, 'A' to 'Z')
-      postCode <- self.stringsWithMinAndMaxLength(2,10)
-    } yield Address(addressLine1,
-      addressLine2,
-      city,
-      Some(region),
-      countryCode.mkString,
-      postCode
-    )
+      city         <- self.stringsWithMaxLength(64)
+      region       <- self.stringsWithMaxLength(64)
+      countryCode  <- Gen.pick(2, 'A' to 'Z')
+      postCode     <- self.stringsWithMinAndMaxLength(2, 10)
+    } yield Address(addressLine1, addressLine2, city, Some(region), countryCode.mkString, postCode)
   }
 
   implicit lazy val arbitraryClaimDescription: Arbitrary[ClaimDescription] =
@@ -223,9 +204,10 @@ trait ModelGenerators {
     Arbitrary {
       Gen.oneOf(IsVATRegistered.values)
     }
+
 }
 
-  /*self: Generators =>
+/*self: Generators =>
 
   lazy val dutyAmount: Gen[String] = Gen.listOfN(14, Gen.numStr).map(_.mkString)
 
@@ -438,4 +420,3 @@ trait ModelGenerators {
     )
   }
 }*/
-

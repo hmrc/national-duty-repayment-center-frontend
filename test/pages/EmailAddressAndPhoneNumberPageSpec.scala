@@ -19,7 +19,6 @@ package pages
 import forms.EmailAndPhoneNumber
 import pages.behaviours.PageBehaviours
 
-
 class EmailAddressAndPhoneNumberPageSpec extends PageBehaviours {
 
   "EmailAddressPage" must {

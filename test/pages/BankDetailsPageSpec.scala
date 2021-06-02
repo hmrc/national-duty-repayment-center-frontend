@@ -19,7 +19,6 @@ package pages
 import models.BankDetails
 import pages.behaviours.PageBehaviours
 
-
 class BankDetailsPageSpec extends PageBehaviours {
 
   "BankDetailsPage" must {

@@ -25,9 +25,6 @@ import play.api.data.{Form, Forms}
 class PostcodeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[PostcodeLookup] =
-    Form(
-      mapping(
-        "PostalCode" -> textNoSpaces("postcode.error.required")
-      )(PostcodeLookup.apply)(PostcodeLookup.unapply)
-    )
+    Form(mapping("PostalCode" -> textNoSpaces("postcode.error.required"))(PostcodeLookup.apply)(PostcodeLookup.unapply))
+
 }

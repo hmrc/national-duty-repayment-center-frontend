@@ -19,7 +19,17 @@ package service
 import base.SpecBase
 import models.FileType.{Bulk, SupportingEvidence}
 import models.requests.UploadRequest
-import models.{DuplicateFileUpload, FileTransmissionFailed, FileUpload, FileUploads, FileVerificationFailed, S3UploadError, UpscanFileFailed, UpscanFileReady, UpscanNotification}
+import models.{
+  DuplicateFileUpload,
+  FileTransmissionFailed,
+  FileUpload,
+  FileUploads,
+  FileVerificationFailed,
+  S3UploadError,
+  UpscanFileFailed,
+  UpscanFileReady,
+  UpscanNotification
+}
 import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import services.{FileUploadService, FileUploaded, UploadFile}
@@ -28,8 +38,7 @@ import java.time.ZonedDateTime
 
 class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
-  val service = new FileUploadService {
-  }
+  val service = new FileUploadService {}
   "at state FileUpload" should {
 
     "change state to FileUploaded when upscan callback has returned and accepted already" in {
@@ -166,18 +175,21 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           )
         ),
         Some(
-          FileVerificationFailed(
-            UpscanNotification.FailureDetails(UpscanNotification.REJECTED, "some failure reason")
-          )
+          FileVerificationFailed(UpscanNotification.FailureDetails(UpscanNotification.REJECTED, "some failure reason"))
         )
       )
-      whenReady(service.upscanCallbackArrived(UpscanFileFailed(
-        reference = "foo-bar-ref-4",
-        failureDetails = UpscanNotification.FailureDetails(
-          failureReason = UpscanNotification.REJECTED,
-          message = "some failure reason"
-        )
-      ), SupportingEvidence)(currentState)) {
+      whenReady(
+        service.upscanCallbackArrived(
+          UpscanFileFailed(
+            reference = "foo-bar-ref-4",
+            failureDetails = UpscanNotification.FailureDetails(
+              failureReason = UpscanNotification.REJECTED,
+              message = "some failure reason"
+            )
+          ),
+          SupportingEvidence
+        )(currentState)
+      ) {
         newState => assert(newState == expectedState)
       }
     }
@@ -249,7 +261,6 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               "test1.pdf",
               "application/pdf",
               Some(SupportingEvidence)
-
             )
           )
         )
@@ -346,13 +357,18 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           )
         )
       )
-      whenReady(service.upscanCallbackArrived(UpscanFileFailed(
-        reference = "foo-bar-ref-1",
-        failureDetails = UpscanNotification.FailureDetails(
-          failureReason = UpscanNotification.UNKNOWN,
-          message = "e.g. This file has a virus"
-        )
-      ), SupportingEvidence)(currentState)) {
+      whenReady(
+        service.upscanCallbackArrived(
+          UpscanFileFailed(
+            reference = "foo-bar-ref-1",
+            failureDetails = UpscanNotification.FailureDetails(
+              failureReason = UpscanNotification.UNKNOWN,
+              message = "e.g. This file has a virus"
+            )
+          ),
+          SupportingEvidence
+        )(currentState)
+      ) {
         newState => assert(newState == expectedState)
       }
     }
@@ -397,15 +413,14 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           )
         )
       )
-      val error =  S3UploadError(
+      val error = S3UploadError(
         key = "foo-bar-ref-1",
         errorCode = "a",
         errorMessage = "b",
         errorResource = Some("c"),
         errorRequestId = Some("d")
       )
-      whenReady(service.fileUploadWasRejected(error)(currentState)
-      ){ newState => assert(newState == expectedState)}
+      whenReady(service.fileUploadWasRejected(error)(currentState))(newState => assert(newState == expectedState))
     }
   }
   "when callback returns" should {
@@ -423,11 +438,9 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
             )
           ),
           FileUploads(files =
-            Seq(
-              FileUpload.Initiated(1, "foo-bar-ref-1")
-            )
+            Seq(FileUpload.Initiated(1, "foo-bar-ref-1"))
           )
-      )
+        )
       val expectedState = UploadFile(
         "foo-bar-ref-2",
         UploadRequest(
@@ -439,9 +452,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           )
         ),
         FileUploads(files =
-          Seq(
-            FileUpload.Initiated(1, "foo-bar-ref-1")
-          )
+          Seq(FileUpload.Initiated(1, "foo-bar-ref-1"))
         )
       )
       val upscanReady = UpscanFileReady(
@@ -460,30 +471,31 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
     }
 
     "go to FileUploaded when file already accepted" in {
-          val currentState = UploadFile(
-          "foo-bar-ref-1",
-          UploadRequest(
-            href = "https://s3.bucket",
-            fields = Map(
-              "callbackUrl"     -> "https://foo.bar/callback",
-              "successRedirect" -> "https://foo.bar/success",
-              "errorRedirect"   -> "https://foo.bar/failure"
-            )
-          ),
-          FileUploads(files =
-            Seq(
-              FileUpload.Accepted(
-                1,
-                "foo-bar-ref-1",
-                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-                "test.pdf",
-                "application/pdf",
-                Some(SupportingEvidence))
+      val currentState = UploadFile(
+        "foo-bar-ref-1",
+        UploadRequest(
+          href = "https://s3.bucket",
+          fields = Map(
+            "callbackUrl"     -> "https://foo.bar/callback",
+            "successRedirect" -> "https://foo.bar/success",
+            "errorRedirect"   -> "https://foo.bar/failure"
+          )
+        ),
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         )
+      )
       val expectedState = FileUploaded(
         FileUploads(files =
           Seq(
@@ -545,16 +557,21 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           )
         )
       )
-      whenReady(service.upscanCallbackArrived(UpscanFileReady(
-        reference = "foo-bar-ref-1",
-        downloadUrl = "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-        uploadDetails = UpscanNotification.UploadDetails(
-          uploadTimestamp = ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-          checksum = "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-          fileName = "test.pdf",
-          fileMimeType = "application/pdf"
-        )
-      ), SupportingEvidence)(currentState)) {
+      whenReady(
+        service.upscanCallbackArrived(
+          UpscanFileReady(
+            reference = "foo-bar-ref-1",
+            downloadUrl = "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            uploadDetails = UpscanNotification.UploadDetails(
+              uploadTimestamp = ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              checksum = "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              fileName = "test.pdf",
+              fileMimeType = "application/pdf"
+            )
+          ),
+          SupportingEvidence
+        )(currentState)
+      ) {
         newState => assert(newState == expectedState)
       }
     }
@@ -599,13 +616,18 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
         )
       )
 
-      whenReady(service.upscanCallbackArrived(UpscanFileFailed(
-        reference = "foo-bar-ref-1",
-        failureDetails = UpscanNotification.FailureDetails(
-          failureReason = UpscanNotification.QUARANTINE,
-          message = "e.g. This file has a virus"
-        )
-      ), SupportingEvidence)(currentState)) {
+      whenReady(
+        service.upscanCallbackArrived(
+          UpscanFileFailed(
+            reference = "foo-bar-ref-1",
+            failureDetails = UpscanNotification.FailureDetails(
+              failureReason = UpscanNotification.QUARANTINE,
+              message = "e.g. This file has a virus"
+            )
+          ),
+          SupportingEvidence
+        )(currentState)
+      ) {
         newState => assert(newState == expectedState)
       }
     }
@@ -656,30 +678,38 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
               "errorRedirect"   -> "https://foo.bar/failure"
             )
           ),
-          FileUploads(files = Seq(FileUpload.Accepted(
-            1,
-            "foo-bar-ref-1",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "test.pdf",
-            "application/pdf",
-            Some(Bulk)
-          ), FileUpload.Initiated(2, "foo-bar-ref-2"),
-          ))
+          FileUploads(files =
+            Seq(
+              FileUpload.Accepted(
+                1,
+                "foo-bar-ref-1",
+                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                "test.pdf",
+                "application/pdf",
+                Some(Bulk)
+              ),
+              FileUpload.Initiated(2, "foo-bar-ref-2")
+            )
+          )
         )
 
-      val expectedState =  FileUploaded(
+      val expectedState = FileUploaded(
         FileUploads(files =
-          Seq(FileUpload.Accepted(
-        2,
-        "foo-bar-ref-2",
-        "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-        ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-        "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-        "test2.pdf",
-        "application/pdf",
-        Some(Bulk))))
+          Seq(
+            FileUpload.Accepted(
+              2,
+              "foo-bar-ref-2",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test2.pdf",
+              "application/pdf",
+              Some(Bulk)
+            )
+          )
+        )
       )
 
       val upscanReady = UpscanFileReady(
@@ -689,7 +719,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
           uploadTimestamp = ZonedDateTime.parse("2018-04-24T09:30:00Z"),
           checksum = "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
           fileName = "test2.pdf",
-          fileMimeType = "application/pdf",
+          fileMimeType = "application/pdf"
         )
       )
       whenReady(service.upscanCallbackArrived(upscanReady, Bulk)(currentState)) {
@@ -710,39 +740,49 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
             "errorRedirect"   -> "https://foo.bar/failure"
           )
         ),
-        FileUploads(files = Seq(FileUpload.Accepted(
-          1,
-          "foo-bar-ref-1",
-          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-          ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-          "test.pdf",
-          "application/pdf",
-          Some(SupportingEvidence)
-        ), FileUpload.Initiated(2, "foo-bar-ref-2"),
-        ))
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(SupportingEvidence)
+            ),
+            FileUpload.Initiated(2, "foo-bar-ref-2")
+          )
+        )
       )
 
-    val expectedState =  FileUploaded(
+    val expectedState = FileUploaded(
       FileUploads(files =
-        Seq(FileUpload.Accepted(
-          1,
-          "foo-bar-ref-1",
-          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-          ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-          "test.pdf",
-          "application/pdf",
-          Some(SupportingEvidence)),
-        FileUpload.Accepted(
-          2,
-          "foo-bar-ref-2",
-          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-          ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-          "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-          "test2.pdf",
-          "application/pdf",
-          Some(SupportingEvidence)))))
+        Seq(
+          FileUpload.Accepted(
+            1,
+            "foo-bar-ref-1",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "test.pdf",
+            "application/pdf",
+            Some(SupportingEvidence)
+          ),
+          FileUpload.Accepted(
+            2,
+            "foo-bar-ref-2",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+            "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "test2.pdf",
+            "application/pdf",
+            Some(SupportingEvidence)
+          )
+        )
+      )
+    )
 
     val upscanReady = UpscanFileReady(
       reference = "foo-bar-ref-2",
@@ -751,7 +791,7 @@ class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPr
         uploadTimestamp = ZonedDateTime.parse("2018-04-24T09:30:00Z"),
         checksum = "000000dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
         fileName = "test2.pdf",
-        fileMimeType = "application/pdf",
+        fileMimeType = "application/pdf"
       )
     )
     whenReady(service.upscanCallbackArrived(upscanReady, SupportingEvidence)(currentState)) {

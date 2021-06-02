@@ -31,25 +31,25 @@ import views.html.ClaimantTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimantTypeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: ClaimantTypeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: ClaimantTypeView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ClaimantTypeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ClaimantTypeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ClaimantTypeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(ClaimantTypePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -59,28 +59,29 @@ class ClaimantTypeController @Inject()(
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
-          if(request.userAnswers.get(ClaimantTypePage) != value
-            && mode.equals(CheckMode) ) {
+          if (
+            request.userAnswers.get(ClaimantTypePage) != value
+            && mode.equals(CheckMode)
+          )
             for {
-              _ <- sessionRepository.resetData(request.userAnswers)
+              _           <- sessionRepository.resetData(request.userAnswers)
               sessionData <- sessionRepository.get(request.internalId)
-              userAnswers <- Future.fromTry (sessionData.map(_.copy(id = request.internalId)).
-                getOrElse(UserAnswers(request.internalId)).set(ClaimantTypePage, value))
+              userAnswers <- Future.fromTry(
+                sessionData.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.internalId)).set(
+                  ClaimantTypePage,
+                  value
+                )
+              )
               res <- sessionRepository.set(userAnswers)
-              if(res)
             } yield Redirect(navigator.nextPage(ClaimantTypePage, NormalMode, userAnswers))
-          } else {
+          else
             for {
-              userAnswers <- Future.fromTry (request.userAnswers.
-                set(ClaimantTypePage, value))
-              res <- sessionRepository.set(userAnswers)
-              if(res)
+              userAnswers <- Future.fromTry(request.userAnswers.set(ClaimantTypePage, value))
+              res         <- sessionRepository.set(userAnswers)
             } yield Redirect(navigator.nextPage(ClaimantTypePage, mode, userAnswers))
-          }
       )
   }
+
 }

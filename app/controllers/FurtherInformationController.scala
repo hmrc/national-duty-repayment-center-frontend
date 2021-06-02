@@ -30,25 +30,26 @@ import views.html.FurtherInformationView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FurtherInformationController @Inject()(
-                                              override val messagesApi: MessagesApi,
-                                              sessionRepository: SessionRepository,
-                                              val navigator: AmendNavigator,
-                                              identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              formProvider: FurtherInformationFormProvider,
-                                              val controllerComponents: MessagesControllerComponents,
-                                              view: FurtherInformationView
-                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+class FurtherInformationController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  val navigator: AmendNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: FurtherInformationFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: FurtherInformationView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = FurtherInformationPage
-  val form = formProvider()
+  val form                = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(FurtherInformationPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -57,15 +58,12 @@ class FurtherInformationController @Inject()(
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(FurtherInformationPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(nextPage(updatedAnswers))
       )
   }

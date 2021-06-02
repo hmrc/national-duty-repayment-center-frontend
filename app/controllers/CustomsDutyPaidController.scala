@@ -32,25 +32,25 @@ import views.html.CustomsDutyPaidView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CustomsDutyPaidController @Inject()(
-                                           override val messagesApi: MessagesApi,
-                                           sessionRepository: SessionRepository,
-                                           navigator: Navigator,
-                                           identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           formProvider: CustomsDutyPaidFormProvider,
-                                           val controllerComponents: MessagesControllerComponents,
-                                           view: CustomsDutyPaidView
-                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CustomsDutyPaidController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: CustomsDutyPaidFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: CustomsDutyPaidView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(CustomsDutyPaidPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -60,21 +60,19 @@ class CustomsDutyPaidController @Inject()(
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, isSingleEntry(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsDutyPaidPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(CustomsDutyPaidPage, mode, updatedAnswers))
       )
   }
 
-  def isSingleEntry(userAnswers: UserAnswers): Boolean = {
+  def isSingleEntry(userAnswers: UserAnswers): Boolean =
     userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Single => true
+      case NumberOfEntriesType.Single   => true
       case NumberOfEntriesType.Multiple => false
     }
-  }
+
 }

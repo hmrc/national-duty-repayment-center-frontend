@@ -22,21 +22,13 @@ sealed trait BulkFileUpload
 
 object BulkFileUpload extends Enumerable.Implicits {
 
-  case object EPU extends WithName("01") with BulkFileUpload
+  case object EPU         extends WithName("01") with BulkFileUpload
   case object ItemNumbers extends WithName("02") with BulkFileUpload
-  case object TypeOfDuty extends WithName("03") with BulkFileUpload
-  case object AmountPaid extends WithName("04") with BulkFileUpload
-  case object AmountDue extends WithName("05") with BulkFileUpload
+  case object TypeOfDuty  extends WithName("03") with BulkFileUpload
+  case object AmountPaid  extends WithName("04") with BulkFileUpload
+  case object AmountDue   extends WithName("05") with BulkFileUpload
 
-
-  val values: Seq[BulkFileUpload] = Seq(
-    EPU,
-    ItemNumbers,
-    TypeOfDuty,
-    AmountPaid,
-    AmountDue
-
-  )
+  val values: Seq[BulkFileUpload] = Seq(EPU, ItemNumbers, TypeOfDuty, AmountPaid, AmountDue)
 
   val options: Seq[RadioOption] = values.map {
     value =>
@@ -45,4 +37,5 @@ object BulkFileUpload extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[BulkFileUpload] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

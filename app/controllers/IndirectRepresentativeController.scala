@@ -33,25 +33,25 @@ import views.html.IndirectRepresentativeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndirectRepresentativeController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         sessionRepository: SessionRepository,
-                                         navigator: Navigator,
-                                         identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         formProvider: IndirectRepresentativeFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: IndirectRepresentativeView
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class IndirectRepresentativeController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: IndirectRepresentativeFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: IndirectRepresentativeView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(IndirectRepresentativePage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -60,25 +60,33 @@ class IndirectRepresentativeController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndirectRepresentativePage, value))
-            _  <- sessionRepository.set(updatedAnswers.copy(fileUploadState = updatedFs(updatedAnswers, value)))
+            _              <- sessionRepository.set(updatedAnswers.copy(fileUploadState = updatedFs(updatedAnswers, value)))
           } yield Redirect(navigator.nextPage(IndirectRepresentativePage, mode, updatedAnswers))
-          )
+      )
   }
-  private def updatedFs(ua: UserAnswers, isIndirectRepresentative: Boolean): Option[FileUploadState] = {
-    if(isIndirectRepresentative) {
+
+  private def updatedFs(ua: UserAnswers, isIndirectRepresentative: Boolean): Option[FileUploadState] =
+    if (isIndirectRepresentative)
       ua.fileUploadState match {
-        case Some(s@FileUploaded(fileUploads, _)) => Some(s.copy(fileUploads = fileUploads.copy(files = fileUploads.files.filterNot(_.fileType.contains(ProofOfAuthority)))))
-        case Some(s@UploadFile(_, _, fileUploads, _)) => Some(s.copy(fileUploads = fileUploads.copy(files = fileUploads.files.filterNot(_.fileType.contains(ProofOfAuthority)))))
+        case Some(s @ FileUploaded(fileUploads, _)) =>
+          Some(
+            s.copy(fileUploads =
+              fileUploads.copy(files = fileUploads.files.filterNot(_.fileType.contains(ProofOfAuthority)))
+            )
+          )
+        case Some(s @ UploadFile(_, _, fileUploads, _)) =>
+          Some(
+            s.copy(fileUploads =
+              fileUploads.copy(files = fileUploads.files.filterNot(_.fileType.contains(ProofOfAuthority)))
+            )
+          )
         case _ => ua.fileUploadState
       }
-    } else ua.fileUploadState
-  }
+    else ua.fileUploadState
+
 }

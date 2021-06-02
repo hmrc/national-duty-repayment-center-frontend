@@ -26,20 +26,16 @@ class BulkFileUploadFormProviderSpec extends CheckboxFieldBehaviours {
 
   ".value" must {
 
-    val fieldName = "value"
+    val fieldName   = "value"
     val requiredKey = "bulkFileUpload.error.required"
 
     behave like checkboxField[BulkFileUpload](
       form,
       fieldName,
-      validValues  = BulkFileUpload.values,
+      validValues = BulkFileUpload.values,
       invalidError = FormError(s"$fieldName[0]", "error.invalid")
     )
 
-    behave like mandatoryCheckboxField(
-      form,
-      fieldName,
-      requiredKey
-    )
+    behave like mandatoryCheckboxField(form, fieldName, requiredKey)
   }
 }

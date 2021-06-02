@@ -22,8 +22,8 @@ import play.api.data.FormError
 class AmendCaseSendInformationFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "amendCaseSendInformation.error.required"
-  val lengthKey = "amendCaseSendInformation.error.length"
-  val maxLength = 1000
+  val lengthKey   = "amendCaseSendInformation.error.length"
+  val maxLength   = 1000
 
   val form = new AmendCaseSendInformationFormProvider()()
 
@@ -31,11 +31,7 @@ class AmendCaseSendInformationFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "value"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(maxLength)
-    )
+    behave like fieldThatBindsValidData(form, fieldName, stringsWithMaxLength(maxLength))
 
     behave like fieldWithMaxLength(
       form,
@@ -44,10 +40,6 @@ class AmendCaseSendInformationFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
+    behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }

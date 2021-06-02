@@ -34,13 +34,12 @@ import scala.concurrent.Future
 
 class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
-
   def onwardRoute = Call("GET", "/foo")
 
   lazy val ukRegulationTypeRoute = routes.UkRegulationTypeController.onPageLoad(NormalMode).url
 
   val formProvider = new UkRegulationTypeFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "UkRegulationType Controller" must {
 
@@ -88,9 +87,7 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

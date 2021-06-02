@@ -37,7 +37,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ReasonForOverpaymentFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val reasonForOverpaymentRoute = routes.ReasonForOverpaymentController.onPageLoad(NormalMode).url
 
@@ -63,7 +63,8 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReasonForOverpaymentPage, ClaimDescription("answer")).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(ReasonForOverpaymentPage, ClaimDescription("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -87,9 +88,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =

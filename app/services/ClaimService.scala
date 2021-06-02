@@ -29,37 +29,36 @@ import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 import scala.concurrent.{ExecutionContext, Future}
 case class CaseAlreadyExists(msg: String) extends RuntimeException(msg)
 
-class ClaimService @Inject()(
-                              nDRCConnector: NDRCConnector
-                            )(
-                              implicit ec: ExecutionContext
-                            ) {
-
+class ClaimService @Inject() (nDRCConnector: NDRCConnector)(implicit ec: ExecutionContext) {
 
   def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
     val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
 
     maybeRegistrationRequest match {
       case Some(value) =>
-         nDRCConnector.submitClaim(value).map { clientClaimResponse =>
-        if (clientClaimResponse.result.map(_.caseId).nonEmpty)
-          clientClaimResponse.result.map(_.caseId).get
-        else
-          clientClaimResponse.error match {
-            case _ =>
-              val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
-                clientClaimResponse.error.map(_.errorMessage).getOrElse("")
-              Logger.error(s"Create claim submission failed due to $message")
-              throw new RuntimeException(message)
-          }
-    }
+        nDRCConnector.submitClaim(value).map { clientClaimResponse =>
+          if (clientClaimResponse.result.map(_.caseId).nonEmpty)
+            clientClaimResponse.result.map(_.caseId).get
+          else
+            clientClaimResponse.error match {
+              case _ =>
+                val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
+                  clientClaimResponse.error.map(_.errorMessage).getOrElse("")
+                Logger.error(s"Create claim submission failed due to $message")
+                throw new RuntimeException(message)
+            }
+        }
       case None =>
-        Logger.error("Unsuccessful claim submission, did not contain sufficient UserAnswers data to construct CreateClaimRequest")
+        Logger.error(
+          "Unsuccessful claim submission, did not contain sufficient UserAnswers data to construct CreateClaimRequest"
+        )
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct CreateClaimRequest")
     }
   }
 
-  def submitAmendClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
+  def submitAmendClaim(
+    userAnswers: UserAnswers
+  )(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
     val maybeAmendRequest: Option[AmendClaimRequest] = AmendClaimRequest.buildValidAmendRequest(userAnswers)
 
     maybeAmendRequest match {
@@ -77,11 +76,11 @@ class ClaimService @Inject()(
             }
         }
       case None =>
-        Logger.error("Unsuccessful amend claim submission, did not contain sufficient UserAnswers data to construct AmendClaimRequest")
+        Logger.error(
+          "Unsuccessful amend claim submission, did not contain sufficient UserAnswers data to construct AmendClaimRequest"
+        )
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct AmendClaimRequest")
     }
   }
+
 }
-
-
-

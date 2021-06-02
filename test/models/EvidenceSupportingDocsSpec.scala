@@ -32,8 +32,9 @@ class EvidenceSupportingDocsSpec extends WordSpec with MustMatchers with ScalaCh
 
       forAll(gen) {
         evidenceSupportingDocs =>
-
-          JsString(evidenceSupportingDocs.toString).validate[EvidenceSupportingDocs].asOpt.value mustEqual evidenceSupportingDocs
+          JsString(evidenceSupportingDocs.toString).validate[
+            EvidenceSupportingDocs
+          ].asOpt.value mustEqual evidenceSupportingDocs
       }
     }
 
@@ -43,7 +44,6 @@ class EvidenceSupportingDocsSpec extends WordSpec with MustMatchers with ScalaCh
 
       forAll(gen) {
         invalidValue =>
-
           JsString(invalidValue).validate[EvidenceSupportingDocs] mustEqual JsError("error.invalid")
       }
     }
@@ -54,7 +54,6 @@ class EvidenceSupportingDocsSpec extends WordSpec with MustMatchers with ScalaCh
 
       forAll(gen) {
         evidenceSupportingDocs =>
-
           Json.toJson(evidenceSupportingDocs) mustEqual JsString(evidenceSupportingDocs.toString)
       }
     }

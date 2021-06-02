@@ -27,6 +27,9 @@ class BulkFileUploadFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Set[BulkFileUpload]] =
     Form(
-      "value" -> set(enumerable[BulkFileUpload]("bulkFileUpload.error.required")).verifying(nonEmptySet("bulkFileUpload.error.required"))
+      "value" -> set(enumerable[BulkFileUpload]("bulkFileUpload.error.required")).verifying(
+        nonEmptySet("bulkFileUpload.error.required")
+      )
     )
+
 }

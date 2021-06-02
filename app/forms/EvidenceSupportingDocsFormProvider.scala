@@ -30,4 +30,5 @@ class EvidenceSupportingDocsFormProvider @Inject() extends Mappings {
       "value" -> set(enumerable[EvidenceSupportingDocs]("evidenceSupportingDocs.error.required"))
         .verifying(nonEmptySet("evidenceSupportingDocs.error.required"))
     )
+
 }

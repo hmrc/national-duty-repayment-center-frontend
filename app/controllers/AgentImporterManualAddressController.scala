@@ -31,50 +31,48 @@ import views.html.AgentImporterManualAddressView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AgentImporterManualAddressController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: AgentImporterManualAddressFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: AgentImporterManualAddressView,
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class AgentImporterManualAddressController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: AgentImporterManualAddressFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: AgentImporterManualAddressView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(AgentImporterManualAddressPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode,
-        Seq(SelectItem(text = "United Kingdom", value = Some("GB")))))
+      Ok(view(preparedForm, mode, Seq(SelectItem(text = "United Kingdom", value = Some("GB")))))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode,
-            Seq(SelectItem(text = "United Kingdom", value = Some("GB")))))),
-
+          Future.successful(
+            BadRequest(view(formWithErrors, mode, Seq(SelectItem(text = "United Kingdom", value = Some("GB")))))
+          ),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterManualAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield {
-            if(mode.equals(NormalMode))
+          } yield
+            if (mode.equals(NormalMode))
               Redirect(navigator.nextPage(AgentImporterManualAddressPage, mode, updatedAnswers))
             else
               Redirect(routes.CheckYourAnswersController.onPageLoad)
-          }
       )
   }
+
 }

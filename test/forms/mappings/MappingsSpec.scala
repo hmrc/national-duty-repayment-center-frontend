@@ -32,7 +32,9 @@ object MappingsSpec {
 
     implicit val fooEnumerable: Enumerable[Foo] =
       Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+
   }
+
 }
 
 class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Mappings {
@@ -42,9 +44,7 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
   "text" must {
 
     val testForm: Form[String] =
-      Form(
-        "value" -> text()
-      )
+      Form("value" -> text())
 
     "bind a valid string" in {
       val result = testForm.bind(Map("value" -> "foobar"))
@@ -62,7 +62,7 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
     }
 
     "return a custom error message" in {
-      val form = Form("value" -> text("custom.error"))
+      val form   = Form("value" -> text("custom.error"))
       val result = form.bind(Map("value" -> ""))
       result.errors must contain(FormError("value", "custom.error"))
     }
@@ -76,9 +76,7 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
   "boolean" must {
 
     val testForm: Form[Boolean] =
-      Form(
-        "value" -> boolean()
-      )
+      Form("value" -> boolean())
 
     "bind true" in {
       val result = testForm.bind(Map("value" -> "true"))
@@ -114,9 +112,7 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
   "int" must {
 
     val testForm: Form[Int] =
-      Form(
-        "value" -> int()
-      )
+      Form("value" -> int())
 
     "bind a valid integer" in {
       val result = testForm.bind(Map("value" -> "1"))
@@ -141,9 +137,7 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
 
   "enumerable" must {
 
-    val testForm = Form(
-      "value" -> enumerable[Foo]()
-    )
+    val testForm = Form("value" -> enumerable[Foo]())
 
     "bind a valid option" in {
       val result = testForm.bind(Map("value" -> "Bar"))

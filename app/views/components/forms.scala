@@ -23,7 +23,7 @@ class forms @Inject() (
   val formWithCSRF: uk.gov.hmrc.govukfrontend.views.html.helpers.formWithCSRF,
   val fieldset: views.html.components.fieldset,
 //  val errorSummary: views.html.components.errorSummary,
-    val inputText: views.html.components.inputText,
+  val inputText: views.html.components.inputText,
   val inputNumber: views.html.components.inputNumber,
   val inputHidden: views.html.components.inputHidden,
   val inputDate: views.html.components.inputDate,
@@ -34,4 +34,4 @@ class forms @Inject() (
 //  val inputTime: views.html.components.inputTime,
   val textarea: views.html.components.textarea,
   val errorSummary: views.html.components.errorSummary
-                      )
+)

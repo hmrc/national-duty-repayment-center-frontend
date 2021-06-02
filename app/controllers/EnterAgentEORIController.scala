@@ -30,25 +30,25 @@ import views.html.EnterAgentEORIView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EnterAgentEORIController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: EnterAgentEORIFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: EnterAgentEORIView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class EnterAgentEORIController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: Navigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: EnterAgentEORIFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: EnterAgentEORIView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
       val preparedForm = request.userAnswers.get(EnterAgentEORIPage) match {
-        case None => form
+        case None        => form
         case Some(value) => form.fill(value)
       }
 
@@ -57,11 +57,8 @@ class EnterAgentEORIController @Inject()(
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EnterAgentEORIPage, value))
@@ -69,4 +66,5 @@ class EnterAgentEORIController @Inject()(
           } yield Redirect(navigator.nextPage(EnterAgentEORIPage, mode, updatedAnswers))
       )
   }
+
 }

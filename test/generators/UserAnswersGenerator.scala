@@ -28,11 +28,11 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(AmendCaseUploadAnotherFilePage.type, JsValue)] ::
-    arbitrary[(AmendCaseSendInformationPage.type, JsValue)] ::
-    arbitrary[(AmendCaseResponseTypePage.type, JsValue)] ::
-    arbitrary[(FurtherInformationPage.type, JsValue)] ::
-    arbitrary[(ReferenceNumberPage.type, JsValue)] ::
-    arbitrary[(BulkFileUploadPage.type, JsValue)] ::
+      arbitrary[(AmendCaseSendInformationPage.type, JsValue)] ::
+      arbitrary[(AmendCaseResponseTypePage.type, JsValue)] ::
+      arbitrary[(FurtherInformationPage.type, JsValue)] ::
+      arbitrary[(ReferenceNumberPage.type, JsValue)] ::
+      arbitrary[(BulkFileUploadPage.type, JsValue)] ::
       arbitrary[(IndirectRepresentativePage.type, JsValue)] ::
       arbitrary[(BankDetailsPage.type, JsValue)] ::
       arbitrary[(AgentImporterManualAddressPage.type, JsValue)] ::
@@ -73,7 +73,7 @@ trait UserAnswersGenerator extends TryValues {
         id <- nonEmptyString
         data <- generators match {
           case Nil => Gen.const(Map[QuestionPage[_], JsValue]())
-          case _ => Gen.mapOf(oneOf(generators))
+          case _   => Gen.mapOf(oneOf(generators))
         }
       } yield UserAnswers(
         id = id,
@@ -84,4 +84,5 @@ trait UserAnswersGenerator extends TryValues {
       )
     }
   }
+
 }
