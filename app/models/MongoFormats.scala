@@ -20,7 +20,7 @@ import java.time.Instant
 
 import play.api.libs.json._
 
-trait MongoDateTimeFormats {
+trait MongoFormats {
 
   implicit val instantRead: Reads[Instant] =
     (__ \ "$date").read[Long].map {
@@ -33,4 +33,4 @@ trait MongoDateTimeFormats {
 
 }
 
-object MongoDateTimeFormats extends MongoDateTimeFormats
+object MongoFormats extends MongoFormats

@@ -103,7 +103,7 @@ object UserAnswers {
     (
       (__ \ "_id").read[String] and
         (__ \ "data").read[JsObject] and
-        (__ \ "lastUpdated").read(MongoDateTimeFormats.instantRead) and
+        (__ \ "lastUpdated").read(MongoFormats.instantRead) and
         (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
     )(UserAnswers.apply _)
   }
@@ -115,7 +115,7 @@ object UserAnswers {
     (
       (__ \ "_id").write[String] and
         (__ \ "data").write[JsObject] and
-        (__ \ "lastUpdated").write(MongoDateTimeFormats.instantWrite) and
+        (__ \ "lastUpdated").write(MongoFormats.instantWrite) and
         (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
     )(unlift(UserAnswers.unapply))
   }

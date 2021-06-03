@@ -32,9 +32,9 @@ import services.FileUploadState
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultSessionRepository @Inject()(mongo: ReactiveMongoApi, config: Configuration)(implicit
-                                                                                         ec: ExecutionContext,
-                                                                                         m: Materializer
+class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Configuration)(implicit
+  ec: ExecutionContext,
+  m: Materializer
 ) extends SessionRepository {
 
   private val collectionName: String = "user-answers"
@@ -58,7 +58,7 @@ class DefaultSessionRepository @Inject()(mongo: ReactiveMongoApi, config: Config
   override def get(id: String): Future[Option[UserAnswers]] =
     collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers]) flatMap {
       case Some(answers) => set(answers) map (_ => Some(answers)) // save to update timestamp on accessing answers
-      case None => Future.successful(None)
+      case None          => Future.successful(None)
     }
 
   def resetData(userAnswers: UserAnswers): Future[Boolean] = {
@@ -75,9 +75,9 @@ class DefaultSessionRepository @Inject()(mongo: ReactiveMongoApi, config: Config
     collection.flatMap {
       _.update(ordered = false)
         .one(selector, modifier, upsert = true).map {
-        lastError =>
-          lastError.ok
-      }
+          lastError =>
+            lastError.ok
+        }
     }
   }
 
@@ -99,9 +99,9 @@ class DefaultSessionRepository @Inject()(mongo: ReactiveMongoApi, config: Config
     collection.flatMap {
       _.update(ordered = false)
         .one(selector, modifier, upsert = true).map {
-        lastError =>
-          lastError.ok
-      }
+          lastError =>
+            lastError.ok
+        }
     }
   }
 
