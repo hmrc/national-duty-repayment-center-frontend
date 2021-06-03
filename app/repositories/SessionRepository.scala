@@ -56,10 +56,7 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
     }.map(_ => ())
 
   override def get(id: String): Future[Option[UserAnswers]] =
-    collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers]) flatMap {
-      case Some(answers) => set(answers) map (_ => Some(answers)) // save to update timestamp on accessing answers
-      case None          => Future.successful(None)
-    }
+    collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
 
   def resetData(userAnswers: UserAnswers): Future[Boolean] = {
 
