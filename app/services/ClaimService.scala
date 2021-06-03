@@ -28,7 +28,7 @@ import java.util.UUID
 import scala.concurrent.{ExecutionContext, Future}
 case class CaseAlreadyExists(msg: String) extends RuntimeException(msg)
 
-class ClaimService @Inject()(connector: NDRCConnector)(implicit ec: ExecutionContext) {
+class ClaimService @Inject() (connector: NDRCConnector)(implicit ec: ExecutionContext) {
 
   def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
     val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
@@ -82,7 +82,7 @@ class ClaimService @Inject()(connector: NDRCConnector)(implicit ec: ExecutionCon
     }
   }
 
-  private def correlationId (hc: HeaderCarrier): String = {
+  private def correlationId(hc: HeaderCarrier): String =
     hc.requestId.map(_.value).getOrElse(UUID.randomUUID().toString)
-  }
+
 }

@@ -45,8 +45,8 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
-      val connector    = mock[NDRCConnector]
-      val response     = ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))
+      val connector = mock[NDRCConnector]
+      val response  = ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))
       when(connector.submitClaim(any(), any())(any())).thenReturn(Future.successful(response))
 
       val service = new ClaimService(connector)(ExecutionContext.global)
@@ -61,8 +61,8 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
-      val connector    = mock[NDRCConnector]
-      val response     = ClientClaimSuccessResponse("1", Some(ApiError("409", Some("Aa"))), None)
+      val connector = mock[NDRCConnector]
+      val response  = ClientClaimSuccessResponse("1", Some(ApiError("409", Some("Aa"))), None)
       when(connector.submitClaim(any(), any())(any())).thenReturn(Future.successful(response))
 
       val service = new ClaimService(connector)(ExecutionContext.global)
@@ -79,8 +79,8 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
-      val connector    = mock[NDRCConnector]
-      val response     = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
+      val connector = mock[NDRCConnector]
+      val response  = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
       when(connector.submitClaim(any(), any())(any())).thenReturn(Future.successful(response))
       val message = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
         response.error.map(_.errorMessage).getOrElse("")
@@ -99,8 +99,8 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
-      val connector    = mock[NDRCConnector]
-      val response     = ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))
+      val connector = mock[NDRCConnector]
+      val response  = ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))
       when(connector.submitAmendClaim(any(), any())(any())).thenReturn(Future.successful(response))
 
       val service = new ClaimService(connector)(ExecutionContext.global)
@@ -113,10 +113,10 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
 
       implicit val hc: HeaderCarrier   = HeaderCarrier()
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest      = DataRequest(request, "12", testUserAnswers)
+      val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
-      val connector    = mock[NDRCConnector]
-      val response     = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
+      val connector = mock[NDRCConnector]
+      val response  = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
       when(connector.submitAmendClaim(any(), any())(any())).thenReturn(Future.successful(response))
       val message = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
         response.error.map(_.errorMessage).getOrElse("")

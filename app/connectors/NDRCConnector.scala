@@ -31,14 +31,18 @@ class NDRCConnector @Inject() (config: Configuration, httpClient: HttpClient)(im
 
   private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center")
 
-  def submitClaim(request: CreateClaimRequest, correlationId: String)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
+  def submitClaim(request: CreateClaimRequest, correlationId: String)(implicit
+    hc: HeaderCarrier
+  ): Future[ClientClaimSuccessResponse] =
     httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](
       s"$baseUrl/create-case",
       request,
       Seq("X-Correlation-Id" -> correlationId)
     )
 
-  def submitAmendClaim(request: AmendClaimRequest, correlationId: String)(implicit hc: HeaderCarrier): Future[ClientClaimSuccessResponse] =
+  def submitAmendClaim(request: AmendClaimRequest, correlationId: String)(implicit
+    hc: HeaderCarrier
+  ): Future[ClientClaimSuccessResponse] =
     httpClient.POST[AmendClaimRequest, ClientClaimSuccessResponse](
       s"$baseUrl/amend-case",
       request,
