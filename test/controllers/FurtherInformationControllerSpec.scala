@@ -18,14 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.FurtherInformationFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.UserAnswers
+import navigation.NavigatorBack
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.FurtherInformationPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.FurtherInformationView
@@ -34,12 +32,12 @@ import scala.concurrent.Future
 
 class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  val backLink = NavigatorBack(Some(routes.AmendCaseResponseTypeController.onPageLoad))
 
   val formProvider = new FurtherInformationFormProvider()
   val form         = formProvider()
 
-  lazy val furtherInformationRoute = routes.FurtherInformationController.onPageLoad(NormalMode).url
+  lazy val furtherInformationRoute = routes.FurtherInformationController.onPageLoad().url
 
   "FurtherInformation Controller" must {
 
@@ -56,7 +54,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, backLink)(request, messages).toString
 
       application.stop()
     }
@@ -76,7 +74,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode)(request, messages).toString
+        view(form.fill("answer"), backLink)(request, messages).toString
 
       application.stop()
     }
@@ -86,9 +84,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, furtherInformationRoute)
@@ -97,7 +93,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual routes.AmendCheckYourAnswersController.onPageLoad.url
 
       application.stop()
     }
@@ -119,7 +115,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, backLink)(request, messages).toString
 
       application.stop()
     }

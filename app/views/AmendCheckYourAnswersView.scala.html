@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import uk.gov.hmrc.play.views.html.helpers.{FormWithCSRF => PlayFormWithCSRF}
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
         govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -26,10 +27,12 @@
         html: views.components.html
 )
 
-@(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}")
+    pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
     @html.h1("checkYourAnswers.title", classes = "govuk-heading-l")

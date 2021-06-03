@@ -27,11 +27,13 @@ import scala.util.{Failure, Success, Try}
 final case class UserAnswers(
   id: String,
   data: JsObject = Json.obj(),
+  changePage: Option[String] = None,
   lastUpdated: LocalDateTime = LocalDateTime.now,
   fileUploadState: Option[FileUploadState] = None
-) {
+) extends Answers {
 
   def fileUploadPath: JsPath = JsPath \ "fileUploadState"
+  def changePagePath: JsPath = JsPath \ "changePage"
 
   def dataPath: JsPath = JsPath \ "data"
 
@@ -103,6 +105,7 @@ object UserAnswers {
     (
       (__ \ "_id").read[String] and
         (__ \ "data").read[JsObject] and
+        (__ \ "changePage").readNullable[String] and
         (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead) and
         (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
     )(UserAnswers.apply _)
@@ -115,6 +118,7 @@ object UserAnswers {
     (
       (__ \ "_id").write[String] and
         (__ \ "data").write[JsObject] and
+        (__ \ "changePage").writeNullable[String] and
         (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite) and
         (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
     )(unlift(UserAnswers.unapply))

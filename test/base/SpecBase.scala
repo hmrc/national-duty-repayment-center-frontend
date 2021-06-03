@@ -16,6 +16,8 @@
 
 package base
 
+import java.time.{LocalDate, ZoneId, ZonedDateTime}
+
 import com.codahale.metrics.MetricRegistry
 import com.kenshoo.play.metrics.{Metrics, MetricsFilterImpl, MetricsImpl}
 import config.FrontendAppConfig
@@ -34,14 +36,13 @@ import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{bind, Injector}
-import play.api.libs.json.{JsArray, JsNull, Json}
+import play.api.libs.json.{JsArray, Json}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
-import java.time.{LocalDate, ZoneId, ZonedDateTime}
 import scala.concurrent.{ExecutionContext, Future}
 
 trait SpecBase

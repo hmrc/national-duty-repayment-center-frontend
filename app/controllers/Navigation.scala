@@ -14,3 +14,18 @@
  * limitations under the License.
  */
 
+package controllers
+
+import models.UserAnswers
+import navigation.{Navigator2, NavigatorBack}
+import pages.Page
+import play.api.mvc.Call
+
+trait Navigation[T <: UserAnswers] {
+  val navigator: Navigator2[T]
+  val page: Page
+
+  def nextPage: T => Call = navigator.nextPage(page, _)
+
+  def backLink: T => NavigatorBack = navigator.previousPage(page, _)
+}
