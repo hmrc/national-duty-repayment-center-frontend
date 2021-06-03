@@ -21,14 +21,14 @@ import play.api.libs.json._
 import queries.{Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
 
-import java.time.{Instant, LocalDateTime, ZoneOffset}
+import java.time.Instant
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
   id: String,
   data: JsObject = Json.obj(),
   changePage: Option[String] = None,
-  lastUpdated: LocalDateTime = LocalDateTime.now,
+  lastUpdated: Instant = Instant.now,
   fileUploadState: Option[FileUploadState] = None
 ) extends Answers {
 
@@ -106,7 +106,7 @@ object UserAnswers {
       (__ \ "_id").read[String] and
         (__ \ "data").read[JsObject] and
         (__ \ "changePage").readNullable[String] and
-        (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead) and
+        (__ \ "lastUpdated").read(MongoFormats.instantRead) and
         (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
     )(UserAnswers.apply _)
   }
@@ -119,7 +119,7 @@ object UserAnswers {
       (__ \ "_id").write[String] and
         (__ \ "data").write[JsObject] and
         (__ \ "changePage").writeNullable[String] and
-        (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite) and
+        (__ \ "lastUpdated").write(MongoFormats.instantWrite) and
         (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
     )(unlift(UserAnswers.unapply))
   }

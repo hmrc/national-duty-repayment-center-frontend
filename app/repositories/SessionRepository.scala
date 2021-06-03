@@ -16,7 +16,7 @@
 
 package repositories
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 import akka.stream.Materializer
 import javax.inject.Inject
@@ -64,7 +64,7 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
 
     val modifier =
       Json.obj(
-        "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(
+        "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
           userAnswers.dataPath,
           Json.obj()
         ).get.setObject(userAnswers.fileUploadPath, JsNull).get
@@ -85,13 +85,13 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
     val modifier = {
       if (userAnswers.fileUploadState.isEmpty)
         Json.obj(
-          "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(
+          "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
             userAnswers.fileUploadPath,
             JsNull
           ).get
         )
       else
-        Json.obj("$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now)))
+        Json.obj("$set" -> (userAnswers copy (lastUpdated = Instant.now)))
     }
     collection.flatMap {
       _.update(ordered = false)
@@ -109,13 +109,13 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
     val modifier = {
       if (userAnswers.changePage.isEmpty)
         Json.obj(
-          "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(
+          "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
             userAnswers.changePagePath,
             JsNull
           ).get
         )
       else
-        Json.obj("$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now)))
+        Json.obj("$set" -> (userAnswers copy (lastUpdated = Instant.now)))
     }
     collection.flatMap {
       _.update(ordered = false)
