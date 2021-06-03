@@ -102,6 +102,30 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
     }
   }
 
+  override def clearChangePage(userAnswers: UserAnswers): Future[Boolean] = {
+
+    val selector = Json.obj("_id" -> userAnswers.id)
+
+    val modifier = {
+      if (userAnswers.changePage.isEmpty)
+        Json.obj(
+          "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
+            userAnswers.changePagePath,
+            JsNull
+          ).get
+        )
+      else
+        Json.obj("$set" -> (userAnswers copy (lastUpdated = Instant.now)))
+    }
+    collection.flatMap {
+      _.update(ordered = false)
+        .one(selector, modifier, upsert = true).map {
+          lastError =>
+            lastError.ok
+        }
+    }
+  }
+
   override def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean] =
     if (userAnswers.nonEmpty)
       set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
@@ -121,6 +145,9 @@ trait SessionRepository {
   def get(id: String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
+
+  // TODO - drop this method once optional fields properly supported
+  def clearChangePage(userAnswers: UserAnswers): Future[Boolean]
 
   def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean]
 

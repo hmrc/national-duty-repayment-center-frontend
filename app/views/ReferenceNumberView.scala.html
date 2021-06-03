@@ -15,7 +15,7 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
+@import navigation.NavigatorBack
 @import views.ViewUtils._
 
 @this(
@@ -24,13 +24,15 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("referenceNumber.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("referenceNumber.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = ReferenceNumberController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = ReferenceNumberController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 
