@@ -16,24 +16,20 @@
 
 package models
 
-import java.time.{Instant, LocalDateTime, ZoneOffset}
+import java.time.Instant
 
 import play.api.libs.json._
 
 trait MongoDateTimeFormats {
 
-  implicit val localDateTimeRead: Reads[LocalDateTime] =
+  implicit val instantRead: Reads[Instant] =
     (__ \ "$date").read[Long].map {
       millis =>
-        LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC)
+        Instant.ofEpochMilli(millis)
     }
 
-  implicit val localDateTimeWrite: Writes[LocalDateTime] = new Writes[LocalDateTime] {
-
-    def writes(dateTime: LocalDateTime): JsValue =
-      Json.obj("$date" -> dateTime.atZone(ZoneOffset.UTC).toInstant.toEpochMilli)
-
-  }
+  implicit val instantWrite: Writes[Instant] =
+    (instant: Instant) => Json.obj("$date" -> instant.toEpochMilli)
 
 }
 

@@ -27,7 +27,7 @@ import scala.util.{Failure, Success, Try}
 final case class UserAnswers(
   id: String,
   data: JsObject = Json.obj(),
-  lastUpdated: LocalDateTime = LocalDateTime.now,
+  lastUpdated: Instant = Instant.now,
   fileUploadState: Option[FileUploadState] = None
 ) {
 
@@ -103,7 +103,7 @@ object UserAnswers {
     (
       (__ \ "_id").read[String] and
         (__ \ "data").read[JsObject] and
-        (__ \ "lastUpdated").read(MongoDateTimeFormats.localDateTimeRead) and
+        (__ \ "lastUpdated").read(MongoDateTimeFormats.instantRead) and
         (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
     )(UserAnswers.apply _)
   }
@@ -115,7 +115,7 @@ object UserAnswers {
     (
       (__ \ "_id").write[String] and
         (__ \ "data").write[JsObject] and
-        (__ \ "lastUpdated").write(MongoDateTimeFormats.localDateTimeWrite) and
+        (__ \ "lastUpdated").write(MongoDateTimeFormats.instantWrite) and
         (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
     )(unlift(UserAnswers.unapply))
   }

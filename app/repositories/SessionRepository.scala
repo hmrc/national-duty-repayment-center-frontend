@@ -16,9 +16,9 @@
 
 package repositories
 
-import java.time.LocalDateTime
-import akka.stream.Materializer
+import java.time.Instant
 
+import akka.stream.Materializer
 import javax.inject.Inject
 import models.{RichJsObject, SessionState, UserAnswers}
 import play.api.Configuration
@@ -32,9 +32,9 @@ import services.FileUploadState
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Configuration)(implicit
-  ec: ExecutionContext,
-  m: Materializer
+class DefaultSessionRepository @Inject()(mongo: ReactiveMongoApi, config: Configuration)(implicit
+                                                                                         ec: ExecutionContext,
+                                                                                         m: Materializer
 ) extends SessionRepository {
 
   private val collectionName: String = "user-answers"
@@ -56,7 +56,10 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
     }.map(_ => ())
 
   override def get(id: String): Future[Option[UserAnswers]] =
-    collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
+    collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers]) flatMap {
+      case Some(answers) => set(answers) map (_ => Some(answers)) // save to update timestamp on accessing answers
+      case None => Future.successful(None)
+    }
 
   def resetData(userAnswers: UserAnswers): Future[Boolean] = {
 
@@ -64,7 +67,7 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
 
     val modifier =
       Json.obj(
-        "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(
+        "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
           userAnswers.dataPath,
           Json.obj()
         ).get.setObject(userAnswers.fileUploadPath, JsNull).get
@@ -72,9 +75,9 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
     collection.flatMap {
       _.update(ordered = false)
         .one(selector, modifier, upsert = true).map {
-          lastError =>
-            lastError.ok
-        }
+        lastError =>
+          lastError.ok
+      }
     }
   }
 
@@ -85,20 +88,20 @@ class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Confi
     val modifier = {
       if (userAnswers.fileUploadState.isEmpty)
         Json.obj(
-          "$set" -> Json.toJson(userAnswers copy (lastUpdated = LocalDateTime.now)).as[JsObject].setObject(
+          "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
             userAnswers.fileUploadPath,
             JsNull
           ).get
         )
       else
-        Json.obj("$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now)))
+        Json.obj("$set" -> (userAnswers copy (lastUpdated = Instant.now)))
     }
     collection.flatMap {
       _.update(ordered = false)
         .one(selector, modifier, upsert = true).map {
-          lastError =>
-            lastError.ok
-        }
+        lastError =>
+          lastError.ok
+      }
     }
   }
 
