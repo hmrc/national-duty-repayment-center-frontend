@@ -19,24 +19,23 @@ package services
 import connectors.NDRCConnector
 
 import javax.inject.Inject
-import models.{ClaimId, UserAnswers}
+import models.UserAnswers
 import models.requests.{AmendClaimRequest, CreateClaimRequest, DataRequest}
-import models.responses.ClientClaimSuccessResponse
 import uk.gov.hmrc.http.HeaderCarrier
 import play.api.Logger
-import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
+import java.util.UUID
 import scala.concurrent.{ExecutionContext, Future}
 case class CaseAlreadyExists(msg: String) extends RuntimeException(msg)
 
-class ClaimService @Inject() (nDRCConnector: NDRCConnector)(implicit ec: ExecutionContext) {
+class ClaimService @Inject()(connector: NDRCConnector)(implicit ec: ExecutionContext) {
 
   def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
     val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
 
     maybeRegistrationRequest match {
       case Some(value) =>
-        nDRCConnector.submitClaim(value).map { clientClaimResponse =>
+        connector.submitClaim(value, correlationId(hc)).map { clientClaimResponse =>
           if (clientClaimResponse.result.map(_.caseId).nonEmpty)
             clientClaimResponse.result.map(_.caseId).get
           else
@@ -63,7 +62,7 @@ class ClaimService @Inject() (nDRCConnector: NDRCConnector)(implicit ec: Executi
 
     maybeAmendRequest match {
       case Some(value) =>
-        nDRCConnector.submitAmendClaim(value).map { clientClaimResponse =>
+        connector.submitAmendClaim(value, correlationId(hc)).map { clientClaimResponse =>
           if (clientClaimResponse.result.map(_.caseId).nonEmpty)
             clientClaimResponse.result.map(_.caseId).get
           else
@@ -83,4 +82,7 @@ class ClaimService @Inject() (nDRCConnector: NDRCConnector)(implicit ec: Executi
     }
   }
 
+  private def correlationId (hc: HeaderCarrier): String = {
+    hc.requestId.map(_.value).getOrElse(UUID.randomUUID().toString)
+  }
 }
