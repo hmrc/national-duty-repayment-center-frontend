@@ -15,9 +15,9 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import views.ViewUtils._
 @import java.time.LocalDate
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -25,7 +25,7 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, isImporterJourney: Boolean, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack, isImporterJourney: Boolean, isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
 
 @pageHint = {
@@ -42,11 +42,13 @@
         isSingleEntry match{
             case true =>  messages("entryDetails.single.title")
             case false => messages("entryDetails.multiple.title")
-        })}")
-
+        })
+    }"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = EntryDetailsController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = EntryDetailsController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 

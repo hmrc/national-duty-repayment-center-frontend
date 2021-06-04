@@ -15,10 +15,10 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import models.UserAnswers
 @import views.components.Prefix
 @import models.RepaymentAmounts
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -27,7 +27,7 @@
 )
 
 
-@(form: Form[RepaymentAmounts], mode: Mode,  isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[RepaymentAmounts], backLink: NavigatorBack,  isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
 @updateGlobalErrorsTo(field: String) = @{
     form.copy(errors = form.errors.map(err => err.copy(key = if(err.key.isEmpty) field else err.key)))
@@ -41,10 +41,12 @@
 }
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("vatPaid.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("vatPaid.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = VATPaidController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = VATPaidController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @defining(updateGlobalErrorsTo("ShouldHavePaidAmount")) { newForm =>
 

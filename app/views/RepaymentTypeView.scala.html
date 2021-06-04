@@ -15,8 +15,9 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, RepaymentType}
+@import models.RepaymentType
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -25,13 +26,15 @@
     details: views.html.components.details
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("repaymentType.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("repaymentType.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = RepaymentTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = RepaymentTypeController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 

@@ -29,7 +29,7 @@ import forms.{AdditionalFileUploadFormProvider, UpscanS3ErrorFormProvider}
 import javax.inject.{Inject, Named}
 import models.FileType.SupportingEvidence
 import models.requests.DataRequest
-import models.{AmendCaseResponseType, Mode, UpscanNotification, UserAnswers}
+import models.{AmendCaseResponseType, UpscanNotification, UserAnswers}
 import navigation.AmendNavigator
 import pages.{AmendCaseResponseTypePage, AmendFileUploadPage, AmendFileUploadedPage}
 import play.api.data.Form
@@ -66,7 +66,7 @@ class AmendCaseSendInformationController @Inject() (
   val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
 
   // GET /file-verification
-  final def showWaitingForFileVerification(mode: Mode): Action[AnyContent] =
+  final def showWaitingForFileVerification(): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       implicit val timeout = Timeout(10 seconds)
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
@@ -76,9 +76,9 @@ class AmendCaseSendInformationController @Inject() (
               FileUploadState
             ].flatMap {
               case _: FileUploaded =>
-                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded(mode)))
+                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUploaded()))
               case _: UploadFile =>
-                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
+                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload()))
               case _ => Future.successful(fileStateErrror)
             }
           case _ => Future.successful(fileStateErrror)
@@ -92,7 +92,7 @@ class AmendCaseSendInformationController @Inject() (
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
     }
 
-  final def removeFileUploadByReference(reference: String, mode: Mode): Action[AnyContent] =
+  final def removeFileUploadByReference(reference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         ss.state match {
@@ -101,15 +101,15 @@ class AmendCaseSendInformationController @Inject() (
               FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
             val sessionState = ss.copy(state = Some(removeState))
             fileUtils.applyTransition(
-              removeFileUploadBy(reference)(upscanRequest(request.internalId, mode))(
+              removeFileUploadBy(reference)(upscanRequest(request.internalId))(
                 upscanInitiateConnector.initiate(_)
               )(_),
               removeState,
               sessionState
             ).map {
-              case _ @FileUploaded(_, _)     => Redirect(controller.showFileUploaded(mode))
-              case _ @UploadFile(_, _, _, _) => Redirect(controller.showFileUpload(mode))
-              case s @ _                     => renderState(fileUploadState = s, mode = mode)
+              case _ @FileUploaded(_, _)     => Redirect(controller.showFileUploaded())
+              case _ @UploadFile(_, _, _, _) => Redirect(controller.showFileUpload())
+              case s @ _                     => renderState(fileUploadState = s)
             }
           case None => Future.successful(fileStateErrror)
         }
@@ -117,12 +117,12 @@ class AmendCaseSendInformationController @Inject() (
     }
 
   //GET /file-upload
-  def showFileUpload(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def showFileUpload(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
         ss <- sessionRepository.getFileUploadState(request.internalId)
         s  <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
-        fs <- initiateFileUpload(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(
+        fs <- initiateFileUpload(upscanRequest(request.internalId), Some(SupportingEvidence))(
           upscanInitiateConnector.initiate(_)
         )(s)
         b <- fs match {
@@ -131,11 +131,11 @@ class AmendCaseSendInformationController @Inject() (
           case _ => sessionRepository.updateSession(fs, ss.userAnswers)
         }
         if b
-      } yield renderState(fs, mode = mode)
+      } yield renderState(fs)
   }
 
   //GET /file-uploaded
-  def showFileUploaded(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def showFileUploaded(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
         ss <- sessionRepository.getFileUploadState(request.internalId)
@@ -152,9 +152,8 @@ class AmendCaseSendInformationController @Inject() (
           fileUploadedView(
             uploadAnotherFileChoiceForm,
             s.get.fileUploads,
-            controller.submitUploadAnotherFileChoice(mode),
+            controller.submitUploadAnotherFileChoice(),
             controller.removeFileUploadByReference,
-            mode,
             navigator.previousPage(AmendFileUploadedPage, request.userAnswers)
           )
         )
@@ -162,7 +161,7 @@ class AmendCaseSendInformationController @Inject() (
   }
 
   // POST /file-uploaded
-  final def submitUploadAnotherFileChoice(mode: Mode): Action[AnyContent] =
+  final def submitUploadAnotherFileChoice(): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         val uploadAnotherFileChoiceForm =
@@ -179,9 +178,8 @@ class AmendCaseSendInformationController @Inject() (
                 fileUploadedView(
                   formWithErrors,
                   request.userAnswers.fileUploadState.get.fileUploads,
-                  controller.submitUploadAnotherFileChoice(mode),
+                  controller.submitUploadAnotherFileChoice(),
                   controller.removeFileUploadByReference,
-                  mode,
                   navigator.previousPage(AmendFileUploadedPage, request.userAnswers)
                 )
               )
@@ -191,13 +189,13 @@ class AmendCaseSendInformationController @Inject() (
               ss.state match {
                 case Some(s) if value =>
                   fileUtils.applyTransition(
-                    submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(
+                    submitedUploadAnotherFileChoice(upscanRequest(request.internalId), Some(SupportingEvidence))(
                       upscanInitiateConnector.initiate(_)
                     )(_),
                     s,
                     ss
                   )
-                    .map(_ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode)))
+                    .map(_ => Redirect(routes.AmendCaseSendInformationController.showFileUpload()))
                 case Some(_) =>
                   Future.successful(Redirect(navigator.nextPage(AmendFileUploadedPage, request.userAnswers)))
                 case None => Future.successful(fileStateErrror)
@@ -215,7 +213,7 @@ class AmendCaseSendInformationController @Inject() (
     }
 
   // GET /file-rejected
-  final def markFileUploadAsRejected(mode: Mode): Action[AnyContent] =
+  final def markFileUploadAsRejected(): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       UpscanUploadErrorForm.bindFromRequest().fold(
         _ => Future.successful(BadRequest),
@@ -224,7 +222,7 @@ class AmendCaseSendInformationController @Inject() (
             ss.state match {
               case Some(s) =>
                 fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
-                  _ => Redirect(routes.AmendCaseSendInformationController.showFileUpload(mode))
+                  _ => Redirect(routes.AmendCaseSendInformationController.showFileUpload())
                 )
               case None => Future.successful(fileStateErrror)
             }
@@ -246,17 +244,17 @@ class AmendCaseSendInformationController @Inject() (
       }
     }
 
-  final def upscanRequest(id: String, mode: Mode): UpscanInitiateRequest =
+  final def upscanRequest(id: String): UpscanInitiateRequest =
     UpscanInitiateRequest(
       callbackUrl = appConfig.baseInternalCallbackUrl + controller.callbackFromUpscan(id).url,
-      successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification(mode)),
-      errorRedirect = Some(appConfig.baseExternalCallbackUrl + controller.markFileUploadAsRejected(mode)),
+      successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification()),
+      errorRedirect = Some(appConfig.baseExternalCallbackUrl + controller.markFileUploadAsRejected()),
       minimumFileSize = Some(1),
       maximumFileSize = Some(appConfig.fileFormats.maxFileSizeMb * 1024 * 1024),
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
     )
 
-  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None, mode: Mode)(implicit
+  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None)(implicit
     request: DataRequest[_]
   ): Result =
     fileUploadState match {
@@ -266,8 +264,8 @@ class AmendCaseSendInformationController @Inject() (
             uploadRequest,
             fileUploads,
             maybeUploadError,
-            successAction = controller.showFileUploaded(mode),
-            failureAction = controller.showFileUpload(mode),
+            successAction = controller.showFileUploaded(),
+            failureAction = controller.showFileUpload(),
             checkStatusAction = controller.checkFileVerificationStatus(reference),
             backLink = navigator.previousPage(AmendFileUploadPage, request.userAnswers)
           )
@@ -280,9 +278,8 @@ class AmendCaseSendInformationController @Inject() (
           fileUploadedView(
             formWithErrors.getOrElse(uploadAnotherFileChoiceForm),
             fileUploads,
-            controller.submitUploadAnotherFileChoice(mode),
+            controller.submitUploadAnotherFileChoice(),
             controller.removeFileUploadByReference,
-            mode,
             navigator.previousPage(AmendFileUploadedPage, request.userAnswers)
           )
         )

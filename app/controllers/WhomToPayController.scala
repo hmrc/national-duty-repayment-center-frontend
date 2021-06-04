@@ -21,10 +21,10 @@ import forms.WhomToPayFormProvider
 import javax.inject.Inject
 import models.WhomToPay.Importer
 import models._
-import navigation.Navigator
-import pages.{IndirectRepresentativePage, NumberOfEntriesTypePage, WhomToPayPage}
+import navigation.CreateNavigator
+import pages.{IndirectRepresentativePage, Page, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.WhomToPayView
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class WhomToPayController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -42,24 +42,25 @@ class WhomToPayController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: WhomToPayView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = WhomToPayPage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(WhomToPayPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
@@ -68,7 +69,7 @@ class WhomToPayController @Inject() (
               case _              => Future.successful(updatedAnswers)
             }
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhomToPayPage, mode, updatedAnswersCleaned))
+          } yield Redirect(nextPage(updatedAnswersCleaned))
       )
   }
 

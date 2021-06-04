@@ -27,7 +27,7 @@
         context: FileUploadedViewContext
 )
 
-@(form: Form[_], fileUploads: FileUploads, postAction: Call, removeFileCall: (String, Mode) => Call, mode: Mode, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], fileUploads: FileUploads, postAction: Call, removeFileCall: String => Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @conditionalContent = {
 @html.p(
@@ -50,7 +50,7 @@
             classes = "govuk-heading-xl"
         )
 
-        @html.summaryList(context.summaryListOfFileUploads(fileUploads, removeFileCall, mode))
+        @html.summaryList(context.summaryListOfFileUploads(fileUploads, removeFileCall))
 
         @forms.inputRadio(
             form = form,

@@ -15,8 +15,9 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, ArticleType}
+@import models.ArticleType
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -24,13 +25,15 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("articleType.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("articleType.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = ArticleTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = ArticleTypeController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 

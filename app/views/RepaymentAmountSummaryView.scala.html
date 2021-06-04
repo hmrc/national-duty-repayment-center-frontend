@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
-@import models.Mode
 @import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 @import summary.customsDuty_section
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -24,10 +24,12 @@
     html: views.components.html
 )
 
-@(answerSections: Seq[Section], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("repaymentAmountSummary.title"))}")
+    pageTitle = Some(s"${titleNoForm(messages("repaymentAmountSummary.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
         @html.h1("repaymentAmountSummary.heading", classes = "govuk-heading-xl")
@@ -41,10 +43,8 @@
             }
         }
 
-        @{
-            mode match {
-                case CheckMode => components.button_cya_link()
-                case NormalMode => components.button_link()
-            }
+        @forms.formWithCSRF(action = RepaymentAmountSummaryController.onSubmit(), args = 'novalidate -> "novalidate") {
+            @html.button("site.continue")
         }
+
     }

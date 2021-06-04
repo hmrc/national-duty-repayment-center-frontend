@@ -38,11 +38,24 @@ trait Navigator2[T <: Answers] {
     if (missing == Some(checkYourAnswersPage)) None else missing
   }
 
-  def nextPage(currentPage: Page, userAnswers: T): Call = userAnswers.changePage match {
-    case None =>
-      viewFor(pageOrder, nextPageFor(pageOrder, currentPage, userAnswers)).getOrElse(pageOrder.head.destination())
-    case Some(_) =>
-      viewFor(pageOrder, nextPageAfterChangeFor(pageOrder, currentPage, userAnswers)).getOrElse(checkYourAnswersPage)
+  def nextPage(currentPage: Page, userAnswers: T): Call = {
+
+    println("%%%%%%%%%%%%%%%%%")
+    println("NEXT PAGE")
+    println(currentPage)
+    println(userAnswers)
+
+    val call = userAnswers.changePage match {
+      case None =>
+        viewFor(pageOrder, nextPageFor(pageOrder, currentPage, userAnswers)).getOrElse(pageOrder.head.destination())
+      case Some(_) =>
+        viewFor(pageOrder, nextPageAfterChangeFor(pageOrder, currentPage, userAnswers)).getOrElse(checkYourAnswersPage)
+    }
+
+    println(call)
+    println("%%%%%%%%%%%%%%%%%")
+
+    call
   }
 
   private val jsBackLink: Call = Call("GET", "javascript:history.back()")

@@ -15,8 +15,8 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @import play.api.libs.json.JsObject
 
@@ -26,13 +26,15 @@
     govukSelect: GovukSelect,
     html: views.components.html
 )
-@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterAddressConfirmation.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterAddressConfirmation.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = routes.AgentImporterAddressController.addressSelectSubmit(mode)) {
+    @forms.formWithCSRF(action = routes.AgentImporterAddressController.addressSelectSubmit()) {
 
        @components.error_summary(form.errors)
             <div class="form-group">

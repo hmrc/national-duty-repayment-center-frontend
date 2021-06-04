@@ -16,12 +16,13 @@
 
 package models
 
+import java.time.Instant
+
 import pages._
 import play.api.libs.json._
 import queries.{Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
 
-import java.time.Instant
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
@@ -31,6 +32,20 @@ final case class UserAnswers(
   lastUpdated: Instant = Instant.now,
   fileUploadState: Option[FileUploadState] = None
 ) extends Answers {
+
+  def isImporterJourney: Boolean =
+    get(ClaimantTypePage) match {
+      case Some(ClaimantType.Importer) => true
+      case _                           => false
+    }
+
+  def isAgentJourney: Boolean = !isImporterJourney
+
+  def isSingleEntry: Boolean =
+    get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
+      case NumberOfEntriesType.Single   => true
+      case NumberOfEntriesType.Multiple => false
+    }
 
   def fileUploadPath: JsPath = JsPath \ "fileUploadState"
   def changePagePath: JsPath = JsPath \ "changePage"

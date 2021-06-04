@@ -16,6 +16,8 @@
 
 package controllers
 
+import java.time.LocalDateTime
+
 import akka.actor.ActorRef
 import akka.pattern.ask
 import akka.util.Timeout
@@ -24,9 +26,12 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
 import controllers.actions._
 import forms.{AdditionalFileUploadFormProvider, UpscanS3ErrorFormProvider}
+import javax.inject.{Inject, Named}
 import models.FileType.SupportingEvidence
-import models.{ClaimantType, Mode, NormalMode, UpscanNotification, UserAnswers}
-import pages.ClaimantTypePage
+import models.UpscanNotification
+import models.requests.DataRequest
+import navigation.CreateNavigator
+import pages.{FileUploadPage, FileUploadedPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -35,8 +40,6 @@ import services._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.{FileUploadView, FileUploadedView}
 
-import java.time.LocalDateTime
-import javax.inject.{Inject, Named}
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -46,6 +49,7 @@ class FileUploadController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   sessionRepository: SessionRepository,
+  navigator: CreateNavigator,
   upscanInitiateConnector: UpscanInitiateConnector,
   val controllerComponents: MessagesControllerComponents,
   additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
@@ -62,7 +66,7 @@ class FileUploadController @Inject() (
   val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
 
   // GET /file-verification
-  final def showWaitingForFileVerification(mode: Mode): Action[AnyContent] =
+  final def showWaitingForFileVerification(): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       implicit val timeout = Timeout(10 seconds)
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
@@ -71,8 +75,8 @@ class FileUploadController @Inject() (
             (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[
               FileUploadState
             ].flatMap {
-              case _: FileUploaded => Future.successful(Redirect(routes.FileUploadController.showFileUploaded(mode)))
-              case _: UploadFile   => Future.successful(Redirect(routes.FileUploadController.showFileUpload(mode)))
+              case _: FileUploaded => Future.successful(Redirect(routes.FileUploadController.showFileUploaded()))
+              case _: UploadFile   => Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
               case _               => Future.successful(fileStateErrror)
             }
           case _ => Future.successful(fileStateErrror)
@@ -86,7 +90,7 @@ class FileUploadController @Inject() (
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
     }
 
-  final def removeFileUploadByReference(reference: String, mode: Mode): Action[AnyContent] =
+  final def removeFileUploadByReference(reference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         ss.state match {
@@ -95,15 +99,13 @@ class FileUploadController @Inject() (
               FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
             val sessionState = ss.copy(state = Some(removeState))
             fileUtils.applyTransition(
-              removeFileUploadBy(reference)(upscanRequest(request.internalId, mode))(
-                upscanInitiateConnector.initiate(_)
-              )(_),
+              removeFileUploadBy(reference)(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(_),
               removeState,
               sessionState
             ).map {
-              case _ @FileUploaded(_, _)     => Redirect(routes.FileUploadController.showFileUploaded(mode))
-              case _ @UploadFile(_, _, _, _) => Redirect(routes.FileUploadController.showFileUpload(mode))
-              case s @ _                     => renderState(fileUploadState = s, mode = mode)
+              case _ @FileUploaded(_, _)     => Redirect(routes.FileUploadController.showFileUploaded())
+              case _ @UploadFile(_, _, _, _) => Redirect(routes.FileUploadController.showFileUpload())
+              case s @ _                     => renderState(fileUploadState = s)
             }
           case None => Future.successful(fileStateErrror)
         }
@@ -111,12 +113,12 @@ class FileUploadController @Inject() (
     }
 
   //GET /file-upload
-  def showFileUpload(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def showFileUpload(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
         ss <- sessionRepository.getFileUploadState(request.internalId)
         s  <- Future.successful(ss.userAnswers.flatMap(_.fileUploadState))
-        fs <- initiateFileUpload(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(
+        fs <- initiateFileUpload(upscanRequest(request.internalId), Some(SupportingEvidence))(
           upscanInitiateConnector.initiate(_)
         )(s)
         b <- fs match {
@@ -125,11 +127,11 @@ class FileUploadController @Inject() (
           case _ => sessionRepository.updateSession(fs, ss.userAnswers)
         }
         if b
-      } yield renderState(fs, None, mode)
+      } yield renderState(fs, None)
   }
 
   //GET /file-uploaded
-  def showFileUploaded(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def showFileUploaded(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
         ss <- sessionRepository.getFileUploadState(request.internalId)
@@ -146,16 +148,16 @@ class FileUploadController @Inject() (
           fileUploadedView(
             uploadAnotherFileChoiceForm,
             s.get.fileUploads,
-            controller.submitUploadAnotherFileChoice(mode),
+            controller.submitUploadAnotherFileChoice(),
             controller.removeFileUploadByReference,
-            mode
+            navigator.previousPage(FileUploadedPage, request.userAnswers)
           )
         )
       }
   }
 
   // POST /file-uploaded
-  final def submitUploadAnotherFileChoice(mode: Mode): Action[AnyContent] =
+  final def submitUploadAnotherFileChoice(): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         val uploadAnotherFileChoiceForm =
@@ -171,9 +173,9 @@ class FileUploadController @Inject() (
                 fileUploadedView(
                   formWithErrors,
                   request.userAnswers.fileUploadState.get.fileUploads,
-                  controller.submitUploadAnotherFileChoice(mode),
+                  controller.submitUploadAnotherFileChoice(),
                   controller.removeFileUploadByReference,
-                  mode
+                  navigator.previousPage(FileUploadedPage, request.userAnswers)
                 )
               )
             ),
@@ -181,14 +183,14 @@ class FileUploadController @Inject() (
             ss.state match {
               case Some(s) if value =>
                 fileUtils.applyTransition(
-                  submitedUploadAnotherFileChoice(upscanRequest(request.internalId, mode), Some(SupportingEvidence))(
+                  submitedUploadAnotherFileChoice(upscanRequest(request.internalId), Some(SupportingEvidence))(
                     upscanInitiateConnector.initiate(_)
                   )(_),
                   s,
                   ss
                 )
-                  .map(_ => Redirect(routes.FileUploadController.showFileUpload(mode)))
-              case Some(_) => Future.successful(Redirect(additionalFileUploadRoute(request.userAnswers, mode)))
+                  .map(_ => Redirect(routes.FileUploadController.showFileUpload()))
+              case Some(_) => Future.successful(Redirect(navigator.nextPage(FileUploadedPage, request.userAnswers)))
               case None    => Future.successful(fileStateErrror)
             }
         )
@@ -196,7 +198,7 @@ class FileUploadController @Inject() (
     }
 
   // GET /file-rejected
-  final def markFileUploadAsRejected(mode: Mode): Action[AnyContent] =
+  final def markFileUploadAsRejected(): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       UpscanUploadErrorForm.bindFromRequest().fold(
         _ => Future.successful(BadRequest),
@@ -205,7 +207,7 @@ class FileUploadController @Inject() (
             ss.state match {
               case Some(s) =>
                 fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
-                  _ => Redirect(routes.FileUploadController.showFileUpload(mode))
+                  _ => Redirect(routes.FileUploadController.showFileUpload())
                 )
               case None => Future.successful(fileStateErrror)
             }
@@ -227,27 +229,18 @@ class FileUploadController @Inject() (
       }
     }
 
-  final def upscanRequest(id: String, mode: Mode): UpscanInitiateRequest =
+  final def upscanRequest(id: String): UpscanInitiateRequest =
     UpscanInitiateRequest(
       callbackUrl = appConfig.baseInternalCallbackUrl + controller.callbackFromUpscan(id).url,
-      successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification(mode)),
-      errorRedirect = Some(appConfig.baseExternalCallbackUrl + controller.markFileUploadAsRejected(mode)),
+      successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification()),
+      errorRedirect = Some(appConfig.baseExternalCallbackUrl + controller.markFileUploadAsRejected()),
       minimumFileSize = Some(1),
       maximumFileSize = Some(appConfig.fileFormats.maxFileSizeMb * 1024 * 1024),
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
     )
 
-  private def additionalFileUploadRoute(answers: UserAnswers, mode: Mode): Call =
-    if (mode.equals(NormalMode))
-      if (answers.get(ClaimantTypePage).contains(ClaimantType.Importer))
-        routes.ImporterHasEoriController.onPageLoad(NormalMode)
-      else
-        routes.AgentImporterHasEORIController.onPageLoad(NormalMode)
-    else
-      routes.CheckYourAnswersController.onPageLoad()
-
-  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None, mode: Mode)(implicit
-    request: Request[_]
+  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None)(implicit
+    request: DataRequest[_]
   ): Result =
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
@@ -256,9 +249,10 @@ class FileUploadController @Inject() (
             uploadRequest,
             fileUploads,
             maybeUploadError,
-            successAction = controller.showFileUploaded(mode),
-            failureAction = controller.showFileUpload(mode),
-            checkStatusAction = controller.checkFileVerificationStatus(reference)
+            successAction = controller.showFileUploaded(),
+            failureAction = controller.showFileUpload(),
+            checkStatusAction = controller.checkFileVerificationStatus(reference),
+            navigator.previousPage(FileUploadPage, request.userAnswers)
           )
         )
 
@@ -269,9 +263,9 @@ class FileUploadController @Inject() (
           fileUploadedView(
             formWithErrors.getOrElse(uploadAnotherFileChoiceForm),
             fileUploads,
-            controller.submitUploadAnotherFileChoice(mode),
+            controller.submitUploadAnotherFileChoice(),
             controller.removeFileUploadByReference,
-            mode
+            navigator.previousPage(FileUploadedPage, request.userAnswers)
           )
         )
     }

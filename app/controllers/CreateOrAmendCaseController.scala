@@ -18,23 +18,21 @@ package controllers
 
 import controllers.actions._
 import forms.CreateOrAmendCaseFormProvider
-import models.{CheckMode, Mode, NormalMode, UserAnswers}
-import navigation.Navigator
+import javax.inject.Inject
+import models.{CreateOrAmendCase, UserAnswers}
 import pages.CreateOrAmendCasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.CreateOrAmendCaseView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CreateOrAmendCaseController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   formProvider: CreateOrAmendCaseFormProvider,
@@ -70,9 +68,13 @@ class CreateOrAmendCaseController @Inject() (
               )
             )
             res <- sessionRepository.resetData(userAnswers).flatMap(_ => sessionRepository.set(updatedUserAnswers))
-            if res
-          } yield Redirect(navigator.nextPage(CreateOrAmendCasePage, NormalMode, updatedUserAnswers))
+          } yield Redirect(firstPageForJourney(updatedUserAnswers))
       )
+  }
+
+  private def firstPageForJourney(answers: UserAnswers): Call = answers.get(CreateOrAmendCasePage) match {
+    case Some(CreateOrAmendCase.CreateCase) => routes.ClaimantTypeController.onPageLoad()
+    case Some(CreateOrAmendCase.AmendCase)  => routes.ReferenceNumberController.onPageLoad()
   }
 
 }

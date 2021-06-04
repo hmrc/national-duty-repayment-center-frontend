@@ -15,9 +15,10 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, IsImporterVatRegistered}
+@import models.IsImporterVatRegistered
 @import uk.gov.hmrc.play.views.html._
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -25,13 +26,15 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("isImporterVatRegistered.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("isImporterVatRegistered.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = IsImporterVatRegisteredController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = IsImporterVatRegisteredController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 

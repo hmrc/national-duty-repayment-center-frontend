@@ -12,143 +12,100 @@ GET         /language/:lang                                                     
 
 GET         /this-service-has-been-reset                                               controllers.SessionExpiredController.onPageLoad
 
+GET         /keep-alive                                                                controllers.KeepAliveController.keepAlive
+
+
 GET         /check-answers                                                             controllers.CheckYourAnswersController.onPageLoad
 POST        /check-answers                                                             controllers.CheckYourAnswersController.onSubmit
+GET         /check-answers/change/:page                                                controllers.CheckYourAnswersController.onChange(page)
 
 GET         /unauthorised                                                              controllers.UnauthorisedController.onPageLoad
 
-GET         /do-you-have-an-eori-number                                                controllers.ImporterHasEoriController.onPageLoad(mode: Mode = NormalMode)
-POST        /do-you-have-an-eori-number                                                controllers.ImporterHasEoriController.onSubmit(mode: Mode = NormalMode)
-GET         /change-do-you-have-an-eori-number                                         controllers.ImporterHasEoriController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-do-you-have-an-eori-number                                         controllers.ImporterHasEoriController.onSubmit(mode: Mode = CheckMode)
+GET         /do-you-have-an-eori-number                                                controllers.ImporterHasEoriController.onPageLoad()
+POST        /do-you-have-an-eori-number                                                controllers.ImporterHasEoriController.onSubmit()
 
-GET         /importer-or-representative                                                controllers.ClaimantTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /importer-or-representative                                                controllers.ClaimantTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-importer-or-representative                                         controllers.ClaimantTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-importer-or-representative                                         controllers.ClaimantTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /importer-or-representative                                                controllers.ClaimantTypeController.onPageLoad()
+POST        /importer-or-representative                                                controllers.ClaimantTypeController.onSubmit()
 
-GET         /enter-your-eori-number                                                    controllers.ImporterEoriController.onPageLoad(mode: Mode = NormalMode)
-POST        /enter-your-eori-number                                                    controllers.ImporterEoriController.onSubmit(mode: Mode = NormalMode)
-GET         /change-your-eori-number                                                   controllers.ImporterEoriController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-your-eori-number                                                   controllers.ImporterEoriController.onSubmit(mode: Mode = CheckMode)
+GET         /enter-your-eori-number                                                    controllers.ImporterEoriController.onPageLoad()
+POST        /enter-your-eori-number                                                    controllers.ImporterEoriController.onSubmit()
 
-GET         /vat-registered                                                            controllers.IsVATRegisteredController.onPageLoad(mode: Mode = NormalMode)
-POST        /vat-registered                                                            controllers.IsVATRegisteredController.onSubmit(mode: Mode = NormalMode)
-GET         /change-vat-registered                                                     controllers.IsVATRegisteredController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-vat-registered                                                     controllers.IsVATRegisteredController.onSubmit(mode: Mode = CheckMode)
+GET         /vat-registered                                                            controllers.IsVATRegisteredController.onPageLoad()
+POST        /vat-registered                                                            controllers.IsVATRegisteredController.onSubmit()
 
-GET         /acceptance-date-all-entries                                               controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /acceptance-date-all-entries                                               controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-acceptance-date-all-entries                                        controllers.CustomsRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-acceptance-date-all-entries                                        controllers.CustomsRegulationTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /acceptance-date-all-entries                                               controllers.CustomsRegulationTypeController.onPageLoad()
+POST        /acceptance-date-all-entries                                               controllers.CustomsRegulationTypeController.onSubmit()
 
-GET         /why-are-you-applying                                                      controllers.ArticleTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /why-are-you-applying                                                      controllers.ArticleTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-why-are-you-applying                                               controllers.ArticleTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-why-are-you-applying                                               controllers.ArticleTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /why-are-you-applying                                                      controllers.ArticleTypeController.onPageLoad()
+POST        /why-are-you-applying                                                      controllers.ArticleTypeController.onSubmit()
 
-GET         /why-are-you-applying-uk                                                   controllers.UkRegulationTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /why-are-you-applying-uk                                                   controllers.UkRegulationTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-why-are-you-applying-uk                                            controllers.UkRegulationTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-why-are-you-applying-uk                                            controllers.UkRegulationTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /why-are-you-applying-uk                                                   controllers.UkRegulationTypeController.onPageLoad()
+POST        /why-are-you-applying-uk                                                   controllers.UkRegulationTypeController.onSubmit()
 
-GET         /how-many-entries-submitting                                               controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /how-many-entries-submitting                                               controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-how-many-entries-submitting                                        controllers.NumberOfEntriesTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-how-many-entries-submitting                                        controllers.NumberOfEntriesTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /how-many-entries-submitting                                               controllers.NumberOfEntriesTypeController.onPageLoad()
+POST        /how-many-entries-submitting                                               controllers.NumberOfEntriesTypeController.onSubmit()
 
-GET         /oldest-entry-date                                                         controllers.EntryDetailsController.onPageLoad(mode: Mode = NormalMode)
-POST        /oldest-entry-date                                                         controllers.EntryDetailsController.onSubmit(mode: Mode = NormalMode)
-GET         /change-oldest-entry-date                                                  controllers.EntryDetailsController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-oldest-entry-date                                                  controllers.EntryDetailsController.onSubmit(mode: Mode = CheckMode)
+GET         /oldest-entry-date                                                         controllers.EntryDetailsController.onPageLoad()
+POST        /oldest-entry-date                                                         controllers.EntryDetailsController.onSubmit()
 
-GET         /application-reason                                                        controllers.ClaimReasonTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /application-reason                                                        controllers.ClaimReasonTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-application-reason                                                 controllers.ClaimReasonTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-application-reason                                                 controllers.ClaimReasonTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /application-reason                                                        controllers.ClaimReasonTypeController.onPageLoad()
+POST        /application-reason                                                        controllers.ClaimReasonTypeController.onSubmit()
 
-GET         /reason-for-overpayment                                                    controllers.ReasonForOverpaymentController.onPageLoad(mode: Mode = NormalMode)
-POST        /reason-for-overpayment                                                    controllers.ReasonForOverpaymentController.onSubmit(mode: Mode = NormalMode)
-GET         /change-reason-for-overpayment                                             controllers.ReasonForOverpaymentController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-reason-for-overpayment                                             controllers.ReasonForOverpaymentController.onSubmit(mode: Mode = CheckMode)
+GET         /reason-for-overpayment                                                    controllers.ReasonForOverpaymentController.onPageLoad()
+POST        /reason-for-overpayment                                                    controllers.ReasonForOverpaymentController.onSubmit()
 
-GET         /reclaim                                                                   controllers.ClaimRepaymentTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /reclaim                                                                   controllers.ClaimRepaymentTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-reclaim                                                            controllers.ClaimRepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-reclaim                                                            controllers.ClaimRepaymentTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /reclaim                                                                   controllers.ClaimRepaymentTypeController.onPageLoad()
+POST        /reclaim                                                                   controllers.ClaimRepaymentTypeController.onSubmit()
 
 GET         /supporting-documents                                                      controllers.EvidenceSupportingDocsController.onPageLoad()
+POST        /supporting-documents                                                      controllers.EvidenceSupportingDocsController.onSubmit()
 
-GET         /declarant-reference-number                                                controllers.DeclarantReferenceNumberController.onPageLoad(mode: Mode = NormalMode)
-POST        /declarant-reference-number                                                controllers.DeclarantReferenceNumberController.onSubmit(mode: Mode = NormalMode)
-GET         /change-declarant-reference-number                                         controllers.DeclarantReferenceNumberController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-declarant-reference-number                                         controllers.DeclarantReferenceNumberController.onSubmit(mode: Mode = CheckMode)
+GET         /declarant-reference-number                                                controllers.DeclarantReferenceNumberController.onPageLoad()
+POST        /declarant-reference-number                                                controllers.DeclarantReferenceNumberController.onSubmit()
 
-GET         /repaid                                                                    controllers.WhomToPayController.onPageLoad(mode: Mode = NormalMode)
-POST        /repaid                                                                    controllers.WhomToPayController.onSubmit(mode: Mode = NormalMode)
-GET         /change-repaid                                                             controllers.WhomToPayController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-repaid                                                             controllers.WhomToPayController.onSubmit(mode: Mode = CheckMode)
+GET         /repaid                                                                    controllers.WhomToPayController.onPageLoad()
+POST        /repaid                                                                    controllers.WhomToPayController.onSubmit()
 
-GET         /select-repayment-method                                                   controllers.RepaymentTypeController.onPageLoad(mode: Mode = NormalMode)
-POST        /select-repayment-method                                                   controllers.RepaymentTypeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-repayment-method                                                   controllers.RepaymentTypeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-repayment-method                                                   controllers.RepaymentTypeController.onSubmit(mode: Mode = CheckMode)
+GET         /select-repayment-method                                                   controllers.RepaymentTypeController.onPageLoad()
+POST        /select-repayment-method                                                   controllers.RepaymentTypeController.onSubmit()
 
-GET         /enter-importer-eori-number                                                controllers.EnterAgentEORIController.onPageLoad(mode: Mode = NormalMode)
-POST        /enter-importer-eori-number                                                controllers.EnterAgentEORIController.onSubmit(mode: Mode = NormalMode)
-GET         /change-importer-eori-number                                               controllers.EnterAgentEORIController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-importer-eori-number                                               controllers.EnterAgentEORIController.onSubmit(mode: Mode = CheckMode)
+GET         /enter-importer-eori-number                                                controllers.EnterAgentEORIController.onPageLoad()
+POST        /enter-importer-eori-number                                                controllers.EnterAgentEORIController.onSubmit()
 
-GET         /does-importer-have-eori-number                                            controllers.AgentImporterHasEORIController.onPageLoad(mode: Mode = NormalMode)
-POST        /does-importer-have-eori-number                                            controllers.AgentImporterHasEORIController.onSubmit(mode: Mode = NormalMode)
-GET         /change-importer-have-eori-number                                          controllers.AgentImporterHasEORIController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-importer-have-eori-number                                          controllers.AgentImporterHasEORIController.onSubmit(mode: Mode = CheckMode)
+GET         /does-importer-have-eori-number                                            controllers.AgentImporterHasEORIController.onPageLoad()
+POST        /does-importer-have-eori-number                                            controllers.AgentImporterHasEORIController.onSubmit()
 
-GET         /is-importer-vat-registered                                                controllers.IsImporterVatRegisteredController.onPageLoad(mode: Mode = NormalMode)
-POST        /is-importer-vat-registered                                                controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = NormalMode)
-GET         /change-importer-vat-registered                                         controllers.IsImporterVatRegisteredController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-importer-vat-registered                                         controllers.IsImporterVatRegisteredController.onSubmit(mode: Mode = CheckMode)
+GET         /is-importer-vat-registered                                                controllers.IsImporterVatRegisteredController.onPageLoad()
+POST        /is-importer-vat-registered                                                controllers.IsImporterVatRegisteredController.onSubmit()
 
-GET         /import-vat-overpayment                                                    controllers.VATPaidController.onPageLoad(mode: Mode = NormalMode)
-POST        /import-vat-overpayment                                                    controllers.VATPaidController.onSubmit(mode: Mode = NormalMode)
-GET         /change-import-vat-overpayment                                             controllers.VATPaidController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-import-vat-overpayment                                             controllers.VATPaidController.onSubmit(mode: Mode = CheckMode)
-GET         /repay-import-vat-overpayment                                              controllers.VATPaidController.onPageLoad(mode: Mode = RepayNormalMode)
-POST        /repay-import-vat-overpayment                                              controllers.VATPaidController.onSubmit(mode: Mode = RepayNormalMode)
-GET         /change-repay-import-vat-overpayment                                       controllers.VATPaidController.onPageLoad(mode: Mode = RepayCheckMode)
-POST        /change-repay-import-vat-overpayment                                       controllers.VATPaidController.onSubmit(mode: Mode = RepayCheckMode)
+GET         /import-vat-overpayment                                                    controllers.VATPaidController.onPageLoad()
+POST        /import-vat-overpayment                                                    controllers.VATPaidController.onSubmit()
+
+GET         /customs-duty-overpayment                                                  controllers.CustomsDutyPaidController.onPageLoad()
+POST        /customs-duty-overpayment                                                  controllers.CustomsDutyPaidController.onSubmit()
+
+GET         /other-duties-overpayment                                                  controllers.OtherDutiesPaidController.onPageLoad()
+POST        /other-duties-overpayment                                                  controllers.OtherDutiesPaidController.onSubmit()
 
 
-GET         /customs-duty-overpayment                                                  controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = NormalMode)
-POST        /customs-duty-overpayment                                                  controllers.CustomsDutyPaidController.onSubmit(mode: Mode = NormalMode)
-GET         /change-customs-duty-overpayment                                           controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-customs-duty-overpayment                                           controllers.CustomsDutyPaidController.onSubmit(mode: Mode = CheckMode)
-GET         /repay-customs-duty-overpayment                                            controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = RepayNormalMode)
-POST        /repay-customs-duty-overpayment                                            controllers.CustomsDutyPaidController.onSubmit(mode: Mode = RepayNormalMode)
-GET         /change-repay-customs-duty-overpayment                                     controllers.CustomsDutyPaidController.onPageLoad(mode: Mode = RepayCheckMode)
-POST        /change-repay-customs-duty-overpayment                                     controllers.CustomsDutyPaidController.onSubmit(mode: Mode = RepayCheckMode)
-
-GET         /other-duties-overpayment                                                  controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = NormalMode)
-POST        /other-duties-overpayment                                                  controllers.OtherDutiesPaidController.onSubmit(mode: Mode = NormalMode)
-GET         /change-other-duties-overpayment                                           controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-other-duties-overpayment                                           controllers.OtherDutiesPaidController.onSubmit(mode: Mode = CheckMode)
-GET         /repay-other-duties-overpayment                                            controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = RepayNormalMode)
-POST        /repay-other-duties-overpayment                                            controllers.OtherDutiesPaidController.onSubmit(mode: Mode = RepayNormalMode)
-GET         /change-repay-other-duties-overpayment                                     controllers.OtherDutiesPaidController.onPageLoad(mode: Mode = RepayCheckMode)
-POST        /change-repay-other-duties-overpayment                                     controllers.OtherDutiesPaidController.onSubmit(mode: Mode = RepayCheckMode)
+GET         /select-importer-address                                                   controllers.ImporterAddressController.onPageLoad()
+POST        /select-importer-address                                                   controllers.ImporterAddressController.postcodeSubmit()
+#POST        /change-select-post-importer-address                                       controllers.ImporterAddressController.postcodeSubmit(mode: Mode = CheckMode)
+#GET         /change-select-importer-address                                            controllers.ImporterAddressController.onPageLoad(mode: Mode = CheckMode)
+#POST        /change-select-importer-address                                            controllers.ImporterAddressController.onSubmit(mode: Mode = CheckMode)
+GET         /importer-address                                                          controllers.ImporterAddressController.enteredAddressPageLoad()
+POST        /importer-address                                                          controllers.ImporterAddressController.addressSelectSubmit()
+#POST        /change-importer-address                                                   controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = CheckMode)
 
 
-GET         /select-importer-address                                                   controllers.ImporterAddressController.onPageLoad(mode: Mode = NormalMode)
-POST        /select-importer-address                                                   controllers.ImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
-POST        /change-select-post-importer-address                                       controllers.ImporterAddressController.postcodeSubmit(mode: Mode = CheckMode)
-GET         /change-select-importer-address                                            controllers.ImporterAddressController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-select-importer-address                                            controllers.ImporterAddressController.onSubmit(mode: Mode = CheckMode)
-
-GET         /your-business-address                                                     controllers.AgentImporterAddressController.onPageLoad(mode: Mode = NormalMode)
-POST        /your-business-address                                                     controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = NormalMode)
-POST        /change-select-your-business-address                                       controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = CheckMode)
-GET         /change-your-business-address                                              controllers.AgentImporterAddressController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-your-business-address                                              controllers.AgentImporterAddressController.onSubmit(mode: Mode = CheckMode)
+GET         /your-business-address                                                     controllers.AgentImporterAddressController.onPageLoad()
+POST        /your-business-address                                                     controllers.AgentImporterAddressController.postcodeSubmit()
+#POST        /change-select-your-business-address                                       controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = CheckMode)
+#GET         /change-your-business-address                                              controllers.AgentImporterAddressController.onPageLoad(mode: Mode = CheckMode)
+#POST        /change-your-business-address                                              controllers.AgentImporterAddressController.onSubmit(mode: Mode = CheckMode)
+GET         /enter-agent-importer-address                                              controllers.AgentImporterAddressController.enteredAddressPageLoad()
+POST        /enter-agent-importer-address                                              controllers.AgentImporterAddressController.addressSelectSubmit()
+#POST        /change-agent-importer-address                                       controllers.AgentImporterAddressController.addressSelectSubmit(mode: Mode = CheckMode)
 
 GET         /enter-importer-address                                                    controllers.ImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
 POST        /enter-importer-address                                                    controllers.ImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
@@ -164,28 +121,19 @@ POST        /enter-your-business-address                                        
 GET         /change-enter-your-business-address                                        controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-enter-your-business-address                                        controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
 
-GET         /enter-bank-details                                                        controllers.BankDetailsController.onPageLoad(mode: Mode = NormalMode)
-POST        /enter-bank-details                                                        controllers.BankDetailsController.onSubmit(mode: Mode = NormalMode)
-GET         /change-enter-bank-details                                                 controllers.BankDetailsController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-enter-bank-details                                                 controllers.BankDetailsController.onSubmit(mode: Mode = CheckMode)
+GET         /enter-bank-details                                                        controllers.BankDetailsController.onPageLoad()
+POST        /enter-bank-details                                                        controllers.BankDetailsController.onSubmit()
 
-GET         /repayment-summary                                                         controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = NormalMode)
-GET         /change-repayment-summary                                                  controllers.RepaymentAmountSummaryController.onPageLoad(mode: Mode = CheckMode)
-
-GET         /importer-address                                                          controllers.ImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
-POST        /importer-address                                                          controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)
-POST        /change-importer-address                                                   controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = CheckMode)
+GET         /repayment-summary                                                         controllers.RepaymentAmountSummaryController.onPageLoad()
+POST        /repayment-summary                                                         controllers.RepaymentAmountSummaryController.onSubmit()
 
 
-GET         /enter-agent-importer-address                                              controllers.AgentImporterAddressController.enteredAddressPageLoad(mode: Mode = NormalMode)
-POST        /enter-agent-importer-address                                              controllers.AgentImporterAddressController.addressSelectSubmit(mode: Mode = NormalMode)
-POST        /change-agent-importer-address                                       controllers.AgentImporterAddressController.addressSelectSubmit(mode: Mode = CheckMode)
 
 
-GET         /indirect-representative                                                   controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = NormalMode)
-POST        /indirect-representative                                                   controllers.IndirectRepresentativeController.onSubmit(mode: Mode = NormalMode)
-GET         /change-indirect-representative                                            controllers.IndirectRepresentativeController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-indirect-representative                                            controllers.IndirectRepresentativeController.onSubmit(mode: Mode = CheckMode)
+
+
+GET         /indirect-representative                                                   controllers.IndirectRepresentativeController.onPageLoad()
+POST        /indirect-representative                                                   controllers.IndirectRepresentativeController.onSubmit()
 
 GET         /signout                                                                   controllers.SignOutController.signOut
 
@@ -205,20 +153,14 @@ GET         /amend/what-do-you-need-to-do                                       
 POST        /amend/what-do-you-need-to-do                                              controllers.AmendCaseResponseTypeController.onSubmit()
 
 # File uploads
-GET         /file-upload                                                               controllers.FileUploadController.showFileUpload(mode: Mode = NormalMode)
-GET         /file-uploaded                                                             controllers.FileUploadController.showFileUploaded(mode: Mode = NormalMode)
-POST        /file-uploaded                                                             controllers.FileUploadController.submitUploadAnotherFileChoice(mode: Mode = NormalMode)
+GET         /file-upload                                                               controllers.FileUploadController.showFileUpload()
+GET         /file-uploaded                                                             controllers.FileUploadController.showFileUploaded()
+POST        /file-uploaded                                                             controllers.FileUploadController.submitUploadAnotherFileChoice()
 GET         /file-verification/:reference/status                                       controllers.FileUploadController.checkFileVerificationStatus(reference: String)
 POST        /ndrc/:id/callback-from-upscan                                             controllers.FileUploadController.callbackFromUpscan(id: String)
-GET         /file-verification                                                         controllers.FileUploadController.showWaitingForFileVerification(mode: Mode = NormalMode)
-GET         /file-rejected                                                             controllers.FileUploadController.markFileUploadAsRejected(mode: Mode = NormalMode)
-GET         /file-uploaded/:reference/remove                                           controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = NormalMode)
-GET         /change-file-uploaded                                                      controllers.FileUploadController.showFileUploaded(mode: Mode = CheckMode)
-GET         /change-file-upload                                                        controllers.FileUploadController.showFileUpload(mode: Mode = CheckMode)
-GET         /change-file-verification                                                  controllers.FileUploadController.showWaitingForFileVerification(mode: Mode = CheckMode)
-GET         /change-file-rejected                                                      controllers.FileUploadController.markFileUploadAsRejected(mode: Mode = CheckMode)
-POST        /change-file-uploaded                                                      controllers.FileUploadController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
-GET         /file-uploaded/:reference/change-remove                                    controllers.FileUploadController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
+GET         /file-verification                                                         controllers.FileUploadController.showWaitingForFileVerification()
+GET         /file-rejected                                                             controllers.FileUploadController.markFileUploadAsRejected()
+GET         /file-uploaded/:reference/remove                                           controllers.FileUploadController.removeFileUploadByReference(reference: String)
 
 # bulk uploads
 GET         /upload-multiple-entries                                                   controllers.BulkFileUploadController.showFileUpload(mode: Mode = NormalMode)
@@ -233,65 +175,46 @@ GET         /bulk/change-file-rejected                                          
 
 
 # proof of authority
-GET         /upload-proof-of-authority                                                 controllers.ProofOfAuthorityController.showFileUpload(mode: Mode = NormalMode)
-GET         /upload-proof-of-authority/file-verification                               controllers.ProofOfAuthorityController.showWaitingForFileVerification(mode: Mode = NormalMode)
-GET         /upload-proof-of-authority/file-rejected                                   controllers.ProofOfAuthorityController.markFileUploadAsRejected(mode: Mode = NormalMode)
+GET         /upload-proof-of-authority                                                 controllers.ProofOfAuthorityController.showFileUpload()
+GET         /upload-proof-of-authority/file-verification                               controllers.ProofOfAuthorityController.showWaitingForFileVerification()
+GET         /upload-proof-of-authority/file-rejected                                   controllers.ProofOfAuthorityController.markFileUploadAsRejected()
 GET         /upload-proof-of-authority/file-verification/:reference/status             controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
 POST        /upload-proof-of-authority/:id/callback-from-upscan                        controllers.ProofOfAuthorityController.callbackFromUpscan(id: String)
 
-GET         /change-upload-proof-of-authority                                          controllers.ProofOfAuthorityController.showFileUpload(mode: Mode = CheckMode)
-GET         /upload-proof-of-authority/change-file-verification                        controllers.ProofOfAuthorityController.showWaitingForFileVerification(mode: Mode = CheckMode)
-GET         /upload-proof-of-authority/change-file-rejected                            controllers.ProofOfAuthorityController.markFileUploadAsRejected(mode: Mode = CheckMode)
+#GET         /change-upload-proof-of-authority                                          controllers.ProofOfAuthorityController.showFileUpload(mode: Mode = CheckMode)
+#GET         /upload-proof-of-authority/change-file-verification                        controllers.ProofOfAuthorityController.showWaitingForFileVerification(mode: Mode = CheckMode)
+#GET         /upload-proof-of-authority/change-file-rejected                            controllers.ProofOfAuthorityController.markFileUploadAsRejected(mode: Mode = CheckMode)
 
 
 #amend send information
 
-GET         /amend/upload-a-file                                 controllers.AmendCaseSendInformationController.showFileUpload(mode: Mode = NormalMode)
-GET         /amend/file-uploaded                                 controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = NormalMode)
-POST        /amend/file-uploaded                                 controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = NormalMode)
+GET         /amend/upload-a-file                                 controllers.AmendCaseSendInformationController.showFileUpload()
+GET         /amend/file-uploaded                                 controllers.AmendCaseSendInformationController.showFileUploaded()
+POST        /amend/file-uploaded                                 controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice()
 GET         /amend/file-verification/:reference/status           controllers.AmendCaseSendInformationController.checkFileVerificationStatus(reference: String)
 POST        /amend/ndrc/:id/callback-from-upscan                 controllers.AmendCaseSendInformationController.callbackFromUpscan(id: String)
-GET         /amend/file-verification                             controllers.AmendCaseSendInformationController.showWaitingForFileVerification(mode: Mode = NormalMode)
-GET         /amend/file-rejected                                 controllers.AmendCaseSendInformationController.markFileUploadAsRejected(mode: Mode = NormalMode)
-GET         /amend/file-uploaded/:reference/remove               controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode: Mode = NormalMode)
+GET         /amend/file-verification                             controllers.AmendCaseSendInformationController.showWaitingForFileVerification()
+GET         /amend/file-rejected                                 controllers.AmendCaseSendInformationController.markFileUploadAsRejected()
+GET         /amend/file-uploaded/:reference/remove               controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String)
 
-GET         /change-amend/file-upload                            controllers.AmendCaseSendInformationController.showFileUpload(mode: Mode = CheckMode)
-GET         /change-amend/file-uploaded                          controllers.AmendCaseSendInformationController.showFileUploaded(mode: Mode = CheckMode)
-POST        /change-amend/file-uploaded                          controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice(mode: Mode = CheckMode)
-GET         /change-amend/file-verification                      controllers.AmendCaseSendInformationController.showWaitingForFileVerification(mode: Mode = CheckMode)
-GET         /change-amend/file-rejected                          controllers.AmendCaseSendInformationController.markFileUploadAsRejected(mode: Mode = CheckMode)
-GET         /change-amend/file-uploaded/:reference/remove        controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String, mode: Mode = CheckMode)
-
-GET         /contact                                             controllers.EmailAddressAndPhoneNumberController.onPageLoad(mode: Mode = NormalMode)
-POST        /contact                                             controllers.EmailAddressAndPhoneNumberController.onSubmit(mode: Mode = NormalMode)
-GET         /change-contact                                      controllers.EmailAddressAndPhoneNumberController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-contact                                      controllers.EmailAddressAndPhoneNumberController.onSubmit(mode: Mode = CheckMode)
+GET         /contact                                             controllers.EmailAddressAndPhoneNumberController.onPageLoad()
+POST        /contact                                             controllers.EmailAddressAndPhoneNumberController.onSubmit()
 
 GET         /what-do-you-want-to-do                              controllers.CreateOrAmendCaseController.onPageLoad
 POST        /what-do-you-want-to-do                              controllers.CreateOrAmendCaseController.onSubmit
 
-GET         /your-name                                           controllers.DeclarantNameController.onPageLoad(mode: Mode = NormalMode)
-POST        /your-name                                           controllers.DeclarantNameController.onSubmit(mode: Mode = NormalMode)
-GET         /change-your-name                                    controllers.DeclarantNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-your-name                                    controllers.DeclarantNameController.onSubmit(mode: Mode = CheckMode)
+GET         /your-name                                           controllers.DeclarantNameController.onPageLoad()
+POST        /your-name                                           controllers.DeclarantNameController.onSubmit()
 
-GET         /goods-owner                                         controllers.DoYouOwnTheGoodsController.onPageLoad(mode: Mode = NormalMode)
-POST        /goods-owner                                         controllers.DoYouOwnTheGoodsController.onSubmit(mode: Mode = NormalMode)
-GET         /change-goods-owner                                  controllers.DoYouOwnTheGoodsController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-goods-owner                                  controllers.DoYouOwnTheGoodsController.onSubmit(mode: Mode = CheckMode)
+GET         /goods-owner                                         controllers.DoYouOwnTheGoodsController.onPageLoad()
+POST        /goods-owner                                         controllers.DoYouOwnTheGoodsController.onSubmit()
 
-GET         /name-of-goods-owner                                 controllers.ImporterNameController.onPageLoad(mode: Mode = NormalMode)
-POST        /name-of-goods-owner                                 controllers.ImporterNameController.onSubmit(mode: Mode = NormalMode)
-GET         /change-name-of-goods-owner                          controllers.ImporterNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-name-of-goods-owner                          controllers.ImporterNameController.onSubmit(mode: Mode = CheckMode)
+GET         /name-of-goods-owner                                 controllers.ImporterNameController.onPageLoad()
+POST        /name-of-goods-owner                                 controllers.ImporterNameController.onSubmit()
 
-GET         /importer-name                                       controllers.RepresentativeImporterNameController.onPageLoad(mode: Mode = NormalMode)
-POST        /importer-name                                       controllers.RepresentativeImporterNameController.onSubmit(mode: Mode = NormalMode)
-GET         /change-importer-name                                controllers.RepresentativeImporterNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-importer-name                                controllers.RepresentativeImporterNameController.onSubmit(mode: Mode = CheckMode)
+GET         /importer-name                                       controllers.RepresentativeImporterNameController.onPageLoad()
+POST        /importer-name                                       controllers.RepresentativeImporterNameController.onSubmit()
 
-GET         /your-details                                        controllers.RepresentativeDeclarantAndBusinessNameController.onPageLoad(mode: Mode = NormalMode)
-POST        /your-details                                        controllers.RepresentativeDeclarantAndBusinessNameController.onSubmit(mode: Mode = NormalMode)
-GET         /change-your-details                                 controllers.RepresentativeDeclarantAndBusinessNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-your-details                                 controllers.RepresentativeDeclarantAndBusinessNameController.onSubmit(mode: Mode = CheckMode)
+GET         /your-details                                        controllers.RepresentativeDeclarantAndBusinessNameController.onPageLoad()
+POST        /your-details                                        controllers.RepresentativeDeclarantAndBusinessNameController.onSubmit()
 

@@ -16,11 +16,13 @@
 
 package controllers
 
+import java.time.LocalDate
+
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.NormalMode
-import navigation.Navigator
-import pages.CheckYourAnswersPage
+import models.{NormalMode, UserAnswers}
+import navigation.CreateNavigator
+import pages.{CheckYourAnswersPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.{ClaimDateQuery, ClaimIdQuery}
@@ -29,9 +31,7 @@ import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import views.html.CheckYourAnswersView
-import play.api.libs.json.{JsDefined, JsNull, JsObject, Json}
 
-import java.time.LocalDate
 import scala.concurrent.{ExecutionContext, Future}
 
 class CheckYourAnswersController @Inject() (
@@ -41,19 +41,35 @@ class CheckYourAnswersController @Inject() (
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   claimService: ClaimService,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   val controllerComponents: MessagesControllerComponents,
   view: CheckYourAnswersView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  override val page: Page = CheckYourAnswersPage
+
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-      if (request.userAnswers.data.fields.isEmpty && request.userAnswers.fileUploadState.isEmpty)
-        Redirect(routes.CreateOrAmendCaseController.onPageLoad())
-      else
-        Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections))
+      val updatedAnswers = request.userAnswers.copy(changePage = None)
+      sessionRepository.clearChangePage(updatedAnswers) map { _ =>
+        navigator.firstMissingAnswer(updatedAnswers) match {
+          case Some(call) =>
+            // TODO - render "missing" version of CYA page
+            Redirect(call)
+
+          case None =>
+            val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
+            Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink(updatedAnswers)))
+        }
+      }
+  }
+
+  def onChange(page: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      sessionRepository.set(request.userAnswers.copy(changePage = Some(page))) map { _ =>
+        Redirect(navigator.gotoPage(page))
+      }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -63,7 +79,7 @@ class CheckYourAnswersController @Inject() (
         updatedClaimId   <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
         updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
         _                <- sessionRepository.set(updatedClaimDate)
-      } yield Redirect(navigator.nextPage(CheckYourAnswersPage, NormalMode, request.userAnswers))
+      } yield Redirect(nextPage(request.userAnswers))
   }
 
 }

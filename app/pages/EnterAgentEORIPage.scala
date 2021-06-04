@@ -23,5 +23,5 @@ case object EnterAgentEORIPage extends QuestionPage[EORI] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "enterAgentEORI"
+  override def toString: String = "enterAgentEORIPage"
 }

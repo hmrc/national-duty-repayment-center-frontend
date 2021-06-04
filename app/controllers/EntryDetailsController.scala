@@ -21,7 +21,7 @@ import forms.EntryDetailsFormProvider
 import javax.inject.Inject
 import models.{ClaimantType, CustomsRegulationType, Mode, NumberOfEntriesType, UserAnswers}
 import pages._
-import navigation.Navigator
+import navigation.{CreateNavigator, Navigator}
 import pages.{CustomsRegulationTypePage, EntryDetailsPage, NumberOfEntriesTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class EntryDetailsController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -42,48 +42,49 @@ class EntryDetailsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: EntryDetailsView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = EntryDetailsPage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(EntryDetailsPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers), isSingleEntry(request.userAnswers)))
+      Ok(
+        view(
+          preparedForm,
+          backLink(request.userAnswers),
+          request.userAnswers.isImporterJourney,
+          request.userAnswers.isSingleEntry
+        )
+      )
 
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(
             BadRequest(
-              view(formWithErrors, mode, isImporterJourney(request.userAnswers), isSingleEntry(request.userAnswers))
+              view(
+                formWithErrors,
+                backLink(request.userAnswers),
+                request.userAnswers.isImporterJourney,
+                request.userAnswers.isSingleEntry
+              )
             )
           ),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(EntryDetailsPage, mode, updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
-
-  def isImporterJourney(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => true
-      case _                           => false
-    }
-
-  def isSingleEntry(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Single   => true
-      case NumberOfEntriesType.Multiple => false
-    }
 
 }

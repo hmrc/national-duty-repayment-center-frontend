@@ -26,12 +26,15 @@ import data.TestData.{
   populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney
 }
 import models._
+import navigation.NavigatorBack
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import views.html.CheckYourAnswersView
 
 class CheckYourAnswersControllerSpec extends SpecBase {
+
+  val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad)) // FIX
 
   "Check Your Answers Controller" must {
 
@@ -52,7 +55,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(request, messages).toString
 
       application.stop()
     }
@@ -74,7 +77,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(request, messages).toString
 
       application.stop()
     }
@@ -96,7 +99,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(request, messages).toString
 
       application.stop()
     }
@@ -118,7 +121,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(request, messages).toString
 
       application.stop()
     }
@@ -140,7 +143,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(request, messages).toString
 
       application.stop()
     }
@@ -162,7 +165,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink)(request, messages).toString
 
       application.stop()
     }

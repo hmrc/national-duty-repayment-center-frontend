@@ -18,11 +18,10 @@ package controllers
 
 import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
-
 import javax.inject.Inject
 import models.{CheckMode, ClaimantType, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
-import navigation.Navigator
-import pages.{ArticleTypePage, ClaimantTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage}
+import navigation.{CreateNavigator, Navigator}
+import pages.{ArticleTypePage, ClaimantTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -34,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class CustomsRegulationTypeController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -42,37 +41,34 @@ class CustomsRegulationTypeController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: CustomsRegulationTypeView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = CustomsRegulationTypePage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(CustomsRegulationTypePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
+      Ok(view(preparedForm, backLink(request.userAnswers), request.userAnswers.isImporterJourney))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
+          Future.successful(
+            BadRequest(view(formWithErrors, backLink(request.userAnswers), request.userAnswers.isImporterJourney))
+          ),
         value =>
           for {
             userAnswers <- Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
             _           <- sessionRepository.set(userAnswers)
-          } yield Redirect(navigator.nextPage(CustomsRegulationTypePage, mode, userAnswers))
+          } yield Redirect(nextPage(userAnswers))
       )
   }
-
-  def isImporterJourney(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => true
-      case _                           => false
-    }
 
 }

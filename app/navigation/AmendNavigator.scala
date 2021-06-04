@@ -23,46 +23,18 @@ import play.api.mvc.Call
 
 class AmendNavigator extends Navigator2[UserAnswers] with AmendAnswerConditions with AmendHasAnsweredConditions {
 
+  // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
-    P(
-      CreateOrAmendCasePage,
-      () => controllers.routes.CreateOrAmendCaseController.onPageLoad,
-      always,
-      caseReferenceAnswered
-    ),
-    P(
-      ReferenceNumberPage,
-      () => controllers.routes.ReferenceNumberController.onPageLoad,
-      always,
-      caseReferenceAnswered
-    ),
-    P(
-      AmendCaseResponseTypePage,
-      () => controllers.routes.AmendCaseResponseTypeController.onPageLoad,
-      always,
-      caseResponseTypeAnswered
-    ),
-    P(
-      AmendFileUploadPage,
-      () => controllers.routes.AmendCaseSendInformationController.showFileUpload(NormalMode),
-      showFileUpload,
-      fileUploadedAnswered
-    ),
-    P(
-      AmendFileUploadedPage,
-      () => controllers.routes.AmendCaseSendInformationController.showFileUploaded(NormalMode),
-      showFileUploaded,
-      fileUploadedAnswered
-    ),
-    P(
-      FurtherInformationPage,
-      () => controllers.routes.FurtherInformationController.onPageLoad(),
-      showFurtherInformation,
-      furtherInformationAnswered
-    ),
+    P(CreateOrAmendCasePage, controllers.routes.CreateOrAmendCaseController.onPageLoad, always, caseReferenceAnswered),
+    P(ReferenceNumberPage, controllers.routes.ReferenceNumberController.onPageLoad, always, caseReferenceAnswered),
+    P(AmendCaseResponseTypePage, controllers.routes.AmendCaseResponseTypeController.onPageLoad, always, caseResponseTypeAnswered),
+    P(AmendFileUploadPage, controllers.routes.AmendCaseSendInformationController.showFileUpload, showFileUpload, fileUploadedAnswered),
+    P(AmendFileUploadedPage, controllers.routes.AmendCaseSendInformationController.showFileUploaded, showFileUploaded, fileUploadedAnswered),
+    P(FurtherInformationPage, controllers.routes.FurtherInformationController.onPageLoad, showFurtherInformation, furtherInformationAnswered),
     P(AmendCheckYourAnswersPage, controllers.routes.AmendCheckYourAnswersController.onPageLoad, always, never),
     P(AmendConfirmationPage, controllers.routes.AmendConfirmationController.onPageLoad, always, never)
   )
+  // @formatter:on
 
   override protected def checkYourAnswersPage: Call = controllers.routes.AmendCheckYourAnswersController.onPageLoad()
 
@@ -90,10 +62,10 @@ protected trait AmendAnswerConditions {
 
 protected trait AmendHasAnsweredConditions {
 
-  protected val never: UserAnswers => Boolean                      = (_: UserAnswers) => false
-  protected val createOrAmendAnswered: UserAnswers => Boolean      = _.get(CreateOrAmendCasePage).nonEmpty
-  protected val caseReferenceAnswered: UserAnswers => Boolean      = _.get(ReferenceNumberPage).nonEmpty
-  protected val caseResponseTypeAnswered: UserAnswers => Boolean   = _.get(AmendCaseResponseTypePage).nonEmpty
+  protected val never: UserAnswers => Boolean = (_: UserAnswers) => false
+  protected val createOrAmendAnswered: UserAnswers => Boolean = _.get(CreateOrAmendCasePage).nonEmpty
+  protected val caseReferenceAnswered: UserAnswers => Boolean = _.get(ReferenceNumberPage).nonEmpty
+  protected val caseResponseTypeAnswered: UserAnswers => Boolean = _.get(AmendCaseResponseTypePage).nonEmpty
   protected val furtherInformationAnswered: UserAnswers => Boolean = _.get(FurtherInformationPage).nonEmpty
 
   protected val fileUploadedAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>

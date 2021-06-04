@@ -18,40 +18,26 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import models.UserAnswers
-import navigation.CreateNavigator
-import pages.{Page, RepaymentSummaryPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.RepaymentAmountSummaryAnswersHelper
-import views.html.RepaymentAmountSummaryView
 
-class RepaymentAmountSummaryController @Inject() (
+import scala.concurrent.ExecutionContext
+
+class KeepAliveController @Inject() (
   override val messagesApi: MessagesApi,
-  val navigator: CreateNavigator,
+  sessionRepository: SessionRepository,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  val controllerComponents: MessagesControllerComponents,
-  view: RepaymentAmountSummaryView
-) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+  val controllerComponents: MessagesControllerComponents
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  override val page: Page = RepaymentSummaryPage
-
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def keepAlive(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
-
-      val sections =
-        Seq(helper.getSections(), Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)).flatten
-
-      Ok(view(sections, backLink(request.userAnswers)))
-  }
-
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      Redirect(nextPage(request.userAnswers))
+      sessionRepository.set(request.userAnswers) map { _ => Ok("Ok") }
   }
 
 }

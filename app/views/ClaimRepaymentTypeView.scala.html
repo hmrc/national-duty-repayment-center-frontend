@@ -15,8 +15,9 @@
  *@
 
 @import controllers.routes.ClaimRepaymentTypeController
-@import models.{Mode, ClaimRepaymentType}
+@import models.ClaimRepaymentType
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -24,13 +25,15 @@
     html: views.components.html
 )
 
-@(form: Form[Set[ClaimRepaymentType]], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[Set[ClaimRepaymentType]], backLink: NavigatorBack, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimRepaymentType.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimRepaymentType.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = ClaimRepaymentTypeController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = ClaimRepaymentTypeController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 

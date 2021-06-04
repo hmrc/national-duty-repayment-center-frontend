@@ -15,8 +15,8 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -24,13 +24,15 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterAddress.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("agentImporterAddress.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = AgentImporterAddressController.postcodeSubmit(mode), 'autoComplete -> "on") {
+    @forms.formWithCSRF(action = AgentImporterAddressController.postcodeSubmit(), 'autoComplete -> "on") {
 
         @components.error_summary(form.errors)
 
@@ -54,10 +56,7 @@
             )
         }
             <p>@html.a(
-                link = mode match {
-                        case NormalMode => "enter-your-business-address"
-                        case CheckMode => "change-enter-your-business-address"
-                    },
+                link = "enter-your-business-address",
                 messageKey = messages("importerAddress.manual"),
                 id = Some("enter-address-manually")
                 )</p>

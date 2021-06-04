@@ -17,9 +17,10 @@
 package controllers
 
 import controllers.actions._
-import models.NormalMode
-
 import javax.inject.Inject
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{Page, SupportingDocumentsPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -29,17 +30,25 @@ import scala.concurrent.ExecutionContext
 
 class EvidenceSupportingDocsController @Inject() (
   override val messagesApi: MessagesApi,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: EvidenceSupportingDocsView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+
+  override val page: Page = SupportingDocumentsPage
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view())
+      Ok(view(backLink(request.userAnswers)))
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      Redirect(nextPage(request.userAnswers))
   }
 
 }

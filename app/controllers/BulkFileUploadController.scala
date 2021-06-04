@@ -69,7 +69,7 @@ class BulkFileUploadController @Inject() (
             ].flatMap {
               case _: FileUploaded =>
                 if (mode.equals(NormalMode))
-                  Future.successful(Redirect(routes.EntryDetailsController.onPageLoad(mode)))
+                  Future.successful(Redirect(routes.EntryDetailsController.onPageLoad()))
                 else
                   Future.successful(Redirect(routes.CheckYourAnswersController.onPageLoad))
               case _: UploadFile => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload(mode)))
@@ -154,7 +154,7 @@ class BulkFileUploadController @Inject() (
             uploadRequest,
             fileUploads,
             maybeUploadError,
-            successAction = routes.EntryDetailsController.onPageLoad(mode),
+            successAction = routes.EntryDetailsController.onPageLoad(),
             failureAction = routes.BulkFileUploadController.showFileUpload(mode),
             checkStatusAction = routes.BulkFileUploadController.checkFileVerificationStatus(reference)
           )

@@ -68,15 +68,15 @@ class ProofOfAuthorityController @Inject() (
             (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[
               FileUploadState
             ].flatMap {
-              case _: FileUploaded => Future.successful(Redirect(routes.BankDetailsController.onPageLoad(NormalMode)))
+              case _: FileUploaded => Future.successful(Redirect(routes.BankDetailsController.onPageLoad()))
               case _: UploadFile   => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload(mode)))
               case _               => Future.successful(fileStateErrror)
               case s: FileUploaded =>
                 if (mode.equals(NormalMode))
-                  Future.successful(Redirect(routes.BankDetailsController.onPageLoad(mode)))
+                  Future.successful(Redirect(routes.BankDetailsController.onPageLoad()))
                 else
                   request.userAnswers.get(BankDetailsPage).isEmpty match {
-                    case true  => Future.successful(Redirect(routes.BankDetailsController.onPageLoad(mode)))
+                    case true  => Future.successful(Redirect(routes.BankDetailsController.onPageLoad()))
                     case false => Future.successful(Redirect(routes.CheckYourAnswersController.onPageLoad))
                   }
 
@@ -161,7 +161,7 @@ class ProofOfAuthorityController @Inject() (
             uploadRequest,
             fileUploads,
             maybeUploadError,
-            successAction = routes.BankDetailsController.onPageLoad(mode),
+            successAction = routes.BankDetailsController.onPageLoad(),
             failureAction = routes.ProofOfAuthorityController.showFileUpload(mode),
             checkStatusAction = routes.ProofOfAuthorityController.checkFileVerificationStatus(reference)
           )

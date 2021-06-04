@@ -15,8 +15,8 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @import play.api.libs.json.JsObject
 
@@ -27,17 +27,19 @@
     html: views.components.html
 )
 
-@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[JsObject], search: PostcodeLookup, candidateAddresses: Seq[SelectItem], backLink: NavigatorBack, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
         case true => messages("importerAddressConfirmation.title")
         case _ => messages("agent.importerAddressConfirmation.title")
         })
-    }")
+    }"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = routes.ImporterAddressController.addressSelectSubmit(mode)) {
+    @forms.formWithCSRF(action = routes.ImporterAddressController.addressSelectSubmit()) {
 
         @components.error_summary(form.errors)
     <div class="form-group">
