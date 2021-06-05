@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.DeclarantReferenceNumberFormProvider
 import javax.inject.Inject
 import models.UserAnswers
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import pages.{DeclarantReferenceNumberPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class DeclarantReferenceNumberController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator2,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

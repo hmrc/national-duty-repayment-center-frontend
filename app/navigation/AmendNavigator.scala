@@ -21,7 +21,7 @@ import models.UserAnswers
 import pages._
 import play.api.mvc.Call
 
-class AmendNavigator extends Navigator2[UserAnswers] with AmendAnswerConditions with AmendHasAnsweredConditions {
+class AmendNavigator extends Navigator[UserAnswers] with AmendAnswerConditions with AmendHasAnsweredConditions {
 
   override protected def checkYourAnswersPage: Call = controllers.routes.AmendCheckYourAnswersController.onPageLoad()
 

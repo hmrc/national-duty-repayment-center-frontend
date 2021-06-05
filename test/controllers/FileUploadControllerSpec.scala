@@ -23,7 +23,7 @@ import models.ClaimantType.Importer
 import models.FileType.{Bulk, SupportingEvidence}
 import models.requests.UploadRequest
 import models.{AgentImporterHasEORI, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import org.mockito.Matchers.anyObject
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -202,7 +202,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
       val application = applicationBuilder(
         userAnswers = Some(userAnswers),
-        createNavigator = injector.instanceOf[CreateNavigator2]
+        createNavigator = injector.instanceOf[CreateNavigator]
       ).build()
       when(mockSessionRepository.getFileUploadState(userAnswersId)) thenReturn Future.successful(
         SessionState(Some(fileUploadedState), Some(userAnswers))
@@ -244,7 +244,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         Importer
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers), createNavigator = injector.instanceOf[CreateNavigator2])
+        applicationBuilder(userAnswers = Some(userAnswers), createNavigator = injector.instanceOf[CreateNavigator])
           .build()
       when(mockSessionRepository.getFileUploadState(userAnswersId)) thenReturn Future.successful(
         SessionState(Some(fileUploadedState), Some(userAnswers))

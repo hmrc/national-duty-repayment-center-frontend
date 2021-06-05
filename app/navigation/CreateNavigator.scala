@@ -30,9 +30,9 @@ import models.{
 import pages._
 import play.api.mvc.Call
 
-trait CreateNavigator2 extends Navigator2[UserAnswers]
+trait CreateNavigator extends Navigator[UserAnswers]
 
-class CreateNavigator extends CreateNavigator2 with CreateAnswerConditions with CreateHasAnsweredConditions {
+class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions with CreateHasAnsweredConditions {
 
   override protected def checkYourAnswersPage: Call = controllers.routes.CheckYourAnswersController.onPageLoad()
 
@@ -98,7 +98,6 @@ class CreateNavigator extends CreateNavigator2 with CreateAnswerConditions with 
     P(ConfirmationPage, controllers.routes.ConfirmationController.onPageLoad, always, never)
   )
   // @formatter:off
-
 }
 
 protected trait CreateAnswerConditions {
@@ -106,7 +105,7 @@ protected trait CreateAnswerConditions {
   protected val always: UserAnswers => Boolean = (_: UserAnswers) => true
 
   protected val isImporter: UserAnswers => Boolean = _.isImporterJourney
-  protected val isAgent: UserAnswers => Boolean = _.isAgentJourney
+  protected val isAgent: UserAnswers => Boolean    = _.isAgentJourney
 
   protected val showUkRegulationType: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation)
@@ -127,19 +126,19 @@ protected trait CreateAnswerConditions {
     answers.get(ClaimRepaymentTypePage).exists(_.contains(ClaimRepaymentType.Other))
 
   protected val showFileUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
-   answers.fileUploadState.isEmpty || answers.fileUploadState.exists(state => state.fileUploads.isEmpty)
+    answers.fileUploadState.isEmpty || answers.fileUploadState.exists(state => state.fileUploads.isEmpty)
 
   protected val showImporterEori: UserAnswers => Boolean = (answers: UserAnswers) =>
-   answers.isImporterJourney && answers.get(ImporterHasEoriPage).contains(true)
+    answers.isImporterJourney && answers.get(ImporterHasEoriPage).contains(true)
 
   protected val showImporterAgentEori: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && answers.get(ImporterHasEoriPage).contains(true)
 
   protected val showEnterAgentEori: UserAnswers => Boolean = (answers: UserAnswers) =>
-   answers.isAgentJourney && answers.get(AgentImporterHasEORIPage).contains(AgentImporterHasEORI.Yes)
+    answers.isAgentJourney && answers.get(AgentImporterHasEORIPage).contains(AgentImporterHasEORI.Yes)
 
   protected val showImporterName: UserAnswers => Boolean = (answers: UserAnswers) =>
-   answers.isImporterJourney && answers.get(DoYouOwnTheGoodsPage).contains(DoYouOwnTheGoods.No)
+    answers.isImporterJourney && answers.get(DoYouOwnTheGoodsPage).contains(DoYouOwnTheGoods.No)
 
   protected val showWhomToRepay: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && answers.get(RepaymentTypePage).contains(RepaymentType.BACS)
@@ -151,7 +150,8 @@ protected trait CreateAnswerConditions {
     answers.isAgentJourney && answers.get(IndirectRepresentativePage).contains(false)
 
   protected val showBankDetails: UserAnswers => Boolean = (answers: UserAnswers) =>
-      answers.get(RepaymentTypePage).contains(RepaymentType.BACS)
+    answers.get(RepaymentTypePage).contains(RepaymentType.BACS)
+
 }
 
 protected trait CreateHasAnsweredConditions {
@@ -169,6 +169,7 @@ protected trait CreateHasAnsweredConditions {
   protected val customsDutyPaidAnswered: UserAnswers => Boolean      = _.get(CustomsDutyPaidPage).nonEmpty
   protected val vatPaidAnswered: UserAnswers => Boolean              = _.get(VATPaidPage).nonEmpty
   protected val otherDutyPaidAnswered: UserAnswers => Boolean        = _.get(OtherDutiesPaidPage).nonEmpty
+
   private val dutyPages: Set[String] =
     Set(ClaimRepaymentTypePage, CustomsDutyPaidPage, VATPaidPage, OtherDutiesPaidPage, RepaymentSummaryPage)
 
@@ -176,48 +177,53 @@ protected trait CreateHasAnsweredConditions {
     !answers.changePage.exists(page => dutyPages.contains(page))
 
   protected val fileUploadedAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
-     answers.fileUploadState.exists(state => state.fileUploads.nonEmpty)
+    answers.fileUploadState.exists(state => state.fileUploads.nonEmpty)
 
-  protected val importerHasEoriAnswered: UserAnswers => Boolean        =   (answers: UserAnswers) =>
+  protected val importerHasEoriAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isImporterJourney && answers.get(ImporterHasEoriPage).nonEmpty
 
-  protected val importerHasAgentEoriAnswered: UserAnswers => Boolean        =   (answers: UserAnswers) =>
+  protected val importerHasAgentEoriAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && answers.get(ImporterHasEoriPage).nonEmpty
 
-
-  protected val importerEoriAnswered: UserAnswers => Boolean        = (answers: UserAnswers) =>
+  protected val importerEoriAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isImporterJourney && answers.get(ImporterEoriPage).nonEmpty
 
-  protected val importerAgentEoriAnswered: UserAnswers => Boolean        = (answers: UserAnswers) =>
+  protected val importerAgentEoriAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && answers.get(ImporterEoriPage).nonEmpty
 
-  protected val agentImporterHasEoriAnswered: UserAnswers => Boolean        = _.get(AgentImporterHasEORIPage).nonEmpty
-  protected val enterAgentEoriAnswered: UserAnswers => Boolean        = _.get(EnterAgentEORIPage).nonEmpty
-  protected val isVatRegisteredAnswered: UserAnswers => Boolean        = _.get(IsVATRegisteredPage).nonEmpty
-  protected val isImporterVatRegisteredAnswered: UserAnswers => Boolean        = _.get(IsImporterVatRegisteredPage).nonEmpty
-  protected val representativeImporterNameAnswered: UserAnswers => Boolean        = _.get(RepresentativeImporterNamePage).nonEmpty
-  protected val declarantNameAnswered: UserAnswers => Boolean        = _.get(DeclarantNamePage).nonEmpty
-  protected val doYouOwnGoodsAnswered: UserAnswers => Boolean        = _.get(DoYouOwnTheGoodsPage).nonEmpty
-  protected val importerNameAnswered: UserAnswers => Boolean        = _.get(ImporterNamePage).nonEmpty
+  protected val agentImporterHasEoriAnswered: UserAnswers => Boolean    = _.get(AgentImporterHasEORIPage).nonEmpty
+  protected val enterAgentEoriAnswered: UserAnswers => Boolean          = _.get(EnterAgentEORIPage).nonEmpty
+  protected val isVatRegisteredAnswered: UserAnswers => Boolean         = _.get(IsVATRegisteredPage).nonEmpty
+  protected val isImporterVatRegisteredAnswered: UserAnswers => Boolean = _.get(IsImporterVatRegisteredPage).nonEmpty
 
-  protected val importerAddressAnswered: UserAnswers => Boolean        = (answers: UserAnswers) =>
+  protected val representativeImporterNameAnswered: UserAnswers => Boolean =
+    _.get(RepresentativeImporterNamePage).nonEmpty
+
+  protected val declarantNameAnswered: UserAnswers => Boolean = _.get(DeclarantNamePage).nonEmpty
+  protected val doYouOwnGoodsAnswered: UserAnswers => Boolean = _.get(DoYouOwnTheGoodsPage).nonEmpty
+  protected val importerNameAnswered: UserAnswers => Boolean  = _.get(ImporterNamePage).nonEmpty
+
+  protected val importerAddressAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(ImporterAddressPage).nonEmpty || answers.get(ImporterManualAddressPage).nonEmpty
 
-  protected val emailAndPhoneNumberAnswered: UserAnswers => Boolean        = _.get(EmailAddressAndPhoneNumberPage).nonEmpty
-  protected val declarantReferenceNumberAnswered: UserAnswers => Boolean        = _.get(DeclarantReferenceNumberPage).nonEmpty
-  protected val repaymentTypeAnswered: UserAnswers => Boolean        = _.get(RepaymentTypePage).nonEmpty
-  protected val bankDetailsAnswered: UserAnswers => Boolean        = _.get(BankDetailsPage).nonEmpty
-  protected val representativeDeclarantAndBusinessNameAnswered: UserAnswers => Boolean        = _.get(RepresentativeDeclarantAndBusinessNamePage).nonEmpty
+  protected val emailAndPhoneNumberAnswered: UserAnswers => Boolean      = _.get(EmailAddressAndPhoneNumberPage).nonEmpty
+  protected val declarantReferenceNumberAnswered: UserAnswers => Boolean = _.get(DeclarantReferenceNumberPage).nonEmpty
+  protected val repaymentTypeAnswered: UserAnswers => Boolean            = _.get(RepaymentTypePage).nonEmpty
+  protected val bankDetailsAnswered: UserAnswers => Boolean              = _.get(BankDetailsPage).nonEmpty
 
-  protected val agentImporterAddressAnswered: UserAnswers => Boolean        = (answers: UserAnswers) =>
+  protected val representativeDeclarantAndBusinessNameAnswered: UserAnswers => Boolean =
+    _.get(RepresentativeDeclarantAndBusinessNamePage).nonEmpty
+
+  protected val agentImporterAddressAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(AgentImporterAddressPage).nonEmpty || answers.get(AgentImporterManualAddressPage).nonEmpty
 
-  protected val whoToRepayAnsweredAnswered: UserAnswers => Boolean        = _.get(WhomToPayPage).nonEmpty
-  protected val indirectRepresentativeAnswered: UserAnswers => Boolean        = _.get(IndirectRepresentativePage).nonEmpty
+  protected val whoToRepayAnsweredAnswered: UserAnswers => Boolean     = _.get(WhomToPayPage).nonEmpty
+  protected val indirectRepresentativeAnswered: UserAnswers => Boolean = _.get(IndirectRepresentativePage).nonEmpty
 
   protected val proofOfAuthorityAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.fileUploadState.flatMap(_.fileUploads.files.find(_.fileType.contains(ProofOfAuthority))).isDefined
 
   protected val bulkUploadAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.fileUploadState.flatMap(_.fileUploads.files.find(_.fileType.contains(Bulk))).isDefined
+
 }

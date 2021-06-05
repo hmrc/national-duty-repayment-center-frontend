@@ -21,7 +21,7 @@ import forms.WhomToPayFormProvider
 import javax.inject.Inject
 import models.WhomToPay.Importer
 import models._
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import pages.{IndirectRepresentativePage, Page, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class WhomToPayController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator2,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

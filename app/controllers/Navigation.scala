@@ -17,12 +17,12 @@
 package controllers
 
 import models.UserAnswers
-import navigation.{Navigator2, NavigatorBack}
+import navigation.{Navigator, NavigatorBack}
 import pages.Page
 import play.api.mvc.Call
 
 trait Navigation[T <: UserAnswers] {
-  val navigator: Navigator2[T]
+  val navigator: Navigator[T]
   val page: Page
 
   def nextPage: T => Call = navigator.nextPage(page, _)

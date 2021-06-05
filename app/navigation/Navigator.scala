@@ -16,181 +16,67 @@
 
 package navigation
 
-import controllers.routes
-import javax.inject.{Inject, Singleton}
-import models.ClaimantType.Representative
-import models.RepaymentType.BACS
-import models._
-import pages._
+import models.Answers
+import pages.Page
 import play.api.mvc.Call
 
-@Singleton
-class Navigator @Inject() () {
+trait Navigator[T <: Answers] {
+  protected case class P(page: Page, destination: () => Call, canAccessGiven: T => Boolean, hasAnswer: T => Boolean)
 
-  private val normalRoutes: Page => UserAnswers => Call = {
-    case ArticleTypePage                            => getReasonForRepayment
-    case UkRegulationTypePage                       => getReasonForRepayment
-    case AgentImporterHasEORIPage                   => getAgentEORIStatus
-    case ImporterEoriPage                           => getEORIPage
-    case IsImporterVatRegisteredPage                => _ => routes.RepresentativeImporterNameController.onPageLoad()
-    case ImporterNamePage                           => _ => routes.ImporterAddressController.onPageLoad()
-    case RepresentativeImporterNamePage             => _ => routes.ImporterAddressController.onPageLoad()
-    case DeclarantNamePage                          => _ => routes.DoYouOwnTheGoodsController.onPageLoad()
-    case DoYouOwnTheGoodsPage                       => doYouOwnTheGoods
-    case ImporterManualAddressPage                  => getImporterManualAddress
-    case ImporterHasEoriPage                        => getEORIConfirmation
-    case IsVATRegisteredPage                        => _ => routes.DeclarantNameController.onPageLoad()
-    case EmailAddressAndPhoneNumberPage             => _ => routes.DeclarantReferenceNumberController.onPageLoad()
-    case DeclarantReferenceNumberPage               => getRepaymentType
-    case RepaymentTypePage                          => getRepaymentMethodType
-    case BankDetailsPage                            => _ => routes.CheckYourAnswersController.onPageLoad
-    case EnterAgentEORIPage                         => _ => routes.IsImporterVatRegisteredController.onPageLoad()
-    case RepresentativeImporterNamePage             => _ => routes.ImporterAddressController.onPageLoad()
-    case AgentImporterManualAddressPage             => _ => routes.EmailAddressAndPhoneNumberController.onPageLoad()
-    case WhomToPayPage                              => whomToPayRoute
-    case IndirectRepresentativePage                 => indirectRepresentativeRoute
-    case ProofOfAuthorityPage                       => _ => routes.BankDetailsController.onPageLoad()
-    case CheckYourAnswersPage                       => _ => routes.ConfirmationController.onPageLoad()
-    case RepresentativeDeclarantAndBusinessNamePage => _ => routes.AgentImporterAddressController.onPageLoad()
-    case _                                          => _ => routes.IndexController.onPageLoad()
+  protected val pageOrder: Seq[P]
+
+  protected def checkYourAnswersPage: Call
+
+  protected def pageFor: String => Option[Page] = (pageName: String) =>
+    pageOrder.find(_.page.toString == pageName).map(_.page)
+
+  private lazy val reversePageOrder = pageOrder.reverse
+
+  def gotoPage(pageName: String): Call = viewFor(pageOrder, pageFor(pageName)).getOrElse(pageOrder.head.destination())
+
+  def firstMissingAnswer(userAnswers: T): Option[Call] = {
+    val missing = viewFor(pageOrder, nextPageAfterChangeFor(pageOrder, pageOrder.head.page, userAnswers))
+    if (missing == Some(checkYourAnswersPage)) None else missing
   }
 
-  private def getImporterManualAddress(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
-    case Some(ClaimantType.Importer) => routes.EmailAddressAndPhoneNumberController.onPageLoad()
-    case _                           => routes.ImporterHasEoriController.onPageLoad()
+  def nextPage(currentPage: Page, userAnswers: T): Call = userAnswers.changePage match {
+    case None =>
+      viewFor(pageOrder, nextPageFor(pageOrder, currentPage, userAnswers)).getOrElse(pageOrder.head.destination())
+    case Some(_) =>
+      viewFor(pageOrder, nextPageAfterChangeFor(pageOrder, currentPage, userAnswers)).getOrElse(checkYourAnswersPage)
   }
 
-  private def doYouOwnTheGoods(answers: UserAnswers): Call = answers.get(DoYouOwnTheGoodsPage) match {
-    case Some(DoYouOwnTheGoods.Yes) => routes.ImporterAddressController.onPageLoad()
-    case _                          => routes.ImporterNameController.onPageLoad()
-  }
+  private val jsBackLink: Call = Call("GET", "javascript:history.back()")
 
-  private def getRepaymentType(answers: UserAnswers): Call =
-    (answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType, answers.get(ClaimantTypePage)) match {
-      case (NumberOfEntriesType.Multiple, Some(ClaimantType.Representative)) =>
-        routes.WhomToPayController.onPageLoad()
-      case (NumberOfEntriesType.Multiple, Some(ClaimantType.Importer)) =>
-        routes.BankDetailsController.onPageLoad()
-      case _ => routes.RepaymentTypeController.onPageLoad()
+  def previousPage(currentPage: Page, userAnswers: T): NavigatorBack =
+    if (userAnswers.changePage.nonEmpty)
+      NavigatorBack(Some(jsBackLink))
+    else
+      NavigatorBack(viewFor(pageOrder, nextPageFor(reversePageOrder, currentPage, userAnswers)))
+
+  private val nextPageFor: (Seq[P], Page, T) => Option[Page] = (pages, currentPage, userAnswers) =>
+    after(pages, currentPage)
+      .find(_.canAccessGiven(userAnswers))
+      .map(_.page)
+
+  protected val nextPageAfterChangeFor: (Seq[P], Page, T) => Option[Page] =
+    (pages, currentPage, userAnswers) => {
+      after(pages, currentPage)
+        .find(p => p.canAccessGiven(userAnswers) && !p.hasAnswer(userAnswers))
+        .map(_.page)
     }
 
-  private def getReasonForRepayment(answers: UserAnswers): Call =
-    answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Multiple => routes.BulkFileUploadController.showFileUpload()
-      case NumberOfEntriesType.Single   => routes.EntryDetailsController.onPageLoad()
-    }
+  private val viewFor: (Seq[P], Option[Page]) => Option[Call] = (pages, page) =>
+    page.flatMap(
+      p =>
+        pages
+          .find(_.page == p)
+          .map(_.destination())
+    )
 
-  private def whomToPayRoute(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
-    case Some(WhomToPay.Importer)       => routes.BankDetailsController.onPageLoad()
-    case Some(WhomToPay.Representative) => routes.IndirectRepresentativeController.onPageLoad()
-    case None                           => routes.SessionExpiredController.onPageLoad()
+  private def after(pages: Seq[P], page: Page): Seq[P] = pages.span(_.page != page)._2 match {
+    case s if s.isEmpty => Seq.empty
+    case s              => s.tail
   }
-
-  private def indirectRepresentativeRoute(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
-    case Some(true)  => routes.BankDetailsController.onPageLoad()
-    case Some(false) => routes.ProofOfAuthorityController.showFileUpload()
-    case None        => routes.SessionExpiredController.onPageLoad()
-  }
-
-  private def getEORIPage(answers: UserAnswers): Call = answers.get(ClaimantTypePage) match {
-    case Some(ClaimantType.Representative) =>
-      if (answers.get(RepresentativeImporterNamePage).isEmpty)
-        routes.RepresentativeImporterNameController.onPageLoad()
-      else routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad()
-    case _ => routes.IsVATRegisteredController.onPageLoad()
-  }
-
-  private def getAgentEORIStatus(answers: UserAnswers): Call = answers.get(AgentImporterHasEORIPage) match {
-    case Some(AgentImporterHasEORI.Yes) => routes.EnterAgentEORIController.onPageLoad()
-    case _                              => routes.IsImporterVatRegisteredController.onPageLoad()
-  }
-
-  private def getAgentEORIStatusWithCheckMode(answers: UserAnswers): Call =
-    answers.get(AgentImporterHasEORIPage) match {
-      case Some(AgentImporterHasEORI.Yes) => routes.EnterAgentEORIController.onPageLoad()
-      case _                              => routes.IsImporterVatRegisteredController.onPageLoad()
-    }
-
-  private def getEORIConfirmation(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
-    case Some(true) => routes.ImporterEoriController.onPageLoad()
-    case _ =>
-      answers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
-        case true => routes.IsVATRegisteredController.onPageLoad()
-        case _    => routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad()
-      }
-  }
-
-  private def getEORIConfirmationWithCheckMode(answers: UserAnswers): Call = answers.get(ImporterHasEoriPage) match {
-    case Some(true) => routes.ImporterEoriController.onPageLoad()
-    case _ =>
-      answers.get(ClaimantTypePage).contains(ClaimantType.Importer) match {
-        case true => routes.IsVATRegisteredController.onPageLoad()
-        case _    => routes.ImporterNameController.onPageLoad()
-      }
-  }
-
-  private def getRepaymentMethodType(answers: UserAnswers): Call =
-    (answers.get(RepaymentTypePage), answers.get(ClaimantTypePage)) match {
-      case (Some(RepaymentType.BACS), Some(ClaimantType.Representative)) =>
-        routes.WhomToPayController.onPageLoad()
-      case (Some(RepaymentType.BACS), Some(ClaimantType.Importer)) =>
-        routes.BankDetailsController.onPageLoad()
-      case _ => routes.CheckYourAnswersController.onPageLoad
-    }
-
-  private def getWhomToPayCheckMode(answers: UserAnswers): Call = answers.get(WhomToPayPage) match {
-    case Some(WhomToPay.Representative) => routes.IndirectRepresentativeController.onPageLoad()
-    case Some(WhomToPay.Importer) =>
-      answers.get(BankDetailsPage).isEmpty match {
-        case false => routes.CheckYourAnswersController.onPageLoad()
-        case true  => routes.BankDetailsController.onPageLoad()
-      }
-  }
-
-  private def getRepaymentTypeWithCheckMode(answers: UserAnswers): Call =
-    (answers.get(RepaymentTypePage), answers.get(ClaimantTypePage)) match {
-      case (Some(BACS), Some(Representative))                      => routes.WhomToPayController.onPageLoad()
-      case (Some(BACS), _) if answers.get(BankDetailsPage).isEmpty => routes.BankDetailsController.onPageLoad()
-      case (Some(RepaymentType.CMA), _)                            => routes.CheckYourAnswersController.onPageLoad()
-    }
-
-  private def getIndirectRepresentativeWithCheckMode(answers: UserAnswers): Call =
-    answers.get(IndirectRepresentativePage) match {
-      case Some(false) => routes.ProofOfAuthorityController.showFileUpload()
-      case Some(true) =>
-        answers.get(BankDetailsPage).isEmpty match {
-          case false => routes.CheckYourAnswersController.onPageLoad()
-          case true  => routes.BankDetailsController.onPageLoad()
-        }
-    }
-
-  private def doYouOwnTheGoodsWithCheckMode(answers: UserAnswers): Call =
-    answers.get(DoYouOwnTheGoodsPage).contains(DoYouOwnTheGoods.No) match {
-      case true  => routes.ImporterNameController.onPageLoad()
-      case false => routes.CheckYourAnswersController.onPageLoad()
-    }
-
-  private val checkRouteMap: Page => UserAnswers => Call = {
-    case ImporterHasEoriPage        => getEORIConfirmationWithCheckMode
-    case AgentImporterHasEORIPage   => getAgentEORIStatusWithCheckMode
-    case WhomToPayPage              => getWhomToPayCheckMode
-    case IndirectRepresentativePage => getIndirectRepresentativeWithCheckMode
-    case RepaymentTypePage          => getRepaymentTypeWithCheckMode
-    case DoYouOwnTheGoodsPage       => doYouOwnTheGoodsWithCheckMode
-    case _                          => _ => routes.CheckYourAnswersController.onPageLoad()
-  }
-
-  def nextPage(page: Page, userAnswers: UserAnswers): Call =
-//    mode match {
-//      case _ =>
-    normalRoutes(page)(userAnswers)
-
-//      case CheckMode =>
-//        checkRouteMap(page)(userAnswers)
-//      case RepayNormalMode =>
-//        repayRouteMap(NormalMode)(page)(userAnswers)
-//      case RepayCheckMode =>
-//        repayRouteMap(CheckMode)(page)(userAnswers)
-//    }
 
 }

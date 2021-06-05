@@ -21,7 +21,7 @@ import java.time.LocalDate
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import pages.{CheckYourAnswersPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -41,7 +41,7 @@ class CheckYourAnswersController @Inject() (
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   claimService: ClaimService,
-  val navigator: CreateNavigator2,
+  val navigator: CreateNavigator,
   val controllerComponents: MessagesControllerComponents,
   view: CheckYourAnswersView
 )(implicit ec: ExecutionContext)

@@ -22,7 +22,7 @@ import forms.{AddressSelectionFormProvider, AgentImporterAddressFormProvider, Po
 import javax.inject.Inject
 import models.requests.DataRequest
 import models.{Address, PostcodeLookup}
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import org.slf4j.LoggerFactory
 import pages.{AgentImporterAddressPage, AgentImporterManualAddressPage, AgentImporterPostcodePage}
 import play.api.data.Form
@@ -41,7 +41,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AgentImporterAddressController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: CreateNavigator2,
+  navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

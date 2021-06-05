@@ -26,7 +26,7 @@ import controllers.actions._
 import models.AmendCaseResponseType.FurtherInformation
 import models._
 import models.requests.{AmendClaimRequest, CreateClaimRequest, UploadRequest}
-import navigation.{CreateNavigator2, NavigatorBack}
+import navigation.{CreateNavigator, NavigatorBack}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.TryValues
@@ -89,13 +89,13 @@ trait SpecBase
   def navBackLink(call: Call) = NavigatorBack(Some(call))
   val defaultNextPage         = Call("GET", "/default-next-page")
 
-  val mockCreateNavigator = mock[CreateNavigator2]
+  val mockCreateNavigator = mock[CreateNavigator]
   when(mockCreateNavigator.previousPage(any(), any())).thenReturn(defaultBackLink)
   when(mockCreateNavigator.nextPage(any(), any())).thenReturn(defaultNextPage)
 
   protected def applicationBuilder(
     userAnswers: Option[UserAnswers] = None,
-    createNavigator: CreateNavigator2 = mockCreateNavigator
+    createNavigator: CreateNavigator = mockCreateNavigator
   ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .configure("metrics.enabled" -> false, "auditing.enabled" -> false, "metrics.jvm" -> false).overrides(
@@ -105,7 +105,7 @@ trait SpecBase
         bind[UpscanInitiateConnector].toInstance(upscanMock),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[SessionRepository].toInstance(mockSessionRepository),
-        bind[CreateNavigator2].toInstance(createNavigator),
+        bind[CreateNavigator].toInstance(createNavigator),
         bind[Metrics].to[MetricsImpl]
       )
 

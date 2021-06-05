@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.DoYouOwnTheGoodsFormProvider
 import javax.inject.Inject
 import models.{DoYouOwnTheGoods, UserAnswers}
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import pages.{DeclarantNamePage, DoYouOwnTheGoodsPage, ImporterNamePage, Page}
 import play.api.data.FormError
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class DoYouOwnTheGoodsController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator2,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

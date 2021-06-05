@@ -30,7 +30,7 @@ import javax.inject.{Inject, Named}
 import models.FileType.ProofOfAuthority
 import models.UpscanNotification
 import models.requests.DataRequest
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import pages.{ProofOfAuthorityPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -48,7 +48,7 @@ class ProofOfAuthorityController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  navigator: CreateNavigator2,
+  navigator: CreateNavigator,
   sessionRepository: SessionRepository,
   upscanInitiateConnector: UpscanInitiateConnector,
   val fileUtils: FileUploadUtils,

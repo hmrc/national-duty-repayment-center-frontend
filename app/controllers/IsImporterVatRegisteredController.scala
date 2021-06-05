@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.IsImporterVatRegisteredFormProvider
 import javax.inject.Inject
 import models.UserAnswers
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import pages.{IsImporterVatRegisteredPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class IsImporterVatRegisteredController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator2,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

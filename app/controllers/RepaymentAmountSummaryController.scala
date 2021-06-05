@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import javax.inject.Inject
 import models.UserAnswers
-import navigation.CreateNavigator2
+import navigation.CreateNavigator
 import pages.{Page, RepaymentSummaryPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -29,7 +29,7 @@ import views.html.RepaymentAmountSummaryView
 
 class RepaymentAmountSummaryController @Inject() (
   override val messagesApi: MessagesApi,
-  val navigator: CreateNavigator2,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
