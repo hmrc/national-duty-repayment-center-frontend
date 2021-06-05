@@ -20,10 +20,10 @@ import controllers.actions._
 import forms.AgentImporterHasEORIFormProvider
 import javax.inject.Inject
 import models.{AgentImporterHasEORI, UserAnswers}
-import navigation.{CreateNavigator, Navigator}
-import pages.{AgentImporterHasEORIPage, ArticleTypePage, EnterAgentEORIPage, Page}
+import navigation.CreateNavigator2
+import pages.{AgentImporterHasEORIPage, EnterAgentEORIPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentImporterHasEORIView
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AgentImporterHasEORIController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator,
+  val navigator: CreateNavigator2,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -41,10 +41,10 @@ class AgentImporterHasEORIController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: AgentImporterHasEORIView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers]{
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = AgentImporterHasEORIPage
-  val form = formProvider()
+  val form                = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -69,8 +69,7 @@ class AgentImporterHasEORIController @Inject() (
                 case AgentImporterHasEORI.Yes => setEORINumber.set(AgentImporterHasEORIPage, value)
               })
             _ <- sessionRepository.set(updatedAnswers)
-          } yield
-              Redirect(nextPage(updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 

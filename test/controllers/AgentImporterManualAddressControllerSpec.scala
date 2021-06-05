@@ -18,14 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.AgentImporterManualAddressFormProvider
-import models.{Address, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{Address, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AgentImporterManualAddressPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
@@ -35,12 +32,10 @@ import scala.concurrent.Future
 
 class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new AgentImporterManualAddressFormProvider()
   val form         = formProvider()
 
-  lazy val agentImporterManualAddressRoute = routes.AgentImporterManualAddressController.onPageLoad(NormalMode).url
+  lazy val agentImporterManualAddressRoute = routes.AgentImporterManualAddressController.onPageLoad().url
 
   "AgentImporterManualAddress Controller" must {
 
@@ -57,7 +52,10 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(request, messages).toString
+        view(form, defaultBackLink, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
+          request,
+          messages
+        ).toString
 
       application.stop()
     }
@@ -82,7 +80,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       contentAsString(result) mustEqual
         view(
           form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")),
-          NormalMode,
+          defaultBackLink,
           Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
         )(request, messages).toString
 
@@ -93,10 +91,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, agentImporterManualAddressRoute)
@@ -112,7 +107,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -134,7 +129,7 @@ class AgentImporterManualAddressControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
+        view(boundForm, defaultBackLink, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
           request,
           messages
         ).toString

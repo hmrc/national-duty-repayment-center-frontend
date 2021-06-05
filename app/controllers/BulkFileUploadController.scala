@@ -30,7 +30,7 @@ import javax.inject.{Inject, Named}
 import models.FileType.Bulk
 import models.requests.DataRequest
 import models.{UpscanNotification, UserAnswers}
-import navigation.CreateNavigator
+import navigation.CreateNavigator2
 import pages.{BulkFileUploadPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -49,7 +49,7 @@ class BulkFileUploadController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator,
+  val navigator: CreateNavigator2,
   upscanInitiateConnector: UpscanInitiateConnector,
   val fileUtils: FileUploadUtils,
   val upscanS3ErrorFormProvider: UpscanS3ErrorFormProvider,

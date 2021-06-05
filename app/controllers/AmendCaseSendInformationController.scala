@@ -101,9 +101,7 @@ class AmendCaseSendInformationController @Inject() (
               FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
             val sessionState = ss.copy(state = Some(removeState))
             fileUtils.applyTransition(
-              removeFileUploadBy(reference)(upscanRequest(request.internalId))(
-                upscanInitiateConnector.initiate(_)
-              )(_),
+              removeFileUploadBy(reference)(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(_),
               removeState,
               sessionState
             ).map {

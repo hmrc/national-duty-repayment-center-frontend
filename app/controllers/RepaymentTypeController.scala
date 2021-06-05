@@ -22,7 +22,7 @@ import javax.inject.Inject
 import models.ClaimantType.Importer
 import models.RepaymentType.CMA
 import models.UserAnswers
-import navigation.CreateNavigator
+import navigation.CreateNavigator2
 import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -35,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class RepaymentTypeController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator,
+  val navigator: CreateNavigator2,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

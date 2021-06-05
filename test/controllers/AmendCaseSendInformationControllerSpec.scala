@@ -20,16 +20,7 @@ import java.time.ZonedDateTime
 
 import base.SpecBase
 import models.FileType.SupportingEvidence
-import models.{
-  AmendCaseResponseType,
-  CheckMode,
-  FileUpload,
-  FileUploads,
-  NormalMode,
-  SessionState,
-  UpscanNotification,
-  UserAnswers
-}
+import models.{AmendCaseResponseType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.Matchers.anyObject
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -47,7 +38,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
   "GET /file-upload" should {
     "show the upload first document page" in {
-      val fileUploadUrl = routes.AmendCaseSendInformationController.showFileUpload(NormalMode).url
+      val fileUploadUrl = routes.AmendCaseSendInformationController.showFileUpload().url
       val application   = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
         when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
@@ -65,7 +56,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
   "GET /file-uploaded" should {
     "show file uploaded page" in {
-      val fileUploadedUrl = routes.AmendCaseSendInformationController.showFileUploaded(NormalMode).url
+      val fileUploadedUrl = routes.AmendCaseSendInformationController.showFileUploaded().url
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -111,7 +102,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
   "POST /file-uploaded" should {
     "go to Further information page" in {
       lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice(NormalMode).url
+        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -155,7 +146,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
     "go to Check your request page when no documents need to provided" in {
       lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice(NormalMode).url
+        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
 
@@ -199,7 +190,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
     "go to upload file page" in {
       lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice(NormalMode).url
+        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
 
@@ -236,14 +227,14 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
       val result = route(application, request).value
 
-      redirectLocation(result) mustEqual Some(routes.AmendCaseSendInformationController.showFileUpload(NormalMode).url)
+      redirectLocation(result) mustEqual Some(routes.AmendCaseSendInformationController.showFileUpload().url)
 
       application.stop()
     }
 
     "stay on file uploaded page when validation error" in {
       lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice(NormalMode).url
+        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
 
@@ -289,7 +280,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
   "In CheckMode" should {
     "go to Further Information page when both Documents and Further Information selected" in {
       lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice(CheckMode).url
+        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
 
       val amendCaseResponseType: Set[AmendCaseResponseType] =
         Set(AmendCaseResponseType.SupportingDocuments, AmendCaseResponseType.FurtherInformation)
@@ -334,7 +325,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
     "go to Check your Answers page when only Documents is selected" in {
       lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice(CheckMode).url
+        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
 

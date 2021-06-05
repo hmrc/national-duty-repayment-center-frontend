@@ -18,14 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.UkRegulationTypeFormProvider
-import models.{NormalMode, UkRegulationType, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{UkRegulationType, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UkRegulationTypePage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.UkRegulationTypeView
@@ -34,9 +31,7 @@ import scala.concurrent.Future
 
 class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
-  lazy val ukRegulationTypeRoute = routes.UkRegulationTypeController.onPageLoad(NormalMode).url
+  lazy val ukRegulationTypeRoute = routes.UkRegulationTypeController.onPageLoad().url
 
   val formProvider = new UkRegulationTypeFormProvider()
   val form         = formProvider()
@@ -56,7 +51,7 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -76,7 +71,7 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UkRegulationType.values.head), NormalMode)(request, messages).toString
+        view(form.fill(UkRegulationType.values.head), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -87,7 +82,6 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -98,7 +92,7 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -120,7 +114,7 @@ class UkRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

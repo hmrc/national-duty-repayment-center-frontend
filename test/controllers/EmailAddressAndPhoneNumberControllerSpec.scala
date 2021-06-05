@@ -18,28 +18,19 @@ package controllers
 
 import base.SpecBase
 import forms.{EmailAddressAndPhoneNumberFormProvider, EmailAndPhoneNumber}
-import models.{IsContactProvided, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import models.{IsContactProvided, UserAnswers}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.EmailAddressAndPhoneNumberPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EmailAddressAndPhoneNumberView
 
-import scala.concurrent.Future
-
 class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSugar {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new EmailAddressAndPhoneNumberFormProvider()
   val form         = formProvider()
 
-  lazy val emailAddressRoute = routes.EmailAddressAndPhoneNumberController.onPageLoad(NormalMode).url
+  lazy val emailAddressRoute = routes.EmailAddressAndPhoneNumberController.onPageLoad().url
 
   "EmailAddress Controller" must {
 
@@ -56,7 +47,7 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -81,7 +72,7 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
       contentAsString(result) mustEqual
         view(
           form.fill(EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))),
-          NormalMode
+          defaultBackLink
         )(request, messages).toString
 
       application.stop()
@@ -104,7 +95,7 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

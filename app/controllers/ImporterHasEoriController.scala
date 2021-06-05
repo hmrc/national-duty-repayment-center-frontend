@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ImporterHasEoriFormProvider
 import javax.inject.Inject
 import models.UserAnswers
-import navigation.CreateNavigator
+import navigation.CreateNavigator2
 import pages.{ImporterEoriPage, ImporterHasAgentEoriPage, ImporterHasEoriPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -30,10 +30,10 @@ import views.html.ImporterHasEoriView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ImporterHasEoriController @Inject()(
+class ImporterHasEoriController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: CreateNavigator,
+  navigator: CreateNavigator2,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -41,9 +41,9 @@ class ImporterHasEoriController @Inject()(
   val controllerComponents: MessagesControllerComponents,
   view: ImporterHasEoriView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport  {
+    extends FrontendBaseController with I18nSupport {
 
-  val form                = formProvider()
+  val form = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -78,14 +78,15 @@ class ImporterHasEoriController @Inject()(
   }
 
   private def backLink(answers: UserAnswers) =
-    if(answers.isImporterJourney)
+    if (answers.isImporterJourney)
       navigator.previousPage(ImporterHasEoriPage, answers)
     else
       navigator.previousPage(ImporterHasAgentEoriPage, answers)
 
   private def nextPage(answers: UserAnswers) =
-    if(answers.isImporterJourney)
+    if (answers.isImporterJourney)
       navigator.nextPage(ImporterHasEoriPage, answers)
     else
       navigator.nextPage(ImporterHasAgentEoriPage, answers)
+
 }

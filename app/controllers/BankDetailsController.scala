@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.BankDetailsFormProvider
 import javax.inject.Inject
 import models.{RepaymentType, UserAnswers}
-import navigation.CreateNavigator
+import navigation.CreateNavigator2
 import pages.{BankDetailsPage, Page, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class BankDetailsController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator,
+  val navigator: CreateNavigator2,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

@@ -17,11 +17,22 @@
 package navigation
 
 import models.FileType.{Bulk, ProofOfAuthority}
-import models.{AgentImporterHasEORI, ClaimRepaymentType, CustomsRegulationType, DoYouOwnTheGoods, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
+import models.{
+  AgentImporterHasEORI,
+  ClaimRepaymentType,
+  CustomsRegulationType,
+  DoYouOwnTheGoods,
+  NumberOfEntriesType,
+  RepaymentType,
+  UserAnswers,
+  WhomToPay
+}
 import pages._
 import play.api.mvc.Call
 
-class CreateNavigator extends Navigator2[UserAnswers] with CreateAnswerConditions with CreateHasAnsweredConditions {
+trait CreateNavigator2 extends Navigator2[UserAnswers]
+
+class CreateNavigator extends CreateNavigator2 with CreateAnswerConditions with CreateHasAnsweredConditions {
 
   override protected def checkYourAnswersPage: Call = controllers.routes.CheckYourAnswersController.onPageLoad()
 

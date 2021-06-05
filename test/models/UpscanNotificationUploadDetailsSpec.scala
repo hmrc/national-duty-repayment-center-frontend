@@ -17,7 +17,7 @@
 package models
 
 import org.scalatest.Matchers.convertToAnyShouldWrapper
-import org.scalatest.{Matchers, MustMatchers, OptionValues, WordSpec}
+import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 class UpscanNotificationUploadDetailsSpec

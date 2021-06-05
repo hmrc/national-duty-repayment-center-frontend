@@ -18,15 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.RepresentativeImporterNameFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.UserAnswers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.RepresentativeImporterNamePage
-import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RepresentativeImporterNameView
@@ -35,8 +32,6 @@ import scala.concurrent.Future
 
 class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new RepresentativeImporterNameFormProvider()
 
   private val userAnswersDummy =
@@ -44,7 +39,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
 
   val form = formProvider()
 
-  lazy val importerNameRoute = routes.RepresentativeImporterNameController.onPageLoad(NormalMode).url
+  lazy val importerNameRoute = routes.RepresentativeImporterNameController.onPageLoad().url
 
   "Representative ImporterName Controller" must {
 
@@ -61,7 +56,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -79,7 +74,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(models.UserName("Joe Bloggs")), NormalMode)(request, messages).toString
+        view(form.fill(models.UserName("Joe Bloggs")), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -90,7 +85,6 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -100,7 +94,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -122,7 +116,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

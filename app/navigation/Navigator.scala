@@ -180,11 +180,11 @@ class Navigator @Inject() () {
     case _                          => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
-
   def nextPage(page: Page, userAnswers: UserAnswers): Call =
 //    mode match {
 //      case _ =>
-        normalRoutes(page)(userAnswers)
+    normalRoutes(page)(userAnswers)
+
 //      case CheckMode =>
 //        checkRouteMap(page)(userAnswers)
 //      case RepayNormalMode =>

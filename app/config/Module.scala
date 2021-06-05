@@ -22,6 +22,7 @@ import com.google.inject.{AbstractModule, Inject, Singleton}
 import com.typesafe.config.Config
 import controllers.CheckStateActor
 import controllers.actions._
+import navigation.{CreateNavigator, CreateNavigator2}
 import play.api.Configuration
 import play.api.libs.concurrent.AkkaGuiceSupport
 import play.api.libs.ws.WSClient
@@ -48,6 +49,7 @@ class Module extends AbstractModule with AkkaGuiceSupport {
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
 
     bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
+    bind(classOf[CreateNavigator2]).to(classOf[CreateNavigator]).asEagerSingleton()
 
   }
 

@@ -18,14 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.ReasonForOverpaymentFormProvider
-import models.{ClaimDescription, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{ClaimDescription, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ReasonForOverpaymentPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ReasonForOverpaymentView
@@ -34,12 +31,10 @@ import scala.concurrent.Future
 
 class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new ReasonForOverpaymentFormProvider()
   val form         = formProvider()
 
-  lazy val reasonForOverpaymentRoute = routes.ReasonForOverpaymentController.onPageLoad(NormalMode).url
+  lazy val reasonForOverpaymentRoute = routes.ReasonForOverpaymentController.onPageLoad().url
 
   "ReasonForOverpayment Controller" must {
 
@@ -56,7 +51,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -77,7 +72,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ClaimDescription("answer")), NormalMode)(request, messages).toString
+        view(form.fill(ClaimDescription("answer")), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -88,7 +83,6 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -98,7 +92,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -120,7 +114,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.AmendCaseResponseTypeFormProvider
-import models.{AmendCaseResponseType, NormalMode, UserAnswers}
+import models.{AmendCaseResponseType, UserAnswers}
 import navigation.NavigatorBack
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -95,7 +95,7 @@ class AmendCaseResponseTypeControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AmendCaseSendInformationController.showFileUpload(NormalMode).url
+      redirectLocation(result).value mustEqual routes.AmendCaseSendInformationController.showFileUpload().url
 
       application.stop()
     }

@@ -21,18 +21,17 @@ package connectors
  *
  */
 
+import java.time.LocalDateTime
+
+import base.SpecBase
+import com.github.tomakehurst.wiremock.client.WireMock._
+import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
 import org.scalatest.MustMatchers
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
-import com.github.tomakehurst.wiremock.client.WireMock._
-import base.SpecBase
-import models.ClaimId
-import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
-
-import java.time.LocalDateTime
 
 class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 

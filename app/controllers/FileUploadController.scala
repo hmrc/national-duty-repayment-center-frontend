@@ -30,7 +30,7 @@ import javax.inject.{Inject, Named}
 import models.FileType.SupportingEvidence
 import models.UpscanNotification
 import models.requests.DataRequest
-import navigation.CreateNavigator
+import navigation.CreateNavigator2
 import pages.{FileUploadPage, FileUploadedPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -49,7 +49,7 @@ class FileUploadController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   sessionRepository: SessionRepository,
-  navigator: CreateNavigator,
+  navigator: CreateNavigator2,
   upscanInitiateConnector: UpscanInitiateConnector,
   val controllerComponents: MessagesControllerComponents,
   additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,

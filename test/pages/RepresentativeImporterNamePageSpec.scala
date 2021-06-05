@@ -16,7 +16,7 @@
 
 package pages
 
-import models.{Name, UserName}
+import models.UserName
 import pages.behaviours.PageBehaviours
 
 class RepresentativeImporterNamePageSpec extends PageBehaviours {

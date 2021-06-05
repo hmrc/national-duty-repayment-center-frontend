@@ -26,6 +26,7 @@ import controllers.actions._
 import models.AmendCaseResponseType.FurtherInformation
 import models._
 import models.requests.{AmendClaimRequest, CreateClaimRequest, UploadRequest}
+import navigation.{CreateNavigator2, NavigatorBack}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.TryValues
@@ -37,7 +38,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{bind, Injector}
 import play.api.libs.json.{JsArray, Json}
-import play.api.mvc.AnyContentAsEmpty
+import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
 import repositories.SessionRepository
@@ -84,7 +85,18 @@ trait SpecBase
 
   val mockSessionRepository = mock[SessionRepository]
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
+  val defaultBackLink         = NavigatorBack(Some(Call("GET", "/default-back-link")))
+  def navBackLink(call: Call) = NavigatorBack(Some(call))
+  val defaultNextPage         = Call("GET", "/default-next-page")
+
+  val mockCreateNavigator = mock[CreateNavigator2]
+  when(mockCreateNavigator.previousPage(any(), any())).thenReturn(defaultBackLink)
+  when(mockCreateNavigator.nextPage(any(), any())).thenReturn(defaultNextPage)
+
+  protected def applicationBuilder(
+    userAnswers: Option[UserAnswers] = None,
+    createNavigator: CreateNavigator2 = mockCreateNavigator
+  ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .configure("metrics.enabled" -> false, "auditing.enabled" -> false, "metrics.jvm" -> false).overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
@@ -93,6 +105,7 @@ trait SpecBase
         bind[UpscanInitiateConnector].toInstance(upscanMock),
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[SessionRepository].toInstance(mockSessionRepository),
+        bind[CreateNavigator2].toInstance(createNavigator),
         bind[Metrics].to[MetricsImpl]
       )
 

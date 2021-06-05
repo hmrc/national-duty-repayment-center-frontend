@@ -39,13 +39,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
         AnswerRow(
           Html("Customs Duty that was paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-customs-duty-overpayment"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/customsDutyPaid"),
           Some("customs-duty-overpayment")
         ),
         AnswerRow(
           Html("Customs Duty that should have been paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-customs-duty-overpayment"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/customsDutyPaid"),
           Some("customs-duty-overpayment")
         ),
         AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -57,13 +57,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
         AnswerRow(
           Html("Import VAT that was paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-import-vat-overpayment"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/vATPaid"),
           Some("change-import-vat-overpayment")
         ),
         AnswerRow(
           Html("Import VAT that should have been paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-import-vat-overpayment"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/vATPaid"),
           Some("change-import-vat-overpayment")
         ),
         AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -75,13 +75,13 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
         AnswerRow(
           Html("Other duties that were paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-other-duties-overpayment"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/otherDutiesPaid"),
           Some("other-duties-overpayment")
         ),
         AnswerRow(
           Html("Other duties that should have been paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/repay-other-duties-overpayment"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/otherDutiesPaid"),
           Some("other-duties-overpayment")
         ),
         AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
@@ -108,7 +108,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, routes.RepaymentAmountSummaryController.onPageLoad(NormalMode).url)
+      val request = FakeRequest(GET, routes.RepaymentAmountSummaryController.onPageLoad().url)
 
       val result = route(application, request).value
 
@@ -117,7 +117,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(answersViewModel, NormalMode)(request, messages).toString
+        view(answersViewModel, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

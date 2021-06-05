@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ImporterManualAddressFormProvider
 import javax.inject.Inject
 import models.UserAnswers
-import navigation.CreateNavigator
+import navigation.CreateNavigator2
 import pages.{ImporterManualAddressPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ImporterManualAddressController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  val navigator: CreateNavigator,
+  val navigator: CreateNavigator2,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
