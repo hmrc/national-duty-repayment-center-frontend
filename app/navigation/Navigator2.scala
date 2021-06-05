@@ -27,7 +27,8 @@ trait Navigator2[T <: Answers] {
 
   protected def checkYourAnswersPage: Call
 
-  protected def pageFor: String => Option[Page]
+  protected def pageFor: String => Option[Page] = (pageName: String) =>
+    pageOrder.find(_.page.toString == pageName).map(_.page)
 
   private lazy val reversePageOrder = pageOrder.reverse
 
@@ -38,24 +39,11 @@ trait Navigator2[T <: Answers] {
     if (missing == Some(checkYourAnswersPage)) None else missing
   }
 
-  def nextPage(currentPage: Page, userAnswers: T): Call = {
-
-    println("%%%%%%%%%%%%%%%%%")
-    println("NEXT PAGE")
-    println(currentPage)
-    println(userAnswers)
-
-    val call = userAnswers.changePage match {
-      case None =>
-        viewFor(pageOrder, nextPageFor(pageOrder, currentPage, userAnswers)).getOrElse(pageOrder.head.destination())
-      case Some(_) =>
-        viewFor(pageOrder, nextPageAfterChangeFor(pageOrder, currentPage, userAnswers)).getOrElse(checkYourAnswersPage)
-    }
-
-    println(call)
-    println("%%%%%%%%%%%%%%%%%")
-
-    call
+  def nextPage(currentPage: Page, userAnswers: T): Call = userAnswers.changePage match {
+    case None =>
+      viewFor(pageOrder, nextPageFor(pageOrder, currentPage, userAnswers)).getOrElse(pageOrder.head.destination())
+    case Some(_) =>
+      viewFor(pageOrder, nextPageAfterChangeFor(pageOrder, currentPage, userAnswers)).getOrElse(checkYourAnswersPage)
   }
 
   private val jsBackLink: Call = Call("GET", "javascript:history.back()")

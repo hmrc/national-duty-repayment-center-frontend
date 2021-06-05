@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.EmailAddressAndPhoneNumberFormProvider
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
-import navigation.{CreateNavigator, Navigator}
-import pages.{DoYouOwnTheGoodsPage, EmailAddressAndPhoneNumberPage, Page}
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{EmailAddressAndPhoneNumberPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -41,10 +41,10 @@ class EmailAddressAndPhoneNumberController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: EmailAddressAndPhoneNumberView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers]{
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = EmailAddressAndPhoneNumberPage
-  val form = formProvider()
+  val form                = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

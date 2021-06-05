@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.BankDetailsFormProvider
 import javax.inject.Inject
-import models.{ClaimantType, Mode, RepaymentType, UserAnswers, WhomToPay}
-import navigation.{CreateNavigator, Navigator}
-import pages.{ArticleTypePage, BankDetailsPage, ClaimantTypePage, IndirectRepresentativePage, Page, RepaymentTypePage, WhomToPayPage}
+import models.{RepaymentType, UserAnswers}
+import navigation.CreateNavigator
+import pages.{BankDetailsPage, Page, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.BankDetailsView
@@ -44,7 +44,7 @@ class BankDetailsController @Inject() (
     extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = BankDetailsPage
-  val form = formProvider()
+  val form                = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

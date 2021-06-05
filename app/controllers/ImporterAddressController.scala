@@ -142,7 +142,6 @@ class ImporterAddressController @Inject() (
               )
           )
 
-        // TODO - is this the right "previous page" for the addressConfirmationView???  Needs to go back to "postcode" view
         if (form.hasErrors)
           BadRequest(
             addressConfirmationView(
@@ -216,18 +215,5 @@ class ImporterAddressController @Inject() (
         )
       )
   }
-
-//  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-//    implicit request =>
-//      form.bindFromRequest().fold(
-//        formWithErrors =>
-//          Future.successful(BadRequest(view(formWithErrors, navigator.previousPage(ImporterPostcodePage, request.userAnswers), request.userAnswers.isImporterJourney))),
-//        value =>
-//          for {
-//            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
-//            _              <- sessionRepository.set(updatedAnswers)
-//          } yield Redirect(navigator.nextPage(ImporterAddressPage, updatedAnswers))
-//      )
-//  }
 
 }

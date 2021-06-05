@@ -17,11 +17,13 @@
 package navigation
 
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
-import models.{NormalMode, UserAnswers}
+import models.UserAnswers
 import pages._
 import play.api.mvc.Call
 
 class AmendNavigator extends Navigator2[UserAnswers] with AmendAnswerConditions with AmendHasAnsweredConditions {
+
+  override protected def checkYourAnswersPage: Call = controllers.routes.AmendCheckYourAnswersController.onPageLoad()
 
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
@@ -35,11 +37,6 @@ class AmendNavigator extends Navigator2[UserAnswers] with AmendAnswerConditions 
     P(AmendConfirmationPage, controllers.routes.AmendConfirmationController.onPageLoad, always, never)
   )
   // @formatter:on
-
-  override protected def checkYourAnswersPage: Call = controllers.routes.AmendCheckYourAnswersController.onPageLoad()
-
-  override protected def pageFor: String => Option[Page] = (pageName: String) =>
-    pageOrder.find(_.page.toString == pageName).map(_.page)
 
 }
 

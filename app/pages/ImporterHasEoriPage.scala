@@ -22,9 +22,9 @@ case object ImporterHasEoriPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "importerHasEoriPage"
+  override def toString: String = "importerHasEori"
 }
 
 case object ImporterHasAgentEoriPage extends Page {
-  override def toString: String = "importerHasAgentEoriPage"
+  override def toString: String = "importerHasAgentEori"
 }

@@ -65,13 +65,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         AnswerRow(
           HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
           HtmlFormat.escape(messages(s"$fileName")),
-          Some(routes.BulkFileUploadController.showFileUpload(CheckMode).url)
+          Some(routes.CheckYourAnswersController.onChange(BulkFileUploadPage).url)
         )
       case _ =>
         AnswerRow(
           HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
           HtmlFormat.escape(messages(s"bulkFileUpload.empty")),
-          Some(routes.BulkFileUploadController.showFileUpload(CheckMode).url)
+          Some(routes.CheckYourAnswersController.onChange(BulkFileUploadPage).url)
         )
     }))
 
@@ -82,13 +82,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           AnswerRow(
             HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"$fileName")),
-            Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
+            Some(routes.CheckYourAnswersController.onChange(ProofOfAuthorityPage).url)
           )
         case _ =>
           AnswerRow(
             HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"proofOfAuthority.empty")),
-            Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
+            Some(routes.CheckYourAnswersController.onChange(ProofOfAuthorityPage).url)
           )
       })
     )
@@ -122,7 +122,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterManualAddress.checkYourAnswersLabel")),
         formatAddress(x),
-        Some(routes.AgentImporterManualAddressController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(AgentImporterManualAddressPage).url)
       )
   }
 
@@ -134,7 +134,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case _                           => messages("importerAddress.checkYourAnswersLabel")
         }),
         formatAddress(x),
-        Some(routes.ImporterManualAddressController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ImporterManualAddressPage).url)
       )
   }
 
@@ -143,7 +143,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterAddress.checkYourAnswersLabel")),
         formatAddress(x),
-        Some(routes.CheckYourAnswersController.onChange(ImporterAddressPage).url)
+        Some(routes.CheckYourAnswersController.onChange(AgentImporterAddressPage).url)
       )
   }
 
@@ -155,7 +155,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case _                           => messages("importerAddress.checkYourAnswersLabel")
         }),
         formatAddress(x),
-        Some(routes.CheckYourAnswersController.onChange(ImporterPostcodePage).url)
+        Some(routes.CheckYourAnswersController.onChange(ImporterAddressPage).url)
       )
   }
 

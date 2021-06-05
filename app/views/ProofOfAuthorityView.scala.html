@@ -18,6 +18,7 @@
 @import models.requests.UploadRequest
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
 @import views.UploadFileViewContext
+@import navigation.NavigatorBack
 
 @this(
         govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -30,10 +31,12 @@
         context : UploadFileViewContext
 )
 
-@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("proof-of-authority.title"))}")
+    pageTitle = Some(s"${titleNoForm(messages("proof-of-authority.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
     <form action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate

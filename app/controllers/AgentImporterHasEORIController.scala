@@ -19,7 +19,7 @@ package controllers
 import controllers.actions._
 import forms.AgentImporterHasEORIFormProvider
 import javax.inject.Inject
-import models.{AgentImporterHasEORI, CheckMode, Mode, UserAnswers}
+import models.{AgentImporterHasEORI, UserAnswers}
 import navigation.{CreateNavigator, Navigator}
 import pages.{AgentImporterHasEORIPage, ArticleTypePage, EnterAgentEORIPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}

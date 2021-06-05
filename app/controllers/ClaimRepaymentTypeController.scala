@@ -64,7 +64,6 @@ class ClaimRepaymentTypeController @Inject() (
             BadRequest(view(formWithErrors, backLink(request.userAnswers), request.userAnswers.isImporterJourney))
           ),
         value =>
-          // TODO - is this removal of duties necessary?
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimRepaymentTypePage, value))
             removeCustomsPaid <-

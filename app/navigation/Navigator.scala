@@ -76,7 +76,7 @@ class Navigator @Inject() () {
 
   private def getReasonForRepayment(answers: UserAnswers): Call =
     answers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Multiple => routes.BulkFileUploadController.showFileUpload(NormalMode)
+      case NumberOfEntriesType.Multiple => routes.BulkFileUploadController.showFileUpload()
       case NumberOfEntriesType.Single   => routes.EntryDetailsController.onPageLoad()
     }
 
@@ -88,7 +88,7 @@ class Navigator @Inject() () {
 
   private def indirectRepresentativeRoute(answers: UserAnswers): Call = answers.get(IndirectRepresentativePage) match {
     case Some(true)  => routes.BankDetailsController.onPageLoad()
-    case Some(false) => routes.ProofOfAuthorityController.showFileUpload(NormalMode)
+    case Some(false) => routes.ProofOfAuthorityController.showFileUpload()
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
@@ -156,7 +156,7 @@ class Navigator @Inject() () {
 
   private def getIndirectRepresentativeWithCheckMode(answers: UserAnswers): Call =
     answers.get(IndirectRepresentativePage) match {
-      case Some(false) => routes.ProofOfAuthorityController.showFileUpload(CheckMode)
+      case Some(false) => routes.ProofOfAuthorityController.showFileUpload()
       case Some(true) =>
         answers.get(BankDetailsPage).isEmpty match {
           case false => routes.CheckYourAnswersController.onPageLoad()
@@ -180,21 +180,17 @@ class Navigator @Inject() () {
     case _                          => _ => routes.CheckYourAnswersController.onPageLoad()
   }
 
-  private def repayRouteMap(mode: Mode): Page => UserAnswers => Call = {
 
-    case _ => _ => routes.CheckYourAnswersController.onPageLoad()
-  }
-
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
-    mode match {
-      case NormalMode =>
+  def nextPage(page: Page, userAnswers: UserAnswers): Call =
+//    mode match {
+//      case _ =>
         normalRoutes(page)(userAnswers)
-      case CheckMode =>
-        checkRouteMap(page)(userAnswers)
-      case RepayNormalMode =>
-        repayRouteMap(NormalMode)(page)(userAnswers)
-      case RepayCheckMode =>
-        repayRouteMap(CheckMode)(page)(userAnswers)
-    }
+//      case CheckMode =>
+//        checkRouteMap(page)(userAnswers)
+//      case RepayNormalMode =>
+//        repayRouteMap(NormalMode)(page)(userAnswers)
+//      case RepayCheckMode =>
+//        repayRouteMap(CheckMode)(page)(userAnswers)
+//    }
 
 }

@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import models.{CheckMode, ClaimRepaymentType, NormalMode, UserAnswers}
-import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage, VATPaidPage}
+import models.{ClaimRepaymentType, UserAnswers}
+import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

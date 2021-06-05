@@ -15,36 +15,36 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, CreateOrAmendCase}
+@import models.CreateOrAmendCase
 @import views.ViewUtils._
 
 @this(
-  govukLayout: views.html.layouts.GovukLayoutWrapper,
-  forms: views.components.forms,
-  html: views.components.html
+        govukLayout: views.html.layouts.GovukLayoutWrapper,
+        forms: views.components.forms,
+        html: views.components.html
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("createOrAmendCase.title"))}"),
-    backLink = false
-) {
+    @govukLayout(
+        pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("createOrAmendCase.title"))}"),
+        backLink = false
+    ) {
 
-  @forms.formWithCSRF(action = CreateOrAmendCaseController.onSubmit, args = 'novalidate -> "novalidate") {
+        @forms.formWithCSRF(action = CreateOrAmendCaseController.onSubmit, args = 'novalidate -> "novalidate") {
 
-    @components.error_summary(form.errors)
+            @components.error_summary(form.errors)
 
-    @forms.inputRadio(
-      form = form,
-      idPrefix = "value",
-      name = "value",
-      items = CreateOrAmendCase.options(form),
-      inline = false,
-      legendAsHeading = true,
-      legend = Some(messages("createOrAmendCase.heading"))
-    )
+            @forms.inputRadio(
+                form = form,
+                idPrefix = "value",
+                name = "value",
+                items = CreateOrAmendCase.options(form),
+                inline = false,
+                legendAsHeading = true,
+                legend = Some(messages("createOrAmendCase.heading"))
+            )
 
-    @html.button("site.continue")
-  }
-}
+            @html.button("site.continue")
+        }
+    }

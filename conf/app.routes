@@ -90,36 +90,23 @@ POST        /other-duties-overpayment                                           
 
 GET         /select-importer-address                                                   controllers.ImporterAddressController.onPageLoad()
 POST        /select-importer-address                                                   controllers.ImporterAddressController.postcodeSubmit()
-#POST        /change-select-post-importer-address                                       controllers.ImporterAddressController.postcodeSubmit(mode: Mode = CheckMode)
-#GET         /change-select-importer-address                                            controllers.ImporterAddressController.onPageLoad(mode: Mode = CheckMode)
-#POST        /change-select-importer-address                                            controllers.ImporterAddressController.onSubmit(mode: Mode = CheckMode)
 GET         /importer-address                                                          controllers.ImporterAddressController.enteredAddressPageLoad()
 POST        /importer-address                                                          controllers.ImporterAddressController.addressSelectSubmit()
-#POST        /change-importer-address                                                   controllers.ImporterAddressController.addressSelectSubmit(mode: Mode = CheckMode)
-
 
 GET         /your-business-address                                                     controllers.AgentImporterAddressController.onPageLoad()
 POST        /your-business-address                                                     controllers.AgentImporterAddressController.postcodeSubmit()
-#POST        /change-select-your-business-address                                       controllers.AgentImporterAddressController.postcodeSubmit(mode: Mode = CheckMode)
-#GET         /change-your-business-address                                              controllers.AgentImporterAddressController.onPageLoad(mode: Mode = CheckMode)
-#POST        /change-your-business-address                                              controllers.AgentImporterAddressController.onSubmit(mode: Mode = CheckMode)
 GET         /enter-agent-importer-address                                              controllers.AgentImporterAddressController.enteredAddressPageLoad()
 POST        /enter-agent-importer-address                                              controllers.AgentImporterAddressController.addressSelectSubmit()
-#POST        /change-agent-importer-address                                       controllers.AgentImporterAddressController.addressSelectSubmit(mode: Mode = CheckMode)
 
-GET         /enter-importer-address                                                    controllers.ImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
-POST        /enter-importer-address                                                    controllers.ImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
-GET         /change-enter-importer-address                                             controllers.ImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-enter-importer-address                                             controllers.ImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
+GET         /enter-importer-address                                                    controllers.ImporterManualAddressController.onPageLoad()
+POST        /enter-importer-address                                                    controllers.ImporterManualAddressController.onSubmit()
 
 GET         /application-complete                                                      controllers.ConfirmationController.onPageLoad()
 
 GET         /amend/information-sent                                                    controllers.AmendConfirmationController.onPageLoad()
 
-GET         /enter-your-business-address                                               controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = NormalMode)
-POST        /enter-your-business-address                                               controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = NormalMode)
-GET         /change-enter-your-business-address                                        controllers.AgentImporterManualAddressController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-enter-your-business-address                                        controllers.AgentImporterManualAddressController.onSubmit(mode: Mode = CheckMode)
+GET         /enter-your-business-address                                               controllers.AgentImporterManualAddressController.onPageLoad()
+POST        /enter-your-business-address                                               controllers.AgentImporterManualAddressController.onSubmit()
 
 GET         /enter-bank-details                                                        controllers.BankDetailsController.onPageLoad()
 POST        /enter-bank-details                                                        controllers.BankDetailsController.onSubmit()
@@ -147,8 +134,6 @@ GET         /amend/check-answers                                                
 POST        /amend/check-answers                                                       controllers.AmendCheckYourAnswersController.onSubmit
 GET         /amend-check-your-answers/change/:page                                     controllers.AmendCheckYourAnswersController.onChange(page)
 
-
-
 GET         /amend/what-do-you-need-to-do                                              controllers.AmendCaseResponseTypeController.onPageLoad()
 POST        /amend/what-do-you-need-to-do                                              controllers.AmendCaseResponseTypeController.onSubmit()
 
@@ -163,16 +148,11 @@ GET         /file-rejected                                                      
 GET         /file-uploaded/:reference/remove                                           controllers.FileUploadController.removeFileUploadByReference(reference: String)
 
 # bulk uploads
-GET         /upload-multiple-entries                                                   controllers.BulkFileUploadController.showFileUpload(mode: Mode = NormalMode)
-GET         /bulk/file-verification                                                    controllers.BulkFileUploadController.showWaitingForFileVerification(mode: Mode = NormalMode)
-GET         /bulk/file-rejected                                                        controllers.BulkFileUploadController.markFileUploadAsRejected(mode: Mode = NormalMode)
+GET         /upload-multiple-entries                                                   controllers.BulkFileUploadController.showFileUpload()
+GET         /bulk/file-verification                                                    controllers.BulkFileUploadController.showWaitingForFileVerification()
+GET         /bulk/file-rejected                                                        controllers.BulkFileUploadController.markFileUploadAsRejected()
 GET         /bulk/file-verification/:reference/status                                  controllers.BulkFileUploadController.checkFileVerificationStatus(reference: String)
 POST        /bulk/:id/callback-from-upscan                                             controllers.BulkFileUploadController.callbackFromUpscan(id: String)
-
-GET         /change-upload-multiple-entries                                            controllers.BulkFileUploadController.showFileUpload(mode: Mode = CheckMode)
-GET         /bulk/change-file-verification                                             controllers.BulkFileUploadController.showWaitingForFileVerification(mode: Mode = CheckMode)
-GET         /bulk/change-file-rejected                                                 controllers.BulkFileUploadController.markFileUploadAsRejected(mode: Mode = CheckMode)
-
 
 # proof of authority
 GET         /upload-proof-of-authority                                                 controllers.ProofOfAuthorityController.showFileUpload()
@@ -180,11 +160,6 @@ GET         /upload-proof-of-authority/file-verification                        
 GET         /upload-proof-of-authority/file-rejected                                   controllers.ProofOfAuthorityController.markFileUploadAsRejected()
 GET         /upload-proof-of-authority/file-verification/:reference/status             controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
 POST        /upload-proof-of-authority/:id/callback-from-upscan                        controllers.ProofOfAuthorityController.callbackFromUpscan(id: String)
-
-#GET         /change-upload-proof-of-authority                                          controllers.ProofOfAuthorityController.showFileUpload(mode: Mode = CheckMode)
-#GET         /upload-proof-of-authority/change-file-verification                        controllers.ProofOfAuthorityController.showWaitingForFileVerification(mode: Mode = CheckMode)
-#GET         /upload-proof-of-authority/change-file-rejected                            controllers.ProofOfAuthorityController.markFileUploadAsRejected(mode: Mode = CheckMode)
-
 
 #amend send information
 

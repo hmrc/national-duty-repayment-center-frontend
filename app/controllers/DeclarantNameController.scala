@@ -18,15 +18,15 @@ package controllers
 
 import controllers.actions._
 import forms.DeclarantNameFormProvider
-import models.{Mode, UserAnswers}
-import navigation.{CreateNavigator, Navigator}
-import pages.{CustomsRegulationTypePage, DeclarantNamePage, Page}
+import javax.inject.Inject
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{DeclarantNamePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarantNameView
-import javax.inject.Inject
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -41,10 +41,10 @@ class DeclarantNameController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: DeclarantNameView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers]{
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = DeclarantNamePage
-  val form = formProvider()
+  val form                = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

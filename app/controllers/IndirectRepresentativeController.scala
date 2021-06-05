@@ -18,13 +18,13 @@ package controllers
 
 import controllers.actions._
 import forms.IndirectRepresentativeFormProvider
-import models.FileType.ProofOfAuthority
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
-import navigation.{CreateNavigator, Navigator}
-import pages.{IndirectRepresentativePage, IsImporterVatRegisteredPage, Page}
+import models.FileType.ProofOfAuthority
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{IndirectRepresentativePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.{FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -43,10 +43,10 @@ class IndirectRepresentativeController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: IndirectRepresentativeView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers]{
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = IndirectRepresentativePage
-  val form = formProvider()
+  val form                = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

@@ -19,12 +19,11 @@ package controllers
 import controllers.actions._
 import forms.EntryDetailsFormProvider
 import javax.inject.Inject
-import models.{ClaimantType, CustomsRegulationType, Mode, NumberOfEntriesType, UserAnswers}
-import pages._
-import navigation.{CreateNavigator, Navigator}
-import pages.{CustomsRegulationTypePage, EntryDetailsPage, NumberOfEntriesTypePage}
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{EntryDetailsPage, _}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.EntryDetailsView

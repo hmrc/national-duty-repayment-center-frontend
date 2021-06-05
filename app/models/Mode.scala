@@ -25,6 +25,7 @@ case object NormalMode      extends Mode
 case object RepayNormalMode extends Mode
 case object RepayCheckMode  extends Mode
 
+// TODO - delete "Mode"
 object Mode {
 
   implicit val jsLiteral: JavascriptLiteral[Mode] = new JavascriptLiteral[Mode] {

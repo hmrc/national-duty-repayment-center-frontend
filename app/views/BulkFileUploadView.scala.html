@@ -15,11 +15,10 @@
  *@
 
 @import models.requests.UploadRequest
-@import controllers.routes._
-@import models.{Mode, BulkFileUpload}
 @import views.UploadFileViewContext
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
 @import config.FrontendAppConfig
+@import navigation.NavigatorBack
 
 @this(
 govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -32,10 +31,12 @@ appConfig: FrontendAppConfig,
 context : UploadFileViewContext
 )
 
-@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-pageTitle = Some(s"${titleNoForm(messages("bulkFileUpload.title"))}")
+    pageTitle = Some(s"${titleNoForm(messages("bulkFileUpload.title"))}"),
+    backLink = false,
+    backLinkNav = Some(backLink)
 ) {
 
 <form action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate

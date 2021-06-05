@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{NormalMode, UserAnswers}
+import models.UserAnswers
 import navigation.CreateNavigator
 import pages.{CheckYourAnswersPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}

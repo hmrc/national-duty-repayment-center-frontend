@@ -16,11 +16,14 @@
 
 package navigation
 
+import models.FileType.{Bulk, ProofOfAuthority}
 import models.{AgentImporterHasEORI, ClaimRepaymentType, CustomsRegulationType, DoYouOwnTheGoods, NumberOfEntriesType, RepaymentType, UserAnswers, WhomToPay}
 import pages._
 import play.api.mvc.Call
 
 class CreateNavigator extends Navigator2[UserAnswers] with CreateAnswerConditions with CreateHasAnsweredConditions {
+
+  override protected def checkYourAnswersPage: Call = controllers.routes.CheckYourAnswersController.onPageLoad()
 
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
@@ -30,7 +33,10 @@ class CreateNavigator extends Navigator2[UserAnswers] with CreateAnswerCondition
     P(CustomsRegulationTypePage, controllers.routes.CustomsRegulationTypeController.onPageLoad, always, customsRegulationAnswered),
     P(UkRegulationTypePage, controllers.routes.UkRegulationTypeController.onPageLoad, showUkRegulationType, ukRegulationTypeAnswered),
     P(ArticleTypePage, controllers.routes.ArticleTypeController.onPageLoad, showArticleType, ukRegulationTypeAnswered),
-    P(EntryDetailsPage, controllers.routes.EntryDetailsController.onPageLoad, showEntryDetails, entryDetailsAnswered),
+
+    P(BulkFileUploadPage, controllers.routes.BulkFileUploadController.showFileUpload, showBulkUpload, bulkUploadAnswered),
+
+    P(EntryDetailsPage, controllers.routes.EntryDetailsController.onPageLoad, always, entryDetailsAnswered),
     P(ClaimReasonTypePage, controllers.routes.ClaimReasonTypeController.onPageLoad, always, claimReasonAnswered),
     P(ReasonForOverpaymentPage, controllers.routes.ReasonForOverpaymentController.onPageLoad, always, reasonForOverpaymentAnswered),
     P(ClaimRepaymentTypePage, controllers.routes.ClaimRepaymentTypeController.onPageLoad, always, claimRepaymentTypeAnswered),
@@ -57,6 +63,7 @@ class CreateNavigator extends Navigator2[UserAnswers] with CreateAnswerCondition
     P(ImporterNamePage, controllers.routes.ImporterNameController.onPageLoad, showImporterName, importerNameAnswered),
 
     P(ImporterAddressPage, controllers.routes.ImporterAddressController.onPageLoad, always, importerAddressAnswered),
+    P(ImporterManualAddressPage, controllers.routes.ImporterManualAddressController.onPageLoad, never, never),
 
     P(ImporterHasAgentEoriPage, controllers.routes.ImporterHasEoriController.onPageLoad, isAgent, importerHasAgentEoriAnswered),
     P(ImporterAgentEoriPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterAgentEori, importerAgentEoriAnswered),
@@ -64,6 +71,7 @@ class CreateNavigator extends Navigator2[UserAnswers] with CreateAnswerCondition
     P(RepresentativeDeclarantAndBusinessNamePage, controllers.routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad, isAgent, representativeDeclarantAndBusinessNameAnswered),
 
     P(AgentImporterAddressPage, controllers.routes.AgentImporterAddressController.onPageLoad, isAgent, agentImporterAddressAnswered),
+    P(AgentImporterManualAddressPage, controllers.routes.AgentImporterManualAddressController.onPageLoad, never, never),
 
     P(EmailAddressAndPhoneNumberPage, controllers.routes.EmailAddressAndPhoneNumberController.onPageLoad, always, emailAndPhoneNumberAnswered),
     P(DeclarantReferenceNumberPage, controllers.routes.DeclarantReferenceNumberController.onPageLoad, always, declarantReferenceNumberAnswered),
@@ -71,7 +79,7 @@ class CreateNavigator extends Navigator2[UserAnswers] with CreateAnswerCondition
 
     P(WhomToPayPage, controllers.routes.WhomToPayController.onPageLoad, showWhomToRepay, whoToRepayAnsweredAnswered),
     P(IndirectRepresentativePage, controllers.routes.IndirectRepresentativeController.onPageLoad, showIndirectRepresentative, indirectRepresentativeAnswered),
-
+    P(ProofOfAuthorityPage, controllers.routes.ProofOfAuthorityController.showFileUpload, showProofOfAuthority, proofOfAuthorityAnswered),
 
     P(BankDetailsPage, controllers.routes.BankDetailsController.onPageLoad, showBankDetails, bankDetailsAnswered),
 
@@ -79,11 +87,6 @@ class CreateNavigator extends Navigator2[UserAnswers] with CreateAnswerCondition
     P(ConfirmationPage, controllers.routes.ConfirmationController.onPageLoad, always, never)
   )
   // @formatter:off
-
-  override protected def checkYourAnswersPage: Call = controllers.routes.CheckYourAnswersController.onPageLoad()
-
-  override protected def pageFor: String => Option[Page] = (pageName: String) =>
-    pageOrder.find(_.page.toString == pageName).map(_.page)
 
 }
 
@@ -100,8 +103,8 @@ protected trait CreateAnswerConditions {
   protected val showArticleType: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UnionsCustomsCodeRegulation)
 
-  protected val showEntryDetails: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(NumberOfEntriesTypePage).exists(entries => entries.numberOfEntriesType == NumberOfEntriesType.Single)
+  protected val showBulkUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
+    answers.get(NumberOfEntriesTypePage).exists(entries => entries.numberOfEntriesType == NumberOfEntriesType.Multiple)
 
   protected val showCustomsDutyPaid: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(ClaimRepaymentTypePage).exists(_.contains(ClaimRepaymentType.Customs))
@@ -132,6 +135,9 @@ protected trait CreateAnswerConditions {
 
   protected val showIndirectRepresentative: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && answers.get(WhomToPayPage).contains(WhomToPay.Representative)
+
+  protected val showProofOfAuthority: UserAnswers => Boolean = (answers: UserAnswers) =>
+    answers.isAgentJourney && answers.get(IndirectRepresentativePage).contains(false)
 
   protected val showBankDetails: UserAnswers => Boolean = (answers: UserAnswers) =>
       answers.get(RepaymentTypePage).contains(RepaymentType.BACS)
@@ -182,13 +188,25 @@ protected trait CreateHasAnsweredConditions {
   protected val declarantNameAnswered: UserAnswers => Boolean        = _.get(DeclarantNamePage).nonEmpty
   protected val doYouOwnGoodsAnswered: UserAnswers => Boolean        = _.get(DoYouOwnTheGoodsPage).nonEmpty
   protected val importerNameAnswered: UserAnswers => Boolean        = _.get(ImporterNamePage).nonEmpty
-  protected val importerAddressAnswered: UserAnswers => Boolean        = _.get(ImporterAddressPage).nonEmpty
+
+  protected val importerAddressAnswered: UserAnswers => Boolean        = (answers: UserAnswers) =>
+    answers.get(ImporterAddressPage).nonEmpty || answers.get(ImporterManualAddressPage).nonEmpty
+
   protected val emailAndPhoneNumberAnswered: UserAnswers => Boolean        = _.get(EmailAddressAndPhoneNumberPage).nonEmpty
   protected val declarantReferenceNumberAnswered: UserAnswers => Boolean        = _.get(DeclarantReferenceNumberPage).nonEmpty
   protected val repaymentTypeAnswered: UserAnswers => Boolean        = _.get(RepaymentTypePage).nonEmpty
   protected val bankDetailsAnswered: UserAnswers => Boolean        = _.get(BankDetailsPage).nonEmpty
   protected val representativeDeclarantAndBusinessNameAnswered: UserAnswers => Boolean        = _.get(RepresentativeDeclarantAndBusinessNamePage).nonEmpty
-  protected val agentImporterAddressAnswered: UserAnswers => Boolean        = _.get(AgentImporterAddressPage).nonEmpty
+
+  protected val agentImporterAddressAnswered: UserAnswers => Boolean        = (answers: UserAnswers) =>
+    answers.get(AgentImporterAddressPage).nonEmpty || answers.get(AgentImporterManualAddressPage).nonEmpty
+
   protected val whoToRepayAnsweredAnswered: UserAnswers => Boolean        = _.get(WhomToPayPage).nonEmpty
   protected val indirectRepresentativeAnswered: UserAnswers => Boolean        = _.get(IndirectRepresentativePage).nonEmpty
+
+  protected val proofOfAuthorityAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
+    answers.fileUploadState.flatMap(_.fileUploads.files.find(_.fileType.contains(ProofOfAuthority))).isDefined
+
+  protected val bulkUploadAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
+    answers.fileUploadState.flatMap(_.fileUploads.files.find(_.fileType.contains(Bulk))).isDefined
 }

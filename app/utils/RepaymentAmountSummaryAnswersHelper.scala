@@ -17,7 +17,7 @@
 package utils
 
 import controllers.routes
-import models.{CheckMode, ClaimRepaymentType, Mode, NormalMode, RepayCheckMode, RepayNormalMode, UserAnswers}
+import models.{ClaimRepaymentType, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}

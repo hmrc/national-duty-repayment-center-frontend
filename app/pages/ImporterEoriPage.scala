@@ -23,9 +23,9 @@ case object ImporterEoriPage extends QuestionPage[EORI] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "importerEoriPage"
+  override def toString: String = "importerEori"
 }
 
 case object ImporterAgentEoriPage extends Page {
-  override def toString: String = "importerAgentEoriPage"
+  override def toString: String = "importerAgentEori"
 }

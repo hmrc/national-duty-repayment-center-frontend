@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.UkRegulationTypeFormProvider
 import javax.inject.Inject
-import models.{CheckMode, Mode, NormalMode, UserAnswers}
-import navigation.{CreateNavigator, Navigator}
-import pages.{ArticleTypePage, CustomsRegulationTypePage, NumberOfEntriesTypePage, Page, UkRegulationTypePage}
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{Page, UkRegulationTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.UkRegulationTypeView
