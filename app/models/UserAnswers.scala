@@ -42,10 +42,12 @@ final case class UserAnswers(
   def isAgentJourney: Boolean = !isImporterJourney
 
   def isSingleEntry: Boolean =
-    get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
-      case NumberOfEntriesType.Single   => true
-      case NumberOfEntriesType.Multiple => false
+    get(NumberOfEntriesTypePage).map(_.numberOfEntriesType) match {
+      case Some(NumberOfEntriesType.Single)   => true
+      case Some(NumberOfEntriesType.Multiple) => false
     }
+
+  def isMultipleEntry: Boolean = !isSingleEntry
 
   def fileUploadPath: JsPath = JsPath \ "fileUploadState"
   def changePagePath: JsPath = JsPath \ "changePage"

@@ -17,16 +17,7 @@
 package navigation
 
 import models.FileType.{Bulk, ProofOfAuthority}
-import models.{
-  AgentImporterHasEORI,
-  ClaimRepaymentType,
-  CustomsRegulationType,
-  DoYouOwnTheGoods,
-  NumberOfEntriesType,
-  RepaymentType,
-  UserAnswers,
-  WhomToPay
-}
+import models.{AgentImporterHasEORI, ClaimRepaymentType, CustomsRegulationType, DoYouOwnTheGoods, RepaymentType, UserAnswers, WhomToPay}
 import pages._
 import play.api.mvc.Call
 
@@ -43,7 +34,7 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
     P(NumberOfEntriesTypePage, controllers.routes.NumberOfEntriesTypeController.onPageLoad, always, numberOfEntriesAnswered),
     P(CustomsRegulationTypePage, controllers.routes.CustomsRegulationTypeController.onPageLoad, always, customsRegulationAnswered),
     P(UkRegulationTypePage, controllers.routes.UkRegulationTypeController.onPageLoad, showUkRegulationType, ukRegulationTypeAnswered),
-    P(ArticleTypePage, controllers.routes.ArticleTypeController.onPageLoad, showArticleType, ukRegulationTypeAnswered),
+    P(ArticleTypePage, controllers.routes.ArticleTypeController.onPageLoad, showArticleType, articleTypeAnswered),
 
     P(BulkFileUploadPage, controllers.routes.BulkFileUploadController.showFileUpload, showBulkUpload, bulkUploadAnswered),
 
@@ -86,7 +77,8 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
 
     P(EmailAddressAndPhoneNumberPage, controllers.routes.EmailAddressAndPhoneNumberController.onPageLoad, always, emailAndPhoneNumberAnswered),
     P(DeclarantReferenceNumberPage, controllers.routes.DeclarantReferenceNumberController.onPageLoad, always, declarantReferenceNumberAnswered),
-    P(RepaymentTypePage, controllers.routes.RepaymentTypeController.onPageLoad, always, repaymentTypeAnswered),
+
+    P(RepaymentTypePage, controllers.routes.RepaymentTypeController.onPageLoad, showRepaymentType, repaymentTypeAnswered),
 
     P(WhomToPayPage, controllers.routes.WhomToPayController.onPageLoad, showWhomToRepay, whoToRepayAnsweredAnswered),
     P(IndirectRepresentativePage, controllers.routes.IndirectRepresentativeController.onPageLoad, showIndirectRepresentative, indirectRepresentativeAnswered),
@@ -114,7 +106,7 @@ protected trait CreateAnswerConditions {
     answers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UnionsCustomsCodeRegulation)
 
   protected val showBulkUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(NumberOfEntriesTypePage).exists(entries => entries.numberOfEntriesType == NumberOfEntriesType.Multiple)
+    answers.isMultipleEntry
 
   protected val showCustomsDutyPaid: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(ClaimRepaymentTypePage).exists(_.contains(ClaimRepaymentType.Customs))
@@ -140,8 +132,11 @@ protected trait CreateAnswerConditions {
   protected val showImporterName: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isImporterJourney && answers.get(DoYouOwnTheGoodsPage).contains(DoYouOwnTheGoods.No)
 
+  protected val showRepaymentType: UserAnswers => Boolean = (answers: UserAnswers) =>
+    answers.isSingleEntry
+
   protected val showWhomToRepay: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.isAgentJourney && answers.get(RepaymentTypePage).contains(RepaymentType.BACS)
+    answers.isAgentJourney && (answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry)
 
   protected val showIndirectRepresentative: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && answers.get(WhomToPayPage).contains(WhomToPay.Representative)
@@ -150,7 +145,7 @@ protected trait CreateAnswerConditions {
     answers.isAgentJourney && answers.get(IndirectRepresentativePage).contains(false)
 
   protected val showBankDetails: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(RepaymentTypePage).contains(RepaymentType.BACS)
+    answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry
 
 }
 
