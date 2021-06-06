@@ -17,7 +17,15 @@
 package navigation
 
 import models.FileType.{Bulk, ProofOfAuthority}
-import models.{AgentImporterHasEORI, ClaimRepaymentType, CustomsRegulationType, DoYouOwnTheGoods, RepaymentType, UserAnswers, WhomToPay}
+import models.{
+  AgentImporterHasEORI,
+  ClaimRepaymentType,
+  CustomsRegulationType,
+  DoYouOwnTheGoods,
+  RepaymentType,
+  UserAnswers,
+  WhomToPay
+}
 import pages._
 import play.api.mvc.Call
 
