@@ -91,7 +91,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
     @backLinkNav.flatMap(_.maybeCall.map( call =>
         govukBackLink(BackLink(
             attributes = Map("id"->"back-link"),
-            classes = "govuk-!-display-none-print app-back-link",
+            classes = "govuk-!-display-none-print nav-back-link",
             href = call.url,
             content = Text(messages("site.back"))
         ))
