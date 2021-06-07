@@ -16,6 +16,6 @@
 
 package pages
 
-case object RepaymentSummaryPage extends Page {
+case object RepaymentAmountSummaryPage extends Page {
   override def toString: String = "repaymentSummaryPage"
 }

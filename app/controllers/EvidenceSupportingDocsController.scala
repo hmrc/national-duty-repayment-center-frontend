@@ -20,7 +20,7 @@ import controllers.actions._
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{Page, SupportingDocumentsPage}
+import pages.{EvidenceSupportingDocsPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -39,7 +39,7 @@ class EvidenceSupportingDocsController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  override val page: Page = SupportingDocumentsPage
+  override val page: Page = EvidenceSupportingDocsPage
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

@@ -243,7 +243,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
             .set(ImporterHasEoriPage, true).success.value
-        navigator.nextPage(ImporterHasAgentEoriPage, answers)
+        navigator.nextPage(ImportHasEoriOnAgentJourneyPage, answers)
           .mustBe(routes.ImporterEoriController.onPageLoad())
       }
 
@@ -261,7 +261,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
             .set(ImporterHasEoriPage, false).success.value
-        navigator.nextPage(ImporterHasAgentEoriPage, answers)
+        navigator.nextPage(ImportHasEoriOnAgentJourneyPage, answers)
           .mustBe(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad())
       }
 

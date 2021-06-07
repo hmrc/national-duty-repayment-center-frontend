@@ -21,7 +21,7 @@ import forms.ImporterEoriFormProvider
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{ImporterAgentEoriPage, ImporterEoriPage}
+import pages.{ImporterEoriOnAgentJourneyPage, ImporterEoriPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -71,12 +71,12 @@ class ImporterEoriController @Inject() (
     if (answers.isImporterJourney)
       navigator.previousPage(ImporterEoriPage, answers)
     else
-      navigator.previousPage(ImporterAgentEoriPage, answers)
+      navigator.previousPage(ImporterEoriOnAgentJourneyPage, answers)
 
   private def nextPage(answers: UserAnswers) =
     if (answers.isImporterJourney)
       navigator.nextPage(ImporterEoriPage, answers)
     else
-      navigator.nextPage(ImporterAgentEoriPage, answers)
+      navigator.nextPage(ImporterEoriOnAgentJourneyPage, answers)
 
 }

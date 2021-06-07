@@ -54,8 +54,8 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
     P(CustomsDutyPaidPage, controllers.routes.CustomsDutyPaidController.onPageLoad, showCustomsDutyPaid, customsDutyPaidAnswered),
     P(VATPaidPage, controllers.routes.VATPaidController.onPageLoad, showVatPaid, vatPaidAnswered),
     P(OtherDutiesPaidPage, controllers.routes.OtherDutiesPaidController.onPageLoad, showOtherDutyPaid, otherDutyPaidAnswered),
-    P(RepaymentSummaryPage, controllers.routes.RepaymentAmountSummaryController.onPageLoad, always, repaymentSummaryAnswered),
-    P(SupportingDocumentsPage, controllers.routes.EvidenceSupportingDocsController.onPageLoad, always, fileUploadedAnswered),
+    P(RepaymentAmountSummaryPage, controllers.routes.RepaymentAmountSummaryController.onPageLoad, always, repaymentSummaryAnswered),
+    P(EvidenceSupportingDocsPage, controllers.routes.EvidenceSupportingDocsController.onPageLoad, always, fileUploadedAnswered),
     P(FileUploadPage, controllers.routes.FileUploadController.showFileUpload, showFileUpload, fileUploadedAnswered),
     P(FileUploadedPage, controllers.routes.FileUploadController.showFileUploaded, always, fileUploadedAnswered),
 
@@ -76,8 +76,8 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
     P(ImporterAddressPage, controllers.routes.ImporterAddressController.onPageLoad, always, importerAddressAnswered),
     P(ImporterManualAddressPage, controllers.routes.ImporterManualAddressController.onPageLoad, never, never),
 
-    P(ImporterHasAgentEoriPage, controllers.routes.ImporterHasEoriController.onPageLoad, isAgent, importerHasAgentEoriAnswered),
-    P(ImporterAgentEoriPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterAgentEori, importerAgentEoriAnswered),
+    P(ImportHasEoriOnAgentJourneyPage, controllers.routes.ImporterHasEoriController.onPageLoad, isAgent, importerHasAgentEoriAnswered),
+    P(ImporterEoriOnAgentJourneyPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterAgentEori, importerAgentEoriAnswered),
 
     P(RepresentativeDeclarantAndBusinessNamePage, controllers.routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad, isAgent, representativeDeclarantAndBusinessNameAnswered),
 
@@ -177,7 +177,7 @@ protected trait CreateHasAnsweredConditions {
   protected val otherDutyPaidAnswered: UserAnswers => Boolean        = _.get(OtherDutiesPaidPage).nonEmpty
 
   private val dutyPages: Set[String] =
-    Set(ClaimRepaymentTypePage, CustomsDutyPaidPage, VATPaidPage, OtherDutiesPaidPage, RepaymentSummaryPage)
+    Set(ClaimRepaymentTypePage, CustomsDutyPaidPage, VATPaidPage, OtherDutiesPaidPage, RepaymentAmountSummaryPage)
 
   protected val repaymentSummaryAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
     !answers.changePage.exists(page => dutyPages.contains(page))

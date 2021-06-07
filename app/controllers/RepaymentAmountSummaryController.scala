@@ -20,7 +20,7 @@ import controllers.actions._
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{Page, RepaymentSummaryPage}
+import pages.{Page, RepaymentAmountSummaryPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -37,7 +37,7 @@ class RepaymentAmountSummaryController @Inject() (
   view: RepaymentAmountSummaryView
 ) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  override val page: Page = RepaymentSummaryPage
+  override val page: Page = RepaymentAmountSummaryPage
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
