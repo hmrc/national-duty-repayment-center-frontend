@@ -21,17 +21,17 @@ package connectors
  *
  */
 
-import java.time.LocalDateTime
-
-import base.SpecBase
-import com.github.tomakehurst.wiremock.client.WireMock._
-import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
 import org.scalatest.MustMatchers
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
+import com.github.tomakehurst.wiremock.client.WireMock._
+import base.SpecBase
+import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
+
+import java.time.LocalDateTime
 
 class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
@@ -65,7 +65,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
             .willReturn(ok(responseBody))
         )
 
-        val result = connector.submitClaim(createClaimRequest).futureValue
+        val result = connector.submitClaim(createClaimRequest, "111").futureValue
 
         result mustEqual ClientClaimSuccessResponse(
           correlationId = "111",
@@ -84,7 +84,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
         server.stubFor(post(urlEqualTo(url)).willReturn(notFound()))
 
-        val result = connector.submitClaim(createClaimRequest).value
+        val result = connector.submitClaim(createClaimRequest, "111").value
         result mustBe None
       }
     }
@@ -113,7 +113,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
             .willReturn(ok(responseBody))
         )
 
-        val result = connector.submitAmendClaim(amendClaimRequest).futureValue
+        val result = connector.submitAmendClaim(amendClaimRequest, "111").futureValue
 
         result mustEqual ClientClaimSuccessResponse(
           correlationId = "111",
@@ -132,7 +132,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
         server.stubFor(post(urlEqualTo(url)).willReturn(notFound()))
 
-        val result = connector.submitAmendClaim(amendClaimRequest).value
+        val result = connector.submitAmendClaim(amendClaimRequest, "111").value
         result mustBe None
       }
     }
