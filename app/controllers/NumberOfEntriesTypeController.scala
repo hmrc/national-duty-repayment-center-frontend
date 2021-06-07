@@ -21,7 +21,7 @@ import forms.NumberOfEntriesTypeFormProvider
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{NumberOfEntriesTypePage, Page}
+import pages.{ClaimantTypePage, NumberOfEntriesTypePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -61,10 +61,29 @@ class NumberOfEntriesTypeController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
-          for {
-            userAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
-            res         <- sessionRepository.set(userAnswers)
-          } yield Redirect(nextPage(userAnswers))
+          // TODO - remove this logic of clearing answers if number of entries is changed
+          if (
+            !request.userAnswers.get(NumberOfEntriesTypePage).contains(value)
+            && request.userAnswers.changePage.contains(NumberOfEntriesTypePage.toString)
+          ) {
+            val claimantType = request.userAnswers.get(ClaimantTypePage).get
+            for {
+              _           <- sessionRepository.resetData(request.userAnswers)
+              sessionData <- sessionRepository.get(request.internalId)
+              userAnswers <- Future.fromTry(
+                sessionData.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.internalId)).set(
+                  NumberOfEntriesTypePage,
+                  value
+                )
+              )
+              claimantTypeAnswers <- Future.fromTry(userAnswers.set(ClaimantTypePage, claimantType))
+              res                 <- sessionRepository.set(claimantTypeAnswers)
+            } yield Redirect(nextPage(userAnswers))
+          } else
+            for {
+              userAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
+              res         <- sessionRepository.set(userAnswers)
+            } yield Redirect(nextPage(userAnswers))
       )
   }
 

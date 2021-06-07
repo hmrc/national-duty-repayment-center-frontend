@@ -61,10 +61,27 @@ class ClaimantTypeController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
-          for {
-            userAnswers <- Future.fromTry(request.userAnswers.set(ClaimantTypePage, value))
-            res         <- sessionRepository.set(userAnswers)
-          } yield Redirect(nextPage(userAnswers))
+          // TODO - remove this logic of clearing answers if claimant type is changed
+          if (
+            !request.userAnswers.get(ClaimantTypePage).contains(value)
+            && request.userAnswers.changePage.contains(ClaimantTypePage.toString)
+          )
+            for {
+              _           <- sessionRepository.resetData(request.userAnswers)
+              sessionData <- sessionRepository.get(request.internalId)
+              userAnswers <- Future.fromTry(
+                sessionData.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.internalId)).set(
+                  ClaimantTypePage,
+                  value
+                )
+              )
+              res <- sessionRepository.set(userAnswers)
+            } yield Redirect(nextPage(userAnswers))
+          else
+            for {
+              userAnswers <- Future.fromTry(request.userAnswers.set(ClaimantTypePage, value))
+              res         <- sessionRepository.set(userAnswers)
+            } yield Redirect(nextPage(userAnswers))
       )
   }
 
