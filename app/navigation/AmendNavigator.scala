@@ -24,10 +24,10 @@ import play.api.mvc.Call
 class AmendNavigator extends Navigator[UserAnswers] with AmendAnswerConditions with AmendHasAnsweredConditions {
 
   override protected def checkYourAnswersPage: Call = controllers.routes.AmendCheckYourAnswersController.onPageLoad()
+  override protected lazy val pageBeforeNavigation  = Some(controllers.routes.CreateOrAmendCaseController.onPageLoad())
 
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
-    P(FirstPage, controllers.routes.CreateOrAmendCaseController.onPageLoad, always, caseReferenceAnswered),
     P(ReferenceNumberPage, controllers.routes.ReferenceNumberController.onPageLoad, always, caseReferenceAnswered),
     P(AmendCaseResponseTypePage, controllers.routes.AmendCaseResponseTypeController.onPageLoad, always, caseResponseTypeAnswered),
     P(AmendFileUploadPage, controllers.routes.AmendCaseSendInformationController.showFileUpload, showFileUpload, fileUploadedAnswered),

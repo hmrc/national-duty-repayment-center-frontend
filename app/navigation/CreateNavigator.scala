@@ -35,9 +35,10 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
 
   override protected def checkYourAnswersPage: Call = controllers.routes.CheckYourAnswersController.onPageLoad()
 
+  override protected lazy val pageBeforeNavigation = Some(controllers.routes.CreateOrAmendCaseController.onPageLoad())
+
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
-    P(FirstPage, controllers.routes.ClaimantTypeController.onPageLoad, always, always),
     P(ClaimantTypePage, controllers.routes.ClaimantTypeController.onPageLoad, always, claimantTypeAnswered),
     P(NumberOfEntriesTypePage, controllers.routes.NumberOfEntriesTypeController.onPageLoad, always, numberOfEntriesAnswered),
     P(CustomsRegulationTypePage, controllers.routes.CustomsRegulationTypeController.onPageLoad, always, customsRegulationAnswered),

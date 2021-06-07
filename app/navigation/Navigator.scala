@@ -26,6 +26,7 @@ trait Navigator[T <: Answers] {
   protected val pageOrder: Seq[P]
 
   protected def checkYourAnswersPage: Call
+  protected lazy val pageBeforeNavigation: Option[Call] = None
 
   protected def pageFor: String => Option[Page] = (pageName: String) =>
     pageOrder.find(_.page.toString == pageName).map(_.page)
@@ -52,7 +53,10 @@ trait Navigator[T <: Answers] {
     if (userAnswers.changePage.nonEmpty)
       NavigatorBack(Some(jsBackLink))
     else
-      NavigatorBack(viewFor(pageOrder, nextPageFor(reversePageOrder, currentPage, userAnswers)))
+      viewFor(pageOrder, nextPageFor(reversePageOrder, currentPage, userAnswers)) match {
+        case Some(page) => NavigatorBack(Some(page))
+        case None       => NavigatorBack(pageBeforeNavigation)
+      }
 
   private val nextPageFor: (Seq[P], Page, T) => Option[Page] = (pages, currentPage, userAnswers) =>
     after(pages, currentPage)

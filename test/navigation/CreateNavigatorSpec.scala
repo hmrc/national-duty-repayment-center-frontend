@@ -18,7 +18,6 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import forms.EmailAndPhoneNumber
 import models.ClaimRepaymentType.{Customs, Other, Vat}
 import models._
 import pages._
