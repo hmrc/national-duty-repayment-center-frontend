@@ -33,21 +33,15 @@ final case class UserAnswers(
   fileUploadState: Option[FileUploadState] = None
 ) extends Answers {
 
-  def isImporterJourney: Boolean =
-    get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => true
-      case _                           => false
-    }
+  def isImporterJourney: Boolean = get(ClaimantTypePage).contains(ClaimantType.Importer)
 
-  def isAgentJourney: Boolean = !isImporterJourney
+  def isAgentJourney: Boolean = get(ClaimantTypePage).contains(ClaimantType.Representative)
 
   def isSingleEntry: Boolean =
-    get(NumberOfEntriesTypePage).map(_.numberOfEntriesType) match {
-      case Some(NumberOfEntriesType.Single)   => true
-      case Some(NumberOfEntriesType.Multiple) => false
-    }
+    get(NumberOfEntriesTypePage).map(_.numberOfEntriesType).contains(NumberOfEntriesType.Single)
 
-  def isMultipleEntry: Boolean = !isSingleEntry
+  def isMultipleEntry: Boolean =
+    get(NumberOfEntriesTypePage).map(_.numberOfEntriesType).contains(NumberOfEntriesType.Multiple)
 
   def fileUploadPath: JsPath = JsPath \ "fileUploadState"
   def changePagePath: JsPath = JsPath \ "changePage"

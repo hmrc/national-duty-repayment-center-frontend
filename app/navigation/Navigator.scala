@@ -80,3 +80,5 @@ trait Navigator[T <: Answers] {
   }
 
 }
+
+case object FirstPage extends Page

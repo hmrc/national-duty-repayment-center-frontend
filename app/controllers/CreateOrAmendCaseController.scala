@@ -20,6 +20,7 @@ import controllers.actions._
 import forms.CreateOrAmendCaseFormProvider
 import javax.inject.Inject
 import models.{CreateOrAmendCase, UserAnswers}
+import navigation.{AmendNavigator, CreateNavigator, FirstPage}
 import pages.CreateOrAmendCasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
@@ -35,6 +36,8 @@ class CreateOrAmendCaseController @Inject() (
   sessionRepository: SessionRepository,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
+  amendNavigator: AmendNavigator,
+  createNavigator: CreateNavigator,
   formProvider: CreateOrAmendCaseFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: CreateOrAmendCaseView
@@ -73,8 +76,8 @@ class CreateOrAmendCaseController @Inject() (
   }
 
   private def firstPageForJourney(answers: UserAnswers): Call = answers.get(CreateOrAmendCasePage) match {
-    case Some(CreateOrAmendCase.CreateCase) => routes.ClaimantTypeController.onPageLoad()
-    case Some(CreateOrAmendCase.AmendCase)  => routes.ReferenceNumberController.onPageLoad()
+    case Some(CreateOrAmendCase.CreateCase) => createNavigator.nextPage(FirstPage, answers)
+    case Some(CreateOrAmendCase.AmendCase)  => amendNavigator.nextPage(FirstPage, answers)
   }
 
 }

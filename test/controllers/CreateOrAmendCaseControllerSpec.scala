@@ -33,7 +33,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val createOrAmendCaseRoute = routes.CreateOrAmendCaseController.onPageLoad.url
 
-  val formProvider = new CreateOrAmendCaseFormProvider()
+  val formProvider =   new CreateOrAmendCaseFormProvider()
   val form         = formProvider()
 
   "CreateOrAmendCase Controller" must {
@@ -97,7 +97,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.ClaimantTypeController.onPageLoad.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }

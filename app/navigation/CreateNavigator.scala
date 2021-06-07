@@ -37,7 +37,7 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
 
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
-    P(CreateOrAmendCasePage, controllers.routes.CreateOrAmendCaseController.onPageLoad, always, always),
+    P(FirstPage, controllers.routes.ClaimantTypeController.onPageLoad, always, always),
     P(ClaimantTypePage, controllers.routes.ClaimantTypeController.onPageLoad, always, claimantTypeAnswered),
     P(NumberOfEntriesTypePage, controllers.routes.NumberOfEntriesTypeController.onPageLoad, always, numberOfEntriesAnswered),
     P(CustomsRegulationTypePage, controllers.routes.CustomsRegulationTypeController.onPageLoad, always, customsRegulationAnswered),
@@ -153,7 +153,9 @@ protected trait CreateAnswerConditions {
     answers.isAgentJourney && answers.get(IndirectRepresentativePage).contains(false)
 
   protected val showBankDetails: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry
+    answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry ||
+      (answers.isAgentJourney && answers.get(WhomToPayPage).contains(WhomToPay.Importer)) ||
+      (answers.isAgentJourney && answers.get(IndirectRepresentativePage).contains(true))
 
 }
 

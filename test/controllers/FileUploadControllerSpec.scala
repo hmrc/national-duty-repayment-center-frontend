@@ -19,7 +19,7 @@ package controllers
 import java.time.ZonedDateTime
 
 import base.SpecBase
-import models.ClaimantType.Importer
+import models.ClaimantType.{Importer, Representative}
 import models.FileType.{Bulk, SupportingEvidence}
 import models.requests.UploadRequest
 import models.{AgentImporterHasEORI, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
@@ -30,18 +30,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.{AgentImporterHasEORIPage, ClaimantTypePage, ImporterHasEoriPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{
-  contentAsString,
-  defaultAwaitTimeout,
-  redirectLocation,
-  route,
-  running,
-  status,
-  writeableOf_AnyContentAsEmpty,
-  writeableOf_AnyContentAsFormUrlEncoded,
-  GET,
-  POST
-}
+import play.api.test.Helpers.{GET, POST, contentAsString, defaultAwaitTimeout, redirectLocation, route, running, status, writeableOf_AnyContentAsEmpty, writeableOf_AnyContentAsFormUrlEncoded}
 import play.twirl.api.HtmlFormat
 import services.{FileUploaded, UploadFile}
 
@@ -197,8 +186,8 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
       val userAnswers = UserAnswers(userAnswersId).set(
-        AgentImporterHasEORIPage,
-        AgentImporterHasEORI.values.head
+        ClaimantTypePage,
+        Representative
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
       val application = applicationBuilder(
         userAnswers = Some(userAnswers),

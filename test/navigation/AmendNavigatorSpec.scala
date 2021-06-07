@@ -28,7 +28,7 @@ import services.FileUploaded
 
 class AmendNavigatorSpec extends SpecBase {
 
-  private val navigator = injector.instanceOf[AmendNavigator]
+    private val navigator = injector.instanceOf[AmendNavigator]
 
   val caseRefAnswer                                              = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
   val documentAndInformationResponse: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
@@ -59,7 +59,7 @@ class AmendNavigatorSpec extends SpecBase {
   "Amend Navigator going forward" should {
 
     "goto first page" in {
-      navigator.nextPage(CreateOrAmendCasePage, emptyUserAnswers) mustBe routes.ReferenceNumberController.onPageLoad()
+      navigator.nextPage(FirstPage, emptyUserAnswers) mustBe routes.ReferenceNumberController.onPageLoad()
     }
     "goto next page after case reference" in {
       val answers = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
