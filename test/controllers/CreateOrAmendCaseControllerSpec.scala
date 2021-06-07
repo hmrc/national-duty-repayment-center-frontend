@@ -33,7 +33,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val createOrAmendCaseRoute = routes.CreateOrAmendCaseController.onPageLoad.url
 
-  val formProvider =   new CreateOrAmendCaseFormProvider()
+  val formProvider = new CreateOrAmendCaseFormProvider()
   val form         = formProvider()
 
   "CreateOrAmendCase Controller" must {

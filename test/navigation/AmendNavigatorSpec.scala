@@ -28,7 +28,7 @@ import services.FileUploaded
 
 class AmendNavigatorSpec extends SpecBase {
 
-    private val navigator = injector.instanceOf[AmendNavigator]
+  private val navigator = injector.instanceOf[AmendNavigator]
 
   val caseRefAnswer                                              = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
   val documentAndInformationResponse: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)

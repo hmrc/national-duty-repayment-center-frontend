@@ -30,7 +30,18 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.{AgentImporterHasEORIPage, ClaimantTypePage, ImporterHasEoriPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{GET, POST, contentAsString, defaultAwaitTimeout, redirectLocation, route, running, status, writeableOf_AnyContentAsEmpty, writeableOf_AnyContentAsFormUrlEncoded}
+import play.api.test.Helpers.{
+  contentAsString,
+  defaultAwaitTimeout,
+  redirectLocation,
+  route,
+  running,
+  status,
+  writeableOf_AnyContentAsEmpty,
+  writeableOf_AnyContentAsFormUrlEncoded,
+  GET,
+  POST
+}
 import play.twirl.api.HtmlFormat
 import services.{FileUploaded, UploadFile}
 
@@ -185,10 +196,10 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = true
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
-        ClaimantTypePage,
-        Representative
-      ).success.value.copy(fileUploadState = Some(fileUploadedState))
+      val userAnswers =
+        UserAnswers(userAnswersId).set(ClaimantTypePage, Representative).success.value.copy(fileUploadState =
+          Some(fileUploadedState)
+        )
       val application = applicationBuilder(
         userAnswers = Some(userAnswers),
         createNavigator = injector.instanceOf[CreateNavigator]

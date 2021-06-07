@@ -318,179 +318,136 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
       }
     }
 
-//    "in Check mode" must {
-//      "go to Repayment Amount Summary page after the Customs Duty Paid page when VAT and Other Duties is not selected" in {
-//        val values: Seq[ClaimRepaymentType] = Seq(Customs)
-//        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
-//
-//        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
-//          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
-//      }
-//      "go to Vat Paid page after the Customs Duty Paid page when VAT is selected" in {
-//        val values: Seq[ClaimRepaymentType] = Seq(Customs, Vat)
-//        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
-//
-//        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
-//          .mustBe(routes.VATPaidController.onPageLoad(CheckMode))
-//      }
-//      "go to Other Duties Paid page after the Customs Duty Paid page when VAT is not selected and Other Duties is selected" in {
-//        val values: Seq[ClaimRepaymentType] = Seq(Customs, Other)
-//        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
-//
-//        navigator.nextPage(CustomsDutyPaidPage, CheckMode, userAnswers)
-//          .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
-//      }
-//      "go to Repayment Amount Summary page after the VAT Paid page when Other Duties is not selected" in {
-//        val values: Seq[ClaimRepaymentType] = Seq(Vat)
-//        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
-//
-//        navigator.nextPage(VATPaidPage, CheckMode, userAnswers)
-//          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
-//      }
-//      "go to Other Duties page after the VAT Paid page when Other Duties is selected" in {
-//        val values: Seq[ClaimRepaymentType] = Seq(Other)
-//        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
-//
-//        navigator.nextPage(VATPaidPage, CheckMode, userAnswers)
-//          .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
-//      }
-//      "go to Repayment Amount Summary page after the Other Duties Paid page" in {
-//        navigator.nextPage(OtherDutiesPaidPage, CheckMode, UserAnswers("id"))
-//          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
-//      }
-//      "go to Customs Duty Paid page when Customs is selected as a Claim Repayment type" in {
-//        val values: Seq[ClaimRepaymentType] = Seq(Customs)
-//        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
-//
-//        navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
-//          .mustBe(routes.CustomsDutyPaidController.onPageLoad(CheckMode))
-//      }
-//      "go to Vat Paid page when Vat is selected as a Claim Repayment type" in {
-//        val values: Seq[ClaimRepaymentType] = Seq(Vat)
-//        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
-//
-//        navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
-//          .mustBe(routes.VATPaidController.onPageLoad(CheckMode))
-//      }
-//      "go to Other Duties Paid page when Other is selected as a Claim Repayment type" in {
-//        val values: Seq[ClaimRepaymentType] = Seq(Other)
-//        val userAnswers                     = UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, values.toSet).success.value
-//
-//        navigator.nextPage(ClaimRepaymentTypePage, CheckMode, userAnswers)
-//          .mustBe(routes.OtherDutiesPaidController.onPageLoad(CheckMode))
-//      }
-//      "go to the Indirect Representatives page after the Whom to pay page if the representative is to be paid" in {
-//        val userAnswers = UserAnswers(userAnswersId).set(WhomToPayPage, WhomToPay.Representative).success.value
-//
-//        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
-//          .mustBe(routes.IndirectRepresentativeController.onPageLoad(CheckMode))
-//      }
-//      "go to the Check your answers page after the whom to pay page if the importer is to be paid and bank details have already been entered" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(WhomToPayPage, WhomToPay.Importer).success.value
-//          .set(BankDetailsPage, BankDetails("name", "111111", "11111111")).success.value
-//
-//        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
-//          .mustBe(routes.CheckYourAnswersController.onPageLoad())
-//      }
-//      "go to the Bank Details page after the whom to pay page if the importer is to be paid and bank details have not been entered" in {
-//        val userAnswers = UserAnswers(userAnswersId).set(WhomToPayPage, WhomToPay.Importer).success.value
-//
-//        navigator.nextPage(WhomToPayPage, CheckMode, userAnswers)
-//          .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
-//      }
-//      "go to Bank Details page when BACs is selected as a repayment method and bank account details are empty" in {
-//        val userAnswers = UserAnswers(userAnswersId).set(RepaymentTypePage, RepaymentType.BACS).success.value
-//
-//        navigator.nextPage(RepaymentTypePage, CheckMode, userAnswers)
-//          .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
-//      }
-//      "go to the Whom is to be paid page after the repayment type page when in agent journey and BACS is selected" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(ClaimantTypePage, ClaimantType.Representative).success.value
-//          .set(RepaymentTypePage, RepaymentType.BACS).success.value
-//
-//        navigator.nextPage(RepaymentTypePage, CheckMode, userAnswers)
-//          .mustBe(routes.WhomToPayController.onPageLoad(CheckMode))
-//      }
-//      "go to the Proof of Authority page after the Indirect Representative page when in agent journey and is not an indirect representative and BACS is selected" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(ClaimantTypePage, ClaimantType.Representative).success.value
-//          .set(RepaymentTypePage, RepaymentType.BACS).success.value
-//          .set(IndirectRepresentativePage, false).success.value
-//
-//        navigator.nextPage(IndirectRepresentativePage, CheckMode, userAnswers)
-//          .mustBe(routes.ProofOfAuthorityController.showFileUpload(CheckMode))
-//      }
-//      "go to the Bank Details page after the Indirect Representative page when in agent journey and is an indirect representative and BACS is selected" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(ClaimantTypePage, ClaimantType.Representative).success.value
-//          .set(RepaymentTypePage, RepaymentType.BACS).success.value
-//          .set(IndirectRepresentativePage, true).success.value
-//
-//        navigator.nextPage(IndirectRepresentativePage, CheckMode, userAnswers)
-//          .mustBe(routes.BankDetailsController.onPageLoad(CheckMode))
-//      }
-//      "go to the Check your answers page after the Declarant Reference page" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(
-//            DeclarantReferenceNumberPage,
-//            DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("this is a reference"))
-//          ).success.value
-//
-//        navigator.nextPage(DeclarantReferenceNumberPage, CheckMode, userAnswers)
-//          .mustBe(routes.CheckYourAnswersController.onPageLoad())
-//      }
-//      "go to the Check your answers page after the How can we contact you" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(
-//            EmailAddressAndPhoneNumberPage,
-//            EmailAndPhoneNumber(
-//              Set(IsContactProvided.Email, IsContactProvided.Phone),
-//              Some("abc@gmail.com"),
-//              Some("01632 960 001")
-//            )
-//          ).success.value
-//
-//        navigator.nextPage(EmailAddressAndPhoneNumberPage, CheckMode, userAnswers)
-//          .mustBe(routes.CheckYourAnswersController.onPageLoad())
-//      }
-//
-//      "go to Check Your Answers page after the Customs Duty Paid Page with RepayCheckMode" in {
-//        navigator.nextPage(CustomsDutyPaidPage, RepayCheckMode, UserAnswers("id"))
-//          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
-//      }
-//
-//      "go to Check Your Answers page after the VAT Paid Page with RepayCheckMode" in {
-//        navigator.nextPage(VATPaidPage, RepayCheckMode, UserAnswers("id"))
-//          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
-//      }
-//
-//      "go to Check Your Answers page after the Other Duties Paid Page with RepayCheckMode" in {
-//        navigator.nextPage(OtherDutiesPaidPage, RepayCheckMode, UserAnswers("id"))
-//          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode))
-//      }
-//
-//      "go to Check your answers page after the Declarant name page" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(DeclarantNamePage, Name("Joe", "Bloggs")).success.value
-//        navigator.nextPage(DeclarantNamePage, CheckMode, userAnswers)
-//          .mustBe(routes.CheckYourAnswersController.onPageLoad())
-//      }
-//
-//      "go to Check your answers page when Do You own the goods answer is 'Yes'" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(DoYouOwnTheGoodsPage, DoYouOwnTheGoods.Yes).success.value
-//        navigator.nextPage(DeclarantNamePage, CheckMode, userAnswers)
-//          .mustBe(routes.CheckYourAnswersController.onPageLoad())
-//      }
-//
-//      "go to Check your answers page after Importer name page" in {
-//        val userAnswers = UserAnswers(userAnswersId)
-//          .set(ImporterNamePage, UserName("Joe Bloggs")).success.value
-//        navigator.nextPage(DeclarantNamePage, CheckMode, userAnswers)
-//          .mustBe(routes.CheckYourAnswersController.onPageLoad())
-//      }
-//    }
+    "in Check mode" must {
+      def changeAnswers(page: Page) = UserAnswers(userAnswersId, changePage = Some(page.toString))
+
+      "go to Repayment Amount Summary page after the Customs Duty Paid page when VAT and Other Duties is not selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs)
+        val userAnswers                     = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, userAnswers)
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
+      }
+      "go to Vat Paid page after the Customs Duty Paid page when VAT is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs, Vat)
+        val userAnswers                     = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, userAnswers)
+          .mustBe(routes.VATPaidController.onPageLoad())
+      }
+      "go to Other Duties Paid page after the Customs Duty Paid page when VAT is not selected and Other Duties is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs, Other)
+        val userAnswers                     = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(CustomsDutyPaidPage, userAnswers)
+          .mustBe(routes.OtherDutiesPaidController.onPageLoad())
+      }
+      "go to Repayment Amount Summary page after the VAT Paid page when Other Duties is not selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Vat)
+        val userAnswers                     = changeAnswers(VATPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(VATPaidPage, userAnswers)
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
+      }
+      "go to Other Duties page after the VAT Paid page when Other Duties is selected" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Other)
+        val userAnswers                     = changeAnswers(VATPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(VATPaidPage, userAnswers)
+          .mustBe(routes.OtherDutiesPaidController.onPageLoad())
+      }
+      "go to Repayment Amount Summary page after the Other Duties Paid page" in {
+        navigator.nextPage(OtherDutiesPaidPage, UserAnswers("id"))
+          .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
+      }
+      "go to Customs Duty Paid page when Customs is selected as a Claim Repayment type" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Customs)
+        val userAnswers                     = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(ClaimRepaymentTypePage, userAnswers)
+          .mustBe(routes.CustomsDutyPaidController.onPageLoad())
+      }
+      "go to Vat Paid page when Vat is selected as a Claim Repayment type" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Vat)
+        val userAnswers                     = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(ClaimRepaymentTypePage, userAnswers)
+          .mustBe(routes.VATPaidController.onPageLoad())
+      }
+      "go to Other Duties Paid page when Other is selected as a Claim Repayment type" in {
+        val values: Seq[ClaimRepaymentType] = Seq(Other)
+        val userAnswers                     = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
+
+        navigator.nextPage(ClaimRepaymentTypePage, userAnswers)
+          .mustBe(routes.OtherDutiesPaidController.onPageLoad())
+      }
+      "go to the Indirect Representatives page after the Whom to pay page if the representative is to be paid" in {
+        val userAnswers = changeAnswers(WhomToPayPage)
+          .set(WhomToPayPage, WhomToPay.Representative).success.value
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(WhomToPayPage, userAnswers)
+          .mustBe(routes.IndirectRepresentativeController.onPageLoad())
+      }
+      "go to the Check your answers page after the whom to pay page if the importer is to be paid and bank details have already been entered" in {
+        val userAnswers = changeAnswers(WhomToPayPage)
+          .set(WhomToPayPage, WhomToPay.Importer).success.value
+          .set(BankDetailsPage, BankDetails("name", "111111", "11111111")).success.value
+
+        navigator.nextPage(WhomToPayPage, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+      "go to the Bank Details page after the whom to pay page if the importer is to be paid and bank details have not been entered" in {
+        val userAnswers = changeAnswers(WhomToPayPage)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(WhomToPayPage, WhomToPay.Importer).success.value
+
+        navigator.nextPage(WhomToPayPage, userAnswers)
+          .mustBe(routes.BankDetailsController.onPageLoad())
+      }
+      "go to Bank Details page when BACs is selected as a repayment method and bank account details are empty" in {
+        val userAnswers = changeAnswers(RepaymentTypePage).set(RepaymentTypePage, RepaymentType.BACS).success.value
+
+        navigator.nextPage(RepaymentTypePage, userAnswers)
+          .mustBe(routes.BankDetailsController.onPageLoad())
+      }
+      "go to the Whom is to be paid page after the repayment type page when in agent journey and BACS is selected" in {
+        val userAnswers = changeAnswers(RepaymentTypePage)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
+
+        navigator.nextPage(RepaymentTypePage, userAnswers)
+          .mustBe(routes.WhomToPayController.onPageLoad())
+      }
+      "go to the Proof of Authority page after the Indirect Representative page when in agent journey and is not an indirect representative and BACS is selected" in {
+        val userAnswers = changeAnswers(IndirectRepresentativePage)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
+          .set(IndirectRepresentativePage, false).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, userAnswers)
+          .mustBe(routes.ProofOfAuthorityController.showFileUpload())
+      }
+      "go to the Bank Details page after the Indirect Representative page when in agent journey and is an indirect representative and BACS is selected" in {
+        val userAnswers = changeAnswers(IndirectRepresentativePage)
+          .set(ClaimantTypePage, ClaimantType.Representative).success.value
+          .set(RepaymentTypePage, RepaymentType.BACS).success.value
+          .set(IndirectRepresentativePage, true).success.value
+
+        navigator.nextPage(IndirectRepresentativePage, userAnswers)
+          .mustBe(routes.BankDetailsController.onPageLoad())
+      }
+      "go to the Check your answers page after the Declarant Reference page" in {
+        val userAnswers = changeAnswers(DeclarantReferenceNumberPage)
+          .set(
+            DeclarantReferenceNumberPage,
+            DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("this is a reference"))
+          ).success.value
+
+        navigator.nextPage(DeclarantReferenceNumberPage, userAnswers)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
+      }
+
+    }
   }
 }

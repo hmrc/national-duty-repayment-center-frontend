@@ -25,7 +25,7 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with String
   val actualAmountPaidRequiredKey = "customsDutyPaid.actualamountpaid.error.required"
   val shouldHavePaidRequiredKey   = "customsDutyPaid.shouldhavepaid.error.required"
   val maxLength                   = 14
-  val minimum                     = 0.01
+  val minimum                     = 0.00
   var maximum                     = 99999999999.99
 
   def buildFormDataWithSpaces(
