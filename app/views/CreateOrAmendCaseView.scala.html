@@ -27,8 +27,7 @@
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
     @govukLayout(
-        pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("createOrAmendCase.title"))}"),
-        backLink = false
+        pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("createOrAmendCase.title"))}")
     ) {
 
         @forms.formWithCSRF(action = CreateOrAmendCaseController.onSubmit, args = 'novalidate -> "novalidate") {

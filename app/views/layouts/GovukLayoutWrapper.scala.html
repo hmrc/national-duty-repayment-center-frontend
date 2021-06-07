@@ -44,7 +44,6 @@
     pageTitle: Option[String] = None,
     timeout: Boolean = true,
     js: Option[Html] = None,
-    backLink: Boolean = true,
     backLinkNav: Option[NavigatorBack] = None,
 refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
@@ -84,14 +83,10 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
         appConfig.routeToSwitchLanguage
     )
 
-    @if(backLink) {
-        @components.back_link()
-    }
-
     @backLinkNav.flatMap(_.maybeCall.map( call =>
         govukBackLink(BackLink(
             attributes = Map("id"->"back-link"),
-            classes = "govuk-!-display-none-print app-back-link",
+            classes = "govuk-!-display-none-print nav-back-link",
             href = call.url,
             content = Text(messages("site.back"))
         ))

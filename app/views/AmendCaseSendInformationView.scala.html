@@ -36,7 +36,6 @@
 
     @govukLayout(
         pageTitle = Some(s"${titleNoForm(if(fileUploads.isEmpty)messages("view.amend-upload-file.title") else messages("view.amend-upload-file.next.title", maybeUploadError.isDefined))}"),
-        backLink = false,
         backLinkNav = Some(backLink)
     ) {
 

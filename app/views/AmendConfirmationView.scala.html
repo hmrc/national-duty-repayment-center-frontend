@@ -26,8 +26,7 @@
 @(claimId: String)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("confirmation.title"))}"),
-    backLink = false
+    pageTitle = Some(s"${titleNoForm(messages("confirmation.title"))}")
 ) {
 
     <div class="govuk-panel govuk-panel--confirmation">
