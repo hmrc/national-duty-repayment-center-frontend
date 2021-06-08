@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NDRC AutoComplete
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 
 // @description  NDRC AutoComplete
 // @author       NDRC Team
@@ -89,7 +89,20 @@ function completePage() {
         document.getElementById("ShouldHavePaidAmount").value = "89.99";
         submit();
     }
+    if (currentPageIs("/import-vat-overpayment")) {
+        document.getElementById("ActualPaidAmount").value = "200.00";
+        document.getElementById("ShouldHavePaidAmount").value = "159";
+        submit();
+    }
+    if (currentPageIs("/other-duties-overpayment")) {
+        document.getElementById("ActualPaidAmount").value = "300.00";
+        document.getElementById("ShouldHavePaidAmount").value = "0";
+        submit();
+    }
     if (currentPageIs("/repayment-summary")) {
+        submit();
+    }
+    if (currentPageIs("/supporting-documents")) {
         submit();
     }
     if (currentPageIs("/evidenceSupportingDocs")) {
@@ -123,18 +136,18 @@ function completePage() {
         document.getElementById("value").checked = true;
         submit();
     }
-    if (currentPageIs("/representative-importer-name")) {
-        document.getElementById("importerName").value = "ACME Importer Ltc";
-        submit();
-    }
-    if (currentPageIs("/representative-agent-name")) {
-        document.getElementById("declarantName").value = "Tim Tester";
-        document.getElementById("agentName").value = "Tester Import Agents";
-        submit();
-    }
-    if (currentPageIs("/enter-your-name")) {
+    if (currentPageIs("/your-name")) {
         document.getElementById("firstName").value = "Tim";
         document.getElementById("lastName").value = "Tester";
+        submit();
+    }
+    if (currentPageIs("/importer-name")) {
+        document.getElementById("importerName").value = "ACME Importer Ltd";
+        submit();
+    }
+    if (currentPageIs("/your-details")) {
+        document.getElementById("declarantName").value = "Tim Tester";
+        document.getElementById("agentName").value = "Tester Import Agents";
         submit();
     }
     if (currentPageIs("/goods-owner")) {
@@ -149,17 +162,17 @@ function completePage() {
         document.getElementById("PostalCode").value = "AA000AA";
         submit();
     }
-    if (currentPageIs("/importerManualAddress")) {
-        document.getElementById("AddressLine1").value = "Unit 42";
+    if (currentPageIs("/enter-importer-address")) {
+        document.getElementById("AddressLine1").value = "ACME Importer Ltd";
         document.getElementById("AddressLine2").value = "West Industrial Estate";
         document.getElementById("City").value = "Walsall";
         document.getElementById("PostalCode").value = "WS1 2AB";
         document.getElementById("CountryCode").getElementsByTagName("option")[1].selected = "selected";
         submit();
     }
-    if (currentPageIs("/agentImporterManualAddress")) {
+    if (currentPageIs("/enter-your-business-address")) {
         document.getElementById("AddressLine1").value = "Unit 42";
-        document.getElementById("AddressLine2").value = "Importer Estate";
+        document.getElementById("AddressLine2").value = "East Industrial Estate";
         document.getElementById("City").value = "Walsall";
         document.getElementById("PostalCode").value = "WS1 2AB";
         document.getElementById("CountryCode").getElementsByTagName("option")[1].selected = "selected";
