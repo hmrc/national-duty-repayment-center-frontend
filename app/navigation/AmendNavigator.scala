@@ -28,6 +28,7 @@ class AmendNavigator extends Navigator[UserAnswers] with AmendAnswerConditions w
 
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
+    P(FirstPage, controllers.routes.ReferenceNumberController.onPageLoad, never, always),
     P(ReferenceNumberPage, controllers.routes.ReferenceNumberController.onPageLoad, always, caseReferenceAnswered),
     P(AmendCaseResponseTypePage, controllers.routes.AmendCaseResponseTypeController.onPageLoad, always, caseResponseTypeAnswered),
     P(AmendFileUploadPage, controllers.routes.AmendCaseSendInformationController.showFileUpload, showFileUpload, fileUploadedAnswered),
