@@ -51,17 +51,16 @@ class CheckYourAnswersController @Inject() (
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val updatedAnswers = request.userAnswers.copy(changePage = None)
-      sessionRepository.clearChangePage(updatedAnswers) map { _ =>
-        navigator.firstMissingAnswer(updatedAnswers) match {
-          case Some(call) =>
-            // TODO - render "missing" version of CYA page
-            Redirect(call)
-
-          case None =>
+      navigator.firstMissingAnswer(request.userAnswers) match {
+        case Some(call) =>
+          // TODO - render "missing" version of CYA page
+          Future.successful(Redirect(call))
+        case None =>
+          val updatedAnswers = request.userAnswers.copy(changePage = None)
+          sessionRepository.clearChangePage(updatedAnswers) map { _ =>
             val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
             Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink(updatedAnswers)))
-        }
+          }
       }
   }
 

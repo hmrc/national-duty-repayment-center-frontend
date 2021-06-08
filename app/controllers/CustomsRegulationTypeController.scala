@@ -20,8 +20,9 @@ import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
 import javax.inject.Inject
 import models.UserAnswers
+import models.CustomsRegulationType
 import navigation.CreateNavigator
-import pages.{CustomsRegulationTypePage, Page}
+import pages.{AgentImporterManualAddressPage, ArticleTypePage, CustomsRegulationTypePage, Page, UkRegulationTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -66,8 +67,13 @@ class CustomsRegulationTypeController @Inject() (
         value =>
           for {
             userAnswers <- Future.fromTry(request.userAnswers.set(CustomsRegulationTypePage, value))
-            _           <- sessionRepository.set(userAnswers)
-          } yield Redirect(nextPage(userAnswers))
+            removeAnswers <- value match {
+              case CustomsRegulationType.UnionsCustomsCodeRegulation =>
+                Future.fromTry(userAnswers.remove(UkRegulationTypePage))
+              case CustomsRegulationType.UKCustomsCodeRegulation => Future.fromTry(userAnswers.remove(ArticleTypePage))
+            }
+            _ <- sessionRepository.set(removeAnswers)
+          } yield Redirect(nextPage(removeAnswers))
       )
   }
 
