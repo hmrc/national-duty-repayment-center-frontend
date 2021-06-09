@@ -55,7 +55,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("amendCaseUploadAnotherFile.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"amendCaseUploadAnotherFile.$x")),
-        Some(routes.AmendCaseSendInformationController.showFileUploaded(CheckMode).url)
+        Some(routes.AmendCaseSendInformationController.showFileUploaded().url)
       )
   }
 
@@ -65,13 +65,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         AnswerRow(
           HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
           HtmlFormat.escape(messages(s"$fileName")),
-          Some(routes.BulkFileUploadController.showFileUpload(CheckMode).url)
+          Some(routes.CheckYourAnswersController.onChange(BulkFileUploadPage).url)
         )
       case _ =>
         AnswerRow(
           HtmlFormat.escape(messages("bulkFileUpload.checkYourAnswersLabel")),
           HtmlFormat.escape(messages(s"bulkFileUpload.empty")),
-          Some(routes.BulkFileUploadController.showFileUpload(CheckMode).url)
+          Some(routes.CheckYourAnswersController.onChange(BulkFileUploadPage).url)
         )
     }))
 
@@ -82,13 +82,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           AnswerRow(
             HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"$fileName")),
-            Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
+            Some(routes.CheckYourAnswersController.onChange(ProofOfAuthorityPage).url)
           )
         case _ =>
           AnswerRow(
             HtmlFormat.escape(messages("proofOfAuthority.checkYourAnswersLabel")),
             HtmlFormat.escape(messages(s"proofOfAuthority.empty")),
-            Some(routes.ProofOfAuthorityController.showFileUpload(CheckMode).url)
+            Some(routes.CheckYourAnswersController.onChange(ProofOfAuthorityPage).url)
           )
       })
     )
@@ -98,7 +98,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("indirectRepresentative.checkYourAnswersLabel")),
         yesOrNo(x),
-        Some(routes.IndirectRepresentativeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(IndirectRepresentativePage).url)
       )
   }
 
@@ -113,7 +113,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             HtmlFormat.escape(x.AccountNumber).toString
           ).mkString("<br>")
         ),
-        Some(routes.BankDetailsController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(BankDetailsPage).url)
       )
   }
 
@@ -122,7 +122,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterManualAddress.checkYourAnswersLabel")),
         formatAddress(x),
-        Some(routes.AgentImporterManualAddressController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(AgentImporterManualAddressPage).url)
       )
   }
 
@@ -134,7 +134,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case _                           => messages("importerAddress.checkYourAnswersLabel")
         }),
         formatAddress(x),
-        Some(routes.ImporterManualAddressController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ImporterManualAddressPage).url)
       )
   }
 
@@ -143,7 +143,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterAddress.checkYourAnswersLabel")),
         formatAddress(x),
-        Some(routes.AgentImporterAddressController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(AgentImporterAddressPage).url)
       )
   }
 
@@ -155,7 +155,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case _                           => messages("importerAddress.checkYourAnswersLabel")
         }),
         formatAddress(x),
-        Some(routes.ImporterAddressController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ImporterAddressPage).url)
       )
   }
 
@@ -179,7 +179,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("otherDutiesPaid.checkYourAnswersLabel")),
         HtmlFormat.escape(x.ActualPaidAmount),
-        Some(routes.OtherDutiesPaidController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(OtherDutiesPaidPage).url)
       )
   }
 
@@ -188,7 +188,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("customsDutyPaid.checkYourAnswersLabel")),
         HtmlFormat.escape(x.ActualPaidAmount),
-        Some(routes.CustomsDutyPaidController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(CustomsDutyPaidPage).url)
       )
   }
 
@@ -197,7 +197,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("vatPaid.checkYourAnswersLabel")),
         HtmlFormat.escape(x.ActualPaidAmount),
-        Some(routes.VATPaidController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(VATPaidPage).url)
       )
   }
 
@@ -206,7 +206,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("agentImporterHasEORI.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"agentImporterHasEORI.$x")),
-        Some(routes.AgentImporterHasEORIController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(AgentImporterHasEORIPage).url)
       )
   }
 
@@ -215,7 +215,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("isImporterVatRegistered.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"isImporterVatRegistered.$x")),
-        Some(routes.IsImporterVatRegisteredController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(IsImporterVatRegisteredPage).url)
       )
   }
 
@@ -224,7 +224,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("enterAgentEORI.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.EnterAgentEORIController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(EnterAgentEORIPage).url)
       )
   }
 
@@ -233,7 +233,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("whomToPay.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"whomToPay.$x")),
-        Some(routes.WhomToPayController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(WhomToPayPage).url)
       )
   }
 
@@ -242,7 +242,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("repaymentType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"repaymentType.$x")),
-        Some(routes.RepaymentTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(RepaymentTypePage).url)
       )
   }
 
@@ -251,7 +251,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("representative.importer.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.RepresentativeImporterNameController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(RepresentativeImporterNamePage).url)
       )
   }
 
@@ -260,7 +260,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("phoneNumber.checkYourAnswersLabel")),
         HtmlFormat.escape(x.phone.getOrElse("")),
-        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(EmailAddressAndPhoneNumberPage).url)
       )
   }
 
@@ -269,7 +269,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("emailAddress.checkYourAnswersLabel")),
         HtmlFormat.escape(x.email.getOrElse("")),
-        Some(routes.EmailAddressAndPhoneNumberController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(EmailAddressAndPhoneNumberPage).url)
       )
   }
 
@@ -278,7 +278,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.answer")),
         HtmlFormat.escape(x.declarantReferenceNumber.getOrElse("")),
-        Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(DeclarantReferenceNumberPage).url)
       )
   }
 
@@ -290,7 +290,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             AnswerRow(
               HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
               HtmlFormat.escape(changeToYesNo(Yes.toString)),
-              Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)
+              Some(routes.CheckYourAnswersController.onChange(DeclarantReferenceNumberPage).url)
             )
           ),
           declarantReferenceNumber
@@ -300,7 +300,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           AnswerRow(
             HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
             HtmlFormat.escape(changeToYesNo(No.toString)),
-            Some(routes.DeclarantReferenceNumberController.onPageLoad(CheckMode).url)
+            Some(routes.CheckYourAnswersController.onChange(DeclarantReferenceNumberPage).url)
           )
         )
     }
@@ -310,7 +310,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("declarantName.checkYourAnswersLabel")),
         HtmlFormat.escape(x.firstName.concat(" ").concat(x.lastName)),
-        Some(routes.DeclarantNameController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(DeclarantNamePage).url)
       )
   }
 
@@ -328,7 +328,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("claimRepaymentType.checkYourAnswersLabel")),
         Html(x.map(value => HtmlFormat.escape(messages(s"claimRepaymentType.$value")).toString).mkString(",<br>")),
-        Some(routes.ClaimRepaymentTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ClaimRepaymentTypePage).url)
       )
   }
 
@@ -337,7 +337,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("reasonForOverpayment.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.ReasonForOverpaymentController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ReasonForOverpaymentPage).url)
       )
   }
 
@@ -346,7 +346,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("claimReasonType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"claimReasonType.$x")),
-        Some(routes.ClaimReasonTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ClaimReasonTypePage).url)
       )
   }
 
@@ -355,7 +355,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("representative.declarantAndBusinessName.agentName.checkYourAnswersLabel")),
         HtmlFormat.escape(x.agentName),
-        Some(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(RepresentativeDeclarantAndBusinessNamePage).url)
       )
   }
 
@@ -364,7 +364,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("representative.declarantAndBusinessName.declarantName.checkYourAnswersLabel")),
         HtmlFormat.escape(x.declarantName),
-        Some(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(RepresentativeDeclarantAndBusinessNamePage).url)
       )
   }
 
@@ -373,7 +373,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("doYouOwnTheGoods.checkYourAnswersLabel", declarantName)),
         HtmlFormat.escape(changeToYesNo(x.toString)),
-        Some(routes.DoYouOwnTheGoodsController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(DoYouOwnTheGoodsPage).url)
       )
   }
 
@@ -382,16 +382,16 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("importerName.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.ImporterNameController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ImporterNamePage).url)
       )
   }
 
   def repaymentAmountSummary: AnswerRow = {
-    val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers, RepayCheckMode)
+    val helper = new RepaymentAmountSummaryAnswersHelper(userAnswers)
     AnswerRow(
       HtmlFormat.escape(messages("repaymentAmountSummary.total.checkYourAnswersLabel")),
       HtmlFormat.escape("£" + helper.getTotalAmount().format2d),
-      Some(routes.RepaymentAmountSummaryController.onPageLoad(CheckMode).url)
+      Some(routes.RepaymentAmountSummaryController.onPageLoad().url)
     )
   }
 
@@ -403,7 +403,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         (noOfDocuments.toString)
           .concat(" ").concat(messages("view.upload-file.documents.added"))
       ),
-      Some(routes.FileUploadController.showFileUploaded(CheckMode).url)
+      Some(routes.CheckYourAnswersController.onChange(FileUploadedPage).url)
     )
   }
 
@@ -557,7 +557,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("entryDetails.epu.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(x.EPU)),
-        Some(routes.EntryDetailsController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(EntryDetailsPage).url)
       )
   }
 
@@ -566,7 +566,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("entryDetails.number.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(x.EntryNumber)),
-        Some(routes.EntryDetailsController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(EntryDetailsPage).url)
       )
   }
 
@@ -576,7 +576,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("entryDetails.date.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(x.EntryDate.format(dateFormatter))),
-        Some(routes.EntryDetailsController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(EntryDetailsPage).url)
       )
   }
 
@@ -588,7 +588,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case Some(v) if v.numberOfEntriesType == Single   => "1"
           case Some(v) if v.numberOfEntriesType == Multiple => v.entries.getOrElse("")
         }),
-        Some(routes.NumberOfEntriesTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(NumberOfEntriesTypePage).url)
       )
   }
 
@@ -597,7 +597,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("articleType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"articleType.$x")),
-        Some(routes.ArticleTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ArticleTypePage).url)
       )
   }
 
@@ -606,7 +606,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("ukRegulationType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"ukRegulationType.$x")),
-        Some(routes.UkRegulationTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(UkRegulationTypePage).url)
       )
   }
 
@@ -615,7 +615,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("customsRegulationType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"customsRegulationType.$x")),
-        Some(routes.CustomsRegulationTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(CustomsRegulationTypePage).url)
       )
   }
 
@@ -624,7 +624,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("isVATRegistered.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"isVATRegistered.$x")),
-        Some(routes.IsVATRegisteredController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(IsVATRegisteredPage).url)
       )
   }
 
@@ -633,7 +633,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("importerEori.checkYourAnswersLabel")),
         HtmlFormat.escape(x.value),
-        Some(routes.ImporterEoriController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ImporterEoriPage).url)
       )
   }
 
@@ -642,7 +642,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       AnswerRow(
         HtmlFormat.escape(messages("importerHasEori.checkYourAnswersLabel")),
         yesOrNo(x),
-        Some(routes.ImporterHasEoriController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ImporterHasEoriPage).url)
       )
   }
 
@@ -654,7 +654,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           case Some(ClaimantType.Importer) => messages("claimantType.importer")
           case _                           => messages("claimantType.representative")
         }),
-        Some(routes.ClaimantTypeController.onPageLoad(CheckMode).url)
+        Some(routes.CheckYourAnswersController.onChange(ClaimantTypePage).url)
       )
   }
 

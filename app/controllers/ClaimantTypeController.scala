@@ -18,11 +18,10 @@ package controllers
 
 import controllers.actions._
 import forms.ClaimantTypeFormProvider
-
 import javax.inject.Inject
-import models.{CheckMode, Entries, Mode, NormalMode, NumberOfEntriesType, UserAnswers}
-import navigation.Navigator
-import pages.{ClaimantTypePage, NumberOfEntriesTypePage}
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{ClaimantTypePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -34,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ClaimantTypeController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -42,28 +41,30 @@ class ClaimantTypeController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ClaimantTypeView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = ClaimantTypePage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(ClaimantTypePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
+          // TODO - remove this logic of clearing answers if claimant type is changed
           if (
-            request.userAnswers.get(ClaimantTypePage) != value
-            && mode.equals(CheckMode)
+            !request.userAnswers.get(ClaimantTypePage).contains(value)
+            && request.userAnswers.changePage.contains(ClaimantTypePage.toString)
           )
             for {
               _           <- sessionRepository.resetData(request.userAnswers)
@@ -75,12 +76,12 @@ class ClaimantTypeController @Inject() (
                 )
               )
               res <- sessionRepository.set(userAnswers)
-            } yield Redirect(navigator.nextPage(ClaimantTypePage, NormalMode, userAnswers))
+            } yield Redirect(nextPage(userAnswers))
           else
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(ClaimantTypePage, value))
               res         <- sessionRepository.set(userAnswers)
-            } yield Redirect(navigator.nextPage(ClaimantTypePage, mode, userAnswers))
+            } yield Redirect(nextPage(userAnswers))
       )
   }
 

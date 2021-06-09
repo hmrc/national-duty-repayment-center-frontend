@@ -17,57 +17,27 @@
 package navigation
 
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
-import models.{NormalMode, UserAnswers}
+import models.UserAnswers
 import pages._
 import play.api.mvc.Call
 
-class AmendNavigator extends Navigator2[UserAnswers] with AmendAnswerConditions with AmendHasAnsweredConditions {
+class AmendNavigator extends Navigator[UserAnswers] with AmendAnswerConditions with AmendHasAnsweredConditions {
 
+  override protected def checkYourAnswersPage: Call = controllers.routes.AmendCheckYourAnswersController.onPageLoad()
+  override protected lazy val pageBeforeNavigation  = Some(controllers.routes.CreateOrAmendCaseController.onPageLoad())
+
+  // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
-    P(
-      CreateOrAmendCasePage,
-      () => controllers.routes.CreateOrAmendCaseController.onPageLoad,
-      always,
-      caseReferenceAnswered
-    ),
-    P(
-      ReferenceNumberPage,
-      () => controllers.routes.ReferenceNumberController.onPageLoad,
-      always,
-      caseReferenceAnswered
-    ),
-    P(
-      AmendCaseResponseTypePage,
-      () => controllers.routes.AmendCaseResponseTypeController.onPageLoad,
-      always,
-      caseResponseTypeAnswered
-    ),
-    P(
-      AmendFileUploadPage,
-      () => controllers.routes.AmendCaseSendInformationController.showFileUpload(NormalMode),
-      showFileUpload,
-      fileUploadedAnswered
-    ),
-    P(
-      AmendFileUploadedPage,
-      () => controllers.routes.AmendCaseSendInformationController.showFileUploaded(NormalMode),
-      showFileUploaded,
-      fileUploadedAnswered
-    ),
-    P(
-      FurtherInformationPage,
-      () => controllers.routes.FurtherInformationController.onPageLoad(),
-      showFurtherInformation,
-      furtherInformationAnswered
-    ),
+    P(FirstPage, controllers.routes.ReferenceNumberController.onPageLoad, never, always),
+    P(ReferenceNumberPage, controllers.routes.ReferenceNumberController.onPageLoad, always, caseReferenceAnswered),
+    P(AmendCaseResponseTypePage, controllers.routes.AmendCaseResponseTypeController.onPageLoad, always, caseResponseTypeAnswered),
+    P(AmendFileUploadPage, controllers.routes.AmendCaseSendInformationController.showFileUpload, showFileUpload, fileUploadedAnswered),
+    P(AmendFileUploadedPage, controllers.routes.AmendCaseSendInformationController.showFileUploaded, showFileUploaded, fileUploadedAnswered),
+    P(FurtherInformationPage, controllers.routes.FurtherInformationController.onPageLoad, showFurtherInformation, furtherInformationAnswered),
     P(AmendCheckYourAnswersPage, controllers.routes.AmendCheckYourAnswersController.onPageLoad, always, never),
     P(AmendConfirmationPage, controllers.routes.AmendConfirmationController.onPageLoad, always, never)
   )
-
-  override protected def checkYourAnswersPage: Call = controllers.routes.AmendCheckYourAnswersController.onPageLoad()
-
-  override protected def pageFor: String => Option[Page] = (pageName: String) =>
-    pageOrder.find(_.page.toString == pageName).map(_.page)
+  // @formatter:on
 
 }
 

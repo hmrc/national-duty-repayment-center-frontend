@@ -22,7 +22,7 @@ import base.SpecBase
 import controllers.routes
 import models.AmendCaseResponseType._
 import models.FileType.SupportingEvidence
-import models.{AmendCaseResponseType, FileUpload, FileUploads, NormalMode}
+import models.{AmendCaseResponseType, FileUpload, FileUploads}
 import pages._
 import services.FileUploaded
 
@@ -59,7 +59,7 @@ class AmendNavigatorSpec extends SpecBase {
   "Amend Navigator going forward" should {
 
     "goto first page" in {
-      navigator.nextPage(CreateOrAmendCasePage, emptyUserAnswers) mustBe routes.ReferenceNumberController.onPageLoad()
+      navigator.nextPage(FirstPage, emptyUserAnswers) mustBe routes.ReferenceNumberController.onPageLoad()
     }
     "goto next page after case reference" in {
       val answers = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
@@ -73,7 +73,7 @@ class AmendNavigatorSpec extends SpecBase {
         navigator.nextPage(
           AmendCaseResponseTypePage,
           docAnswer
-        ) mustBe routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
+        ) mustBe routes.AmendCaseSendInformationController.showFileUpload()
       }
       "further information selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(FurtherInformation)
@@ -86,7 +86,7 @@ class AmendNavigatorSpec extends SpecBase {
         navigator.nextPage(
           AmendCaseResponseTypePage,
           docAnswer
-        ) mustBe routes.AmendCaseSendInformationController.showFileUpload(NormalMode)
+        ) mustBe routes.AmendCaseSendInformationController.showFileUpload()
       }
     }
     "goto next page after upload document" in {
@@ -95,7 +95,7 @@ class AmendNavigatorSpec extends SpecBase {
       navigator.nextPage(
         AmendFileUploadPage,
         answers
-      ) mustBe routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
+      ) mustBe routes.AmendCaseSendInformationController.showFileUploaded()
     }
     "goto next page after uploaded documents" when {
       "there is further info to add" in {
@@ -124,7 +124,7 @@ class AmendNavigatorSpec extends SpecBase {
     }
     "go back from further information" in {
       navigator.previousPage(FurtherInformationPage, completeAnswers).maybeCall mustBe Some(
-        routes.AmendCaseSendInformationController.showFileUploaded(NormalMode)
+        routes.AmendCaseSendInformationController.showFileUploaded()
       )
     }
     "go back from upload summary" in {

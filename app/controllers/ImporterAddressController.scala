@@ -19,16 +19,16 @@ package controllers
 import connectors.AddressLookupConnector
 import controllers.actions._
 import forms.{AddressSelectionFormProvider, ImporterAddressFormProvider, PostcodeFormProvider}
-
 import javax.inject.Inject
-import models.{Address, ClaimantType, Mode, NormalMode, PostcodeLookup, UserAnswers}
-import navigation.Navigator
-import pages.{ClaimantTypePage, ImporterAddressPage, ImporterManualAddressPage, ImporterPostcodePage}
+import models.requests.DataRequest
+import models.{Address, PostcodeLookup}
+import navigation.CreateNavigator
 import org.slf4j.LoggerFactory
+import pages.{ImporterAddressPage, ImporterManualAddressPage, ImporterPostcodePage}
 import play.api.data.Form
-import play.api.libs.json.{JsObject, Json}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request, Result}
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.http.HeaderCarrier
@@ -41,7 +41,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ImporterAddressController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -62,7 +62,7 @@ class ImporterAddressController @Inject() (
   private val selectionForm = addressSelectionFormProvider()
   val logger                = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val preparedForm = request.userAnswers.get(ImporterPostcodePage) match {
         case None => postcodeForm
@@ -70,36 +70,63 @@ class ImporterAddressController @Inject() (
           postcodeForm.fill(PostcodeLookup(value))
       }
 
-      Future.successful(Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers))))
+      Future.successful(
+        Ok(
+          view(
+            preparedForm,
+            navigator.previousPage(ImporterAddressPage, request.userAnswers),
+            request.userAnswers.isImporterJourney
+          )
+        )
+      )
   }
 
-  def postcodeSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def postcodeSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
 
     implicit request =>
       postcodeForm.bindFromRequest.fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
+          Future.successful(
+            BadRequest(
+              view(
+                formWithErrors,
+                navigator.previousPage(ImporterAddressPage, request.userAnswers),
+                request.userAnswers.isImporterJourney
+              )
+            )
+          ),
         lookup =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterPostcodePage, lookup.postcode))
             _              <- sessionRepository.set(updatedAnswers)
-            lookupResult   <- doPostcodeLookup(lookup, mode, selectionForm, isImporterJourney(request.userAnswers))
+            lookupResult   <- doPostcodeLookup(lookup, selectionForm, request.userAnswers.isImporterJourney)
           } yield lookupResult
       )
   }
 
-  private def doPostcodeLookup(lookup: PostcodeLookup, mode: Mode, form: Form[JsObject], isImporterJourney: Boolean)(
-    implicit
+  private def doPostcodeLookup(lookup: PostcodeLookup, form: Form[JsObject], isImporterJourney: Boolean)(implicit
     hc: HeaderCarrier,
-    request: Request[_]
+    request: DataRequest[_]
   ): Future[Result] =
     addressLookupConnector.addressLookup(lookup) map {
       case Left(err) =>
         logger.warn(s"Address lookup failure $err")
-        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney))
+        BadRequest(
+          view(
+            buildLookupFailureError(lookup),
+            navigator.previousPage(ImporterAddressPage, request.userAnswers),
+            isImporterJourney
+          )
+        )
 
       case Right(candidates) if candidates.noOfHits == 0 =>
-        BadRequest(view(buildLookupFailureError(lookup), mode, isImporterJourney))
+        BadRequest(
+          view(
+            buildLookupFailureError(lookup),
+            navigator.previousPage(ImporterAddressPage, request.userAnswers),
+            isImporterJourney
+          )
+        )
 
       case Right(candidates) =>
         val selectionItems = sorter.sort(candidates.candidateAddresses)
@@ -116,9 +143,25 @@ class ImporterAddressController @Inject() (
           )
 
         if (form.hasErrors)
-          BadRequest(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney))
+          BadRequest(
+            addressConfirmationView(
+              form,
+              lookup,
+              selectionItems,
+              navigator.previousPage(ImporterAddressPage, request.userAnswers),
+              isImporterJourney
+            )
+          )
         else
-          Ok(addressConfirmationView(form, lookup, selectionItems, mode, isImporterJourney))
+          Ok(
+            addressConfirmationView(
+              form,
+              lookup,
+              selectionItems,
+              navigator.previousPage(ImporterAddressPage, request.userAnswers),
+              isImporterJourney
+            )
+          )
     }
 
   private def buildLookupFailureError(lookup: PostcodeLookup) =
@@ -129,64 +172,48 @@ class ImporterAddressController @Inject() (
     postcode <- form.get("address-postcode").flatMap(_.headOption)
   } yield PostcodeLookup(postcode)
 
-  def addressSelectSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def addressSelectSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       extractSearchTerms(request.body.asFormUrlEncoded).map { searchTerms =>
         selectionForm.bindFromRequest().fold(
-          formWithErrors => doPostcodeLookup(searchTerms, mode, formWithErrors, isImporterJourney(request.userAnswers)),
+          formWithErrors => doPostcodeLookup(searchTerms, formWithErrors, request.userAnswers.isImporterJourney),
           js =>
             form.bind(js).fold(
               formWithErrors =>
-                Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
+                Future.successful(
+                  BadRequest(
+                    view(
+                      formWithErrors,
+                      navigator.previousPage(ImporterAddressPage, request.userAnswers),
+                      request.userAnswers.isImporterJourney
+                    )
+                  )
+                ),
               address =>
                 for {
                   updatedAnswers             <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, address))
                   removeManualAddressAnswers <- Future.fromTry(updatedAnswers.remove(ImporterManualAddressPage))
                   _                          <- sessionRepository.set(removeManualAddressAnswers)
-                } yield request.userAnswers.get(ClaimantTypePage) match {
-                  case Some(ClaimantType.Importer) =>
-                    if (mode.equals(NormalMode))
-                      Redirect(routes.EmailAddressAndPhoneNumberController.onPageLoad(mode))
-                    else
-                      Redirect(routes.CheckYourAnswersController.onPageLoad)
-                  case _ =>
-                    if (mode.equals(NormalMode))
-                      Redirect(routes.ImporterHasEoriController.onPageLoad(mode))
-                    else
-                      Redirect(routes.CheckYourAnswersController.onPageLoad)
-                }
+                } yield Redirect(navigator.nextPage(ImporterAddressPage, removeManualAddressAnswers))
             )
         )
       }.getOrElse(Future.successful(Redirect(routes.ImporterAddressController.enteredAddressPageLoad())))
   }
 
-  def enteredAddressPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def enteredAddressPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(ImporterAddressPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, isImporterJourney(request.userAnswers)))
-  }
-
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode, isImporterJourney(request.userAnswers)))),
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ImporterAddressPage, mode, updatedAnswers))
+      Ok(
+        view(
+          preparedForm,
+          navigator.previousPage(ImporterAddressPage, request.userAnswers),
+          request.userAnswers.isImporterJourney
+        )
       )
   }
-
-  def isImporterJourney(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => true
-      case _                           => false
-    }
 
 }

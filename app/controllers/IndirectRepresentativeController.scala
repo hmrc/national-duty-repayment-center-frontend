@@ -18,14 +18,13 @@ package controllers
 
 import controllers.actions._
 import forms.IndirectRepresentativeFormProvider
-import models.FileType.ProofOfAuthority
-
 import javax.inject.Inject
-import models.{Mode, UserAnswers}
-import navigation.Navigator
-import pages.IndirectRepresentativePage
+import models.FileType.ProofOfAuthority
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{IndirectRepresentativePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.{FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -36,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class IndirectRepresentativeController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -44,29 +43,30 @@ class IndirectRepresentativeController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: IndirectRepresentativeView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = IndirectRepresentativePage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(IndirectRepresentativePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndirectRepresentativePage, value))
             _              <- sessionRepository.set(updatedAnswers.copy(fileUploadState = updatedFs(updatedAnswers, value)))
-          } yield Redirect(navigator.nextPage(IndirectRepresentativePage, mode, updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 

@@ -18,14 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarantReferenceNumberFormProvider
-import models.{DeclarantReferenceNumber, DeclarantReferenceType, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{DeclarantReferenceNumber, DeclarantReferenceType, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.DeclarantReferenceNumberPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.DeclarantReferenceNumberView
@@ -34,12 +31,10 @@ import scala.concurrent.Future
 
 class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new DeclarantReferenceNumberFormProvider()
   val form         = formProvider()
 
-  lazy val declarantReferenceNumberRoute = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode).url
+  lazy val declarantReferenceNumberRoute = routes.DeclarantReferenceNumberController.onPageLoad().url
 
   "DeclarantReferenceNumber Controller" must {
 
@@ -56,7 +51,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -79,7 +74,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("123"))), NormalMode)(
+        view(form.fill(DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("123"))), defaultBackLink)(
           request,
           messages
         ).toString
@@ -93,7 +88,6 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -103,7 +97,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -125,7 +119,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

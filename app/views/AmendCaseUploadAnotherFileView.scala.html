@@ -27,7 +27,7 @@
         context: FileUploadedViewContext
 )
 
-@(form: Form[_], fileUploads: FileUploads, postAction: Call, removeFileCall: (String, Mode) => Call, mode: Mode, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], fileUploads: FileUploads, postAction: Call, removeFileCall: String => Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @conditionalContent = {
 @html.p(
@@ -38,7 +38,6 @@
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(if(fileUploads.isSingle)messages("view.amend-file-uploaded.singular.title") else messages("view.amend-file-uploaded.plural.title", fileUploads.acceptedCount))}"),
-    backLink = false,
     backLinkNav = Some(backLink)
     ) {
 
@@ -50,7 +49,7 @@
             classes = "govuk-heading-xl"
         )
 
-        @html.summaryList(context.summaryListOfFileUploads(fileUploads, removeFileCall, mode))
+        @html.summaryList(context.summaryListOfFileUploads(fileUploads, removeFileCall))
 
         @forms.inputRadio(
             form = form,

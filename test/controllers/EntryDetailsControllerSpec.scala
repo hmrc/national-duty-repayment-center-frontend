@@ -16,34 +16,30 @@
 
 package controllers
 
+import java.time.LocalDate
+
 import base.SpecBase
 import forms.EntryDetailsFormProvider
-import models.{Entries, EntryDetails, NormalMode, NumberOfEntriesType, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{Entries, EntryDetails, NumberOfEntriesType, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{EntryDetailsPage, NumberOfEntriesTypePage}
-import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EntryDetailsView
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
 class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new EntryDetailsFormProvider()
   val form         = formProvider()
 
   val validDateAnswer: LocalDate = LocalDate.parse("0900-01-01")
 
-  lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad(NormalMode).url
+  lazy val entryDetailsRoute = routes.EntryDetailsController.onPageLoad().url
 
   private val userAnswers = UserAnswers(
     userAnswersId,
@@ -72,7 +68,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, false, false)(request, messages).toString
+        view(form, defaultBackLink, false, false)(request, messages).toString
 
       application.stop()
     }
@@ -92,7 +88,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(EntryDetails("123", "123456Q", validDateAnswer)), NormalMode, false, false)(
+        view(form.fill(EntryDetails("123", "123456Q", validDateAnswer)), defaultBackLink, false, false)(
           request,
           messages
         ).toString
@@ -108,7 +104,6 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -124,7 +119,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -151,7 +146,7 @@ class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, false, false)(request, messages).toString
+        view(boundForm, defaultBackLink, false, false)(request, messages).toString
 
       application.stop()
     }

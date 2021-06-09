@@ -19,14 +19,11 @@ package controllers
 import base.SpecBase
 import forms.VATPaidFormProvider
 import models._
-import navigation.{FakeNavigator, Navigator}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, VATPaidPage}
-import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.VATPaidView
@@ -35,12 +32,10 @@ import scala.concurrent.Future
 
 class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new VATPaidFormProvider()
   val form         = formProvider()
 
-  lazy val vATPaidRoute = routes.VATPaidController.onPageLoad(NormalMode).url
+  lazy val vATPaidRoute = routes.VATPaidController.onPageLoad().url
 
   private val userAnswers = UserAnswers(
     userAnswersId,
@@ -67,7 +62,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, true)(request, messages).toString
+        view(form, defaultBackLink, true)(request, messages).toString
 
       application.stop()
     }
@@ -88,7 +83,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(RepaymentAmounts("100.00", "50.00")), NormalMode, false)(request, messages).toString
+        view(form.fill(RepaymentAmounts("100.00", "50.00")), defaultBackLink, false)(request, messages).toString
 
       application.stop()
     }
@@ -99,7 +94,6 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -109,7 +103,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -135,7 +129,7 @@ class VATPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, false)(request, messages).toString
+        view(boundForm, defaultBackLink, false)(request, messages).toString
 
       application.stop()
     }

@@ -18,15 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.ImporterNameFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.UserAnswers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ImporterNamePage
-import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ImporterNameView
@@ -35,14 +32,12 @@ import scala.concurrent.Future
 
 class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider             = new ImporterNameFormProvider()
   private val userAnswersDummy = UserAnswers(userAnswersId, Json.obj(ImporterNamePage.toString -> "Joe Bloggs"))
 
   val form = formProvider()
 
-  lazy val importerNameRoute = routes.ImporterNameController.onPageLoad(NormalMode).url
+  lazy val importerNameRoute = routes.ImporterNameController.onPageLoad().url
 
   " ImporterName Controller" must {
 
@@ -59,7 +54,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -77,7 +72,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(models.UserName("Joe Bloggs")), NormalMode)(request, messages).toString
+        view(form.fill(models.UserName("Joe Bloggs")), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -88,7 +83,6 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -98,7 +92,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -120,7 +114,7 @@ class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

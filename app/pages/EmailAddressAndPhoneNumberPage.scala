@@ -23,6 +23,6 @@ case object EmailAddressAndPhoneNumberPage extends QuestionPage[EmailAndPhoneNum
 
   override def path: JsPath = JsPath \ toString
 
-  //override def toString: String = "isContactProvided"
+  override def toString: String = "emailAddressAndPhoneNumber"
 
 }

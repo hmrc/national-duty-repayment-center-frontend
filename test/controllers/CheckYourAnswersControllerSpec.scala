@@ -17,23 +17,22 @@
 package controllers
 
 import base.SpecBase
-import data.TestData.{
-  populateUserAnswersWithImporterInformation,
-  populateUserAnswersWithImporterUKCustomsRegulationInformation,
-  populateUserAnswersWithRepresentativeMultipleJourney,
-  populateUserAnswersWithRepresentativeSingleBACSJourney,
-  populateUserAnswersWithRepresentativeSingleCMAJourney,
-  populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney
-}
-import models._
+import data.TestData._
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import views.html.CheckYourAnswersView
 
+import scala.concurrent.Future
+
 class CheckYourAnswersControllerSpec extends SpecBase {
 
   "Check Your Answers Controller" must {
+
+    when(mockSessionRepository.clearChangePage(any())).thenReturn(Future.successful(true))
+    when(mockCreateNavigator.firstMissingAnswer(any())).thenReturn(None)
 
     "return OK and the correct view for an Importer Journey GET" in {
 
@@ -52,7 +51,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -74,7 +73,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -96,7 +95,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -118,7 +117,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -140,7 +139,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -162,7 +161,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(checkYourAnswersHelper.getCheckYourAnswerSections)(request, messages).toString
+        view(checkYourAnswersHelper.getCheckYourAnswerSections, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

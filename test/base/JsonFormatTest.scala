@@ -16,7 +16,7 @@
 
 package base
 
-import org.scalatest.{Assertion, Informer, Matchers}
+import org.scalatest.{Assertion, Matchers}
 import play.api.libs.json.{Format, Json}
 
 abstract class JsonFormatTest[A: Format] extends Matchers {

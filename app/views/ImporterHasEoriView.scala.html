@@ -15,8 +15,8 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -25,13 +25,14 @@
     details: views.html.components.details,
 )
 
-@(form: Form[_], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerHasEori.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("importerHasEori.title"))}"),
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = ImporterHasEoriController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = ImporterHasEoriController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 

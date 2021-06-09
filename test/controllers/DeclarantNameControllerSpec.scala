@@ -18,15 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.DeclarantNameFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.UserAnswers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.DeclarantNamePage
-import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.DeclarantNameView
@@ -34,8 +31,6 @@ import views.html.DeclarantNameView
 import scala.concurrent.Future
 
 class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new DeclarantNameFormProvider()
   val form         = formProvider()
@@ -45,7 +40,7 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
     Json.obj(DeclarantNamePage.toString -> Json.obj("firstName" -> "Joe", "lastName" -> "Bloggs"))
   )
 
-  lazy val declarantNameRoute = routes.DeclarantNameController.onPageLoad(NormalMode).url
+  lazy val declarantNameRoute = routes.DeclarantNameController.onPageLoad().url
 
   "Declarant name Controller" must {
 
@@ -62,7 +57,7 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -80,7 +75,7 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(models.Name("Joe", "Bloggs")), NormalMode)(request, messages).toString
+        view(form.fill(models.Name("Joe", "Bloggs")), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -91,7 +86,6 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -101,7 +95,7 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -123,7 +117,7 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

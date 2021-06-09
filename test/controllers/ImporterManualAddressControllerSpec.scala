@@ -18,14 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.ImporterManualAddressFormProvider
-import models.{Address, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{Address, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ImporterManualAddressPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
@@ -35,12 +32,10 @@ import scala.concurrent.Future
 
 class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new ImporterManualAddressFormProvider()
   val form         = formProvider()
 
-  lazy val importerManualAddressRoute = routes.ImporterManualAddressController.onPageLoad(NormalMode).url
+  lazy val importerManualAddressRoute = routes.ImporterManualAddressController.onPageLoad().url
 
   "ImporterManualAddress Controller" must {
 
@@ -57,7 +52,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
+        view(form, defaultBackLink, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
           request,
           messages
         ).toString
@@ -85,7 +80,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       contentAsString(result) mustEqual
         view(
           form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")),
-          NormalMode,
+          defaultBackLink,
           false,
           Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
         )(request, messages).toString
@@ -99,7 +94,6 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -116,7 +110,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -138,7 +132,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
+        view(boundForm, defaultBackLink, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
           request,
           messages
         ).toString

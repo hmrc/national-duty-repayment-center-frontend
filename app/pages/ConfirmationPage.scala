@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import config.FrontendAppConfig
-@import views.ViewHelpers.pageTitle
+package pages
 
-@this(
-        govukLayout: views.html.layouts.GovukLayoutWrapper,
-        forms: views.components.forms,
-        html: views.components.html,
-        appConfig: FrontendAppConfig
-)
-
-@(successAction: Call, failureAction: Call, checkStatusAction: Call)(implicit request: Request[_], messages: Messages)
-
-@govukLayout(
-  pageTitle("view.upload-file.waiting"),
-  refresh = 3) {
-
-    <h1 class="govuk-heading-l">@messages("view.upload-file.waiting")</h1>
-    <div class="ccms-loader"></div>
+case object ConfirmationPage extends Page {
+  override def toString: String = "confirmationPage"
 }

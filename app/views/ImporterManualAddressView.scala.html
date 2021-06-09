@@ -15,8 +15,8 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -25,16 +25,17 @@
     govukSelect: GovukSelect
 )
 
-@(form: Form[_], mode: Mode, isImporterJourney: Boolean, countryOptions: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack, isImporterJourney: Boolean, countryOptions: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
     case true => messages("importerYourAddress.title")
     case _ => messages("importerManualAddress.title")
-    })}")
+    })}"),
+    backLinkNav = Some(backLink)
     ) {
 
-    @forms.formWithCSRF(action = ImporterManualAddressController.onSubmit(mode), args = 'novalidate -> "novalidate", 'autoComplete -> "on") {
+    @forms.formWithCSRF(action = ImporterManualAddressController.onSubmit(), args = 'novalidate -> "novalidate", 'autoComplete -> "on") {
 
     @components.error_summary(form.errors)
 

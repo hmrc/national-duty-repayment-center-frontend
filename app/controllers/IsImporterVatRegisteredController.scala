@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.IsImporterVatRegisteredFormProvider
 import javax.inject.Inject
-import models.{AgentImporterHasEORI, Mode, UserAnswers}
-import navigation.Navigator
-import pages.{AgentImporterHasEORIPage, IsImporterVatRegisteredPage}
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{IsImporterVatRegisteredPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.IsImporterVatRegisteredView
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class IsImporterVatRegisteredController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -41,29 +41,30 @@ class IsImporterVatRegisteredController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: IsImporterVatRegisteredView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = IsImporterVatRegisteredPage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(IsImporterVatRegisteredPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IsImporterVatRegisteredPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsImporterVatRegisteredPage, mode, updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 

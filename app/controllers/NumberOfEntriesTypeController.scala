@@ -18,13 +18,12 @@ package controllers
 
 import controllers.actions._
 import forms.NumberOfEntriesTypeFormProvider
-
 import javax.inject.Inject
-import models.{CheckMode, Mode, NoOfEntries, NormalMode, UserAnswers}
-import navigation.Navigator
-import pages.{ClaimantTypePage, NumberOfEntriesTypePage}
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{ClaimantTypePage, NumberOfEntriesTypePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.NumberOfEntriesTypeView
@@ -34,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class NumberOfEntriesTypeController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -42,29 +41,30 @@ class NumberOfEntriesTypeController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: NumberOfEntriesTypeView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = NumberOfEntriesTypePage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(NumberOfEntriesTypePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
+          // TODO - remove this logic of clearing answers if number of entries is changed
           if (
-            request.userAnswers.get(NumberOfEntriesTypePage).nonEmpty &&
-            request.userAnswers.get(NumberOfEntriesTypePage).get != value
-            && mode.equals(CheckMode)
+            !request.userAnswers.get(NumberOfEntriesTypePage).contains(value)
+            && request.userAnswers.changePage.contains(NumberOfEntriesTypePage.toString)
           ) {
             val claimantType = request.userAnswers.get(ClaimantTypePage).get
             for {
@@ -78,12 +78,12 @@ class NumberOfEntriesTypeController @Inject() (
               )
               claimantTypeAnswers <- Future.fromTry(userAnswers.set(ClaimantTypePage, claimantType))
               res                 <- sessionRepository.set(claimantTypeAnswers)
-            } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, NormalMode, claimantTypeAnswers))
+            } yield Redirect(nextPage(userAnswers))
           } else
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
               res         <- sessionRepository.set(userAnswers)
-            } yield Redirect(navigator.nextPage(NumberOfEntriesTypePage, mode, userAnswers))
+            } yield Redirect(nextPage(userAnswers))
       )
   }
 

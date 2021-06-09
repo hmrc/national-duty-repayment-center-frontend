@@ -18,15 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.RepresentativeDeclarantAndBusinessNameFormProvider
-import models.{NormalMode, RepresentativeDeclarantAndBusinessName, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{RepresentativeDeclarantAndBusinessName, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.RepresentativeDeclarantAndBusinessNamePage
-import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RepresentativeDeclarantAndBusinessNameView
@@ -34,8 +31,6 @@ import views.html.RepresentativeDeclarantAndBusinessNameView
 import scala.concurrent.Future
 
 class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with MockitoSugar {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new RepresentativeDeclarantAndBusinessNameFormProvider()
 
@@ -51,7 +46,7 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
 
   val form = formProvider()
 
-  lazy val agentNameRoute = routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(NormalMode).url
+  lazy val agentNameRoute = routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad().url
 
   "RepresentativeDeclarantAndBusinessName Controller" must {
 
@@ -68,7 +63,7 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -86,7 +81,7 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(RepresentativeDeclarantAndBusinessName("dec name", "agent name")), NormalMode)(
+        view(form.fill(RepresentativeDeclarantAndBusinessName("dec name", "agent name")), defaultBackLink)(
           request,
           messages
         ).toString
@@ -100,7 +95,6 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -110,7 +104,7 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -132,7 +126,7 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

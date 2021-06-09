@@ -18,14 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.CreateOrAmendCaseFormProvider
-import models.{CreateOrAmendCase, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{CreateOrAmendCase, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CreateOrAmendCasePage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.CreateOrAmendCaseView
@@ -33,8 +30,6 @@ import views.html.CreateOrAmendCaseView
 import scala.concurrent.Future
 
 class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
-
-  def onwardRoute = Call("GET", "/foo")
 
   lazy val createOrAmendCaseRoute = routes.CreateOrAmendCaseController.onPageLoad.url
 
@@ -92,7 +87,6 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -103,7 +97,7 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }

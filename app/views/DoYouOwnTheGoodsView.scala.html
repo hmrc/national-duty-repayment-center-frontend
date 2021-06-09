@@ -15,8 +15,8 @@
  *@
 
 @import controllers.routes._
-@import models.Mode
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -25,13 +25,14 @@
     details: views.html.components.details
 )
 
-@(form: Form[_], mode: Mode, declarantName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack, declarantName: String)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("doYouOwnTheGoods.title", declarantName))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("doYouOwnTheGoods.title", declarantName))}"),
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = DoYouOwnTheGoodsController.onSubmit(mode), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = DoYouOwnTheGoodsController.onSubmit(), args = 'novalidate -> "novalidate") {
 
         @components.error_summary(form.errors)
 

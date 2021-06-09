@@ -18,14 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.AgentImporterHasEORIFormProvider
-import models.{AgentImporterHasEORI, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{AgentImporterHasEORI, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AgentImporterHasEORIPage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.AgentImporterHasEORIView
@@ -34,9 +31,7 @@ import scala.concurrent.Future
 
 class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
-  lazy val agentImporterHasEORIRoute = routes.AgentImporterHasEORIController.onPageLoad(NormalMode).url
+  lazy val agentImporterHasEORIRoute = routes.AgentImporterHasEORIController.onPageLoad().url
 
   val formProvider = new AgentImporterHasEORIFormProvider()
   val form         = formProvider()
@@ -56,7 +51,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -77,7 +72,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AgentImporterHasEORI.values.head), NormalMode)(request, messages).toString
+        view(form.fill(AgentImporterHasEORI.values.head), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -86,10 +81,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request =
         FakeRequest(POST, agentImporterHasEORIRoute)
@@ -99,7 +91,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -121,7 +113,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

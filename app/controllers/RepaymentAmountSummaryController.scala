@@ -17,35 +17,41 @@
 package controllers
 
 import controllers.actions._
-
 import javax.inject.Inject
-import models.{CheckMode, ClaimRepaymentType, Mode, NormalMode}
-import pages.ClaimRepaymentTypePage
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{Page, RepaymentAmountSummaryPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.{CheckYourAnswersHelper, RepaymentAmountSummaryAnswersHelper}
+import utils.RepaymentAmountSummaryAnswersHelper
 import views.html.RepaymentAmountSummaryView
 
 class RepaymentAmountSummaryController @Inject() (
   override val messagesApi: MessagesApi,
-  sessionRepository: SessionRepository,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: RepaymentAmountSummaryView
-) extends FrontendBaseController with I18nSupport {
+) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  override val page: Page = RepaymentAmountSummaryPage
+
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers, mode)
+      val helper = new RepaymentAmountSummaryAnswersHelper(request.userAnswers)
 
       val sections =
         Seq(helper.getSections(), Seq(helper.getTotalSection()).filter(_ => helper.getSections().size > 1)).flatten
 
-      Ok(view(sections, mode))
+      Ok(view(sections, backLink(request.userAnswers)))
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      Redirect(nextPage(request.userAnswers))
   }
 
 }

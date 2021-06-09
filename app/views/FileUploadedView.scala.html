@@ -17,6 +17,7 @@
 @import config.FrontendAppConfig
 @import views.FileUploadedViewContext
 @import views.ViewHelpers.pageTitle
+@import navigation.NavigatorBack
 
 @this(
         govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -26,7 +27,7 @@
         context: FileUploadedViewContext
 )
 
-@(form: Form[_], fileUploads: FileUploads, postAction: Call, removeFileCall: (String, Mode) => Call, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], fileUploads: FileUploads, postAction: Call, removeFileCall: String => Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @conditionalContent = {
 @html.p(
@@ -37,7 +38,8 @@
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(if(fileUploads.isSingle)messages("view.file-uploaded.singular.title") else messages("view.file-uploaded.plural.title", fileUploads.acceptedCount))}"),
-    backLink = false) {
+    backLinkNav = Some(backLink)) {
+
 
     @forms.formWithCSRF(action = postAction, args = 'novalidate -> "novalidate") {
         @components.error_summary(form.errors)
@@ -47,7 +49,7 @@
             classes = "govuk-heading-xl"
         )
 
-        @html.summaryList(context.summaryListOfFileUploads(fileUploads, removeFileCall, mode))
+        @html.summaryList(context.summaryListOfFileUploads(fileUploads, removeFileCall))
 
         @forms.inputRadio(
             form = form,

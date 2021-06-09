@@ -15,8 +15,9 @@
  *@
 
 @import controllers.routes._
-@import models.{Mode, CustomsRegulationType}
+@import models.CustomsRegulationType
 @import views.ViewUtils._
+@import navigation.NavigatorBack
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -24,13 +25,14 @@
     html: views.components.html
 )
 
-@(form: Form[_], mode: Mode, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack, isImporterJourney: Boolean)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("customsRegulationType.title"))}")
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("customsRegulationType.title"))}"),
+    backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = CustomsRegulationTypeController.onSubmit(mode), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = CustomsRegulationTypeController.onSubmit(), 'autoComplete -> "off") {
 
         @components.error_summary(form.errors)
 

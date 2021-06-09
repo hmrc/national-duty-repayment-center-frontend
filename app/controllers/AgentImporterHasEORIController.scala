@@ -18,13 +18,12 @@ package controllers
 
 import controllers.actions._
 import forms.AgentImporterHasEORIFormProvider
-
 import javax.inject.Inject
-import models.{AgentImporterHasEORI, CheckMode, Mode}
-import navigation.Navigator
-import pages.{AgentImporterHasEORIPage, EnterAgentEORIPage}
+import models.{AgentImporterHasEORI, UserAnswers}
+import navigation.CreateNavigator
+import pages.{AgentImporterHasEORIPage, EnterAgentEORIPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentImporterHasEORIView
@@ -34,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AgentImporterHasEORIController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -42,28 +41,25 @@ class AgentImporterHasEORIController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: AgentImporterHasEORIView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = AgentImporterHasEORIPage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(AgentImporterHasEORIPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val oldEORI =
-        if (request.userAnswers.get(AgentImporterHasEORIPage).nonEmpty)
-          request.userAnswers.get(AgentImporterHasEORIPage).get
-
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           for {
             setEORINumber <- Future.fromTry(request.userAnswers.set(AgentImporterHasEORIPage, value))
@@ -73,15 +69,7 @@ class AgentImporterHasEORIController @Inject() (
                 case AgentImporterHasEORI.Yes => setEORINumber.set(AgentImporterHasEORIPage, value)
               })
             _ <- sessionRepository.set(updatedAnswers)
-          } yield
-            if (mode.equals(CheckMode))
-              (oldEORI, value) match {
-                case (AgentImporterHasEORI.No, AgentImporterHasEORI.Yes) =>
-                  Redirect(navigator.nextPage(AgentImporterHasEORIPage, CheckMode, updatedAnswers))
-                case _ => Redirect(routes.CheckYourAnswersController.onPageLoad())
-              }
-            else
-              Redirect(navigator.nextPage(AgentImporterHasEORIPage, mode, updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 

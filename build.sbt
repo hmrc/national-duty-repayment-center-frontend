@@ -7,6 +7,8 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 lazy val appName: String = "national-duty-repayment-center-frontend"
 
+PlayKeys.devSettings := Seq("play.server.http.port" -> "8450")
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin, SbtArtifactory)
   .disablePlugins(JUnitXmlReportPlugin)
@@ -28,7 +30,6 @@ lazy val root = (project in file("."))
       "uk.gov.hmrc.play.views.html.helpers._",
       "uk.gov.hmrc.play.views.html.layouts._",
       "views.ViewUtils._",
-      "models.Mode",
       "controllers.routes._"
     ),
     PlayKeys.playDefaultPort := 9000,

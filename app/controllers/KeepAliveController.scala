@@ -18,37 +18,26 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
-import models.UserAnswers
-import navigation.CreateNavigator
-import pages.{EvidenceSupportingDocsPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.EvidenceSupportingDocsView
 
 import scala.concurrent.ExecutionContext
 
-class EvidenceSupportingDocsController @Inject() (
+class KeepAliveController @Inject() (
   override val messagesApi: MessagesApi,
-  val navigator: CreateNavigator,
+  sessionRepository: SessionRepository,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  val controllerComponents: MessagesControllerComponents,
-  view: EvidenceSupportingDocsView
+  val controllerComponents: MessagesControllerComponents
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+    extends FrontendBaseController with I18nSupport {
 
-  override val page: Page = EvidenceSupportingDocsPage
-
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def keepAlive(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      Ok(view(backLink(request.userAnswers)))
-  }
-
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      Redirect(nextPage(request.userAnswers))
+      sessionRepository.set(request.userAnswers) map { _ => Ok("Ok") }
   }
 
 }

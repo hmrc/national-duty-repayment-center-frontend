@@ -16,16 +16,10 @@
 
 package controllers
 
+import java.time.ZonedDateTime
+
 import base.SpecBase
-import models.{
-  CustomsRegulationType,
-  FileUpload,
-  FileUploads,
-  NormalMode,
-  SessionState,
-  UpscanNotification,
-  UserAnswers
-}
+import models.{CustomsRegulationType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.Matchers.anyObject
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -44,7 +38,6 @@ import play.api.test.Helpers.{
 import play.twirl.api.HtmlFormat
 import services.FileUploaded
 
-import java.time.ZonedDateTime
 import scala.concurrent.Future
 
 class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
@@ -52,7 +45,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
 
   "GET /file-upload" should {
     "show the upload first document page" in {
-      val fileUploadUrl = routes.BulkFileUploadController.showFileUpload(NormalMode).url
+      val fileUploadUrl = routes.BulkFileUploadController.showFileUpload().url
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .build()
@@ -72,7 +65,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
 
   "GET /upload-multiple-entries" should {
     "go to entry details page when the CustomsRegulationType is set to UnionsCustomsCodeRegulation" in {
-      lazy val uploadFile = routes.BulkFileUploadController.showFileUpload(NormalMode).url
+      lazy val uploadFile = routes.BulkFileUploadController.showFileUpload().url
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -108,7 +101,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
     "go to entry details page when the CustomsRegulationType is set to UKCustomsCodeRegulation " in {
-      lazy val uploadFile = routes.BulkFileUploadController.showFileUpload(NormalMode).url
+      lazy val uploadFile = routes.BulkFileUploadController.showFileUpload().url
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =

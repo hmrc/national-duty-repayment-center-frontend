@@ -18,26 +18,20 @@ package controllers
 
 import base.SpecBase
 import forms.ClaimantTypeFormProvider
-import models.{ClaimantType, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{ClaimantType, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ClaimantTypePage
-import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
 import views.html.ClaimantTypeView
 
 import scala.concurrent.Future
 
 class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
-  lazy val claimantTypeRoute = routes.ClaimantTypeController.onPageLoad(NormalMode).url
+  lazy val claimantTypeRoute = routes.ClaimantTypeController.onPageLoad().url
 
   val formProvider = new ClaimantTypeFormProvider()
   val form         = formProvider()
@@ -57,7 +51,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -77,7 +71,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ClaimantType.values.head), NormalMode)(request, messages).toString
+        view(form.fill(ClaimantType.values.head), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -90,7 +84,6 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -101,7 +94,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -123,7 +116,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

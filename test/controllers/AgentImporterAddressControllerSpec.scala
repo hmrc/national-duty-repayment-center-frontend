@@ -20,14 +20,12 @@ import base.SpecBase
 import connectors.AddressLookupConnector
 import forms.{AddressSelectionFormProvider, AgentImporterAddressFormProvider, PostcodeFormProvider}
 import models.responses._
-import models.{NormalMode, PostcodeLookup, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{PostcodeLookup, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AgentImporterPostcodePage
 import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.Helpers._
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.{AgentImporterAddressConfirmationView, AgentImporterAddressView}
@@ -35,16 +33,14 @@ import views.html.{AgentImporterAddressConfirmationView, AgentImporterAddressVie
 import scala.concurrent.Future
 
 class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
-  private lazy val agentImporterAddressPostcodeRoute = routes.AgentImporterAddressController.onPageLoad(NormalMode).url
+  private lazy val agentImporterAddressPostcodeRoute = routes.AgentImporterAddressController.onPageLoad().url
 
   private lazy val agentImporterAddressSelectRoute =
-    routes.AgentImporterAddressController.addressSelectSubmit(NormalMode).url
+    routes.AgentImporterAddressController.addressSelectSubmit().url
 
   private val postcodeForm  = (new PostcodeFormProvider)()
   private val addressForm   = (new AgentImporterAddressFormProvider)()
   private val selectionForm = (new AddressSelectionFormProvider)()
-
-  def onwardRoute: Call = Call("GET", "/apply-for-repayment-of-import-duty-and-import-vat/enter-agent-importer-address")
 
   "AgentImporterAddressController" must {
     "return OK and the correct view for a GET on the postcode page" in {
@@ -60,7 +56,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm, NormalMode)(request, messages).toString
+          view(postcodeForm, defaultBackLink)(request, messages).toString
       }
     }
 
@@ -79,7 +75,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(postcodeForm.fill(PostcodeLookup("answer")), NormalMode)(request, messages).toString
+          view(postcodeForm.fill(PostcodeLookup("answer")), defaultBackLink)(request, messages).toString
       }
     }
 
@@ -100,7 +96,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedView = application.injector.instanceOf[AgentImporterAddressView]
 
         contentAsString(result) mustEqual
-          expectedView(boundForm, NormalMode)(request, messages).toString
+          expectedView(boundForm, defaultBackLink)(request, messages).toString
       }
     }
 
@@ -108,10 +104,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
         val request = buildRequest(POST, agentImporterAddressSelectRoute)
@@ -120,7 +113,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual routes.AgentImporterAddressController.enteredAddressPageLoad.url
       }
     }
 
@@ -128,10 +121,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
         val request = buildRequest(POST, agentImporterAddressSelectRoute)
@@ -143,7 +133,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         val expectedView = application.injector.instanceOf[AgentImporterAddressView]
         val boundForm    = addressForm.bind(Map.empty[String, String])
         contentAsString(result) mustEqual
-          expectedView(boundForm, NormalMode)(request, messages).toString
+          expectedView(boundForm, defaultBackLink)(request, messages).toString
       }
     }
 
@@ -166,10 +156,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[AddressLookupConnector].toInstance(addressLookupConnector)
-          )
+          .overrides(bind[AddressLookupConnector].toInstance(addressLookupConnector))
           .build()
 
       running(application) {
@@ -190,7 +177,7 @@ class AgentImporterAddressControllerSpec extends SpecBase with MockitoSugar {
         )
 
         contentAsString(result) mustEqual
-          expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, NormalMode)(
+          expectedView(expectedForm, PostcodeLookup("AA1 1AA"), expectedSelectItems, defaultBackLink)(
             request,
             messages
           ).toString

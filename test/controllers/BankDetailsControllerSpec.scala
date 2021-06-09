@@ -18,15 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.BankDetailsFormProvider
-import models.{BankDetails, NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{BankDetails, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.BankDetailsPage
-import play.api.inject.bind
 import play.api.libs.json.Json
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.BankDetailsView
@@ -35,12 +32,10 @@ import scala.concurrent.Future
 
 class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new BankDetailsFormProvider()
   val form         = formProvider()
 
-  lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad(NormalMode).url
+  lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad().url
 
   private val userAnswers = UserAnswers(
     userAnswersId,
@@ -65,12 +60,10 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[BankDetailsView]
 
-      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -85,12 +78,10 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
-
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(BankDetails("name", "123456", "00123456")), NormalMode)(request, messages).toString
+        view(form.fill(BankDetails("name", "123456", "00123456")), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -101,7 +92,6 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
           .build()
 
       val request =
@@ -111,7 +101,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual onwardRoute.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -130,12 +120,10 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val backLink = routes.DeclarantReferenceNumberController.onPageLoad(NormalMode)
-
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

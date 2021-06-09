@@ -19,11 +19,11 @@ package controllers
 import controllers.actions._
 import forms.ImporterEoriFormProvider
 import javax.inject.Inject
-import models.Mode
-import navigation.Navigator
-import pages.ImporterEoriPage
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{ImporterEoriOnAgentJourneyPage, ImporterEoriPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ImporterEoriView
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ImporterEoriController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -45,26 +45,38 @@ class ImporterEoriController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(ImporterEoriPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEoriPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ImporterEoriPage, mode, updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
+
+  private def backLink(answers: UserAnswers) =
+    if (answers.isImporterJourney)
+      navigator.previousPage(ImporterEoriPage, answers)
+    else
+      navigator.previousPage(ImporterEoriOnAgentJourneyPage, answers)
+
+  private def nextPage(answers: UserAnswers) =
+    if (answers.isImporterJourney)
+      navigator.nextPage(ImporterEoriPage, answers)
+    else
+      navigator.nextPage(ImporterEoriOnAgentJourneyPage, answers)
 
 }

@@ -17,25 +17,21 @@
 package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock._
+import models.PostcodeLookup
 import models.requests.IdentifierRequest
 import models.responses._
 import models.results.{InvalidJson, UnexpectedResponseStatus}
-import models.{InternalId, PostcodeLookup}
-import org.mockito.Matchers.{any, eq => equalTo}
-import org.mockito.Mockito.{times, verify}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Application
 import play.api.http.HeaderNames
-import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.running
-import utils.WireMockHelper
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.WireMockHelper
 
 class AddressLookupConnectorSpec
     extends FreeSpec with MustMatchers with WireMockHelper with ScalaFutures with EitherValues with IntegrationPatience

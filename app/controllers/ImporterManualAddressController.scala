@@ -18,13 +18,12 @@ package controllers
 
 import controllers.actions._
 import forms.ImporterManualAddressFormProvider
-
 import javax.inject.Inject
-import models.{ClaimantType, Mode, NormalMode, UserAnswers}
-import navigation.Navigator
-import pages.{ClaimantTypePage, ImporterManualAddressPage}
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{ImporterManualAddressPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -35,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ImporterManualAddressController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -43,11 +42,12 @@ class ImporterManualAddressController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ImporterManualAddressView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = ImporterManualAddressPage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(ImporterManualAddressPage) match {
         case None        => form
@@ -57,14 +57,14 @@ class ImporterManualAddressController @Inject() (
       Ok(
         view(
           preparedForm,
-          mode,
-          isImporterJourney(request.userAnswers),
+          backLink(request.userAnswers),
+          request.userAnswers.isImporterJourney,
           Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
         )
       )
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
@@ -72,8 +72,8 @@ class ImporterManualAddressController @Inject() (
             BadRequest(
               view(
                 formWithErrors,
-                mode,
-                isImporterJourney(request.userAnswers),
+                backLink(request.userAnswers),
+                request.userAnswers.isImporterJourney,
                 Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
               )
             )
@@ -82,18 +82,8 @@ class ImporterManualAddressController @Inject() (
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterManualAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield
-            if (mode.equals(NormalMode))
-              Redirect(navigator.nextPage(ImporterManualAddressPage, mode, updatedAnswers))
-            else
-              Redirect(routes.CheckYourAnswersController.onPageLoad)
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
-
-  def isImporterJourney(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => true
-      case _                           => false
-    }
 
 }

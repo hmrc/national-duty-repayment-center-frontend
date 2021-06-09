@@ -24,3 +24,7 @@ case object ImporterHasEoriPage extends QuestionPage[Boolean] {
 
   override def toString: String = "importerHasEori"
 }
+
+case object ImportHasEoriOnAgentJourneyPage extends Page {
+  override def toString: String = "importHasEoriOnAgentJourneyPage"
+}

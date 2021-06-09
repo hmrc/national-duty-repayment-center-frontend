@@ -18,22 +18,22 @@ package controllers
 
 import controllers.actions._
 import forms.DeclarantNameFormProvider
-import models.Mode
-import navigation.Navigator
-import pages.DeclarantNamePage
+import javax.inject.Inject
+import models.UserAnswers
+import navigation.CreateNavigator
+import pages.{DeclarantNamePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.DeclarantNameView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DeclarantNameController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -41,29 +41,30 @@ class DeclarantNameController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: DeclarantNameView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  val form = formProvider()
+  override val page: Page = DeclarantNamePage
+  val form                = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(DeclarantNamePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarantNamePage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DeclarantNamePage, mode, updatedAnswers))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 
