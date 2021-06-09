@@ -17,9 +17,11 @@
 package models.requests
 
 import java.time.LocalDate
+
 import models._
 import base.SpecBase
 import data.TestData._
+import models.eis.EISAddress
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
@@ -53,7 +55,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         AddressLine2 = Some("line 2"),
         City = "city",
         Region = Some("region"),
-        CountryCode = "GB",
+        Country = Country("GB", "United Kingdom"),
         PostalCode = "ZZ111ZZ"
       )
 
@@ -61,7 +63,7 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
         IsVATRegistered = "true",
         EORI = EORI("GB123456789123456"),
         Name = "Joe Bloggs",
-        Address = address,
+        Address = EISAddress(address),
         TelephoneNumber = Some("12345678"),
         EmailAddress = Some("example@example.com")
       )

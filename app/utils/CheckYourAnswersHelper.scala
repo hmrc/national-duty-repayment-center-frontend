@@ -16,19 +16,19 @@
 
 package utils
 
+import java.time.format.DateTimeFormatter
+
 import controllers.routes
-import models._
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
+import models.DeclarantReferenceType.{No, Yes}
 import models.FileType.{Bulk, ProofOfAuthority}
 import models.FileUpload.Accepted
+import models.NumberOfEntriesType.{Multiple, Single}
+import models._
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import viewmodels.{AnswerRow, AnswerSection}
-
-import java.time.format.DateTimeFormatter
-import models.DeclarantReferenceType.{No, Yes}
-import models.NumberOfEntriesType.{Multiple, Single}
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -37,8 +37,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   val referenceNumberPage            = userAnswers.get(ReferenceNumberPage)
   val fileUploadState                = userAnswers.fileUploadState
   val indirectRepresentativePage     = userAnswers.get(IndirectRepresentativePage)
-  val agentImporterManualAddressPage = userAnswers.get(AgentImporterManualAddressPage)
-  val importerManualAddressPage      = userAnswers.get(ImporterManualAddressPage)
   val agentImporterHasEORIPage       = userAnswers.get(AgentImporterHasEORIPage)
   val whomToPayPage                  = userAnswers.get(WhomToPayPage)
   val repaymentTypePage              = userAnswers.get(RepaymentTypePage)
@@ -117,27 +115,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
-  def agentImporterManualAddress: Option[AnswerRow] = agentImporterManualAddressPage map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("agentImporterManualAddress.checkYourAnswersLabel")),
-        formatAddress(x),
-        Some(routes.CheckYourAnswersController.onChange(AgentImporterManualAddressPage).url)
-      )
-  }
-
-  def importerManualAddress: Option[AnswerRow] = importerManualAddressPage map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(claimantTypePage match {
-          case Some(ClaimantType.Importer) => messages("agentImporterAddress.checkYourAnswersLabel")
-          case _                           => messages("importerAddress.checkYourAnswersLabel")
-        }),
-        formatAddress(x),
-        Some(routes.CheckYourAnswersController.onChange(ImporterManualAddressPage).url)
-      )
-  }
-
   def agentImporterAddress: Option[AnswerRow] = userAnswers.get(AgentImporterAddressPage) map {
     x =>
       AnswerRow(
@@ -166,11 +143,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
         HtmlFormat.escape(x.City).toString,
         HtmlFormat.escape(x.Region.getOrElse("")).toString,
-        HtmlFormat.escape(x.CountryCode match {
-          case "GB" => messages("United Kingdom")
-          case _    => messages("Other")
-        }).toString,
-        HtmlFormat.escape(x.PostalCode).toString
+        HtmlFormat.escape(x.PostalCode).toString,
+        HtmlFormat.escape(x.Country.name).toString
       ).filter(!_.isEmpty()).mkString("<br>")
     )
 
@@ -461,10 +435,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         }) ++
         getAnswerRow(isImporterVatRegistered) ++
         getAnswerRow(representativeImporterName) ++
-        (importerManualAddressPage match {
-          case None => getAnswerRow(importerAddress)
-          case _    => getAnswerRow(importerManualAddress)
-        })
+        getAnswerRow(importerAddress)
     )
 
   def getYourDetailsAnswerSection: AnswerSection =
@@ -489,15 +460,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         }) ++
         getAnswerRow(claimantTypePage match {
           case Some(ClaimantType.Importer) =>
-            importerManualAddressPage match {
-              case None => importerAddress
-              case _    => importerManualAddress
-            }
+            importerAddress
           case _ =>
-            agentImporterManualAddressPage match {
-              case None => agentImporterAddress
-              case _    => agentImporterManualAddress
-            }
+            agentImporterAddress
         })
     )
 

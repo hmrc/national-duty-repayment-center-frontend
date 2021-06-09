@@ -17,7 +17,13 @@
 package models.addresslookup
 
 import config.FrontendAppConfig
-import models.addresslookup.AddressLookupRequest.Labels.Language.{AppLevelLabels, ConfirmPageLabels, EditPageLabels, LookupPageLabels, SelectPageLabels}
+import models.addresslookup.AddressLookupRequest.Labels.Language.{
+  AppLevelLabels,
+  ConfirmPageLabels,
+  EditPageLabels,
+  LookupPageLabels,
+  SelectPageLabels
+}
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json.{Json, OFormat}
 

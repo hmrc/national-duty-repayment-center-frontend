@@ -19,13 +19,13 @@ package controllers
 import controllers.actions._
 import forms.ImporterManualAddressFormProvider
 import javax.inject.Inject
-import models.{Address, UserAnswers}
+import models.{Address, Country, UserAnswers}
 import navigation.CreateNavigator
-import pages.{ImporterManualAddressPage, Page}
+import pages.{ImporterAddressPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
-import services.AddressLookupService
+import services.{AddressLookupService, CountryService}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ImporterManualAddressView
@@ -40,18 +40,21 @@ class ImporterAddressFrontendController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   addressLookupService: AddressLookupService,
+  countriesService: CountryService,
   formProvider: ImporterManualAddressFormProvider,
   val controllerComponents: MessagesControllerComponents,
   addressView: ImporterManualAddressView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  override val page: Page = ImporterManualAddressPage
+  override val page: Page = ImporterAddressPage
   private val form        = formProvider()
+
+  private val countrySelectItems = countriesService.selectItems()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      request.userAnswers.get(ImporterManualAddressPage) match {
+      request.userAnswers.get(ImporterAddressPage) match {
         case Some(address) =>
           val preparedForm = form.fill(address)
           Ok(
@@ -59,7 +62,7 @@ class ImporterAddressFrontendController @Inject() (
               preparedForm,
               backLink(request.userAnswers),
               request.userAnswers.isImporterJourney,
-              Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
+              countrySelectItems
             )
           )
         case _ =>
@@ -77,13 +80,13 @@ class ImporterAddressFrontendController @Inject() (
                 formWithErrors,
                 backLink(request.userAnswers),
                 request.userAnswers.isImporterJourney,
-                Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
+                countrySelectItems
               )
             )
           ),
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterManualAddressPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(nextPage(updatedAnswers))
       )
@@ -112,7 +115,7 @@ class ImporterAddressFrontendController @Inject() (
           el._2,
           el._4,
           None,
-          confirmedAddress.address.country.code,
+          Country(confirmedAddress.address.country.code, confirmedAddress.address.country.name),
           confirmedAddress.address.postcode.getOrElse("")
         )
         // Address Lookup Service may return an address that is incompatible with NDRC, so validate it again
@@ -130,7 +133,7 @@ class ImporterAddressFrontendController @Inject() (
           )
         else
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterManualAddressPage, updatedAddress))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, updatedAddress))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(nextPage(updatedAnswers))
       }

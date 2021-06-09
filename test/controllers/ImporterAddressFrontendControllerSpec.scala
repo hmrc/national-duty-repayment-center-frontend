@@ -17,31 +17,38 @@
 package controllers
 
 import base.SpecBase
+import data.TestData
 import forms.ImporterManualAddressFormProvider
-import models.{Address, UserAnswers}
+import models.{Address, Country, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ImporterManualAddressPage
+import pages.ImporterAddressPage
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.CountryService
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.ImporterManualAddressView
 
 import scala.concurrent.Future
 
-class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
+class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new ImporterManualAddressFormProvider()
-  val form         = formProvider()
+  implicit val countriesService = TestData.testCountryService
+  val formProvider              = new ImporterManualAddressFormProvider()
+  val form                      = formProvider()
 
-  lazy val importerManualAddressRoute = routes.ImporterManualAddressController.onPageLoad().url
+  lazy val importerManualAddressRoute = routes.ImporterAddressFrontendController.onPageLoad().url
 
   "ImporterManualAddress Controller" must {
 
+    // TODO test for redirect to ALF and view existing address
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[CountryService].toInstance(countriesService))
+        .build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
 
@@ -49,13 +56,13 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val view = application.injector.instanceOf[ImporterManualAddressView]
 
-      status(result) mustEqual OK
+      status(result) mustEqual SEE_OTHER
 
-      contentAsString(result) mustEqual
-        view(form, defaultBackLink, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
-          request,
-          messages
-        ).toString
+//      contentAsString(result) mustEqual
+//        view(form, defaultBackLink, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
+//          request,
+//          messages
+//        ).toString
 
       application.stop()
     }
@@ -63,11 +70,20 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(
-        ImporterManualAddressPage,
-        Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")
+        ImporterAddressPage,
+        Address(
+          "address line 1",
+          Some("address line 2"),
+          "city",
+          Some("Region"),
+          Country("GB", "United Kingdom"),
+          "AA211AA"
+        )
       ).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(bind[CountryService].toInstance(countriesService))
+        .build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
 
@@ -79,7 +95,16 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
       contentAsString(result) mustEqual
         view(
-          form.fill(Address("address line 1", Some("address line 2"), "city", Some("Region"), "GB", "AA211AA")),
+          form.fill(
+            Address(
+              "address line 1",
+              Some("address line 2"),
+              "city",
+              Some("Region"),
+              Country("GB", "United Kingdom"),
+              "AA211AA"
+            )
+          ),
           defaultBackLink,
           false,
           Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
@@ -94,6 +119,7 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CountryService].toInstance(countriesService))
           .build()
 
       val request =
@@ -117,7 +143,9 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[CountryService].toInstance(countriesService))
+        .build()
 
       val request =
         FakeRequest(POST, importerManualAddressRoute)
@@ -142,7 +170,9 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to Session Expired for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None)
+        .overrides(bind[CountryService].toInstance(countriesService))
+        .build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
 
@@ -157,7 +187,9 @@ class ImporterManualAddressControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to Session Expired for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      val application = applicationBuilder(userAnswers = None)
+        .overrides(bind[CountryService].toInstance(countriesService))
+        .build()
 
       val request =
         FakeRequest(POST, importerManualAddressRoute)

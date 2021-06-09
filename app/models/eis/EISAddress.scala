@@ -14,14 +14,31 @@
  * limitations under the License.
  */
 
-package pages
+package models.eis
 
 import models.Address
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Json, OFormat}
 
-case object ImporterManualAddressPage extends QuestionPage[Address] {
+final case class EISAddress(
+  AddressLine1: String,
+  AddressLine2: Option[String],
+  City: String,
+  Region: Option[String],
+  CountryCode: String,
+  PostalCode: String
+)
 
-  override def path: JsPath = JsPath \ toString
+object EISAddress {
 
-  override def toString: String = "importerManualAddress"
+  implicit val format: OFormat[EISAddress] = Json.format[EISAddress]
+
+  def apply(address: Address): EISAddress = new EISAddress(
+    address.AddressLine1,
+    address.AddressLine2,
+    address.City,
+    address.Region,
+    address.Country.code,
+    address.PostalCode
+  )
+
 }

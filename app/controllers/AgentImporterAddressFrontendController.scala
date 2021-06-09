@@ -19,13 +19,13 @@ package controllers
 import controllers.actions._
 import forms.AgentImporterManualAddressFormProvider
 import javax.inject.Inject
-import models.{Address, UserAnswers}
+import models.{Address, Country, UserAnswers}
 import navigation.CreateNavigator
-import pages.{AgentImporterManualAddressPage, Page}
+import pages.{AgentImporterAddressPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import services.AddressLookupService
+import services.{AddressLookupService, CountryService}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.AgentImporterManualAddressView
@@ -40,27 +40,24 @@ class AgentImporterAddressFrontendController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   addressLookupService: AddressLookupService,
+  countriesService: CountryService,
   formProvider: AgentImporterManualAddressFormProvider,
   val controllerComponents: MessagesControllerComponents,
   addressView: AgentImporterManualAddressView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  override val page: Page = AgentImporterManualAddressPage
+  override val page: Page = AgentImporterAddressPage
   val form                = formProvider()
+
+  private val countrySelectItems = countriesService.selectItems()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      request.userAnswers.get(AgentImporterManualAddressPage) match {
+      request.userAnswers.get(AgentImporterAddressPage) match {
         case Some(address) =>
           val preparedForm = form.fill(address)
-          Ok(
-            addressView(
-              preparedForm,
-              backLink(request.userAnswers),
-              Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
-            )
-          )
+          Ok(addressView(preparedForm, backLink(request.userAnswers), countrySelectItems))
         case _ =>
           Redirect(controllers.routes.AgentImporterAddressFrontendController.onChange())
       }
@@ -70,18 +67,10 @@ class AgentImporterAddressFrontendController @Inject() (
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(
-            BadRequest(
-              addressView(
-                formWithErrors,
-                backLink(request.userAnswers),
-                Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
-              )
-            )
-          ),
+          Future.successful(BadRequest(addressView(formWithErrors, backLink(request.userAnswers), countrySelectItems))),
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterManualAddressPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(nextPage(updatedAnswers))
       )
@@ -110,7 +99,7 @@ class AgentImporterAddressFrontendController @Inject() (
           el._2,
           el._4,
           None,
-          confirmedAddress.address.country.code,
+          Country(confirmedAddress.address.country.code, confirmedAddress.address.country.name),
           confirmedAddress.address.postcode.getOrElse("")
         )
         // Address Lookup Service may return an address that is incompatible with NDRC, so validate it again
@@ -127,7 +116,7 @@ class AgentImporterAddressFrontendController @Inject() (
           )
         else
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterManualAddressPage, updatedAddress))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, updatedAddress))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(nextPage(updatedAnswers))
       }

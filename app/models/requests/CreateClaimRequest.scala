@@ -21,6 +21,7 @@ import java.time.LocalDate
 import models.DeclarantReferenceType.{No, Yes}
 import models.WhomToPay.Importer
 import models._
+import models.eis.EISAddress
 import pages._
 import play.api.libs.json.{Json, OFormat}
 
@@ -97,11 +98,7 @@ object CreateClaimRequest {
       case _                           => userAnswers.get(RepresentativeDeclarantAndBusinessNamePage).map(_.declarantName)
     }
 
-    def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] =
-      userAnswers.get(AgentImporterAddressPage) match {
-        case Some(_) => userAnswers.get(AgentImporterAddressPage)
-        case _       => userAnswers.get(AgentImporterManualAddressPage)
-      }
+    def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(AgentImporterAddressPage)
     def getDecRef(userAnswers: UserAnswers): Option[String] = userAnswers.get(DeclarantReferenceNumberPage) match {
       case Some(decRef) if decRef.declarantReferenceType == Yes => Some(decRef.declarantReferenceNumber.get)
       case Some(decRef) if decRef.declarantReferenceType == No  => Some("NA")
@@ -126,7 +123,7 @@ object CreateClaimRequest {
       val eori      = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
       val telephone = getTelePhone(userAnswers)
       val email     = getEmailAddress(userAnswers)
-      UserDetails("false", eori, name, address, telephone, email)
+      UserDetails("false", eori, name, EISAddress(address), telephone, email)
     }
 
     def getIsVATRegistered(userAnswers: UserAnswers): String = userAnswers.get(IsVATRegisteredPage) match {
@@ -140,10 +137,7 @@ object CreateClaimRequest {
         case _                                 => "false"
       }
 
-    def getImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(ImporterAddressPage) match {
-      case Some(_) => userAnswers.get(ImporterAddressPage)
-      case _       => userAnswers.get(ImporterManualAddressPage)
-    }
+    def getImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(ImporterAddressPage)
 
     def getAgentImporterName(userAnswers: UserAnswers): Option[String] =
       userAnswers.get(RepresentativeDeclarantAndBusinessNamePage).map(_.agentName)
@@ -188,7 +182,7 @@ object CreateClaimRequest {
           case _                           => getIsImporterVatRegistered(userAnswers)
         }
       }
-      UserDetails(isVATRegistered, eori, name, address, telephone, email)
+      UserDetails(isVATRegistered, eori, name, EISAddress(address), telephone, email)
     }
 
     def getBankDetails(userAnswers: UserAnswers): Option[AllBankDetails] = getPaymentMethod(userAnswers) match {

@@ -16,6 +16,7 @@
 
 package forms
 
+import data.TestData
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
@@ -25,7 +26,8 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
   val lengthKey   = "agentImporterManualAddress.error.length"
   val maxLength   = 128
 
-  val form = new AgentImporterManualAddressFormProvider()()
+  implicit val countriesService = TestData.testCountryService
+  val form                      = new AgentImporterManualAddressFormProvider().apply()
 
   ".AddressLine1" must {
 

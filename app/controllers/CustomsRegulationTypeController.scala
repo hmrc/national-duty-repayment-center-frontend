@@ -19,10 +19,9 @@ package controllers
 import controllers.actions._
 import forms.CustomsRegulationTypeFormProvider
 import javax.inject.Inject
-import models.UserAnswers
-import models.CustomsRegulationType
+import models.{CustomsRegulationType, UserAnswers}
 import navigation.CreateNavigator
-import pages.{AgentImporterManualAddressPage, ArticleTypePage, CustomsRegulationTypePage, Page, UkRegulationTypePage}
+import pages.{ArticleTypePage, CustomsRegulationTypePage, Page, UkRegulationTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

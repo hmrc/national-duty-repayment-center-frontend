@@ -25,10 +25,10 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AddressLookupService @Inject()(
-                                      addressLookupConnector: AddressLookupFrontendConnector,
-                                      implicit val messagesApi: MessagesApi,
-                                      implicit val appConfig: FrontendAppConfig
+class AddressLookupService @Inject() (
+  addressLookupConnector: AddressLookupFrontendConnector,
+  implicit val messagesApi: MessagesApi,
+  implicit val appConfig: FrontendAppConfig
 ) {
 
   def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AddressLookupConfirmation] =

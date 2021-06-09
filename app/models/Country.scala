@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import models.Address
-import play.api.libs.json.JsPath
+import play.api.libs.json.{Json, OFormat}
 
-case object AgentImporterManualAddressPage extends QuestionPage[Address] {
+final case class Country(code: String, name: String)
 
-  override def path: JsPath = JsPath \ toString
+object Country {
 
-  override def toString: String = "agentImporterManualAddress"
+  implicit val format: OFormat[Country] = Json.format[Country]
+
 }

@@ -25,6 +25,7 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiat
 import controllers.actions._
 import models.AmendCaseResponseType.FurtherInformation
 import models._
+import models.eis.EISAddress
 import models.requests.{AmendClaimRequest, CreateClaimRequest, UploadRequest}
 import navigation.{CreateNavigator, NavigatorBack}
 import org.mockito.Matchers.any
@@ -133,7 +134,7 @@ trait SpecBase
     AddressLine2 = Some("line 2"),
     City = "city",
     Region = Some("region"),
-    CountryCode = "GB",
+    Country = Country("GB", "United Kingdom"),
     PostalCode = "ZZ111ZZ"
   )
 
@@ -141,7 +142,7 @@ trait SpecBase
     IsVATRegistered = "true",
     EORI = EORI("GB123456789123456"),
     Name = "Joe Bloggs",
-    Address = address,
+    Address = EISAddress(address),
     TelephoneNumber = Some("12345678"),
     EmailAddress = Some("example@example.com")
   )
