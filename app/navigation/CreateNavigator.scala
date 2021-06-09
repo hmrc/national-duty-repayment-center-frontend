@@ -74,16 +74,14 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
     P(DoYouOwnTheGoodsPage, controllers.routes.DoYouOwnTheGoodsController.onPageLoad, isImporter, doYouOwnGoodsAnswered),
     P(ImporterNamePage, controllers.routes.ImporterNameController.onPageLoad, showImporterName, importerNameAnswered),
 
-    P(ImporterAddressPage, controllers.routes.ImporterAddressController.onPageLoad, always, importerAddressAnswered),
-    P(ImporterManualAddressPage, controllers.routes.ImporterManualAddressController.onPageLoad, never, never),
+    P(ImporterManualAddressPage, controllers.routes.ImporterAddressFrontendController.onPageLoad, always, importerAddressAnswered),
 
     P(ImportHasEoriOnAgentJourneyPage, controllers.routes.ImporterHasEoriController.onPageLoad, isAgent, importerHasAgentEoriAnswered),
     P(ImporterEoriOnAgentJourneyPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterAgentEori, importerAgentEoriAnswered),
 
     P(RepresentativeDeclarantAndBusinessNamePage, controllers.routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad, isAgent, representativeDeclarantAndBusinessNameAnswered),
 
-    P(AgentImporterAddressPage, controllers.routes.AgentImporterAddressController.onPageLoad, isAgent, agentImporterAddressAnswered),
-    P(AgentImporterManualAddressPage, controllers.routes.AgentImporterManualAddressController.onPageLoad, never, never),
+    P(AgentImporterManualAddressPage, controllers.routes.AgentImporterAddressFrontendController.onPageLoad, isAgent, agentImporterAddressAnswered),
 
     P(EmailAddressAndPhoneNumberPage, controllers.routes.EmailAddressAndPhoneNumberController.onPageLoad, always, emailAndPhoneNumberAnswered),
     P(DeclarantReferenceNumberPage, controllers.routes.DeclarantReferenceNumberController.onPageLoad, always, declarantReferenceNumberAnswered),

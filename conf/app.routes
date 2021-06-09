@@ -88,6 +88,7 @@ GET         /other-duties-overpayment                                           
 POST        /other-duties-overpayment                                                  controllers.OtherDutiesPaidController.onSubmit()
 
 
+#TODO - remove ImporterAddressController routes
 GET         /select-importer-address                                                   controllers.ImporterAddressController.onPageLoad()
 POST        /select-importer-address                                                   controllers.ImporterAddressController.postcodeSubmit()
 GET         /importer-address                                                          controllers.ImporterAddressController.enteredAddressPageLoad()
@@ -98,8 +99,19 @@ POST        /your-business-address                                              
 GET         /enter-agent-importer-address                                              controllers.AgentImporterAddressController.enteredAddressPageLoad()
 POST        /enter-agent-importer-address                                              controllers.AgentImporterAddressController.addressSelectSubmit()
 
+#TODO - remove ImporterManualAddressController routes
 GET         /enter-importer-address                                                    controllers.ImporterManualAddressController.onPageLoad()
 POST        /enter-importer-address                                                    controllers.ImporterManualAddressController.onSubmit()
+
+GET         /importer-address-lookup                                                   controllers.ImporterAddressFrontendController.onPageLoad()
+POST        /importer-address-lookup                                                   controllers.ImporterAddressFrontendController.onSubmit()
+GET         /importer-address-lookup/change                                            controllers.ImporterAddressFrontendController.onChange()
+GET         /importer-address-lookup/update                                            controllers.ImporterAddressFrontendController.onUpdate(id: String)
+
+GET         /your-business-address-lookup                                              controllers.AgentImporterAddressFrontendController.onPageLoad()
+POST        /your-business-address-lookup                                              controllers.AgentImporterAddressFrontendController.onSubmit()
+GET         /your-business-address-lookup/change                                       controllers.AgentImporterAddressFrontendController.onChange()
+GET         /your-business-address-lookup/update                                       controllers.AgentImporterAddressFrontendController.onUpdate(id: String)
 
 GET         /application-complete                                                      controllers.ConfirmationController.onPageLoad()
 

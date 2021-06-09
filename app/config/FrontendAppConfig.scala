@@ -69,10 +69,17 @@ trait FrontendAppConfig {
   val upscanInitiateBaseUrl: String
   val baseExternalCallbackUrl: String
   val baseInternalCallbackUrl: String
+
   def languageMap: Map[String, Lang]
+
   val routeToSwitchLanguage: String => Call
   val locationCanonicalList: String
   val feedbackSurvey: String
+  val addressLookupInitUrl: String
+  val addressLookupConfirmedUrl: String
+  val showPhaseBanner: Boolean
+
+  def selfUrl(url: String): String
 }
 
 @Singleton
@@ -90,11 +97,23 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   override val reportAProblemNonJSUrl =
     s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 
+  override val showPhaseBanner: Boolean = configuration.get[Boolean]("phaseBanner.display")
+
   override val betaFeedbackUrl                = s"$contactHost/contact/beta-feedback"
   override val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated"
 
   override val addressLookupServiceUrl: String =
     configuration.get[Service]("microservice.services.address-lookup").baseUrl
+
+  private val addressLookupBaseUrl: String = configuration.get[Service]("microservice.services.address-lookup-frontend").baseUrl
+  override val addressLookupInitUrl: String         = s"$addressLookupBaseUrl${configuration.get[String]("microservice.services.address-lookup-frontend.init")}"
+  override val addressLookupConfirmedUrl: String    = s"$addressLookupBaseUrl${configuration.get[String]("microservice.services.address-lookup-frontend.confirmed")}"
+
+  private val selfBaseUrl: String = configuration
+    .getOptional[String]("platform.frontend.host")
+    .getOrElse("http://localhost:8450")
+
+  override def selfUrl(url: String):String = s"$selfBaseUrl$url"
 
   override val timeout: Int             = configuration.get[Int]("timeout.timeout")
   override val countdown: Int           = configuration.get[Int]("timeout.countdown")

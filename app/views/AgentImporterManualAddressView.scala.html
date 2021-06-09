@@ -81,17 +81,6 @@
 
         @forms.inputText(
             form = form,
-            id = "Region",
-            name = "Region",
-            inputType = "text",
-            label = "agentImporterManualAddress.region.heading",
-            classes = Some("govuk-!-width-two-thirds"),
-            isPageHeading = false,
-            isInFieldset = true
-        )
-
-        @forms.inputText(
-            form = form,
             id = "PostalCode",
             name = "PostalCode",
             inputType = "text",
@@ -120,6 +109,13 @@
             )
         </div>
     }
-        @html.button("site.continue")
+        <div class="govuk-button-group">
+            @html.button("site.continue")
+            @html.a(
+                link = controllers.routes.AgentImporterAddressFrontendController.onChange().url,
+                messageKey = messages("address.change"),
+                id = Some("enter-address-manually")
+            )
+        </div>
     }
 }

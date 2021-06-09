@@ -82,7 +82,9 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 
 @beforeContentBlock = {
 
-    @phaseBanner("beta")
+    @if(appConfig.showPhaseBanner) {
+        @phaseBanner("beta")
+    }
 
     @languageSelection(
         appConfig.languageMap,

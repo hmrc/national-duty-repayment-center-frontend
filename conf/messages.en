@@ -813,3 +813,8 @@ representative.importer.hint = This must match the information on the import doc
 representative.importer.importerName.error.required = Enter the importer''s name
 representative.importer.importerName.error.length= Importer name must be 512 characters or less
 representative.importer.importerName.error.invalid = Importer''s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
+
+address.label.select.title = Select an address
+address.label.confirm.title = Confirm your address
+address.label.edit.postcode = Postcode
+address.change = Search for a new address
