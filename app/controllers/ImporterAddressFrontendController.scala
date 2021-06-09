@@ -127,7 +127,7 @@ class ImporterAddressFrontendController @Inject() (
                 formWithAddress,
                 backLink(request.userAnswers),
                 request.userAnswers.isImporterJourney,
-                Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
+                countrySelectItems
               )
             )
           )

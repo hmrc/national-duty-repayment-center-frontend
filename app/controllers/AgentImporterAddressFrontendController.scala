@@ -110,7 +110,7 @@ class AgentImporterAddressFrontendController @Inject() (
               addressView(
                 formWithAddress,
                 backLink(request.userAnswers),
-                Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
+                countrySelectItems
               )
             )
           )

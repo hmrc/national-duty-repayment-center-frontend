@@ -64,7 +64,7 @@ object AddressLookupRequest {
       Labels(
         en =
           AddressLookupRequest.Labels.Language(
-            AppLevelLabels(navTitle = Some(eng("service.name"))),
+            AppLevelLabels(navTitle = Some(eng("site.service_name"))),
             SelectPageLabels(
               title = Some(eng("address.label.select.title")),
               heading = Some(eng("address.label.select.title"))
@@ -86,7 +86,7 @@ object AddressLookupRequest {
           ),
         cy =
           AddressLookupRequest.Labels.Language(
-            AppLevelLabels(navTitle = Some(cy("service.name"))),
+            AppLevelLabels(navTitle = Some(cy("site.service_name"))),
             SelectPageLabels(),
             LookupPageLabels(heading = Some(eng(lookupPageHeadingKey))),
             ConfirmPageLabels(),
