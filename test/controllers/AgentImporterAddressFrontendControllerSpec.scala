@@ -41,10 +41,9 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
 
   lazy val agentImporterManualAddressRoute = routes.AgentImporterAddressFrontendController.onPageLoad().url
 
-  "AgentImporterManualAddress Controller" must {
+  "AgentImporterAddressFrontendController" must {
 
-    // TODO test for redirect to ALF and view existing address
-    "return OK and the correct view for a GET" in {
+    "redirects to address lookup when there is no address in cache" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(bind[CountryService].toInstance(countriesService))
@@ -54,15 +53,9 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AgentImporterManualAddressView]
-
       status(result) mustEqual SEE_OTHER
 
-//      contentAsString(result) mustEqual
-//        view(form, defaultBackLink, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
-//          request,
-//          messages
-//        ).toString
+      redirectLocation(result).value mustEqual routes.AgentImporterAddressFrontendController.onChange().url
 
       application.stop()
     }

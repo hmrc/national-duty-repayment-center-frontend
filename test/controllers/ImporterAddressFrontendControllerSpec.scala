@@ -41,10 +41,9 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val importerManualAddressRoute = routes.ImporterAddressFrontendController.onPageLoad().url
 
-  "ImporterManualAddress Controller" must {
+  "ImporterAddressFrontendController" must {
 
-    // TODO test for redirect to ALF and view existing address
-    "return OK and the correct view for a GET" in {
+    "redirects to address lookup when there is no address in cache" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(bind[CountryService].toInstance(countriesService))
@@ -54,15 +53,9 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ImporterManualAddressView]
-
       status(result) mustEqual SEE_OTHER
 
-//      contentAsString(result) mustEqual
-//        view(form, defaultBackLink, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
-//          request,
-//          messages
-//        ).toString
+      redirectLocation(result).value mustEqual routes.ImporterAddressFrontendController.onChange().url
 
       application.stop()
     }
