@@ -438,6 +438,7 @@ agentImporterAddress.postalCode.error.invalid = Enter a real postcode
 
 importerManualAddress.title = Enter the importer’s address
 importerManualAddress.heading = Enter the importer’s address
+importerManualAddress.confirmation.title = Confirm the importer’s address
 importerManualAddress.addressLine1.heading = Address line 1
 importerManualAddress.addressLine2.heading = Address line 2 (optional)
 importerManualAddress.city.heading = Town or city
@@ -446,9 +447,11 @@ importerManualAddress.country.heading = Country
 importerManualAddress.checkYourAnswersLabel = Importer address
 importerManualAddress.error.required = Enter the importer’s address
 importerManualAddress.hint = We will use this to send letters about this application.
+agent.importerManualAddress.hint = We may use these details to contact the importer about this claim.
 importerManualAddress.error.length = Address must be 128 characters or less
 importerYourAddress.title = Enter your address
 importerYourAddress.heading = Enter your address
+importerYourAddress.confirmation.title = Confirm your address
 
 confirmation.title = Information sent
 confirmation.heading = Information sent
@@ -474,6 +477,7 @@ amend.confirmation.helpUs.p3 = (takes one minute)
 
 agentImporterManualAddress.title = Enter your business address
 agentImporterManualAddress.heading = Enter your business address
+agentImporterManualAddress.confirmation.title = Confirm your business address
 agentImporterManualAddress.hint = We will use this to send letters about this application.
 agentImporterManualAddress.checkYourAnswersLabel = Your address
 agentImporterManualAddress.line1.heading = Address line 1
@@ -815,6 +819,5 @@ representative.importer.importerName.error.length= Importer name must be 512 cha
 representative.importer.importerName.error.invalid = Importer’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
 
 address.label.select.title = Select an address
-address.label.confirm.title = Confirm your address
 address.label.edit.postcode = Postcode
 address.change = Search for a new address

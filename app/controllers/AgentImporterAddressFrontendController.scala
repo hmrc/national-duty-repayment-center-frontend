@@ -83,8 +83,10 @@ class AgentImporterAddressFrontendController @Inject() (
         controllers.routes.IndexController.onPageLoad().url,
         controllers.routes.SignOutController.signOut().url,
         controllers.routes.KeepAliveController.keepAlive().url,
+        "agentImporterAddress.title",
+        "agentImporterManualAddress.hint",
         "agentImporterManualAddress.title",
-        "agentImporterManualAddress.hint"
+        "agentImporterManualAddress.confirmation.title"
       ) map {
         response => Redirect(response.redirectUrl)
       }

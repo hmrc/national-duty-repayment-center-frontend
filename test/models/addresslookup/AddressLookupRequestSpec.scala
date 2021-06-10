@@ -44,8 +44,10 @@ class AddressLookupRequestSpec extends WordSpec with MustMatchers with MockitoSu
         homeUrl = "http://start",
         signOutUrl = "http://leave",
         keepAliveUrl = "http://keepalive",
-        lookupPageHeadingKey = "importerYourAddress.title",
-        hintKey = "importerManualAddress.hint"
+        lookupPageHeadingKey = "importerAddress.title",
+        hintKey = "importerManualAddress.hint",
+        editPageHeadingKey = "importerYourAddress.title",
+        confirmationHeadingKey = "importerYourAddress.confirmation.title"
       )(realMessagesApi, appConfig)
 
       request mustBe expectedRequest
@@ -75,8 +77,8 @@ class AddressLookupRequestSpec extends WordSpec with MustMatchers with MockitoSu
           AppLevelLabels(navTitle = Some("Apply for repayment of import duty and import VAT")),
           SelectPageLabels(title = Some("Select an address"), heading = Some("Select an address")),
           LookupPageLabels(
-            title = Some("Enter your address"),
-            heading = Some("Enter your address"),
+            title = Some("What is your address?"),
+            heading = Some("What is your address?"),
             afterHeadingText = Some("We will use this to send letters about this application.")
           ),
           ConfirmPageLabels(title = Some("Confirm your address"), heading = Some("Confirm your address")),
@@ -90,7 +92,7 @@ class AddressLookupRequestSpec extends WordSpec with MustMatchers with MockitoSu
         AddressLookupRequest.Labels.Language(
           AppLevelLabels(navTitle = Some("TODO Welsh service name")),
           SelectPageLabels(),
-          LookupPageLabels(heading = Some("Enter your address")),
+          LookupPageLabels(heading = Some("What is your address?")),
           ConfirmPageLabels(),
           EditPageLabels()
         )

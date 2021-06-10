@@ -26,7 +26,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
 import services.{AddressLookupService, CountryService}
-import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.ImporterManualAddressView
 
@@ -99,8 +98,11 @@ class ImporterAddressFrontendController @Inject() (
         controllers.routes.IndexController.onPageLoad().url,
         controllers.routes.SignOutController.signOut().url,
         controllers.routes.KeepAliveController.keepAlive().url,
+        if (request.userAnswers.isImporterJourney) "importerAddress.title" else "agent.importerAddress.title",
+        if (request.userAnswers.isImporterJourney) "importerManualAddress.hint" else "agent.importerManualAddress.hint",
         if (request.userAnswers.isImporterJourney) "importerYourAddress.title" else "importerManualAddress.title",
-        if (request.userAnswers.isImporterJourney) "importerManualAddress.hint" else ""
+        if (request.userAnswers.isImporterJourney) "importerYourAddress.confirmation.title"
+        else "importerManualAddress.confirmation.title"
       ) map {
         response => Redirect(response.redirectUrl)
       }

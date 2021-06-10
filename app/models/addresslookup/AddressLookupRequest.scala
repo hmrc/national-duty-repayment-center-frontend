@@ -42,7 +42,9 @@ object AddressLookupRequest {
     signOutUrl: String,
     keepAliveUrl: String,
     lookupPageHeadingKey: String,
-    hintKey: String
+    hintKey: String,
+    editPageHeadingKey: String,
+    confirmationHeadingKey: String
   )(implicit messagesApi: MessagesApi, config: FrontendAppConfig): AddressLookupRequest = {
     val eng: Messages = MessagesImpl(Lang("en"), messagesApi)
     val cy: Messages  = MessagesImpl(Lang("cy"), messagesApi)
@@ -76,14 +78,11 @@ object AddressLookupRequest {
               heading = Some(eng(lookupPageHeadingKey)),
               afterHeadingText = Some(eng(hintKey))
             ),
-            ConfirmPageLabels(
-              title = Some(eng("address.label.confirm.title")),
-              heading = Some(eng("address.label.confirm.title"))
-            ),
+            ConfirmPageLabels(title = Some(eng(confirmationHeadingKey)), heading = Some(eng(confirmationHeadingKey))),
             EditPageLabels(
               postcodeLabel = Some(eng("address.label.edit.postcode")),
-              title = Some(eng(lookupPageHeadingKey)),
-              heading = Some(eng(lookupPageHeadingKey))
+              title = Some(eng(editPageHeadingKey)),
+              heading = Some(eng(editPageHeadingKey))
             )
           ),
         cy =
