@@ -105,15 +105,7 @@ class AgentImporterAddressFrontendController @Inject() (
         // Address Lookup Service may return an address that is incompatible with NDRC, so validate it again
         val formWithAddress = form.fillAndValidate(updatedAddress)
         if (formWithAddress.hasErrors)
-          Future.successful(
-            BadRequest(
-              addressView(
-                formWithAddress,
-                backLink(request.userAnswers),
-                countrySelectItems
-              )
-            )
-          )
+          Future.successful(BadRequest(addressView(formWithAddress, backLink(request.userAnswers), countrySelectItems)))
         else
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, updatedAddress))

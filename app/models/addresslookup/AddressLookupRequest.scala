@@ -53,6 +53,8 @@ object AddressLookupRequest {
         serviceHref = homeUrl,
         signOutHref = signOutUrl,
         showPhaseBanner = config.showPhaseBanner,
+        phaseFeedbackLink = config.betaFeedbackUrl,
+        deskProServiceName = config.contactFormServiceIdentifier,
         ukMode = false,
         includeHMRCBranding = false,
         AddressLookupRequest.Options.TimeoutConfig(
@@ -101,6 +103,8 @@ object AddressLookupRequest {
     serviceHref: String,
     signOutHref: String,
     showPhaseBanner: Boolean,
+    phaseFeedbackLink: String,
+    deskProServiceName: String,
     ukMode: Boolean,
     includeHMRCBranding: Boolean,
     timeoutConfig: AddressLookupRequest.Options.TimeoutConfig

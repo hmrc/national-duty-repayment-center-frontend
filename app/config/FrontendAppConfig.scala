@@ -86,7 +86,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
 
   override val appName: String              = configuration.get[String]("appName")
   override val contactHost                  = configuration.get[String]("contact-frontend.host")
-  override val contactFormServiceIdentifier = "play26frontend"
+  override val contactFormServiceIdentifier = configuration.get[String]("contact-frontend.serviceId")
   override val analyticsToken: String       = configuration.get[String](s"google-analytics.token")
   override val analyticsHost: String        = configuration.get[String](s"google-analytics.host")
 
