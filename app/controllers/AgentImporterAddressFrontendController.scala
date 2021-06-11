@@ -70,7 +70,7 @@ class AgentImporterAddressFrontendController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(addressView(formWithErrors, backLink(request.userAnswers), countrySelectItems))),
-        value => saveAndContinue(value)
+        value => saveAndContinue(value, true)
       )
   }
 
@@ -102,7 +102,8 @@ class AgentImporterAddressFrontendController @Inject() (
             el._4,
             None,
             Country(confirmedAddress.address.country.code, confirmedAddress.address.country.name),
-            confirmedAddress.address.postcode
+            confirmedAddress.address.postcode,
+            Some(confirmedAddress.auditRef)
           )
           // Address Lookup Service may return an address that is incompatible with NDRC, so validate it again
           // Note: simple `form.fillAndValidate(updatedAddress)` doesn't work with conditional PostCode validation
@@ -118,15 +119,21 @@ class AgentImporterAddressFrontendController @Inject() (
                   )
                 )
               )
-            case Right(updatedAddress) => saveAndContinue(updatedAddress)
+            case Right(updatedAddress) => saveAndContinue(updatedAddress, false)
           }
       }
   }
 
-  private def saveAndContinue(address: Address)(implicit request: DataRequest[_]) =
+  private def saveAndContinue(address: Address, checkAuditRef: Boolean)(implicit request: DataRequest[_]) = {
+    val updateAuditRef =
+      if (checkAuditRef && !request.userAnswers.get(AgentImporterAddressPage).contains(address))
+        address.copy(auditRef = None)
+      else
+        address
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, address))
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentImporterAddressPage, updateAuditRef))
       _              <- sessionRepository.set(updatedAnswers)
     } yield Redirect(nextPage(updatedAnswers))
+  }
 
 }

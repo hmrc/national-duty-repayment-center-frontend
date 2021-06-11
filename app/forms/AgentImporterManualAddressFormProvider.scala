@@ -41,8 +41,9 @@ class AgentImporterManualAddressFormProvider @Inject() (implicit countriesServic
       city: String,
       region: Option[String],
       countryCode: String,
-      postCode: Option[String]
-    ) => new Address(addressLine1, addressLine2, city, region, countriesService.find(countryCode), postCode)
+      postCode: Option[String],
+      auditRef: Option[String]
+    ) => new Address(addressLine1, addressLine2, city, region, countriesService.find(countryCode), postCode, auditRef)
 
     Form(
       mapping(
@@ -100,7 +101,8 @@ class AgentImporterManualAddressFormProvider @Inject() (implicit countriesServic
                 maxLength(maxPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid")
               )
             )
-        )
+        ),
+        "auditRef" -> optional(text())
       )(formToModel)(
         agentImporterManualAddress =>
           Some(
@@ -110,7 +112,8 @@ class AgentImporterManualAddressFormProvider @Inject() (implicit countriesServic
               agentImporterManualAddress.City,
               agentImporterManualAddress.Region,
               agentImporterManualAddress.Country.code,
-              agentImporterManualAddress.PostalCode
+              agentImporterManualAddress.PostalCode,
+              agentImporterManualAddress.auditRef
             )
           )
       )

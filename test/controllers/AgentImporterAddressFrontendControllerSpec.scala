@@ -16,22 +16,25 @@
 
 package controllers
 
+import java.util.UUID
+
 import base.SpecBase
 import data.TestData
+import data.TestData.addressLookupConfirmation
 import forms.AgentImporterManualAddressFormProvider
-import models.UserAnswers
+import models.{Address, UserAnswers}
 import models.addresslookup.AddressLookupOnRamp
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.AgentImporterAddressPage
+import pages.{AgentImporterAddressPage, ImporterAddressPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.{AddressLookupService, CountryService}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
-import views.html.AgentImporterManualAddressView
+import views.html.{AgentImporterManualAddressView, ImporterManualAddressView}
 
 import scala.concurrent.Future
 
@@ -43,6 +46,7 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
 
   lazy val agentImporterManualAddressRoute = routes.AgentImporterAddressFrontendController.onPageLoad().url
   lazy val agentImporterChangeAddressRoute = routes.AgentImporterAddressFrontendController.onChange().url
+  lazy val agentImporterUpdateAddressRoute = routes.AgentImporterAddressFrontendController.onUpdate(Some("id")).url
 
   "AgentImporterAddressFrontendController" must {
 
@@ -100,9 +104,20 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       callBackUrlCaptor.getValue must not include "id="
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "populate the view correctly on a GET when the question has previously been answered for UK address" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterAddressPage, addressUk).success.value
+      populateExistingAddresss(addressUk)
+
+    }
+
+    "populate the view correctly on a GET when the question has previously been answered for non-UK address" in {
+
+      populateExistingAddresss(addressInternational)
+
+    }
+
+    def populateExistingAddresss(address: Address) = {
+      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterAddressPage, address).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(bind[CountryService].toInstance(countriesService))
@@ -117,7 +132,7 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(addressUk), defaultBackLink, countriesService.selectItems())(request, messages).toString
+        view(form.fill(address), defaultBackLink, countriesService.selectItems())(request, messages).toString
 
       application.stop()
     }
@@ -147,6 +162,133 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
+    }
+
+    "retain audit reference when same address is submitted manually" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterAddressPage, addressUk).success.value
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(bind[CountryService].toInstance(countriesService))
+          .build()
+
+      val request =
+        FakeRequest(POST, agentImporterManualAddressRoute)
+          .withFormUrlEncodedBody(
+            ("AddressLine1", addressUk.AddressLine1),
+            ("AddressLine2", addressUk.AddressLine2.getOrElse("")),
+            ("City", addressUk.City),
+            ("Region", addressUk.Region.getOrElse("")),
+            ("CountryCode", addressUk.Country.code),
+            ("PostalCode", addressUk.PostalCode.getOrElse("")),
+            ("auditRef", addressUk.auditRef.getOrElse(""))
+          )
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+
+      persistedAnswers.getValue.get(AgentImporterAddressPage) mustBe Some(addressUk)
+    }
+
+    "clear audit reference when changed address is submitted manually" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterAddressPage, addressUk).success.value
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(bind[CountryService].toInstance(countriesService))
+          .build()
+
+      val request =
+        FakeRequest(POST, agentImporterManualAddressRoute)
+          .withFormUrlEncodedBody(
+            ("AddressLine1", addressUk.AddressLine1),
+            ("AddressLine2", addressUk.AddressLine2.getOrElse("")),
+            ("City", "Different"),
+            ("Region", addressUk.Region.getOrElse("")),
+            ("CountryCode", addressUk.Country.code),
+            ("PostalCode", addressUk.PostalCode.getOrElse("")),
+            ("auditRef", addressUk.auditRef.getOrElse(""))
+          )
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+
+      persistedAnswers.getValue.get(AgentImporterAddressPage) mustBe Some(
+        addressUk.copy(City = "Different", auditRef = None)
+      )
+    }
+
+    "persist address with audit ref and redirect to next page when valid data returned from address lookup" in {
+      val mockAddressLookupService = mock[AddressLookupService]
+
+      val auditRef = UUID.randomUUID().toString
+
+      when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+        Future.successful(addressLookupConfirmation(auditRef))
+      )
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CountryService].toInstance(countriesService))
+          .overrides(bind[AddressLookupService].toInstance(mockAddressLookupService))
+          .build()
+
+      val request = FakeRequest(GET, agentImporterUpdateAddressRoute)
+      val result  = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      persistedAnswers.getValue.get(AgentImporterAddressPage).flatMap(_.auditRef) mustBe Some(auditRef)
+
+    }
+
+    "show error page when invalid data returned from address lookup" in {
+      val mockAddressLookupService = mock[AddressLookupService]
+
+      val invalidCity = "Southampton" * 10
+      when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+        Future.successful(
+          addressLookupConfirmation(
+            city = invalidCity, // too long
+            postCode = None,    // missing for GB
+            countryCode = "GB"
+          )
+        )
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CountryService].toInstance(countriesService))
+          .overrides(bind[AddressLookupService].toInstance(mockAddressLookupService))
+          .build()
+
+      val request = FakeRequest(GET, agentImporterUpdateAddressRoute)
+      val result  = route(application, request).value
+
+      status(result) mustEqual BAD_REQUEST
+
+      contentAsString(result) must include("City must be 64 characters or less")
+      contentAsString(result) must include("Enter a UK postcode")
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {

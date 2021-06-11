@@ -38,8 +38,9 @@ class ImporterManualAddressFormProvider @Inject() (implicit countriesService: Co
       city: String,
       region: Option[String],
       countryCode: String,
-      postCode: Option[String]
-    ) => new Address(addressLine1, addressLine2, city, region, countriesService.find(countryCode), postCode)
+      postCode: Option[String],
+      auditRef: Option[String]
+    ) => new Address(addressLine1, addressLine2, city, region, countriesService.find(countryCode), postCode, auditRef)
     Form(
       mapping(
         "AddressLine1" ->
@@ -96,7 +97,8 @@ class ImporterManualAddressFormProvider @Inject() (implicit countriesService: Co
                 maxLength(10, "importerAddress.postalCode.error.invalid")
               )
             )
-        )
+        ),
+        "auditRef" -> optional(text())
       )(formToModel)(
         importerAddress =>
           Some(
@@ -106,7 +108,8 @@ class ImporterManualAddressFormProvider @Inject() (implicit countriesService: Co
               importerAddress.City,
               importerAddress.Region,
               importerAddress.Country.code,
-              importerAddress.PostalCode
+              importerAddress.PostalCode,
+              importerAddress.auditRef
             )
           )
       )

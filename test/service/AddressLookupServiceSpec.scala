@@ -19,7 +19,7 @@ package service
 import base.SpecBase
 import config.FrontendAppConfig
 import connectors.AddressLookupFrontendConnector
-import data.TestData
+import data.TestData._
 import models.addresslookup.AddressLookupOnRamp
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, verify, when}
@@ -47,7 +47,7 @@ class AddressLookupServiceSpec extends SpecBase with MustMatchers with BeforeAnd
   override protected def beforeEach(): Unit = {
     super.beforeEach()
     when(connector.getAddress(any())(any[HeaderCarrier], any[ExecutionContext])).thenReturn(
-      Future.successful(TestData.addressLookupConfirmation)
+      Future.successful(addressLookupConfirmation())
     )
     when(connector.initialiseJourney(any())(any(), any())).thenReturn(
       Future.successful(new AddressLookupOnRamp("callBackUrl"))
@@ -63,7 +63,7 @@ class AddressLookupServiceSpec extends SpecBase with MustMatchers with BeforeAnd
   "AddressLookupService" should {
 
     "return an valid address when Address Lookup returns a valid response" in {
-      service.retrieveAddress("byid").futureValue mustBe TestData.addressLookupConfirmation
+      service.retrieveAddress("byid").futureValue mustBe addressLookupConfirmation()
       verify(connector).getAddress(any())(any(), any())
     }
 

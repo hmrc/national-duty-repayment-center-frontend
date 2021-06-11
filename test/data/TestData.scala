@@ -16,16 +16,16 @@
 
 package data
 
+import java.time.{LocalDate, ZoneId, ZonedDateTime}
+
 import forms.EmailAndPhoneNumber
 import models.FileUpload.Accepted
 import models._
+import models.addresslookup.{AddressLookupAddress, AddressLookupConfirmation, AddressLookupCountry}
+import models.eis.EISAddress
 import models.requests.CreateClaimRequest
 import pages._
 import services.{CountryService, FileUploaded}
-import java.time.{LocalDate, ZoneId, ZonedDateTime}
-
-import models.addresslookup.{AddressLookupAddress, AddressLookupConfirmation, AddressLookupCountry}
-import models.eis.EISAddress
 
 object TestData {
 
@@ -629,19 +629,20 @@ object TestData {
     Nil
   )
 
-  val addressLookupConfirmation = AddressLookupConfirmation(
-    "auditRef",
-    Some("id123456"),
-    AddressLookupAddress(
-      List(
-        testImporterManualAddress.AddressLine1,
-        testImporterManualAddress.AddressLine2.getOrElse(""),
-        "",
-        testImporterManualAddress.City
-      ),
-      testImporterManualAddress.PostalCode,
-      AddressLookupCountry("UK", "United Kingdom")
+  def addressLookupConfirmation(
+    auditRef: String = "auditRef",
+    city: String = testImporterManualAddress.City,
+    postCode: Option[String] = testImporterManualAddress.PostalCode,
+    countryCode: String = "GB"
+  ) =
+    AddressLookupConfirmation(
+      auditRef,
+      Some("id123456"),
+      AddressLookupAddress(
+        List(testImporterManualAddress.AddressLine1, testImporterManualAddress.AddressLine2.getOrElse(""), "", city),
+        postCode,
+        AddressLookupCountry(countryCode, "Country")
+      )
     )
-  )
 
 }

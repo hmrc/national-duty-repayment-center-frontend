@@ -135,7 +135,8 @@ trait SpecBase
     City = "city",
     Region = Some("region"),
     Country = Country("GB", "United Kingdom"),
-    PostalCode = Some("ZZ111ZZ")
+    PostalCode = Some("ZZ111ZZ"),
+    auditRef = Some("audit-ref-a")
   )
 
   val addressInternational = Address(
@@ -144,7 +145,8 @@ trait SpecBase
     City = "city",
     Region = Some("region"),
     Country = Country("FR", "France"),
-    PostalCode = None
+    PostalCode = None,
+    auditRef = Some("audit-ref-b")
   )
 
   val userDetails = UserDetails(

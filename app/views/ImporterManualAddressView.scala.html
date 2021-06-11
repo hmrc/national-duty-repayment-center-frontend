@@ -17,6 +17,7 @@
 @import controllers.routes._
 @import views.ViewUtils._
 @import navigation.NavigatorBack
+@import models.Address
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -25,7 +26,7 @@
     govukSelect: GovukSelect
 )
 
-@(form: Form[_], backLink: NavigatorBack, isImporterJourney: Boolean, countryOptions: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[Address], backLink: NavigatorBack, isImporterJourney: Boolean, countryOptions: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(isImporterJourney match {
@@ -117,6 +118,9 @@
             )
             @components.autocomplete.countryCode()
         </div>
+
+        @components.hiddenInput("auditRef", form.value.flatMap(add => add.auditRef).getOrElse(""))
+
         }
         <div class="govuk-button-group">
         @html.button("site.continue")

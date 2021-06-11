@@ -23,7 +23,7 @@ import models.addresslookup.MissingAddressIdException
 import models.requests.DataRequest
 import models.{Address, Country, UserAnswers}
 import navigation.CreateNavigator
-import pages.{ImporterAddressPage, Page}
+import pages.{AgentImporterAddressPage, ImporterAddressPage, Page}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -86,7 +86,7 @@ class ImporterAddressFrontendController @Inject() (
               )
             )
           ),
-        value => saveAndContinue(value)
+        value => saveAndContinue(value, true)
       )
   }
 
@@ -119,7 +119,8 @@ class ImporterAddressFrontendController @Inject() (
             el._4,
             None,
             Country(confirmedAddress.address.country.code, confirmedAddress.address.country.name),
-            confirmedAddress.address.postcode
+            confirmedAddress.address.postcode,
+            Some(confirmedAddress.auditRef)
           )
           // Address Lookup Service may return an address that is incompatible with NDRC, so validate it again
           // Note: simple `form.fillAndValidate(updatedAddress)` doesn't work with conditional PostCode validation
@@ -136,14 +137,20 @@ class ImporterAddressFrontendController @Inject() (
                   )
                 )
               )
-            case Right(updatedAddress) => saveAndContinue(updatedAddress)
+            case Right(updatedAddress) => saveAndContinue(updatedAddress, false)
           }
       }
   }
 
-  private def saveAndContinue(address: Address)(implicit request: DataRequest[_]) = for {
-    updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, address))
-    _              <- sessionRepository.set(updatedAnswers)
-  } yield Redirect(nextPage(updatedAnswers))
+  private def saveAndContinue(address: Address, checkAuditRef: Boolean)(implicit request: DataRequest[_]) = {
+    val updateAuditRef =
+      if (checkAuditRef && !request.userAnswers.get(ImporterAddressPage).contains(address))
+        address.copy(auditRef = None)
+      else address
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, updateAuditRef))
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Redirect(nextPage(updatedAnswers))
+  }
 
 }
