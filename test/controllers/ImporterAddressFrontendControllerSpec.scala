@@ -19,34 +19,36 @@ package controllers
 import base.SpecBase
 import data.TestData
 import forms.ImporterManualAddressFormProvider
-import models.{Address, Country, UserAnswers}
+import models.addresslookup.AddressLookupOnRamp
+import models.{Address, UserAnswers}
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ImporterAddressPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.CountryService
-import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
+import services.{AddressLookupService, CountryService}
 import views.html.ImporterManualAddressView
 
 import scala.concurrent.Future
 
 class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
-  implicit val countriesService = TestData.testCountryService
-  val formProvider              = new ImporterManualAddressFormProvider()
-  val form                      = formProvider()
+  implicit val testCountryService = TestData.testCountryService
+  val formProvider                = new ImporterManualAddressFormProvider()
+  val form                        = formProvider()
 
   lazy val importerManualAddressRoute = routes.ImporterAddressFrontendController.onPageLoad().url
+  lazy val importerChangeAddressRoute = routes.ImporterAddressFrontendController.onChange().url
 
   "ImporterAddressFrontendController" must {
 
     "redirects to address lookup when there is no address in cache" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(bind[CountryService].toInstance(countriesService))
+        .overrides(bind[CountryService].toInstance(testCountryService))
         .build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
@@ -60,22 +62,49 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "calls address lookup initialise with correct url" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(
-        ImporterAddressPage,
-        Address(
-          "address line 1",
-          Some("address line 2"),
-          "city",
-          Some("Region"),
-          Country("GB", "United Kingdom"),
-          "AA211AA"
-        )
-      ).success.value
+      val mockAddressLookupService = mock[AddressLookupService]
+
+      val callBackUrlCaptor: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
+      when(
+        mockAddressLookupService.initialiseJourney(
+          callBackUrlCaptor.capture(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any()
+        )(any(), any())
+      ).thenReturn(Future.successful(AddressLookupOnRamp("http://localhost/AddressLookupReturnedRedirect")))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[CountryService].toInstance(testCountryService))
+        .overrides(bind[AddressLookupService].toInstance(mockAddressLookupService))
+        .build()
+
+      val request = FakeRequest(GET, importerChangeAddressRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual "http://localhost/AddressLookupReturnedRedirect"
+
+      application.stop()
+
+      // make sure "id" query param is not part of the callback url
+      callBackUrlCaptor.getValue must not include "id="
+    }
+
+    "populate the view correctly on a GET when the question has previously been answered for UK address" in {
+
+      val userAnswers = UserAnswers(userAnswersId).set(ImporterAddressPage, addressUk).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
-        .overrides(bind[CountryService].toInstance(countriesService))
+        .overrides(bind[CountryService].toInstance(testCountryService))
         .build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
@@ -87,24 +116,12 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(
-          form.fill(
-            Address(
-              "address line 1",
-              Some("address line 2"),
-              "city",
-              Some("Region"),
-              Country("GB", "United Kingdom"),
-              "AA211AA"
-            )
-          ),
-          defaultBackLink,
-          false,
-          Seq(SelectItem(text = "United Kingdom", value = Some("GB")))
-        )(request, messages).toString
+        view(form.fill(addressUk), defaultBackLink, false, testCountryService.selectItems())(request, messages).toString
 
       application.stop()
     }
+
+    def populateExistingAddresss(address: Address) = {}
 
     "redirect to the next page when valid data is submitted" in {
 
@@ -112,7 +129,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[CountryService].toInstance(countriesService))
+          .overrides(bind[CountryService].toInstance(testCountryService))
           .build()
 
       val request =
@@ -137,7 +154,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(bind[CountryService].toInstance(countriesService))
+        .overrides(bind[CountryService].toInstance(testCountryService))
         .build()
 
       val request =
@@ -153,10 +170,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, defaultBackLink, false, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
-          request,
-          messages
-        ).toString
+        view(boundForm, defaultBackLink, false, testCountryService.selectItems())(request, messages).toString
 
       application.stop()
     }
@@ -164,7 +178,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
     "redirect to Session Expired for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None)
-        .overrides(bind[CountryService].toInstance(countriesService))
+        .overrides(bind[CountryService].toInstance(testCountryService))
         .build()
 
       val request = FakeRequest(GET, importerManualAddressRoute)
@@ -181,7 +195,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
     "redirect to Session Expired for a POST if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None)
-        .overrides(bind[CountryService].toInstance(countriesService))
+        .overrides(bind[CountryService].toInstance(testCountryService))
         .build()
 
       val request =

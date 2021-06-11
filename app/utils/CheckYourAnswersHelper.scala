@@ -143,7 +143,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         HtmlFormat.escape(x.AddressLine2.getOrElse("")).toString,
         HtmlFormat.escape(x.City).toString,
         HtmlFormat.escape(x.Region.getOrElse("")).toString,
-        HtmlFormat.escape(x.PostalCode).toString,
+        HtmlFormat.escape(x.PostalCode.getOrElse("")).toString,
         HtmlFormat.escape(x.Country.name).toString
       ).filter(!_.isEmpty()).mkString("<br>")
     )

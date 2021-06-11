@@ -24,6 +24,7 @@ import pages._
 import services.{CountryService, FileUploaded}
 import java.time.{LocalDate, ZoneId, ZonedDateTime}
 
+import models.addresslookup.{AddressLookupAddress, AddressLookupConfirmation, AddressLookupCountry}
 import models.eis.EISAddress
 
 object TestData {
@@ -53,10 +54,17 @@ object TestData {
   val testRepresentativeImporterName: UserName       = UserName("ImporterName")
 
   val testImporterManualAddress: Address =
-    Address("line 1", Some("line 2"), "City", Some("Region"), ukCountry, "AA11AA")
+    Address("line 1", Some("line 2"), "City", Some("Region"), ukCountry, Some("AA11AA"))
 
   val testAgentManualAddress: Address =
-    Address("line 1 agent", Some("line 2 agent"), "City agent", Some("Region agent"), Country("IT", "Italy"), "AA11AA")
+    Address(
+      "line 1 agent",
+      Some("line 2 agent"),
+      "City agent",
+      Some("Region agent"),
+      Country("IT", "Italy"),
+      Some("AA11AA")
+    )
 
   val testEmailAndPhoneNumber: EmailAndPhoneNumber = EmailAndPhoneNumber(
     Set(IsContactProvided.Email, IsContactProvided.Phone),
@@ -619,6 +627,21 @@ object TestData {
       testDocumentList
     ),
     Nil
+  )
+
+  val addressLookupConfirmation = AddressLookupConfirmation(
+    "auditRef",
+    Some("id123456"),
+    AddressLookupAddress(
+      List(
+        testImporterManualAddress.AddressLine1,
+        testImporterManualAddress.AddressLine2.getOrElse(""),
+        "",
+        testImporterManualAddress.City
+      ),
+      testImporterManualAddress.PostalCode,
+      AddressLookupCountry("UK", "United Kingdom")
+    )
   )
 
 }

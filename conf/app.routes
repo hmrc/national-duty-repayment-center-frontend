@@ -90,12 +90,12 @@ POST        /other-duties-overpayment                                           
 GET         /select-importer-address                                                   controllers.ImporterAddressFrontendController.onPageLoad()
 POST        /select-importer-address                                                   controllers.ImporterAddressFrontendController.onSubmit()
 GET         /select-importer-address/change                                            controllers.ImporterAddressFrontendController.onChange()
-GET         /select-importer-address/update                                            controllers.ImporterAddressFrontendController.onUpdate(id: String)
+GET         /select-importer-address/update                                            controllers.ImporterAddressFrontendController.onUpdate(id: Option[String])
 
 GET         /your-business-address                                              controllers.AgentImporterAddressFrontendController.onPageLoad()
 POST        /your-business-address                                              controllers.AgentImporterAddressFrontendController.onSubmit()
 GET         /your-business-address/change                                       controllers.AgentImporterAddressFrontendController.onChange()
-GET         /your-business-address/update                                       controllers.AgentImporterAddressFrontendController.onUpdate(id: String)
+GET         /your-business-address/update                                       controllers.AgentImporterAddressFrontendController.onUpdate(id: Option[String])
 
 GET         /application-complete                                                      controllers.ConfirmationController.onPageLoad()
 

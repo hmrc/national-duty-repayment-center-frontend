@@ -162,10 +162,26 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
 
   ".PostalCode" must {
 
-    val fieldName = "PostalCode"
-    val maxLength = 10
-    val minLength = 2
+    val fieldName   = "PostalCode"
+    val maxLength   = 10
+    val minLength   = 2
+    val requiredKey = "postcode.error.required"
 
     behave like fieldThatBindsValidData(form, fieldName, stringsWithMinAndMaxLength(minLength, maxLength))
+
+    "not error on missing postcode for non-UK countries" in {
+      val result = form.bind(Map("CountryCode" -> "FR")).apply(fieldName)
+      result.errors shouldBe Seq.empty
+    }
+
+    "error on missing postcode for UK countries" in {
+      val result = form.bind(Map("CountryCode" -> "GB")).apply(fieldName)
+      result.errors shouldBe Seq(FormError(fieldName, Seq(requiredKey)))
+    }
+
+    "not error with UK postcode" in {
+      val result = form.bind(Map("CountryCode" -> "GB", fieldName -> "HG12DG")).apply(fieldName)
+      result.errors shouldBe Seq.empty
+    }
   }
 }

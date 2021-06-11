@@ -19,7 +19,9 @@ package controllers
 import base.SpecBase
 import data.TestData
 import forms.AgentImporterManualAddressFormProvider
-import models.{Address, Country, UserAnswers}
+import models.UserAnswers
+import models.addresslookup.AddressLookupOnRamp
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -27,7 +29,7 @@ import pages.AgentImporterAddressPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.CountryService
+import services.{AddressLookupService, CountryService}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.AgentImporterManualAddressView
 
@@ -40,6 +42,7 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
   val form                      = formProvider()
 
   lazy val agentImporterManualAddressRoute = routes.AgentImporterAddressFrontendController.onPageLoad().url
+  lazy val agentImporterChangeAddressRoute = routes.AgentImporterAddressFrontendController.onChange().url
 
   "AgentImporterAddressFrontendController" must {
 
@@ -60,19 +63,46 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       application.stop()
     }
 
+    "calls address lookup initialise with correct url" in {
+
+      val mockAddressLookupService = mock[AddressLookupService]
+
+      val callBackUrlCaptor: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
+      when(
+        mockAddressLookupService.initialiseJourney(
+          callBackUrlCaptor.capture(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any()
+        )(any(), any())
+      ).thenReturn(Future.successful(AddressLookupOnRamp("http://localhost/AddressLookupReturnedRedirect")))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[CountryService].toInstance(countriesService))
+        .overrides(bind[AddressLookupService].toInstance(mockAddressLookupService))
+        .build()
+
+      val request = FakeRequest(GET, agentImporterChangeAddressRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual "http://localhost/AddressLookupReturnedRedirect"
+
+      application.stop()
+
+      // make sure "id" query param is not part of the callback url
+      callBackUrlCaptor.getValue must not include "id="
+    }
+
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(
-        AgentImporterAddressPage,
-        Address(
-          "address line 1",
-          Some("address line 2"),
-          "city",
-          Some("Region"),
-          Country("GB", "United Kingdom"),
-          "AA211AA"
-        )
-      ).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AgentImporterAddressPage, addressUk).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(bind[CountryService].toInstance(countriesService))
@@ -87,20 +117,7 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(
-          form.fill(
-            Address(
-              "address line 1",
-              Some("address line 2"),
-              "city",
-              Some("Region"),
-              Country("GB", "United Kingdom"),
-              "AA211AA"
-            )
-          ),
-          defaultBackLink,
-          countriesService.selectItems()
-        )(request, messages).toString
+        view(form.fill(addressUk), defaultBackLink, countriesService.selectItems())(request, messages).toString
 
       application.stop()
     }

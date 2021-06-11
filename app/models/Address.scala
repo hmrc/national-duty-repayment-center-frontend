@@ -18,15 +18,15 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-// TODO - add audit ref to this class (for ALF)
 final case class Address(
   AddressLine1: String,
   AddressLine2: Option[String],
   City: String,
   Region: Option[String],
   Country: Country,
-  PostalCode: String
-) {}
+  PostalCode: Option[String],
+  auditRef: Option[String] = None
+)
 
 object Address {
 

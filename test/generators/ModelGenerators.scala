@@ -192,7 +192,14 @@ trait ModelGenerators {
       region       <- self.stringsWithMaxLength(64)
       countryCode  <- Gen.pick(2, 'A' to 'Z')
       postCode     <- self.stringsWithMinAndMaxLength(2, 10)
-    } yield Address(addressLine1, addressLine2, city, Some(region), Country(countryCode.mkString, "Country"), postCode)
+    } yield Address(
+      addressLine1,
+      addressLine2,
+      city,
+      Some(region),
+      Country(countryCode.mkString, "Country"),
+      Some(postCode)
+    )
   }
 
   implicit lazy val arbitraryClaimDescription: Arbitrary[ClaimDescription] =

@@ -19,9 +19,12 @@ package controllers
 import controllers.actions._
 import forms.ImporterManualAddressFormProvider
 import javax.inject.Inject
+import models.addresslookup.MissingAddressIdException
+import models.requests.DataRequest
 import models.{Address, Country, UserAnswers}
 import navigation.CreateNavigator
 import pages.{ImporterAddressPage, Page}
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
@@ -83,18 +86,15 @@ class ImporterAddressFrontendController @Inject() (
               )
             )
           ),
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(nextPage(updatedAnswers))
+        value => saveAndContinue(value)
       )
   }
 
   def onChange(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       addressLookupService.initialiseJourney(
-        controllers.routes.ImporterAddressFrontendController.onUpdate("").url,
+        // Note: Use 'None' to generate update url without id parameter
+        controllers.routes.ImporterAddressFrontendController.onUpdate(None).url,
         controllers.routes.IndexController.onPageLoad().url,
         controllers.routes.SignOutController.signOut().url,
         controllers.routes.KeepAliveController.keepAlive().url,
@@ -108,37 +108,42 @@ class ImporterAddressFrontendController @Inject() (
       }
   }
 
-  def onUpdate(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onUpdate(id: Option[String]): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      addressLookupService.retrieveAddress(id) flatMap { confirmedAddress =>
-        val el = confirmedAddress.extractAddressLines()
-        val updatedAddress = Address(
-          el._1,
-          el._2,
-          el._4,
-          None,
-          Country(confirmedAddress.address.country.code, confirmedAddress.address.country.name),
-          confirmedAddress.address.postcode.getOrElse("")
-        )
-        // Address Lookup Service may return an address that is incompatible with NDRC, so validate it again
-        val formWithAddress = form.fillAndValidate(updatedAddress)
-        if (formWithAddress.hasErrors)
-          Future.successful(
-            BadRequest(
-              addressView(
-                formWithAddress,
-                backLink(request.userAnswers),
-                request.userAnswers.isImporterJourney,
-                countrySelectItems
-              )
-            )
+      addressLookupService.retrieveAddress(id.getOrElse(throw new MissingAddressIdException)) flatMap {
+        confirmedAddress =>
+          val el = confirmedAddress.extractAddressLines()
+          val updatedAddress = Address(
+            el._1,
+            el._2,
+            el._4,
+            None,
+            Country(confirmedAddress.address.country.code, confirmedAddress.address.country.name),
+            confirmedAddress.address.postcode
           )
-        else
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, updatedAddress))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(nextPage(updatedAnswers))
+          // Address Lookup Service may return an address that is incompatible with NDRC, so validate it again
+          // Note: simple `form.fillAndValidate(updatedAddress)` doesn't work with conditional PostCode validation
+          val data = form.mapping.unbind(updatedAddress)
+          form.mapping.bind(data) match {
+            case Left(errors) =>
+              Future.successful(
+                BadRequest(
+                  addressView(
+                    Form[Address](form.mapping, data, errors, None),
+                    backLink(request.userAnswers),
+                    request.userAnswers.isImporterJourney,
+                    countrySelectItems
+                  )
+                )
+              )
+            case Right(updatedAddress) => saveAndContinue(updatedAddress)
+          }
       }
   }
+
+  private def saveAndContinue(address: Address)(implicit request: DataRequest[_]) = for {
+    updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, address))
+    _              <- sessionRepository.set(updatedAnswers)
+  } yield Redirect(nextPage(updatedAnswers))
 
 }

@@ -14,31 +14,6 @@
  * limitations under the License.
  */
 
-package models.eis
+package models.addresslookup
 
-import models.Address
-import play.api.libs.json.{Json, OFormat}
-
-final case class EISAddress(
-  AddressLine1: String,
-  AddressLine2: Option[String],
-  City: String,
-  Region: Option[String],
-  CountryCode: String,
-  PostalCode: Option[String]
-)
-
-object EISAddress {
-
-  implicit val format: OFormat[EISAddress] = Json.format[EISAddress]
-
-  def apply(address: Address): EISAddress = new EISAddress(
-    address.AddressLine1,
-    address.AddressLine2,
-    address.City,
-    address.Region,
-    address.Country.code,
-    address.PostalCode
-  )
-
-}
+case class MissingAddressIdException() extends RuntimeException("Address lookup called back without address id")

@@ -129,20 +129,29 @@ trait SpecBase
     DeclarantName = "DummyData"
   )
 
-  val address = Address(
+  val addressUk = Address(
     AddressLine1 = "line 1",
     AddressLine2 = Some("line 2"),
     City = "city",
     Region = Some("region"),
     Country = Country("GB", "United Kingdom"),
-    PostalCode = "ZZ111ZZ"
+    PostalCode = Some("ZZ111ZZ")
+  )
+
+  val addressInternational = Address(
+    AddressLine1 = "line 1",
+    AddressLine2 = Some("line 2"),
+    City = "city",
+    Region = Some("region"),
+    Country = Country("FR", "France"),
+    PostalCode = None
   )
 
   val userDetails = UserDetails(
     IsVATRegistered = "true",
     EORI = EORI("GB123456789123456"),
     Name = "Joe Bloggs",
-    Address = EISAddress(address),
+    Address = EISAddress(addressUk),
     TelephoneNumber = Some("12345678"),
     EmailAddress = Some("example@example.com")
   )

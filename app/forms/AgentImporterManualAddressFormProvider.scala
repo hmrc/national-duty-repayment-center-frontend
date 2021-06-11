@@ -22,6 +22,7 @@ import models.Address
 import play.api.data.Forms.{mapping, optional}
 import play.api.data.{Form, Forms}
 import services.CountryService
+import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
 class AgentImporterManualAddressFormProvider @Inject() (implicit countriesService: CountryService) extends Mappings {
 
@@ -40,7 +41,7 @@ class AgentImporterManualAddressFormProvider @Inject() (implicit countriesServic
       city: String,
       region: Option[String],
       countryCode: String,
-      postCode: String
+      postCode: Option[String]
     ) => new Address(addressLine1, addressLine2, city, region, countriesService.find(countryCode), postCode)
 
     Form(
@@ -89,13 +90,17 @@ class AgentImporterManualAddressFormProvider @Inject() (implicit countriesServic
                 regexp(Validation.safeInputPattern, "agentImporterManualAddress.countryCode.error.invalid")
               )
             ),
-        "PostalCode" -> textNoSpaces("agentImporterManualAddress.postalCode.error.invalid")
-          .verifying(
-            firstError(
-              minLength(minPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid"),
-              maxLength(maxPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid")
+        "PostalCode" -> mandatoryIfEqual(
+          "CountryCode",
+          "GB",
+          textNoSpaces("postcode.error.required")
+            .verifying(
+              firstError(
+                minLength(minPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid"),
+                maxLength(maxPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid")
+              )
             )
-          )
+        )
       )(formToModel)(
         agentImporterManualAddress =>
           Some(
