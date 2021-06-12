@@ -18,8 +18,10 @@ package controllers
 
 import base.SpecBase
 import data.TestData._
+import navigation.CreateNavigatorImpl
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
+import pages.{ClaimRepaymentTypePage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
@@ -162,6 +164,45 @@ class CheckYourAnswersControllerSpec extends SpecBase {
 
       contentAsString(result) mustEqual
         view(checkYourAnswersHelper.getCheckYourAnswerSections, defaultBackLink)(request, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to first missing answer" in {
+
+      val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers).remove(ImporterHasEoriPage).get
+
+      val application = applicationBuilder(
+        userAnswers = Some(userAnswers),
+        createNavigator = injector.instanceOf[CreateNavigatorImpl]
+      ).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.ImporterHasEoriController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "not redirect when returning from changing repayment type" in {
+
+      val userAnswers =
+        populateUserAnswersWithImporterInformation(emptyUserAnswers).copy(changePage = Some(ClaimRepaymentTypePage))
+
+      val application = applicationBuilder(
+        userAnswers = Some(userAnswers),
+        createNavigator = injector.instanceOf[CreateNavigatorImpl]
+      ).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual OK
 
       application.stop()
     }
