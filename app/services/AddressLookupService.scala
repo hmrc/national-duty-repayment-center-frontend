@@ -46,7 +46,7 @@ class AddressLookupService @Inject() (
   )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AddressLookupOnRamp] =
     addressLookupConnector.initialiseJourney(
       AddressLookupRequest(
-        appConfig.selfUrl(callBackUrl.split('?').head),
+        appConfig.selfUrl(callBackUrl),
         appConfig.selfUrl(homeUrl),
         appConfig.selfUrl(signOutUrl),
         appConfig.selfUrl(keepAliveUrl),
