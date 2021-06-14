@@ -16,18 +16,12 @@
 
 package models
 
-import models.eis.EISAddress
 import play.api.libs.json.{Json, OFormat}
 
-final case class UserDetails(
-  IsVATRegistered: String,
-  EORI: EORI,
-  Name: String,
-  Address: EISAddress,
-  TelephoneNumber: Option[String],
-  EmailAddress: Option[String]
-)
+final case class Country(code: String, name: String)
 
-object UserDetails {
-  implicit val format: OFormat[UserDetails] = Json.format[UserDetails]
+object Country {
+
+  implicit val format: OFormat[Country] = Json.format[Country]
+
 }

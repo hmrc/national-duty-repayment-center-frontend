@@ -25,10 +25,3 @@ case object AgentImporterAddressPage extends QuestionPage[Address] {
 
   override def toString: String = "agentImporterAddress"
 }
-
-case object AgentImporterPostcodePage extends QuestionPage[String] {
-
-  override def path: JsPath = AgentImporterAddressPage.path \ toString
-
-  override def toString: String = "PostalCode"
-}

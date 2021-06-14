@@ -23,10 +23,10 @@ class ImporterManualAddressPageSpec extends PageBehaviours {
 
   "ImporterManualAddressPage" must {
 
-    beRetrievable[Address](ImporterManualAddressPage)
+    beRetrievable[Address](ImporterAddressPage)
 
-    beSettable[Address](ImporterManualAddressPage)
+    beSettable[Address](ImporterAddressPage)
 
-    beRemovable[Address](ImporterManualAddressPage)
+    beRemovable[Address](ImporterAddressPage)
   }
 }

@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package models
+package models.addresslookup
 
-import models.eis.EISAddress
 import play.api.libs.json.{Json, OFormat}
 
-final case class UserDetails(
-  IsVATRegistered: String,
-  EORI: EORI,
-  Name: String,
-  Address: EISAddress,
-  TelephoneNumber: Option[String],
-  EmailAddress: Option[String]
-)
+case class AddressLookupAddress(lines: List[String], postcode: Option[String], country: AddressLookupCountry)
 
-object UserDetails {
-  implicit val format: OFormat[UserDetails] = Json.format[UserDetails]
+object AddressLookupAddress {
+  implicit val format: OFormat[AddressLookupAddress] = Json.format[AddressLookupAddress]
 }

@@ -74,16 +74,14 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
     P(DoYouOwnTheGoodsPage, controllers.routes.DoYouOwnTheGoodsController.onPageLoad, isImporter, doYouOwnGoodsAnswered),
     P(ImporterNamePage, controllers.routes.ImporterNameController.onPageLoad, showImporterName, importerNameAnswered),
 
-    P(ImporterAddressPage, controllers.routes.ImporterAddressController.onPageLoad, always, importerAddressAnswered),
-    P(ImporterManualAddressPage, controllers.routes.ImporterManualAddressController.onPageLoad, never, never),
+    P(ImporterAddressPage, controllers.routes.ImporterAddressFrontendController.onPageLoad, always, importerAddressAnswered),
 
     P(ImportHasEoriOnAgentJourneyPage, controllers.routes.ImporterHasEoriController.onPageLoad, isAgent, importerHasAgentEoriAnswered),
     P(ImporterEoriOnAgentJourneyPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterAgentEori, importerAgentEoriAnswered),
 
     P(RepresentativeDeclarantAndBusinessNamePage, controllers.routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad, isAgent, representativeDeclarantAndBusinessNameAnswered),
 
-    P(AgentImporterAddressPage, controllers.routes.AgentImporterAddressController.onPageLoad, isAgent, agentImporterAddressAnswered),
-    P(AgentImporterManualAddressPage, controllers.routes.AgentImporterManualAddressController.onPageLoad, never, never),
+    P(AgentImporterAddressPage, controllers.routes.AgentImporterAddressFrontendController.onPageLoad, isAgent, agentImporterAddressAnswered),
 
     P(EmailAddressAndPhoneNumberPage, controllers.routes.EmailAddressAndPhoneNumberController.onPageLoad, always, emailAndPhoneNumberAnswered),
     P(DeclarantReferenceNumberPage, controllers.routes.DeclarantReferenceNumberController.onPageLoad, always, declarantReferenceNumberAnswered),
@@ -210,8 +208,7 @@ protected trait CreateHasAnsweredConditions {
   protected val doYouOwnGoodsAnswered: UserAnswers => Boolean = _.get(DoYouOwnTheGoodsPage).nonEmpty
   protected val importerNameAnswered: UserAnswers => Boolean  = _.get(ImporterNamePage).nonEmpty
 
-  protected val importerAddressAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(ImporterAddressPage).nonEmpty || answers.get(ImporterManualAddressPage).nonEmpty
+  protected val importerAddressAnswered: UserAnswers => Boolean =  _.get(ImporterAddressPage).nonEmpty
 
   protected val emailAndPhoneNumberAnswered: UserAnswers => Boolean      = _.get(EmailAddressAndPhoneNumberPage).nonEmpty
   protected val declarantReferenceNumberAnswered: UserAnswers => Boolean = _.get(DeclarantReferenceNumberPage).nonEmpty
@@ -221,8 +218,7 @@ protected trait CreateHasAnsweredConditions {
   protected val representativeDeclarantAndBusinessNameAnswered: UserAnswers => Boolean =
     _.get(RepresentativeDeclarantAndBusinessNamePage).nonEmpty
 
-  protected val agentImporterAddressAnswered: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(AgentImporterAddressPage).nonEmpty || answers.get(AgentImporterManualAddressPage).nonEmpty
+  protected val agentImporterAddressAnswered: UserAnswers => Boolean = _.get(AgentImporterAddressPage).nonEmpty
 
   protected val whoToRepayAnsweredAnswered: UserAnswers => Boolean     = _.get(WhomToPayPage).nonEmpty
   protected val indirectRepresentativeAnswered: UserAnswers => Boolean = _.get(IndirectRepresentativePage).nonEmpty

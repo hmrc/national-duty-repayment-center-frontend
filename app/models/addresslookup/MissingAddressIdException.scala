@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-package pages
+package models.addresslookup
 
-import models.Address
-import play.api.libs.json.JsPath
-
-case object ImporterManualAddressPage extends QuestionPage[Address] {
-
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "importerManualAddress"
-}
+case class MissingAddressIdException() extends RuntimeException("Address lookup called back without address id")

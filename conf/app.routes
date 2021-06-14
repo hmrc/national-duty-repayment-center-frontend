@@ -87,26 +87,19 @@ POST        /customs-duty-overpayment                                           
 GET         /other-duties-overpayment                                                  controllers.OtherDutiesPaidController.onPageLoad()
 POST        /other-duties-overpayment                                                  controllers.OtherDutiesPaidController.onSubmit()
 
+GET         /select-importer-address                                                   controllers.ImporterAddressFrontendController.onPageLoad()
+POST        /select-importer-address                                                   controllers.ImporterAddressFrontendController.onSubmit()
+GET         /select-importer-address/change                                            controllers.ImporterAddressFrontendController.onChange()
+GET         /select-importer-address/update                                            controllers.ImporterAddressFrontendController.onUpdate(id: Option[String])
 
-GET         /select-importer-address                                                   controllers.ImporterAddressController.onPageLoad()
-POST        /select-importer-address                                                   controllers.ImporterAddressController.postcodeSubmit()
-GET         /importer-address                                                          controllers.ImporterAddressController.enteredAddressPageLoad()
-POST        /importer-address                                                          controllers.ImporterAddressController.addressSelectSubmit()
-
-GET         /your-business-address                                                     controllers.AgentImporterAddressController.onPageLoad()
-POST        /your-business-address                                                     controllers.AgentImporterAddressController.postcodeSubmit()
-GET         /enter-agent-importer-address                                              controllers.AgentImporterAddressController.enteredAddressPageLoad()
-POST        /enter-agent-importer-address                                              controllers.AgentImporterAddressController.addressSelectSubmit()
-
-GET         /enter-importer-address                                                    controllers.ImporterManualAddressController.onPageLoad()
-POST        /enter-importer-address                                                    controllers.ImporterManualAddressController.onSubmit()
+GET         /your-business-address                                              controllers.AgentImporterAddressFrontendController.onPageLoad()
+POST        /your-business-address                                              controllers.AgentImporterAddressFrontendController.onSubmit()
+GET         /your-business-address/change                                       controllers.AgentImporterAddressFrontendController.onChange()
+GET         /your-business-address/update                                       controllers.AgentImporterAddressFrontendController.onUpdate(id: Option[String])
 
 GET         /application-complete                                                      controllers.ConfirmationController.onPageLoad()
 
 GET         /amend/information-sent                                                    controllers.AmendConfirmationController.onPageLoad()
-
-GET         /enter-your-business-address                                               controllers.AgentImporterManualAddressController.onPageLoad()
-POST        /enter-your-business-address                                               controllers.AgentImporterManualAddressController.onSubmit()
 
 GET         /enter-bank-details                                                        controllers.BankDetailsController.onPageLoad()
 POST        /enter-bank-details                                                        controllers.BankDetailsController.onSubmit()

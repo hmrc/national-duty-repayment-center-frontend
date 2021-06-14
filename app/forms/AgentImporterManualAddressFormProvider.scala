@@ -16,13 +16,15 @@
 
 package forms
 
-import javax.inject.Inject
 import forms.mappings.Mappings
+import javax.inject.Inject
 import models.Address
-import play.api.data.{Form, Forms}
 import play.api.data.Forms.{mapping, optional}
+import play.api.data.{Form, Forms}
+import services.CountryService
+import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
-class AgentImporterManualAddressFormProvider @Inject() extends Mappings {
+class AgentImporterManualAddressFormProvider @Inject() (implicit countriesService: CountryService) extends Mappings {
 
   private val maxLineLength       = 128
   private val maxCityLength       = 64
@@ -31,72 +33,91 @@ class AgentImporterManualAddressFormProvider @Inject() extends Mappings {
   private val minPostalCodeLength = 2
   private val maxPostalCodeLength = 10
 
-  def apply(): Form[Address] = Form(
-    mapping(
-      "AddressLine1" ->
-        text("agentImporterManualAddress.line1.error.required")
-          .verifying(
-            firstError(
-              maxLength(maxLineLength, "agentImporterManualAddress.line1.error.length"),
-              regexp(Validation.safeInputPattern, "agentImporterManualAddress.line1.error.invalid")
-            )
-          ),
-      "AddressLine2" ->
-        optional(
-          Forms.text
+  def apply(): Form[Address] = {
+
+    val formToModel = (
+      addressLine1: String,
+      addressLine2: Option[String],
+      city: String,
+      region: Option[String],
+      countryCode: String,
+      postCode: Option[String],
+      auditRef: Option[String]
+    ) => new Address(addressLine1, addressLine2, city, region, countriesService.find(countryCode), postCode, auditRef)
+
+    Form(
+      mapping(
+        "AddressLine1" ->
+          text("agentImporterManualAddress.line1.error.required")
             .verifying(
               firstError(
-                maxLength(maxLineLength, "agentImporterManualAddress.line2.error.length"),
-                regexp(Validation.safeInputPattern, "agentImporterManualAddress.line2.error.invalid")
+                maxLength(maxLineLength, "agentImporterManualAddress.line1.error.length"),
+                regexp(Validation.safeInputPattern, "agentImporterManualAddress.line1.error.invalid")
+              )
+            ),
+        "AddressLine2" ->
+          optional(
+            Forms.text
+              .verifying(
+                firstError(
+                  maxLength(maxLineLength, "agentImporterManualAddress.line2.error.length"),
+                  regexp(Validation.safeInputPattern, "agentImporterManualAddress.line2.error.invalid")
+                )
+              )
+          ),
+        "City" ->
+          text("agentImporterManualAddress.city.error.required")
+            .verifying(
+              firstError(
+                maxLength(maxCityLength, "agentImporterManualAddress.city.error.length"),
+                regexp(Validation.safeInputPattern, "agentImporterManualAddress.city.error.invalid")
+              )
+            ),
+        "Region" ->
+          optional(
+            Forms.text
+              .verifying(
+                firstError(
+                  maxLength(maxRegionLength, "agentImporterManualAddress.region.error.length"),
+                  regexp(Validation.safeInputPattern, "agentImporterManualAddress.region.error.invalid")
+                )
+              )
+          ),
+        "CountryCode" ->
+          text("agentImporterManualAddress.countryCode.error.required")
+            .verifying(
+              firstError(
+                maxLength(maxCCLength, "agentImporterManualAddress.countryCode.error.length"),
+                regexp(Validation.safeInputPattern, "agentImporterManualAddress.countryCode.error.invalid")
+              )
+            ),
+        "PostalCode" -> mandatoryIfEqual(
+          "CountryCode",
+          "GB",
+          textNoSpaces("postcode.error.required")
+            .verifying(
+              firstError(
+                minLength(minPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid"),
+                maxLength(maxPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid")
               )
             )
         ),
-      "City" ->
-        text("agentImporterManualAddress.city.error.required")
-          .verifying(
-            firstError(
-              maxLength(maxCityLength, "agentImporterManualAddress.city.error.length"),
-              regexp(Validation.safeInputPattern, "agentImporterManualAddress.city.error.invalid")
+        "auditRef" -> optional(text())
+      )(formToModel)(
+        agentImporterManualAddress =>
+          Some(
+            (
+              agentImporterManualAddress.AddressLine1,
+              agentImporterManualAddress.AddressLine2,
+              agentImporterManualAddress.City,
+              agentImporterManualAddress.Region,
+              agentImporterManualAddress.Country.code,
+              agentImporterManualAddress.PostalCode,
+              agentImporterManualAddress.auditRef
             )
-          ),
-      "Region" ->
-        optional(
-          Forms.text
-            .verifying(
-              firstError(
-                maxLength(maxRegionLength, "agentImporterManualAddress.region.error.length"),
-                regexp(Validation.safeInputPattern, "agentImporterManualAddress.region.error.invalid")
-              )
-            )
-        ),
-      "CountryCode" ->
-        text("agentImporterManualAddress.countryCode.error.required")
-          .verifying(
-            firstError(
-              maxLength(maxCCLength, "agentImporterManualAddress.countryCode.error.length"),
-              regexp(Validation.safeInputPattern, "agentImporterManualAddress.countryCode.error.invalid")
-            )
-          ),
-      "PostalCode" -> textNoSpaces("agentImporterManualAddress.postalCode.error.invalid")
-        .verifying(
-          firstError(
-            minLength(minPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid"),
-            maxLength(maxPostalCodeLength, "agentImporterManualAddress.postalCode.error.invalid")
           )
-        )
-    )(Address.apply)(
-      agentImporterManualAddress =>
-        Some(
-          (
-            agentImporterManualAddress.AddressLine1,
-            agentImporterManualAddress.AddressLine2,
-            agentImporterManualAddress.City,
-            agentImporterManualAddress.Region,
-            agentImporterManualAddress.CountryCode,
-            agentImporterManualAddress.PostalCode
-          )
-        )
+      )
     )
-  )
+  }
 
 }

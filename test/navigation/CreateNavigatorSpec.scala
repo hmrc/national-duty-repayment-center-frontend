@@ -208,7 +208,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
             .set(DoYouOwnTheGoodsPage, DoYouOwnTheGoods.Yes).success.value
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
         navigator.nextPage(DoYouOwnTheGoodsPage, answers)
-          .mustBe(routes.ImporterAddressController.onPageLoad())
+          .mustBe(routes.ImporterAddressFrontendController.onPageLoad())
       }
 
       "go to Importer name page from 'Do you own the goods page' in importer journey if 'No' is selected" in {
@@ -226,7 +226,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
             .set(ImporterNamePage, UserName("Joe Bloggs")).success.value
         navigator.nextPage(ImporterNamePage, answers)
-          .mustBe(routes.ImporterAddressController.onPageLoad())
+          .mustBe(routes.ImporterAddressFrontendController.onPageLoad())
       }
 
       "go to PhoneNumber page after importerAddressConfirmation page when Representative single/multiple entry journeys selected " in {
@@ -234,7 +234,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
-        navigator.nextPage(AgentImporterManualAddressPage, answers)
+        navigator.nextPage(AgentImporterAddressPage, answers)
           .mustBe(routes.EmailAddressAndPhoneNumberController.onPageLoad())
       }
 
@@ -279,7 +279,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
 
-        navigator.nextPage(ImporterManualAddressPage, answers)
+        navigator.nextPage(ImporterAddressPage, answers)
           .mustBe(routes.EmailAddressAndPhoneNumberController.onPageLoad())
       }
 
@@ -288,7 +288,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
-        navigator.nextPage(ImporterManualAddressPage, answers)
+        navigator.nextPage(ImporterAddressPage, answers)
           .mustBe(routes.ImporterHasEoriController.onPageLoad())
       }
 

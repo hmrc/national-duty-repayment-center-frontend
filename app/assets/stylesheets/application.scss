@@ -5,3 +5,22 @@ $hmrc-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/assets/li
 
 // Components
 @import 'components/upload-loading';
+@import "accessible-autocomplete.min.css";
+
+
+.autocomplete__menu {
+  font-family: "GDS Transport", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #0b0c0c;
+}
+
+.govuk-form-group--error {
+  .autocomplete__input {
+    border: 2px solid #d4351c;
+  }
+}
