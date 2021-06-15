@@ -19,11 +19,12 @@ package connectors
 import com.codahale.metrics.MetricRegistry
 import com.kenshoo.play.metrics.Metrics
 import config.FrontendAppConfig
-import play.api.Logger
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http._
-
 import java.net.URL
+
+import org.slf4j.LoggerFactory
+
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
@@ -34,6 +35,8 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class UpscanInitiateConnector @Inject() (appConfig: FrontendAppConfig, http: HttpGet with HttpPost, metrics: Metrics)
     extends HttpAPIMonitor {
+
+  private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
   val baseUrl: String                          = appConfig.upscanInitiateBaseUrl
   val upscanInitiatev2Path                     = "/upscan/v2/initiate"
@@ -51,7 +54,7 @@ class UpscanInitiateConnector @Inject() (appConfig: FrontendAppConfig, http: Htt
         )
         .recoverWith {
           case e: Throwable =>
-            Logger.error(s"Upscan initiate request failed due to: $e")
+            logger.error(s"Upscan initiate request failed due to: $e")
             Future.failed(UpscanInitiateError(e))
         }
     }
