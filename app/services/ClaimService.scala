@@ -17,18 +17,20 @@
 package services
 
 import connectors.NDRCConnector
-
 import javax.inject.Inject
 import models.UserAnswers
 import models.requests.{AmendClaimRequest, CreateClaimRequest, DataRequest}
 import uk.gov.hmrc.http.HeaderCarrier
-import play.api.Logger
-
 import java.util.UUID
+
+import org.slf4j.LoggerFactory
+
 import scala.concurrent.{ExecutionContext, Future}
 case class CaseAlreadyExists(msg: String) extends RuntimeException(msg)
 
 class ClaimService @Inject() (connector: NDRCConnector)(implicit ec: ExecutionContext) {
+
+  private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
   def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
     val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
@@ -43,12 +45,12 @@ class ClaimService @Inject() (connector: NDRCConnector)(implicit ec: ExecutionCo
               case _ =>
                 val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
                   clientClaimResponse.error.map(_.errorMessage).getOrElse("")
-                Logger.error(s"Create claim submission failed due to $message")
+                logger.error(s"Create claim submission failed due to $message")
                 throw new RuntimeException(message)
             }
         }
       case None =>
-        Logger.error(
+        logger.error(
           "Unsuccessful claim submission, did not contain sufficient UserAnswers data to construct CreateClaimRequest"
         )
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct CreateClaimRequest")
@@ -70,12 +72,12 @@ class ClaimService @Inject() (connector: NDRCConnector)(implicit ec: ExecutionCo
               case _ =>
                 val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
                   clientClaimResponse.error.map(_.errorMessage).getOrElse("")
-                Logger.error(s"Amend claim submission failed due to $message")
+                logger.error(s"Amend claim submission failed due to $message")
                 throw new RuntimeException(message)
             }
         }
       case None =>
-        Logger.error(
+        logger.error(
           "Unsuccessful amend claim submission, did not contain sufficient UserAnswers data to construct AmendClaimRequest"
         )
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct AmendClaimRequest")
