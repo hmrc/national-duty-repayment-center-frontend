@@ -23,8 +23,6 @@ import scala.concurrent.Future
 
 trait SessionRepository {
 
-  val started: Future[Unit]
-
   def get(id: String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]

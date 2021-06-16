@@ -61,8 +61,6 @@ class CacheDataRepository @Inject() (mongoComponent: MongoComponent, config: Con
 
   private val upsert = ReplaceOptions().upsert(true)
 
-  override val started: Future[Unit] = ensureIndexes map (_ => ())
-
   override def set(userAnswers: UserAnswers): Future[Boolean] =
     collection.replaceOne(
       filter(userAnswers.id),
