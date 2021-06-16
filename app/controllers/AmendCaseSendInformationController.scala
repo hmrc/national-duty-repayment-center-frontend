@@ -37,7 +37,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
 import services._
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.{AmendCaseSendInformationView, AmendCaseUploadAnotherFileView}
 
 import scala.concurrent.duration.DurationInt
