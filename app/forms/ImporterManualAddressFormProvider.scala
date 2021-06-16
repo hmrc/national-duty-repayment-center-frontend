@@ -24,23 +24,10 @@ import play.api.data.{Form, Forms}
 import services.CountryService
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
-class ImporterManualAddressFormProvider @Inject() (implicit countriesService: CountryService) extends Mappings {
+class ImporterManualAddressFormProvider @Inject() (implicit val countriesService: CountryService)
+    extends Mappings with AddressHandling {
 
-  private val maxLineLength   = 128
-  private val maxCityLength   = 64
-  private val maxRegionLength = 64
-  private val maxCCLength     = 2
-
-  def apply(): Form[Address] = {
-    val formToModel = (
-      addressLine1: String,
-      addressLine2: Option[String],
-      city: String,
-      region: Option[String],
-      countryCode: String,
-      postCode: Option[String],
-      auditRef: Option[String]
-    ) => new Address(addressLine1, addressLine2, city, region, countriesService.find(countryCode), postCode, auditRef)
+  def apply(): Form[Address] =
     Form(
       mapping(
         "AddressLine1" ->
@@ -93,27 +80,13 @@ class ImporterManualAddressFormProvider @Inject() (implicit countriesService: Co
           textNoSpaces("postcode.error.required")
             .verifying(
               firstError(
-                minLength(2, "importerAddress.postalCode.error.invalid"),
-                maxLength(10, "importerAddress.postalCode.error.invalid")
+                minLength(minPostalCodeLength, "importerAddress.postalCode.error.invalid"),
+                maxLength(maxPostalCodeLength, "importerAddress.postalCode.error.invalid")
               )
             )
         ),
         "auditRef" -> optional(text())
-      )(formToModel)(
-        importerAddress =>
-          Some(
-            (
-              importerAddress.AddressLine1,
-              importerAddress.AddressLine2,
-              importerAddress.City,
-              importerAddress.Region,
-              importerAddress.Country.code,
-              importerAddress.PostalCode,
-              importerAddress.auditRef
-            )
-          )
-      )
+      )(formToModel)(modelToForm)
     )
-  }
 
 }

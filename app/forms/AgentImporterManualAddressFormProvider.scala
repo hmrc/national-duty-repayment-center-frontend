@@ -24,27 +24,10 @@ import play.api.data.{Form, Forms}
 import services.CountryService
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
-class AgentImporterManualAddressFormProvider @Inject() (implicit countriesService: CountryService) extends Mappings {
+class AgentImporterManualAddressFormProvider @Inject() (implicit val countriesService: CountryService)
+    extends Mappings with AddressHandling {
 
-  private val maxLineLength       = 128
-  private val maxCityLength       = 64
-  private val maxRegionLength     = 64
-  private val maxCCLength         = 2
-  private val minPostalCodeLength = 2
-  private val maxPostalCodeLength = 10
-
-  def apply(): Form[Address] = {
-
-    val formToModel = (
-      addressLine1: String,
-      addressLine2: Option[String],
-      city: String,
-      region: Option[String],
-      countryCode: String,
-      postCode: Option[String],
-      auditRef: Option[String]
-    ) => new Address(addressLine1, addressLine2, city, region, countriesService.find(countryCode), postCode, auditRef)
-
+  def apply(): Form[Address] =
     Form(
       mapping(
         "AddressLine1" ->
@@ -103,21 +86,7 @@ class AgentImporterManualAddressFormProvider @Inject() (implicit countriesServic
             )
         ),
         "auditRef" -> optional(text())
-      )(formToModel)(
-        agentImporterManualAddress =>
-          Some(
-            (
-              agentImporterManualAddress.AddressLine1,
-              agentImporterManualAddress.AddressLine2,
-              agentImporterManualAddress.City,
-              agentImporterManualAddress.Region,
-              agentImporterManualAddress.Country.code,
-              agentImporterManualAddress.PostalCode,
-              agentImporterManualAddress.auditRef
-            )
-          )
-      )
+      )(formToModel)(modelToForm)
     )
-  }
 
 }

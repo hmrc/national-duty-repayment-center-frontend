@@ -30,7 +30,6 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ImporterAddressPage
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.{AddressLookupService, CountryService}
@@ -163,6 +162,33 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
+    "retain international postcode when submitted" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CountryService].toInstance(testCountryService))
+          .build()
+
+      val request =
+        FakeRequest(POST, importerManualAddressRoute)
+          .withFormUrlEncodedBody(
+            ("AddressLine1", "line 1"),
+            ("City", "postal City"),
+            ("CountryCode", "FR"),
+            ("PostalCode", "FR123456")
+          )
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      application.stop()
+
+      persistedAnswers.getValue.get(ImporterAddressPage).flatMap(_.PostalCode) mustBe Some("FR123456")
+    }
+
     "retain audit reference when same address is submitted manually" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(ImporterAddressPage, addressUk).success.value
@@ -233,13 +259,13 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
       )
     }
 
-    "persist address with audit ref and redirect to next page when valid data returned from address lookup" in {
+    "persist international address including postal code with audit ref and redirect to next page when valid data returned from address lookup" in {
       val mockAddressLookupService = mock[AddressLookupService]
 
       val auditRef = UUID.randomUUID().toString
 
       when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
-        Future.successful(addressLookupConfirmation(auditRef))
+        Future.successful(addressLookupConfirmation(auditRef, "Paris", Some("PR123"), "FR"))
       )
 
       val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
@@ -258,6 +284,8 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       persistedAnswers.getValue.get(ImporterAddressPage).flatMap(_.auditRef) mustBe Some(auditRef)
+
+      persistedAnswers.getValue.get(ImporterAddressPage).flatMap(_.PostalCode) mustBe Some("PR123")
 
     }
 
