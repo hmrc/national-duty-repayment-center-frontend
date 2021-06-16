@@ -259,7 +259,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
       )
     }
 
-    "persist address with audit ref and redirect to next page when valid data returned from address lookup" in {
+    "persist international address including postal code with audit ref and redirect to next page when valid data returned from address lookup" in {
       val mockAddressLookupService = mock[AddressLookupService]
 
       val auditRef = UUID.randomUUID().toString

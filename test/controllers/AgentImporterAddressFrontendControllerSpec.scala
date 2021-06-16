@@ -22,19 +22,19 @@ import base.SpecBase
 import data.TestData
 import data.TestData.addressLookupConfirmation
 import forms.AgentImporterManualAddressFormProvider
-import models.{Address, UserAnswers}
 import models.addresslookup.AddressLookupOnRamp
+import models.{Address, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{AgentImporterAddressPage, ImporterAddressPage}
+import pages.AgentImporterAddressPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.{AddressLookupService, CountryService}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
-import views.html.{AgentImporterManualAddressView, ImporterManualAddressView}
+import views.html.AgentImporterManualAddressView
 
 import scala.concurrent.Future
 
@@ -261,7 +261,7 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       )
     }
 
-    "persist address with audit ref and redirect to next page when valid data returned from address lookup" in {
+    "persist international address inc. postal code with audit ref and redirect to next page when valid data returned from address lookup" in {
       val mockAddressLookupService = mock[AddressLookupService]
 
       val auditRef = UUID.randomUUID().toString
