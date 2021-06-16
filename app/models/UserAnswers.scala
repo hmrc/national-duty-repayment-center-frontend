@@ -22,6 +22,7 @@ import pages._
 import play.api.libs.json._
 import queries.{Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import scala.util.{Failure, Success, Try}
 
@@ -110,29 +111,7 @@ object UserAnswers {
 
     }
 
-  implicit lazy val reads: Reads[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-    (
-      (__ \ "_id").read[String] and
-        (__ \ "data").read[JsObject] and
-        (__ \ "changePage").readNullable[String] and
-        (__ \ "lastUpdated").read(MongoFormats.instantRead) and
-        (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
-    )(UserAnswers.apply _)
-  }
-
-  implicit lazy val writes: OWrites[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-
-    (
-      (__ \ "_id").write[String] and
-        (__ \ "data").write[JsObject] and
-        (__ \ "changePage").writeNullable[String] and
-        (__ \ "lastUpdated").write(MongoFormats.instantWrite) and
-        (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
-    )(unlift(UserAnswers.unapply))
-  }
+  implicit val formatInstant                 = MongoJavatimeFormats.instantFormat
+  implicit val formats: OFormat[UserAnswers] = Json.format[UserAnswers]
 
 }

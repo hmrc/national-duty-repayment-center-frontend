@@ -16,127 +16,10 @@
 
 package repositories
 
-import java.time.Instant
-
-import akka.stream.Materializer
-import javax.inject.Inject
-import models.{RichJsObject, SessionState, UserAnswers}
-import play.api.Configuration
-import play.api.libs.json._
-import play.modules.reactivemongo.ReactiveMongoApi
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONDocument
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
-import reactivemongo.play.json.collection.JSONCollection
+import models.{SessionState, UserAnswers}
 import services.FileUploadState
 
-import scala.concurrent.{ExecutionContext, Future}
-
-class DefaultSessionRepository @Inject() (mongo: ReactiveMongoApi, config: Configuration)(implicit
-  ec: ExecutionContext,
-  m: Materializer
-) extends SessionRepository {
-
-  private val collectionName: String = "user-answers"
-
-  private val cacheTtl = config.get[Int]("mongodb.timeToLiveInSeconds")
-
-  private def collection: Future[JSONCollection] =
-    mongo.database.map(_.collection[JSONCollection](collectionName))
-
-  private val lastUpdatedIndex = Index(
-    key = Seq("lastUpdated" -> IndexType.Ascending),
-    name = Some("user-answers-last-updated-index"),
-    options = BSONDocument("expireAfterSeconds" -> cacheTtl)
-  )
-
-  val started: Future[Unit] =
-    collection.flatMap {
-      _.indexesManager.ensure(lastUpdatedIndex)
-    }.map(_ => ())
-
-  override def get(id: String): Future[Option[UserAnswers]] =
-    collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
-
-  def resetData(userAnswers: UserAnswers): Future[Boolean] = {
-
-    val selector = Json.obj("_id" -> userAnswers.id)
-
-    val modifier =
-      Json.obj(
-        "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
-          userAnswers.dataPath,
-          Json.obj()
-        ).get.setObject(userAnswers.fileUploadPath, JsNull).get
-      )
-    collection.flatMap {
-      _.update(ordered = false)
-        .one(selector, modifier, upsert = true).map {
-          lastError =>
-            lastError.ok
-        }
-    }
-  }
-
-  override def set(userAnswers: UserAnswers): Future[Boolean] = {
-
-    val selector = Json.obj("_id" -> userAnswers.id)
-
-    val modifier = {
-      if (userAnswers.fileUploadState.isEmpty)
-        Json.obj(
-          "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
-            userAnswers.fileUploadPath,
-            JsNull
-          ).get
-        )
-      else
-        Json.obj("$set" -> (userAnswers copy (lastUpdated = Instant.now)))
-    }
-    collection.flatMap {
-      _.update(ordered = false)
-        .one(selector, modifier, upsert = true).map {
-          lastError =>
-            lastError.ok
-        }
-    }
-  }
-
-  override def clearChangePage(userAnswers: UserAnswers): Future[Boolean] = {
-
-    val selector = Json.obj("_id" -> userAnswers.id)
-
-    val modifier = {
-      if (userAnswers.changePage.isEmpty)
-        Json.obj(
-          "$set" -> Json.toJson(userAnswers copy (lastUpdated = Instant.now)).as[JsObject].setObject(
-            userAnswers.changePagePath,
-            JsNull
-          ).get
-        )
-      else
-        Json.obj("$set" -> (userAnswers copy (lastUpdated = Instant.now)))
-    }
-    collection.flatMap {
-      _.update(ordered = false)
-        .one(selector, modifier, upsert = true).map {
-          lastError =>
-            lastError.ok
-        }
-    }
-  }
-
-  override def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean] =
-    if (userAnswers.nonEmpty)
-      set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
-    else Future.successful(true)
-
-  override def getFileUploadState(id: String): Future[SessionState] =
-    for {
-      u <- get(id)
-    } yield (SessionState(u.flatMap(_.fileUploadState), u))
-
-}
+import scala.concurrent.Future
 
 trait SessionRepository {
 
@@ -145,9 +28,6 @@ trait SessionRepository {
   def get(id: String): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers): Future[Boolean]
-
-  // TODO - drop this method once optional fields properly supported
-  def clearChangePage(userAnswers: UserAnswers): Future[Boolean]
 
   def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean]
 
