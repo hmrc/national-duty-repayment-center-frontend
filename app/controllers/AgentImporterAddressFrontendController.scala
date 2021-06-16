@@ -70,7 +70,10 @@ class AgentImporterAddressFrontendController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(addressView(formWithErrors, backLink(request.userAnswers), countrySelectItems))),
-        value => saveAndContinue(value, true)
+        _ => {
+          val address = formProvider.dataExtractor.bindFromRequest().value.getOrElse(throw new Exception)
+          saveAndContinue(address, true)
+        }
       )
   }
 
@@ -119,7 +122,7 @@ class AgentImporterAddressFrontendController @Inject() (
                   )
                 )
               )
-            case Right(updatedAddress) => saveAndContinue(updatedAddress, false)
+            case Right(_) => saveAndContinue(updatedAddress, false)
           }
       }
   }

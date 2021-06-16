@@ -164,6 +164,33 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       application.stop()
     }
 
+    "retain international postcode when submitted" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CountryService].toInstance(countriesService))
+          .build()
+
+      val request =
+        FakeRequest(POST, agentImporterManualAddressRoute)
+          .withFormUrlEncodedBody(
+            ("AddressLine1", "line 1"),
+            ("City", "postal City"),
+            ("CountryCode", "FR"),
+            ("PostalCode", "FR123456")
+          )
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      application.stop()
+
+      persistedAnswers.getValue.get(AgentImporterAddressPage).flatMap(_.PostalCode) mustBe Some("FR123456")
+    }
+
     "retain audit reference when same address is submitted manually" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(AgentImporterAddressPage, addressUk).success.value
@@ -240,7 +267,7 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       val auditRef = UUID.randomUUID().toString
 
       when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
-        Future.successful(addressLookupConfirmation(auditRef))
+        Future.successful(addressLookupConfirmation(auditRef, "Berlin", Some("352456"), "DE"))
       )
 
       val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
@@ -259,6 +286,8 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       persistedAnswers.getValue.get(AgentImporterAddressPage).flatMap(_.auditRef) mustBe Some(auditRef)
+
+      persistedAnswers.getValue.get(AgentImporterAddressPage).flatMap(_.PostalCode) mustBe Some("352456")
 
     }
 

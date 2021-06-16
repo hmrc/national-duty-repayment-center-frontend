@@ -23,7 +23,7 @@ import models.addresslookup.MissingAddressIdException
 import models.requests.DataRequest
 import models.{Address, Country, UserAnswers}
 import navigation.CreateNavigator
-import pages.{AgentImporterAddressPage, ImporterAddressPage, Page}
+import pages.{ImporterAddressPage, Page}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -86,7 +86,10 @@ class ImporterAddressFrontendController @Inject() (
               )
             )
           ),
-        value => saveAndContinue(value, true)
+        _ => {
+          val address = formProvider.dataExtractor.bindFromRequest().value.getOrElse(throw new Exception)
+          saveAndContinue(address, true)
+        }
       )
   }
 
@@ -137,7 +140,7 @@ class ImporterAddressFrontendController @Inject() (
                   )
                 )
               )
-            case Right(updatedAddress) => saveAndContinue(updatedAddress, false)
+            case Right(_) => saveAndContinue(updatedAddress, false)
           }
       }
   }
