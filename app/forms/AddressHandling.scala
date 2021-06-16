@@ -17,8 +17,8 @@
 package forms
 
 import models.Address
-import play.api.data.{Form, Forms}
 import play.api.data.Forms.{mapping, optional}
+import play.api.data.{Form, Forms}
 import services.CountryService
 
 trait AddressHandling {
@@ -45,16 +45,16 @@ trait AddressHandling {
 
   val modelToForm
     : Address => Some[(String, Option[String], String, Option[String], String, Option[String], Option[String])] =
-    (importerAddress: Address) =>
+    (address: Address) =>
       Some(
         (
-          importerAddress.AddressLine1,
-          importerAddress.AddressLine2,
-          importerAddress.City,
-          importerAddress.Region,
-          importerAddress.Country.code,
-          importerAddress.PostalCode,
-          importerAddress.auditRef
+          address.AddressLine1,
+          address.AddressLine2,
+          address.City,
+          address.Region,
+          address.Country.code,
+          address.PostalCode,
+          address.auditRef
         )
       )
 
