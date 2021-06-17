@@ -52,33 +52,34 @@ class CacheDataRepository @Inject() (mongoComponent: MongoComponent, config: Con
       replaceIndexes = config.getOptional[Boolean]("mongodb.replaceIndexes").getOrElse(false)
     ) with SessionRepository {
 
-  def get(id: String): Future[Option[UserAnswers]] = Mdc.preservingMdc {
-    collection.findOneAndUpdate(filter(id), Updates.set("lastUpdated", Instant.now())).toFutureOption()
-  }
-
   private def filter(id: String) =
     equal("id", Codecs.toBson(id))
 
   private val upsert = ReplaceOptions().upsert(true)
 
-  override def set(userAnswers: UserAnswers): Future[Boolean] =
+  def get(id: String): Future[Option[UserAnswers]] = Mdc.preservingMdc {
+    collection.findOneAndUpdate(filter(id), Updates.set("lastUpdated", Instant.now())).toFutureOption()
+  }
+
+  def set(userAnswers: UserAnswers): Future[Boolean] = Mdc.preservingMdc {
     collection.replaceOne(
       filter(userAnswers.id),
       userAnswers.copy(lastUpdated = Instant.now()),
       upsert
     ).toFutureOption() map (result => result.exists(_.wasAcknowledged()))
+  }
 
-  override def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean] =
+  def updateSession(newState: FileUploadState, userAnswers: Option[UserAnswers]): Future[Boolean] =
     if (userAnswers.nonEmpty)
       set(userAnswers = userAnswers.get.copy(fileUploadState = Some(newState)))
     else Future.successful(true)
 
-  override def getFileUploadState(id: String): Future[SessionState] =
+  def getFileUploadState(id: String): Future[SessionState] =
     for {
       maybeUserAnswers <- get(id)
     } yield SessionState(maybeUserAnswers.flatMap(_.fileUploadState), maybeUserAnswers)
 
-  override def resetData(userAnswers: UserAnswers): Future[Boolean] = set(
+  def resetData(userAnswers: UserAnswers): Future[Boolean] = set(
     userAnswers.copy(data = Json.obj(), fileUploadState = None)
   )
 
