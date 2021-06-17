@@ -22,21 +22,24 @@
 @import views.components.FooterLinks
 @import config.FrontendAppConfig
 @import navigation.NavigatorBack
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcScripts
+@import views.html.helper.CSPNonce
 
 @this(
-        govukLayout: GovukLayout,
-        govukPhaseBanner: GovukPhaseBanner,
-        govukBackLink: GovukBackLink,
-        hmrcHeader: HmrcHeader,
-        siteHeader: components.siteHeader,
-        phaseBanner: components.phaseBanner,
-        link: components.link,
-        hmrcTimeoutDialog : HmrcTimeoutDialog,
-        reportAProblemLink: ReportAProblemLink,
-        appConfig: config.FrontendAppConfig,
-        languageSelection: components.languageSelection,
-        hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet,
-        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
+govukLayout: GovukLayout,
+govukPhaseBanner: GovukPhaseBanner,
+govukBackLink: GovukBackLink,
+hmrcHeader: HmrcHeader,
+siteHeader: components.siteHeader,
+phaseBanner: components.phaseBanner,
+link: components.link,
+hmrcTimeoutDialog : HmrcTimeoutDialog,
+hmrcScripts: HmrcScripts,
+reportAProblemLink: ReportAProblemLink,
+appConfig: config.FrontendAppConfig,
+languageSelection: components.languageSelection,
+hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet,
+hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
 )
 
 @(
@@ -77,7 +80,8 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @scripts = {
-  <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
+    @hmrcScripts(nonce = CSPNonce.get)
+    <script src='@controllers.routes.Assets.versioned("javascripts/ndrcfrontend.js")'></script>
 }
 
 @beforeContentBlock = {
