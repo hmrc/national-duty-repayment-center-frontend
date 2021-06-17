@@ -235,6 +235,7 @@ evidenceSupportingDocs.bullet2 = .jpg
 evidenceSupportingDocs.bullet3 = .pdf
 evidenceSupportingDocs.bullet4 = .png
 evidenceSupportingDocs.bullet5 = .xls
+evidenceSupportingDocs.bullet6 = .txt
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
 
@@ -744,6 +745,7 @@ amend-file-upload.help.fileFormat2= PDF (.pdf)
 amend-file-upload.help.fileFormat3= Microsoft (Word, Excel or PowerPoint)
 amend-file-upload.help.fileFormat4= Open Document Format (ODF)
 amend-file-upload.help.fileFormat5= email (.txt, .oft or .msg)
+amend-file-upload.help.fileFormat6= Text Files (.txt)
 
 
 your.details.checkYourAnswersLabel = Your details
