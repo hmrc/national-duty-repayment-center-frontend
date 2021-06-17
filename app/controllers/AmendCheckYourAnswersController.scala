@@ -52,16 +52,17 @@ class AmendCheckYourAnswersController @Inject() (
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val updatedAnswers = request.userAnswers.copy(changePage = None)
-      sessionRepository.clearChangePage(updatedAnswers) map { _ =>
-        navigator.firstMissingAnswer(updatedAnswers) match {
-          case Some(call) =>
-            // TODO - render "missing" version of CYA page
-            Redirect(call)
-          case None =>
+      navigator.firstMissingAnswer(updatedAnswers) match {
+        case Some(call) =>
+          // TODO - render "missing" version of CYA page
+          Future.successful(Redirect(call))
+        case None =>
+          sessionRepository.set(updatedAnswers) map { _ =>
             val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
             Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink(updatedAnswers)))
-        }
+          }
       }
+
   }
 
   def onChange(page: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {

@@ -57,7 +57,7 @@ class CheckYourAnswersController @Inject() (
           // TODO - render "missing" version of CYA page
           Future.successful(Redirect(call))
         case None =>
-          sessionRepository.clearChangePage(updatedAnswers) map { _ =>
+          sessionRepository.set(updatedAnswers) map { _ =>
             val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
             Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink(updatedAnswers)))
           }

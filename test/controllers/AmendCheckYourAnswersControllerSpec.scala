@@ -23,8 +23,10 @@ import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.FileType.SupportingEvidence
 import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
 import navigation.NavigatorBack
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{reset, when}
+import org.scalatest.BeforeAndAfterEach
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
@@ -36,7 +38,18 @@ import views.html.AmendCheckYourAnswersView
 
 import scala.concurrent.Future
 
-class AmendCheckYourAnswersControllerSpec extends SpecBase {
+class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
+
+  override protected def beforeEach(): Unit = {
+    super.beforeEach()
+    when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+  }
+
+  override protected def afterEach(): Unit = {
+    reset(mockSessionRepository)
+    super.afterEach()
+  }
+
   def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString
 
   val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad))
@@ -44,7 +57,6 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
   "Amend Check Your Answers Controller" must {
 
     "return OK and the correct view for a GET when only Documents are selected" in {
-      when(mockSessionRepository.clearChangePage(any())) thenReturn Future.successful(true)
       val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments)
 
       val fileUploadedState = FileUploaded(
@@ -87,13 +99,16 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "return OK and the correct view for a GET when further information is provided" in {
-      when(mockSessionRepository.clearChangePage(any())) thenReturn Future.successful(true)
+    "return OK and the correct view for a GET when further information is provided and clears changePage setting" in {
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
       val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
 
       val userAnswers = UserAnswers(userAnswersId).set(ReferenceNumberPage, "1234").success.value
         .set(AmendCaseResponseTypePage, values.toSet).success.value
         .set(FurtherInformationPage, "hello").success.value
+        .copy(changePage = Some(ReferenceNumberPage))
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
 
@@ -114,9 +129,10 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase {
       labels mustNot contain(htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
 
       application.stop()
+
+      persistedAnswers.getValue.changePage mustBe None
     }
-    "return OK and the correct view for a GET when both Documents are Further information are selected" in {
-      when(mockSessionRepository.clearChangePage(any())) thenReturn Future.successful(true)
+    "return OK and the correct view for a GET when both Documents and Further information are selected" in {
       val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments, FurtherInformation)
 
       val fileUploadedState = FileUploaded(
