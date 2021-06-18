@@ -25,6 +25,7 @@ import pages.{BankDetailsPage, Page, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.BankAccountReputationService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.BankDetailsView
 
@@ -38,6 +39,7 @@ class BankDetailsController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   formProvider: BankDetailsFormProvider,
+  bankAccountReputationService: BankAccountReputationService,
   val controllerComponents: MessagesControllerComponents,
   view: BankDetailsView
 )(implicit ec: ExecutionContext)
@@ -60,18 +62,25 @@ class BankDetailsController @Inject() (
     implicit request =>
       form.bindFromRequest().fold(
         formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(BankDetailsPage, value))
-            removeCMA <-
-              Future.fromTry(updatedAnswers.get(RepaymentTypePage) match {
-                case Some(RepaymentType.CMA) =>
-                  updatedAnswers.remove(RepaymentTypePage)
-                case _ =>
-                  updatedAnswers.set(BankDetailsPage, value)
-              })
-            _ <- sessionRepository.set(removeCMA)
-          } yield Redirect(nextPage(removeCMA))
+        bankDetails =>
+          bankAccountReputationService.validate(bankDetails) flatMap { barsResult =>
+            formProvider.processBarsResult(barsResult, bankDetails) match {
+              case None =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(BankDetailsPage, bankDetails))
+                  removeCMA <-
+                    Future.fromTry(updatedAnswers.get(RepaymentTypePage) match {
+                      case Some(RepaymentType.CMA) =>
+                        updatedAnswers.remove(RepaymentTypePage)
+                      case _ =>
+                        updatedAnswers.set(BankDetailsPage, bankDetails)
+                    })
+                  _ <- sessionRepository.set(removeCMA)
+                } yield Redirect(nextPage(removeCMA))
+              case Some(barsErrorForm) =>
+                Future.successful(BadRequest(view(barsErrorForm, backLink(request.userAnswers))))
+            }
+          }
       )
   }
 

@@ -16,25 +16,32 @@
 
 package forms
 
+import data.BarsTestData
 import forms.behaviours.StringFieldBehaviours
+import models.BankDetails
 import org.scalacheck.Gen
 import play.api.data.FormError
 
-class BankDetailsFormProviderSpec extends StringFieldBehaviours {
+class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestData {
 
   val requiredKey = "bankDetails.error.required"
   val lengthKey   = "bankDetails.error.length"
 
-  val form = new BankDetailsFormProvider()()
+  val provider = new BankDetailsFormProvider
+  val form     = provider.apply()
+
+  val accountNameField   = "AccountName"
+  val sortCodeField      = "SortCode"
+  val accountNumberField = "AccountNumber"
 
   ".AccountName" must {
 
-    val fieldName   = "AccountName"
+    val fieldName   = accountNameField
     val requiredKey = "bankDetails.name.error.required"
     val lengthKey   = "bankDetails.name.error.length"
     val invalidKey  = "bankDetails.name.error.invalid"
-    val maxLength   = 40
 
+    val maxLength = 40
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
     behave like fieldThatPreventsUnsafeInput(
@@ -56,7 +63,7 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
 
   ".SortCode" must {
 
-    val fieldName   = "SortCode"
+    val fieldName   = sortCodeField
     val requiredKey = "bankDetails.sortCode.error.required"
     val invalidKey  = "bankDetails.sortCode.error.invalid"
 
@@ -113,7 +120,7 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
 
   ".AccountNumber" must {
 
-    val fieldName   = "AccountNumber"
+    val fieldName   = accountNumberField
     val requiredKey = "bankDetails.accountNumber.error.required"
     val invalidKey  = "bankDetails.accountNumber.error.invalid"
     val lengthKey   = "bankDetails.accountNumber.error.length"
@@ -157,6 +164,45 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours {
       val result = form.bind(Map(fieldName -> "12 34 56 789")).apply(fieldName)
 
       result.errors shouldEqual Seq(FormError(fieldName, lengthKey, Seq(maxLength)))
+    }
+  }
+
+  "processBarsResult" must {
+
+    val bankDetails = BankDetails("Name", "123456", "12345678")
+
+    "return nothing when BARS check is successful" in {
+      provider.processBarsResult(barsSuccessResult, bankDetails) shouldBe None
+    }
+
+    "return form with error when sort code does not exist" in {
+      provider.processBarsResult(barsSortcodeDoesNotExistResult, bankDetails).map(_.errors).get shouldEqual Seq(
+        FormError(sortCodeField, "bankDetails.bars.validation.sortcodeNotFound", Seq.empty)
+      )
+    }
+
+    "return form with error when BACS not supported" in {
+      provider.processBarsResult(barsBacsNotSupportedResult, bankDetails).map(_.errors).get shouldEqual Seq(
+        FormError(sortCodeField, "bankDetails.bars.validation.bacsNotSupported", Seq.empty)
+      )
+    }
+
+    "return form with error when account invalid" in {
+      provider.processBarsResult(barsInvalidAccountResult, bankDetails).map(_.errors).get shouldEqual Seq(
+        FormError(accountNumberField, "bankDetails.bars.validation.modCheckFailed", Seq.empty)
+      )
+    }
+
+    "return form with error when roll number required" in {
+      provider.processBarsResult(barsRollRequiredResult, bankDetails).map(_.errors).get shouldEqual Seq(
+        FormError(sortCodeField, "bankDetails.bars.validation.rollRequired", Seq.empty)
+      )
+    }
+
+    "return form with error when account name does not match" in {
+      provider.processBarsResult(barsCompanyNameDoesNotMatchResult, bankDetails).map(_.errors).get shouldEqual Seq(
+        FormError(accountNameField, "bankDetails.bars.validation.companyNameInvalid", Seq.empty)
+      )
     }
   }
 }
