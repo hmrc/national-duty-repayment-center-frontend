@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-package pages
+package models.eis
 
-import models.ClaimDescription
-import play.api.libs.json.JsPath
+import com.google.inject.ImplementedBy
+import models.eis.QuoteFormatterImpl.illegalRegex
 
-case object ReasonForOverpaymentPage extends QuestionPage[ClaimDescription] {
+import scala.util.matching.Regex
 
-  override def path: JsPath = JsPath \ toString
+@ImplementedBy(classOf[QuoteFormatterImpl])
+trait QuoteFormatter {
 
-  override def toString: String = "reasonForOverpayment"
+  def format(value: String): String
+
+}
+
+class QuoteFormatterImpl extends QuoteFormatter {
+
+  override def format(value: String): String = illegalRegex.findFirstIn(value).fold(value)(_ => s"[$value]")
+}
+
+object QuoteFormatterImpl {
+  val illegalRegex: Regex = """^\s*[\"'`;]|[\"'`]\s*$""".r
 }

@@ -16,7 +16,9 @@
 
 package models.requests
 
+import javax.inject.Inject
 import models._
+import models.eis.QuoteFormatter
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.libs.json.{Json, OFormat}
 
@@ -24,12 +26,15 @@ final case class AmendClaimRequest(Content: AmendContent, uploadedFiles: Seq[Upl
 
 object AmendClaimRequest {
   implicit val formats: OFormat[AmendClaimRequest] = Json.format[AmendClaimRequest]
+}
+
+class AmendClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
 
   def buildValidAmendRequest(userAnswers: UserAnswers): Option[AmendClaimRequest] = {
 
     def getFurtherInformation(userAnswers: UserAnswers): Option[String] =
       userAnswers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.FurtherInformation) match {
-        case true => userAnswers.get(FurtherInformationPage)
+        case true => userAnswers.get(FurtherInformationPage).map(info => quoteFormatter.format(info))
         case _    => Some("Files Uploaded")
       }
 
