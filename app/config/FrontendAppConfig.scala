@@ -77,6 +77,7 @@ trait FrontendAppConfig {
   val addressLookupInitUrl: String
   val addressLookupConfirmedUrl: String
   val showPhaseBanner: Boolean
+  val barsBusinessAssessUrl: String
 
   def selfUrl(url: String): String
 }
@@ -109,6 +110,12 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
 
   override val addressLookupConfirmedUrl: String =
     s"$addressLookupBaseUrl${configuration.get[String]("microservice.services.address-lookup-frontend.confirmed")}"
+
+  private val barsBaseUrl: String =
+    configuration.get[Service]("microservice.services.bank-account-reputation").baseUrl
+
+  override val barsBusinessAssessUrl: String =
+    s"$barsBaseUrl${configuration.get[String]("microservice.services.bank-account-reputation.businessAssess")}"
 
   private val selfBaseUrl: String = configuration
     .getOptional[String]("platform.frontend.host")
