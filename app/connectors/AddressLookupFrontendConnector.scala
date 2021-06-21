@@ -22,7 +22,7 @@ import models.addresslookup.{AddressLookupConfirmation, AddressLookupOnRamp, Add
 import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpClient
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import connectors.InitialiseAddressLookupHttpParser.InitialiseAddressLookupReads
 

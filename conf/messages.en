@@ -521,6 +521,14 @@ bankDetails.accountNumber.error.required = Enter an account number
 bankDetails.accountNumber.error.invalid = Enter a valid account number like 00733445
 bankDetails.accountNumber.error.length = Account number must be between 6 and 8 digits
 
+bankDetails.bars.validation.failed = Unable to validate bank account details
+bankDetails.bars.validation.sortcodeNotFound = Enter a valid sort code
+bankDetails.bars.validation.modCheckFailed = Account number must be valid for the given sort code
+bankDetails.bars.validation.rollRequired = Enter details of a bank account or building society account that does not require a roll number
+bankDetails.bars.validation.bacsNotSupported = This bank account cannot receive Bacs payments. Enter a bank account that can receive Bacs payments
+bankDetails.bars.validation.accountInvalid = Enter a real bank account
+bankDetails.bars.validation.companyNameInvalid = Enter the name as it appears on the bank account
+
 importerAddressConfirmation.title = Select your address
 importerAddressConfirmation.heading = Select your address
 importerAddressConfirmation.link1 = change

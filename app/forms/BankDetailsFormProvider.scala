@@ -16,26 +16,31 @@
 
 package forms
 
+import forms.mappings.Mappings
 import javax.inject.Inject
 import models.BankDetails
-import forms.mappings.Mappings
-import play.api.data.Form
+import models.bars.BARSResult
 import play.api.data.Forms._
+import play.api.data.{Form, FormError}
 
 class BankDetailsFormProvider @Inject() extends Mappings {
 
+  private val accountName   = "AccountName"
+  private val sortCode      = "SortCode"
+  private val accountNumber = "AccountNumber"
+
   def apply(): Form[BankDetails] = Form(
     mapping(
-      "AccountName" -> text("bankDetails.name.error.required")
+      accountName -> text("bankDetails.name.error.required")
         .verifying(
           firstError(
             maxLength(40, "bankDetails.name.error.length"),
             regexp(Validation.safeInputPattern, "bankDetails.name.error.invalid")
           )
         ),
-      "SortCode" -> textNoSpaces("bankDetails.sortCode.error.required")
+      sortCode -> textNoSpaces("bankDetails.sortCode.error.required")
         .verifying(firstError(regexp(Validation.sortCodePattern.toString, "bankDetails.sortCode.error.invalid"))),
-      "AccountNumber" -> textNoSpaces("bankDetails.accountNumber.error.required")
+      accountNumber -> textNoSpaces("bankDetails.accountNumber.error.required")
         .verifying(
           firstError(
             minLength(6, "bankDetails.accountNumber.error.length"),
@@ -45,5 +50,30 @@ class BankDetailsFormProvider @Inject() extends Mappings {
         )
     )(BankDetails.apply)(BankDetails.unapply)
   )
+
+  def processBarsResult(barsResult: BARSResult, bankDetails: BankDetails): Option[Form[BankDetails]] =
+    if (barsResult.isValid)
+      None
+    else
+      Some(apply().fill(bankDetails).copy(errors = barsResult match {
+
+        case bars if !bars.sortcodeExists =>
+          Seq(FormError(sortCode, "bankDetails.bars.validation.sortcodeNotFound"))
+
+        case bars if !bars.validAccountAndSortCode =>
+          Seq(FormError(accountNumber, "bankDetails.bars.validation.modCheckFailed"))
+
+        case bars if !bars.sortcodeAcceptsDirectCredit =>
+          Seq(FormError(sortCode, "bankDetails.bars.validation.bacsNotSupported"))
+
+        case bars if !bars.rollNotRequired => Seq(FormError(sortCode, "bankDetails.bars.validation.rollRequired"))
+
+        case bars if !bars.accountValid => Seq(FormError(accountNumber, "bankDetails.bars.validation.accountInvalid"))
+
+        case bars if !bars.companyNameValid =>
+          Seq(FormError(accountName, "bankDetails.bars.validation.companyNameInvalid"))
+
+        case _ => Seq(FormError("", "bankDetails.bars.validation.failed"))
+      }))
 
 }
