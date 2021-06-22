@@ -74,6 +74,12 @@ class QuoteFormatterSpec extends SpecBase with MustMatchers {
       "value starts with semi-colon" in {
         doesTransform(""";Transforms this""", """[;Transforms this]""")
       }
+      "value starts with space followed by illegal character" in {
+        doesTransform(" 'test space' at beginning", "[ 'test space' at beginning]")
+      }
+      "value ends with illegal character followed by space" in {
+        doesTransform("test space at `end` ", "[test space at `end` ]")
+      }
     }
 
   }
