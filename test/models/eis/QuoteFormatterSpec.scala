@@ -47,6 +47,12 @@ class QuoteFormatterSpec extends SpecBase with MustMatchers {
       "value ends with semi-colon" in {
         doesNotTransform("""Must retain value;""")
       }
+      "value starts with space" in {
+        doesNotTransform(" space at start")
+      }
+      "value ends with space" in {
+        doesNotTransform("space at end ")
+      }
     }
 
     "transform value" when {
