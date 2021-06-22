@@ -203,7 +203,7 @@ reasonForOverpayment.title = Tell us why the overpayment happened
 reasonForOverpayment.heading = Tell us why the overpayment happened
 reasonForOverpayment.checkYourAnswersLabel = Why the overpayment happened
 reasonForOverpayment.error.required = Tell us why the overpayment happened
-reasonForOverpayment.error.length = Reason for overpayment must be 1500 characters or fewer
+reasonForOverpayment.error.length = Reason for overpayment must be 1400 characters or fewer
 reasonForOverpayment.hint = If you do not provide enough information, we may be unable to process your application.
 reasonForOverpayment.p1 = You can tell us about:
 reasonForOverpayment.bullet1 = any commodity codes
@@ -609,7 +609,7 @@ furtherInformation.title = Give us further information
 furtherInformation.heading = Give us further information
 furtherInformation.checkYourAnswersLabel = Response to HMRC
 furtherInformation.error.required = Enter the further information
-furtherInformation.error.length = Further information must be 1500 characters or fewer
+furtherInformation.error.length = Further information must be 1400 characters or fewer
 furtherInformation.hintText = Send the information that HMRC has asked for.
 
 amendCaseResponseType.title = What do you need to do?

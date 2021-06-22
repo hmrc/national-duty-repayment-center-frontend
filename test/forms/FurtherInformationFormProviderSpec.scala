@@ -23,7 +23,7 @@ class FurtherInformationFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "furtherInformation.error.required"
   val lengthKey   = "furtherInformation.error.length"
-  val maxLength   = 1500
+  val maxLength   = 1400
 
   val form = new FurtherInformationFormProvider()()
 
