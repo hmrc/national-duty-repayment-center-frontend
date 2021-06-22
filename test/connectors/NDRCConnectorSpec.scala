@@ -21,15 +21,15 @@ package connectors
  *
  */
 
+import base.SpecBase
+import com.github.tomakehurst.wiremock.client.WireMock._
+import models.responses.ClientClaimSuccessResponse
 import org.scalatest.MustMatchers
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
-import com.github.tomakehurst.wiremock.client.WireMock._
-import base.SpecBase
-import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
 
 import java.time.LocalDateTime
 
@@ -53,10 +53,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
         val responseBody =
           s"""{
              |  "correlationId": "111",
-             |  "result": {
-             |      "caseId": "1",
-             |      "generatedAt": "${generatedAt.toString}"
-             |  }
+             |  "caseId": "ABC123"
              |}""".stripMargin
 
         val connector = app.injector.instanceOf[NDRCConnector]
@@ -67,10 +64,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
         val result = connector.submitClaim(createClaimRequest, "111").futureValue
 
-        result mustEqual ClientClaimSuccessResponse(
-          correlationId = "111",
-          result = Some(NDRCFileTransferResult("1", generatedAt))
-        )
+        result mustEqual ClientClaimSuccessResponse(correlationId = "111", caseId = Some("ABC123"))
       }
     }
 
@@ -102,10 +96,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
         val responseBody =
           s"""{
              |  "correlationId": "111",
-             |  "result": {
-             |      "caseId": "1",
-             |      "generatedAt": "${generatedAt.toString}"
-             |  }
+             |  "caseId": "DEF456"
              |}""".stripMargin
         val connector = app.injector.instanceOf[NDRCConnector]
         server.stubFor(
@@ -115,10 +106,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
         val result = connector.submitAmendClaim(amendClaimRequest, "111").futureValue
 
-        result mustEqual ClientClaimSuccessResponse(
-          correlationId = "111",
-          result = Some(NDRCFileTransferResult("1", generatedAt))
-        )
+        result mustEqual ClientClaimSuccessResponse(correlationId = "111", caseId = Some("DEF456"))
       }
     }
 

@@ -16,35 +16,15 @@
 
 package models.responses
 
-import play.api.libs.json.{Format, Json, OFormat}
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
-
-import java.time.LocalDateTime
 
 final case class ClientClaimSuccessResponse(
   correlationId: String,
-  error: Option[ApiError] = None,
-  result: Option[NDRCFileTransferResult] = None
+  caseId: Option[String],
+  error: Option[ApiError] = None
 )
 
 object ClientClaimSuccessResponse {
   implicit val format: OFormat[ClientClaimSuccessResponse] = Json.format[ClientClaimSuccessResponse]
-}
-
-case class NDRCFileTransferResult(caseId: String, generatedAt: LocalDateTime)
-
-object NDRCFileTransferResult {
-
-  implicit val formats: Format[NDRCFileTransferResult] =
-    Json.format[NDRCFileTransferResult]
-
-}
-
-case class NDRCFileTransferResponse(
-  correlationId: String,
-  error: Option[ApiError] = None,
-  result: Option[NDRCFileTransferResult] = None
-) {
-  def isSuccess: Boolean   = error.isEmpty && result.isDefined
-  def isDuplicate: Boolean = error.exists(_.errorCode == "409")
 }

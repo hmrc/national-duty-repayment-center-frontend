@@ -42,8 +42,8 @@ class ClaimService @Inject() (
     maybeRegistrationRequest match {
       case Some(value) =>
         connector.submitClaim(value, correlationId(hc)).map { clientClaimResponse =>
-          if (clientClaimResponse.result.map(_.caseId).nonEmpty)
-            clientClaimResponse.result.map(_.caseId).get
+          if (clientClaimResponse.caseId.nonEmpty)
+            clientClaimResponse.caseId.get
           else
             clientClaimResponse.error match {
               case _ =>
@@ -69,8 +69,8 @@ class ClaimService @Inject() (
     maybeAmendRequest match {
       case Some(value) =>
         connector.submitAmendClaim(value, correlationId(hc)).map { clientClaimResponse =>
-          if (clientClaimResponse.result.map(_.caseId).nonEmpty)
-            clientClaimResponse.result.map(_.caseId).get
+          if (clientClaimResponse.caseId.nonEmpty)
+            clientClaimResponse.caseId.get
           else
             clientClaimResponse.error match {
               case _ =>
