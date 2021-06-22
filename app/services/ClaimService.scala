@@ -44,12 +44,11 @@ class ClaimService @Inject() (
         connector.submitClaim(value, correlationId(hc)).map { clientClaimResponse =>
           clientClaimResponse.caseId match {
             case Some(value) => value
-            case None => {
+            case None =>
               val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
                 clientClaimResponse.error.map(_.errorMessage).getOrElse("")
               logger.error(s"Create claim submission failed due to $message")
               throw new RuntimeException(message)
-            }
           }
         }
       case None =>
