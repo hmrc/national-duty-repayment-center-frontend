@@ -31,7 +31,6 @@ import services.ClaimService
 import uk.gov.hmrc.http.{HeaderCarrier, SessionKeys}
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
-import java.time.LocalDateTime
 import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
