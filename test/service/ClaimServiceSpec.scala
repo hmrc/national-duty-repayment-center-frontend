@@ -16,13 +16,11 @@
 
 package service
 
-import java.time.LocalDateTime
-
 import base.SpecBase
 import connectors.NDRCConnector
 import data.TestData.{populateUserAnswersRepresentativeWithEmail, populateUserAnswersWithAmendData}
 import models.requests.{AmendClaimBuilder, CreateClaimBuilder, DataRequest}
-import models.responses.{ClientClaimSuccessResponse, NDRCFileTransferResult}
+import models.responses.ClientClaimSuccessResponse
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{MustMatchers, OptionValues}
@@ -50,12 +48,12 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
       val connector = mock[NDRCConnector]
-      val response  = ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))
+      val response  = ClientClaimSuccessResponse("1", Some("ABC123"))
       when(connector.submitClaim(any(), any())(any())).thenReturn(Future.successful(response))
 
       val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
       val result  = service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
-      result mustBe "caseId"
+      result mustBe "ABC123"
     }
 
     "should throw error when duplicate caseID is submitted" in {
@@ -66,7 +64,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
       val connector = mock[NDRCConnector]
-      val response  = ClientClaimSuccessResponse("1", Some(ApiError("409", Some("Aa"))), None)
+      val response  = ClientClaimSuccessResponse("1", None, Some(ApiError("409", Some("Aa"))))
       when(connector.submitClaim(any(), any())(any())).thenReturn(Future.successful(response))
 
       val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
@@ -84,7 +82,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
       val connector = mock[NDRCConnector]
-      val response  = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
+      val response  = ClientClaimSuccessResponse("1", None, Some(ApiError("500", Some("Aa"))))
       when(connector.submitClaim(any(), any())(any())).thenReturn(Future.successful(response))
       val message = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
         response.error.map(_.errorMessage).getOrElse("")
@@ -104,7 +102,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
       val connector = mock[NDRCConnector]
-      val response  = ClientClaimSuccessResponse("1", None, Some(NDRCFileTransferResult("caseId", LocalDateTime.now)))
+      val response  = ClientClaimSuccessResponse("1", Some("caseId"))
       when(connector.submitAmendClaim(any(), any())(any())).thenReturn(Future.successful(response))
 
       val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
@@ -120,7 +118,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       val dataRequest                  = DataRequest(request, "12", testUserAnswers)
 
       val connector = mock[NDRCConnector]
-      val response  = ClientClaimSuccessResponse("1", Some(ApiError("500", Some("Aa"))), None)
+      val response  = ClientClaimSuccessResponse("1", None, Some(ApiError("500", Some("Aa"))))
       when(connector.submitAmendClaim(any(), any())(any())).thenReturn(Future.successful(response))
       val message = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
         response.error.map(_.errorMessage).getOrElse("")

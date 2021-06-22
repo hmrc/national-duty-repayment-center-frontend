@@ -42,16 +42,14 @@ class ClaimService @Inject() (
     maybeRegistrationRequest match {
       case Some(value) =>
         connector.submitClaim(value, correlationId(hc)).map { clientClaimResponse =>
-          if (clientClaimResponse.result.map(_.caseId).nonEmpty)
-            clientClaimResponse.result.map(_.caseId).get
-          else
-            clientClaimResponse.error match {
-              case _ =>
-                val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
-                  clientClaimResponse.error.map(_.errorMessage).getOrElse("")
-                logger.error(s"Create claim submission failed due to $message")
-                throw new RuntimeException(message)
-            }
+          clientClaimResponse.caseId match {
+            case Some(value) => value
+            case None =>
+              val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
+                clientClaimResponse.error.map(_.errorMessage).getOrElse("")
+              logger.error(s"Create claim submission failed due to $message")
+              throw new RuntimeException(message)
+          }
         }
       case None =>
         logger.error(
@@ -69,8 +67,8 @@ class ClaimService @Inject() (
     maybeAmendRequest match {
       case Some(value) =>
         connector.submitAmendClaim(value, correlationId(hc)).map { clientClaimResponse =>
-          if (clientClaimResponse.result.map(_.caseId).nonEmpty)
-            clientClaimResponse.result.map(_.caseId).get
+          if (clientClaimResponse.caseId.nonEmpty)
+            clientClaimResponse.caseId.get
           else
             clientClaimResponse.error match {
               case _ =>
