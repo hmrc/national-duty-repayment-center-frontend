@@ -6,6 +6,7 @@ $hmrc-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/assets/li
 // Components
 @import 'components/upload-loading';
 @import "accessible-autocomplete.min.css";
+@import "media";
 
 
 .autocomplete__menu {

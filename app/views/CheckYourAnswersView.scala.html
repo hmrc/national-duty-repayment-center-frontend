@@ -16,7 +16,7 @@
 
 @import controllers.routes._
 @import views.ViewUtils._
-@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
+@import viewmodels.Section
 @import navigation.NavigatorBack
 
 @this(
@@ -25,7 +25,7 @@
     html: views.components.html
 )
 
-@(answerSections: Seq[Section], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(sections: Seq[Section], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("checkYourAnswers.title"))}"),
@@ -34,15 +34,16 @@
 
     @html.h1("checkYourAnswers.title", classes = "govuk-heading-l")
 
-   @forms.formWithCSRF(action = CheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = CheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
 
-    @for(section <- answerSections) {
-        @{
-            section match {
-                case a: AnswerSection => components.answer_section(a)
-                case r: RepeaterAnswerSection => components.repeater_answer_section(r)
-            }
-        }
+    @components.answers(sections)
+
+    @html.h2("checkYourAnswers.submit.heading", classes = "govuk-heading-m")
+    @html.p{
+        @messages("checkYourAnswers.submit.before.send")
+    }
+    @html.p{
+        @messages("checkYourAnswers.submit.print")
     }
 
     @html.button("create.cya.continue")

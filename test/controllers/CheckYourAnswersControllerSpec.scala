@@ -27,6 +27,7 @@ import org.scalatest.BeforeAndAfterEach
 import pages.{ClaimRepaymentTypePage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import queries.{AmendClaimIdQuery, ClaimIdQuery}
 import utils.CheckYourAnswersHelper
 import views.html.CheckYourAnswersView
 
@@ -229,6 +230,25 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to start for a GET if claim submitted" in {
+
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
+
+      val userAnswers = emptyUserAnswers
+        .set(ClaimIdQuery, "1234").success.value
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
 
       application.stop()
     }

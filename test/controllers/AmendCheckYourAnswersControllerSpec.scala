@@ -32,6 +32,7 @@ import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
+import queries.AmendClaimIdQuery
 import services.FileUploaded
 import utils.CheckYourAnswersHelper
 import views.html.AmendCheckYourAnswersView
@@ -187,6 +188,25 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to start for a GET if amend claim submitted" in {
+
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
+
+      val userAnswers = emptyUserAnswers
+        .set(AmendClaimIdQuery, "1234").success.value
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.AmendCheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
 
       application.stop()
     }

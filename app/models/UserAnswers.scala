@@ -20,7 +20,7 @@ import java.time.Instant
 
 import pages._
 import play.api.libs.json._
-import queries.{Gettable, Settable}
+import queries.{AmendClaimIdQuery, ClaimIdQuery, Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
@@ -33,6 +33,9 @@ final case class UserAnswers(
   lastUpdated: Instant = Instant.now,
   fileUploadState: Option[FileUploadState] = None
 ) extends Answers {
+
+  def isCreateSubmitted: Boolean = get(ClaimIdQuery).nonEmpty
+  def isAmendSubmitted: Boolean  = get(AmendClaimIdQuery).nonEmpty
 
   def isImporterJourney: Boolean = get(ClaimantTypePage).contains(ClaimantType.Importer)
 

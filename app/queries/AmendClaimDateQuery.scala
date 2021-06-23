@@ -14,27 +14,12 @@
  * limitations under the License.
  */
 
-package views
+package queries
 
-object CommonUtilsHelper {
+import java.time.LocalDateTime
 
-  /**
-    * Mapping, folding and getOrElse on Option[String] for non-empty strings.
-    * Commonly used in the Twirl components.
-    *
-   * @param optString
-    */
-  implicit class RichOptionString(optString: Option[String]) {
+import play.api.libs.json.JsPath
 
-    def mapNonEmpty[T](f: String => T): Option[T] =
-      optString.filter(_.nonEmpty).map(f)
-
-    def foldNonEmpty[B](ifEmpty: => B)(f: String => B): B =
-      optString.filter(_.nonEmpty).fold(ifEmpty)(f)
-
-    def getNonEmptyOrElse[B >: String](default: => B): B =
-      optString.filter(_.nonEmpty).getOrElse(default)
-
-  }
-
+object AmendClaimDateQuery extends Gettable[LocalDateTime] with Settable[LocalDateTime] {
+  def path: JsPath = JsPath \ "amendClaimDate"
 }

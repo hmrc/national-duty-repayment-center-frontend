@@ -16,7 +16,7 @@
 
 package controllers
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
@@ -25,7 +25,7 @@ import navigation.AmendNavigator
 import pages.{AmendCheckYourAnswersPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import queries.{ClaimDateQuery, ClaimIdQuery}
+import queries.{AmendClaimDateQuery, AmendClaimIdQuery}
 import repositories.SessionRepository
 import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -51,18 +51,23 @@ class AmendCheckYourAnswersController @Inject() (
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val updatedAnswers = request.userAnswers.copy(changePage = None)
-      navigator.firstMissingAnswer(updatedAnswers) match {
-        case Some(call) =>
-          // TODO - render "missing" version of CYA page
-          Future.successful(Redirect(call))
-        case None =>
-          sessionRepository.set(updatedAnswers) map { _ =>
-            val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
-            Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink(updatedAnswers)))
-          }
+      if (request.userAnswers.isAmendSubmitted)
+        sessionRepository.resetData(request.userAnswers) map { _ =>
+          Redirect(controllers.routes.IndexController.onPageLoad())
+        }
+      else {
+        val updatedAnswers = request.userAnswers.copy(changePage = None)
+        navigator.firstMissingAnswer(updatedAnswers) match {
+          case Some(call) =>
+            // TODO - render "missing" version of CYA page
+            Future.successful(Redirect(call))
+          case None =>
+            sessionRepository.set(updatedAnswers) map { _ =>
+              val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
+              Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink(updatedAnswers)))
+            }
+        }
       }
-
   }
 
   def onChange(page: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -76,8 +81,8 @@ class AmendCheckYourAnswersController @Inject() (
     implicit request =>
       for {
         claimId          <- claimService.submitAmendClaim(request.userAnswers)
-        updatedClaimId   <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
-        updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
+        updatedClaimId   <- Future.fromTry(request.userAnswers.set(AmendClaimIdQuery, claimId))
+        updatedClaimDate <- Future.fromTry(updatedClaimId.set(AmendClaimDateQuery, LocalDateTime.now))
         _                <- sessionRepository.set(updatedClaimDate)
       } yield Redirect(nextPage(request.userAnswers))
   }

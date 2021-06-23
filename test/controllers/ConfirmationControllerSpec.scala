@@ -17,18 +17,15 @@
 package controllers
 
 import base.SpecBase
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
-import views.html.ConfirmationView
-
-import scala.concurrent.Future
+import utils.CheckYourAnswersHelper
+import views.html.{ConfirmationView, ReviewView}
 
 class ConfirmationControllerSpec extends SpecBase {
 
-  "confirmation Controller" must {
+  "ConfirmationController for confirmation view" must {
 
     "return OK and the correct view for a GET when claimId can be retrieved from user answers" in {
 
@@ -39,27 +36,27 @@ class ConfirmationControllerSpec extends SpecBase {
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
+      running(application) {
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad().url)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ConfirmationView]
+        val view = application.injector.instanceOf[ConfirmationView]
 
-      status(result) mustEqual OK
+        status(result) mustEqual OK
 
-      contentAsString(result) mustEqual
-        view(claimId)(request, messages).toString
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
 
-      application.stop()
+        contentAsString(result) mustEqual
+          view(claimId, checkYourAnswersHelper.getCreateConfirmationSections)(request, messages).toString
+
+      }
     }
 
-    "return INTERNAL_SERVER_ERROR for a GET when claimId cannot be retrieved from user answers" in {
+    "redirect to start for a GET when claimId cannot be retrieved from user answers" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
 
       running(application) {
 
@@ -67,7 +64,55 @@ class ConfirmationControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        status(result) mustEqual INTERNAL_SERVER_ERROR
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
+      }
+    }
+  }
+
+  "ConfirmationController for review view" must {
+
+    "return OK and the correct view for a GET when claimId can be retrieved from user answers" in {
+
+      val claimId = "1"
+
+      val answers = emptyUserAnswers
+        .set(ClaimIdQuery, claimId).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.ConfirmationController.onReview().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[ReviewView]
+
+        status(result) mustEqual OK
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+
+        contentAsString(result) mustEqual
+          view(checkYourAnswersHelper.getCreateConfirmationSections)(request, messages).toString
+
+      }
+    }
+
+    "redirect to start for a GET when claimId cannot be retrieved from user answers" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.ConfirmationController.onReview().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
       }
     }
   }

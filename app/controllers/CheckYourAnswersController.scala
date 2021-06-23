@@ -16,7 +16,7 @@
 
 package controllers
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
@@ -51,16 +51,22 @@ class CheckYourAnswersController @Inject() (
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val updatedAnswers = request.userAnswers.copy(changePage = None)
-      navigator.firstMissingAnswer(updatedAnswers) match {
-        case Some(call) =>
-          // TODO - render "missing" version of CYA page
-          Future.successful(Redirect(call))
-        case None =>
-          sessionRepository.set(updatedAnswers) map { _ =>
-            val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
-            Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink(updatedAnswers)))
-          }
+      if (request.userAnswers.isCreateSubmitted)
+        sessionRepository.resetData(request.userAnswers) map { _ =>
+          Redirect(controllers.routes.IndexController.onPageLoad())
+        }
+      else {
+        val updatedAnswers = request.userAnswers.copy(changePage = None)
+        navigator.firstMissingAnswer(updatedAnswers) match {
+          case Some(call) =>
+            // TODO - render "missing" version of CYA page
+            Future.successful(Redirect(call))
+          case None =>
+            sessionRepository.set(updatedAnswers) map { _ =>
+              val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
+              Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink(updatedAnswers)))
+            }
+        }
       }
   }
 
@@ -76,7 +82,7 @@ class CheckYourAnswersController @Inject() (
       for {
         claimId          <- claimService.submitClaim(request.userAnswers)
         updatedClaimId   <- Future.fromTry(request.userAnswers.set(ClaimIdQuery, claimId))
-        updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDate.now))
+        updatedClaimDate <- Future.fromTry(updatedClaimId.set(ClaimDateQuery, LocalDateTime.now))
         _                <- sessionRepository.set(updatedClaimDate)
       } yield Redirect(nextPage(request.userAnswers))
   }

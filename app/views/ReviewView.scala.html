@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +12,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package viewmodels
+@import viewmodels.Section
 
-case class RepeaterAnswerRow(answer: String, changeUrl: String, deleteUrl: String)
+@this(
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    html: views.components.html
+)
+
+@(sections: Seq[Section])(implicit request: Request[_], messages: Messages)
+
+@govukLayout(
+    pageTitle = Some(s"${titleNoForm(messages("confirmation.title"))}")
+) {
+
+  @html.h1("confirmation.summary.title")
+  @components.answers(sections)
+
+}
