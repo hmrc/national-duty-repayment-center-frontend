@@ -34,7 +34,6 @@ import views.DateTimeFormats
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-  // TODO - change format to GDS guidelines
   val dateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
   val amendCaseResponseTypePage      = userAnswers.get(AmendCaseResponseTypePage)
@@ -63,7 +62,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       }) ++
       Seq(getYourDetailsAnswerSection, getContactDetailsAnswerSection, getPaymentInformationAnswerSection)
 
-  def getCreateConfirmationSections: Seq[AnswerSection] = Seq(getApplicationSentSection) ++ getCheckYourAnswerSections
+  def getCreateConfirmationSections: Seq[AnswerSection] = readOnly(
+    Seq(getApplicationSentSection) ++ getCheckYourAnswerSections
+  )
 
   def getAmendCheckYourAnswerSections: Seq[AnswerSection] = {
     def additionalSection = amendCaseResponseTypePage.map { amendCaseResponseType =>
@@ -85,6 +86,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
     Seq(AnswerSection(Some(messages("")), list ++ additionalSection))
   }
+
+  private def readOnly(sections: Seq[AnswerSection]) =
+    sections.map(section => section.copy(rows = section.rows.map(row => row.copy(changeUrl = None))))
 
   private def bulkFileUpload: Option[AnswerRow] =
     fileUploadState.map(_.fileUploads.files.filter(_.fileType.contains(Bulk))).flatMap(_.headOption.map(_ match {

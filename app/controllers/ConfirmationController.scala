@@ -23,9 +23,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.ClaimIdQuery
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import views.html.{ConfirmationView, ReviewView}
-
-import scala.concurrent.ExecutionContext
+import views.html.{ClaimSummaryView, ConfirmationView}
 
 class ConfirmationController @Inject() (
   override val messagesApi: MessagesApi,
@@ -34,7 +32,7 @@ class ConfirmationController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   confirmationView: ConfirmationView,
-  reviewView: ReviewView
+  reviewView: ClaimSummaryView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -47,7 +45,7 @@ class ConfirmationController @Inject() (
       }
   }
 
-  def onReview: Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onSummary: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       request.userAnswers.get(ClaimIdQuery) match {
         case Some(_) =>

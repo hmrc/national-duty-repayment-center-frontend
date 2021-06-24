@@ -21,7 +21,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
 import utils.CheckYourAnswersHelper
-import views.html.{ConfirmationView, ReviewView}
+import views.html.{ClaimSummaryView, ConfirmationView}
 
 class ConfirmationControllerSpec extends SpecBase {
 
@@ -71,7 +71,7 @@ class ConfirmationControllerSpec extends SpecBase {
     }
   }
 
-  "ConfirmationController for review view" must {
+  "ConfirmationController for summary view" must {
 
     "return OK and the correct view for a GET when claimId can be retrieved from user answers" in {
 
@@ -84,11 +84,11 @@ class ConfirmationControllerSpec extends SpecBase {
 
       running(application) {
 
-        val request = FakeRequest(GET, routes.ConfirmationController.onReview().url)
+        val request = FakeRequest(GET, routes.ConfirmationController.onSummary().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ReviewView]
+        val view = application.injector.instanceOf[ClaimSummaryView]
 
         status(result) mustEqual OK
 
@@ -106,7 +106,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
       running(application) {
 
-        val request = FakeRequest(GET, routes.ConfirmationController.onReview().url)
+        val request = FakeRequest(GET, routes.ConfirmationController.onSummary().url)
 
         val result = route(application, request).value
 
