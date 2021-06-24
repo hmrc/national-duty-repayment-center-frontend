@@ -16,10 +16,10 @@
 
 package queries
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 import play.api.libs.json.JsPath
 
-object ClaimDateQuery extends Gettable[LocalDate] with Settable[LocalDate] {
+object ClaimDateQuery extends Gettable[LocalDateTime] with Settable[LocalDateTime] {
   def path: JsPath = JsPath \ "claimDate"
 }

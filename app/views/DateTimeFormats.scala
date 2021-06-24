@@ -16,25 +16,21 @@
 
 package views
 
-object CommonUtilsHelper {
+import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime, ZoneId}
 
-  /**
-    * Mapping, folding and getOrElse on Option[String] for non-empty strings.
-    * Commonly used in the Twirl components.
-    *
-   * @param optString
-    */
-  implicit class RichOptionString(optString: Option[String]) {
+object DateTimeFormats {
 
-    def mapNonEmpty[T](f: String => T): Option[T] =
-      optString.filter(_.nonEmpty).map(f)
+  private val dateFormatter               = DateTimeFormatter.ofPattern("d MMMM yyyy")
+  def formatDate(date: LocalDate): String = dateFormatter.format(date)
 
-    def foldNonEmpty[B](ifEmpty: => B)(f: String => B): B =
-      optString.filter(_.nonEmpty).fold(ifEmpty)(f)
+  private val ukZone: ZoneId      = ZoneId.of("Europe/London")
+  private val dateAtTimeFormatter = DateTimeFormatter.ofPattern("d MMMM uuu 'at' h:mma").withZone(ukZone)
 
-    def getNonEmptyOrElse[B >: String](default: => B): B =
-      optString.filter(_.nonEmpty).getOrElse(default)
-
-  }
+  def formatDateAtTime(datetime: LocalDateTime): String =
+    dateAtTimeFormatter
+      .format(datetime)
+      .replace("AM", "am")
+      .replace("PM", "pm")
 
 }

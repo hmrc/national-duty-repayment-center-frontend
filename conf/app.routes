@@ -98,6 +98,7 @@ GET         /your-business-address/change                                       
 GET         /your-business-address/update                                       controllers.AgentImporterAddressFrontendController.onUpdate(id: Option[String])
 
 GET         /application-complete                                                      controllers.ConfirmationController.onPageLoad()
+GET         /application-complete/summary                                              controllers.ConfirmationController.onSummary()
 
 GET         /amend/information-sent                                                    controllers.AmendConfirmationController.onPageLoad()
 

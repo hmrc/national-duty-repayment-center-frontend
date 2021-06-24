@@ -53,6 +53,9 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 <noscript>
     <style type="text/css">
             a[href^="javascript:"].govuk-back-link { visibility: hidden; }
+            p.ndrc-print-link { display: none; }
+            div.ndrc-display-only-non-javascript { display: block; }
+            div.ndrc-display-none-non-javascript { display: none; }
     </style>
 </noscript>
 
@@ -72,8 +75,6 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 
   <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="screen" rel="stylesheet"
   type="text/css" />
-    <!--<![endif]-->
-@*  <link rel="stylesheet" href='@controllers.routes.Assets.versioned("stylesheets/print.css")' type="text/css" media="print" />*@
 }
 
 @scripts = {
@@ -106,8 +107,9 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
   <div class="govuk-!-margin-bottom-6">
     @contentBlock
   </div>
-
+  <p class="govuk-!-display-none-print">
     @hmrcReportTechnicalIssueHelper()
+  </p>
 }
 
 @govukLayout(

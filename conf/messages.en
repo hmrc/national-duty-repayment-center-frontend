@@ -2,6 +2,10 @@ checkYourAnswers.title = Check your answers before sending your information
 checkYourAnswers.heading = Check Your Answers
 checkYourAnswers.guidance = Guidance for check your answers
 
+checkYourAnswers.submit.heading = Send your application
+checkYourAnswers.submit.before.send = Before you send your application, ensure that you have fully reviewed the information you have provided and that it is correct.
+checkYourAnswers.submit.print = You can print a summary of your application on the next page.
+
 site.switchLanguage = Newid yr iaith ir Gymraeg
 
 date.day = Day
@@ -454,17 +458,25 @@ importerYourAddress.title = Enter your address
 importerYourAddress.heading = Enter your address
 importerYourAddress.confirmation.title = Confirm your address
 
-confirmation.title = Information sent
-confirmation.heading = Information sent
-confirmation.referenceNumber = Your Reference Number
+confirmation.title = Application complete
+confirmation.heading = Application complete
+confirmation.referenceNumber = Your reference number
+confirmation.application.received = We have received your application.
+confirmation.print = Print or save a summary of your application and reference number
+confirmation.print.text = as we will not send you an email confirmation.
+confirmation.review = View a summary of your application and reference number (opens in a new tab)
 confirmation.whatHappensNext.heading = What happens next
-confirmation.whatHappensNext.p1 = We’ve sent your application to the NDRC team.
-confirmation.whatHappensNext.p2 = They will contact you either to confirm your registration, or to ask for more information.
-confirmation.improveService.heading = Help us improve our services
-confirmation.improveService.p1 = We use your feedback to make our services better.
+confirmation.whatHappensNext.p1 = We will process your application and send our decision by post within 30 days.
+confirmation.whatHappensNext.p2 = We will contact you if we need more information to complete your application.
 confirmation.improveService.link.text1 = What did you think of this service?
-confirmation.improveService.link.tab = ?newTab=true
-confirmation.improveService.link.text2 = (takes one minute)
+
+confirmation.amend.title = Information sent
+confirmation.amend.heading = Information sent
+
+confirmation.summary.title = Your application details
+confirmation.summary.section.heading = Application
+confirmation.summary.reference = Claim reference number
+confirmation.summary.datetime = Submitted
 
 amend.confirmation.whatHappensNext.heading = What happens next
 amend.confirmation.receivedInformation = We have received your information.

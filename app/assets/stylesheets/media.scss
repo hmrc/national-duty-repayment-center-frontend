@@ -1,0 +1,21 @@
+/*
+====================================
+CSS to support print media.  Hides sign-out link on the header, removes the footer section
+from the view and the page (url/page number, etc.)
+
+.ndrc-!-display-only-print - is used to hide content except when printing
+====================================
+*/
+@media all {
+  .ndrc-\21-display-only-print { display: none}
+}
+@media print {
+  @page { margin: 10px }
+  .govuk-section-break { page-break-inside : avoid }
+  .hmrc-sign-out-nav__link { display: none; }
+  .ndrc-\21-display-only-print{ display: contents}
+  footer { display: none; }
+  @-moz-document url-prefix() {
+    .govuk-summary-list__key { width: 40%; }
+  }
+}

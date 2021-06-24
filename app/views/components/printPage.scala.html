@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package queries
+@(linkMessageKey: String, messageKey: Option[String] = None)(implicit messages: Messages)
 
-import play.api.libs.json.JsPath
-
-object ClaimIdQuery extends Gettable[String] with Settable[String] {
-  def path: JsPath = JsPath \ "claimId"
-}
+<p class="govuk-body ndrc-print-link govuk-!-display-none-print" >
+ <a class="govuk-link govuk-link--no-visited-state govuk-link--visually-hidden" href="javascript:if(window.print)window.print()">@messages(linkMessageKey)</a>
+ @messageKey.map(msg => messages(msg))
+</p>
