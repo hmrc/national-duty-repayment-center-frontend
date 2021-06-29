@@ -27,8 +27,8 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
   val requiredKey = "bankDetails.error.required"
   val lengthKey   = "bankDetails.error.length"
 
-  val provider = new BankDetailsFormProvider
-  val form     = provider.apply()
+  val provider     = new BankDetailsFormProvider
+  private val form = provider.apply()
 
   val accountNameField   = "AccountName"
   val sortCodeField      = "SortCode"
@@ -101,19 +101,19 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
 
     "not bind sort codes with characters" in {
       val result        = form.bind(Map(fieldName -> "abcdef")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern.toString))
+      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern))
       result.errors shouldEqual Seq(expectedError)
     }
 
     "not bind sort codes with less than 6 digit" in {
       val result        = form.bind(Map(fieldName -> "12   34  5")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern.toString))
+      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern))
       result.errors shouldEqual Seq(expectedError)
     }
 
     "not bind sort codes with more than 6 digit" in {
       val result        = form.bind(Map(fieldName -> "12   34  5678")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern.toString))
+      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern))
       result.errors shouldEqual Seq(expectedError)
     }
   }

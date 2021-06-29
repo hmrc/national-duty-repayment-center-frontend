@@ -16,14 +16,14 @@
 
 package forms
 
-import forms.mappings.Mappings
 import forms.mappings.Implicits.SanitizedString
-
-import javax.inject.Inject
+import forms.mappings.Mappings
 import models.BankDetails
 import models.bars.BARSResult
 import play.api.data.Forms._
 import play.api.data.{Form, FormError}
+
+import javax.inject.Inject
 
 class BankDetailsFormProvider @Inject() extends Mappings {
 

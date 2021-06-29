@@ -36,9 +36,9 @@ import scala.concurrent.Future
 class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTestData {
 
   val formProvider = new BankDetailsFormProvider()
-  val form         = formProvider()
+  private val form = formProvider()
 
-  lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad().url
+  private lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad().url
 
   private val userAnswers = UserAnswers(
     userAnswersId,
