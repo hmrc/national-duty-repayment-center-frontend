@@ -93,8 +93,13 @@ class ConstraintsSpec
       result mustEqual Valid
     }
 
-    "return Invalid for an input that does not match the expression" in {
-      val result = regexp("""^\d+$""", "error.invalid")("foo")
+    "return Valid for an input that matches the expression and uses a transform" in {
+      val result = regexp("""^\w+$""", "error.invalid", _.replaceAll("""[ ]""", ""))("f o o")
+      result mustEqual Valid
+    }
+
+    "return Invalid for an input that does not match the expression and uses a transform" in {
+      val result = regexp("""^\d+$""", "error.invalid", _.replaceAll("""[ ]""", ""))("f o o")
       result mustEqual Invalid("error.invalid", """^\d+$""")
     }
   }

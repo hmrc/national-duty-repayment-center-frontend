@@ -113,6 +113,30 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
       application.stop()
     }
 
+    "redirect to the next page when sort code and account number has hyphens and spaces data is submitted" in {
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val mockBankAccountReputationService = mock[BankAccountReputationService]
+      when(mockBankAccountReputationService.validate(any())(any())) thenReturn Future.successful(barsSuccessResult)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
+          .build()
+
+      val request =
+        FakeRequest(POST, bankDetailsRoute)
+          .withFormUrlEncodedBody(("AccountName", "name"), ("SortCode", "12-34 56"), ("AccountNumber", "00-1234 56"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
     "return a Bad Request and errors when BARS checks fail" in {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)

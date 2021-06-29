@@ -74,6 +74,14 @@ trait Constraints {
         Invalid(errorKey, regex)
     }
 
+  protected def regexp(regex: String, errorKey: String, transform: String => String = x => x): Constraint[String] =
+    Constraint {
+      case str if transform(str).matches(regex) =>
+        Valid
+      case _ =>
+        Invalid(errorKey, regex)
+    }
+
   protected def maxLength(maximum: Int, errorKey: String): Constraint[String] =
     Constraint {
       case str if str.trim.length <= maximum =>
