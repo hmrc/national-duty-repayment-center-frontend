@@ -174,6 +174,20 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
       form.value shouldEqual Some(BankDetails("AccountName", "123456", "00123456"))
     }
 
+    "Pad 7 digit account codes" in {
+      val form = new BankDetailsFormProvider().apply().bind(buildFormData("123456", "1234567"))
+
+      form.hasErrors shouldEqual false
+      form.value shouldEqual Some(BankDetails("AccountName", "123456", "01234567"))
+    }
+
+    "Pad 7 digit account code, when spaces and hyphens present" in {
+      val form = new BankDetailsFormProvider().apply().bind(buildFormData("123456", "12 34 5-6-7"))
+
+      form.hasErrors shouldEqual false
+      form.value shouldEqual Some(BankDetails("AccountName", "123456", "01234567"))
+    }
+
     "Remove dashes from sort codes" in {
       val form = new BankDetailsFormProvider().apply().bind(buildFormData("12-34-56", "12345678"))
 
