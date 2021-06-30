@@ -27,8 +27,8 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
   val requiredKey = "bankDetails.error.required"
   val lengthKey   = "bankDetails.error.length"
 
-  val provider = new BankDetailsFormProvider
-  val form     = provider.apply()
+  val provider     = new BankDetailsFormProvider
+  private val form = provider.apply()
 
   val accountNameField   = "AccountName"
   val sortCodeField      = "SortCode"
@@ -101,19 +101,19 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
 
     "not bind sort codes with characters" in {
       val result        = form.bind(Map(fieldName -> "abcdef")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern.toString))
+      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern))
       result.errors shouldEqual Seq(expectedError)
     }
 
     "not bind sort codes with less than 6 digit" in {
       val result        = form.bind(Map(fieldName -> "12   34  5")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern.toString))
+      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern))
       result.errors shouldEqual Seq(expectedError)
     }
 
     "not bind sort codes with more than 6 digit" in {
       val result        = form.bind(Map(fieldName -> "12   34  5678")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern.toString))
+      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.sortCodePattern))
       result.errors shouldEqual Seq(expectedError)
     }
   }
@@ -123,7 +123,6 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
     val fieldName   = accountNumberField
     val requiredKey = "bankDetails.accountNumber.error.required"
     val invalidKey  = "bankDetails.accountNumber.error.invalid"
-    val lengthKey   = "bankDetails.accountNumber.error.length"
     val minLength   = 6
     val maxLength   = 8
 
@@ -134,13 +133,6 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
 
     behave like fieldThatBindsValidData(form, fieldName, validAccountNumberGen)
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
     behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
 
     "bind account number in format with any number of spaces nn   nn    nn format" in {
@@ -150,20 +142,64 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
 
     "not bind strings with characters" in {
       val result        = form.bind(Map(fieldName -> "abcdef")).apply(fieldName)
-      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.accountNumberPattern.toString))
+      val expectedError = FormError(fieldName, invalidKey, Seq(Validation.accountNumberPattern))
       result.errors shouldEqual Seq(expectedError)
     }
 
     "not bind strings with less than 6 digit" in {
-      val result = form.bind(Map(fieldName -> "12 34   5")).apply(fieldName)
+      val result = form.bind(Map(fieldName -> "12345")).apply(fieldName)
 
-      result.errors shouldEqual Seq(FormError(fieldName, lengthKey, Seq(minLength)))
+      result.errors shouldEqual Seq(FormError(fieldName, invalidKey, Seq(Validation.accountNumberPattern)))
     }
 
     "not bind strings with more than 8 digit" in {
-      val result = form.bind(Map(fieldName -> "12 34 56 789")).apply(fieldName)
+      val result = form.bind(Map(fieldName -> "123456789")).apply(fieldName)
 
-      result.errors shouldEqual Seq(FormError(fieldName, lengthKey, Seq(maxLength)))
+      result.errors shouldEqual Seq(FormError(fieldName, invalidKey, Seq(Validation.accountNumberPattern)))
+    }
+  }
+
+  "Form" must {
+    "Accept valid form data" in {
+      val form = new BankDetailsFormProvider().apply().bind(buildFormData("123456", "12345678"))
+
+      form.hasErrors shouldEqual false
+      form.value shouldEqual Some(BankDetails("AccountName", "123456", "12345678"))
+    }
+
+    "Pad 6 digit account codes" in {
+      val form = new BankDetailsFormProvider().apply().bind(buildFormData("123456", "123456"))
+
+      form.hasErrors shouldEqual false
+      form.value shouldEqual Some(BankDetails("AccountName", "123456", "00123456"))
+    }
+
+    "Pad 7 digit account codes" in {
+      val form = new BankDetailsFormProvider().apply().bind(buildFormData("123456", "1234567"))
+
+      form.hasErrors shouldEqual false
+      form.value shouldEqual Some(BankDetails("AccountName", "123456", "01234567"))
+    }
+
+    "Pad 7 digit account code, when spaces and hyphens present" in {
+      val form = new BankDetailsFormProvider().apply().bind(buildFormData("123456", "12 34 5-6-7"))
+
+      form.hasErrors shouldEqual false
+      form.value shouldEqual Some(BankDetails("AccountName", "123456", "01234567"))
+    }
+
+    "Remove dashes from sort codes" in {
+      val form = new BankDetailsFormProvider().apply().bind(buildFormData("12-34-56", "12345678"))
+
+      form.hasErrors shouldEqual false
+      form.value shouldEqual Some(BankDetails("AccountName", "123456", "12345678"))
+    }
+
+    "Remove spaces from sort codes and account numbers" in {
+      val form = new BankDetailsFormProvider().apply().bind(buildFormData(" 12 34 56 ", " 1234 5678 "))
+
+      form.hasErrors shouldEqual false
+      form.value shouldEqual Some(BankDetails("AccountName", "123456", "12345678"))
     }
   }
 
@@ -205,4 +241,8 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
       )
     }
   }
+
+  private def buildFormData(sortCode: String, accountNumber: String) =
+    Map(accountNameField -> "AccountName", sortCodeField -> sortCode, accountNumberField -> accountNumber)
+
 }

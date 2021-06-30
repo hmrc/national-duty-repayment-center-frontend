@@ -16,10 +16,9 @@
 
 package forms.mappings
 
-import java.time.LocalDate
-
 import play.api.data.validation.{Constraint, Invalid, Valid}
 
+import java.time.LocalDate
 import scala.util.{Success, Try}
 
 trait Constraints {
@@ -69,6 +68,14 @@ trait Constraints {
   protected def regexp(regex: String, errorKey: String): Constraint[String] =
     Constraint {
       case str if str.trim.matches(regex) =>
+        Valid
+      case _ =>
+        Invalid(errorKey, regex)
+    }
+
+  protected def regexp(regex: String, errorKey: String, transform: String => String = x => x): Constraint[String] =
+    Constraint {
+      case str if transform(str).matches(regex) =>
         Valid
       case _ =>
         Invalid(errorKey, regex)

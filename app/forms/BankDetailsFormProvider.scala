@@ -16,12 +16,14 @@
 
 package forms
 
+import forms.mappings.Implicits.SanitizedString
 import forms.mappings.Mappings
-import javax.inject.Inject
 import models.BankDetails
 import models.bars.BARSResult
 import play.api.data.Forms._
 import play.api.data.{Form, FormError}
+
+import javax.inject.Inject
 
 class BankDetailsFormProvider @Inject() extends Mappings {
 
@@ -29,27 +31,33 @@ class BankDetailsFormProvider @Inject() extends Mappings {
   private val sortCode      = "SortCode"
   private val accountNumber = "AccountNumber"
 
-  def apply(): Form[BankDetails] = Form(
-    mapping(
-      accountName -> text("bankDetails.name.error.required")
-        .verifying(
-          firstError(
-            maxLength(40, "bankDetails.name.error.length"),
-            regexp(Validation.safeInputPattern, "bankDetails.name.error.invalid")
+  def apply(): Form[BankDetails] = {
+
+    val formToModel = (accountName: String, sortCode: String, accountNumber: String) =>
+      BankDetails(accountName, sortCode.stripSpacesAndDashes, accountNumber.stripSpacesAndDashes.leftPadAccountNumber)
+
+    Form(
+      mapping(
+        accountName -> text("bankDetails.name.error.required")
+          .verifying(
+            firstError(
+              maxLength(40, "bankDetails.name.error.length"),
+              regexp(Validation.safeInputPattern, "bankDetails.name.error.invalid")
+            )
+          ),
+        sortCode -> text("bankDetails.sortCode.error.required")
+          .verifying(
+            firstError(regexp(Validation.sortCodePattern, "bankDetails.sortCode.error.invalid", _.stripSpacesAndDashes))
+          ),
+        accountNumber -> text("bankDetails.accountNumber.error.required")
+          .verifying(
+            firstError(
+              regexp(Validation.accountNumberPattern, "bankDetails.accountNumber.error.invalid", _.stripSpacesAndDashes)
+            )
           )
-        ),
-      sortCode -> textNoSpaces("bankDetails.sortCode.error.required")
-        .verifying(firstError(regexp(Validation.sortCodePattern.toString, "bankDetails.sortCode.error.invalid"))),
-      accountNumber -> textNoSpaces("bankDetails.accountNumber.error.required")
-        .verifying(
-          firstError(
-            minLength(6, "bankDetails.accountNumber.error.length"),
-            maxLength(8, "bankDetails.accountNumber.error.length"),
-            regexp(Validation.accountNumberPattern.toString, "bankDetails.accountNumber.error.invalid")
-          )
-        )
-    )(BankDetails.apply)(BankDetails.unapply)
-  )
+      )(formToModel)(BankDetails.unapply)
+    )
+  }
 
   def processBarsResult(barsResult: BARSResult, bankDetails: BankDetails): Option[Form[BankDetails]] =
     if (barsResult.isValid)
