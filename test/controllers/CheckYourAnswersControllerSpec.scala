@@ -27,7 +27,7 @@ import org.scalatest.BeforeAndAfterEach
 import pages.{ClaimRepaymentTypePage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import queries.{AmendClaimIdQuery, ClaimIdQuery}
+import queries.ClaimIdQuery
 import utils.CheckYourAnswersHelper
 import views.html.CheckYourAnswersView
 

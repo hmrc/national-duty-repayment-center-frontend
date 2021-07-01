@@ -16,15 +16,6 @@
 
 package models.requests
 
-import models.UserAnswers
-import play.api.mvc.{Request, WrappedRequest}
+import models.EORI
 
-case class OptionalDataRequest[A](request: Request[A], identification: Identification, userAnswers: Option[UserAnswers])
-    extends WrappedRequest[A](request) {
-  val internalId: String = identification.identifier
-}
-
-case class DataRequest[A](request: Request[A], identification: Identification, userAnswers: UserAnswers)
-    extends WrappedRequest[A](request) {
-  val internalId: String = identification.identifier
-}
+case class Identification(identifier: String, eori: Option[EORI] = None)
