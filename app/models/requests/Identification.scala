@@ -18,4 +18,4 @@ package models.requests
 
 import models.EORI
 
-case class Identification(identifier: String, eori: Option[EORI] = None)
+case class Identification(identifier: String, eori: Option[EORI])

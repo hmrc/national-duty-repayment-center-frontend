@@ -114,7 +114,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
     }
 
     def populateExistingAddresss(address: Address) = {
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterAddressPage, address).success.value
+      val userAnswers = UserAnswers(userIdentification).set(ImporterAddressPage, address).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(bind[CountryService].toInstance(testCountryService))
@@ -191,7 +191,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
     "retain audit reference when same address is submitted manually" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterAddressPage, addressUk).success.value
+      val userAnswers = UserAnswers(userIdentification).set(ImporterAddressPage, addressUk).success.value
 
       val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
@@ -225,7 +225,7 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
     "clear audit reference when changed address is submitted manually" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterAddressPage, addressUk).success.value
+      val userAnswers = UserAnswers(userIdentification).set(ImporterAddressPage, addressUk).success.value
 
       val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)

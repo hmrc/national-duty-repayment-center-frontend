@@ -34,6 +34,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
   private val userAnswers = UserAnswers(
     userAnswersId,
+    None,
     Json.obj(
       OtherDutiesPaidPage.toString -> Json.obj("ActualPaidAmount" -> "100.00", "ShouldHavePaidAmount" -> "50.00")
     )
@@ -48,7 +49,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         ClaimRepaymentTypePage,
         ClaimRepaymentType.values.toSet
       ).success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
@@ -112,7 +113,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         ClaimRepaymentTypePage,
         ClaimRepaymentType.values.toSet
       ).success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value

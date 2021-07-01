@@ -106,7 +106,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
       val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
 
-      val userAnswers = UserAnswers(userAnswersId).set(ReferenceNumberPage, "1234").success.value
+      val userAnswers = UserAnswers(userIdentification).set(ReferenceNumberPage, "1234").success.value
         .set(AmendCaseResponseTypePage, values.toSet).success.value
         .set(FurtherInformationPage, "hello").success.value
         .copy(changePage = Some(ReferenceNumberPage))

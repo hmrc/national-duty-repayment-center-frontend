@@ -84,7 +84,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         CustomsRegulationTypePage,
         CustomsRegulationType.UnionsCustomsCodeRegulation
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -120,7 +120,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         CustomsRegulationTypePage,
         CustomsRegulationType.UKCustomsCodeRegulation
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -166,7 +166,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = false
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         CustomsRegulationTypePage,
         CustomsRegulationType.UKCustomsCodeRegulation
       ).success.value.copy(fileUploadState = Some(fileUploadState))

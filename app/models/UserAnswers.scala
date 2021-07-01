@@ -18,6 +18,7 @@ package models
 
 import java.time.Instant
 
+import models.requests.Identification
 import pages._
 import play.api.libs.json._
 import queries.{AmendClaimIdQuery, ClaimIdQuery, Gettable, Settable}
@@ -28,6 +29,7 @@ import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
   id: String,
+  userEori: Option[EORI],
   data: JsObject = Json.obj(),
   changePage: Option[String] = None,
   lastUpdated: Instant = Instant.now,
@@ -91,6 +93,9 @@ final case class UserAnswers(
 
 object UserAnswers {
   import services.UploadFile
+
+  def apply(identification: Identification): UserAnswers =
+    new UserAnswers(identification.identifier, identification.eori)
 
   implicit def uploadReads: Reads[FileUploadState] =
     //TODO error cases

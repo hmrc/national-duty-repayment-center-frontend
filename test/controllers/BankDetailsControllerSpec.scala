@@ -42,6 +42,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
 
   private val userAnswers = UserAnswers(
     userAnswersId,
+    None,
     Json.obj(
       BankDetailsPage.toString -> Json.obj(
         "AccountName"   -> "name",

@@ -31,8 +31,6 @@ import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
 
-import java.time.LocalDateTime
-
 class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
   implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
@@ -45,8 +43,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
   "SubmitClaim" must {
 
     "must return a result when the server responds with OK" in {
-      val app         = application
-      val generatedAt = LocalDateTime.now
+      val app = application
       running(app) {
 
         val url = s"/create-case"
@@ -87,8 +84,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
   "SubmitAmendClaim" must {
 
     "must return a result when the server responds with OK" in {
-      val app         = application
-      val generatedAt = LocalDateTime.now
+      val app = application
 
       running(app) {
 

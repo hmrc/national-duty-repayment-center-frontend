@@ -75,6 +75,7 @@ trait UserAnswersGenerator extends TryValues {
         }
       } yield UserAnswers(
         id = id,
+        userEori = None,
         data = data.foldLeft(Json.obj()) {
           case (obj, (path, value)) =>
             obj.setObject(path.path, value).get

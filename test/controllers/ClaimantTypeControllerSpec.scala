@@ -58,7 +58,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, ClaimantType.values.head).success.value
+      val userAnswers = UserAnswers(userIdentification).set(ClaimantTypePage, ClaimantType.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +78,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ClaimantTypePage, ClaimantType.values.head).success.value
+      val userAnswers = UserAnswers(userIdentification).set(ClaimantTypePage, ClaimantType.values.head).success.value
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 

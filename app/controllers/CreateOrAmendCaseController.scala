@@ -49,7 +49,7 @@ class CreateOrAmendCaseController @Inject() (
   def onPageLoad(): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       val preparedForm =
-        request.userAnswers.getOrElse(UserAnswers(request.internalId)).get(CreateOrAmendCasePage) match {
+        request.userAnswers.getOrElse(UserAnswers(request.identification)).get(CreateOrAmendCasePage) match {
           case None        => form
           case Some(value) => form.fill(value)
         }
@@ -63,7 +63,7 @@ class CreateOrAmendCaseController @Inject() (
         formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
-            userAnswers <- Future.successful(request.userAnswers.getOrElse(UserAnswers(request.internalId)))
+            userAnswers <- Future.successful(request.userAnswers.getOrElse(UserAnswers(request.identification)))
             updatedUserAnswers <- Future.fromTry(
               userAnswers.copy(id = request.internalId, fileUploadState = None, data = Json.obj()).set(
                 CreateOrAmendCasePage,
