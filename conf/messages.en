@@ -1,4 +1,5 @@
 checkYourAnswers.title = Check your answers before sending your information
+checkYourAnswers.amend.title = Check your additional information
 checkYourAnswers.heading = Check Your Answers
 checkYourAnswers.guidance = Guidance for check your answers
 
@@ -671,9 +672,9 @@ amendCaseUploadAnotherFile.02 = No
 amendCaseUploadAnotherFile.checkYourAnswersLabel = Do you need to upload another file?
 amendCaseUploadAnotherFile.error.required = Select another file to upload
 
-amendCaseResponseType.sendInformation.checkYourAnswersLabel = Information
-amendCaseResponseType.sendDocuments.checkYourAnswersLabel = Documents
-amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel = Documents and Information
+amendCaseResponseType.sendInformation.checkYourAnswersLabel = Send additional Information
+amendCaseResponseType.sendDocuments.checkYourAnswersLabel = Send additional Documents
+amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel = Send additional Documents and Information
 
 view.upload-file.title = Upload your supporting documentation
 view.upload-file.heading = Upload your supporting documentation
@@ -729,9 +730,10 @@ view.amend-upload-file.waiting=Your document is being uploaded. You’ll be redi
 form.amend-upload-file.submit= Continue
 form.amend-file-uploaded.continue=Continue
 site.amend-file.remove = Remove
-view.amend-upload-file.checkYourAnswersLabel = Documents
-amend.next.step.heading = Now send your information
-amend.next.step.p1 = By sending this information you are confirming that, to the best of your knowledge, the details you are providing are correct.
+view.amend-upload-file.checkYourAnswersLabel = Additional uploads
+amend.next.step.heading = Send your amended application
+amend.next.step.p1 = Before sending your amended application, ensure that you have fully reviewed the information you have provided and that it is correct.
+amend.next.step.p2 = You can print a summary of your application on the next page.
 amend.site.continue = Accept and send
 amend-file-upload.help.linkText = Help with file types
 amend-file-upload.help.line1 = Each file must be 6MB or less.
