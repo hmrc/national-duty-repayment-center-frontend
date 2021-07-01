@@ -283,6 +283,24 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.EmailAddressAndPhoneNumberController.onPageLoad())
       }
 
+      "go to ImporterHasEori page after FileUploadedPage page when the claimant is importer" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+
+        navigator.nextPage(FileUploadedPage, answers)
+          .mustBe(routes.ImporterHasEoriController.onPageLoad())
+      }
+
+      "skip ImporterHasEori page after FileUploadedPage page when the claimant is importer and has EORI" in {
+        val answers =
+          emptyUserAnswersWithEORI
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+
+        navigator.nextPage(FileUploadedPage, answers)
+          .mustBe(routes.IsVATRegisteredController.onPageLoad())
+      }
+
       "go to ImporterHasEori page after ImporterManualAddress page when the claimant is representative" in {
         val answers =
           emptyUserAnswers
@@ -290,6 +308,33 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
 
         navigator.nextPage(ImporterAddressPage, answers)
           .mustBe(routes.ImporterHasEoriController.onPageLoad())
+      }
+
+      "skip ImporterHasEori page after ImporterManualAddress page when the claimant is representative and has EORI" in {
+        val answers =
+          emptyUserAnswersWithEORI
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(ImporterAddressPage, answers)
+          .mustBe(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad())
+      }
+
+      "go to AgentImporterHasEORIPage page after FileUploadedPage page when the claimant is representative" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(FileUploadedPage, answers)
+          .mustBe(routes.AgentImporterHasEORIController.onPageLoad())
+      }
+
+      "go to AgentImporterHasEORIPage page after FileUploadedPage page when the claimant is representative and has EORI" in {
+        val answers =
+          emptyUserAnswersWithEORI
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(FileUploadedPage, answers)
+          .mustBe(routes.AgentImporterHasEORIController.onPageLoad())
       }
 
       "go to ClaimantType page when CreateOrAmendCase is type of Start a new application" in {

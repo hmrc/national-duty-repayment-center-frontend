@@ -127,7 +127,7 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
       name    <- getAgentImporterName(userAnswers)
       address <- getAgentImporterAddress(userAnswers)
     } yield {
-      val eori      = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
+      val eori      = userAnswers.userEori.getOrElse(userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR")))
       val telephone = getTelePhone(userAnswers)
       val email     = getEmailAddress(userAnswers)
       UserDetails("false", eori, name, EISAddress(address), telephone, email)
@@ -162,8 +162,9 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
     }
 
     def getImporterEORI(userAnswers: UserAnswers): EORI = userAnswers.get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
-      case _                           => userAnswers.get(EnterAgentEORIPage).getOrElse(EORI("GBPR"))
+      case Some(ClaimantType.Importer) =>
+        userAnswers.userEori.getOrElse(userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR")))
+      case _ => userAnswers.get(EnterAgentEORIPage).getOrElse(EORI("GBPR"))
     }
 
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {
