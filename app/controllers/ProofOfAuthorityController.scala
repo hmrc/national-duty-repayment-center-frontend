@@ -31,7 +31,7 @@ import models.FileType.ProofOfAuthority
 import models.UpscanNotification
 import models.requests.DataRequest
 import navigation.CreateNavigator
-import pages.{ProofOfAuthorityPage}
+import pages.ProofOfAuthorityPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
@@ -72,10 +72,8 @@ class ProofOfAuthorityController @Inject() (
             (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[
               FileUploadState
             ].flatMap {
-              case _: FileUploaded =>
-                Future.successful(Redirect(navigator.nextPage(ProofOfAuthorityPage, request.userAnswers)))
-              case _: UploadFile => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))
-              case _             => Future.successful(fileStateErrror)
+              case _: FileUploadState => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))
+              case _                  => Future.successful(fileStateErrror)
             }
           case _ => Future.successful(fileStateErrror)
         }
@@ -147,13 +145,51 @@ class ProofOfAuthorityController @Inject() (
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
     }
 
+  final def onRemove(reference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
+        ss.state match {
+          case Some(s) =>
+            val removeState =
+              FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
+            val sessionState = ss.copy(state = Some(removeState))
+            fileUtils.applyTransition(
+              removeFileUploadBy(reference)(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(_),
+              removeState,
+              sessionState
+            ).map {
+              case _ @FileUploaded(_, _)     => Redirect(routes.ProofOfAuthorityController.showFileUpload())
+              case _ @UploadFile(_, _, _, _) => Redirect(routes.ProofOfAuthorityController.showFileUpload())
+              case s @ _                     => renderState(fileUploadState = s)
+            }
+          case None => Future.successful(fileStateErrror)
+        }
+      }
+    }
+
+  def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(ProofOfAuthority)).contains(Seq.empty))
+        Redirect(
+          routes.ProofOfAuthorityController.markFileUploadAsRejected.url,
+          Map(
+            "key"          -> Seq(request.internalId),
+            "errorMessage" -> Seq("Missing file"),
+            "errorCode"    -> Seq("InvalidArgument")
+          ),
+          SEE_OTHER
+        )
+      else
+        Redirect(navigator.nextPage(ProofOfAuthorityPage, request.userAnswers))
+  }
+
   final def renderState(fileUploadState: FileUploadState)(implicit request: DataRequest[_]): Result =
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
         Ok(
           view(
             uploadRequest,
-            fileUploads,
+            fileUploads.toFilesOfType(ProofOfAuthority),
             maybeUploadError,
             successAction = routes.BankDetailsController.onPageLoad(),
             failureAction = routes.ProofOfAuthorityController.showFileUpload(),

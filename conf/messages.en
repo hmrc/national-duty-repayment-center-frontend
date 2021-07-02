@@ -718,12 +718,21 @@ proof-of-authority.title = Upload proof of authority
 proof-of-authority.heading = Upload proof of authority
 proof-of-authority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application.
 proof-of-authority.paragraph2 = This document must be 6MB or less
-proof-of-authority.h2 = Accepted file formats
-proof-of-authority.bullet1 = .doc
-proof-of-authority.bullet2 = .jpg
-proof-of-authority.bullet3 = .pdf
-proof-of-authority.bullet4 = .png
-proof-of-authority.bullet5 = .xls
+proof-of-authority.filetypes = Types of files you can upload
+proof-of-authority.filetype1 = Image (.jpeg, .jpg or .png)
+proof-of-authority.filetype2 = PDF (.pdf)
+proof-of-authority.filetype3 = MS Word document (.doc or .docx)
+proof-of-authority.filetype4 = MS Excel spreadsheet (.xls or .xlsx)
+proof-of-authority.filetype5 = MS PowerPoint (.ppt or .pptx)
+proof-of-authority.filetype6 = Open Document Format (.odt, .ods or .odp)
+proof-of-authority.filetype7 = Text files (.txt)
+
+upload_documents.status.in_progress = Uploading your file
+upload_documents.status.ready = Ready to submit
+upload_documents_summary.remove.label = Remove
+upload_documents_summary.remove.label.hidden = Remove file {0}
+
+
 
 view.amend-upload-file.title = Upload a file
 view.amend-upload-file.heading = Upload a file

@@ -154,6 +154,8 @@ POST        /bulk/:id/callback-from-upscan                                      
 
 # proof of authority
 GET         /upload-proof-of-authority                                                 controllers.ProofOfAuthorityController.showFileUpload()
+GET         /upload-proof-of-authority/remove                                          controllers.ProofOfAuthorityController.onRemove(documentReference: String)
+POST        /upload-proof-of-authority/continue                                        controllers.ProofOfAuthorityController.onContinue()
 GET         /upload-proof-of-authority/file-verification                               controllers.ProofOfAuthorityController.showWaitingForFileVerification()
 GET         /upload-proof-of-authority/file-rejected                                   controllers.ProofOfAuthorityController.markFileUploadAsRejected()
 GET         /upload-proof-of-authority/file-verification/:reference/status             controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
