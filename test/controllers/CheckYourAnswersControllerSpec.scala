@@ -24,12 +24,12 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
 import org.scalatest.BeforeAndAfterEach
-import pages.{ClaimRepaymentTypePage, ImporterHasEoriPage}
+import pages.{CheckYourAnswersPage, ClaimRepaymentTypePage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
 import utils.CheckYourAnswersHelper
-import views.html.CheckYourAnswersView
+import views.html.{CheckYourAnswersView, CheckYourMissingAnswersView}
 
 import scala.concurrent.Future
 
@@ -175,16 +175,44 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
       application.stop()
     }
 
-    "redirect to first missing answer and not update cached data" in {
+    "display 'missing answers' view and not update cached data" in {
 
       val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers).remove(ImporterHasEoriPage).get
 
-      val application = applicationBuilder(
-        userAnswers = Some(userAnswers),
-        createNavigator = injector.instanceOf[CreateNavigatorImpl]
-      ).build()
+      val navigator = injector.instanceOf[CreateNavigatorImpl]
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), createNavigator = navigator).build()
 
       val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual OK
+
+      val view = application.injector.instanceOf[CheckYourMissingAnswersView]
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      contentAsString(result) mustEqual
+        view(
+          checkYourAnswersHelper.getCheckYourAnswerSections,
+          navigator.previousPage(CheckYourAnswersPage, userAnswers)
+        )(request, messages).toString
+
+      application.stop()
+
+      verifyZeroInteractions(mockSessionRepository)
+    }
+
+    "redirect to missing answer on resolve" in {
+
+      val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers).remove(ImporterHasEoriPage).get
+
+      val navigator = injector.instanceOf[CreateNavigatorImpl]
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), createNavigator = navigator).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onResolve().url)
 
       val result = route(application, request).value
 

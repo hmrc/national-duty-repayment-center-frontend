@@ -35,7 +35,7 @@ import play.twirl.api.HtmlFormat
 import queries.AmendClaimIdQuery
 import services.FileUploaded
 import utils.CheckYourAnswersHelper
-import views.html.AmendCheckYourAnswersView
+import views.html.{AmendCheckYourAnswersView, AmendCheckYourMissingAnswersView}
 
 import scala.concurrent.Future
 
@@ -174,6 +174,52 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
       val labels = checkYourAnswersHelper.getAmendCheckYourAnswerSections.flatMap(_.rows.map(_.label.toString()))
       labels must contain(htmlEscapedMessage("furtherInformation.checkYourAnswersLabel"))
       labels must contain(htmlEscapedMessage("view.amend-upload-file.checkYourAnswersLabel"))
+      application.stop()
+    }
+
+    "return OK and the missing answers view for a GET when both Documents and Further information are selected but documents not supplied" in {
+      val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments, FurtherInformation)
+
+      val userAnswers = emptyUserAnswers
+        .set(ReferenceNumberPage, "1234").success.value
+        .set(FurtherInformationPage, "aaa").success.value
+        .set(AmendCaseResponseTypePage, values.toSet).success.value
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.AmendCheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[AmendCheckYourMissingAnswersView]
+
+      status(result) mustEqual OK
+      contentAsString(result) must contain
+      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink)(request, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to missing answers for a GET onResolve when both Documents and Further information are selected but documents not supplied" in {
+      val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments, FurtherInformation)
+
+      val userAnswers = emptyUserAnswers
+        .set(ReferenceNumberPage, "1234").success.value
+        .set(FurtherInformationPage, "aaa").success.value
+        .set(AmendCaseResponseTypePage, values.toSet).success.value
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.AmendCheckYourAnswersController.onResolve().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.AmendCaseSendInformationController.showFileUpload().url
+
       application.stop()
     }
 

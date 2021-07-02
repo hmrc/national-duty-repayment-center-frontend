@@ -2,6 +2,13 @@ checkYourAnswers.title = Check your answers before sending your information
 checkYourAnswers.heading = Check Your Answers
 checkYourAnswers.guidance = Guidance for check your answers
 
+checkYourAnswers.missing.icon = Warning
+checkYourAnswers.missing.warning = Some information is missing. This must be completed before sending your application.
+checkYourAnswers.missing.subheading = Some information is missing
+checkYourAnswers.missing.paragraph = Please review your answers above and complete any missing information. Alternatively, you can use the button below.
+checkYourAnswers.missing.resolve.link = Resolve missing answers
+checkYourAnswers.missing.resolve = Resolve missing answers
+
 checkYourAnswers.submit.heading = Send your application
 checkYourAnswers.submit.before.send = Before you send your application, ensure that you have fully reviewed the information you have provided and that it is correct.
 checkYourAnswers.submit.print = You can print a summary of your application on the next page.
