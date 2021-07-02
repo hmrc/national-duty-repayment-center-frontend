@@ -30,7 +30,7 @@ import repositories.SessionRepository
 import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import views.html.CheckYourAnswersView
+import views.html.{CheckYourAnswersView, CheckYourMissingAnswersView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -43,7 +43,8 @@ class CheckYourAnswersController @Inject() (
   claimService: ClaimService,
   val navigator: CreateNavigator,
   val controllerComponents: MessagesControllerComponents,
-  view: CheckYourAnswersView
+  view: CheckYourAnswersView,
+  viewMissing: CheckYourMissingAnswersView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
@@ -56,17 +57,26 @@ class CheckYourAnswersController @Inject() (
           Redirect(controllers.routes.IndexController.onPageLoad())
         }
       else {
-        val updatedAnswers = request.userAnswers.copy(changePage = None)
+        val updatedAnswers         = request.userAnswers.copy(changePage = None)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
         navigator.firstMissingAnswer(updatedAnswers) match {
-          case Some(call) =>
-            // TODO - render "missing" version of CYA page
-            Future.successful(Redirect(call))
+          case Some(_) =>
+            Future.successful(
+              Ok(viewMissing(checkYourAnswersHelper.getCheckYourAnswerSections, backLink(updatedAnswers)))
+            )
           case None =>
             sessionRepository.set(updatedAnswers) map { _ =>
-              val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
               Ok(view(checkYourAnswersHelper.getCheckYourAnswerSections, backLink(updatedAnswers)))
             }
         }
+      }
+  }
+
+  def onResolve(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      navigator.firstMissingAnswer(request.userAnswers) match {
+        case Some(call) => Redirect(call)
+        case None       => Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }
 

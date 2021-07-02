@@ -30,7 +30,7 @@ import repositories.SessionRepository
 import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import views.html.AmendCheckYourAnswersView
+import views.html.{AmendCheckYourAnswersView, AmendCheckYourMissingAnswersView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -43,7 +43,8 @@ class AmendCheckYourAnswersController @Inject() (
   claimService: ClaimService,
   val navigator: AmendNavigator,
   val controllerComponents: MessagesControllerComponents,
-  view: AmendCheckYourAnswersView
+  view: AmendCheckYourAnswersView,
+  viewMissing: AmendCheckYourMissingAnswersView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
@@ -56,17 +57,26 @@ class AmendCheckYourAnswersController @Inject() (
           Redirect(controllers.routes.IndexController.onPageLoad())
         }
       else {
-        val updatedAnswers = request.userAnswers.copy(changePage = None)
+        val updatedAnswers         = request.userAnswers.copy(changePage = None)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
         navigator.firstMissingAnswer(updatedAnswers) match {
-          case Some(call) =>
-            // TODO - render "missing" version of CYA page
-            Future.successful(Redirect(call))
+          case Some(_) =>
+            Future.successful(
+              Ok(viewMissing(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink(updatedAnswers)))
+            )
           case None =>
             sessionRepository.set(updatedAnswers) map { _ =>
-              val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
               Ok(view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink(updatedAnswers)))
             }
         }
+      }
+  }
+
+  def onResolve(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      navigator.firstMissingAnswer(request.userAnswers) match {
+        case Some(call) => Redirect(call)
+        case None       => Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }
 
