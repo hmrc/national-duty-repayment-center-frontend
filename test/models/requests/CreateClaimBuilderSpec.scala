@@ -18,6 +18,7 @@ package models.requests
 
 import base.SpecBase
 import data.TestData._
+import models.EORI
 import models.eis.QuoteFormatter
 import org.mockito.Mockito.verify
 import org.scalatest.MustMatchers
@@ -96,6 +97,28 @@ class CreateClaimBuilderSpec extends SpecBase with MustMatchers with MockitoSuga
       val result = createClaimBuilder.buildValidClaimRequest(testUserAnswers)
 
       result mustBe Some(testCreateClaimRequestWithBankAccountNumberContaining6Digits)
+    }
+
+    "use users EORI number for ImporterJourney when present" in {
+      val userEori = EORI("GB91648723498651345")
+      val testUserAnswers =
+        populateUserAnswersWithCMAPaymentMethodAndClaimantImporter(emptyUserAnswers).copy(userEori = Some(userEori))
+
+      val result = createClaimBuilder.buildValidClaimRequest(testUserAnswers)
+
+      result.map(_.Content.ImporterDetails.EORI) mustBe Some(userEori)
+      result.flatMap(_.Content.AgentDetails) mustBe None
+    }
+
+    "use users EORI number for AgentJourney when present" in {
+      val userEori = EORI("GB91648723498651345")
+      val testUserAnswers =
+        populateUserAnswersWithRepresentativeAndMultipleEntries(emptyUserAnswers).copy(userEori = Some(userEori))
+
+      val result = createClaimBuilder.buildValidClaimRequest(testUserAnswers)
+
+      result.map(_.Content.ImporterDetails.EORI) mustBe Some(testImporterEORI)
+      result.flatMap(_.Content.AgentDetails.map(_.EORI)) mustBe Some(userEori)
     }
   }
 }

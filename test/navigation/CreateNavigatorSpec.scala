@@ -34,7 +34,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
       "go to first question from a page that doesn't exist in the route map" in {
 
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, UserAnswers("id")) mustBe routes.ClaimantTypeController.onPageLoad()
+        navigator.nextPage(UnknownPage, UserAnswers("id", None)) mustBe routes.ClaimantTypeController.onPageLoad()
       }
 
       "go to IndirectRepresentative after WhomToPay page when the claimant is representative and has selected representative to be paid" in {
@@ -283,6 +283,24 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.EmailAddressAndPhoneNumberController.onPageLoad())
       }
 
+      "go to ImporterHasEori page after FileUploadedPage page when the claimant is importer" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+
+        navigator.nextPage(FileUploadedPage, answers)
+          .mustBe(routes.ImporterHasEoriController.onPageLoad())
+      }
+
+      "skip ImporterHasEori page after FileUploadedPage page when the claimant is importer and has EORI" in {
+        val answers =
+          emptyUserAnswersWithEORI
+            .set(ClaimantTypePage, ClaimantType.Importer).success.value
+
+        navigator.nextPage(FileUploadedPage, answers)
+          .mustBe(routes.IsVATRegisteredController.onPageLoad())
+      }
+
       "go to ImporterHasEori page after ImporterManualAddress page when the claimant is representative" in {
         val answers =
           emptyUserAnswers
@@ -290,6 +308,33 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
 
         navigator.nextPage(ImporterAddressPage, answers)
           .mustBe(routes.ImporterHasEoriController.onPageLoad())
+      }
+
+      "skip ImporterHasEori page after ImporterManualAddress page when the claimant is representative and has EORI" in {
+        val answers =
+          emptyUserAnswersWithEORI
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(ImporterAddressPage, answers)
+          .mustBe(routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad())
+      }
+
+      "go to AgentImporterHasEORIPage page after FileUploadedPage page when the claimant is representative" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(FileUploadedPage, answers)
+          .mustBe(routes.AgentImporterHasEORIController.onPageLoad())
+      }
+
+      "go to AgentImporterHasEORIPage page after FileUploadedPage page when the claimant is representative and has EORI" in {
+        val answers =
+          emptyUserAnswersWithEORI
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(FileUploadedPage, answers)
+          .mustBe(routes.AgentImporterHasEORIController.onPageLoad())
       }
 
       "go to ClaimantType page when CreateOrAmendCase is type of Start a new application" in {
@@ -302,23 +347,23 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
       }
 
       "go to EvidenceSupportingDocs page after the Customs Duty Paid Page with RepayNormalMode" in {
-        navigator.nextPage(CustomsDutyPaidPage, UserAnswers("id"))
+        navigator.nextPage(CustomsDutyPaidPage, UserAnswers("id", None))
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
       }
 
       "go to EvidenceSupportingDocs page after the VAT Paid Page with RepayNormalMode" in {
-        navigator.nextPage(VATPaidPage, UserAnswers("id"))
+        navigator.nextPage(VATPaidPage, UserAnswers("id", None))
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
       }
 
       "go to EvidenceSupportingDocs page after the Other Duties Paid Page with RepayNormalMode" in {
-        navigator.nextPage(OtherDutiesPaidPage, UserAnswers("id"))
+        navigator.nextPage(OtherDutiesPaidPage, UserAnswers("id", None))
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
       }
     }
 
     "in Check mode" must {
-      def changeAnswers(page: Page) = UserAnswers(userAnswersId, changePage = Some(page.toString))
+      def changeAnswers(page: Page) = UserAnswers(userAnswersId, None, changePage = Some(page.toString))
 
       "go to Repayment Amount Summary page after the Customs Duty Paid page when VAT and Other Duties is not selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs)
@@ -356,7 +401,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.OtherDutiesPaidController.onPageLoad())
       }
       "go to Repayment Amount Summary page after the Other Duties Paid page" in {
-        navigator.nextPage(OtherDutiesPaidPage, UserAnswers("id"))
+        navigator.nextPage(OtherDutiesPaidPage, UserAnswers("id", None))
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
       }
       "go to Customs Duty Paid page when Customs is selected as a Claim Repayment type" in {

@@ -19,7 +19,7 @@ package service
 import base.SpecBase
 import connectors.NDRCConnector
 import data.TestData.{populateUserAnswersRepresentativeWithEmail, populateUserAnswersWithAmendData}
-import models.requests.{AmendClaimBuilder, CreateClaimBuilder, DataRequest}
+import models.requests.{AmendClaimBuilder, CreateClaimBuilder, DataRequest, Identification}
 import models.responses.ClientClaimSuccessResponse
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -45,7 +45,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
 
       implicit val hc: HeaderCarrier   = HeaderCarrier()
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest                  = DataRequest(request, "12", testUserAnswers)
+      val dataRequest                  = DataRequest(request, Identification("12", None), testUserAnswers)
 
       val connector = mock[NDRCConnector]
       val response  = ClientClaimSuccessResponse("1", Some("ABC123"))
@@ -61,7 +61,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
 
       implicit val hc: HeaderCarrier   = HeaderCarrier()
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest                  = DataRequest(request, "12", testUserAnswers)
+      val dataRequest                  = DataRequest(request, Identification("12", None), testUserAnswers)
 
       val connector = mock[NDRCConnector]
       val response  = ClientClaimSuccessResponse("1", None, Some(ApiError("409", Some("Aa"))))
@@ -79,7 +79,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
 
       implicit val hc: HeaderCarrier   = HeaderCarrier()
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest                  = DataRequest(request, "12", testUserAnswers)
+      val dataRequest                  = DataRequest(request, Identification("12", None), testUserAnswers)
 
       val connector = mock[NDRCConnector]
       val response  = ClientClaimSuccessResponse("1", None, Some(ApiError("500", Some("Aa"))))
@@ -99,7 +99,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
 
       implicit val hc: HeaderCarrier   = HeaderCarrier()
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest                  = DataRequest(request, "12", testUserAnswers)
+      val dataRequest                  = DataRequest(request, Identification("12", None), testUserAnswers)
 
       val connector = mock[NDRCConnector]
       val response  = ClientClaimSuccessResponse("1", Some("caseId"))
@@ -115,7 +115,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
 
       implicit val hc: HeaderCarrier   = HeaderCarrier()
       implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
-      val dataRequest                  = DataRequest(request, "12", testUserAnswers)
+      val dataRequest                  = DataRequest(request, Identification("12", None), testUserAnswers)
 
       val connector = mock[NDRCConnector]
       val response  = ClientClaimSuccessResponse("1", None, Some(ApiError("500", Some("Aa"))))

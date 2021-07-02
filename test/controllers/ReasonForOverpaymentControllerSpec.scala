@@ -59,7 +59,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(ReasonForOverpaymentPage, ClaimDescription("answer")).success.value
+        UserAnswers(userIdentification).set(ReasonForOverpaymentPage, ClaimDescription("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

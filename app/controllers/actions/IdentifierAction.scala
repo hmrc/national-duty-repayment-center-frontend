@@ -20,7 +20,7 @@ import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
 import models.EORI
-import models.requests.IdentifierRequest
+import models.requests.{Identification, IdentifierRequest}
 import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
@@ -67,8 +67,10 @@ class AuthenticatedIdentifierAction @Inject() (
         block(
           IdentifierRequest(
             request,
-            userInternalId.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id")),
-            eori
+            Identification(
+              userInternalId.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id")),
+              eori
+            )
           )
         )
 

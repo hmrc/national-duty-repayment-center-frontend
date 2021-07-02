@@ -60,7 +60,7 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
     P(FileUploadPage, controllers.routes.FileUploadController.showFileUpload, showFileUpload, fileUploadedAnswered),
     P(FileUploadedPage, controllers.routes.FileUploadController.showFileUploaded, always, fileUploadedAnswered),
 
-    P(ImporterHasEoriPage, controllers.routes.ImporterHasEoriController.onPageLoad, isImporter, importerHasEoriAnswered),
+    P(ImporterHasEoriPage, controllers.routes.ImporterHasEoriController.onPageLoad, showWhatIsImporterEori, importerHasEoriAnswered),
     P(ImporterEoriPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterEori, importerEoriAnswered),
 
     P(AgentImporterHasEORIPage, controllers.routes.AgentImporterHasEORIController.onPageLoad, isAgent, agentImporterHasEoriAnswered),
@@ -76,7 +76,7 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
 
     P(ImporterAddressPage, controllers.routes.ImporterAddressFrontendController.onPageLoad, always, importerAddressAnswered),
 
-    P(ImportHasEoriOnAgentJourneyPage, controllers.routes.ImporterHasEoriController.onPageLoad, isAgent, importerHasAgentEoriAnswered),
+    P(ImportHasEoriOnAgentJourneyPage, controllers.routes.ImporterHasEoriController.onPageLoad, showWhatIsImporterAgentEori, importerHasAgentEoriAnswered),
     P(ImporterEoriOnAgentJourneyPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterAgentEori, importerAgentEoriAnswered),
 
     P(RepresentativeDeclarantAndBusinessNamePage, controllers.routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad, isAgent, representativeDeclarantAndBusinessNameAnswered),
@@ -128,11 +128,17 @@ protected trait CreateAnswerConditions {
   protected val showFileUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.fileUploadState.isEmpty || answers.fileUploadState.exists(state => state.fileUploads.isEmpty)
 
+  protected val showWhatIsImporterEori: UserAnswers => Boolean = (answers: UserAnswers) =>
+    answers.isImporterJourney && answers.userEori.isEmpty
+
   protected val showImporterEori: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.isImporterJourney && answers.get(ImporterHasEoriPage).contains(true)
+    answers.isImporterJourney && answers.userEori.isEmpty && answers.get(ImporterHasEoriPage).contains(true)
+
+  protected val showWhatIsImporterAgentEori: UserAnswers => Boolean = (answers: UserAnswers) =>
+    answers.isAgentJourney && answers.userEori.isEmpty
 
   protected val showImporterAgentEori: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.isAgentJourney && answers.get(ImporterHasEoriPage).contains(true)
+    answers.isAgentJourney && answers.userEori.isEmpty && answers.get(ImporterHasEoriPage).contains(true)
 
   protected val showEnterAgentEori: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && answers.get(AgentImporterHasEORIPage).contains(AgentImporterHasEORI.Yes)

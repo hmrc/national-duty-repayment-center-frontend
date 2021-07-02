@@ -58,7 +58,7 @@ class IsVATRegisteredControllerSpec extends SpecBase with MockitoSugar {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(IsVATRegisteredPage, IsVATRegistered.Yes).success.value
+      val userAnswers = UserAnswers(userIdentification).set(IsVATRegisteredPage, IsVATRegistered.Yes).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

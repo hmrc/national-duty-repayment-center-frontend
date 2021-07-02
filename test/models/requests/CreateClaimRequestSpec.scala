@@ -18,9 +18,8 @@ package models.requests
 
 import java.time.LocalDate
 
-import models._
 import base.SpecBase
-import data.TestData._
+import models._
 import models.eis.EISAddress
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar

@@ -58,7 +58,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         DeclarantReferenceNumberPage,
         DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("123"))
       ).success.value
