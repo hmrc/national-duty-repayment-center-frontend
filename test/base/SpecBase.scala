@@ -26,7 +26,7 @@ import controllers.actions._
 import models.AmendCaseResponseType.FurtherInformation
 import models._
 import models.eis.EISAddress
-import models.requests.{AmendClaimRequest, CreateClaimRequest, UploadRequest}
+import models.requests.{AmendClaimRequest, CreateClaimRequest, Identification, UploadRequest}
 import navigation.{CreateNavigator, NavigatorBack}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -51,9 +51,11 @@ trait SpecBase
     extends PlaySpec with GuiceOneAppPerSuite with TryValues with ScalaFutures with IntegrationPatience
     with MockitoSugar {
 
-  val userAnswersId = "id"
+  val userAnswersId      = "id"
+  val userIdentification = Identification(userAnswersId, None)
 
-  def emptyUserAnswers = UserAnswers(userAnswersId, Json.obj())
+  def emptyUserAnswers         = UserAnswers(userAnswersId, None, Json.obj())
+  def emptyUserAnswersWithEORI = UserAnswers(userAnswersId, Some(EORI("GB74584535835457535")), Json.obj())
 
   def injector: Injector = app.injector
 

@@ -18,4 +18,7 @@ package models.requests;
 
 import play.api.mvc.{Request, WrappedRequest}
 
-case class IdentifierRequest[A](request: Request[A], identifier: String) extends WrappedRequest[A](request)
+case class IdentifierRequest[A](request: Request[A], identification: Identification)
+    extends WrappedRequest[A](request) {
+  val internalId: String = identification.identifier
+}

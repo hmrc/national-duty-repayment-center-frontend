@@ -17,40 +17,41 @@
 package controllers
 
 import controllers.actions._
-
 import javax.inject.Inject
-import org.slf4j.LoggerFactory
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.ClaimIdQuery
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ConfirmationView
-
-import scala.concurrent.{ExecutionContext, Future}
+import utils.CheckYourAnswersHelper
+import views.html.{ClaimSummaryView, ConfirmationView}
 
 class ConfirmationController @Inject() (
   override val messagesApi: MessagesApi,
-  sessionRepository: SessionRepository,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: ConfirmationView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+  confirmationView: ConfirmationView,
+  reviewView: ClaimSummaryView
+) extends FrontendBaseController with I18nSupport {
 
-  private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
-
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      for {
-        id  <- Future.successful(request.userAnswers.get(ClaimIdQuery))
-        res <- sessionRepository.resetData(request.userAnswers)
-        if res
-      } yield id.map(i => Ok(view(i))).getOrElse {
-        logger.warn("Could not find the registrationId or registrationDate in user answers")
-        InternalServerError
+      request.userAnswers.get(ClaimIdQuery) match {
+        case Some(claimId) =>
+          val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+          Ok(confirmationView(claimId, checkYourAnswersHelper.getCreateConfirmationSections))
+        case None => Redirect(controllers.routes.IndexController.onPageLoad())
+      }
+  }
+
+  def onSummary: Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      request.userAnswers.get(ClaimIdQuery) match {
+        case Some(_) =>
+          val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+          Ok(reviewView(checkYourAnswersHelper.getCreateConfirmationSections))
+        case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }
 

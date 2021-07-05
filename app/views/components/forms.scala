@@ -22,7 +22,6 @@ import javax.inject.{Inject, Singleton}
 class forms @Inject() (
   val formWithCSRF: uk.gov.hmrc.govukfrontend.views.html.helpers.formWithCSRF,
   val fieldset: views.html.components.fieldset,
-//  val errorSummary: views.html.components.errorSummary,
   val inputText: views.html.components.inputText,
   val inputNumber: views.html.components.inputNumber,
   val inputHidden: views.html.components.inputHidden,
@@ -31,7 +30,6 @@ class forms @Inject() (
   val inputRadio: views.html.components.inputRadio,
   val yesNoRadio: views.html.components.yesNoRadio,
   val inputSelect: views.html.components.inputSelect,
-//  val inputTime: views.html.components.inputTime,
-  val textarea: views.html.components.textarea,
+  val inputCharacterCount: views.html.components.inputCharacterCount,
   val errorSummary: views.html.components.errorSummary
 )

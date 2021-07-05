@@ -16,19 +16,7 @@
 
 package views
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 object CommonUtilsHelper {
-
-  implicit class DateTimeUtilities(s: LocalDateTime) {
-
-    def ddMMYYYYAtTimeFormat = {
-      val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy 'at' HH:mm")
-      formatter.format(s)
-    }
-
-  }
 
   /**
     * Mapping, folding and getOrElse on Option[String] for non-empty strings.

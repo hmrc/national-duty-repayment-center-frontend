@@ -88,7 +88,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = false
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         CustomsRegulationTypePage,
         CustomsRegulationType.UKCustomsCodeRegulation
       ).success.value.copy(fileUploadState = Some(fileUploadState))

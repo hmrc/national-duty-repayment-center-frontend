@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-package viewmodels
+package models.eis
 
-case class RepeaterAnswerSection(
-  headingKey: String,
-  relevanceRow: AnswerRow,
-  rows: Seq[RepeaterAnswerRow],
-  addLinkKey: String,
-  addLinkUrl: String
-) extends Section
+import com.google.inject.ImplementedBy
+import models.eis.QuoteFormatterImpl.illegalRegex
+
+import scala.util.matching.Regex
+
+@ImplementedBy(classOf[QuoteFormatterImpl])
+trait QuoteFormatter {
+
+  def format(value: String): String
+
+}
+
+class QuoteFormatterImpl extends QuoteFormatter {
+
+  override def format(value: String): String = illegalRegex.findFirstIn(value).fold(value)(_ => s"[$value]")
+}
+
+object QuoteFormatterImpl {
+  val illegalRegex: Regex = """^\s*[\"'`;]|[\"'`]\s*$""".r
+}

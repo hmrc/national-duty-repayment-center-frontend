@@ -17,14 +17,10 @@
 package controllers
 
 import base.SpecBase
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import queries.ClaimIdQuery
+import queries.AmendClaimIdQuery
 import views.html.AmendConfirmationView
-
-import scala.concurrent.Future
 
 class AmendConfirmationControllerSpec extends SpecBase {
 
@@ -32,25 +28,42 @@ class AmendConfirmationControllerSpec extends SpecBase {
 
     "return OK and the correct view for a GET" in {
       val claimId = "1"
-      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
 
       val answers = emptyUserAnswers
-        .set(ClaimIdQuery, claimId).success.value
+        .set(AmendClaimIdQuery, claimId).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.AmendConfirmationController.onPageLoad().url)
+      running(application) {
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, routes.AmendConfirmationController.onPageLoad().url)
 
-      val view = application.injector.instanceOf[AmendConfirmationView]
+        val result = route(application, request).value
 
-      status(result) mustEqual OK
+        val view = application.injector.instanceOf[AmendConfirmationView]
 
-      contentAsString(result) mustEqual
-        view(claimId)(request, messages).toString
+        status(result) mustEqual OK
 
-      application.stop()
+        contentAsString(result) mustEqual
+          view(claimId)(request, messages).toString
+
+      }
+    }
+
+    "redirect to start for a GET when amend claimId cannot be retrieved from user answers" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.AmendConfirmationController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
+      }
     }
   }
 }

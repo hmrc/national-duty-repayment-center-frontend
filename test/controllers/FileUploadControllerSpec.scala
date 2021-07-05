@@ -107,7 +107,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = true
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AgentImporterHasEORIPage,
         AgentImporterHasEORI.values.head
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -156,7 +156,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = true
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AgentImporterHasEORIPage,
         AgentImporterHasEORI.values.head
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -197,7 +197,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
       val userAnswers =
-        UserAnswers(userAnswersId).set(ClaimantTypePage, Representative).success.value.copy(fileUploadState =
+        UserAnswers(userIdentification).set(ClaimantTypePage, Representative).success.value.copy(fileUploadState =
           Some(fileUploadedState)
         )
       val application = applicationBuilder(
@@ -239,7 +239,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val userAnswers = UserAnswers(userAnswersId).set(ImporterHasEoriPage, true).success.value.set(
+      val userAnswers = UserAnswers(userIdentification).set(ImporterHasEoriPage, true).success.value.set(
         ClaimantTypePage,
         Importer
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -281,7 +281,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AgentImporterHasEORIPage,
         AgentImporterHasEORI.values.head
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -306,7 +306,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
       lazy val uploadAnotherFile = routes.FileUploadController.submitUploadAnotherFileChoice().url
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
+        UserAnswers(userIdentification).set(AgentImporterHasEORIPage, AgentImporterHasEORI.values.head).success.value
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -365,7 +365,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = false
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AgentImporterHasEORIPage,
         AgentImporterHasEORI.values.head
       ).success.value.copy(fileUploadState = Some(fileUploadState))
@@ -428,7 +428,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
             )
           )
         )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AgentImporterHasEORIPage,
         AgentImporterHasEORI.values.head
       ).success.value.copy(fileUploadState = Some(currentState))

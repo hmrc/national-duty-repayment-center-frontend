@@ -33,7 +33,7 @@ import scala.concurrent.Future
 class ImporterNameControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider             = new ImporterNameFormProvider()
-  private val userAnswersDummy = UserAnswers(userAnswersId, Json.obj(ImporterNamePage.toString -> "Joe Bloggs"))
+  private val userAnswersDummy = UserAnswers(userAnswersId, None, Json.obj(ImporterNamePage.toString -> "Joe Bloggs"))
 
   val form = formProvider()
 

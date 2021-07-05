@@ -99,6 +99,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
       val userAnswers = UserAnswers(
         userAnswersId,
+        None,
         Json.obj(
           CustomsDutyPaidPage.toString -> Json.obj("ActualPaidAmount" -> "0.00", "ShouldHavePaidAmount" -> "0.00"),
           OtherDutiesPaidPage.toString -> Json.obj("ActualPaidAmount" -> "0.00", "ShouldHavePaidAmount" -> "0.00")

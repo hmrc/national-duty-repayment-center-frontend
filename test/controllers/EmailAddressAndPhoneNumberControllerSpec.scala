@@ -54,7 +54,7 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         EmailAddressAndPhoneNumberPage,
         EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))
       ).success.value

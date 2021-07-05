@@ -16,7 +16,6 @@
 
 package queries
 
-import models.ClaimId
 import play.api.libs.json.JsPath
 
 object ClaimIdQuery extends Gettable[String] with Settable[String] {

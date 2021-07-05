@@ -18,10 +18,11 @@ package models.requests
 
 import java.time.LocalDate
 
+import javax.inject.Inject
 import models.DeclarantReferenceType.{No, Yes}
 import models.WhomToPay.Importer
 import models._
-import models.eis.EISAddress
+import models.eis.{EISAddress, QuoteFormatter}
 import pages._
 import play.api.libs.json.{Json, OFormat}
 
@@ -29,6 +30,10 @@ final case class CreateClaimRequest(Content: Content, uploadedFiles: Seq[Uploade
 
 object CreateClaimRequest {
   implicit val formats: OFormat[CreateClaimRequest] = Json.format[CreateClaimRequest]
+
+}
+
+class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
 
   def buildValidClaimRequest(userAnswers: UserAnswers): Option[CreateClaimRequest] = {
 
@@ -69,11 +74,13 @@ object CreateClaimRequest {
       noOfEntries            <- userAnswers.get(NumberOfEntriesTypePage).map(_.entries)
       entryDetails           <- userAnswers.get(EntryDetailsPage)
       claimReason            <- userAnswers.get(ClaimReasonTypePage)
-      claimDescription       <- userAnswers.get(ReasonForOverpaymentPage)
-      payeeIndicator         <- getPayeeIndicator(userAnswers)
-      paymentMethod          <- getPaymentMethod(userAnswers)
-      declarantReNumber      <- getDecRef(userAnswers)
-      declarantName          <- getDeclarantName(userAnswers)
+      claimDescription <- userAnswers.get(ReasonForOverpaymentPage).map(
+        description => ClaimDescription(quoteFormatter.format(description.value))
+      )
+      payeeIndicator    <- getPayeeIndicator(userAnswers)
+      paymentMethod     <- getPaymentMethod(userAnswers)
+      declarantReNumber <- getDecRef(userAnswers)
+      declarantName     <- getDeclarantName(userAnswers)
     } yield ClaimDetails(
       FormType("01"),
       customRegulationType,
@@ -120,7 +127,7 @@ object CreateClaimRequest {
       name    <- getAgentImporterName(userAnswers)
       address <- getAgentImporterAddress(userAnswers)
     } yield {
-      val eori      = userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
+      val eori      = userAnswers.userEori.getOrElse(userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR")))
       val telephone = getTelePhone(userAnswers)
       val email     = getEmailAddress(userAnswers)
       UserDetails("false", eori, name, EISAddress(address), telephone, email)
@@ -155,8 +162,9 @@ object CreateClaimRequest {
     }
 
     def getImporterEORI(userAnswers: UserAnswers): EORI = userAnswers.get(ClaimantTypePage) match {
-      case Some(ClaimantType.Importer) => userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR"))
-      case _                           => userAnswers.get(EnterAgentEORIPage).getOrElse(EORI("GBPR"))
+      case Some(ClaimantType.Importer) =>
+        userAnswers.userEori.getOrElse(userAnswers.get(ImporterEoriPage).getOrElse(EORI("GBPR")))
+      case _ => userAnswers.get(EnterAgentEORIPage).getOrElse(EORI("GBPR"))
     }
 
     def getImporterUserDetails(userAnswers: UserAnswers): Option[UserDetails] = for {

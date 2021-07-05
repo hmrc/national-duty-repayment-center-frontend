@@ -70,7 +70,7 @@ class ClaimantTypeController @Inject() (
               _           <- sessionRepository.resetData(request.userAnswers)
               sessionData <- sessionRepository.get(request.internalId)
               userAnswers <- Future.fromTry(
-                sessionData.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.internalId)).set(
+                sessionData.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.identification)).set(
                   ClaimantTypePage,
                   value
                 )

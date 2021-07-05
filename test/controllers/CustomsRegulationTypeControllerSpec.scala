@@ -59,7 +59,7 @@ class CustomsRegulationTypeControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(CustomsRegulationTypePage, CustomsRegulationType.values.head).success.value
+        UserAnswers(userIdentification).set(CustomsRegulationTypePage, CustomsRegulationType.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

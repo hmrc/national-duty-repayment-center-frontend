@@ -59,7 +59,7 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+        UserAnswers(userIdentification).set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

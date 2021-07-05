@@ -29,8 +29,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
     def format2d = "%.2f".format(s)
   }
 
-  def displayDuty(index: String, amount: Double, dutyType: String): Option[AnswerRow] =
-    getAnswerRow(index, amount, dutyType)
+  def displayDuty(index: String, amount: Double, dutyType: String): AnswerRow =
+    getAnswerRow(index, amount, dutyType).getOrElse(AnswerRow(Html(""), Html("")))
 
   private def getAnswerRow(index: String, amount: Double, dutyType: String): Option[AnswerRow] =
     userAnswers.get(ClaimRepaymentTypePage).map {
@@ -86,7 +86,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
 
   def getSections(): Seq[AnswerSection] = {
 
-    val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
+    val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).getOrElse(Set.empty)
     val customDutyPaid                              = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
     val customDutyDue                               = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
     val vatPaid                                     = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
@@ -123,14 +123,14 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   private def getAnswerSection(dutyType: String, dutyPaid: Double, dutyDue: Double): AnswerSection = {
     val answerSection: AnswerSection = dutyType match {
       case "repaymentAmountSummary.total" =>
-        AnswerSection(Some(dutyType), Seq(displayDuty("0", dutyPaid, "repaymentAmountSummary.total.amount").get))
+        AnswerSection(Some(dutyType), Seq(displayDuty("0", dutyPaid, "repaymentAmountSummary.total.amount")))
       case _ =>
         AnswerSection(
           Some(dutyType),
           Seq(
-            displayDuty("0", dutyPaid, dutyType).get,
-            displayDuty("1", dutyDue, dutyType).get,
-            displayDuty("2", (dutyPaid - dutyDue), dutyType).get
+            displayDuty("0", dutyPaid, dutyType),
+            displayDuty("1", dutyDue, dutyType),
+            displayDuty("2", (dutyPaid - dutyDue), dutyType)
           )
         )
     }

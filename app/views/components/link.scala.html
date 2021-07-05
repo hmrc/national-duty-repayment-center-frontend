@@ -25,9 +25,7 @@
 )(implicit messages: Messages)
 
     @classes = @{
-        if (useButtonStyle) "govuk-button" else "govuk-link"
+        if (useButtonStyle) "govuk-button" else "govuk-link govuk-link--no-visited-state"
     }
 
-    <a href="@link" class="@classes" @id.map(x => s"id=$x") @if(isExternal) { target="_blank" } @if(useButtonStyle) { role="button" data-module="govuk-button" }>
-        @messages(messageKey)@if(isExternal)(" " + messages("site.opensInNewWindowOrTab"))
-    </a>
+    <a href="@link" class="@classes" @id.map(x => s"id=$x") @if(isExternal) { target="_blank" } @if(useButtonStyle) { role="button" data-module="govuk-button" }>@messages(messageKey)</a>

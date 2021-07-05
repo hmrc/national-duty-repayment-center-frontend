@@ -14,8 +14,7 @@
  * limitations under the License.
  *@
 
-@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
-@import summary.customsDuty_section
+@import viewmodels.Section
 @import navigation.NavigatorBack
 
 @this(
@@ -24,7 +23,7 @@
     html: views.components.html
 )
 
-@(answerSections: Seq[Section], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(sections: Seq[Section], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("repaymentAmountSummary.title"))}"),
@@ -33,14 +32,7 @@
 
         @html.h1("repaymentAmountSummary.heading", classes = "govuk-heading-xl")
 
-        @for(section <- answerSections) {
-            @{
-                section match {
-                    case a: AnswerSection => components.answer_section(a)
-                    case r: RepeaterAnswerSection => components.repeater_answer_section(r)
-                }
-            }
-        }
+        @components.answers(sections)
 
         @forms.formWithCSRF(action = RepaymentAmountSummaryController.onSubmit(), args = 'novalidate -> "novalidate") {
             @html.button("site.continue")

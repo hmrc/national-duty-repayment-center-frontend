@@ -18,26 +18,38 @@ package controllers
 
 import base.SpecBase
 import data.TestData._
+import models.UserAnswers
 import navigation.CreateNavigatorImpl
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import pages.{ClaimRepaymentTypePage, ImporterHasEoriPage}
+import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
+import org.scalatest.BeforeAndAfterEach
+import pages.{CheckYourAnswersPage, ClaimRepaymentTypePage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import queries.ClaimIdQuery
 import utils.CheckYourAnswersHelper
-import views.html.CheckYourAnswersView
+import views.html.{CheckYourAnswersView, CheckYourMissingAnswersView}
 
 import scala.concurrent.Future
 
-class CheckYourAnswersControllerSpec extends SpecBase {
+class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
+
+  override protected def beforeEach(): Unit = {
+    super.beforeEach()
+    when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+  }
+
+  override protected def afterEach(): Unit = {
+    reset(mockSessionRepository)
+    super.afterEach()
+  }
 
   "Check Your Answers Controller" must {
 
-    when(mockSessionRepository.clearChangePage(any())).thenReturn(Future.successful(true))
     when(mockCreateNavigator.firstMissingAnswer(any())).thenReturn(None)
 
     "return OK and the correct view for an Importer Journey GET" in {
-
       val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers)
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
@@ -59,7 +71,6 @@ class CheckYourAnswersControllerSpec extends SpecBase {
     }
 
     "return OK and the correct view for an Importer Journey UKCustomsRegulation GET" in {
-
       val userAnswers = populateUserAnswersWithImporterUKCustomsRegulationInformation(emptyUserAnswers)
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
@@ -81,7 +92,6 @@ class CheckYourAnswersControllerSpec extends SpecBase {
     }
 
     "return OK and the correct view for Representative Single BACS Journey GET" in {
-
       val userAnswers = populateUserAnswersWithRepresentativeSingleBACSJourney(emptyUserAnswers)
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
@@ -103,7 +113,6 @@ class CheckYourAnswersControllerSpec extends SpecBase {
     }
 
     "return OK and the correct view for Representative Single Paying Representative Journey GET" in {
-
       val userAnswers = populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney(emptyUserAnswers)
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
@@ -125,7 +134,6 @@ class CheckYourAnswersControllerSpec extends SpecBase {
     }
 
     "return OK and the correct view for Representative Single CMA Journey GET" in {
-
       val userAnswers = populateUserAnswersWithRepresentativeSingleCMAJourney(emptyUserAnswers)
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
@@ -147,7 +155,6 @@ class CheckYourAnswersControllerSpec extends SpecBase {
     }
 
     "return OK and the correct view for Representative Multiple Journey GET" in {
-
       val userAnswers = populateUserAnswersWithRepresentativeMultipleJourney(emptyUserAnswers)
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
@@ -168,16 +175,44 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       application.stop()
     }
 
-    "redirect to first missing answer" in {
+    "display 'missing answers' view and not update cached data" in {
 
       val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers).remove(ImporterHasEoriPage).get
 
-      val application = applicationBuilder(
-        userAnswers = Some(userAnswers),
-        createNavigator = injector.instanceOf[CreateNavigatorImpl]
-      ).build()
+      val navigator = injector.instanceOf[CreateNavigatorImpl]
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), createNavigator = navigator).build()
 
       val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual OK
+
+      val view = application.injector.instanceOf[CheckYourMissingAnswersView]
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+
+      contentAsString(result) mustEqual
+        view(
+          checkYourAnswersHelper.getCheckYourAnswerSections,
+          navigator.previousPage(CheckYourAnswersPage, userAnswers)
+        )(request, messages).toString
+
+      application.stop()
+
+      verifyZeroInteractions(mockSessionRepository)
+    }
+
+    "redirect to missing answer on resolve" in {
+
+      val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers).remove(ImporterHasEoriPage).get
+
+      val navigator = injector.instanceOf[CreateNavigatorImpl]
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), createNavigator = navigator).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onResolve().url)
 
       val result = route(application, request).value
 
@@ -186,10 +221,13 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       redirectLocation(result).value mustEqual routes.ImporterHasEoriController.onPageLoad().url
 
       application.stop()
+
+      verifyZeroInteractions(mockSessionRepository)
     }
 
-    "not redirect when returning from changing repayment type" in {
-
+    "not redirect and clear changePage when returning from changing repayment type" in {
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
       val userAnswers =
         populateUserAnswersWithImporterInformation(emptyUserAnswers).copy(changePage = Some(ClaimRepaymentTypePage))
 
@@ -205,6 +243,8 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       application.stop()
+
+      persistedAnswers.getValue.changePage mustBe None
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -218,6 +258,25 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to start for a GET if claim submitted" in {
+
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
+
+      val userAnswers = emptyUserAnswers
+        .set(ClaimIdQuery, "1234").success.value
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
 
       application.stop()
     }

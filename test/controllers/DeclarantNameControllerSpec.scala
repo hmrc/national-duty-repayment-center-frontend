@@ -37,6 +37,7 @@ class DeclarantNameControllerSpec extends SpecBase with MockitoSugar {
 
   private val userAnswersDummy = UserAnswers(
     userAnswersId,
+    None,
     Json.obj(DeclarantNamePage.toString -> Json.obj("firstName" -> "Joe", "lastName" -> "Bloggs"))
   )
 

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
-package viewmodels
+package models.bars
 
-case class RepeaterAnswerRow(answer: String, changeUrl: String, deleteUrl: String)
+import play.api.libs.json.{Json, OFormat}
+
+case class BusinessDetails(companyName: String)
+
+object BusinessDetails {
+  implicit val format: OFormat[BusinessDetails] = Json.format[BusinessDetails]
+}

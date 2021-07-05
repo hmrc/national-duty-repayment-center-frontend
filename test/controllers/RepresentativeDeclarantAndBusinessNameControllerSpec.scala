@@ -36,6 +36,7 @@ class RepresentativeDeclarantAndBusinessNameControllerSpec extends SpecBase with
 
   private val userAnswersDummy = UserAnswers(
     userAnswersId,
+    None,
     Json.obj(
       RepresentativeDeclarantAndBusinessNamePage.toString -> Json.obj(
         "declarantName" -> "dec name",

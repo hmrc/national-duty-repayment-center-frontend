@@ -18,11 +18,10 @@ package config
 
 import com.google.inject.{ImplementedBy, Inject}
 import controllers.routes
+import javax.inject.Singleton
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.Call
-
-import javax.inject.Singleton
 
 /*
  * Copyright 2021 HM Revenue & Customs
@@ -43,6 +42,7 @@ import javax.inject.Singleton
 object FrontendAppConfig {
 
   case class FileFormats(maxFileSizeMb: Int, approvedFileTypes: String, approvedFileExtensions: String)
+  case class EoriIntegration(enabled: Boolean, enrolmentKey: String, enrolmentUrl: Option[String])
 }
 
 @ImplementedBy(classOf[FrontendAppConfigImpl])
@@ -69,6 +69,8 @@ trait FrontendAppConfig {
   val baseExternalCallbackUrl: String
   val baseInternalCallbackUrl: String
 
+  val eoriIntegration: FrontendAppConfig.EoriIntegration
+
   def languageMap: Map[String, Lang]
 
   val routeToSwitchLanguage: String => Call
@@ -77,6 +79,7 @@ trait FrontendAppConfig {
   val addressLookupInitUrl: String
   val addressLookupConfirmedUrl: String
   val showPhaseBanner: Boolean
+  val barsBusinessAssessUrl: String
 
   def selfUrl(url: String): String
 }
@@ -110,6 +113,12 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   override val addressLookupConfirmedUrl: String =
     s"$addressLookupBaseUrl${configuration.get[String]("microservice.services.address-lookup-frontend.confirmed")}"
 
+  private val barsBaseUrl: String =
+    configuration.get[Service]("microservice.services.bank-account-reputation").baseUrl
+
+  override val barsBusinessAssessUrl: String =
+    s"$barsBaseUrl${configuration.get[String]("microservice.services.bank-account-reputation.businessAssess")}"
+
   private val selfBaseUrl: String = configuration
     .getOptional[String]("platform.frontend.host")
     .getOrElse("http://localhost:8450")
@@ -135,6 +144,15 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
     approvedFileExtensions = configuration.get[String]("file-formats.approved-file-extensions"),
     approvedFileTypes = configuration.get[String]("file-formats.approved-file-types")
   )
+
+  override val eoriIntegration: FrontendAppConfig.EoriIntegration = {
+    val enabled = configuration.get[Boolean]("eori-integration.enabled")
+    FrontendAppConfig.EoriIntegration(
+      enabled = enabled,
+      enrolmentKey = configuration.get[String]("eori-integration.enrolment-key"),
+      enrolmentUrl = if (enabled) configuration.getOptional[String]("eori-integration.enrolment-url") else None
+    )
+  }
 
   override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
   override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")

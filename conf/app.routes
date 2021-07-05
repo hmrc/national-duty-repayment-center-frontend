@@ -17,6 +17,8 @@ GET         /keep-alive                                                         
 
 GET         /check-answers                                                             controllers.CheckYourAnswersController.onPageLoad
 POST        /check-answers                                                             controllers.CheckYourAnswersController.onSubmit
+GET         /check-answers/resolve                                                     controllers.CheckYourAnswersController.onResolve
+POST        /check-answers/resolve                                                     controllers.CheckYourAnswersController.onResolve
 GET         /check-answers/change/:page                                                controllers.CheckYourAnswersController.onChange(page)
 
 GET         /unauthorised                                                              controllers.UnauthorisedController.onPageLoad
@@ -98,6 +100,7 @@ GET         /your-business-address/change                                       
 GET         /your-business-address/update                                       controllers.AgentImporterAddressFrontendController.onUpdate(id: Option[String])
 
 GET         /application-complete                                                      controllers.ConfirmationController.onPageLoad()
+GET         /application-complete/summary                                              controllers.ConfirmationController.onSummary()
 
 GET         /amend/information-sent                                                    controllers.AmendConfirmationController.onPageLoad()
 
@@ -125,6 +128,8 @@ POST        /amend/further-information                                          
 
 GET         /amend/check-answers                                                       controllers.AmendCheckYourAnswersController.onPageLoad
 POST        /amend/check-answers                                                       controllers.AmendCheckYourAnswersController.onSubmit
+GET         /amend/check-answers/resolve                                               controllers.AmendCheckYourAnswersController.onResolve
+POST        /amend/check-answers/resolve                                               controllers.AmendCheckYourAnswersController.onResolve
 GET         /amend-check-your-answers/change/:page                                     controllers.AmendCheckYourAnswersController.onChange(page)
 
 GET         /amend/what-do-you-need-to-do                                              controllers.AmendCaseResponseTypeController.onPageLoad()

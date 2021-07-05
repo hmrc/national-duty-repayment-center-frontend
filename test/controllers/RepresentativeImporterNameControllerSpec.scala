@@ -35,7 +35,7 @@ class RepresentativeImporterNameControllerSpec extends SpecBase with MockitoSuga
   val formProvider = new RepresentativeImporterNameFormProvider()
 
   private val userAnswersDummy =
-    UserAnswers(userAnswersId, Json.obj(RepresentativeImporterNamePage.toString -> "Joe Bloggs"))
+    UserAnswers(userAnswersId, None, Json.obj(RepresentativeImporterNamePage.toString -> "Joe Bloggs"))
 
   val form = formProvider()
 

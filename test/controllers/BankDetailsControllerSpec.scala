@@ -17,28 +17,32 @@
 package controllers
 
 import base.SpecBase
+import data.BarsTestData
 import forms.BankDetailsFormProvider
 import models.{BankDetails, UserAnswers}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.BankDetailsPage
+import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.BankAccountReputationService
 import views.html.BankDetailsView
 
 import scala.concurrent.Future
 
-class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
+class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTestData {
 
   val formProvider = new BankDetailsFormProvider()
-  val form         = formProvider()
+  private val form = formProvider()
 
-  lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad().url
+  private lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad().url
 
   private val userAnswers = UserAnswers(
     userAnswersId,
+    None,
     Json.obj(
       BankDetailsPage.toString -> Json.obj(
         "AccountName"   -> "name",
@@ -90,8 +94,12 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
+      val mockBankAccountReputationService = mock[BankAccountReputationService]
+      when(mockBankAccountReputationService.validate(any())(any())) thenReturn Future.successful(barsSuccessResult)
+
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
           .build()
 
       val request =
@@ -106,9 +114,72 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
+    "redirect to the next page when sort code and account number has hyphens and spaces data is submitted" in {
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val mockBankAccountReputationService = mock[BankAccountReputationService]
+      when(mockBankAccountReputationService.validate(any())(any())) thenReturn Future.successful(barsSuccessResult)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
+          .build()
+
+      val request =
+        FakeRequest(POST, bankDetailsRoute)
+          .withFormUrlEncodedBody(("AccountName", "name"), ("SortCode", "12-34 56"), ("AccountNumber", "00-1234 56"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
+    "return a Bad Request and errors when BARS checks fail" in {
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val mockBankAccountReputationService = mock[BankAccountReputationService]
+      when(mockBankAccountReputationService.validate(any())(any())) thenReturn Future.successful(
+        barsSortcodeDoesNotExistResult
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
+          .build()
+
+      val request =
+        FakeRequest(POST, bankDetailsRoute)
+          .withFormUrlEncodedBody(("AccountName", "name"), ("SortCode", "123456"), ("AccountNumber", "00123456"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual BAD_REQUEST
+
+      val view = application.injector.instanceOf[BankDetailsView]
+
+      val errorForm =
+        formProvider.processBarsResult(barsSortcodeDoesNotExistResult, BankDetails("name", "123456", "00123456")).get
+
+      contentAsString(result) mustEqual
+        view(errorForm, defaultBackLink)(request, messages).toString
+
+      application.stop()
+    }
+
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockBankAccountReputationService = mock[BankAccountReputationService]
+      when(mockBankAccountReputationService.validate(any())(any())) thenReturn Future.successful(barsSuccessResult)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
+          .build()
 
       val request =
         FakeRequest(POST, bankDetailsRoute)

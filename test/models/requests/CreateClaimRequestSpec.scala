@@ -18,9 +18,8 @@ package models.requests
 
 import java.time.LocalDate
 
-import models._
 import base.SpecBase
-import data.TestData._
+import models._
 import models.eis.EISAddress
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
@@ -178,62 +177,6 @@ class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSuga
 
       Json.toJson(createClaimRequest) mustEqual json
       json.validate[CreateClaimRequest] mustEqual JsSuccess(createClaimRequest)
-    }
-
-    "returns a valid CreateClaimRequest for a userAnswers containing a Representative journey with an Email Address" in {
-      val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
-
-      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-
-      result mustBe Some(testCreateClaimRequestRepresentativeWithEmail)
-    }
-
-    "returns a valid CreateClaimRequest for a userAnswers containing claimantType as Representative and Multiple Entries" in {
-      val testUserAnswers = populateUserAnswersWithRepresentativeAndMultipleEntries(emptyUserAnswers)
-
-      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-
-      result mustBe Some(testCreateClaimRequestWithRepresentativeAndMultipleEntries)
-    }
-
-    "returns a valid CreateClaimRequest for a userAnswers containing claimantType as Representative and PaymentMethod as CMA" in {
-      val testUserAnswers = populateUserAnswersWithCMAPaymentMethod(emptyUserAnswers)
-
-      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-
-      result mustBe Some(testCreateClaimRequestWithCMAPaymentMethod)
-    }
-
-    "returns a valid CreateClaimRequest for a userAnswers containing claimantType as Importer and PaymentMethod as CMA" in {
-      val testUserAnswers = populateUserAnswersWithCMAPaymentMethodAndClaimantImporter(emptyUserAnswers)
-
-      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-
-      result mustBe Some(testCreateClaimRequestWithCMAPaymentMethodAndClaimantImporter)
-    }
-
-    "returns a valid CreateClaimRequest for a userAnswers containing UK Customs Regulation type" in {
-      val testUserAnswers = populateUserAnswersWithUKCustomsRegulationType(emptyUserAnswers)
-
-      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-
-      result mustBe Some(testCreateClaimRequestWithUKCustomsRegulationType)
-    }
-
-    "returns a valid CreateClaimRequest for a userAnswers containing claimant type Representative, single entry, and paying representative by bacs" in {
-      val testUserAnswers = populateUserAnswersWithRepresentativeSinglePayingRepresentativeBacs(emptyUserAnswers)
-
-      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-
-      result mustBe Some(testCreateClaimRequestWithRepresentativeSinglePayingRepresentativeBacs)
-    }
-
-    "returns a valid CreateClaimRequest for a userAnswers containing a bank account number with only 6 digits" in {
-      val testUserAnswers = populateUserAnswersWithBankAccountNumberContaining6Digits(emptyUserAnswers)
-
-      val result = CreateClaimRequest.buildValidClaimRequest(testUserAnswers)
-
-      result mustBe Some(testCreateClaimRequestWithBankAccountNumberContaining6Digits)
     }
 
   }

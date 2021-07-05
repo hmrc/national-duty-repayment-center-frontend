@@ -77,7 +77,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
       val amendCaseResponseType: Set[AmendCaseResponseType] =
         Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
         amendCaseResponseType
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -122,7 +122,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
       val amendCaseResponseType: Set[AmendCaseResponseType] =
         Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
         amendCaseResponseType
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -166,7 +166,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         ),
         acknowledged = true
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
         amendCaseResponseType
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -210,7 +210,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         ),
         acknowledged = true
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
         amendCaseResponseType
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -254,7 +254,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         ),
         acknowledged = true
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
         amendCaseResponseType
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -301,7 +301,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         ),
         acknowledged = true
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
         amendCaseResponseType
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -345,7 +345,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         ),
         acknowledged = true
       )
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
         amendCaseResponseType
       ).success.value.copy(fileUploadState = Some(fileUploadedState))
@@ -397,7 +397,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
-      val userAnswers = UserAnswers(userAnswersId).set(
+      val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
         amendCaseResponseType
       ).success.value.copy(fileUploadState = Some(fileUploadState))

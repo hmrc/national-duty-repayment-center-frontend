@@ -19,7 +19,7 @@ package services
 import connectors.NDRCConnector
 import javax.inject.Inject
 import models.UserAnswers
-import models.requests.{AmendClaimRequest, CreateClaimRequest, DataRequest}
+import models.requests.{AmendClaimBuilder, AmendClaimRequest, CreateClaimBuilder, CreateClaimRequest, DataRequest}
 import uk.gov.hmrc.http.HeaderCarrier
 import java.util.UUID
 
@@ -28,26 +28,28 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.{ExecutionContext, Future}
 case class CaseAlreadyExists(msg: String) extends RuntimeException(msg)
 
-class ClaimService @Inject() (connector: NDRCConnector)(implicit ec: ExecutionContext) {
+class ClaimService @Inject() (
+  connector: NDRCConnector,
+  createClaimBuilder: CreateClaimBuilder,
+  amendClaimBuilder: AmendClaimBuilder
+)(implicit ec: ExecutionContext) {
 
   private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
   def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
-    val maybeRegistrationRequest: Option[CreateClaimRequest] = CreateClaimRequest.buildValidClaimRequest(userAnswers)
+    val maybeRegistrationRequest: Option[CreateClaimRequest] = createClaimBuilder.buildValidClaimRequest(userAnswers)
 
     maybeRegistrationRequest match {
       case Some(value) =>
         connector.submitClaim(value, correlationId(hc)).map { clientClaimResponse =>
-          if (clientClaimResponse.result.map(_.caseId).nonEmpty)
-            clientClaimResponse.result.map(_.caseId).get
-          else
-            clientClaimResponse.error match {
-              case _ =>
-                val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
-                  clientClaimResponse.error.map(_.errorMessage).getOrElse("")
-                logger.error(s"Create claim submission failed due to $message")
-                throw new RuntimeException(message)
-            }
+          clientClaimResponse.caseId match {
+            case Some(value) => value
+            case None =>
+              val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
+                clientClaimResponse.error.map(_.errorMessage).getOrElse("")
+              logger.error(s"Create claim submission failed due to $message")
+              throw new RuntimeException(message)
+          }
         }
       case None =>
         logger.error(
@@ -60,13 +62,13 @@ class ClaimService @Inject() (connector: NDRCConnector)(implicit ec: ExecutionCo
   def submitAmendClaim(
     userAnswers: UserAnswers
   )(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
-    val maybeAmendRequest: Option[AmendClaimRequest] = AmendClaimRequest.buildValidAmendRequest(userAnswers)
+    val maybeAmendRequest: Option[AmendClaimRequest] = amendClaimBuilder.buildValidAmendRequest(userAnswers)
 
     maybeAmendRequest match {
       case Some(value) =>
         connector.submitAmendClaim(value, correlationId(hc)).map { clientClaimResponse =>
-          if (clientClaimResponse.result.map(_.caseId).nonEmpty)
-            clientClaimResponse.result.map(_.caseId).get
+          if (clientClaimResponse.caseId.nonEmpty)
+            clientClaimResponse.caseId.get
           else
             clientClaimResponse.error match {
               case _ =>

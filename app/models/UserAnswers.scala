@@ -18,20 +18,26 @@ package models
 
 import java.time.Instant
 
+import models.requests.Identification
 import pages._
 import play.api.libs.json._
-import queries.{Gettable, Settable}
+import queries.{AmendClaimIdQuery, ClaimIdQuery, Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(
   id: String,
+  userEori: Option[EORI],
   data: JsObject = Json.obj(),
   changePage: Option[String] = None,
   lastUpdated: Instant = Instant.now,
   fileUploadState: Option[FileUploadState] = None
 ) extends Answers {
+
+  def isCreateSubmitted: Boolean = get(ClaimIdQuery).nonEmpty
+  def isAmendSubmitted: Boolean  = get(AmendClaimIdQuery).nonEmpty
 
   def isImporterJourney: Boolean = get(ClaimantTypePage).contains(ClaimantType.Importer)
 
@@ -88,6 +94,9 @@ final case class UserAnswers(
 object UserAnswers {
   import services.UploadFile
 
+  def apply(identification: Identification): UserAnswers =
+    new UserAnswers(identification.identifier, identification.eori)
+
   implicit def uploadReads: Reads[FileUploadState] =
     //TODO error cases
     Reads {
@@ -110,29 +119,7 @@ object UserAnswers {
 
     }
 
-  implicit lazy val reads: Reads[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-    (
-      (__ \ "_id").read[String] and
-        (__ \ "data").read[JsObject] and
-        (__ \ "changePage").readNullable[String] and
-        (__ \ "lastUpdated").read(MongoFormats.instantRead) and
-        (__ \ "fileUploadState").readNullable[FileUploadState](uploadReads)
-    )(UserAnswers.apply _)
-  }
-
-  implicit lazy val writes: OWrites[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-
-    (
-      (__ \ "_id").write[String] and
-        (__ \ "data").write[JsObject] and
-        (__ \ "changePage").writeNullable[String] and
-        (__ \ "lastUpdated").write(MongoFormats.instantWrite) and
-        (__ \ "fileUploadState").writeNullable[FileUploadState](uploadWrites)
-    )(unlift(UserAnswers.unapply))
-  }
+  implicit val formatInstant                 = MongoJavatimeFormats.instantFormat
+  implicit val formats: OFormat[UserAnswers] = Json.format[UserAnswers]
 
 }

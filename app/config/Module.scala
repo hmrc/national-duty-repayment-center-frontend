@@ -26,7 +26,7 @@ import navigation.{CreateNavigator, CreateNavigatorImpl}
 import play.api.Configuration
 import play.api.libs.concurrent.AkkaGuiceSupport
 import play.api.libs.ws.WSClient
-import repositories.{DefaultSessionRepository, SessionRepository}
+import repositories.{CacheDataRepository, SessionRepository}
 import uk.gov.hmrc.http.hooks.HttpHook
 import uk.gov.hmrc.http.{HttpGet, HttpPost}
 import uk.gov.hmrc.play.audit.http.HttpAuditing
@@ -45,10 +45,9 @@ class Module extends AbstractModule with AkkaGuiceSupport {
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
 
-    // For session based storage instead of cred based, change to SessionIdentifierAction
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
 
-    bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
+    bind(classOf[SessionRepository]).to(classOf[CacheDataRepository]).asEagerSingleton()
     bind(classOf[CreateNavigator]).to(classOf[CreateNavigatorImpl]).asEagerSingleton()
 
   }
