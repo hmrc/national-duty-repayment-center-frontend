@@ -23,6 +23,7 @@ import models.FileType.ProofOfAuthority
 import models.{CustomsRegulationType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.{any, anyObject}
+
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CustomsRegulationTypePage
