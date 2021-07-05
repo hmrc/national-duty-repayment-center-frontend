@@ -88,6 +88,8 @@ trait FrontendAppConfig {
   val barsBusinessAssessUrl: String
 
   def selfUrl(url: String): String
+
+  val fileUploadTimeoutSeconds: Long
 }
 
 @Singleton
@@ -163,6 +165,8 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
 
   override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
   override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")
+
+  override val fileUploadTimeoutSeconds: Long = configuration.getMillis("file-upload.timeout") / 1000
 
   override val upscanInitiateBaseUrl: String =
     configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
