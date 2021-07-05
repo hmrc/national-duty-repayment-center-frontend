@@ -39,7 +39,6 @@ import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ProofOfAuthorityView
 
-import scala.concurrent.duration.DurationLong
 import scala.concurrent.{ExecutionContext, Future}
 
 class ProofOfAuthorityController @Inject() (
@@ -65,13 +64,13 @@ class ProofOfAuthorityController @Inject() (
   // GET /upload-proof-of-authority/file-verification
   final def showWaitingForFileVerification() = (identify andThen getData andThen requireData).async {
     implicit request =>
-      implicit val timeout = Timeout(appConfig.fileUploadTimeoutSeconds seconds)
+      implicit val timeout = Timeout(appConfig.fileUploadTimeout)
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         ss.state match {
           case Some(s) =>
             (checkStateActor ? CheckState(
               request.internalId,
-              LocalDateTime.now.plusSeconds(appConfig.fileUploadTimeoutSeconds),
+              LocalDateTime.now.plusSeconds(appConfig.fileUploadTimeout.toSeconds),
               s
             )).mapTo[FileUploadState].flatMap {
               case _: FileUploaded => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))

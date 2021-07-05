@@ -22,15 +22,15 @@
 @import views.html.components.uploadProgressBar
 
 @this(
-govukLayout: views.html.layouts.GovukLayoutWrapper,
-forms: views.components.forms,
-html: views.components.html,
-details: views.html.components.details,
-uploadSummary: views.html.components.uploadSummary,
-govukFileUpload: GovukFileUpload,
-govukButton: GovukButton,
-appConfig: FrontendAppConfig,
-context : UploadFileViewContext
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html,
+    details: views.html.components.details,
+    uploadSummary: views.html.components.uploadSummary,
+    govukFileUpload: GovukFileUpload,
+    govukButton: GovukButton,
+    appConfig: FrontendAppConfig,
+    context : UploadFileViewContext
 )
 
 @(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)

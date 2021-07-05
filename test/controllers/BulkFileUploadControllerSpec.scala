@@ -19,24 +19,29 @@ package controllers
 import java.time.ZonedDateTime
 
 import base.SpecBase
+import models.FileType.Bulk
 import models.{CustomsRegulationType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
-import org.mockito.Matchers.anyObject
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.{any, anyObject}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CustomsRegulationTypePage
+import play.api.http.Status.SEE_OTHER
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{
   contentAsString,
   defaultAwaitTimeout,
+  redirectLocation,
   route,
   running,
   status,
   writeableOf_AnyContentAsEmpty,
-  GET
+  GET,
+  POST
 }
 import play.twirl.api.HtmlFormat
-import services.FileUploaded
+import services.{FileUploadState, FileUploaded}
 
 import scala.concurrent.Future
 
@@ -197,6 +202,110 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       }
       application.stop()
     }
+  }
+
+  "POST /upload-multiple-entries/continue " should {
+    "redirect to next page when bulk file has already been uploaded" in {
+
+      val fileUploadState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(Bulk)
+            )
+          )
+        )
+      )
+
+      val userAnswers = UserAnswers(userIdentification).copy(fileUploadState = Some(fileUploadState))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = buildRequest(POST, routes.BulkFileUploadController.onContinue().url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual defaultNextPage.url
+      }
+      application.stop()
+
+    }
+
+    "display error when bulk file not uploaded" in {
+
+      val fileUploadState = FileUploaded(
+        FileUploads(files =
+          Seq(FileUpload.Initiated(1, "11370e18-6e24-453e-b45a-76d3e32ea33d"))
+        )
+      )
+
+      val userAnswers = UserAnswers(userIdentification).copy(fileUploadState = Some(fileUploadState))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = buildRequest(POST, routes.BulkFileUploadController.onContinue().url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value must include(routes.BulkFileUploadController.markFileUploadAsRejected().url)
+        redirectLocation(result).value must include("errorCode=MissingFile")
+      }
+      application.stop()
+
+    }
+  }
+
+  "GET /upload-multiple-entries/remove " should {
+    "remove existing bulk upload" in {
+
+      val fileUploadState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(Bulk)
+            )
+          )
+        )
+      )
+
+      val updatedState: ArgumentCaptor[FileUploadState] = ArgumentCaptor.forClass(classOf[FileUploadState])
+      when(mockSessionRepository.updateSession(updatedState.capture(), any())) thenReturn Future.successful(true)
+
+      val userAnswers = UserAnswers(userIdentification).copy(fileUploadState = Some(fileUploadState))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = buildRequest(GET, routes.BulkFileUploadController.onRemove("foo-bar-ref-1").url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.BulkFileUploadController.showFileUpload().url
+      }
+      application.stop()
+
+      updatedState.getValue.fileUploads.isEmpty mustBe true
+    }
+
   }
 
   def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString

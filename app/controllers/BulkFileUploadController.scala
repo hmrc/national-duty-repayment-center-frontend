@@ -29,7 +29,7 @@ import forms.UpscanS3ErrorFormProvider
 import javax.inject.{Inject, Named}
 import models.FileType.Bulk
 import models.requests.DataRequest
-import models.{UpscanNotification, UserAnswers}
+import models.{SessionState, UpscanNotification, UserAnswers}
 import navigation.CreateNavigator
 import pages.{BulkFileUploadPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -39,7 +39,6 @@ import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.BulkFileUploadView
 
-import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 
 class BulkFileUploadController @Inject() (
@@ -66,17 +65,17 @@ class BulkFileUploadController @Inject() (
   // GET /file-verification
   final def showWaitingForFileVerification() = (identify andThen getData andThen requireData).async {
     implicit request =>
-      implicit val timeout = Timeout(10 seconds)
+      implicit val timeout = Timeout(appConfig.fileUploadTimeout)
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         ss.state match {
           case Some(s) =>
-            (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[
-              FileUploadState
-            ].flatMap {
-              case _: FileUploaded =>
-                Future.successful(Redirect(nextPage(request.userAnswers)))
-              case _: UploadFile => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload()))
-              case _             => Future.successful(fileStateErrror)
+            (checkStateActor ? CheckState(
+              request.internalId,
+              LocalDateTime.now.plusSeconds(appConfig.fileUploadTimeout.toSeconds),
+              s
+            )).mapTo[FileUploadState].flatMap {
+              case _: FileUploaded => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload()))
+              case _               => Future.successful(redirectInternalError("InternalError"))
             }
           case _ => Future.successful(fileStateErrror)
         }
@@ -147,13 +146,45 @@ class BulkFileUploadController @Inject() (
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
     }
 
+  //GET /upload-multiple-entries/remove
+  final def onRemove(reference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      request.userAnswers.fileUploadState match {
+        case Some(fus) =>
+          val acceptedFiles =
+            FileUploaded(fileUploads = fus.fileUploads.copy(files = filesInStateAccepted(fus.fileUploads.files)))
+          val sessionState = SessionState(Some(acceptedFiles), Some(request.userAnswers))
+          fileUtils.applyTransition(
+            removeFileUploadBy(reference)(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(_),
+            acceptedFiles,
+            sessionState
+          ).map(_ => Redirect(bulkFileUploadController.showFileUpload()))
+        case None => Future.successful(fileStateErrror)
+      }
+    }
+
+  //POST /upload-multiple-entries/continue
+  def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(Bulk)).contains(Seq.empty))
+        redirectInternalError("MissingFile")
+      else
+        Redirect(navigator.nextPage(BulkFileUploadPage, request.userAnswers))
+  }
+
+  private def redirectInternalError(errorCode: String)(implicit request: DataRequest[_]) = Redirect(
+    bulkFileUploadController.markFileUploadAsRejected.url,
+    Map("key" -> Seq(request.internalId), "errorMessage" -> Seq(errorCode), "errorCode" -> Seq(errorCode)),
+    SEE_OTHER
+  )
+
   final def renderState(fileUploadState: FileUploadState)(implicit request: DataRequest[_]): Result =
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
         Ok(
           view(
             uploadRequest,
-            fileUploads,
+            fileUploads.toFilesOfType(Bulk),
             maybeUploadError,
             successAction = routes.EntryDetailsController.onPageLoad(),
             failureAction = routes.BulkFileUploadController.showFileUpload(),
