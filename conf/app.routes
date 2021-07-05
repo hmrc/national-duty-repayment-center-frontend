@@ -147,6 +147,8 @@ GET         /file-uploaded/:reference/remove                                    
 
 # bulk uploads
 GET         /upload-multiple-entries                                                   controllers.BulkFileUploadController.showFileUpload()
+GET         /upload-multiple-entries/remove                                            controllers.BulkFileUploadController.onRemove(documentReference: String)
+POST        /upload-multiple-entries/continue                                          controllers.BulkFileUploadController.onContinue()
 GET         /bulk/file-verification                                                    controllers.BulkFileUploadController.showWaitingForFileVerification()
 GET         /bulk/file-rejected                                                        controllers.BulkFileUploadController.markFileUploadAsRejected()
 GET         /bulk/file-verification/:reference/status                                  controllers.BulkFileUploadController.checkFileVerificationStatus(reference: String)

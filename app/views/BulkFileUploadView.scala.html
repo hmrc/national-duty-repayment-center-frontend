@@ -16,40 +16,32 @@
 
 @import models.requests.UploadRequest
 @import views.UploadFileViewContext
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
 @import config.FrontendAppConfig
 @import navigation.NavigatorBack
+@import views.html.components.uploadProgressBar
 
 @this(
-govukLayout: views.html.layouts.GovukLayoutWrapper,
-forms: views.components.forms,
-html: views.components.html,
-details: views.html.components.details,
-govukFileUpload: GovukFileUpload,
-govukButton: GovukButton,
-appConfig: FrontendAppConfig,
-context : UploadFileViewContext
+    govukLayout: views.html.layouts.GovukLayoutWrapper,
+    forms: views.components.forms,
+    html: views.components.html,
+    details: views.html.components.details,
+    uploadSummary: views.html.components.uploadSummary,
+    govukFileUpload: GovukFileUpload,
+    govukButton: GovukButton,
+    appConfig: FrontendAppConfig,
+    context : UploadFileViewContext
 )
 
-@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("bulkFileUpload.title"))}"),
     backLinkNav = Some(backLink)
 ) {
 
-<form action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate
-      data-file-upload-redirect-success-url="@successAction.url"
-      data-file-upload-redirect-failure-url="@failureAction.url"
-      data-file-upload-check-status-url="@checkStatusAction.url"
-      data-file-upload-aria-live-message="@messages("view.upload-file.waiting")">
-
     @maybeUploadError.map { fileUploadError =>
         @forms.errorSummary(Seq(context.toFormError(fileUploadError)))
-    }
-
-    @uploadRequest.fields.map { case (key, value) =>
-        @forms.inputHidden(key, value)
     }
 
     @html.h1(messages("bulkFileUpload.heading"))
@@ -65,36 +57,66 @@ context : UploadFileViewContext
     )
 	
 	
-    @html.p{ @messages("bulkFileUpload.paragraph2") }	
-	
-    @govukFileUpload(FUpload(
-        name = "file",
-        id = "file",
-        value = Some(""),
-        label = Label(
-            content = Text(messages("fileUpload.title"))
-        ),
-        describedBy = None,
-        hint = None,
-        errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
-        formGroupClasses = "",
-        classes = "",
-        attributes = Map(
-        "accept" -> appConfig.fileFormats.approvedFileExtensions,
-        "data-msg-required" -> messages("error.file-upload.required"),
-        "data-msg-filesize" -> messages("error.file-upload.invalid-size-large",appConfig.fileFormats.maxFileSizeMb),
-        "data-msg-accept" -> messages("error.upload-file.other")
-        ))
-    )
+    @html.p{ @messages("bulkFileUpload.paragraph2") }
 
-    <div>
-        @govukButton(Button(
-        content = Text(messages("form.upload-file.submit")),
-        preventDoubleClick = true,
-        classes = "file-upload__submit"
-        ))
+    @uploadSummary(uploadedFiles, ref => routes.BulkFileUploadController.onRemove(ref).url, Some(
+        SummaryListRow(
+            key = Key(content = Text(messages("upload_documents.status.in_progress")), classes = "govuk-!-width-three-quarters"),
+            value = Value(content = HtmlContent(uploadProgressBar())),
+            classes = "govuk-!-display-none hidden-progress-row",
+            actions = Some(Actions(items = Seq.empty))
+        )
+    ))
+
+    <form id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate>
+
+        @uploadRequest.fields.map { case (key, value) =>
+            @forms.inputHidden(key, value)
+        }
+
+        @if(uploadedFiles.isEmpty) {
+            @govukFileUpload(FileUpload(
+                name = "file",
+                id = "file",
+                value = Some(""),
+                label = Label(
+                    content = Text(messages("fileUpload.title"))
+                ),
+                describedBy = None,
+                hint = None,
+                errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
+                formGroupClasses = "",
+                classes = "",
+                attributes = Map(
+                    "accept" -> appConfig.fileFormats.approvedFileExtensions,
+                    "onchange" -> "javascript:onFileSelect()",
+                    "data-msg-required" -> messages("error.file-upload.required"),
+                    "data-msg-filesize" -> messages("error.file-upload.invalid-size-large", appConfig.fileFormats.maxFileSizeMb),
+                    "data-msg-accept" -> messages("error.upload-file.other")
+                ))
+            )
+
+            <div class="ndrc-display-only-non-javascript">
+            @govukButton(Button(
+                attributes = Map("id" -> "ndrc-fileupload-continue"),
+                content = Text(messages("form.upload-file.submit")),
+                preventDoubleClick = true,
+                classes = "file-upload__submit"
+            ))
+            </div>
+        }
+    </form>
+
+    <div class="ndrc-display-none-non-javascript">
+        @forms.formWithCSRF(action = BulkFileUploadController.onContinue(), args = 'novalidate -> "novalidate") {
+            @html.button("site.continue")
+        }
     </div>
-
-    <div class="file-upload__loading-container" aria-live="polite" role="region"></div>
-</form>
+    <div class="ndrc-display-only-non-javascript">
+        @if(!uploadedFiles.isEmpty){
+            @forms.formWithCSRF(action = BulkFileUploadController.onContinue(), args = 'novalidate -> "novalidate") {
+                @html.button("site.continue")
+            }
+        }
+    </div>
 }

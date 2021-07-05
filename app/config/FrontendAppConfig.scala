@@ -23,6 +23,8 @@ import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.Call
 
+import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
+
 /*
  * Copyright 2021 HM Revenue & Customs
  *
@@ -89,7 +91,7 @@ trait FrontendAppConfig {
 
   def selfUrl(url: String): String
 
-  val fileUploadTimeoutSeconds: Long
+  val fileUploadTimeout: FiniteDuration
 }
 
 @Singleton
@@ -166,7 +168,8 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
   override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")
 
-  override val fileUploadTimeoutSeconds: Long = configuration.getMillis("file-upload.timeout") / 1000
+  override val fileUploadTimeout: FiniteDuration =
+    FiniteDuration(configuration.getMillis("file-upload.timeout"), MILLISECONDS)
 
   override val upscanInitiateBaseUrl: String =
     configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
