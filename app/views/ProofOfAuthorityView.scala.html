@@ -16,92 +16,116 @@
 
 @import config.FrontendAppConfig
 @import models.requests.UploadRequest
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.{FileUpload => FUpload}
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
 @import views.UploadFileViewContext
 @import navigation.NavigatorBack
+@import views.html.components.uploadProgressBar
 
 @this(
-        govukLayout: views.html.layouts.GovukLayoutWrapper,
-        forms: views.components.forms,
-        html: views.components.html,
-        details: views.html.components.details,
-        govukFileUpload: GovukFileUpload,
-        govukButton: GovukButton,
-        appConfig: FrontendAppConfig,
-        context : UploadFileViewContext
+govukLayout: views.html.layouts.GovukLayoutWrapper,
+forms: views.components.forms,
+html: views.components.html,
+details: views.html.components.details,
+uploadSummary: views.html.components.uploadSummary,
+govukFileUpload: GovukFileUpload,
+govukButton: GovukButton,
+appConfig: FrontendAppConfig,
+context : UploadFileViewContext
 )
 
-@(uploadRequest: UploadRequest, fileUploads: FileUploads, maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("proof-of-authority.title"))}"),
     backLinkNav = Some(backLink)
 ) {
 
-    <form action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate
-    data-file-upload-redirect-success-url="@successAction.url"
-    data-file-upload-redirect-failure-url="@failureAction.url"
-    data-file-upload-check-status-url="@checkStatusAction.url"
-    data-file-upload-aria-live-message="@messages("view.upload-file.waiting")">
+    @maybeUploadError.map { fileUploadError =>
+        @forms.errorSummary(Seq(context.toFormError(fileUploadError)))
+    }
 
-        @maybeUploadError.map { fileUploadError =>
-            @forms.errorSummary(Seq(context.toFormError(fileUploadError)))
-        }
+    @html.h1(messages("proof-of-authority.heading"))
+
+    @html.p {
+        @messages("proof-of-authority.paragraph1")
+    }
+
+    @html.p {
+        @messages("proof-of-authority.paragraph2")
+    }
+
+    @details(messages("proof-of-authority.filetypes")) {
+        @html.ul(
+            messages("proof-of-authority.filetype1"),
+            messages("proof-of-authority.filetype2"),
+            messages("proof-of-authority.filetype3"),
+            messages("proof-of-authority.filetype4"),
+            messages("proof-of-authority.filetype5"),
+            messages("proof-of-authority.filetype6"),
+            messages("proof-of-authority.filetype7")
+        )
+    }
+
+    @uploadSummary(uploadedFiles, ref => routes.ProofOfAuthorityController.onRemove(ref).url, Some(
+        SummaryListRow(
+            key = Key(content = Text(messages("upload_documents.status.in_progress")), classes = "govuk-!-width-three-quarters"),
+            value = Value(content = HtmlContent(uploadProgressBar())),
+            classes = "govuk-!-display-none hidden-progress-row",
+            actions = Some(Actions(items = Seq.empty))
+        )
+    ))
+
+    <form  id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate>
 
         @uploadRequest.fields.map { case (key, value) =>
             @forms.inputHidden(key, value)
         }
 
-        @html.h1(messages("proof-of-authority.heading"))
+        @if(uploadedFiles.isEmpty) {
+            @govukFileUpload(FileUpload(
+                name = "file",
+                id = "file",
+                value = Some(""),
+                label = Label(
+                    content = Text(messages("fileUpload.title"))
+                ),
+                describedBy = None,
+                hint = None,
+                errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
+                formGroupClasses = "",
+                classes = "",
+                attributes = Map(
+                    "accept" -> appConfig.fileFormats.proofOfAuthorityExtensions,
+                    "onchange" -> "javascript:onFileSelect()",
+                    "data-msg-required" -> messages("error.file-upload.required"),
+                    "data-msg-filesize" -> messages("error.file-upload.invalid-size-large", appConfig.fileFormats.maxFileSizeMb),
+                    "data-msg-accept" -> messages("error.upload-file.other")
+                ))
+            )
 
-        @html.p {
-            @messages("proof-of-authority.paragraph1")
+            <div class="ndrc-display-only-non-javascript">
+                @govukButton(Button(
+                    attributes = Map("id" -> "ndrc-fileupload-continue"),
+                    content = Text(messages("form.upload-file.submit")),
+                    preventDoubleClick = true,
+                    classes = "file-upload__submit"
+                ))
+            </div>
+
         }
 
-        @html.p {
-            @messages("proof-of-authority.paragraph2")
-        }
-
-
-        @html.h2(messages("proof-of-authority.h2"), classes = "govuk-heading-m")
-
-
-        @html.ul(
-            messages("proof-of-authority.bullet1"),
-            messages("proof-of-authority.bullet2"),
-            messages("proof-of-authority.bullet3"),
-            messages("proof-of-authority.bullet4"),
-            messages("proof-of-authority.bullet5")
-        )
-
-        @govukFileUpload(FUpload(
-            name = "file",
-            id = "file",
-            value = Some(""),
-            label = Label(
-                content = Text(messages("fileUpload.title"))
-            ),
-            describedBy = None,
-            hint = None,
-            errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
-            formGroupClasses = "",
-            classes = "",
-            attributes = Map(
-                "accept" -> appConfig.fileFormats.approvedFileExtensions,
-                "data-msg-required" -> messages("error.file-upload.required"),
-                "data-msg-filesize" -> messages("error.file-upload.invalid-size-large",appConfig.fileFormats.maxFileSizeMb),
-                "data-msg-accept" -> messages("error.upload-file.other")
-            ))
-        )
-
-        <div>
-        @govukButton(Button(
-            content = Text(messages("form.upload-file.submit")),
-            preventDoubleClick = true,
-            classes = "file-upload__submit"
-        ))
-        </div>
-
-        <div class="file-upload__loading-container" aria-live="polite" role="region"></div>
     </form>
+
+    <div class="ndrc-display-none-non-javascript">
+        @forms.formWithCSRF(action = ProofOfAuthorityController.onContinue(), args = 'novalidate -> "novalidate") {
+            @html.button("site.continue")
+        }
+    </div>
+    <div class="ndrc-display-only-non-javascript">
+        @if(!uploadedFiles.isEmpty){
+            @forms.formWithCSRF(action = ProofOfAuthorityController.onContinue(), args = 'novalidate -> "novalidate") {
+                @html.button("site.continue")
+            }
+        }
+    </div>
 }

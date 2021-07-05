@@ -41,7 +41,13 @@ import play.api.mvc.Call
 
 object FrontendAppConfig {
 
-  case class FileFormats(maxFileSizeMb: Int, approvedFileTypes: String, approvedFileExtensions: String)
+  case class FileFormats(
+    maxFileSizeMb: Int,
+    approvedFileTypes: String,
+    approvedFileExtensions: String,
+    proofOfAuthorityExtensions: String
+  )
+
   case class EoriIntegration(enabled: Boolean, enrolmentKey: String, enrolmentUrl: Option[String])
 }
 
@@ -82,6 +88,8 @@ trait FrontendAppConfig {
   val barsBusinessAssessUrl: String
 
   def selfUrl(url: String): String
+
+  val fileUploadTimeoutSeconds: Long
 }
 
 @Singleton
@@ -142,7 +150,8 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   override val fileFormats: FrontendAppConfig.FileFormats = FrontendAppConfig.FileFormats(
     maxFileSizeMb = configuration.get[Int]("file-formats.max-file-size-mb"),
     approvedFileExtensions = configuration.get[String]("file-formats.approved-file-extensions"),
-    approvedFileTypes = configuration.get[String]("file-formats.approved-file-types")
+    approvedFileTypes = configuration.get[String]("file-formats.approved-file-types"),
+    proofOfAuthorityExtensions = configuration.get[String]("file-formats.proof-of-authority-file-extensions")
   )
 
   override val eoriIntegration: FrontendAppConfig.EoriIntegration = {
@@ -156,6 +165,8 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
 
   override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
   override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")
+
+  override val fileUploadTimeoutSeconds: Long = configuration.getMillis("file-upload.timeout") / 1000
 
   override val upscanInitiateBaseUrl: String =
     configuration.get[Service]("microservice.services.upscan-initiate").baseUrl

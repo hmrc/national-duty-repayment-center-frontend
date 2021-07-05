@@ -28,10 +28,10 @@ import controllers.actions._
 import forms.UpscanS3ErrorFormProvider
 import javax.inject.{Inject, Named}
 import models.FileType.ProofOfAuthority
-import models.UpscanNotification
 import models.requests.DataRequest
+import models.{SessionState, UpscanNotification}
 import navigation.CreateNavigator
-import pages.{ProofOfAuthorityPage}
+import pages.ProofOfAuthorityPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
@@ -39,7 +39,7 @@ import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ProofOfAuthorityView
 
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.DurationLong
 import scala.concurrent.{ExecutionContext, Future}
 
 class ProofOfAuthorityController @Inject() (
@@ -65,17 +65,17 @@ class ProofOfAuthorityController @Inject() (
   // GET /upload-proof-of-authority/file-verification
   final def showWaitingForFileVerification() = (identify andThen getData andThen requireData).async {
     implicit request =>
-      implicit val timeout = Timeout(10 seconds)
+      implicit val timeout = Timeout(appConfig.fileUploadTimeoutSeconds seconds)
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         ss.state match {
           case Some(s) =>
-            (checkStateActor ? CheckState(request.internalId, LocalDateTime.now.plusSeconds(10), s)).mapTo[
-              FileUploadState
-            ].flatMap {
-              case _: FileUploaded =>
-                Future.successful(Redirect(navigator.nextPage(ProofOfAuthorityPage, request.userAnswers)))
-              case _: UploadFile => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))
-              case _             => Future.successful(fileStateErrror)
+            (checkStateActor ? CheckState(
+              request.internalId,
+              LocalDateTime.now.plusSeconds(appConfig.fileUploadTimeoutSeconds),
+              s
+            )).mapTo[FileUploadState].flatMap {
+              case _: FileUploaded => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))
+              case _               => Future.successful(redirectInternalError("InternalError"))
             }
           case _ => Future.successful(fileStateErrror)
         }
@@ -147,17 +147,46 @@ class ProofOfAuthorityController @Inject() (
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
     }
 
+  //GET /upload-proof-of-authority/remove
+  final def onRemove(reference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      request.userAnswers.fileUploadState match {
+        case Some(fus) =>
+          val acceptedFiles =
+            FileUploaded(fileUploads = fus.fileUploads.copy(files = filesInStateAccepted(fus.fileUploads.files)))
+          val sessionState = SessionState(Some(acceptedFiles), Some(request.userAnswers))
+          fileUtils.applyTransition(
+            removeFileUploadBy(reference)(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(_),
+            acceptedFiles,
+            sessionState
+          ).map(_ => Redirect(routes.ProofOfAuthorityController.showFileUpload()))
+        case None => Future.successful(fileStateErrror)
+      }
+    }
+
+  //POST /upload-proof-of-authority/continue
+  def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(ProofOfAuthority)).contains(Seq.empty))
+        redirectInternalError("MissingFile")
+      else
+        Redirect(navigator.nextPage(ProofOfAuthorityPage, request.userAnswers))
+  }
+
+  private def redirectInternalError(errorCode: String)(implicit request: DataRequest[_]) = Redirect(
+    routes.ProofOfAuthorityController.markFileUploadAsRejected.url,
+    Map("key" -> Seq(request.internalId), "errorMessage" -> Seq(errorCode), "errorCode" -> Seq(errorCode)),
+    SEE_OTHER
+  )
+
   final def renderState(fileUploadState: FileUploadState)(implicit request: DataRequest[_]): Result =
     fileUploadState match {
       case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
         Ok(
           view(
             uploadRequest,
-            fileUploads,
+            fileUploads.toFilesOfType(ProofOfAuthority),
             maybeUploadError,
-            successAction = routes.BankDetailsController.onPageLoad(),
-            failureAction = routes.ProofOfAuthorityController.showFileUpload(),
-            checkStatusAction = routes.ProofOfAuthorityController.checkFileVerificationStatus(reference),
             navigator.previousPage(ProofOfAuthorityPage, request.userAnswers)
           )
         )

@@ -1,0 +1,30 @@
+/* Dynamic progress bar for please-wait page within file upload journey */
+
+.ndrc-display-only-non-javascript {
+  display: none;
+}
+
+.ndrc_progress_bar_container {
+  border: solid;
+  width: 10rem;
+  border-color: #1d70b8;
+}
+.ndrc_progress_bar {
+  width: 0%;
+  height: 20px;
+  background: #1d70b8;
+  position :relative;
+  // 500ms start delay for Safari - see ndrcfrontend.js
+  -webkit-animation: move_progress 10s forwards 500ms;
+  animation: move_progress 10s forwards 500ms;
+}
+
+@keyframes move_progress {
+  from   {width: 0%;}
+  to  {width: 95%;}
+}
+
+@-webkit-keyframes  move_progress {
+  from   {width: 0%;}
+  to  {width: 95%;}
+}

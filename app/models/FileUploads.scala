@@ -37,6 +37,12 @@ case class FileUploads(files: Seq[FileUpload] = Seq.empty) {
         UploadedFile(f.reference, f.url, f.uploadTimestamp, f.checksum, f.fileName, f.fileMimeType)
     }
 
+  def toFilesOfType(fileType: FileType): Seq[UploadedFile] =
+    files.collect {
+      case f: FileUpload.Accepted if f.fileType.contains(fileType) =>
+        UploadedFile(f.reference, f.url, f.uploadTimestamp, f.checksum, f.fileName, f.fileMimeType)
+    }
+
   def +(file: FileUpload): FileUploads = copy(files = files :+ file)
 
 }
