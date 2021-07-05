@@ -33,7 +33,7 @@ appConfig: FrontendAppConfig,
 context : UploadFileViewContext
 )
 
-@(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("proof-of-authority.title"))}"),
@@ -75,11 +75,7 @@ context : UploadFileViewContext
         )
     ))
 
-    <form  id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate
-    data-file-upload-redirect-success-url="@successAction.url"
-    data-file-upload-redirect-failure-url="@failureAction.url"
-    data-file-upload-check-status-url="@checkStatusAction.url"
-    data-file-upload-aria-live-message="@messages("view.upload-file.waiting")">
+    <form  id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate>
 
         @uploadRequest.fields.map { case (key, value) =>
             @forms.inputHidden(key, value)

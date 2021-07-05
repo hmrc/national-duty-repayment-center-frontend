@@ -28,8 +28,8 @@ import controllers.actions._
 import forms.UpscanS3ErrorFormProvider
 import javax.inject.{Inject, Named}
 import models.FileType.ProofOfAuthority
-import models.UpscanNotification
 import models.requests.DataRequest
+import models.{SessionState, UpscanNotification}
 import navigation.CreateNavigator
 import pages.ProofOfAuthorityPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -145,28 +145,24 @@ class ProofOfAuthorityController @Inject() (
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
     }
 
+  //GET /upload-proof-of-authority/remove
   final def onRemove(reference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
-        ss.state match {
-          case Some(s) =>
-            val removeState =
-              FileUploaded(fileUploads = s.fileUploads.copy(files = filesInStateAccepted(s.fileUploads.files)))
-            val sessionState = ss.copy(state = Some(removeState))
-            fileUtils.applyTransition(
-              removeFileUploadBy(reference)(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(_),
-              removeState,
-              sessionState
-            ).map {
-              case _ @FileUploaded(_, _)     => Redirect(routes.ProofOfAuthorityController.showFileUpload())
-              case _ @UploadFile(_, _, _, _) => Redirect(routes.ProofOfAuthorityController.showFileUpload())
-              case s @ _                     => renderState(fileUploadState = s)
-            }
-          case None => Future.successful(fileStateErrror)
-        }
+      request.userAnswers.fileUploadState match {
+        case Some(fus) =>
+          val acceptedFiles =
+            FileUploaded(fileUploads = fus.fileUploads.copy(files = filesInStateAccepted(fus.fileUploads.files)))
+          val sessionState = SessionState(Some(acceptedFiles), Some(request.userAnswers))
+          fileUtils.applyTransition(
+            removeFileUploadBy(reference)(upscanRequest(request.internalId))(upscanInitiateConnector.initiate(_))(_),
+            acceptedFiles,
+            sessionState
+          ).map(_ => Redirect(routes.ProofOfAuthorityController.showFileUpload()))
+        case None => Future.successful(fileStateErrror)
       }
     }
 
+  //POST /upload-proof-of-authority/continue
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(ProofOfAuthority)).contains(Seq.empty))
@@ -175,7 +171,7 @@ class ProofOfAuthorityController @Inject() (
           Map(
             "key"          -> Seq(request.internalId),
             "errorMessage" -> Seq("Missing file"),
-            "errorCode"    -> Seq("InvalidArgument")
+            "errorCode"    -> Seq("MissingFile")
           ),
           SEE_OTHER
         )
@@ -191,9 +187,6 @@ class ProofOfAuthorityController @Inject() (
             uploadRequest,
             fileUploads.toFilesOfType(ProofOfAuthority),
             maybeUploadError,
-            successAction = routes.BankDetailsController.onPageLoad(),
-            failureAction = routes.ProofOfAuthorityController.showFileUpload(),
-            checkStatusAction = routes.ProofOfAuthorityController.checkFileVerificationStatus(reference),
             navigator.previousPage(ProofOfAuthorityPage, request.userAnswers)
           )
         )

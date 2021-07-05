@@ -18,6 +18,7 @@ package views
 
 import com.google.inject.Inject
 import config.FrontendAppConfig
+import javax.inject.Singleton
 import models.{
   DuplicateFileUpload,
   FileTransmissionFailed,
@@ -27,8 +28,6 @@ import models.{
   UpscanNotification
 }
 import play.api.data.FormError
-
-import javax.inject.Singleton
 
 @Singleton
 class UploadFileViewContext @Inject() (appConfig: FrontendAppConfig) {
@@ -47,11 +46,11 @@ class UploadFileViewContext @Inject() (appConfig: FrontendAppConfig) {
 
   def toMessageKey(error: S3UploadError): String =
     error.errorCode match {
-      case "400" | "InvalidArgument" => "error.file-upload.required"
-      case "InternalError"           => "error.file-upload.try-again"
-      case "EntityTooLarge"          => "error.file-upload.invalid-size-large"
-      case "EntityTooSmall"          => "error.file-upload.invalid-size-small"
-      case _                         => "error.file-upload.unknown"
+      case "400" | "InvalidArgument" | "MissingFile" => "error.file-upload.required"
+      case "InternalError"                           => "error.file-upload.try-again"
+      case "EntityTooLarge"                          => "error.file-upload.invalid-size-large"
+      case "EntityTooSmall"                          => "error.file-upload.invalid-size-small"
+      case _                                         => "error.file-upload.unknown"
     }
 
   def toMessageKey(details: UpscanNotification.FailureDetails): String =
