@@ -148,7 +148,7 @@ GET         /file-uploaded/:reference/remove                                    
 # bulk uploads
 GET         /upload-multiple-entries                                                   controllers.BulkFileUploadController.showFileUpload()
 GET         /upload-multiple-entries/remove                                            controllers.BulkFileUploadController.onRemove(documentReference: String)
-POST        /upload-multiple-entries/continue                                          controllers.BulkFileUploadController.onContinue()
+POST        /upload-multiple-entries                                                   controllers.BulkFileUploadController.onContinue()
 GET         /bulk/file-verification                                                    controllers.BulkFileUploadController.showWaitingForFileVerification()
 GET         /bulk/file-rejected                                                        controllers.BulkFileUploadController.markFileUploadAsRejected()
 GET         /bulk/file-verification/:reference/status                                  controllers.BulkFileUploadController.checkFileVerificationStatus(reference: String)
@@ -157,7 +157,7 @@ POST        /bulk/:id/callback-from-upscan                                      
 # proof of authority
 GET         /upload-proof-of-authority                                                 controllers.ProofOfAuthorityController.showFileUpload()
 GET         /upload-proof-of-authority/remove                                          controllers.ProofOfAuthorityController.onRemove(documentReference: String)
-POST        /upload-proof-of-authority/continue                                        controllers.ProofOfAuthorityController.onContinue()
+POST        /upload-proof-of-authority                                                 controllers.ProofOfAuthorityController.onContinue()
 GET         /upload-proof-of-authority/file-verification                               controllers.ProofOfAuthorityController.showWaitingForFileVerification()
 GET         /upload-proof-of-authority/file-rejected                                   controllers.ProofOfAuthorityController.markFileUploadAsRejected()
 GET         /upload-proof-of-authority/file-verification/:reference/status             controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
@@ -166,13 +166,12 @@ POST        /upload-proof-of-authority/:id/callback-from-upscan                 
 #amend send information
 
 GET         /amend/upload-a-file                                 controllers.AmendCaseSendInformationController.showFileUpload()
-GET         /amend/file-uploaded                                 controllers.AmendCaseSendInformationController.showFileUploaded()
-POST        /amend/file-uploaded                                 controllers.AmendCaseSendInformationController.submitUploadAnotherFileChoice()
+POST        /amend/upload-a-file                                 controllers.AmendCaseSendInformationController.onContinue()
 GET         /amend/file-verification/:reference/status           controllers.AmendCaseSendInformationController.checkFileVerificationStatus(reference: String)
 POST        /amend/ndrc/:id/callback-from-upscan                 controllers.AmendCaseSendInformationController.callbackFromUpscan(id: String)
 GET         /amend/file-verification                             controllers.AmendCaseSendInformationController.showWaitingForFileVerification()
 GET         /amend/file-rejected                                 controllers.AmendCaseSendInformationController.markFileUploadAsRejected()
-GET         /amend/file-uploaded/:reference/remove               controllers.AmendCaseSendInformationController.removeFileUploadByReference(reference: String)
+GET         /amend/file-uploaded/:reference/remove               controllers.AmendCaseSendInformationController.onRemove(reference: String)
 
 GET         /contact                                             controllers.EmailAddressAndPhoneNumberController.onPageLoad()
 POST        /contact                                             controllers.EmailAddressAndPhoneNumberController.onSubmit()

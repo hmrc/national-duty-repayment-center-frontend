@@ -89,24 +89,16 @@ class AmendNavigatorSpec extends SpecBase {
         ) mustBe routes.AmendCaseSendInformationController.showFileUpload()
       }
     }
-    "goto next page after upload document" in {
-      val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments)
-      val answers                                           = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
-      navigator.nextPage(
-        AmendFileUploadPage,
-        answers
-      ) mustBe routes.AmendCaseSendInformationController.showFileUploaded()
-    }
-    "goto next page after uploaded documents" when {
+    "goto next page after upload documents" when {
       "there is further info to add" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
         val answers                                           = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
-        navigator.nextPage(AmendFileUploadedPage, answers) mustBe routes.FurtherInformationController.onPageLoad()
+        navigator.nextPage(AmendFileUploadPage, answers) mustBe routes.FurtherInformationController.onPageLoad()
       }
       "there is no further info to add" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments)
         val answers                                           = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
-        navigator.nextPage(AmendFileUploadedPage, answers) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
+        navigator.nextPage(AmendFileUploadPage, answers) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
       }
 
     }
@@ -124,12 +116,7 @@ class AmendNavigatorSpec extends SpecBase {
     }
     "go back from further information" in {
       navigator.previousPage(FurtherInformationPage, completeAnswers).maybeCall mustBe Some(
-        routes.AmendCaseSendInformationController.showFileUploaded()
-      )
-    }
-    "go back from upload summary" in {
-      navigator.previousPage(AmendFileUploadedPage, completeAnswers).maybeCall mustBe Some(
-        routes.AmendCaseResponseTypeController.onPageLoad()
+        routes.AmendCaseSendInformationController.showFileUpload()
       )
     }
     "go back from upload page" in {
