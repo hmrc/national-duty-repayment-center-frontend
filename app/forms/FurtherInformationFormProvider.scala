@@ -25,7 +25,7 @@ class FurtherInformationFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> textNoSpaces("furtherInformation.error.required")
+      "value" -> text("furtherInformation.error.required")
         .verifying(maxLength(1400, "furtherInformation.error.length"))
     )
 

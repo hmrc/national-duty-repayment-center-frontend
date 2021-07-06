@@ -49,12 +49,20 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
     }
   }
 
-  def mandatoryNotSpaceField(form: Form[_], fieldName: String, requiredError: FormError): Unit =
+  def mandatoryNotSpaceField(form: Form[_], fieldName: String, requiredError: FormError): Unit = {
     "not bind empty values" in {
 
       val result = form.bind(Map(fieldName -> " ")).apply(fieldName)
       result.errors shouldEqual Seq(requiredError)
     }
+
+    "not remove spaces within values" in {
+
+      val result = form.bind(Map(fieldName -> "some value")).apply(fieldName)
+      result.errors shouldEqual Seq.empty
+      result.value shouldBe Some("some value")
+    }
+  }
 
   def optionalField(form: Form[_], fieldName: String): Unit = {
 
