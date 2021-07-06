@@ -75,7 +75,10 @@ class BulkFileUploadController @Inject() (
               s
             )).mapTo[FileUploadState].flatMap {
               case _: FileUploaded => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload()))
-              case _               => Future.successful(redirectInternalError("InternalError"))
+              case _ =>
+                Future.successful(
+                  redirectInternalError(bulkFileUploadController.markFileUploadAsRejected, "InternalError")
+                )
             }
           case _ => Future.successful(fileStateErrror)
         }
@@ -167,16 +170,10 @@ class BulkFileUploadController @Inject() (
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(Bulk)).contains(Seq.empty))
-        redirectInternalError("MissingFile")
+        redirectInternalError(bulkFileUploadController.markFileUploadAsRejected, "MissingFile")
       else
         Redirect(navigator.nextPage(BulkFileUploadPage, request.userAnswers))
   }
-
-  private def redirectInternalError(errorCode: String)(implicit request: DataRequest[_]) = Redirect(
-    bulkFileUploadController.markFileUploadAsRejected.url,
-    Map("key" -> Seq(request.internalId), "errorMessage" -> Seq(errorCode), "errorCode" -> Seq(errorCode)),
-    SEE_OTHER
-  )
 
   final def renderState(fileUploadState: FileUploadState)(implicit request: DataRequest[_]): Result =
     fileUploadState match {

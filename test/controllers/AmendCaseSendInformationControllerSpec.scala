@@ -21,7 +21,8 @@ import java.time.ZonedDateTime
 import base.SpecBase
 import models.FileType.SupportingEvidence
 import models.{AmendCaseResponseType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
-import org.mockito.Matchers.anyObject
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.{any, anyObject}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AmendCaseResponseTypePage
@@ -29,14 +30,14 @@ import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
-import services.FileUploaded
+import services.{FileUploadState, FileUploaded}
 
 import scala.concurrent.Future
 
 class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar {
   val id = "1"
 
-  "GET /file-upload" should {
+  "GET /amend/upload-a-file" should {
     "show the upload first document page" in {
       val fileUploadUrl = routes.AmendCaseSendInformationController.showFileUpload().url
       val application   = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
@@ -52,11 +53,9 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       }
       application.stop()
     }
-  }
 
-  "GET /file-uploaded" should {
-    "show file uploaded page" in {
-      val fileUploadedUrl = routes.AmendCaseSendInformationController.showFileUploaded().url
+    "show file upload page with file already uploaded" in {
+      val fileUploadedUrl = routes.AmendCaseSendInformationController.showFileUpload().url
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -67,7 +66,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
               "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-              "test.pdf",
+              "uploaded-file.pdf",
               "application/pdf",
               Some(SupportingEvidence)
             )
@@ -93,16 +92,16 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         val request = buildRequest(GET, fileUploadedUrl)
         val result  = route(application, request).value
         status(result) mustEqual 200
-        contentAsString(result) must include("You have uploaded 1 file")
+        contentAsString(result) must include("uploaded-file.pdf")
       }
       application.stop()
     }
   }
 
-  "POST /file-uploaded" should {
-    "go to Further information page" in {
-      lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
+  "POST /amend/upload-a-file" should {
+    "go to Further information page when file uploaded" in {
+      lazy val continueUrl =
+        routes.AmendCaseSendInformationController.onContinue().url
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
@@ -114,7 +113,8 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         ),
@@ -134,7 +134,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       )
       when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
-      val request = FakeRequest(POST, uploadAnotherFile)
+      val request = FakeRequest(POST, continueUrl)
         .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
 
       val result = route(application, request).value
@@ -144,9 +144,9 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       application.stop()
     }
 
-    "go to Check your request page when no documents need to provided" in {
-      lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
+    "go to Check your request page when file uploaded and no further information required " in {
+      lazy val continueUrl =
+        routes.AmendCaseSendInformationController.onContinue().url
 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
 
@@ -160,7 +160,8 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
               ZonedDateTime.parse("2018-04-24T09:30:00Z"),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "test.pdf",
-              "application/pdf"
+              "application/pdf",
+              Some(SupportingEvidence)
             )
           )
         ),
@@ -178,7 +179,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(POST, uploadAnotherFile)
+      val request = FakeRequest(POST, continueUrl)
         .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
 
       val result = route(application, request).value
@@ -188,71 +189,16 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       application.stop()
     }
 
-    "go to upload file page" in {
-      lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
+    "error if no file uploaded" in {
+      lazy val continueUrl =
+        routes.AmendCaseSendInformationController.onContinue().url
 
       val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
 
       val fileUploadedState = FileUploaded(
         FileUploads(files =
-          Seq(
-            FileUpload.Accepted(
-              1,
-              "foo-bar-ref-1",
-              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-              "test.pdf",
-              "application/pdf"
-            )
-          )
-        ),
-        acknowledged = true
-      )
-      val userAnswers = UserAnswers(userIdentification).set(
-        AmendCaseResponseTypePage,
-        amendCaseResponseType
-      ).success.value.copy(fileUploadState = Some(fileUploadedState))
-
-      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
-        Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers)))
-      )
-      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
-
-      val request = FakeRequest(POST, uploadAnotherFile)
-        .withFormUrlEncodedBody(("uploadAnotherFile", "yes"))
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val result = route(application, request).value
-
-      redirectLocation(result) mustEqual Some(routes.AmendCaseSendInformationController.showFileUpload().url)
-
-      application.stop()
-    }
-
-    "stay on file uploaded page when validation error" in {
-      lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
-
-      val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
-
-      val fileUploadedState = FileUploaded(
-        FileUploads(files =
-          Seq(
-            FileUpload.Accepted(
-              1,
-              "foo-bar-ref-1",
-              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-              "test.pdf",
-              "application/pdf"
-            )
-          )
-        ),
-        acknowledged = true
+          Seq(FileUpload.Initiated(1, "11370e18-6e24-453e-b45a-76d3e32ea33d"))
+        )
       )
       val userAnswers = UserAnswers(userIdentification).set(
         AmendCaseResponseTypePage,
@@ -266,104 +212,16 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(POST, uploadAnotherFile)
+      val request = FakeRequest(POST, continueUrl)
         .withFormUrlEncodedBody(("uploadAnotherFile", ""))
 
       val result = route(application, request).value
 
-      status(result) mustEqual 400
-      contentAsString(result) must include(htmlEscapedMessage("error.uploadAnotherFile.required"))
-      application.stop()
-    }
-  }
-
-  "In CheckMode" should {
-    "go to Further Information page when both Documents and Further Information selected" in {
-      lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
-
-      val amendCaseResponseType: Set[AmendCaseResponseType] =
-        Set(AmendCaseResponseType.SupportingDocuments, AmendCaseResponseType.FurtherInformation)
-
-      val fileUploadedState = FileUploaded(
-        FileUploads(files =
-          Seq(
-            FileUpload.Accepted(
-              1,
-              "foo-bar-ref-1",
-              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-              "test.pdf",
-              "application/pdf"
-            )
-          )
-        ),
-        acknowledged = true
+      status(result) mustEqual 303
+      redirectLocation(result).value must include(
+        routes.AmendCaseSendInformationController.markFileUploadAsRejected().url
       )
-      val userAnswers = UserAnswers(userIdentification).set(
-        AmendCaseResponseTypePage,
-        amendCaseResponseType
-      ).success.value.copy(fileUploadState = Some(fileUploadedState))
-
-      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
-        Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers)))
-      )
-      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(POST, uploadAnotherFile)
-        .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
-
-      val result = route(application, request).value
-
-      redirectLocation(result) mustEqual Some(routes.FurtherInformationController.onPageLoad().url)
-
-      application.stop()
-    }
-
-    "go to Check your Answers page when only Documents is selected" in {
-      lazy val uploadAnotherFile =
-        routes.AmendCaseSendInformationController.submitUploadAnotherFileChoice().url
-
-      val amendCaseResponseType: Set[AmendCaseResponseType] = Set(AmendCaseResponseType.SupportingDocuments)
-
-      val fileUploadedState = FileUploaded(
-        FileUploads(files =
-          Seq(
-            FileUpload.Accepted(
-              1,
-              "foo-bar-ref-1",
-              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-              "test.pdf",
-              "application/pdf"
-            )
-          )
-        ),
-        acknowledged = true
-      )
-      val userAnswers = UserAnswers(userIdentification).set(
-        AmendCaseResponseTypePage,
-        amendCaseResponseType
-      ).success.value.copy(fileUploadState = Some(fileUploadedState))
-
-      when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
-        Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers)))
-      )
-      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(POST, uploadAnotherFile)
-        .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
-
-      val result = route(application, request).value
-
-      redirectLocation(result) mustEqual Some(routes.AmendCheckYourAnswersController.onPageLoad().url)
-
+      redirectLocation(result).value must include("errorCode=MissingFile")
       application.stop()
     }
   }
@@ -428,6 +286,48 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       }
       application.stop()
     }
+  }
+
+  "GET /amend/file-uploaded/:reference/remove " should {
+    "remove existing upload" in {
+
+      val fileUploadState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(SupportingEvidence)
+            )
+          )
+        )
+      )
+
+      val updatedState: ArgumentCaptor[FileUploadState] = ArgumentCaptor.forClass(classOf[FileUploadState])
+      when(mockSessionRepository.updateSession(updatedState.capture(), any())) thenReturn Future.successful(true)
+
+      val userAnswers = UserAnswers(userIdentification).copy(fileUploadState = Some(fileUploadState))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = buildRequest(GET, routes.AmendCaseSendInformationController.onRemove("foo-bar-ref-1").url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.AmendCaseSendInformationController.showFileUpload().url
+      }
+      application.stop()
+
+      updatedState.getValue.fileUploads.isEmpty mustBe true
+    }
+
   }
 
   def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString

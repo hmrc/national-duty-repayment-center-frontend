@@ -74,7 +74,10 @@ class ProofOfAuthorityController @Inject() (
               s
             )).mapTo[FileUploadState].flatMap {
               case _: FileUploaded => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))
-              case _               => Future.successful(redirectInternalError("InternalError"))
+              case _ =>
+                Future.successful(
+                  redirectInternalError(routes.ProofOfAuthorityController.markFileUploadAsRejected, "InternalError")
+                )
             }
           case _ => Future.successful(fileStateErrror)
         }
@@ -167,16 +170,10 @@ class ProofOfAuthorityController @Inject() (
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(ProofOfAuthority)).contains(Seq.empty))
-        redirectInternalError("MissingFile")
+        redirectInternalError(routes.ProofOfAuthorityController.markFileUploadAsRejected, "MissingFile")
       else
         Redirect(navigator.nextPage(ProofOfAuthorityPage, request.userAnswers))
   }
-
-  private def redirectInternalError(errorCode: String)(implicit request: DataRequest[_]) = Redirect(
-    routes.ProofOfAuthorityController.markFileUploadAsRejected.url,
-    Map("key" -> Seq(request.internalId), "errorMessage" -> Seq(errorCode), "errorCode" -> Seq(errorCode)),
-    SEE_OTHER
-  )
 
   final def renderState(fileUploadState: FileUploadState)(implicit request: DataRequest[_]): Result =
     fileUploadState match {

@@ -24,7 +24,8 @@ import play.api.mvc.Call
 class AmendNavigator extends Navigator[UserAnswers] with AmendAnswerConditions with AmendHasAnsweredConditions {
 
   override protected def checkYourAnswersPage: Call = controllers.routes.AmendCheckYourAnswersController.onPageLoad()
-  override protected lazy val pageBeforeNavigation  = Some(controllers.routes.CreateOrAmendCaseController.onPageLoad())
+
+  override protected lazy val pageBeforeNavigation = Some(controllers.routes.CreateOrAmendCaseController.onPageLoad())
 
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
@@ -32,7 +33,6 @@ class AmendNavigator extends Navigator[UserAnswers] with AmendAnswerConditions w
     P(ReferenceNumberPage, controllers.routes.ReferenceNumberController.onPageLoad, always, caseReferenceAnswered),
     P(AmendCaseResponseTypePage, controllers.routes.AmendCaseResponseTypeController.onPageLoad, always, caseResponseTypeAnswered),
     P(AmendFileUploadPage, controllers.routes.AmendCaseSendInformationController.showFileUpload, showFileUpload, fileUploadedAnswered),
-    P(AmendFileUploadedPage, controllers.routes.AmendCaseSendInformationController.showFileUploaded, showFileUploaded, fileUploadedAnswered),
     P(FurtherInformationPage, controllers.routes.FurtherInformationController.onPageLoad, showFurtherInformation, furtherInformationAnswered),
     P(AmendCheckYourAnswersPage, controllers.routes.AmendCheckYourAnswersController.onPageLoad, always, never),
     P(AmendConfirmationPage, controllers.routes.AmendConfirmationController.onPageLoad, always, never)
@@ -46,9 +46,7 @@ protected trait AmendAnswerConditions {
   protected val always: UserAnswers => Boolean = (_: UserAnswers) => true
 
   protected val showFileUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(AmendCaseResponseTypePage).exists(
-      _.contains(SupportingDocuments)
-    ) && (answers.fileUploadState.isEmpty || answers.fileUploadState.exists(state => state.fileUploads.isEmpty))
+    answers.get(AmendCaseResponseTypePage).exists(_.contains(SupportingDocuments))
 
   protected val showFileUploaded: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(AmendCaseResponseTypePage).exists(_.contains(SupportingDocuments))
