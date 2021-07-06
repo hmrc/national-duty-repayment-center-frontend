@@ -23,7 +23,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.AmendClaimIdQuery
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import views.html.{ClaimSummaryView, AmendConfirmationView}
+import views.html.{AmendConfirmationView, ClaimSummaryView}
 
 class AmendConfirmationController @Inject() (
   override val messagesApi: MessagesApi,
@@ -41,7 +41,7 @@ class AmendConfirmationController @Inject() (
         case Some(claimId) =>
           val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
           Ok(view(claimId, checkYourAnswersHelper.getAmendCheckYourAnswerSections))
-        case None          => Redirect(controllers.routes.IndexController.onPageLoad())
+        case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }
 
@@ -51,7 +51,7 @@ class AmendConfirmationController @Inject() (
         case Some(_) =>
           val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
           Ok(reviewView(checkYourAnswersHelper.getAmendCheckYourAnswerSections))
-        case None          => Redirect(controllers.routes.IndexController.onPageLoad())
+        case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }
 
