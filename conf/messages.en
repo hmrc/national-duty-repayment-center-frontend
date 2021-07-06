@@ -494,6 +494,9 @@ confirmation.summary.datetime = Submitted
 
 amend.confirmation.whatHappensNext.heading = What happens next
 amend.confirmation.receivedInformation = We have received your information.
+amend.confirmation.print = Print or save a summary of your additional information and reference number
+amend.confirmation.print.text = as we will not send you an email confirmation.
+amend.confirmation.review = View a summary of your additional information and reference number (opens in a new tab)
 amend.confirmation.amendWhatHappensNext.p1 = We will process your application and send our decision by post within 30 days.
 amend.confirmation.amendWhatHappensNext.p2 = We will contact you if we need more information to complete your application.
 amend.confirmation.moreInformation.heading = If we do not need more information

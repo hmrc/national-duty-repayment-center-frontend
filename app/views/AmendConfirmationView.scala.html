@@ -40,7 +40,18 @@
 
         @html.p{ @messages("amend.confirmation.receivedInformation") }
 
-        @components.printPage("confirmation.print", Some("confirmation.print.text"))
+        @components.printPage("amend.confirmation.print", Some("amend.confirmation.print.text"))
+
+        <noscript>
+            @html.p {
+                @html.a(
+                    link = AmendConfirmationController.onSummary().url,
+                    messageKey = "amend.confirmation.review",
+                    isExternal = true
+                )
+                @messages("amend.confirmation.print.text")
+            }
+        </noscript>
 
         @html.h2("amend.confirmation.whatHappensNext.heading", classes = "govuk-heading-m")
 

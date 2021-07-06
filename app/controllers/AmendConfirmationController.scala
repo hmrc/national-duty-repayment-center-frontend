@@ -23,7 +23,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.AmendClaimIdQuery
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
-import views.html.AmendConfirmationView
+import views.html.{ClaimSummaryView, AmendConfirmationView}
 
 class AmendConfirmationController @Inject() (
   override val messagesApi: MessagesApi,
@@ -31,7 +31,8 @@ class AmendConfirmationController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: AmendConfirmationView
+  view: AmendConfirmationView,
+  reviewView: ClaimSummaryView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
@@ -40,6 +41,16 @@ class AmendConfirmationController @Inject() (
         case Some(claimId) =>
           val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
           Ok(view(claimId, checkYourAnswersHelper.getAmendCheckYourAnswerSections))
+        case None          => Redirect(controllers.routes.IndexController.onPageLoad())
+      }
+  }
+
+  def onSummary: Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      request.userAnswers.get(AmendClaimIdQuery) match {
+        case Some(_) =>
+          val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+          Ok(reviewView(checkYourAnswersHelper.getAmendCheckYourAnswerSections))
         case None          => Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }
