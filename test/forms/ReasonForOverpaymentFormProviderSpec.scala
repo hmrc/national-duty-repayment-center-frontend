@@ -41,5 +41,6 @@ class ReasonForOverpaymentFormProviderSpec extends StringFieldBehaviours {
     )
 
     behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
+    behave like mandatoryNotSpaceField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
   }
 }
