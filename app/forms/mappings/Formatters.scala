@@ -17,13 +17,12 @@
 package forms.mappings
 
 import forms.{TrimWhitespace, Validation}
-import play.api.data.format.Formatter
 import models.Enumerable
-
-import scala.util.{Failure, Success, Try}
+import play.api.data.format.Formatter
 import play.api.data.{FormError, Mapping}
 
 import scala.util.control.Exception.nonFatalCatch
+import scala.util.{Failure, Success, Try}
 
 trait Formatters extends TrimWhitespace {
 
@@ -44,8 +43,9 @@ trait Formatters extends TrimWhitespace {
 
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
       data.get(key) match {
-        case None | Some("") => Left(Seq(FormError(key, errorKey)))
-        case Some(s)         => Right(trimWhitespace(s))
+        case None                                         => Left(Seq(FormError(key, errorKey)))
+        case Some(value) if trimWhitespace(value).isEmpty => Left(Seq(FormError(key, errorKey)))
+        case Some(s)                                      => Right(trimWhitespace(s))
       }
 
     override def unbind(key: String, value: String): Map[String, String] =

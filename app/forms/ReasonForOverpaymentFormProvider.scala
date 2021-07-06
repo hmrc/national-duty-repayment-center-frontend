@@ -25,7 +25,7 @@ class ReasonForOverpaymentFormProvider @Inject() extends Mappings {
 
   def apply(): Form[ClaimDescription] =
     Form(
-      "value" -> text("reasonForOverpayment.error.required")
+      "value" -> textNoSpaces("reasonForOverpayment.error.required")
         .verifying(maxLength(1400, "reasonForOverpayment.error.length")).transform[ClaimDescription](
           ClaimDescription.apply,
           _.value
