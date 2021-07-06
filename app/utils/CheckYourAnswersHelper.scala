@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
 import controllers.routes
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.DeclarantReferenceType.{No, Yes}
-import models.FileType.{Bulk, ProofOfAuthority}
+import models.FileType.{Bulk, ProofOfAuthority, SupportingEvidence}
 import models.FileUpload.Accepted
 import models.NumberOfEntriesType.{Multiple, Single}
 import models._
@@ -666,14 +666,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   private def evidenceFileUploadsAmend: AnswerRow = {
-    val noOfDocuments = fileUploadState.map(_.fileUploads.acceptedCount).getOrElse(0)
+    val uploadedFiles: Seq[UploadedFile] =
+      fileUploadState.map(_.fileUploads.toFilesOfType(SupportingEvidence)).getOrElse(Seq.empty)
     AnswerRow(
       HtmlFormat.escape(messages("view.amend-upload-file.checkYourAnswersLabel")),
-      if (noOfDocuments == 1)
-        HtmlFormat.escape(messages("view.amend-upload-file.document.added", noOfDocuments))
-      else
-        HtmlFormat.escape(messages("view.amend-upload-file.documents.added", noOfDocuments)),
-      Some(routes.AmendCheckYourAnswersController.onChange(AmendFileUploadedPage).url)
+      Html(uploadedFiles.map(file => HtmlFormat.escape(file.fileName)).mkString("<br>")),
+      Some(routes.AmendCheckYourAnswersController.onChange(AmendFileUploadPage).url)
     )
   }
 

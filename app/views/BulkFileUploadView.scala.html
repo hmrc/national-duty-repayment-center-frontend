@@ -36,7 +36,7 @@
 @(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], successAction: Call, failureAction: Call, checkStatusAction: Call, backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("bulkFileUpload.title"))}"),
+    pageTitle = Some(s"${errorPrefix(maybeUploadError)}${titleNoForm(messages("bulkFileUpload.title"))}"),
     backLinkNav = Some(backLink)
 ) {
 
@@ -88,7 +88,7 @@
                 formGroupClasses = "",
                 classes = "",
                 attributes = Map(
-                    "accept" -> appConfig.fileFormats.approvedFileExtensions,
+                    "accept" -> appConfig.fileFormats.bulkExtensions,
                     "onchange" -> "javascript:onFileSelect()",
                     "data-msg-required" -> messages("error.file-upload.required"),
                     "data-msg-filesize" -> messages("error.file-upload.invalid-size-large", appConfig.fileFormats.maxFileSizeMb),
@@ -98,7 +98,6 @@
 
             <div class="ndrc-display-only-non-javascript">
             @govukButton(Button(
-                attributes = Map("id" -> "ndrc-fileupload-continue"),
                 content = Text(messages("form.upload-file.submit")),
                 preventDoubleClick = true,
                 classes = "file-upload__submit"
@@ -109,13 +108,20 @@
 
     <div class="ndrc-display-none-non-javascript">
         @forms.formWithCSRF(action = BulkFileUploadController.onContinue(), args = 'novalidate -> "novalidate") {
-            @html.button("site.continue")
+            @govukButton(Button(
+                attributes = Map("id" -> "ndrc-fileupload-continue"),
+                content = Text(messages("site.continue")),
+                preventDoubleClick = true
+            ))
         }
     </div>
     <div class="ndrc-display-only-non-javascript">
         @if(!uploadedFiles.isEmpty){
             @forms.formWithCSRF(action = BulkFileUploadController.onContinue(), args = 'novalidate -> "novalidate") {
-                @html.button("site.continue")
+                @govukButton(Button(
+                    content = Text(messages("site.continue")),
+                    preventDoubleClick = true
+                ))
             }
         }
     </div>

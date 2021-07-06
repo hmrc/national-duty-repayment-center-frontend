@@ -47,7 +47,8 @@ object FrontendAppConfig {
     maxFileSizeMb: Int,
     approvedFileTypes: String,
     approvedFileExtensions: String,
-    proofOfAuthorityExtensions: String
+    proofOfAuthorityExtensions: String,
+    bulkExtensions: String
   )
 
   case class EoriIntegration(enabled: Boolean, enrolmentKey: String, enrolmentUrl: Option[String])
@@ -153,7 +154,8 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
     maxFileSizeMb = configuration.get[Int]("file-formats.max-file-size-mb"),
     approvedFileExtensions = configuration.get[String]("file-formats.approved-file-extensions"),
     approvedFileTypes = configuration.get[String]("file-formats.approved-file-types"),
-    proofOfAuthorityExtensions = configuration.get[String]("file-formats.proof-of-authority-file-extensions")
+    proofOfAuthorityExtensions = configuration.get[String]("file-formats.proof-of-authority-file-extensions"),
+    bulkExtensions = configuration.get[String]("file-formats.bulk-file-extensions")
   )
 
   override val eoriIntegration: FrontendAppConfig.EoriIntegration = {

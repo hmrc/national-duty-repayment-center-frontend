@@ -36,7 +36,7 @@
 @(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("proof-of-authority.title"))}"),
+    pageTitle = Some(s"${errorPrefix(maybeUploadError)}${titleNoForm(messages("proof-of-authority.title"))}"),
     backLinkNav = Some(backLink)
 ) {
 
@@ -105,7 +105,6 @@
 
             <div class="ndrc-display-only-non-javascript">
                 @govukButton(Button(
-                    attributes = Map("id" -> "ndrc-fileupload-continue"),
                     content = Text(messages("form.upload-file.submit")),
                     preventDoubleClick = true,
                     classes = "file-upload__submit"
@@ -118,13 +117,20 @@
 
     <div class="ndrc-display-none-non-javascript">
         @forms.formWithCSRF(action = ProofOfAuthorityController.onContinue(), args = 'novalidate -> "novalidate") {
-            @html.button("site.continue")
+            @govukButton(Button(
+                attributes = Map("id" -> "ndrc-fileupload-continue"),
+                content = Text(messages("site.continue")),
+                preventDoubleClick = true
+            ))
         }
     </div>
     <div class="ndrc-display-only-non-javascript">
         @if(!uploadedFiles.isEmpty){
             @forms.formWithCSRF(action = ProofOfAuthorityController.onContinue(), args = 'novalidate -> "novalidate") {
-                @html.button("site.continue")
+                @govukButton(Button(
+                    content = Text(messages("site.continue")),
+                    preventDoubleClick = true
+                ))
             }
         }
     </div>
