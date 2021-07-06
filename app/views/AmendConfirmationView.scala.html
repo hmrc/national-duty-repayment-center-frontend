@@ -15,6 +15,7 @@
  *@
 
 @import uk.gov.hmrc.play.views.html._
+@import viewmodels.Section
 @import config.FrontendAppConfig
 
 @this(
@@ -23,32 +24,35 @@
         config: FrontendAppConfig
 )
 
-@(claimId: String)(implicit request: Request[_], messages: Messages)
+@(claimId: String, sections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("confirmation.amend.title"))}")
 ) {
 
-    <div class="govuk-panel govuk-panel--confirmation">
-        @html.h1("confirmation.amend.heading", classes="govuk-panel__title")
-        <div class="govuk-panel__body">
-            @messages("confirmation.referenceNumber")<br><strong> @claimId.toString </strong>
+    <div class="govuk-!-display-none-print">
+        <div class="govuk-panel govuk-panel--confirmation">
+            @html.h1("confirmation.amend.heading", classes="govuk-panel__title")
+            <div class="govuk-panel__body">
+                @messages("confirmation.referenceNumber")<br><strong> @claimId.toString </strong>
+            </div>
         </div>
+
+        @html.p{ @messages("amend.confirmation.receivedInformation") }
+
+        @components.printPage("confirmation.print", Some("confirmation.print.text"))
+
+        @html.h2("amend.confirmation.whatHappensNext.heading", classes = "govuk-heading-m")
+
+        @html.p{ @messages("amend.confirmation.amendWhatHappensNext.p1") }
+        @html.p{ @messages("amend.confirmation.amendWhatHappensNext.p2") }
+
+        @html.p{
+            @html.a(config.feedbackSurvey, messages("confirmation.improveService.link.text1"))
+        }
     </div>
-
-    @html.p{ @messages("amend.confirmation.receivedInformation") }
-
-    @html.h2("amend.confirmation.whatHappensNext.heading", classes = "govuk-heading-m")
-
-    @html.p{ @messages("amend.confirmation.amendWhatHappensNext.p1") }
-
-    @html.h2("amend.confirmation.moreInformation.heading", classes = "govuk-heading-m")
-    @html.p{ @messages("amend.confirmation.moreInformation.p1") }
-
-    @html.h2("amend.confirmation.helpUs.heading", classes = "govuk-heading-m")
-    @html.p{ @messages("amend.confirmation.helpUs.p1") }
-    @html.p{
-        @html.a(config.feedbackSurvey, messages("amend.confirmation.helpUs.p2"))
-        @messages("amend.confirmation.helpUs.p3")
-    }
+    <div class="ndrc-!-display-only-print">
+        @html.h1("confirmation.summary.title")Con
+        @components.answers(sections)
+    </div>
 }

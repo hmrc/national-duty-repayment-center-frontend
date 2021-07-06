@@ -494,7 +494,8 @@ confirmation.summary.datetime = Submitted
 
 amend.confirmation.whatHappensNext.heading = What happens next
 amend.confirmation.receivedInformation = We have received your information.
-amend.confirmation.amendWhatHappensNext.p1 = We will check the information you have sent and contact you if we need more information.
+amend.confirmation.amendWhatHappensNext.p1 = We will process your application and send our decision by post within 30 days.
+amend.confirmation.amendWhatHappensNext.p2 = We will contact you if we need more information to complete your application.
 amend.confirmation.moreInformation.heading = If we do not need more information
 amend.confirmation.moreInformation.p1 = We will continue processing your application.
 amend.confirmation.helpUs.heading = Help us improve our services
