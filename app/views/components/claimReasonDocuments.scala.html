@@ -1,0 +1,92 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.ClaimReasonType
+
+@this(html: views.components.html)
+
+@(claimReason: ClaimReasonType)(implicit request: Request[_], messages: Messages)
+
+@{
+ claimReason match {
+  case ClaimReasonType.CommodityCodeChange => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.substitute_entry"
+  )
+  case ClaimReasonType.CurrencyChanges => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.substitute_entry",
+   "claimReason.documents.currency_charge_evicence"
+  )
+  case ClaimReasonType.Cpuchange => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.substitute_entry"
+  )
+  case ClaimReasonType.CustomsSpecialProcedures => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.substitute_entry"
+  )
+  case ClaimReasonType.Preference => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.airway_bill",
+   "claimReason.documents.proof_of_origin",
+   "claimReason.documents.substitute_entry"
+  )
+  case ClaimReasonType.Retroactivequota => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.substitute_entry",
+   "claimReason.documents.proof_of_quota"
+  )
+  case ClaimReasonType.ReturnOfUnwantedGoods => html.ul(
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.airway_bill",
+   "claimReason.documents.proof_of_return"
+  )
+  case ClaimReasonType.ReturnedGoodsRelief => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.airway_bill",
+   "claimReason.documents.substitute_entry",
+   "claimReason.documents.proof_of_return",
+   "claimReason.documents.evidence_of_export"
+  )
+  case ClaimReasonType.Value => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice",
+   "claimReason.documents.evidence_of_corrected_invoice"
+  )
+  case ClaimReasonType.Other => html.ul(
+   "claimReason.documents.c88",
+   "claimReason.documents.e2",
+   "claimReason.documents.commercial_invoice"
+  )
+  case _ => ""
+ }
+}

@@ -236,19 +236,24 @@ claimRepaymentType.03 = Other duties
 claimRepaymentType.checkYourAnswersLabel = What do you want to reclaim?
 claimRepaymentType.error.required = Select what you want to reclaim
 
-evidenceSupportingDocs.title = Supporting documents
-evidenceSupportingDocs.heading = Supporting documents
-evidenceSupportingDocs.paragraph1 = You should send as many supporting documents for this application as possible.
-evidenceSupportingDocs.paragraph2 = Each file must be 6MB or less.
+evidenceSupportingDocs.title = Required supporting documents
+evidenceSupportingDocs.heading = Required supporting documents
+evidenceSupportingDocs.paragraph1 = These are the documents we must have to process your claim.
 evidenceSupportingDocs.h2 = Accepted file formats
-evidenceSupportingDocs.bullet1 = .doc
-evidenceSupportingDocs.bullet2 = .jpg
-evidenceSupportingDocs.bullet3 = .pdf
-evidenceSupportingDocs.bullet4 = .png
-evidenceSupportingDocs.bullet5 = .xls
-evidenceSupportingDocs.bullet6 = .txt
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
+
+claimReason.documents.c88 = <b>C88</b>, which authorises imports from the country of origin
+claimReason.documents.e2 = <b>E2</b>, which authorises imports from the country of origin
+claimReason.documents.commercial_invoice = <b>Commercial invoice</b>, which shows the value of the goods
+claimReason.documents.substitute_entry = <b>Substitute entry</b>, which shows changes made to the original entry
+claimReason.documents.currency_charge_evicence = Evidence that the invoice has been corrected in another currency
+claimReason.documents.airway_bill = <b>Airway bill</b> or <b>bill of lading</b> that show shipping details
+claimReason.documents.proof_of_origin = <b>Proof of origin documents</b>, such as a GSP certificate
+claimReason.documents.proof_of_quota = Proof of the quota and commodity codes that are being claimed against
+claimReason.documents.proof_of_return = Proof of return
+claimReason.documents.evidence_of_export = Evidence of the original export
+claimReason.documents.evidence_of_corrected_invoice = Evidence of corrected invoice
 
 declarantReferenceNumber.title = Do you want to create a declarant reference number?
 declarantReferenceNumber.heading = Do you want to create a declarant reference number?
