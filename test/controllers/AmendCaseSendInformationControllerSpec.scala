@@ -135,9 +135,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
 
       val request = FakeRequest(POST, continueUrl)
-        .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
-
-      val result = route(application, request).value
+      val result  = route(application, request).value
 
       redirectLocation(result) mustEqual Some(routes.FurtherInformationController.onPageLoad().url)
 
@@ -180,9 +178,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(POST, continueUrl)
-        .withFormUrlEncodedBody(("uploadAnotherFile", "no"))
-
-      val result = route(application, request).value
+      val result  = route(application, request).value
 
       redirectLocation(result) mustEqual Some(routes.AmendCheckYourAnswersController.onPageLoad().url)
 
@@ -213,9 +209,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(POST, continueUrl)
-        .withFormUrlEncodedBody(("uploadAnotherFile", ""))
-
-      val result = route(application, request).value
+      val result  = route(application, request).value
 
       status(result) mustEqual 303
       redirectLocation(result).value must include(

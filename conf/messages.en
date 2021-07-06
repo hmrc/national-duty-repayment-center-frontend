@@ -254,6 +254,7 @@ claimReason.documents.proof_of_quota = Proof of the quota and commodity codes th
 claimReason.documents.proof_of_return = Proof of return
 claimReason.documents.evidence_of_export = Evidence of the original export
 claimReason.documents.evidence_of_corrected_invoice = Evidence of corrected invoice
+claimReason.documents.additional.documents.para = You may also include additional documents if you think they are relevant.
 
 declarantReferenceNumber.title = Do you want to create a declarant reference number?
 declarantReferenceNumber.heading = Do you want to create a declarant reference number?
@@ -674,25 +675,16 @@ amendCaseResponseType.sendInformation.checkYourAnswersLabel = Information
 amendCaseResponseType.sendDocuments.checkYourAnswersLabel = Documents
 amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel = Documents and Information
 
-view.upload-file.title = Upload a file
-view.upload-file.heading = Upload a file
-view.upload-file.line1 = You can upload as many files as you need to.
-view.upload-file.line2 = You can only upload one file at a time.
-view.upload-file.h2 =  Suggested supporting documents
-view.upload-file.help.line1 = Send us any supporting documents you have. This could include:
-view.upload-file.help.fileType1=air waybill or bill of lading, which show shipping details
-view.upload-file.help.fileType2=C88, which authorises imports from the country of origin
-view.upload-file.help.fileType3=copies of any duplicate entries
-view.upload-file.help.fileType4=E2, which authorises imports from the country of origin
-view.upload-file.help.fileType5=invoice, which shows the value of the goods
-view.upload-file.help.fileType6=packing list, which shows packaging details in each shipment
-view.upload-file.help.fileType7=proof of origin, such as GSP certificates
-view.upload-file.help.fileType8= proof of return
-view.upload-file.help.fileType9=substitute entry, which shows changes made to the original entry
-view.upload-file.help.fileType10=tariff classification advice
-view.upload-file.help.fileType11=technical specifications where commodity codes have changed
-view.upload-file.help.fileType12=transfer of residence authorisation
-view.upload-file.help.line4=Upload a file
+view.upload-file.title = Upload your supporting documentation
+view.upload-file.heading = Upload your supporting documentation
+view.upload-file.line1 = You can upload as many files as you need to support your application.
+view.upload-file.line2 = Each file must be 6MB or smaller.
+view.upload-file.details =  What you must upload
+view.upload-file.types.heading = Types of files you can upload
+
+view.upload-file.label.upload.first = Upload your first file
+view.upload-file.label.upload.next = Upload another file (optional)
+
 view.upload-file.waiting=Your document is being uploaded. You’ll be redirected once the file has been processed.
 form.upload-file.submit= Continue
 view.upload-file.checkYourAnswersLabel = Supporting documents
@@ -764,13 +756,14 @@ amend.site.continue = Accept and send
 amend-file-upload.help.linkText = Help with file types
 amend-file-upload.help.line1 = Each file must be 6MB or less.
 amend-file-upload.help.line2 = Accepted file formats
-amend-file-upload.help.fileFormat1= Image (.jpeg, .jpg or .png)
-amend-file-upload.help.fileFormat2= PDF (.pdf)
-amend-file-upload.help.fileFormat3= MS Word document (.doc or .docx)
-amend-file-upload.help.fileFormat4= MS Excel spreadsheet (.xls or .xlsx)
-amend-file-upload.help.fileFormat5= MS PowerPoint (.ppt or .pptx)
-amend-file-upload.help.fileFormat6= Open Document Format (.odt, .ods or .odp)
-amend-file-upload.help.fileFormat7= Text files (.txt)
+
+supported-file-type.help.fileFormat1= Image (.jpeg, .jpg or .png)
+supported-file-type.help.fileFormat2= PDF (.pdf)
+supported-file-type.help.fileFormat3= MS Word document (.doc or .docx)
+supported-file-type.help.fileFormat4= MS Excel spreadsheet (.xls or .xlsx)
+supported-file-type.help.fileFormat5= MS PowerPoint (.ppt or .pptx)
+supported-file-type.help.fileFormat6= Open Document Format (.odt, .ods or .odp)
+supported-file-type.help.fileFormat7= Text files (.txt)
 
 your.details.checkYourAnswersLabel = Your details
 contact.details.checkYourAnswersLabel = Contact details

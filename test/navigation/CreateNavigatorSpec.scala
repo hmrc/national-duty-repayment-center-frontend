@@ -288,7 +288,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
 
-        navigator.nextPage(FileUploadedPage, answers)
+        navigator.nextPage(FileUploadPage, answers)
           .mustBe(routes.ImporterHasEoriController.onPageLoad())
       }
 
@@ -297,7 +297,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswersWithEORI
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
 
-        navigator.nextPage(FileUploadedPage, answers)
+        navigator.nextPage(FileUploadPage, answers)
           .mustBe(routes.IsVATRegisteredController.onPageLoad())
       }
 
@@ -324,7 +324,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswers
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
-        navigator.nextPage(FileUploadedPage, answers)
+        navigator.nextPage(FileUploadPage, answers)
           .mustBe(routes.AgentImporterHasEORIController.onPageLoad())
       }
 
@@ -333,7 +333,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           emptyUserAnswersWithEORI
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
-        navigator.nextPage(FileUploadedPage, answers)
+        navigator.nextPage(FileUploadPage, answers)
           .mustBe(routes.AgentImporterHasEORIController.onPageLoad())
       }
 

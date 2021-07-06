@@ -61,7 +61,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         val request = buildRequest(GET, fileUploadUrl)
         val result  = route(application, request).value
         status(result) mustEqual 200
-        contentAsString(result) must include(htmlEscapedMessage("view.upload-file.heading"))
+        contentAsString(result) must include(htmlEscapedMessage("proof-of-authority.heading"))
       }
       application.stop()
     }

@@ -27,6 +27,7 @@
         forms: views.components.forms,
         html: views.components.html,
         details: views.html.components.details,
+        supportedFileTypeList: views.html.components.supportedFileTypeList,
         uploadSummary: views.html.components.uploadSummary,
         govukFileUpload: GovukFileUpload,
         govukButton: GovukButton,
@@ -47,16 +48,9 @@
         }
 
         @html.p{ @messages("amend-file-upload.help.line1") }
+
         @html.h2("amend-file-upload.help.line2", classes = "govuk-heading-m")
-        @html.ul(
-            messages("amend-file-upload.help.fileFormat1"),
-            messages("amend-file-upload.help.fileFormat2"),
-            messages("amend-file-upload.help.fileFormat3"),
-            messages("amend-file-upload.help.fileFormat4"),
-            messages("amend-file-upload.help.fileFormat5"),
-            messages("amend-file-upload.help.fileFormat6"),
-            messages("amend-file-upload.help.fileFormat7")
-        )
+        @supportedFileTypeList()
 
         @uploadSummary(uploadedFiles, ref => routes.AmendCaseSendInformationController.onRemove(ref).url, Some(
             SummaryListRow(
