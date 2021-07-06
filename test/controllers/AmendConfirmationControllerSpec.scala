@@ -21,7 +21,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.AmendClaimIdQuery
 import utils.CheckYourAnswersHelper
-import views.html.{ClaimSummaryView, AmendConfirmationView}
+import views.html.{AmendConfirmationView, ClaimSummaryView}
 
 class AmendConfirmationControllerSpec extends SpecBase {
 
