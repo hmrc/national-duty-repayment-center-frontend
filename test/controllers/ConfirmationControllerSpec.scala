@@ -95,7 +95,10 @@ class ConfirmationControllerSpec extends SpecBase {
         val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
 
         contentAsString(result) mustEqual
-          view(checkYourAnswersHelper.getCreateConfirmationSections, "confirmation.summary.title")(request, messages).toString
+          view(checkYourAnswersHelper.getCreateConfirmationSections, "confirmation.summary.title")(
+            request,
+            messages
+          ).toString
 
       }
     }
