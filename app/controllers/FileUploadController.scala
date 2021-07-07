@@ -77,13 +77,9 @@ class FileUploadController @Inject() (
               s
             )).mapTo[FileUploadState].flatMap {
               case _: FileUploaded => Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
-              case _: UploadFile   => Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
               case _ =>
                 Future.successful(
-                  redirectInternalError(
-                    routes.AmendCaseSendInformationController.markFileUploadAsRejected,
-                    "InternalError"
-                  )
+                  redirectInternalError(routes.FileUploadController.markFileUploadAsRejected, "InternalError")
                 )
             }
           case _ => Future.successful(fileStateErrror)
