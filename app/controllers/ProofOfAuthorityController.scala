@@ -74,6 +74,8 @@ class ProofOfAuthorityController @Inject() (
               s
             )).mapTo[FileUploadState].flatMap {
               case _: FileUploaded => Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))
+              case f @ UploadFile(_, _, fileUploads, _) if fileUploads.initiateCount == 0 =>
+                Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))
               case _ =>
                 Future.successful(
                   redirectInternalError(routes.ProofOfAuthorityController.markFileUploadAsRejected, "InternalError")

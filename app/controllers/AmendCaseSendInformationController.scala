@@ -75,6 +75,8 @@ class AmendCaseSendInformationController @Inject() (
             )).mapTo[FileUploadState].flatMap {
               case _: FileUploaded =>
                 Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload()))
+              case f @ UploadFile(_, _, fileUploads, _) if fileUploads.initiateCount == 0 =>
+                Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload()))
               case _ =>
                 Future.successful(
                   redirectInternalError(

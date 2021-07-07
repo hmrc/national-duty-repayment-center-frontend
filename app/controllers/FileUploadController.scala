@@ -77,6 +77,8 @@ class FileUploadController @Inject() (
               s
             )).mapTo[FileUploadState].flatMap {
               case _: FileUploaded => Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
+              case f @ UploadFile(_, _, fileUploads, _) if fileUploads.initiateCount == 0 =>
+                Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
               case _ =>
                 Future.successful(
                   redirectInternalError(routes.FileUploadController.markFileUploadAsRejected, "InternalError")

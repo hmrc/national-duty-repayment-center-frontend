@@ -74,7 +74,9 @@ class BulkFileUploadController @Inject() (
               LocalDateTime.now.plusSeconds(appConfig.fileUploadTimeout.toSeconds),
               s
             )).mapTo[FileUploadState].flatMap {
-              case _: FileUploaded => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload()))
+              case _: FileUploaded => Future.successful(Redirect(bulkFileUploadController.showFileUpload()))
+              case f @ UploadFile(_, _, fileUploads, _) if fileUploads.initiateCount == 0 =>
+                Future.successful(Redirect(bulkFileUploadController.showFileUpload()))
               case _ =>
                 Future.successful(
                   redirectInternalError(bulkFileUploadController.markFileUploadAsRejected, "InternalError")

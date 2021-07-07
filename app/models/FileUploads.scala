@@ -27,6 +27,10 @@ case class FileUploads(files: Seq[FileUpload] = Seq.empty) {
   def nonEmpty: Boolean = !isEmpty
   def isSingle: Boolean = acceptedCount == 1
 
+  def initiateCount: Int =
+    files
+      .count { case f: FileUpload.Initiated => true; case _ => false }
+
   def acceptedCount: Int =
     files
       .count { case f: FileUpload.Accepted if f.fileType.contains(SupportingEvidence) => true; case _ => false }
