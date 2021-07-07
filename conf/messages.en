@@ -637,7 +637,7 @@ referenceNumber.error.invalid.chars =The reference number must only include lett
 
 furtherInformation.title = Give us further information
 furtherInformation.heading = Give us further information
-furtherInformation.checkYourAnswersLabel = Response to HMRC
+furtherInformation.checkYourAnswersLabel = Additional information
 furtherInformation.error.required = Enter the further information
 furtherInformation.error.length = Further information must be 1400 characters or fewer
 furtherInformation.hintText = Send the information that HMRC has asked for.
