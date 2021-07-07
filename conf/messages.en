@@ -646,7 +646,7 @@ amendCaseResponseType.title = What do you need to do?
 amendCaseResponseType.heading = What do you need to do?
 amendCaseResponseType.supportingDocuments = Send more supporting documents
 amendCaseResponseType.furtherInformation = Give us further information in writing
-amendCaseResponseType.checkYourAnswersLabel = Response type
+amendCaseResponseType.checkYourAnswersLabel = What do you need to do?
 amendCaseResponseType.error.required = Select if you want to send more supporting documents, or give us further information in writing
 amendCaseResponseType.hintText = Select all that apply.
 
