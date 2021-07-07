@@ -50,7 +50,7 @@ class AmendConfirmationController @Inject() (
       request.userAnswers.get(AmendClaimIdQuery) match {
         case Some(_) =>
           val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-          Ok(reviewView(checkYourAnswersHelper.getAmendCheckYourAnswerSections))
+          Ok(reviewView(checkYourAnswersHelper.getAmendCheckYourAnswerSections, "amend.confirmation.summary.title"))
         case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }
