@@ -137,13 +137,12 @@ POST        /amend/what-do-you-need-to-do                                       
 
 # File uploads
 GET         /file-upload                                                               controllers.FileUploadController.showFileUpload()
-GET         /file-uploaded                                                             controllers.FileUploadController.showFileUploaded()
-POST        /file-uploaded                                                             controllers.FileUploadController.submitUploadAnotherFileChoice()
+POST        /file-upload                                                               controllers.FileUploadController.onContinue()
 GET         /file-verification/:reference/status                                       controllers.FileUploadController.checkFileVerificationStatus(reference: String)
 POST        /ndrc/:id/callback-from-upscan                                             controllers.FileUploadController.callbackFromUpscan(id: String)
 GET         /file-verification                                                         controllers.FileUploadController.showWaitingForFileVerification()
 GET         /file-rejected                                                             controllers.FileUploadController.markFileUploadAsRejected()
-GET         /file-uploaded/:reference/remove                                           controllers.FileUploadController.removeFileUploadByReference(reference: String)
+GET         /file-uploaded/:reference/remove                                           controllers.FileUploadController.onRemove(reference: String)
 
 # bulk uploads
 GET         /upload-multiple-entries                                                   controllers.BulkFileUploadController.showFileUpload()

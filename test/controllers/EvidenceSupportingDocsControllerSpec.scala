@@ -17,6 +17,8 @@
 package controllers
 
 import base.SpecBase
+import models.{ClaimReasonType, UserAnswers}
+import pages.ClaimReasonTypePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EvidenceSupportingDocsView
@@ -38,9 +40,33 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(defaultBackLink)(request, messages).toString
+        view(None, defaultBackLink)(request, messages).toString
 
       application.stop()
+    }
+
+    "return OK and the correct view for each ClaimReasonType" in {
+
+      ClaimReasonType.values.foreach { claimReason =>
+        val userAnswers = UserAnswers(userIdentification).set(ClaimReasonTypePage, claimReason).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, routes.EvidenceSupportingDocsController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[EvidenceSupportingDocsView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(Some(claimReason), defaultBackLink)(request, messages).toString
+
+        application.stop()
+
+      }
+
     }
   }
 }

@@ -368,14 +368,12 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   }
 
   private def evidenceFileUploads: AnswerRow = {
-    val noOfDocuments = fileUploadState.map(_.fileUploads.acceptedCount).getOrElse(0)
+    val uploadedFiles: Seq[UploadedFile] =
+      fileUploadState.map(_.fileUploads.toFilesOfType(SupportingEvidence)).getOrElse(Seq.empty)
     AnswerRow(
       HtmlFormat.escape(messages("view.upload-file.checkYourAnswersLabel")),
-      HtmlFormat.escape(
-        (noOfDocuments.toString)
-          .concat(" ").concat(messages("view.upload-file.documents.added"))
-      ),
-      Some(routes.CheckYourAnswersController.onChange(FileUploadedPage).url)
+      Html(uploadedFiles.map(file => HtmlFormat.escape(file.fileName)).mkString("<br>")),
+      Some(routes.CheckYourAnswersController.onChange(FileUploadPage).url)
     )
   }
 

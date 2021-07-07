@@ -57,8 +57,7 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
     P(OtherDutiesPaidPage, controllers.routes.OtherDutiesPaidController.onPageLoad, showOtherDutyPaid, otherDutyPaidAnswered),
     P(RepaymentAmountSummaryPage, controllers.routes.RepaymentAmountSummaryController.onPageLoad, always, repaymentSummaryAnswered),
     P(EvidenceSupportingDocsPage, controllers.routes.EvidenceSupportingDocsController.onPageLoad, always, fileUploadedAnswered),
-    P(FileUploadPage, controllers.routes.FileUploadController.showFileUpload, showFileUpload, fileUploadedAnswered),
-    P(FileUploadedPage, controllers.routes.FileUploadController.showFileUploaded, always, fileUploadedAnswered),
+    P(FileUploadPage, controllers.routes.FileUploadController.showFileUpload, always, fileUploadedAnswered),
 
     P(ImporterHasEoriPage, controllers.routes.ImporterHasEoriController.onPageLoad, showWhatIsImporterEori, importerHasEoriAnswered),
     P(ImporterEoriPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterEori, importerEoriAnswered),
@@ -124,9 +123,6 @@ protected trait CreateAnswerConditions {
 
   protected val showOtherDutyPaid: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(ClaimRepaymentTypePage).exists(_.contains(ClaimRepaymentType.Other))
-
-  protected val showFileUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.fileUploadState.isEmpty || answers.fileUploadState.exists(state => state.fileUploads.isEmpty)
 
   protected val showWhatIsImporterEori: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isImporterJourney && answers.userEori.isEmpty

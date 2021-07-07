@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package pages
 
-case object FileUploadedPage extends Page {
-  override def toString: String = "fileUploadedPage"
-}
+@this(html: views.components.html)
+
+@()(implicit request: Request[_], messages: Messages)
+
+@html.ul(
+    "supported-file-type.help.fileFormat1",
+    "supported-file-type.help.fileFormat2",
+    "supported-file-type.help.fileFormat3",
+    "supported-file-type.help.fileFormat4",
+    "supported-file-type.help.fileFormat5",
+    "supported-file-type.help.fileFormat6",
+    "supported-file-type.help.fileFormat7"
+  )

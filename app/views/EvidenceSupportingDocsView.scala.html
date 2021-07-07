@@ -14,17 +14,19 @@
  * limitations under the License.
  *@
 
-@import controllers._
 @import views.ViewUtils._
 @import navigation.NavigatorBack
 
+@import models.ClaimReasonType.CommodityCodeChange
+
 @this(
         govukLayout: views.html.layouts.GovukLayoutWrapper,
+        claimReasonDocuments: views.html.components.claimReasonDocuments,
         forms: views.components.forms,
         html: views.components.html
 )
 
-@(backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(claimReason: Option[ClaimReasonType], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("evidenceSupportingDocs.title"))}"),
@@ -37,22 +39,7 @@
         @messages("evidenceSupportingDocs.paragraph1")
     }
 
-    @html.p {
-        @messages("evidenceSupportingDocs.paragraph2")
-    }
-
-
-    @html.h2(messages("evidenceSupportingDocs.h2"), classes = "govuk-heading-m")
-
-
-    @html.ul(
-        messages("evidenceSupportingDocs.bullet1"),
-        messages("evidenceSupportingDocs.bullet2"),
-        messages("evidenceSupportingDocs.bullet3"),
-        messages("evidenceSupportingDocs.bullet4"),
-        messages("evidenceSupportingDocs.bullet5"),
-        messages("evidenceSupportingDocs.bullet6")
-    )
+   @claimReason.map(reason => claimReasonDocuments(reason))
 
     @forms.formWithCSRF(action = EvidenceSupportingDocsController.onSubmit(), args = 'novalidate -> "novalidate") {
         @html.button("site.continue")
