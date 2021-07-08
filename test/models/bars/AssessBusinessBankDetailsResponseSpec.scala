@@ -32,7 +32,7 @@ class AssessBusinessBankDetailsResponseSpec extends WordSpec with MustMatchers w
 
     "have invalid account and sortcode " in {
       validAssessResponse.copy(accountNumberWithSortCodeIsValid = "no").validAccountAndSortCode mustBe false
-      validAssessResponse.copy(accountNumberWithSortCodeIsValid = "indeterminate").validAccountAndSortCode mustBe false
+      validAssessResponse.copy(accountNumberWithSortCodeIsValid = "indeterminate").validAccountAndSortCode mustBe true
     }
 
     "require roll number " in {
