@@ -83,6 +83,11 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
     */
   case class Initiated(orderNumber: Int, reference: String, fileType: Option[FileType] = None) extends FileUpload
 
+  /**
+    * Status when file upload times out.
+    */
+  case class TimedOut(orderNumber: Int, reference: String, fileType: Option[FileType] = None) extends FileUpload
+
   /** Status when file transmission has been rejected by AWS S3. */
   case class Rejected(orderNumber: Int, reference: String, details: S3UploadError, fileType: Option[FileType] = None)
       extends FileUpload
@@ -123,6 +128,7 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
   override val formats =
     Set(
       Case[Initiated](Json.format[Initiated]),
+      Case[TimedOut](Json.format[TimedOut]),
       Case[Rejected](Json.format[Rejected]),
       Case[Accepted](Json.format[Accepted]),
       Case[Failed](Json.format[Failed]),

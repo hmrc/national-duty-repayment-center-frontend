@@ -20,7 +20,6 @@ import java.time.LocalDateTime
 
 import akka.actor.ActorRef
 import akka.pattern.ask
-import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
@@ -43,7 +42,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class BulkFileUploadController @Inject() (
   override val messagesApi: MessagesApi,
-  appConfig: FrontendAppConfig,
+  val appConfig: FrontendAppConfig,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -56,7 +55,8 @@ class BulkFileUploadController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: BulkFileUploadView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with FileUploadService with Navigation[UserAnswers] {
+    extends FrontendBaseController with I18nSupport with FileUploadService with CheckStateSupport
+    with Navigation[UserAnswers] {
 
   override val page: Page            = BulkFileUploadPage
   final val bulkFileUploadController = routes.BulkFileUploadController
@@ -65,7 +65,6 @@ class BulkFileUploadController @Inject() (
   // GET /file-verification
   final def showWaitingForFileVerification() = (identify andThen getData andThen requireData).async {
     implicit request =>
-      implicit val timeout = Timeout(appConfig.fileUploadTimeout)
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         ss.state match {
           case Some(s) =>
@@ -73,12 +72,8 @@ class BulkFileUploadController @Inject() (
               request.internalId,
               LocalDateTime.now.plusSeconds(appConfig.fileUploadTimeout.toSeconds),
               s
-            )).mapTo[FileUploadState].flatMap {
-              case _: FileUploaded => Future.successful(Redirect(routes.BulkFileUploadController.showFileUpload()))
-              case _ =>
-                Future.successful(
-                  redirectInternalError(bulkFileUploadController.markFileUploadAsRejected, "InternalError")
-                )
+            )).mapTo[FileUploadState].flatMap { _ =>
+              Future.successful(Redirect(bulkFileUploadController.showFileUpload()))
             }
           case _ => Future.successful(fileStateErrror)
         }

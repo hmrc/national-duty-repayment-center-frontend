@@ -22,6 +22,7 @@ import javax.inject.Singleton
 import models.{
   DuplicateFileUpload,
   FileTransmissionFailed,
+  FileTransmissionTimedOut,
   FileUploadError,
   FileVerificationFailed,
   S3UploadError,
@@ -42,6 +43,9 @@ class UploadFileViewContext @Inject() (appConfig: FrontendAppConfig) {
 
       case DuplicateFileUpload(checksum, existingFileName, duplicateFileName) =>
         FormError("file", Seq("error.file-upload.duplicate"))
+
+      case FileTransmissionTimedOut(ref) =>
+        FormError("file", Seq("error.file-upload.timeout"))
     }
 
   def toMessageKey(error: S3UploadError): String =

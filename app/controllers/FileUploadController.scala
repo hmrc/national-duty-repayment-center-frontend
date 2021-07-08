@@ -20,7 +20,6 @@ import java.time.LocalDateTime
 
 import akka.actor.ActorRef
 import akka.pattern.ask
-import akka.util.Timeout
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
@@ -44,7 +43,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class FileUploadController @Inject() (
   override val messagesApi: MessagesApi,
-  appConfig: FrontendAppConfig,
+  val appConfig: FrontendAppConfig,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   sessionRepository: SessionRepository,
@@ -59,7 +58,7 @@ class FileUploadController @Inject() (
   @Named("check-state-actor") checkStateActor: ActorRef,
   fileUploadView: FileUploadView
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with FileUploadService {
+    extends FrontendBaseController with I18nSupport with FileUploadService with CheckStateSupport {
 
   final val controller      = routes.FileUploadController
   val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
@@ -67,7 +66,6 @@ class FileUploadController @Inject() (
   // GET /file-verification
   final def showWaitingForFileVerification(): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      implicit val timeout = Timeout(appConfig.fileUploadTimeout)
       sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
         ss.state match {
           case Some(s) =>
@@ -75,12 +73,8 @@ class FileUploadController @Inject() (
               request.internalId,
               LocalDateTime.now.plusSeconds(appConfig.fileUploadTimeout.toSeconds),
               s
-            )).mapTo[FileUploadState].flatMap {
-              case _: FileUploaded => Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
-              case _ =>
-                Future.successful(
-                  redirectInternalError(routes.FileUploadController.markFileUploadAsRejected, "InternalError")
-                )
+            )).mapTo[FileUploadState].flatMap { _ =>
+              Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
             }
           case _ => Future.successful(fileStateErrror)
         }

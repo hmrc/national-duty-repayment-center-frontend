@@ -16,27 +16,40 @@
 
 package controllers
 
+import java.time.LocalDateTime
+
 import akka.actor.Actor
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
+import config.FrontendAppConfig
+import javax.inject.Inject
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 
-import java.time.LocalDateTime
-import javax.inject.Inject
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.{FiniteDuration, SECONDS}
 import scala.concurrent.{ExecutionContext, Future}
+
+trait CheckStateSupport {
+  val appConfig: FrontendAppConfig
+  implicit val checkStateActorTimeout = Timeout(appConfig.fileUploadTimeout.plus(FiniteDuration(5, SECONDS)))
+}
 
 case class CheckState(id: String, exitTime: LocalDateTime, state: FileUploadState)
 
-class CheckStateActor @Inject() (sessionRepository: SessionRepository)(implicit ec: ExecutionContext)
-    extends Actor with FileUploadService {
-  implicit val timeout = Timeout(30 seconds)
+class CheckStateActor @Inject() (sessionRepository: SessionRepository, val appConfig: FrontendAppConfig)(implicit
+  ec: ExecutionContext
+) extends Actor with FileUploadService with CheckStateSupport {
 
   override def receive: Receive = {
     case CheckState(id, exitTime, state) =>
-      if (LocalDateTime.now().isAfter(exitTime) || state.isInstanceOf[FileUploaded])
+      if (state.isInstanceOf[FileUploaded])
         Future.successful(state).pipeTo(sender)
+      else if (LocalDateTime.now().isAfter(exitTime))
+        sessionRepository.get(id).map { answers =>
+          val newState = fileUploadTimedOut(state)
+          sessionRepository.updateSession(newState, answers)
+          newState
+        }.pipeTo(sender)
       else
         sessionRepository.get(id).flatMap(
           ss =>
