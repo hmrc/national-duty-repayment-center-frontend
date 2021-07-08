@@ -41,11 +41,5 @@ class RepresentativeImporterNameFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthFirstNameKey, Seq(maxLength))
     )
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
-    )
   }
 }

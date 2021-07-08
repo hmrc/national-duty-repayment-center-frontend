@@ -58,13 +58,6 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
 
     behave like fieldThatBindsValidData(form, fieldName, stringsWithMinAndMaxLength(minLength, maxLength))
 
-    behave like declarantReferencePreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      invalidError = FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
-    )
-
     behave like mandatoryField(
       form.bind(Map(radioFieldName -> "01")),
       fieldName,

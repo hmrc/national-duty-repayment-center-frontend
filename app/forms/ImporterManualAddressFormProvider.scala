@@ -32,43 +32,23 @@ class ImporterManualAddressFormProvider @Inject() (implicit val countriesService
       mapping(
         "AddressLine1" ->
           text("importerAddress.line1.error.required")
-            .verifying(
-              firstError(
-                maxLength(maxLineLength, "importerAddress.line1.error.length")
-              )
-            ),
+            .verifying(firstError(maxLength(maxLineLength, "importerAddress.line1.error.length"))),
         "AddressLine2" ->
           optional(
             Forms.text
-              .verifying(
-                firstError(
-                  maxLength(maxLineLength, "importerAddress.line2.error.length")
-                )
-              )
+              .verifying(firstError(maxLength(maxLineLength, "importerAddress.line2.error.length")))
           ),
         "City" ->
           text("importerAddress.city.error.required")
-            .verifying(
-              firstError(
-                maxLength(maxCityLength, "importerAddress.city.error.length")
-              )
-            ),
+            .verifying(firstError(maxLength(maxCityLength, "importerAddress.city.error.length"))),
         "Region" ->
           optional(
             Forms.text
-              .verifying(
-                firstError(
-                  maxLength(maxRegionLength, "importerAddress.region.error.length")
-                )
-              )
+              .verifying(firstError(maxLength(maxRegionLength, "importerAddress.region.error.length")))
           ),
         "CountryCode" ->
           text("importerAddress.countryCode.error.required")
-            .verifying(
-              firstError(
-                maxLength(maxCCLength, "importerAddress.countryCode.error.length")
-              )
-            ),
+            .verifying(firstError(maxLength(maxCCLength, "importerAddress.countryCode.error.length"))),
         "PostalCode" -> mandatoryIfEqual(
           "CountryCode",
           "GB",

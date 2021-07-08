@@ -29,17 +29,9 @@ class DeclarantNameFormProvider @Inject() extends Mappings {
     Form(
       mapping(
         "firstName" -> text("declarantName.firstName.error.required")
-          .verifying(
-            firstError(
-              maxLength(255, "declarantName.firstName.error.length")
-            )
-          ),
+          .verifying(firstError(maxLength(255, "declarantName.firstName.error.length"))),
         "lastName" -> text("declarantName.lastName.error.required")
-          .verifying(
-            firstError(
-              maxLength(255, "declarantName.lastName.error.length")
-            )
-          )
+          .verifying(firstError(maxLength(255, "declarantName.lastName.error.length")))
       )(Name.apply)(Name.unapply)
     )
 

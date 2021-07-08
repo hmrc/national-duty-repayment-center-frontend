@@ -48,12 +48,6 @@ class RepresentativeDeclarantAndBusinessNameFormProviderSpec extends StringField
       lengthError = FormError(fieldName, lengthDeclarantNameKey, Seq(maxLength))
     )
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidDeclarantNameKey, Seq(Validation.safeInputPattern))
-    )
   }
 
   ".agentName" must {
@@ -71,11 +65,5 @@ class RepresentativeDeclarantAndBusinessNameFormProviderSpec extends StringField
       lengthError = FormError(fieldName, lengthAgentNameKey, Seq(maxLength))
     )
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidAgentNameKey, Seq(Validation.safeInputPattern))
-    )
   }
 }

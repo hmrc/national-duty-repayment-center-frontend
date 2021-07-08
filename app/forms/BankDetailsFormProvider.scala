@@ -39,11 +39,7 @@ class BankDetailsFormProvider @Inject() extends Mappings {
     Form(
       mapping(
         accountName -> text("bankDetails.name.error.required")
-          .verifying(
-            firstError(
-              maxLength(40, "bankDetails.name.error.length")
-            )
-          ),
+          .verifying(firstError(maxLength(40, "bankDetails.name.error.length"))),
         sortCode -> text("bankDetails.sortCode.error.required")
           .verifying(
             firstError(regexp(Validation.sortCodePattern, "bankDetails.sortCode.error.invalid", _.stripSpacesAndDashes))

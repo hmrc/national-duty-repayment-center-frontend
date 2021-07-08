@@ -29,17 +29,9 @@ class RepresentativeDeclarantAndBusinessNameFormProvider @Inject() extends Mappi
     Form(
       mapping(
         "declarantName" -> text("representative.declarantAndBusinessName.declarantName.error.required")
-          .verifying(
-            firstError(
-              maxLength(512, "representative.declarantAndBusinessName.declarantName.error.length")
-            )
-          ),
+          .verifying(firstError(maxLength(512, "representative.declarantAndBusinessName.declarantName.error.length"))),
         "agentName" -> text("representative.declarantAndBusinessName.agentName.error.required")
-          .verifying(
-            firstError(
-              maxLength(512, "representative.declarantAndBusinessName.agentName.error.length")
-            )
-          )
+          .verifying(firstError(maxLength(512, "representative.declarantAndBusinessName.agentName.error.length")))
       )(RepresentativeDeclarantAndBusinessName.apply)(RepresentativeDeclarantAndBusinessName.unapply)
     )
 

@@ -39,13 +39,6 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
-    )
-
     behave like fieldWithMaxLength(
       form,
       fieldName,
@@ -64,13 +57,6 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
     val maxLength  = 128
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
-
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
-    )
 
     behave like fieldWithMaxLength(
       form,
@@ -92,13 +78,6 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
-    )
-
     behave like fieldWithMaxLength(
       form,
       fieldName,
@@ -117,13 +96,6 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
     val maxLength  = 64
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
-
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
-    )
 
     behave like fieldWithMaxLength(
       form,
@@ -152,12 +124,6 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
       lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
-    )
   }
 
   ".PostalCode" must {
