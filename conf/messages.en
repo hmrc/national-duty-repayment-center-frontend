@@ -697,6 +697,7 @@ error.file-upload.invalid-type=The file must be in format .jpg, .jpeg, .png, .ti
 error.file-upload.quarantine=The file contains a virus and cannot be uploaded
 error.file-upload.unknown=The file could not be uploaded
 error.file-upload.try-again=The file could not be uploaded - try again
+error.file-upload.timeout=The file could not be uploaded - try again
 error.uploadAnotherFile.required=Select yes if you need to upload another file
 error.file-upload.duplicate=This file has already been uploaded
 view.upload-file.documents.added = documents added

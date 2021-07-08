@@ -23,6 +23,7 @@ import models.requests.{DataRequest, UploadRequest}
 import models.{
   DuplicateFileUpload,
   FileTransmissionFailed,
+  FileTransmissionTimedOut,
   FileType,
   FileUpload,
   FileUploadError,
@@ -289,6 +290,17 @@ trait FileUploadService {
         current.copy(fileUploads = updatedFileUploads, maybeUploadError = Some(FileTransmissionFailed(error)))
     }
   }
+
+  def fileUploadTimedOut(state: FileUploadState): FileUploadState =
+    state match {
+      case current @ UploadFile(reference, _, fileUploads, _) =>
+        val updatedFileUploads = fileUploads.copy(files = fileUploads.files.map {
+          case FileUpload.Initiated(orderNumber, ref, fileType) =>
+            FileUpload.TimedOut(orderNumber, ref, fileType)
+          case u => u
+        })
+        current.copy(fileUploads = updatedFileUploads, maybeUploadError = Some(FileTransmissionTimedOut(reference)))
+    }
 
   def filesNotInStateInitiated(files: Seq[FileUpload]): Seq[FileUpload] =
     files.filter {

@@ -21,6 +21,7 @@ import play.api.libs.json.Json
 sealed trait FileUploadError
 
 case class FileTransmissionFailed(error: S3UploadError)                       extends FileUploadError
+case class FileTransmissionTimedOut(ref: String)                              extends FileUploadError
 case class FileVerificationFailed(details: UpscanNotification.FailureDetails) extends FileUploadError
 
 case class DuplicateFileUpload(checksum: String, existingFileName: String, duplicateFileName: String)
@@ -30,6 +31,7 @@ object FileUploadError extends SealedTraitFormats[FileUploadError] {
 
   override val formats = Set(
     Case[FileTransmissionFailed](Json.format[FileTransmissionFailed]),
+    Case[FileTransmissionTimedOut](Json.format[FileTransmissionTimedOut]),
     Case[FileVerificationFailed](Json.format[FileVerificationFailed]),
     Case[DuplicateFileUpload](Json.format[DuplicateFileUpload])
   )
