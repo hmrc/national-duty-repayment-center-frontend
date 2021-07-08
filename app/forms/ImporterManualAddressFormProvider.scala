@@ -34,8 +34,7 @@ class ImporterManualAddressFormProvider @Inject() (implicit val countriesService
           text("importerAddress.line1.error.required")
             .verifying(
               firstError(
-                maxLength(maxLineLength, "importerAddress.line1.error.length"),
-                regexp(Validation.safeInputPattern, "importerAddress.line1.error.invalid")
+                maxLength(maxLineLength, "importerAddress.line1.error.length")
               )
             ),
         "AddressLine2" ->
@@ -43,8 +42,7 @@ class ImporterManualAddressFormProvider @Inject() (implicit val countriesService
             Forms.text
               .verifying(
                 firstError(
-                  maxLength(maxLineLength, "importerAddress.line2.error.length"),
-                  regexp(Validation.safeInputPattern, "importerAddress.line2.error.invalid")
+                  maxLength(maxLineLength, "importerAddress.line2.error.length")
                 )
               )
           ),
@@ -52,8 +50,7 @@ class ImporterManualAddressFormProvider @Inject() (implicit val countriesService
           text("importerAddress.city.error.required")
             .verifying(
               firstError(
-                maxLength(maxCityLength, "importerAddress.city.error.length"),
-                regexp(Validation.safeInputPattern, "importerAddress.city.error.invalid")
+                maxLength(maxCityLength, "importerAddress.city.error.length")
               )
             ),
         "Region" ->
@@ -61,8 +58,7 @@ class ImporterManualAddressFormProvider @Inject() (implicit val countriesService
             Forms.text
               .verifying(
                 firstError(
-                  maxLength(maxRegionLength, "importerAddress.region.error.length"),
-                  regexp(Validation.safeInputPattern, "importerAddress.region.error.invalid")
+                  maxLength(maxRegionLength, "importerAddress.region.error.length")
                 )
               )
           ),
@@ -70,8 +66,7 @@ class ImporterManualAddressFormProvider @Inject() (implicit val countriesService
           text("importerAddress.countryCode.error.required")
             .verifying(
               firstError(
-                maxLength(maxCCLength, "importerAddress.countryCode.error.length"),
-                regexp(Validation.safeInputPattern, "importerAddress.countryCode.error.invalid")
+                maxLength(maxCCLength, "importerAddress.countryCode.error.length")
               )
             ),
         "PostalCode" -> mandatoryIfEqual(

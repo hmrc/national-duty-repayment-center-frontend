@@ -31,15 +31,13 @@ class DeclarantNameFormProvider @Inject() extends Mappings {
         "firstName" -> text("declarantName.firstName.error.required")
           .verifying(
             firstError(
-              maxLength(255, "declarantName.firstName.error.length"),
-              regexp(Validation.safeInputPattern, "declarantName.firstName.error.invalid")
+              maxLength(255, "declarantName.firstName.error.length")
             )
           ),
         "lastName" -> text("declarantName.lastName.error.required")
           .verifying(
             firstError(
-              maxLength(255, "declarantName.lastName.error.length"),
-              regexp(Validation.safeInputPattern, "declarantName.lastName.error.invalid")
+              maxLength(255, "declarantName.lastName.error.length")
             )
           )
       )(Name.apply)(Name.unapply)

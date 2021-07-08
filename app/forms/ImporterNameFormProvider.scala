@@ -31,8 +31,7 @@ class ImporterNameFormProvider @Inject() extends Mappings {
         "importerName" -> text("importerName.error.required")
           .verifying(
             firstError(
-              maxLength(512, "importerName.error.length"),
-              regexp(Validation.safeInputPattern, "importerName.error.invalid")
+              maxLength(512, "importerName.error.length")
             )
           )
       )(UserName.apply)(UserName.unapply)

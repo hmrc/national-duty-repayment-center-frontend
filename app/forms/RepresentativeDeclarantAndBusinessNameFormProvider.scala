@@ -31,15 +31,13 @@ class RepresentativeDeclarantAndBusinessNameFormProvider @Inject() extends Mappi
         "declarantName" -> text("representative.declarantAndBusinessName.declarantName.error.required")
           .verifying(
             firstError(
-              maxLength(512, "representative.declarantAndBusinessName.declarantName.error.length"),
-              regexp(Validation.safeInputPattern, "representative.declarantAndBusinessName.declarantName.error.invalid")
+              maxLength(512, "representative.declarantAndBusinessName.declarantName.error.length")
             )
           ),
         "agentName" -> text("representative.declarantAndBusinessName.agentName.error.required")
           .verifying(
             firstError(
-              maxLength(512, "representative.declarantAndBusinessName.agentName.error.length"),
-              regexp(Validation.safeInputPattern, "representative.declarantAndBusinessName.agentName.error.invalid")
+              maxLength(512, "representative.declarantAndBusinessName.agentName.error.length")
             )
           )
       )(RepresentativeDeclarantAndBusinessName.apply)(RepresentativeDeclarantAndBusinessName.unapply)

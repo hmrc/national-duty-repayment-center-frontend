@@ -56,8 +56,8 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
     P(VATPaidPage, controllers.routes.VATPaidController.onPageLoad, showVatPaid, vatPaidAnswered),
     P(OtherDutiesPaidPage, controllers.routes.OtherDutiesPaidController.onPageLoad, showOtherDutyPaid, otherDutyPaidAnswered),
     P(RepaymentAmountSummaryPage, controllers.routes.RepaymentAmountSummaryController.onPageLoad, always, repaymentSummaryAnswered),
-    P(EvidenceSupportingDocsPage, controllers.routes.EvidenceSupportingDocsController.onPageLoad, always, fileUploadedAnswered),
-    P(FileUploadPage, controllers.routes.FileUploadController.showFileUpload, always, fileUploadedAnswered),
+//    P(EvidenceSupportingDocsPage, controllers.routes.EvidenceSupportingDocsController.onPageLoad, always, fileUploadedAnswered),
+//    P(FileUploadPage, controllers.routes.FileUploadController.showFileUpload, always, fileUploadedAnswered),
 
     P(ImporterHasEoriPage, controllers.routes.ImporterHasEoriController.onPageLoad, showWhatIsImporterEori, importerHasEoriAnswered),
     P(ImporterEoriPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterEori, importerEoriAnswered),
