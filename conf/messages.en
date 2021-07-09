@@ -538,12 +538,12 @@ bankDetails.name.error.length = Name on the account must be 40 characters or les
 bankDetails.name.error.invalid = Name on the account must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
 bankDetails.sortCode.heading = Sort code
 bankDetails.sortCode.hint = Must be 6 digits long.
-bankDetails.sortCode.error.required = Enter a valid sort code like 309430
-bankDetails.sortCode.error.invalid = Sort code must be 6 digits
+bankDetails.sortCode.error.required = Enter valid sort code
+bankDetails.sortCode.error.invalid = Enter a valid sort code
 bankDetails.accountNumber.heading = Account number
 bankDetails.accountNumber.hint = Must be between 6 and 8 digits long.
 bankDetails.accountNumber.error.required = Enter an account number
-bankDetails.accountNumber.error.invalid = Enter a valid account number like 00733445
+bankDetails.accountNumber.error.invalid = Enter a valid account number
 bankDetails.accountNumber.error.length = Account number must be between 6 and 8 digits
 
 bankDetails.bars.validation.failed = Unable to validate bank account details
