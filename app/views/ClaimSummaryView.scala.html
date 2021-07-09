@@ -21,13 +21,13 @@
     html: views.components.html
 )
 
-@(sections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(sections: Seq[Section], titleKey: String)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("confirmation.title"))}")
 ) {
 
-  @html.h1("confirmation.summary.title")
+  @html.h1(titleKey)
   @components.answers(sections)
 
 }

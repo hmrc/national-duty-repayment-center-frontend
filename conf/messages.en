@@ -1,4 +1,5 @@
 checkYourAnswers.title = Check your answers before sending your information
+checkYourAnswers.amend.title = Check your additional information
 checkYourAnswers.heading = Check Your Answers
 checkYourAnswers.guidance = Guidance for check your answers
 
@@ -487,13 +488,18 @@ confirmation.summary.datetime = Submitted
 
 amend.confirmation.whatHappensNext.heading = What happens next
 amend.confirmation.receivedInformation = We have received your information.
-amend.confirmation.amendWhatHappensNext.p1 = We will check the information you have sent and contact you if we need more information.
+amend.confirmation.print = Print or save a summary of your additional information and reference number
+amend.confirmation.print.text = as we will not send you an email confirmation.
+amend.confirmation.review = View a summary of your additional information and reference number (opens in a new tab)
+amend.confirmation.amendWhatHappensNext.p1 = We will process your application and send our decision by post within 30 days.
+amend.confirmation.amendWhatHappensNext.p2 = We will contact you if we need more information to complete your application.
 amend.confirmation.moreInformation.heading = If we do not need more information
 amend.confirmation.moreInformation.p1 = We will continue processing your application.
 amend.confirmation.helpUs.heading = Help us improve our services
 amend.confirmation.helpUs.p1 = We use your feedback to make our services better.
 amend.confirmation.helpUs.p2 = What did you think of this service?
 amend.confirmation.helpUs.p3 = (takes one minute)
+amend.confirmation.summary.title = Your amended application details
 
 agentImporterManualAddress.title = Enter your business address
 agentImporterManualAddress.heading = Enter your business address
@@ -620,7 +626,7 @@ referenceNumber.error.invalid.chars =The reference number must only include lett
 
 furtherInformation.title = Give us further information
 furtherInformation.heading = Give us further information
-furtherInformation.checkYourAnswersLabel = Response to HMRC
+furtherInformation.checkYourAnswersLabel = Additional information
 furtherInformation.error.required = Enter the further information
 furtherInformation.error.length = Further information must be 1400 characters or fewer
 furtherInformation.hintText = Send the information that HMRC has asked for.
@@ -629,7 +635,7 @@ amendCaseResponseType.title = What do you need to do?
 amendCaseResponseType.heading = What do you need to do?
 amendCaseResponseType.supportingDocuments = Send more supporting documents
 amendCaseResponseType.furtherInformation = Give us further information in writing
-amendCaseResponseType.checkYourAnswersLabel = Response type
+amendCaseResponseType.checkYourAnswersLabel = What do you need to do?
 amendCaseResponseType.error.required = Select if you want to send more supporting documents, or give us further information in writing
 amendCaseResponseType.hintText = Select all that apply.
 
@@ -659,9 +665,9 @@ amendCaseUploadAnotherFile.02 = No
 amendCaseUploadAnotherFile.checkYourAnswersLabel = Do you need to upload another file?
 amendCaseUploadAnotherFile.error.required = Select another file to upload
 
-amendCaseResponseType.sendInformation.checkYourAnswersLabel = Information
-amendCaseResponseType.sendDocuments.checkYourAnswersLabel = Documents
-amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel = Documents and Information
+amendCaseResponseType.sendInformation.checkYourAnswersLabel = Send additional Information
+amendCaseResponseType.sendDocuments.checkYourAnswersLabel = Send additional Documents
+amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel = Send additional Documents and Information
 
 view.upload-file.title = Upload your supporting documentation
 view.upload-file.heading = Upload your supporting documentation
@@ -718,9 +724,10 @@ view.amend-upload-file.waiting=Your document is being uploaded. You’ll be redi
 form.amend-upload-file.submit= Continue
 form.amend-file-uploaded.continue=Continue
 site.amend-file.remove = Remove
-view.amend-upload-file.checkYourAnswersLabel = Documents
-amend.next.step.heading = Now send your information
-amend.next.step.p1 = By sending this information you are confirming that, to the best of your knowledge, the details you are providing are correct.
+view.amend-upload-file.checkYourAnswersLabel = Additional uploads
+amend.next.step.heading = Send your amended application
+amend.next.step.p1 = Before sending your amended application, ensure that you have fully reviewed the information you have provided and that it is correct.
+amend.next.step.p2 = You can print a summary of your application on the next page.
 amend.site.continue = Accept and send
 amend-file-upload.help.linkText = Help with file types
 amend-file-upload.help.line1 = Each file must be 6MB or less.
