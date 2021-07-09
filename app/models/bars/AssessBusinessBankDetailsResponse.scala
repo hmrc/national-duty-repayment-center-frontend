@@ -28,7 +28,7 @@ case class AssessBusinessBankDetailsResponse(
   sortCodeSupportsDirectCredit: String
 ) {
   val sortcodeExists: Boolean               = sortCodeIsPresentOnEISCD == yes
-  val validAccountAndSortCode: Boolean      = accountNumberWithSortCodeIsValid == yes
+  val validAccountAndSortCode: Boolean      = Set(yes, indeterminate).contains(accountNumberWithSortCodeIsValid)
   val sortcodeSupportsDirectCredit: Boolean = sortCodeSupportsDirectCredit == yes
   val rollNotRequired: Boolean              = nonStandardAccountDetailsRequiredForBacs == no
   val accountValid: Boolean                 = Set(yes, indeterminate).contains(accountExists)
