@@ -46,12 +46,6 @@ class DeclarantNameFormProviderSpec extends StringFieldBehaviours {
 
     behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredFirstNameKey))
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, firstNameInvalidKey, Seq(Validation.safeInputPattern))
-    )
   }
 
   ".lastName" must {
@@ -69,11 +63,5 @@ class DeclarantNameFormProviderSpec extends StringFieldBehaviours {
 
     behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredLastNameKey))
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, lastNameInvalidKey, Seq(Validation.safeInputPattern))
-    )
   }
 }

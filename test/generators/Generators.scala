@@ -60,8 +60,6 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     Gen.oneOf('À' to 'ÿ')
   )
 
-  def unsafeInputs: Gen[Char] = Gen.oneOf(Gen.const('<'), Gen.const('>'), Gen.const('='), Gen.const('|'))
-
   def decimalInRangeWithCommas(min: Double, max: Double): Gen[String] = {
     val numberGen = choose[Double](min, max)
     genIntersperseString(numberGen.toString, ",")
@@ -127,12 +125,6 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     length <- choose(1, maxLength)
     chars  <- listOfN(length, safeInputs)
   } yield chars.mkString
-
-  def unsafeInputsWithMaxLength(maxLength: Int): Gen[String] = for {
-    length      <- choose(2, maxLength)
-    invalidChar <- unsafeInputs
-    validChars  <- listOfN(length - 1, safeInputs)
-  } yield (validChars :+ invalidChar).mkString
 
   def stringsLongerThan(minLength: Int): Gen[String] = for {
     maxLength <- (minLength * 2).max(100)

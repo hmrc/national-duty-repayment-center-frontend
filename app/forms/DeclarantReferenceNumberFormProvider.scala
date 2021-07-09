@@ -37,12 +37,7 @@ class DeclarantReferenceNumberFormProvider @Inject() extends Mappings {
             "value",
             "01",
             text("declarantReferenceNumber.error.required.declarantReferenceNumber")
-              .verifying(
-                firstError(
-                  maxLength(maxLength, "declarantReferenceNumber.error.invalid.length"),
-                  regexp(Validation.safeInputPattern, "declarantReferenceNumber.error.invalid")
-                )
-              )
+              .verifying(firstError(maxLength(maxLength, "declarantReferenceNumber.error.invalid.length")))
           )
       )(DeclarantReferenceNumber.apply)(en => Some(en.declarantReferenceType, en.declarantReferenceNumber))
     )
