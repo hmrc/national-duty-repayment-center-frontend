@@ -29,10 +29,24 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
     def format2d = "%.2f".format(s)
   }
 
-  def displayDuty(index: String, amount: Double, dutyType: String): AnswerRow =
-    getAnswerRow(index, amount, dutyType).getOrElse(AnswerRow(Html(""), Html("")))
+  def displayDuty(
+    index: String,
+    amount: Double,
+    dutyType: String,
+    rowClass: Option[String] = None,
+    keyClass: Option[String] = None,
+    valueClass: Option[String] = None
+  ): AnswerRow =
+    getAnswerRow(index, amount, dutyType, rowClass, keyClass, valueClass).getOrElse(AnswerRow(Html(""), Html("")))
 
-  private def getAnswerRow(index: String, amount: Double, dutyType: String): Option[AnswerRow] =
+  private def getAnswerRow(
+    index: String,
+    amount: Double,
+    dutyType: String,
+    rowClass: Option[String],
+    keyClass: Option[String],
+    valueClass: Option[String]
+  ): Option[AnswerRow] =
     userAnswers.get(ClaimRepaymentTypePage).map {
 
       val isCustomDutyExists  = dutyType.equals("repaymentAmountSummary.customsduty")
@@ -47,9 +61,9 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
       }
 
       def formattedAmount: String = index match {
-        case "2" => "<span class=\"bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
+        case "2" => "<span class=\"govuk-!-font-weight-bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
         case "0" if dutyType == "repaymentAmountSummary.total.amount" =>
-          "<span class=\"bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
+          "<span class=\"govuk-!-font-weight-bold\">" + HtmlFormat.escape("£" + amount.format2d) + "</span>"
         case _ => HtmlFormat.escape("£" + amount.format2d).toString()
       }
 
@@ -58,29 +72,23 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
           Html(x.map(value => HtmlFormat.escape(message).toString).mkString("")),
           Html(x.map(value => formattedAmount).mkString("")),
           index match {
-            case "0" if isCustomDutyExists =>
+            case "2" if isCustomDutyExists =>
               Some(routes.CheckYourAnswersController.onChange(CustomsDutyPaidPage).url)
-            case "1" if isCustomDutyExists =>
-              Some(routes.CheckYourAnswersController.onChange(CustomsDutyPaidPage).url)
-            case "0" if isVATExists =>
+            case "2" if isVATExists =>
               Some(routes.CheckYourAnswersController.onChange(VATPaidPage).url)
-            case "1" if isVATExists =>
-              Some(routes.CheckYourAnswersController.onChange(VATPaidPage).url)
-            case "0" if isOtherDutiesExists =>
-              Some(routes.CheckYourAnswersController.onChange(OtherDutiesPaidPage).url)
-            case "1" if isOtherDutiesExists =>
+            case "2" if isOtherDutiesExists =>
               Some(routes.CheckYourAnswersController.onChange(OtherDutiesPaidPage).url)
             case _ => None
           },
           index match {
-            case "0" if isCustomDutyExists  => Some("customs-duty-overpayment")
-            case "1" if isCustomDutyExists  => Some("customs-duty-overpayment")
-            case "0" if isVATExists         => Some("change-import-vat-overpayment")
-            case "1" if isVATExists         => Some("change-import-vat-overpayment")
-            case "0" if isOtherDutiesExists => Some("other-duties-overpayment")
-            case "1" if isOtherDutiesExists => Some("other-duties-overpayment")
+            case "2" if isCustomDutyExists  => Some("customs-duty-overpayment")
+            case "2" if isVATExists         => Some("change-import-vat-overpayment")
+            case "2" if isOtherDutiesExists => Some("other-duties-overpayment")
             case _                          => None
-          }
+          },
+          rowClass,
+          keyClass,
+          valueClass
         )
     }
 
@@ -123,14 +131,38 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   private def getAnswerSection(dutyType: String, dutyPaid: Double, dutyDue: Double): AnswerSection = {
     val answerSection: AnswerSection = dutyType match {
       case "repaymentAmountSummary.total" =>
-        AnswerSection(Some(dutyType), Seq(displayDuty("0", dutyPaid, "repaymentAmountSummary.total.amount")))
+        AnswerSection(
+          Some(dutyType),
+          Seq(
+            displayDuty(
+              "0",
+              dutyPaid,
+              "repaymentAmountSummary.total.amount",
+              keyClass = Some("govuk-!-width-three-quarters")
+            )
+          )
+        )
       case _ =>
         AnswerSection(
           Some(dutyType),
           Seq(
-            displayDuty("0", dutyPaid, dutyType),
-            displayDuty("1", dutyDue, dutyType),
-            displayDuty("2", (dutyPaid - dutyDue), dutyType)
+            displayDuty(
+              "0",
+              dutyPaid,
+              dutyType,
+              rowClass = Some("govuk-summary-list__row--no-border"),
+              keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
+              valueClass = Some("govuk-!-padding-bottom-0")
+            ),
+            displayDuty(
+              "1",
+              dutyDue,
+              dutyType,
+              rowClass = Some("govuk-!-padding-top-0"),
+              keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
+              valueClass = Some("govuk-!-padding-top-0")
+            ),
+            displayDuty("2", (dutyPaid - dutyDue), dutyType, keyClass = Some("govuk-!-width-three-quarters"))
           )
         )
     }
