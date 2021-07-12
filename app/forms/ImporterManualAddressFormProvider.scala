@@ -32,48 +32,23 @@ class ImporterManualAddressFormProvider @Inject() (implicit val countriesService
       mapping(
         "AddressLine1" ->
           text("importerAddress.line1.error.required")
-            .verifying(
-              firstError(
-                maxLength(maxLineLength, "importerAddress.line1.error.length"),
-                regexp(Validation.safeInputPattern, "importerAddress.line1.error.invalid")
-              )
-            ),
+            .verifying(firstError(maxLength(maxLineLength, "importerAddress.line1.error.length"))),
         "AddressLine2" ->
           optional(
             Forms.text
-              .verifying(
-                firstError(
-                  maxLength(maxLineLength, "importerAddress.line2.error.length"),
-                  regexp(Validation.safeInputPattern, "importerAddress.line2.error.invalid")
-                )
-              )
+              .verifying(firstError(maxLength(maxLineLength, "importerAddress.line2.error.length")))
           ),
         "City" ->
           text("importerAddress.city.error.required")
-            .verifying(
-              firstError(
-                maxLength(maxCityLength, "importerAddress.city.error.length"),
-                regexp(Validation.safeInputPattern, "importerAddress.city.error.invalid")
-              )
-            ),
+            .verifying(firstError(maxLength(maxCityLength, "importerAddress.city.error.length"))),
         "Region" ->
           optional(
             Forms.text
-              .verifying(
-                firstError(
-                  maxLength(maxRegionLength, "importerAddress.region.error.length"),
-                  regexp(Validation.safeInputPattern, "importerAddress.region.error.invalid")
-                )
-              )
+              .verifying(firstError(maxLength(maxRegionLength, "importerAddress.region.error.length")))
           ),
         "CountryCode" ->
           text("importerAddress.countryCode.error.required")
-            .verifying(
-              firstError(
-                maxLength(maxCCLength, "importerAddress.countryCode.error.length"),
-                regexp(Validation.safeInputPattern, "importerAddress.countryCode.error.invalid")
-              )
-            ),
+            .verifying(firstError(maxLength(maxCCLength, "importerAddress.countryCode.error.length"))),
         "PostalCode" -> mandatoryIfEqual(
           "CountryCode",
           "GB",

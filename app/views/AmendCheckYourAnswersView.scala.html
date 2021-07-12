@@ -32,7 +32,7 @@
     backLinkNav = Some(backLink)
 ) {
 
-    @html.h1("checkYourAnswers.title", classes = "govuk-heading-l")
+    @html.h1("checkYourAnswers.amend.title", classes = "govuk-heading-l")
 
     @forms.formWithCSRF(action = AmendCheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
 
@@ -40,6 +40,7 @@
 
         @html.h2("amend.next.step.heading", classes = "govuk-heading-m")
         @html.p{ @messages("amend.next.step.p1") }
+        @html.p{ @messages("amend.next.step.p2") }
 
         @html.button("amend.site.continue")
     }

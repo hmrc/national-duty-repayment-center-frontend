@@ -44,13 +44,6 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
     val maxLength = 40
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, invalidKey, Seq(Validation.safeInputPattern))
-    )
-
     behave like fieldWithMaxLength(
       form,
       fieldName,

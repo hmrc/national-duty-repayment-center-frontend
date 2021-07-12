@@ -103,6 +103,7 @@ GET         /application-complete                                               
 GET         /application-complete/summary                                              controllers.ConfirmationController.onSummary()
 
 GET         /amend/information-sent                                                    controllers.AmendConfirmationController.onPageLoad()
+GET         /amend/information-sent/summary                                              controllers.AmendConfirmationController.onSummary()
 
 GET         /enter-bank-details                                                        controllers.BankDetailsController.onPageLoad()
 POST        /enter-bank-details                                                        controllers.BankDetailsController.onSubmit()

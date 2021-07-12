@@ -20,11 +20,12 @@ import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.AmendClaimIdQuery
-import views.html.AmendConfirmationView
+import utils.CheckYourAnswersHelper
+import views.html.{AmendConfirmationView, ClaimSummaryView}
 
 class AmendConfirmationControllerSpec extends SpecBase {
 
-  "AmendConfirmation Controller" must {
+  "AmendConfirmationController" must {
 
     "return OK and the correct view for a GET" in {
       val claimId = "1"
@@ -44,8 +45,10 @@ class AmendConfirmationControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+
         contentAsString(result) mustEqual
-          view(claimId)(request, messages).toString
+          view(claimId, checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
 
       }
     }
@@ -57,6 +60,54 @@ class AmendConfirmationControllerSpec extends SpecBase {
       running(application) {
 
         val request = FakeRequest(GET, routes.AmendConfirmationController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
+      }
+    }
+  }
+
+  "AmendConfirmationController for summary view" must {
+
+    "return OK and the correct view for a GET when claimId can be retrieved from user answers" in {
+      val claimId = "73"
+
+      val answers = emptyUserAnswers
+        .set(AmendClaimIdQuery, claimId).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.AmendConfirmationController.onSummary().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[ClaimSummaryView]
+
+        status(result) mustEqual OK
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+
+        contentAsString(result) mustEqual
+          view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, "amend.confirmation.summary.title")(
+            request,
+            messages
+          ).toString
+
+      }
+    }
+
+    "redirect to start for a GET when amend claimId cannot be retrieved from user answers" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.AmendConfirmationController.onSummary().url)
 
         val result = route(application, request).value
 

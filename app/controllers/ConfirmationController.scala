@@ -50,7 +50,7 @@ class ConfirmationController @Inject() (
       request.userAnswers.get(ClaimIdQuery) match {
         case Some(_) =>
           val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
-          Ok(reviewView(checkYourAnswersHelper.getCreateConfirmationSections))
+          Ok(reviewView(checkYourAnswersHelper.getCreateConfirmationSections, "confirmation.summary.title"))
         case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }

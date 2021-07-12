@@ -43,11 +43,5 @@ class ImporterNameFormProviderSpec extends StringFieldBehaviours {
 
     behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
 
-    behave like fieldThatPreventsUnsafeInput(
-      form,
-      fieldName,
-      unsafeInputsWithMaxLength(maxLength),
-      FormError(fieldName, nameInvalidKey, Seq(Validation.safeInputPattern))
-    )
   }
 }

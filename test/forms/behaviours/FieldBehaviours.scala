@@ -79,34 +79,4 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
     }
   }
 
-  def fieldThatPreventsUnsafeInput(
-    form: Form[_],
-    fieldName: String,
-    unsafeInputs: Gen[String],
-    invalidError: FormError
-  ): Unit =
-    "prevent unsafe inputs" in {
-
-      forAll(unsafeInputs) {
-        input: String =>
-          val result = form.bind(Map(fieldName -> input)).apply(fieldName)
-          result.errors shouldEqual Seq(invalidError)
-      }
-    }
-
-  def declarantReferencePreventsUnsafeInput(
-    form: Form[_],
-    fieldName: String,
-    unsafeInputs: Gen[String],
-    invalidError: FormError
-  ): Unit =
-    "prevent unsafe inputs" in {
-
-      forAll(unsafeInputs) {
-        input: String =>
-          val result = form.bind(Map("value" -> "01", fieldName -> input)).apply(fieldName)
-          result.errors shouldEqual Seq(invalidError)
-      }
-    }
-
 }
