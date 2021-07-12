@@ -18,4 +18,12 @@ package viewmodels
 
 import play.twirl.api.Html
 
-case class AnswerRow(label: Html, answer: Html, changeUrl: Option[String] = None, id: Option[String] = None)
+case class AnswerRow(
+  label: Html,
+  answer: Html,
+  changeUrl: Option[String] = None,
+  id: Option[String] = None,
+  rowClass: Option[String] = None,
+  keyClass: Option[String] = None,
+  valueClass: Option[String] = None
+)

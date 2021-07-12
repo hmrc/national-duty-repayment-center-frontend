@@ -37,59 +37,89 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       Some("Customs Duty"),
       Seq(
         AnswerRow(
-          Html("Customs Duty that was paid"),
+          Html("Amount that was paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/customsDutyPaid"),
-          Some("customs-duty-overpayment")
+          rowClass = Some("govuk-summary-list__row--no-border"),
+          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
+          valueClass = Some("govuk-!-padding-bottom-0")
         ),
         AnswerRow(
-          Html("Customs Duty that should have been paid"),
+          Html("Amount that should have been paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/customsDutyPaid"),
-          Some("customs-duty-overpayment")
+          rowClass = Some("govuk-!-padding-top-0"),
+          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
+          valueClass = Some("govuk-!-padding-top-0")
         ),
-        AnswerRow(Html("Total Customs Duty repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
+        AnswerRow(
+          Html("Total Customs Duty return amount"),
+          Html("<span class=\"govuk-!-font-weight-bold\">£0.00</span>"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/customsDutyPaid"),
+          Some("customs-duty-overpayment"),
+          keyClass = Some("govuk-!-width-three-quarters")
+        )
       )
     ),
     AnswerSection(
-      Some("Import VAT"),
+      Some("VAT"),
       Seq(
         AnswerRow(
-          Html("Import VAT that was paid"),
+          Html("Amount that was paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/vATPaid"),
-          Some("change-import-vat-overpayment")
+          rowClass = Some("govuk-summary-list__row--no-border"),
+          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
+          valueClass = Some("govuk-!-padding-bottom-0")
         ),
         AnswerRow(
-          Html("Import VAT that should have been paid"),
+          Html("Amount that should have been paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/vATPaid"),
-          Some("change-import-vat-overpayment")
+          rowClass = Some("govuk-!-padding-top-0"),
+          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
+          valueClass = Some("govuk-!-padding-top-0")
         ),
-        AnswerRow(Html("Total import VAT repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
+        AnswerRow(
+          Html("Total VAT return amount"),
+          Html("<span class=\"govuk-!-font-weight-bold\">£0.00</span>"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/vATPaid"),
+          Some("change-import-vat-overpayment"),
+          keyClass = Some("govuk-!-width-three-quarters")
+        )
       )
     ),
     AnswerSection(
       Some("Other duties"),
       Seq(
         AnswerRow(
-          Html("Other duties that were paid"),
+          Html("Amount that was paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/otherDutiesPaid"),
-          Some("other-duties-overpayment")
+          rowClass = Some("govuk-summary-list__row--no-border"),
+          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
+          valueClass = Some("govuk-!-padding-bottom-0")
         ),
         AnswerRow(
-          Html("Other duties that should have been paid"),
+          Html("Amount that should have been paid"),
           Html("£0.00"),
-          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/otherDutiesPaid"),
-          Some("other-duties-overpayment")
+          rowClass = Some("govuk-!-padding-top-0"),
+          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
+          valueClass = Some("govuk-!-padding-top-0")
         ),
-        AnswerRow(Html("Total other duties repayment amount"), Html("<span class=\"bold\">£0.00</span>"))
+        AnswerRow(
+          Html("Total other duties return amount"),
+          Html("<span class=\"govuk-!-font-weight-bold\">£0.00</span>"),
+          Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/otherDutiesPaid"),
+          Some("other-duties-overpayment"),
+          keyClass = Some("govuk-!-width-three-quarters")
+        )
       )
     ),
     AnswerSection(
       Some("Total"),
-      Seq(AnswerRow(Html("Total repayment amount"), Html("<span class=\"bold\">£0.00</span>")))
+      Seq(
+        AnswerRow(
+          Html("Total return amount"),
+          Html("<span class=\"govuk-!-font-weight-bold\">£0.00</span>"),
+          keyClass = Some("govuk-!-width-three-quarters")
+        )
+      )
     )
   )
 

@@ -34,6 +34,8 @@
 
         @components.answers(sections)
 
+        @html.p{ @messages("repaymentAmountSummary.summary") }
+
         @forms.formWithCSRF(action = RepaymentAmountSummaryController.onSubmit(), args = 'novalidate -> "novalidate") {
             @html.button("site.continue")
         }
