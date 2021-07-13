@@ -28,8 +28,7 @@
 @(form: Form[_], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimantType.title"))}"),
-    backLinkNav = Some(backLink)
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimantType.title"))}")
 ) {
 
   @forms.formWithCSRF(action = ClaimantTypeController.onSubmit(), args = 'novalidate -> "novalidate") {
