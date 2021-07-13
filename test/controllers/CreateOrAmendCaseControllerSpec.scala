@@ -19,6 +19,7 @@ package controllers
 import base.SpecBase
 import forms.CreateOrAmendCaseFormProvider
 import models.{CreateOrAmendCase, UserAnswers}
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -80,9 +81,12 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers =
-        UserAnswers(userIdentification).set(CreateOrAmendCasePage, CreateOrAmendCase.values.head).success.value
+        UserAnswers(userIdentification).set(CreateOrAmendCasePage, CreateOrAmendCase.values.head).success.value.copy(
+          changePage = Some("change-page-value")
+        )
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
       when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
 
       val application =
@@ -100,6 +104,8 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
+
+      persistedAnswers.getValue.changePage mustBe None
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
