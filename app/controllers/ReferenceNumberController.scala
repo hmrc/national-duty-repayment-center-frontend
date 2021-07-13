@@ -18,9 +18,10 @@ package controllers
 
 import controllers.actions._
 import forms.ReferenceNumberFormProvider
+
 import javax.inject.Inject
 import models.UserAnswers
-import navigation.AmendNavigator
+import navigation.{AmendNavigator, NavigatorBack}
 import pages.{Page, ReferenceNumberPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -53,13 +54,26 @@ class ReferenceNumberController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, backLink(request.userAnswers)))
+      Ok(
+        view(
+          preparedForm,
+          request.userAnswers.changePage.map(_ => backLink(request.userAnswers)).getOrElse(NavigatorBack(None))
+        )
+      )
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
+        formWithErrors =>
+          Future.successful(
+            BadRequest(
+              view(
+                formWithErrors,
+                request.userAnswers.changePage.map(_ => backLink(request.userAnswers)).getOrElse(NavigatorBack(None))
+              )
+            )
+          ),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReferenceNumberPage, value))

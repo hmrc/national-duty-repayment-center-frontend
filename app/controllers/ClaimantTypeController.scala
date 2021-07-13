@@ -18,9 +18,10 @@ package controllers
 
 import controllers.actions._
 import forms.ClaimantTypeFormProvider
+
 import javax.inject.Inject
 import models.UserAnswers
-import navigation.CreateNavigator
+import navigation.{CreateNavigator, NavigatorBack}
 import pages.{ClaimantTypePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -53,13 +54,26 @@ class ClaimantTypeController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, backLink(request.userAnswers)))
+      Ok(
+        view(
+          preparedForm,
+          request.userAnswers.changePage.map(_ => backLink(request.userAnswers)).getOrElse(NavigatorBack(None))
+        )
+      )
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
+        formWithErrors =>
+          Future.successful(
+            BadRequest(
+              view(
+                formWithErrors,
+                request.userAnswers.changePage.map(_ => backLink(request.userAnswers)).getOrElse(NavigatorBack(None))
+              )
+            )
+          ),
         value =>
           // TODO - remove this logic of clearing answers if claimant type is changed
           if (

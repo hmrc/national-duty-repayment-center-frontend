@@ -19,6 +19,7 @@ package controllers
 import base.SpecBase
 import forms.ClaimantTypeFormProvider
 import models.{ClaimantType, UserAnswers}
+import navigation.NavigatorBack
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -51,7 +52,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, defaultBackLink)(request, messages).toString
+        view(form, NavigatorBack(None))(request, messages).toString
 
       application.stop()
     }
@@ -71,7 +72,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ClaimantType.values.head), defaultBackLink)(request, messages).toString
+        view(form.fill(ClaimantType.values.head), NavigatorBack(None))(request, messages).toString
 
       application.stop()
     }
@@ -116,7 +117,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, defaultBackLink)(request, messages).toString
+        view(boundForm, NavigatorBack(None))(request, messages).toString
 
       application.stop()
     }
