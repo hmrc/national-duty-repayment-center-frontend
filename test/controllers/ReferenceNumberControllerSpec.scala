@@ -54,7 +54,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, backLink)(request, messages).toString
+        view(form, NavigatorBack(None))(request, messages).toString
 
       application.stop()
     }
@@ -75,7 +75,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("NDRC000A00AB0ABCABC0AB0"), backLink)(request, messages).toString
+        view(form.fill("NDRC000A00AB0ABCABC0AB0"), NavigatorBack(None))(request, messages).toString
 
       application.stop()
     }
@@ -116,7 +116,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, backLink)(request, messages).toString
+        view(boundForm, NavigatorBack(None))(request, messages).toString
 
       application.stop()
     }
