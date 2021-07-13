@@ -13,9 +13,7 @@ from the view and the page (url/page number, etc.)
   @page { margin: 10px }
   .govuk-section-break { page-break-inside : avoid }
   .hmrc-sign-out-nav__link { display: none; }
-  .ndrc-\21-display-only-print{ display: contents}
+  .ndrc-\21-display-only-print{ display: block}
   footer { display: none; }
-  @-moz-document url-prefix() {
-    .govuk-summary-list__key { width: 40%; }
-  }
+  .govuk-summary-list__key { width: 40%; }
 }
