@@ -65,10 +65,12 @@ class CreateOrAmendCaseController @Inject() (
           for {
             userAnswers <- Future.successful(request.userAnswers.getOrElse(UserAnswers(request.identification)))
             updatedUserAnswers <- Future.fromTry(
-              userAnswers.copy(id = request.internalId, fileUploadState = None, data = Json.obj()).set(
-                CreateOrAmendCasePage,
-                value
-              )
+              userAnswers.copy(
+                id = request.internalId,
+                fileUploadState = None,
+                data = Json.obj(),
+                changePage = None
+              ).set(CreateOrAmendCasePage, value)
             )
             res <- sessionRepository.resetData(userAnswers).flatMap(_ => sessionRepository.set(updatedUserAnswers))
           } yield Redirect(firstPageForJourney(updatedUserAnswers))
