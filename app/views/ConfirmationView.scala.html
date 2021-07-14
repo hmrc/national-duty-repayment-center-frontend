@@ -54,6 +54,14 @@
         }
         </noscript>
 
+        @html.p {
+            @html.a(
+                link = ConfirmationController.onStartNewApplication().url,
+                messageKey = "confirmation.start",
+                isExternal = false
+            )
+        }
+
         @html.h2("confirmation.whatHappensNext.heading", classes = "govuk-heading-m")
 
         @html.p{ @messages("confirmation.whatHappensNext.p1") }

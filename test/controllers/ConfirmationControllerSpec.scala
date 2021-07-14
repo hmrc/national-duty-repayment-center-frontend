@@ -17,11 +17,18 @@
 package controllers
 
 import base.SpecBase
+import data.TestData.populateUserAnswersWithCMAPaymentMethod
+import models.UserAnswers
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito.when
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
 import utils.CheckYourAnswersHelper
 import views.html.{ClaimSummaryView, ConfirmationView}
+
+import scala.concurrent.Future
 
 class ConfirmationControllerSpec extends SpecBase {
 
@@ -117,6 +124,33 @@ class ConfirmationControllerSpec extends SpecBase {
 
         redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
       }
+    }
+  }
+
+  "ConfirmationController for start new application" must {
+
+    "clear user answers and redirect to start page" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val userAnswers = populateUserAnswersWithCMAPaymentMethod(emptyUserAnswers)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.ConfirmationController.onStartNewApplication().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
+      }
+
+      persistedAnswers.getValue.data mustBe Json.obj()
+      persistedAnswers.getValue.changePage mustBe None
     }
   }
 }

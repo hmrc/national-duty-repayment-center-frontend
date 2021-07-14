@@ -18,22 +18,28 @@ package controllers
 
 import controllers.actions._
 import javax.inject.Inject
+import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.ClaimIdQuery
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import views.html.{ClaimSummaryView, ConfirmationView}
+
+import scala.concurrent.ExecutionContext
 
 class ConfirmationController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
   confirmationView: ConfirmationView,
   reviewView: ClaimSummaryView
-) extends FrontendBaseController with I18nSupport {
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -52,6 +58,13 @@ class ConfirmationController @Inject() (
           val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
           Ok(reviewView(checkYourAnswersHelper.getCreateConfirmationSections, "confirmation.summary.title"))
         case None => Redirect(controllers.routes.IndexController.onPageLoad())
+      }
+  }
+
+  def onStartNewApplication: Action[AnyContent] = identify.async {
+    implicit request =>
+      sessionRepository.set(UserAnswers(request.identification)) map { _ =>
+        Redirect(controllers.routes.IndexController.onPageLoad())
       }
   }
 
