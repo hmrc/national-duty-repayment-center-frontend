@@ -486,7 +486,7 @@ confirmation.amend.heading = Information sent
 
 confirmation.summary.title = Your application details
 confirmation.summary.section.heading = Application
-confirmation.summary.reference = Claim reference number
+confirmation.summary.reference = Application reference number
 confirmation.summary.datetime = Submitted
 
 amend.confirmation.whatHappensNext.heading = What happens next
