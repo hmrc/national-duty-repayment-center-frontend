@@ -140,7 +140,7 @@ class FileUploadController @Inject() (
           sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
             ss.state match {
               case Some(s) =>
-                if (s3Error.errorCode == "InvalidArgument" && s.fileUploads.nonEmpty)
+                if (s3Error.isMissingFileError && s.fileUploads.nonEmpty)
                   Future.successful(Redirect(navigator.nextPage(FileUploadPage, request.userAnswers)))
                 else
                   fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(

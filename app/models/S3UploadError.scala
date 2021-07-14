@@ -63,7 +63,9 @@ case class S3UploadError(
   errorMessage: String,
   errorRequestId: Option[String] = None,
   errorResource: Option[String] = None
-)
+) {
+  val isMissingFileError: Boolean = errorCode == "InvalidArgument" || errorCode == "EntityTooSmall"
+}
 
 object S3UploadError {
 
