@@ -26,6 +26,7 @@
     forms: views.components.forms,
     html: views.components.html,
     details: views.html.components.details,
+    supportedFileTypeList: views.html.components.supportedFileTypeList,
     uploadSummary: views.html.components.uploadSummary,
     govukFileUpload: GovukFileUpload,
     govukButton: GovukButton,
@@ -58,6 +59,10 @@
 	
 	
     @html.p{ @messages("bulkFileUpload.paragraph2") }
+
+    @details(messages("bulkFileUpload.file.details.heading")) {
+        @supportedFileTypeList()
+    }
 
     @uploadSummary(uploadedFiles, ref => routes.BulkFileUploadController.onRemove(ref).url, Some(
         SummaryListRow(
