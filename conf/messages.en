@@ -240,7 +240,7 @@ claimRepaymentType.error.required = Select what you want to reclaim
 evidenceSupportingDocs.title = Required supporting documents
 evidenceSupportingDocs.heading = Required supporting documents
 evidenceSupportingDocs.paragraph1 = These are the documents we must have to process your claim.
-evidenceSupportingDocs.h2 = Accepted file formats
+evidenceSupportingDocs.h2 = Types of files you can upload
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
 
@@ -608,15 +608,16 @@ proofOfAuthority.paragraph2 = Upload a file
 proofOfAuthority.error.required = Upload proof of authority
 proofOfAuthority.checkYourAnswersLabel = Proof of authority document
 
-bulkFileUpload.title = Upload the multiple entries spreadsheet
-bulkFileUpload.heading = Upload the multiple entries spreadsheet
-bulkFileUpload.paragraph1 = For each entry in the spreadsheet, you must provide:
+bulkFileUpload.title = Upload the multiple entry document
+bulkFileUpload.heading = Upload the multiple entry document
+bulkFileUpload.paragraph1 = Your uploaded file must include:
 bulkFileUpload.01 = the entry processing unit (EPU) number, entry number and entry date
 bulkFileUpload.02 = all item numbers
 bulkFileUpload.03 = the type of duty or tax you are claiming for each entry
 bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
-bulkFileUpload.paragraph2 = The spreadsheet must be 6MB or less, and in .csv format.
+bulkFileUpload.paragraph2 = The file must be 6MB or less.
+bulkFileUpload.file.details.heading = Types of files you can upload
 bulkFileUpload.checkYourAnswersLabel = Multiple entries spreadsheet
 bulkFileUpload.error.required = Upload a file to support your application
 
@@ -712,7 +713,7 @@ proof-of-authority.filetype3 = MS Word document (.doc or .docx)
 proof-of-authority.filetype4 = MS Excel spreadsheet (.xls or .xlsx)
 proof-of-authority.filetype5 = MS PowerPoint (.ppt or .pptx)
 proof-of-authority.filetype6 = Open Document Format (.odt, .ods or .odp)
-proof-of-authority.filetype7 = Text files (.txt)
+proof-of-authority.filetype7 = Text files (.csv or .txt)
 
 upload_documents.status.in_progress = Uploading your file
 upload_documents.status.ready = Ready to submit
@@ -736,7 +737,7 @@ amend.next.step.p2 = You can print a summary of your application on the next pag
 amend.site.continue = Accept and send
 amend-file-upload.help.linkText = Help with file types
 amend-file-upload.help.line1 = Each file must be 6MB or less.
-amend-file-upload.help.line2 = Accepted file formats
+amend-file-upload.help.line2 = Types of files you can upload
 
 supported-file-type.help.fileFormat1= Image (.jpeg, .jpg or .png)
 supported-file-type.help.fileFormat2= PDF (.pdf)
@@ -744,7 +745,7 @@ supported-file-type.help.fileFormat3= MS Word document (.doc or .docx)
 supported-file-type.help.fileFormat4= MS Excel spreadsheet (.xls or .xlsx)
 supported-file-type.help.fileFormat5= MS PowerPoint (.ppt or .pptx)
 supported-file-type.help.fileFormat6= Open Document Format (.odt, .ods or .odp)
-supported-file-type.help.fileFormat7= Text files (.txt)
+supported-file-type.help.fileFormat7= Text files (.csv or .txt)
 
 your.details.checkYourAnswersLabel = Your details
 contact.details.checkYourAnswersLabel = Contact details

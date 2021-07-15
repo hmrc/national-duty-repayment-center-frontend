@@ -49,7 +49,7 @@
 
         @html.p{ @messages("amend-file-upload.help.line1") }
 
-        @html.h2("amend-file-upload.help.line2", classes = "govuk-heading-m")
+        @html.h2("amend-file-upload.help.line2", classes = "govuk-heading-s")
         @supportedFileTypeList()
 
         @uploadSummary(uploadedFiles, ref => routes.AmendCaseSendInformationController.onRemove(ref).url, Some(
