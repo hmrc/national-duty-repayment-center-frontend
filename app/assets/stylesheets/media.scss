@@ -7,15 +7,29 @@ from the view and the page (url/page number, etc.)
 ====================================
 */
 @media all {
-  .ndrc-\21-display-only-print { display: none}
+  .ndrc-\21-display-only-print {
+    display: none
+  }
 }
+
 @media print {
-  @page { margin: 10px }
-  .govuk-section-break { page-break-inside : avoid }
-  .hmrc-sign-out-nav__link { display: none; }
-  .ndrc-\21-display-only-print{ display: contents}
-  footer { display: none; }
-  @-moz-document url-prefix() {
-    .govuk-summary-list__key { width: 40%; }
+  @page {
+    margin: 10px
+  }
+  .govuk-section-break {
+    page-break-inside: avoid
+  }
+  .hmrc-sign-out-nav__link {
+    display: none;
+  }
+  .ndrc-\21-display-only-print {
+    display: block; // For browsers that don't support contents
+    display: contents
+  }
+  footer {
+    display: none;
+  }
+  .govuk-summary-list__key {
+    width: 40%;
   }
 }
