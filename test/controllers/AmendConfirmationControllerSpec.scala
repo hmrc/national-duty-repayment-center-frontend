@@ -48,7 +48,7 @@ class AmendConfirmationControllerSpec extends SpecBase {
         val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
 
         contentAsString(result) mustEqual
-          view(claimId, checkYourAnswersHelper.getAmendCheckYourAnswerSections)(request, messages).toString
+          view(claimId, checkYourAnswersHelper.getAmendConfirmationSections)(request, messages).toString
 
       }
     }
@@ -93,7 +93,7 @@ class AmendConfirmationControllerSpec extends SpecBase {
         val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
 
         contentAsString(result) mustEqual
-          view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, "amend.confirmation.summary.title")(
+          view(checkYourAnswersHelper.getAmendConfirmationSections, "amend.confirmation.summary.title")(
             request,
             messages
           ).toString

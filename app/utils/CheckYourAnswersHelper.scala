@@ -87,6 +87,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     Seq(AnswerSection(Some(messages("")), list ++ additionalSection))
   }
 
+  def getAmendConfirmationSections: Seq[AnswerSection] = readOnly(getAmendCheckYourAnswerSections)
+
   private def readOnly(sections: Seq[AnswerSection]) =
     sections.map(section => section.copy(rows = section.rows.map(row => row.copy(changeUrl = None))))
 
