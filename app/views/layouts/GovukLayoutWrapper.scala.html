@@ -31,7 +31,6 @@ govukPhaseBanner: GovukPhaseBanner,
 govukBackLink: GovukBackLink,
 hmrcHeader: HmrcHeader,
 siteHeader: components.siteHeader,
-phaseBanner: components.phaseBanner,
 link: components.link,
 paragraph: components.p,
 hmrcTimeoutDialog : HmrcTimeoutDialog,
@@ -52,7 +51,7 @@ hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
 refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @head = {
-@hmrcTrackingConsentSnippet()
+
 
 <noscript>
     <style type="text/css">
@@ -65,6 +64,8 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 
 <!--[if lte IE 8]><link href='@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")' rel="stylesheet" type="text/css" /><![endif]-->
 <!--[if gt IE 8]><!--><link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
+
+@hmrcTrackingConsentSnippet()
 
 @if(timeout) {
     @hmrcTimeoutDialog(TimeoutDialog(
@@ -79,6 +80,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 
   <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="screen" rel="stylesheet"
   type="text/css" />
+
 }
 
 @scripts = {
@@ -87,10 +89,6 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @beforeContentBlock = {
-
-    @if(appConfig.showPhaseBanner) {
-        @phaseBanner("beta")
-    }
 
     @languageSelection(
         appConfig.languageMap,

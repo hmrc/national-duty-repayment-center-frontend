@@ -14,23 +14,32 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.header.Header
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardHeader
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @import config.FrontendAppConfig
+@import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
+
 @this(
     hmrcHeader: HmrcHeader,
+    hmrcStandardHeader: HmrcStandardHeader,
+    standardBetaBanner: StandardBetaBanner,
     govukBackLink: GovukBackLink,
     govukPhaseBanner : GovukPhaseBanner,
     appConfig:FrontendAppConfig
 )
 
-@(showSignOut: Boolean = true)(implicit messages: Messages)
+@(showSignOut: Boolean = true)(implicit request: Request[_], messages: Messages)
 
-@hmrcHeader(Header(
-    homepageUrl = "https://www.gov.uk/",
+@hmrcStandardHeader(
     serviceName = Some(messages("site.service_name")),
-    containerClasses = "govuk-width-container",
-    navigation = None,
-    serviceUrl = controllers.routes.IndexController.onPageLoad().url,
-    signOutHref = if (showSignOut) Some(controllers.routes.SignOutController.signOut.url) else None
-))
+    serviceUrl = Some(controllers.routes.IndexController.onPageLoad().url),
+    signOutUrl = if (showSignOut) Some(controllers.routes.SignOutController.signOut.url) else None,
+    userResearchBanner = None,
+    phaseBanner = {
+        appConfig.showPhaseBanner match {
+            case true => Some(standardBetaBanner(url = appConfig.betaFeedbackUrl).copy(classes = "govuk-!-display-none-print"))
+            case _ => None
+        }
+    },
+    displayHmrcBanner = false
+)
