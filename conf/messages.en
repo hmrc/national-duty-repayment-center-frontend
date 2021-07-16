@@ -166,7 +166,7 @@ entryDetails.claimEpu.error.valid = Enter a three digit entry processing unit (E
 entryDetails.entryNumber.heading = Entry number
 entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example 123456Q.
 entryDetails.entryNumber.error.required = Enter the entry number
-entryDetails.entryNumber.error.valid = Enter the entry number in the correct format
+entryDetails.entryNumber.error.valid = Enter a valid entry number
 entryDetails.entryDate.heading = Entry date
 entryDetails.entryDate.hint = For example, 25 3 2019.
 
