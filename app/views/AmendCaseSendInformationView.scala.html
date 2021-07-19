@@ -20,7 +20,6 @@
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
 @import views.ViewUtils._
 @import navigation.NavigatorBack
-@import views.html.components.uploadProgressBar
 
 @this(
         govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -35,6 +34,7 @@
         context : UploadFileViewContext
 )
 @(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+
 
     @govukLayout(
         pageTitle = Some(s"${errorPrefix(maybeUploadError)}${titleNoForm(messages("view.amend-upload-file.title"))}"),
@@ -52,14 +52,7 @@
         @html.h2("amend-file-upload.help.line2", classes = "govuk-heading-s")
         @supportedFileTypeList()
 
-        @uploadSummary(uploadedFiles, ref => routes.AmendCaseSendInformationController.onRemove(ref).url, Some(
-            SummaryListRow(
-                key = Key(content = Text(messages("upload_documents.status.in_progress")), classes = "govuk-!-width-three-quarters"),
-                value = Value(content = HtmlContent(uploadProgressBar())),
-                classes = "govuk-!-display-none hidden-progress-row",
-                actions = Some(Actions(items = Seq.empty))
-            )
-        ))
+        @uploadSummary(uploadedFiles, ref => routes.AmendCaseSendInformationController.onRemove(ref).url)
 
         <form id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate>
             @uploadRequest.fields.map { case (key, value) =>
