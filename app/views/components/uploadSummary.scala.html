@@ -15,16 +15,32 @@
  *@
 
 @import views.components.ActionItemBuilder.actionItem
+@import views.html.components.uploadProgressBar
 
 @this(govukSummaryList: GovukSummaryList, govukTag : GovukTag)
 
-@(uploads: Seq[UploadedFile], removeUrl: String => String , progressRow: Option[SummaryListRow] = None)(implicit request: Request[_], messages: Messages)
+@(uploads: Seq[UploadedFile], removeUrl: String => String)(implicit request: Request[_], messages: Messages)
 
 @linkContent(message: String) = {
     <span aria-hidden="true">
         @message
     </span>
 }
+@uploadingMessage = {
+    <span tabindex="-1" id="uploadingMessage" class="govuk-body govuk-!-font-weight-bold govuk-!-width-three-quarters">@messages("upload_documents.status.in_progress")</span>
+}
+
+@progressRow = @{
+    Some(
+        SummaryListRow(
+            key = Key(content = HtmlContent(uploadingMessage)),
+            value = Value(content = HtmlContent(uploadProgressBar())),
+            classes = "govuk-!-display-none hidden-progress-row",
+            actions = Some(Actions(items = Seq.empty))
+        )
+    )
+}
+
 @govukSummaryList(SummaryList(
     attributes = Map("id" -> "summary"),
     rows = uploads.zipWithIndex.flatMap(doc =>

@@ -19,7 +19,6 @@
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
 @import views.UploadFileViewContext
 @import navigation.NavigatorBack
-@import views.html.components.uploadProgressBar
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -66,14 +65,7 @@
         )
     }
 
-    @uploadSummary(uploadedFiles, ref => routes.ProofOfAuthorityController.onRemove(ref).url, Some(
-        SummaryListRow(
-            key = Key(content = Text(messages("upload_documents.status.in_progress")), classes = "govuk-!-width-three-quarters"),
-            value = Value(content = HtmlContent(uploadProgressBar())),
-            classes = "govuk-!-display-none hidden-progress-row",
-            actions = Some(Actions(items = Seq.empty))
-        )
-    ))
+    @uploadSummary(uploadedFiles, ref => routes.ProofOfAuthorityController.onRemove(ref).url)
 
     <form  id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate>
 
