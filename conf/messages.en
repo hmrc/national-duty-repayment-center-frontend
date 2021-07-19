@@ -319,7 +319,7 @@ enterAgentEORI.title = What is the importer’s EORI number?
 enterAgentEORI.heading = What is the importer’s EORI number?
 enterAgentEORI.hint = This is 2 letters, followed by either 12 or 15 numbers, like ‘GB123456789123’ or ‘GB123456789123000’.
 enterAgentEORI.checkYourAnswersLabel = Importer EORI number
-enterAgentEORI.error.required = Enter the importer's EORI number
+enterAgentEORI.error.required = Enter the importer’s EORI number
 enterAgentEORI.error.valid = Enter the importer’s EORI number in the correct format
 
 agentImporterHasEORI.title = Does the importer have an EORI number?
