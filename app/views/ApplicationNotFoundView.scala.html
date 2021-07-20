@@ -1,0 +1,51 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import views.ViewUtils._
+@import config.FrontendAppConfig
+
+
+@this(
+        govukLayout: views.html.layouts.GovukLayoutWrapper,
+        appConfig: FrontendAppConfig,
+        forms: views.components.forms,
+        html: views.components.html
+)
+
+@(caseReference: String)(implicit request: Request[_], messages: Messages)
+
+@emailUrl = @{
+  s"mailto:${appConfig.emails.customsAccountingRepayments}?subject=${messages("amend.application.not.found.email.subject", caseReference)}"
+}
+
+@govukLayout(
+    pageTitle = Some(s"${titleNoForm(messages("amend.application.not.found.title"))}"),
+    backLinkNav = None
+) {
+
+    @html.h1(messages("amend.application.not.found.title"))
+
+    @html.p {@messages("amend.application.not.found.p1", caseReference)}
+
+    @html.p {@messages("amend.application.not.found.p2")}
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("amend.application.not.found.b1") @html.a(ReferenceNumberController.onPageLoad().url, "amend.application.not.found.b1.link") </li>
+        <li>@messages("amend.application.not.found.b2") @html.a(emailUrl, appConfig.emails.customsAccountingRepayments, isExternal = true) @Html(messages("amend.application.not.found.b2.afterlink", caseReference))</li>
+    </ul>
+
+
+}

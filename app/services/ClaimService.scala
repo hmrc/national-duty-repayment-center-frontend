@@ -23,6 +23,7 @@ import models.requests.{AmendClaimBuilder, AmendClaimRequest, CreateClaimBuilder
 import uk.gov.hmrc.http.HeaderCarrier
 import java.util.UUID
 
+import models.responses.ClientClaimResponse
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -61,23 +62,12 @@ class ClaimService @Inject() (
 
   def submitAmendClaim(
     userAnswers: UserAnswers
-  )(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
+  )(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[ClientClaimResponse] = {
     val maybeAmendRequest: Option[AmendClaimRequest] = amendClaimBuilder.buildValidAmendRequest(userAnswers)
 
     maybeAmendRequest match {
       case Some(value) =>
-        connector.submitAmendClaim(value, correlationId(hc)).map { clientClaimResponse =>
-          if (clientClaimResponse.caseId.nonEmpty)
-            clientClaimResponse.caseId.get
-          else
-            clientClaimResponse.error match {
-              case _ =>
-                val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
-                  clientClaimResponse.error.map(_.errorMessage).getOrElse("")
-                logger.error(s"Amend claim submission failed due to $message")
-                throw new RuntimeException(message)
-            }
-        }
+        connector.submitAmendClaim(value, correlationId(hc))
       case None =>
         logger.error(
           "Unsuccessful amend claim submission, did not contain sufficient UserAnswers data to construct AmendClaimRequest"

@@ -16,15 +16,22 @@
 
 package models.responses
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
-final case class ClientClaimSuccessResponse(
+final case class ClientClaimResponse(
   correlationId: String,
   caseId: Option[String],
   error: Option[ApiError] = None
-)
+){
+  val isSuccess = error.isEmpty
+  val isNotFound = error.flatMap(_.errorMessage).exists(_.contains("03- Invalid Case ID"))
+}
 
-object ClientClaimSuccessResponse {
-  implicit val format: OFormat[ClientClaimSuccessResponse] = Json.format[ClientClaimSuccessResponse]
+object ClientClaimResponse {
+  implicit val format: OFormat[ClientClaimResponse] = Json.format[ClientClaimResponse]
+
+  implicit val optionFormat: Format[Option[ClientClaimResponse]] =
+    Format.optionWithNull[ClientClaimResponse]
+
 }

@@ -817,3 +817,13 @@ representative.importer.importerName.error.length= Importer name must be 512 cha
 address.label.select.title = Select an address
 address.label.edit.postcode = Postcode
 address.change = Search for a new address
+
+amend.application.not.found.title = Application not found
+amend.application.not.found.heading = Application not found
+amend.application.not.found.p1 = We cannot find an application with the reference number {0}.
+amend.application.not.found.p2 = You can:
+amend.application.not.found.b1 = check and
+amend.application.not.found.b1.link = enter the application reference number again
+amend.application.not.found.b2 = email us at
+amend.application.not.found.b2.afterlink = with the additional information, the entry details and name of the importer. Please ensure to include the application reference number <b>{0}</b> in the subject header.
+amend.application.not.found.email.subject = Application reference {0}

@@ -89,12 +89,16 @@ class AmendCheckYourAnswersController @Inject() (
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      for {
-        claimId          <- claimService.submitAmendClaim(request.userAnswers)
-        updatedClaimId   <- Future.fromTry(request.userAnswers.set(AmendClaimIdQuery, claimId))
-        updatedClaimDate <- Future.fromTry(updatedClaimId.set(AmendClaimDateQuery, LocalDateTime.now))
-        _                <- sessionRepository.set(updatedClaimDate)
-      } yield Redirect(nextPage(request.userAnswers))
+      claimService.submitAmendClaim(request.userAnswers) flatMap  {
+        case response if response.isSuccess => {
+          for {
+            updatedClaimId <- Future.fromTry(request.userAnswers.set(AmendClaimIdQuery, response.caseId.get))
+            updatedClaimDate <- Future.fromTry(updatedClaimId.set(AmendClaimDateQuery, LocalDateTime.now))
+            _ <- sessionRepository.set(updatedClaimDate)
+          } yield Redirect(nextPage(request.userAnswers))
+        }
+        case response if response.isNotFound => Future.successful( Redirect(controllers.routes.AmendErrorController.onNotFound()) )
+      }
   }
 
 }
