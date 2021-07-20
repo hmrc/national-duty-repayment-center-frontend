@@ -626,7 +626,7 @@ referenceNumber.heading = What is the application reference number?
 referenceNumber.checkYourAnswersLabel = Application reference number
 referenceNumber.error.required = Enter the reference number
 referenceNumber.error.length = The reference number must be 23 characters long
-referenceNumber.hintText = This is the 23-character reference number issued when you submitted your application. For example, NDRC000A00AB0ABCABC0AB0.
+referenceNumber.hintText = This is the 23 character reference number issued when you submitted your application. This will start with NDRC. For example, NDRC000A00AB0ABCABC0AB0.
 referenceNumber.error.prefix = Enter the reference number in the right format
 referenceNumber.error.invalid.chars =The reference number must only include letters a to z and numbers 0 to 9
 
