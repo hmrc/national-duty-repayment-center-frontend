@@ -170,11 +170,10 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
     )
   }
 
-  override val emails: FrontendAppConfig.Emails = {
-    FrontendAppConfig.Emails(
-      customsAccountingRepayments = configuration.get[String]("emails.customs-accounting-repayment")
+  override val emails: FrontendAppConfig.Emails =
+    FrontendAppConfig.Emails(customsAccountingRepayments =
+      configuration.get[String]("emails.customs-accounting-repayment")
     )
-  }
 
   override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
   override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")

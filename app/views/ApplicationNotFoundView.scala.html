@@ -16,13 +16,14 @@
 
 @import views.ViewUtils._
 @import config.FrontendAppConfig
+@import pages.ReferenceNumberPage
 
 
 @this(
-        govukLayout: views.html.layouts.GovukLayoutWrapper,
-        appConfig: FrontendAppConfig,
-        forms: views.components.forms,
-        html: views.components.html
+govukLayout: views.html.layouts.GovukLayoutWrapper,
+appConfig: FrontendAppConfig,
+forms: views.components.forms,
+html: views.components.html
 )
 
 @(caseReference: String)(implicit request: Request[_], messages: Messages)
@@ -43,7 +44,7 @@
     @html.p {@messages("amend.application.not.found.p2")}
 
     <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("amend.application.not.found.b1") @html.a(ReferenceNumberController.onPageLoad().url, "amend.application.not.found.b1.link") </li>
+        <li>@messages("amend.application.not.found.b1") @html.a(AmendCheckYourAnswersController.onChange(ReferenceNumberPage).url, "amend.application.not.found.b1.link") </li>
         <li>@messages("amend.application.not.found.b2") @html.a(emailUrl, appConfig.emails.customsAccountingRepayments, isExternal = true) @Html(messages("amend.application.not.found.b2.afterlink", caseReference))</li>
     </ul>
 

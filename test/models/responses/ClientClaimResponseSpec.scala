@@ -37,11 +37,21 @@ class ClientClaimResponseSpec extends FreeSpec with MustMatchers {
           ApiError(
             "code",
             Some(
-              "9xx : 03- Invalid Case ID"
+              """{"errorDetail":{"errorMessage":"9xx : 03- Invalid Case ID","timestamp":"2021-07-20T11:07:03.038Z","correlationId":"a15a6424-1942-4be8-8d43-485f33ddb31c"}}"""
             )
           )
         )
       ).isNotFound mustBe true
+
+    }
+
+    "correctly reports modified specific error" in {
+      ClientClaimResponse(
+        "id",
+        Some("caseRef"),
+        Some(ApiError("code", Some(""""errorMessage":"9xx : 03 - Invalid Case ID"""")))
+      ).isNotFound mustBe true
+
     }
   }
 

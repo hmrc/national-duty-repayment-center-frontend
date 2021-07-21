@@ -21,6 +21,7 @@ import java.time.ZonedDateTime
 import base.SpecBase
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.FileType.SupportingEvidence
+import models.responses.ClientClaimResponse
 import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
 import navigation.NavigatorBack
 import org.mockito.ArgumentCaptor
@@ -34,6 +35,7 @@ import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
 import queries.AmendClaimIdQuery
 import services.FileUploaded
+import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 import utils.CheckYourAnswersHelper
 import views.html.{AmendCheckYourAnswersView, AmendCheckYourMissingAnswersView}
 
@@ -253,6 +255,58 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to confirmation page when submission is successful" in {
+
+      val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
+
+      val userAnswers = UserAnswers(userIdentification).set(ReferenceNumberPage, "1234").success.value
+        .set(AmendCaseResponseTypePage, values.toSet).success.value
+        .set(FurtherInformationPage, "hello").success.value
+        .copy(changePage = Some(ReferenceNumberPage))
+
+      val successResponse = ClientClaimResponse("id", Some("case-id"))
+
+      when(mockClaimService.submitAmendClaim(any())(any(), any())).thenReturn(Future.successful(successResponse))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(POST, routes.AmendCheckYourAnswersController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.AmendConfirmationController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "redirect to error page for when application ref invalid" in {
+
+      val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
+
+      val userAnswers = UserAnswers(userIdentification).set(ReferenceNumberPage, "1234").success.value
+        .set(AmendCaseResponseTypePage, values.toSet).success.value
+        .set(FurtherInformationPage, "hello").success.value
+        .copy(changePage = Some(ReferenceNumberPage))
+
+      val errorResponse = ClientClaimResponse("id", Some("case-id"), Some(ApiError("code", Some("03- Invalid Case ID"))))
+
+      when(mockClaimService.submitAmendClaim(any())(any(), any())).thenReturn(Future.successful(errorResponse))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(POST, routes.AmendCheckYourAnswersController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.AmendErrorController.onNotFound().url
 
       application.stop()
     }

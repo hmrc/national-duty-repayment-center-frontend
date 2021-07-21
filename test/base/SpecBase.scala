@@ -43,6 +43,7 @@ import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
 import repositories.SessionRepository
+import services.ClaimService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -96,6 +97,8 @@ trait SpecBase
   when(mockCreateNavigator.previousPage(any(), any())).thenReturn(defaultBackLink)
   when(mockCreateNavigator.nextPage(any(), any())).thenReturn(defaultNextPage)
 
+  val mockClaimService = mock[ClaimService]
+
   protected def applicationBuilder(
     userAnswers: Option[UserAnswers] = None,
     createNavigator: CreateNavigator = mockCreateNavigator
@@ -109,6 +112,7 @@ trait SpecBase
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[SessionRepository].toInstance(mockSessionRepository),
         bind[CreateNavigator].toInstance(createNavigator),
+        bind[ClaimService].toInstance(mockClaimService),
         bind[Metrics].to[MetricsImpl]
       )
 

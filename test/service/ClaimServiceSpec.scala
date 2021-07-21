@@ -94,7 +94,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       thrown.getMessage contains message
     }
 
-    "should return caseID when amend case is successful" in {
+    "should return claim response when amend case is successful" in {
       val testUserAnswers = populateUserAnswersWithAmendData(emptyUserAnswers)
 
       implicit val hc: HeaderCarrier   = HeaderCarrier()
@@ -107,7 +107,7 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
 
       val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
       val result  = service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
-      result mustBe "caseId"
+      result mustBe response
     }
 
     "should throw exception when unknown error returned for amend case" in {
