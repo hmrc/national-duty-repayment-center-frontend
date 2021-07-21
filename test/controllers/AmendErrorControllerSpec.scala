@@ -28,7 +28,7 @@ import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
-import views.html.ApplicationNotFoundView
+import views.html.{ApplicationClosedView, ApplicationNotFoundView}
 
 import scala.concurrent.Future
 
@@ -63,6 +63,29 @@ class AmendErrorControllerSpec extends SpecBase with BeforeAndAfterEach {
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[ApplicationNotFoundView]
+
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual
+        view("CASE1234")(request, messages).toString
+
+      contentAsString(result) must include(frontendAppConfig.emails.customsAccountingRepayments)
+
+      application.stop()
+    }
+
+    "return OK and the correct view for 'case closed'" in {
+      val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
+      val userAnswers = emptyUserAnswers
+        .set(ReferenceNumberPage, "CASE1234").success.value
+        .set(AmendCaseResponseTypePage, values.toSet).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.AmendErrorController.onClosed().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[ApplicationClosedView]
 
       status(result) mustEqual OK
       contentAsString(result) mustEqual

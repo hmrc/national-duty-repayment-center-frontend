@@ -311,5 +311,32 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
       application.stop()
     }
+
+    "redirect to error page for when application ref closed" in {
+
+      val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
+
+      val userAnswers = UserAnswers(userIdentification).set(ReferenceNumberPage, "1234").success.value
+        .set(AmendCaseResponseTypePage, values.toSet).success.value
+        .set(FurtherInformationPage, "hello").success.value
+        .copy(changePage = Some(ReferenceNumberPage))
+
+      val errorResponse =
+        ClientClaimResponse("id", Some("case-id"), Some(ApiError("code", Some("04 - Requested case already closed"))))
+
+      when(mockClaimService.submitAmendClaim(any())(any(), any())).thenReturn(Future.successful(errorResponse))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(POST, routes.AmendCheckYourAnswersController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.AmendErrorController.onClosed().url
+
+      application.stop()
+    }
   }
 }
