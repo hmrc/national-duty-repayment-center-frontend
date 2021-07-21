@@ -138,6 +138,7 @@ GET         /amend/what-do-you-need-to-do                                       
 POST        /amend/what-do-you-need-to-do                                              controllers.AmendCaseResponseTypeController.onSubmit()
 
 GET         /amend/application-not-found                                               controllers.AmendErrorController.onNotFound
+GET         /amend/application-closed                                                  controllers.AmendErrorController.onClosed
 
 # File uploads
 GET         /file-upload                                                               controllers.FileUploadController.showFileUpload()

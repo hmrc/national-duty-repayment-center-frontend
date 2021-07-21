@@ -98,6 +98,8 @@ class AmendCheckYourAnswersController @Inject() (
           } yield Redirect(nextPage(request.userAnswers))
         case response if response.isNotFound =>
           Future.successful(Redirect(controllers.routes.AmendErrorController.onNotFound()))
+        case response if response.isCaseClosed =>
+          Future.successful(Redirect(controllers.routes.AmendErrorController.onClosed()))
       }
   }
 

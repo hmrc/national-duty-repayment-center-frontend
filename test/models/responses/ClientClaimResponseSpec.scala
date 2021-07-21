@@ -26,33 +26,31 @@ class ClientClaimResponseSpec extends FreeSpec with MustMatchers {
     }
 
     "correctly reports not Success" in {
-      ClientClaimResponse("id", Some("caseRef"), Some(ApiError("code", Some("message")))).isSuccess mustBe false
+      errorResponseWithMessage("message").isSuccess mustBe false
     }
 
-    "correctly reports specific error" in {
-      ClientClaimResponse(
-        "id",
-        Some("caseRef"),
-        Some(
-          ApiError(
-            "code",
-            Some(
-              """{"errorDetail":{"errorMessage":"9xx : 03- Invalid Case ID","timestamp":"2021-07-20T11:07:03.038Z","correlationId":"a15a6424-1942-4be8-8d43-485f33ddb31c"}}"""
-            )
-          )
-        )
+    "correctly reports invalid case id error" in {
+      errorResponseWithMessage(
+        """{"errorDetail":{"errorMessage":"9xx : 03- Invalid Case ID","timestamp":"2021-07-20T11:07:03.038Z","correlationId":"a15a6424-1942-4be8-8d43-485f33ddb31c"}}"""
       ).isNotFound mustBe true
-
     }
 
-    "correctly reports modified specific error" in {
-      ClientClaimResponse(
-        "id",
-        Some("caseRef"),
-        Some(ApiError("code", Some(""""errorMessage":"9xx : 03 - Invalid Case ID"""")))
-      ).isNotFound mustBe true
+    "correctly reports modified invalid case id error" in {
+      errorResponseWithMessage(""""errorMessage":"9xx : 03 - Invalid Case ID"""").isNotFound mustBe true
+    }
 
+    "correctly reports closed case id error" in {
+      errorResponseWithMessage(
+        """{"errorDetail":{"errorMessage":"04 - Requested case already closed","timestamp":"2021-07-20T11:07:03.038Z","correlationId":"a15a6424-1942-4be8-8d43-485f33ddb31c"}}"""
+      ).isCaseClosed mustBe true
+    }
+
+    "correctly reports modified closed case id error" in {
+      errorResponseWithMessage(""""errorMessage":"9xx : 04-Requested case already closed"""").isCaseClosed mustBe true
     }
   }
+
+  private def errorResponseWithMessage(message: String) =
+    ClientClaimResponse("id", Some("caseRef"), Some(ApiError("code", Some(message))))
 
 }

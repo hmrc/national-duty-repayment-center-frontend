@@ -110,6 +110,22 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       result mustBe response
     }
 
+    "should return failed claim response when amend case is a 'known' failure" in {
+      val testUserAnswers = populateUserAnswersWithAmendData(emptyUserAnswers)
+
+      implicit val hc: HeaderCarrier   = HeaderCarrier()
+      implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
+      val dataRequest                  = DataRequest(request, Identification("12", None), testUserAnswers)
+
+      val connector = mock[NDRCConnector]
+      val response  = ClientClaimResponse("1", None, Some(ApiError("400", Some("04 - Requested case already closed"))))
+      when(connector.submitAmendClaim(any(), any())(any())).thenReturn(Future.successful(response))
+
+      val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
+      val result  = service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
+      result mustBe response
+    }
+
     "should throw exception when unknown error returned for amend case" in {
       val testUserAnswers = populateUserAnswersWithAmendData(emptyUserAnswers)
 

@@ -23,7 +23,7 @@ import pages.ReferenceNumberPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ApplicationNotFoundView
+import views.html.{ApplicationClosedView, ApplicationNotFoundView}
 
 import scala.concurrent.ExecutionContext
 
@@ -34,13 +34,24 @@ class AmendErrorController @Inject() (
   requireData: DataRequiredAction,
   val navigator: AmendNavigator,
   val controllerComponents: MessagesControllerComponents,
-  viewNotFound: ApplicationNotFoundView
+  viewNotFound: ApplicationNotFoundView,
+  viewClosed: ApplicationClosedView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def onNotFound: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(viewNotFound(request.userAnswers.get(ReferenceNumberPage).getOrElse("")))
+      request.userAnswers.get(ReferenceNumberPage) map (
+        caseReference => Ok(viewNotFound(caseReference))
+      ) getOrElse NotFound("")
+
+  }
+
+  def onClosed: Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      request.userAnswers.get(ReferenceNumberPage) map (
+        caseReference => Ok(viewClosed(caseReference))
+      ) getOrElse NotFound("")
   }
 
 }

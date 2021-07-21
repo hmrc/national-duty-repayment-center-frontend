@@ -29,24 +29,19 @@ html: views.components.html
 @(caseReference: String)(implicit request: Request[_], messages: Messages)
 
 @emailUrl = @{
-  s"mailto:${appConfig.emails.customsAccountingRepayments}?subject=${messages("amend.application.not.found.email.subject", caseReference)}"
+  s"mailto:${appConfig.emails.customsAccountingRepayments}?subject=${messages("amend.application.closed.email.subject", caseReference)}"
 }
 
 @govukLayout(
-    pageTitle = Some(s"${titleNoForm(messages("amend.application.not.found.title"))}"),
+    pageTitle = Some(s"${titleNoForm(messages("amend.application.closed.title"))}"),
     backLinkNav = None
 ) {
 
-    @html.h1(messages("amend.application.not.found.title"))
+    @html.h1(messages("amend.application.closed.title"))
 
-    @html.p {@Html(messages("amend.application.not.found.p1", caseReference))}
-
-    @html.p {@Html(messages("amend.application.not.found.p2"))}
-
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("amend.application.not.found.b1") @html.a(AmendCheckYourAnswersController.onChange(ReferenceNumberPage).url, "amend.application.not.found.b1.link") </li>
-        <li>@Html(messages("amend.application.not.found.b2", html.a(emailUrl, appConfig.emails.customsAccountingRepayments, isExternal = true), caseReference))</li>
-    </ul>
+    @html.p {@Html(messages("amend.application.closed.p1"))}
+    @html.p {@Html(messages("amend.application.closed.p2", html.a(emailUrl, appConfig.emails.customsAccountingRepayments, isExternal = true)))}
+    @html.p {@Html(messages("amend.application.closed.p3", caseReference))}
 
 
 }
