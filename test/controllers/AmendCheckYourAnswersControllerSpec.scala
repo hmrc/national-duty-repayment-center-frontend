@@ -294,7 +294,8 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
         .set(FurtherInformationPage, "hello").success.value
         .copy(changePage = Some(ReferenceNumberPage))
 
-      val errorResponse = ClientClaimResponse("id", Some("case-id"), Some(ApiError("code", Some("03- Invalid Case ID"))))
+      val errorResponse =
+        ClientClaimResponse("id", Some("case-id"), Some(ApiError("code", Some("03- Invalid Case ID"))))
 
       when(mockClaimService.submitAmendClaim(any())(any(), any())).thenReturn(Future.successful(errorResponse))
 
