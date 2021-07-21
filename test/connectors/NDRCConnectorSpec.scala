@@ -23,7 +23,7 @@ package connectors
 
 import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.responses.ClientClaimSuccessResponse
+import models.responses.ClientClaimResponse
 import org.scalatest.MustMatchers
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -61,7 +61,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
         val result = connector.submitClaim(createClaimRequest, "111").futureValue
 
-        result mustEqual ClientClaimSuccessResponse(correlationId = "111", caseId = Some("ABC123"))
+        result mustEqual ClientClaimResponse(correlationId = "111", caseId = Some("ABC123"))
       }
     }
 
@@ -102,7 +102,7 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
 
         val result = connector.submitAmendClaim(amendClaimRequest, "111").futureValue
 
-        result mustEqual ClientClaimSuccessResponse(correlationId = "111", caseId = Some("DEF456"))
+        result mustEqual ClientClaimResponse(correlationId = "111", caseId = Some("DEF456"))
       }
     }
 

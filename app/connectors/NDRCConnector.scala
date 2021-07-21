@@ -19,10 +19,11 @@ package connectors
 import com.google.inject.Inject
 import config.Service
 import models.requests.{AmendClaimRequest, CreateClaimRequest}
-import models.responses.ClientClaimSuccessResponse
+import models.responses.ClientClaimResponse
 import play.api.Configuration
-import uk.gov.hmrc.http._
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.HttpReads.Implicits._
+import uk.gov.hmrc.http.{HttpClient, _}
+import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -33,8 +34,8 @@ class NDRCConnector @Inject() (config: Configuration, httpClient: HttpClient)(im
 
   def submitClaim(request: CreateClaimRequest, correlationId: String)(implicit
     hc: HeaderCarrier
-  ): Future[ClientClaimSuccessResponse] =
-    httpClient.POST[CreateClaimRequest, ClientClaimSuccessResponse](
+  ): Future[ClientClaimResponse] =
+    httpClient.POST[CreateClaimRequest, ClientClaimResponse](
       s"$baseUrl/create-case",
       request,
       Seq("X-Correlation-Id" -> correlationId)
@@ -42,11 +43,16 @@ class NDRCConnector @Inject() (config: Configuration, httpClient: HttpClient)(im
 
   def submitAmendClaim(request: AmendClaimRequest, correlationId: String)(implicit
     hc: HeaderCarrier
-  ): Future[ClientClaimSuccessResponse] =
-    httpClient.POST[AmendClaimRequest, ClientClaimSuccessResponse](
+  ): Future[ClientClaimResponse] =
+    httpClient.POST[AmendClaimRequest, Either[UpstreamErrorResponse, ClientClaimResponse]](
       s"$baseUrl/amend-case",
       request,
       Seq("X-Correlation-Id" -> correlationId)
-    )
+    ) map {
+      case Right(response) => response
+      case Left(UpstreamErrorResponse(message, 400, _, _)) =>
+        ClientClaimResponse(correlationId, Some(request.Content.CaseID), Some(ApiError("400", Some(message))))
+      case Left(error) => throw error
+    }
 
 }

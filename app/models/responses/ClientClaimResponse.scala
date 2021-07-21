@@ -16,15 +16,23 @@
 
 package models.responses
 
-import play.api.libs.json.{Json, OFormat}
+import models.responses.ClientClaimResponse.invalidCaseRegex
+import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
-final case class ClientClaimSuccessResponse(
-  correlationId: String,
-  caseId: Option[String],
-  error: Option[ApiError] = None
-)
+final case class ClientClaimResponse(correlationId: String, caseId: Option[String], error: Option[ApiError] = None) {
+  val isSuccess    = error.isEmpty
+  val isNotFound   = error.flatMap(_.errorMessage).exists(_.matches(invalidCaseRegex))
+  val isKnownError = isNotFound // || isCaseClosed
+}
 
-object ClientClaimSuccessResponse {
-  implicit val format: OFormat[ClientClaimSuccessResponse] = Json.format[ClientClaimSuccessResponse]
+object ClientClaimResponse {
+
+  val invalidCaseRegex = ".*03 ?- ?Invalid Case ID.*"
+
+  implicit val format: OFormat[ClientClaimResponse] = Json.format[ClientClaimResponse]
+
+  implicit val optionFormat: Format[Option[ClientClaimResponse]] =
+    Format.optionWithNull[ClientClaimResponse]
+
 }

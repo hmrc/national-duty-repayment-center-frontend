@@ -137,6 +137,8 @@ GET         /amend-check-your-answers/change/:page                              
 GET         /amend/what-do-you-need-to-do                                              controllers.AmendCaseResponseTypeController.onPageLoad()
 POST        /amend/what-do-you-need-to-do                                              controllers.AmendCaseResponseTypeController.onSubmit()
 
+GET         /amend/application-not-found                                               controllers.AmendErrorController.onNotFound
+
 # File uploads
 GET         /file-upload                                                               controllers.FileUploadController.showFileUpload()
 POST        /file-upload                                                               controllers.FileUploadController.onContinue()

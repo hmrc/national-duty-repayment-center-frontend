@@ -52,6 +52,8 @@ object FrontendAppConfig {
   )
 
   case class EoriIntegration(enabled: Boolean, enrolmentKey: String, enrolmentUrl: Option[String])
+
+  case class Emails(customsAccountingRepayments: String)
 }
 
 @ImplementedBy(classOf[FrontendAppConfigImpl])
@@ -79,6 +81,7 @@ trait FrontendAppConfig {
   val baseInternalCallbackUrl: String
 
   val eoriIntegration: FrontendAppConfig.EoriIntegration
+  val emails: FrontendAppConfig.Emails
 
   def languageMap: Map[String, Lang]
 
@@ -166,6 +169,11 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
       enrolmentUrl = if (enabled) configuration.getOptional[String]("eori-integration.enrolment-url") else None
     )
   }
+
+  override val emails: FrontendAppConfig.Emails =
+    FrontendAppConfig.Emails(customsAccountingRepayments =
+      configuration.get[String]("emails.customs-accounting-repayment")
+    )
 
   override val baseExternalCallbackUrl: String = configuration.get[String]("urls.callback.external")
   override val baseInternalCallbackUrl: String = configuration.get[String]("urls.callback.internal")
