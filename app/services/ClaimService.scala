@@ -16,14 +16,15 @@
 
 package services
 
+import java.util.UUID
+
 import connectors.NDRCConnector
 import javax.inject.Inject
 import models.UserAnswers
-import models.requests.{AmendClaimBuilder, AmendClaimRequest, CreateClaimBuilder, CreateClaimRequest, DataRequest}
-import uk.gov.hmrc.http.HeaderCarrier
-import java.util.UUID
-
+import models.requests._
+import models.responses.ClientClaimResponse
 import org.slf4j.LoggerFactory
+import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 case class CaseAlreadyExists(msg: String) extends RuntimeException(msg)
@@ -45,8 +46,7 @@ class ClaimService @Inject() (
           clientClaimResponse.caseId match {
             case Some(value) => value
             case None =>
-              val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
-                clientClaimResponse.error.map(_.errorMessage).getOrElse("")
+              val message = errorMessage(clientClaimResponse)
               logger.error(s"Create claim submission failed due to $message")
               throw new RuntimeException(message)
           }
@@ -61,22 +61,17 @@ class ClaimService @Inject() (
 
   def submitAmendClaim(
     userAnswers: UserAnswers
-  )(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
+  )(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[ClientClaimResponse] = {
     val maybeAmendRequest: Option[AmendClaimRequest] = amendClaimBuilder.buildValidAmendRequest(userAnswers)
 
     maybeAmendRequest match {
       case Some(value) =>
-        connector.submitAmendClaim(value, correlationId(hc)).map { clientClaimResponse =>
-          if (clientClaimResponse.caseId.nonEmpty)
-            clientClaimResponse.caseId.get
-          else
-            clientClaimResponse.error match {
-              case _ =>
-                val message = clientClaimResponse.error.map(_.errorCode).map(_ + " ").getOrElse("") +
-                  clientClaimResponse.error.map(_.errorMessage).getOrElse("")
-                logger.error(s"Amend claim submission failed due to $message")
-                throw new RuntimeException(message)
-            }
+        connector.submitAmendClaim(value, correlationId(hc)) map {
+          case response if response.isSuccess || response.isKnownError => response
+          case errorResponse =>
+            val message = errorMessage(errorResponse)
+            logger.error(s"Amend claim submission failed due to $message")
+            throw new RuntimeException(message)
         }
       case None =>
         logger.error(
@@ -85,6 +80,9 @@ class ClaimService @Inject() (
         throw new RuntimeException("UserAnswers did not contain sufficient data to construct AmendClaimRequest")
     }
   }
+
+  private def errorMessage(response: ClientClaimResponse) = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
+    response.error.map(_.errorMessage).getOrElse("")
 
   private def correlationId(hc: HeaderCarrier): String =
     hc.requestId.map(_.value).getOrElse(UUID.randomUUID().toString)

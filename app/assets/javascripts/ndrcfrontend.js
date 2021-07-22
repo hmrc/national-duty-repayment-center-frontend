@@ -14,6 +14,7 @@ function onFileSelect() {
     if(errorBlock){
       errorBlock.classList.add("govuk-!-display-none");
     }
+    document.getElementById("uploadingMessage").focus();
   }
   finally {
     // timeout before submitting is to give Safari time to render un-hidden element

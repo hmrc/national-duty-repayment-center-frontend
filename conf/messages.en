@@ -90,7 +90,7 @@ impInfo.checkYourAnswersLabel = Import information
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
 importerEori.checkYourAnswersLabel = Your EORI number
-importerEori.error.invalid = Enter your EORI number in the correct format
+importerEori.error.invalid = Enter your EORI number
 
 isVATRegistered.title = Are you VAT registered?
 isVATRegistered.heading = Are you VAT registered?
@@ -115,7 +115,7 @@ customsRegulationType.representative = You can find this on the E2 document.
 customsRegulationType.01 = On or before 31 December 2020
 customsRegulationType.02 = From 1 January 2021
 customsRegulationType.checkYourAnswersLabel = Acceptance date
-customsRegulationType.error.required = Select if the entry acceptance date was from 1 January 2021, or on or before 31 December 2020
+customsRegulationType.error.required = Select an option to continue
 
 articleType.title = Why are you applying for this repayment?
 articleType.heading = Why are you applying for this repayment?
@@ -134,7 +134,7 @@ ukRegulationType.051 = Rejected (Regulation 51)
 ukRegulationType.052 = Special circumstances (Regulation 52)
 ukRegulationType.053 = Withdrawal of customs declaration (Regulation 53)
 ukRegulationType.checkYourAnswersLabel = Reason for application
-ukRegulationType.error.required = Select the reason you are applying for this repayment
+ukRegulationType.error.required = Select why you are applying for this repayment
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
@@ -151,7 +151,7 @@ howManyEntries.title = How many entries are you claiming for?
 howManyEntries.heading = How many entries are you claiming for?
 howManyEntries.checkYourAnswersLabel = Number of entries
 howManyEntries.error.required = Enter the number of entries you are claiming for
-howManyEntries.error.length = Number of entries must be between 2 and 999,999
+howManyEntries.error.length = The number of entries must be between 2 and 999,999
 
 entryDetails.single.title = Add the details for this entry
 entryDetails.multiple.title = Enter the details of the oldest entry
@@ -162,11 +162,11 @@ entryDetails.representative.hint = These can be found on the C88 document.
 entryDetails.claimEpu.heading = Entry processing unit (EPU) number
 entryDetails.claimEpu.hint = This is 3 numbers, for example 131.
 entryDetails.claimEpu.error.required = Enter the entry processing unit (EPU) number
-entryDetails.claimEpu.error.valid = Enter the entry processing unit (EPU) number in the correct format
+entryDetails.claimEpu.error.valid = Enter a three digit entry processing unit (EPU) number
 entryDetails.entryNumber.heading = Entry number
 entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example 123456Q.
 entryDetails.entryNumber.error.required = Enter the entry number
-entryDetails.entryNumber.error.valid = Enter the entry number in the correct format
+entryDetails.entryNumber.error.valid = Enter a valid entry number
 entryDetails.entryDate.heading = Entry date
 entryDetails.entryDate.hint = For example, 25 3 2019.
 
@@ -174,17 +174,17 @@ entryDetails.claimEntryDate.error.required = Enter the entry date
 entryDetails.claimEntryDate.error.invalid = Enter the entry date in the correct format
 entryDetails.claimEntryDate.error.invalid_future = The entry date must be today or in the past
 
-error.date.day_blank = Enter the day in the correct format
+error.date.day_blank = Entry date must include a day
 error.date.day_invalid = Enter the day in the correct format
-error.date.month_blank = Enter the month in the correct format
+error.date.month_blank = Entry date must include a month
 error.date.month_invalid = Enter the month in the correct format
-error.date.year_blank = Enter the year in the correct format
+error.date.year_blank = Entry date must include a year
 error.date.year_invalid = Enter the year in the correct format
 
-error.date.all = Enter the day, month and year in the correct format
-error.date.day_month = Enter the day and month in the correct format
-error.date.day_year = Enter the day and year in the correct format
-error.date.month_year = Enter the month and year in the correct format
+error.date.all = Entry date must be a real date
+error.date.day_month = Entry date must include a day and month
+error.date.day_year = Entry date must include a day and year
+error.date.month_year = Entry date must include a month and year
 
 entryDetails.checkYourAnswersLabel = Entry information
 entryDetails.epu.checkYourAnswersLabel = EPU number
@@ -215,7 +215,7 @@ reasonForOverpayment.title = Tell us why the overpayment happened
 reasonForOverpayment.heading = Tell us why the overpayment happened
 reasonForOverpayment.checkYourAnswersLabel = Why the overpayment happened
 reasonForOverpayment.error.required = Tell us why the overpayment happened
-reasonForOverpayment.error.length = Reason for overpayment must be 1400 characters or less
+reasonForOverpayment.error.length = Overpayment reason must be 1400 characters or less
 reasonForOverpayment.hint = If you do not provide enough information, we may be unable to process your application.
 reasonForOverpayment.p1 = You can tell us about:
 reasonForOverpayment.bullet1 = any commodity codes
@@ -283,7 +283,7 @@ phoneNumber.heading = Enter your phone number
 phoneNumber.checkYourAnswersLabel = Phone number
 phoneNumber.error.required = Enter your phone number
 phoneNumber.error.length = Phone number must be 11 numbers
-phoneNumber.error.invalid = Enter a phone number beginning with 0, like 07700 900 982 or 01632 960 001
+phoneNumber.error.invalid = Enter a phone number beginning with 0
 phoneNumber.hint = Enter a UK landline or mobile number, like 07700 900 982 or 01632 960 001.
 
 emailAddress.title = How can we contact you?
@@ -303,7 +303,7 @@ whomToPay.heading = Who is to be repaid?
 whomToPay.01 = Importer
 whomToPay.02 = Representative
 whomToPay.checkYourAnswersLabel = Who is to be repaid?
-whomToPay.error.required = Select if you want to send the repayment to the importer or the representative
+whomToPay.error.required = Select who you want to send the repayment to
 
 repaymentType.title = Select repayment method
 repaymentType.heading = Select repayment method
@@ -319,7 +319,7 @@ enterAgentEORI.title = What is the importer’s EORI number?
 enterAgentEORI.heading = What is the importer’s EORI number?
 enterAgentEORI.hint = This is 2 letters, followed by either 12 or 15 numbers, like ‘GB123456789123’ or ‘GB123456789123000’.
 enterAgentEORI.checkYourAnswersLabel = Importer EORI number
-enterAgentEORI.error.required = Enter the importer’s EORI number in the correct format
+enterAgentEORI.error.required = Enter the importer’s EORI number
 enterAgentEORI.error.valid = Enter the importer’s EORI number in the correct format
 
 agentImporterHasEORI.title = Does the importer have an EORI number?
@@ -360,7 +360,7 @@ vatPaid.shouldhavepaid.error.decimalPlaces = The amount of VAT that should have 
 vatPaid.shouldhavepaid.error.notANumber = The amount of VAT that should have been paid must be a number
 
 vatPaid.amounts.error.same = The amount of VAT that should have been paid cannot be the same as the amount of VAT that was paid to HMRC
-vatPaid.amounts.error.greater = The amount of VAT that should have been paid cannot be more than the amount of VAT that was paid to HMRC
+vatPaid.amounts.error.greater = The amount of import VAT that should have been paid to HMRC cannot be more than the amount that was paid
 
 customsDutyPaid.title = Customs Duty overpayment
 customsDutyPaid.heading = Customs Duty overpayment
@@ -384,7 +384,7 @@ customsDutyPaid.shouldhavepaid.error.length = The amount of Customs Duty that sh
 customsDutyPaid.shouldhavepaid.error.decimalPlaces = The amount of Customs Duty that should have been paid must be an amount of money, like £123.45 or £248
 
 customsDutyPaid.amounts.error.same = The amount of Customs Duty that should have been paid cannot be the same as the amount of Customs Duty that was paid to HMRC
-customsDutyPaid.amounts.error.greater = The amount of Customs Duty that should have been paid cannot be more than the amount of Customs Duty that was paid to HMRC
+customsDutyPaid.amounts.error.greater = The amount of customs duty that should have been paid to HMRC cannot be more than the amount that was paid
 
 otherDutiesPaid.title = Overpayment of other duties
 otherDutiesPaid.heading = Overpayment of other duties
@@ -406,7 +406,7 @@ otherDutiesPaid.shouldhavepaid.error.length = The amount of other duties that sh
 otherDutiesPaid.shouldhavepaid.error.decimalPlaces = The amount of other duties that should have been paid must be an amount of money, like £123.45 or £248
 
 otherDutiesPaid.amounts.error.same = The amount of other duties that should have been paid cannot be the same as the amount of other duties that were paid to HMRC
-otherDutiesPaid.amounts.error.greater = The amount of other duties that should have been paid cannot be more than the amount of other duties that were paid to HMRC
+otherDutiesPaid.amounts.error.greater = The amount of other duties that should have been paid to HMRC cannot be more than the amount that was paid
 
 otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties to HMRC?
 
@@ -619,14 +619,14 @@ bulkFileUpload.05 = the amount that should have been paid to HMRC
 bulkFileUpload.paragraph2 = The file must be 6MB or less.
 bulkFileUpload.file.details.heading = Types of files you can upload
 bulkFileUpload.checkYourAnswersLabel = Multiple entries spreadsheet
-bulkFileUpload.error.required = Upload a file to support your application
+bulkFileUpload.error.required = You must upload a file
 
 referenceNumber.title = What is the application reference number?
 referenceNumber.heading = What is the application reference number?
 referenceNumber.checkYourAnswersLabel = Application reference number
 referenceNumber.error.required = Enter the reference number
 referenceNumber.error.length = The reference number must be 23 characters long
-referenceNumber.hintText = This is the 23-character reference number issued when you submitted your application. For example, NDRC000A00AB0ABCABC0AB0.
+referenceNumber.hintText = This is the 23 character reference number issued when you submitted your application. This will start with NDRC. For example, NDRC000A00AB0ABCABC0AB0.
 referenceNumber.error.prefix = Enter the reference number in the right format
 referenceNumber.error.invalid.chars =The reference number must only include letters a to z and numbers 0 to 9
 
@@ -642,7 +642,7 @@ amendCaseResponseType.heading = What do you need to do?
 amendCaseResponseType.supportingDocuments = Send more supporting documents
 amendCaseResponseType.furtherInformation = Give us further information in writing
 amendCaseResponseType.checkYourAnswersLabel = What do you need to do?
-amendCaseResponseType.error.required = Select if you want to send more supporting documents, or give us further information in writing
+amendCaseResponseType.error.required = Select an option to continue
 amendCaseResponseType.hintText = Select all that apply.
 
 amendCaseSendInformation.error.length = AmendCaseSendInformation must be 1000 characters or less
@@ -690,10 +690,10 @@ form.upload-file.submit= Continue
 view.upload-file.checkYourAnswersLabel = Supporting documents
 form.file-uploaded.continue=Continue
 site.file.remove = Remove
-error.file-upload.required=Upload a file to support your application
-error.file-upload.invalid-size-small=Upload a file to support your application
-error.file-upload.invalid-size-large=File size must be {0}MB or less
-error.file-upload.invalid-type=The file must be in format .jpg, .jpeg, .png, .tiff, .pdf, .doc, .docx, .xls, .csv, .ppt, .odf, .txt, .oft, or .msg format
+error.file-upload.required=You must upload a file
+error.file-upload.invalid-size-small=The file cannot be empty
+error.file-upload.invalid-size-large=File size cannot be over 6mb
+error.file-upload.invalid-type=Upload a valid file type
 error.file-upload.quarantine=The file contains a virus and cannot be uploaded
 error.file-upload.unknown=The file could not be uploaded
 error.file-upload.try-again=The file could not be uploaded - try again
@@ -753,7 +753,7 @@ payment.information.checkYourAnswersLabel = Payment information
 importer.details.checkYourAnswersLabel = Importer details
 create.cya.continue = Accept and send
 
-isContactProvided.error.required = Select how we can contact you
+isContactProvided.error.required = Select an option to continue
 isContactProvided.01 = Email
 isContactProvided.02 = Phone
 phoneNumber.02.hint = Phone number
@@ -768,7 +768,7 @@ createOrAmendCase.error.required = Select if you want to start a new application
 
 doYouOwnTheGoods.title = Is {0} the name on the import documents?
 doYouOwnTheGoods.heading = Is {0} the name on the import documents?
-doYouOwnTheGoods.error.required = Select if {0} is the name on the import documents
+doYouOwnTheGoods.error.required = Select if {0} is named on the import documents
 doYouOwnTheGoods.01 = Yes
 doYouOwnTheGoods.02 = No
 doYouOwnTheGoods.checkYourAnswersLabel = Is {0} the name on the import documents?
@@ -817,3 +817,19 @@ representative.importer.importerName.error.length= Importer name must be 512 cha
 address.label.select.title = Select an address
 address.label.edit.postcode = Postcode
 address.change = Search for a new address
+
+amend.application.not.found.title = Application not found
+amend.application.not.found.heading = Application not found
+amend.application.not.found.p1 = We cannot find an application with the reference number {0}.
+amend.application.not.found.p2 = You can:
+amend.application.not.found.b1 = check and
+amend.application.not.found.b1.link = enter the application reference number again
+amend.application.not.found.b2 = email us at {0} with the additional information, the entry details and name of the importer. Please ensure to include the application reference number <b>{1}</b> in the subject header.
+amend.application.not.found.email.subject = Application reference {0}
+
+amend.application.closed.title = This application is closed
+amend.application.closed.heading = This application is closed
+amend.application.closed.p1 = We cannot add any information to this application as it is closed. You should have received correspondence via post confirming why your application was closed.
+amend.application.closed.p2 = If you feel this application has been closed in error, you can email us at {0} with the additional information.
+amend.application.closed.p3 = You must include the application reference number <b>{0}</b> in the subject header.
+amend.application.closed.email.subject = Closed application reference {0}
