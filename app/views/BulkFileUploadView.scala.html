@@ -16,7 +16,6 @@
 
 @import models.requests.UploadRequest
 @import views.UploadFileViewContext
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
 @import config.FrontendAppConfig
 @import navigation.NavigatorBack
 
@@ -27,7 +26,7 @@
     details: views.html.components.details,
     supportedFileTypeList: views.html.components.supportedFileTypeList,
     uploadSummary: views.html.components.uploadSummary,
-    govukFileUpload: GovukFileUpload,
+    fileUpload: views.html.components.fileUpload,
     govukButton: GovukButton,
     appConfig: FrontendAppConfig,
     context : UploadFileViewContext
@@ -72,26 +71,8 @@
         }
 
         @if(uploadedFiles.isEmpty) {
-            @govukFileUpload(FileUpload(
-                name = "file",
-                id = "file",
-                value = Some(""),
-                label = Label(
-                    content = Text(messages("fileUpload.title"))
-                ),
-                describedBy = None,
-                hint = None,
-                errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
-                formGroupClasses = "",
-                classes = "",
-                attributes = Map(
-                    "accept" -> appConfig.fileFormats.bulkExtensions,
-                    "onchange" -> "javascript:onFileSelect()",
-                    "data-msg-required" -> messages("error.file-upload.required"),
-                    "data-msg-filesize" -> messages("error.file-upload.invalid-size-large", appConfig.fileFormats.maxFileSizeMb),
-                    "data-msg-accept" -> messages("error.upload-file.other")
-                ))
-            )
+
+            @fileUpload("fileUpload.title", maybeUploadError)
 
             <div class="ndrc-display-only-non-javascript">
             @govukButton(Button(

@@ -17,7 +17,6 @@
 @import models.requests.UploadRequest
 @import config.FrontendAppConfig
 @import views.UploadFileViewContext
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
 @import views.ViewUtils._
 @import navigation.NavigatorBack
 
@@ -28,7 +27,7 @@
         details: views.html.components.details,
         supportedFileTypeList: views.html.components.supportedFileTypeList,
         uploadSummary: views.html.components.uploadSummary,
-        govukFileUpload: GovukFileUpload,
+        fileUpload: views.html.components.fileUpload,
         govukButton: GovukButton,
         appConfig: FrontendAppConfig,
         context : UploadFileViewContext
@@ -59,27 +58,7 @@
                 @forms.inputHidden(key, value)
             }
 
-            @govukFileUpload(FileUpload(
-                name = "file",
-                id = "file",
-                value = Some(""),
-                describedBy = None,
-                label = Label(
-                    content = Text(messages(if(uploadedFiles.isEmpty) "view.amend-upload-file.label.upload.first" else "view.amend-upload-file.label.upload.next")),
-                    isPageHeading = false
-                ),
-                hint = None,
-                errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
-                formGroupClasses = "",
-                classes = "",
-                attributes = Map(
-                    "accept" -> appConfig.fileFormats.approvedFileExtensions,
-                    "onchange" -> "javascript:onFileSelect()",
-                    "data-msg-required" -> messages("error.amend-file-upload.required"),
-                    "data-msg-filesize" -> messages("error.amend-file-upload.invalid-size-large",appConfig.fileFormats.maxFileSizeMb),
-                    "data-msg-accept" -> messages("error.amend-upload-file.other")
-                ))
-            )
+            @fileUpload(if(uploadedFiles.isEmpty) "view.amend-upload-file.label.upload.first" else "view.amend-upload-file.label.upload.next", maybeUploadError)
 
             <div class="ndrc-display-only-non-javascript">
                 @govukButton(Button(
