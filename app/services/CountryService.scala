@@ -58,12 +58,13 @@ class ForeignOfficeCountryService extends CountryService {
   override def find(code: String, welshFlag: Boolean = false): Country =
     if (!welshFlag) {
       val filtered = countriesEN.filter(_.code == code)
-      filtered.head
+      filtered.headOption.getOrElse(NullCountry)
     } else {
       val filtered = countriesCY.filter(_.code == code)
-      filtered.head
+      filtered.headOption.getOrElse(NullCountry)
     }
 
+  val NullCountry = Country("", "")
 }
 
 case class FcoCountry(country: String, name: String)

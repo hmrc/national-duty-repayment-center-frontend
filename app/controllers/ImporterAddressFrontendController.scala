@@ -121,7 +121,7 @@ class ImporterAddressFrontendController @Inject() (
             el._2,
             el._4,
             None,
-            Country(confirmedAddress.address.country.code, confirmedAddress.address.country.name),
+            countriesService.find(confirmedAddress.address.country.code),
             confirmedAddress.address.postcode,
             Some(confirmedAddress.auditRef)
           )

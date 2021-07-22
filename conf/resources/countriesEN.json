@@ -222,15 +222,6 @@
     "name": "Bulgaria",
     "citizen-names": "Bulgarian"
   },
-  "RW": {
-    "entry-number": "151",
-    "entry-timestamp": "2016-04-05T13:23:05Z",
-    "item-hash": "sha-256:28f3129e67f9090a61d044bf39411f5689c3eaa4249ea8324e7c56d269daa9b0",
-    "country": "RW",
-    "official-name": "The Republic of Rwanda",
-    "name": "Rwanda",
-    "citizen-names": "Rwandan"
-  },
   "BH": {
     "entry-number": "19",
     "entry-timestamp": "2016-04-05T13:23:05Z",
