@@ -201,9 +201,9 @@ function completePage() {
         submit();
     }
     if (currentPageIs("/enter-bank-details")) {
-        document.getElementById("AccountName").value = "ACME Importers Ltd";
-        document.getElementById("SortCode").value = "400530";
-        document.getElementById("AccountNumber").value = "71584685";
+        document.getElementById("AccountName").value = "Megacorp";
+        document.getElementById("SortCode").value = "207106";
+        document.getElementById("AccountNumber").value = "86563611";
         submit();
     }
 
