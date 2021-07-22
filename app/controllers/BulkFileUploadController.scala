@@ -75,7 +75,13 @@ class BulkFileUploadController @Inject() (
             )).mapTo[FileUploadState].flatMap { _ =>
               Future.successful(Redirect(bulkFileUploadController.showFileUpload()))
             }
-          case _ => Future.successful(fileStateErrror)
+          case _ =>
+            Future.successful(
+              redirectFileStateMissing(
+                "BulkFile.showWaitingForFileVerification",
+                bulkFileUploadController.showFileUpload()
+              )
+            )
         }
       }
   }
@@ -107,7 +113,13 @@ class BulkFileUploadController @Inject() (
                 fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
                   _ => Redirect(routes.BulkFileUploadController.showFileUpload())
                 )
-              case None => Future.successful(fileStateErrror)
+              case None =>
+                Future.successful(
+                  redirectFileStateMissing(
+                    "BulkFile.markFileUploadAsRejected",
+                    bulkFileUploadController.showFileUpload()
+                  )
+                )
             }
           }
       )
@@ -157,7 +169,8 @@ class BulkFileUploadController @Inject() (
             acceptedFiles,
             sessionState
           ).map(_ => Redirect(bulkFileUploadController.showFileUpload()))
-        case None => Future.successful(fileStateErrror)
+        case None =>
+          Future.successful(redirectFileStateMissing("BulkFile.onRemove", bulkFileUploadController.showFileUpload()))
       }
     }
 
