@@ -76,7 +76,13 @@ class FileUploadController @Inject() (
             )).mapTo[FileUploadState].flatMap { _ =>
               Future.successful(Redirect(routes.FileUploadController.showFileUpload()))
             }
-          case _ => Future.successful(redirectFileStateMissing("FileUpload.showWaitingForFileVerification", routes.FileUploadController.showFileUpload()))
+          case _ =>
+            Future.successful(
+              redirectFileStateMissing(
+                "FileUpload.showWaitingForFileVerification",
+                routes.FileUploadController.showFileUpload()
+              )
+            )
         }
       }
     }
@@ -99,7 +105,10 @@ class FileUploadController @Inject() (
             acceptedFiles,
             sessionState
           ).map(_ => Redirect(routes.FileUploadController.showFileUpload()))
-        case None => Future.successful(redirectFileStateMissing("FileUpload.onRemove", routes.FileUploadController.showFileUpload()))
+        case None =>
+          Future.successful(
+            redirectFileStateMissing("FileUpload.onRemove", routes.FileUploadController.showFileUpload())
+          )
       }
 
     }
@@ -146,7 +155,13 @@ class FileUploadController @Inject() (
                   fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
                     _ => Redirect(routes.FileUploadController.showFileUpload())
                   )
-              case None => Future.successful(redirectFileStateMissing("FileUpload.markFileUploadAsRejected", routes.FileUploadController.showFileUpload()))
+              case None =>
+                Future.successful(
+                  redirectFileStateMissing(
+                    "FileUpload.markFileUploadAsRejected",
+                    routes.FileUploadController.showFileUpload()
+                  )
+                )
             }
           }
       )

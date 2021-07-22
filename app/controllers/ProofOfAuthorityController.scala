@@ -73,7 +73,13 @@ class ProofOfAuthorityController @Inject() (
             )).mapTo[FileUploadState].flatMap { _ =>
               Future.successful(Redirect(routes.ProofOfAuthorityController.showFileUpload()))
             }
-          case _ => Future.successful(fileStateErrror)
+          case _ =>
+            Future.successful(
+              redirectFileStateMissing(
+                "ProofOfAuthority.showWaitingForFileVerification",
+                routes.ProofOfAuthorityController.showFileUpload
+              )
+            )
         }
       }
   }
@@ -107,7 +113,13 @@ class ProofOfAuthorityController @Inject() (
                 fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
                   _ => Redirect(routes.ProofOfAuthorityController.showFileUpload())
                 )
-              case None => Future.successful(fileStateErrror)
+              case None =>
+                Future.successful(
+                  redirectFileStateMissing(
+                    "ProofOfAuthority.markFileUploadAsRejected",
+                    routes.ProofOfAuthorityController.showFileUpload
+                  )
+                )
             }
           }
       )
@@ -156,7 +168,10 @@ class ProofOfAuthorityController @Inject() (
             acceptedFiles,
             sessionState
           ).map(_ => Redirect(routes.ProofOfAuthorityController.showFileUpload()))
-        case None => Future.successful(fileStateErrror)
+        case None =>
+          Future.successful(
+            redirectFileStateMissing("ProofOfAuthority.onRemove", routes.ProofOfAuthorityController.showFileUpload)
+          )
       }
     }
 

@@ -73,7 +73,13 @@ class AmendCaseSendInformationController @Inject() (
             )).mapTo[FileUploadState].flatMap { _ =>
               Future.successful(Redirect(routes.AmendCaseSendInformationController.showFileUpload()))
             }
-          case _ => Future.successful(fileStateErrror)
+          case _ =>
+            Future.successful(
+              redirectFileStateMissing(
+                "AdditionalDocuments.showWaitingForFileVerification",
+                routes.AmendCaseSendInformationController.showFileUpload()
+              )
+            )
         }
       }
     }
@@ -96,7 +102,13 @@ class AmendCaseSendInformationController @Inject() (
             acceptedFiles,
             sessionState
           ).map(_ => Redirect(routes.AmendCaseSendInformationController.showFileUpload()))
-        case None => Future.successful(fileStateErrror)
+        case None =>
+          Future.successful(
+            redirectFileStateMissing(
+              "AdditionalDocuments.onRemove",
+              routes.AmendCaseSendInformationController.showFileUpload()
+            )
+          )
       }
     }
 
@@ -142,7 +154,13 @@ class AmendCaseSendInformationController @Inject() (
                   fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
                     _ => Redirect(routes.AmendCaseSendInformationController.showFileUpload())
                   )
-              case None => Future.successful(fileStateErrror)
+              case None =>
+                Future.successful(
+                  redirectFileStateMissing(
+                    "AdditionalDocuments.markFileUploadAsRejected",
+                    routes.AmendCaseSendInformationController.showFileUpload()
+                  )
+                )
             }
           }
       )
