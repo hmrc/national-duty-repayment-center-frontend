@@ -20,12 +20,13 @@ import controllers.FileUploadUtils.ConvertStateApi
 import models.{FileVerificationStatus, SessionState}
 import play.api.libs.json.Json
 import play.api.mvc.Results._
-import play.api.mvc.{Request, Result}
+import play.api.mvc.{Call, Request, Result}
 import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services.{FileUploadState, FileUploaded}
-
 import javax.inject.Inject
+import play.api.Logger
+
 import scala.concurrent.Future
 
 case class FileUploadException(message: String) extends RuntimeException(message)
@@ -45,8 +46,16 @@ case class FileUploadUtils @Inject() (sessionRepository: SessionRepository) {
 
 object FileUploadUtils {
 
+  private val logger = Logger(this.getClass)
+
   def fileStateErrror = throw FileUploadException("File upload state error")
   type ConvertStateApi = (FileUploadState) => Future[FileUploadState]
+
+  def redirectFileStateMissing(message: String, call: Call) = {
+    logger.warn("Missing FileUploadState") // for PD alerts
+    logger.info(s"FileUploadState was missing performing $message")
+    Redirect(call)
+  }
 
   def acknowledgeFileUploadRedirect(state: FileUploadState)(implicit request: Request[_]): Result =
     (state match {
