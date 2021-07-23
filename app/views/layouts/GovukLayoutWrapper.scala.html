@@ -93,10 +93,12 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
         @phaseBanner("beta")
     }
 
-    @languageSelection(
-        appConfig.languageMap,
-        appConfig.routeToSwitchLanguage
-    )
+    @if(appConfig.languageTranslationEnabled) {
+        @languageSelection(
+            appConfig.languageMap,
+            appConfig.routeToSwitchLanguage
+        )
+    }
 
     @{backLinkNav.flatMap(_.maybeCall) match {
         case Some(call) => govukBackLink(BackLink(
