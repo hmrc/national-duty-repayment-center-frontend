@@ -33,9 +33,6 @@ class LanguageSwitchController @Inject() (
   override def fallbackURL: String =
     routes.IndexController.onPageLoad().url
 
-  override protected def languageMap: Map[String, Lang] =
-    if (appConfig.languageTranslationEnabled)
-      Map("english"    -> Lang("en"), "cymraeg" -> Lang("cy"))
-    else Map("english" -> Lang("en"))
+  override protected def languageMap: Map[String, Lang] = appConfig.languageMap
 
 }

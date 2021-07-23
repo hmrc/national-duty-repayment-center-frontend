@@ -20,7 +20,7 @@ import com.google.inject.{ImplementedBy, Inject}
 import controllers.routes
 import javax.inject.Singleton
 import play.api.Configuration
-import play.api.i18n.Langs
+import play.api.i18n.{Lang, Langs}
 import play.api.mvc.Call
 
 import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
@@ -82,6 +82,8 @@ trait FrontendAppConfig {
 
   val eoriIntegration: FrontendAppConfig.EoriIntegration
   val emails: FrontendAppConfig.Emails
+
+  def languageMap: Map[String, Lang]
 
   val routeToSwitchLanguage: String => Call
   val locationCanonicalList: String
@@ -185,6 +187,10 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
 
   override val routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
+
+  override def languageMap: Map[String, Lang] = if (languageTranslationEnabled)
+    Map("english"    -> Lang("en"), "cymraeg" -> Lang("cy"))
+  else Map("english" -> Lang("en"))
 
   private def loadConfig(key: String): String =
     configuration.getOptional[String](key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
