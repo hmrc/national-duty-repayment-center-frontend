@@ -51,8 +51,6 @@ class EmailAddressAndPhoneNumberFormProviderSpec extends StringFieldBehaviours {
       numDigits <- Gen.choose(length, length)
     } yield s"$numDigits"
 
-    behave like fieldThatBindsValidData(form, fieldName, validData)
-
     "bind telephone number" in {
 
       val result = form.bind(Map(fieldName -> "01234567890", "value" -> "02"))(fieldName)
