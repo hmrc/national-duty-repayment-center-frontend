@@ -95,7 +95,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 
     @if(appConfig.languageTranslationEnabled) {
         @languageSelection(
-            appConfig.languageMap,
+            Map("english" -> Lang("en"), "cymraeg" -> Lang("cy")),
             appConfig.routeToSwitchLanguage
         )
     }

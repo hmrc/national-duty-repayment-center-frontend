@@ -20,7 +20,7 @@ import com.google.inject.{ImplementedBy, Inject}
 import controllers.routes
 import javax.inject.Singleton
 import play.api.Configuration
-import play.api.i18n.Lang
+import play.api.i18n.Langs
 import play.api.mvc.Call
 
 import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
@@ -83,8 +83,6 @@ trait FrontendAppConfig {
   val eoriIntegration: FrontendAppConfig.EoriIntegration
   val emails: FrontendAppConfig.Emails
 
-  def languageMap: Map[String, Lang]
-
   val routeToSwitchLanguage: String => Call
   val locationCanonicalList: String
   val feedbackSurvey: String
@@ -99,7 +97,7 @@ trait FrontendAppConfig {
 }
 
 @Singleton
-class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends FrontendAppConfig {
+class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Langs) extends FrontendAppConfig {
 
   override val appName: String              = configuration.get[String]("appName")
   override val contactHost                  = configuration.get[String]("contact-frontend.host")
@@ -145,8 +143,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   override val loginUrl: String         = configuration.get[String]("urls.login")
   override val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
 
-  override val languageTranslationEnabled: Boolean =
-    configuration.get[Boolean]("microservice.services.features.welsh-translation")
+  override val languageTranslationEnabled: Boolean = langs.availables.exists(_.language == "cy")
 
   override val signOutUrl: String       = configuration.get[String]("urls.logout")
   private lazy val feedbackHost: String = configuration.get[String]("feedback-frontend.host")
@@ -185,8 +182,6 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
     configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
 
   lazy val locationCanonicalList: String = loadConfig("location.canonical.list")
-
-  override def languageMap: Map[String, Lang] = Map("english" -> Lang("en"), "cymraeg" -> Lang("cy"))
 
   override val routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)

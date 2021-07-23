@@ -47,7 +47,7 @@ object AddressLookupRequest {
     confirmationHeadingKey: String
   )(implicit messagesApi: MessagesApi, config: FrontendAppConfig): AddressLookupRequest = {
     val englishMessages: Messages = MessagesImpl(Lang("en"), messagesApi)
-    val welshMessages: Messages  = MessagesImpl(Lang("cy"), messagesApi)
+    val welshMessages: Messages   = MessagesImpl(Lang("cy"), messagesApi)
 
     def labels(messages: Messages) = AddressLookupRequest.Labels.Language(
       AppLevelLabels(navTitle = Some(messages("site.service_name"))),
@@ -60,7 +60,10 @@ object AddressLookupRequest {
         heading = Some(messages(lookupPageHeadingKey)),
         afterHeadingText = Some(messages(hintKey))
       ),
-      ConfirmPageLabels(title = Some(messages(confirmationHeadingKey)), heading = Some(messages(confirmationHeadingKey))),
+      ConfirmPageLabels(
+        title = Some(messages(confirmationHeadingKey)),
+        heading = Some(messages(confirmationHeadingKey))
+      ),
       EditPageLabels(
         postcodeLabel = Some(messages("address.label.edit.postcode")),
         title = Some(messages(editPageHeadingKey)),
@@ -87,7 +90,7 @@ object AddressLookupRequest {
       ),
       Labels(
         en = labels(englishMessages),
-        cy = labels(if(config.languageTranslationEnabled)welshMessages else englishMessages)
+        cy = labels(if (config.languageTranslationEnabled) welshMessages else englishMessages)
       )
     )
   }
