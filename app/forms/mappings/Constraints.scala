@@ -16,9 +16,10 @@
 
 package forms.mappings
 
+import java.time.LocalDate
+
 import play.api.data.validation.{Constraint, Invalid, Valid}
 
-import java.time.LocalDate
 import scala.util.{Success, Try}
 
 trait Constraints {
@@ -95,6 +96,14 @@ trait Constraints {
         Valid
       case _ =>
         Invalid(errorKey, minimum)
+    }
+
+  protected def exactLength(length: Int, errorKey: String): Constraint[String] =
+    Constraint {
+      case str if str.trim.length == length =>
+        Valid
+      case _ =>
+        Invalid(errorKey, length)
     }
 
   protected def startsWith(errorKey: String): Constraint[String] =

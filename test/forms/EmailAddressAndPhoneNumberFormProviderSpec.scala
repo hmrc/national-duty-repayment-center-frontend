@@ -18,6 +18,7 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import org.scalacheck.Gen
+import play.api.data.FormError
 
 class EmailAddressAndPhoneNumberFormProviderSpec extends StringFieldBehaviours {
 
@@ -38,6 +39,44 @@ class EmailAddressAndPhoneNumberFormProviderSpec extends StringFieldBehaviours {
     val validData             = Gen.oneOf(basicEmail, emailWithSpecialChars)
 
     behave like fieldThatBindsValidData(form, fieldName, validData)
+
+  }
+
+  ".phone" must {
+
+    val fieldName = "phone"
+    val length    = 11
+
+    val validData = for {
+      numDigits <- Gen.choose(length, length)
+    } yield s"$numDigits"
+
+    behave like fieldThatBindsValidData(form, fieldName, validData)
+
+    "bind telephone number" in {
+
+      val result = form.bind(Map(fieldName -> "01234567890", "value" -> "02"))(fieldName)
+      result.value.get shouldBe "01234567890"
+      result.errors shouldBe List.empty
+    }
+
+    "error if telephone number too short" in {
+
+      val result = form.bind(Map(fieldName -> "0123456789", "value" -> "02"))(fieldName)
+      result.errors shouldBe List(FormError(fieldName, "phoneNumber.error.length", Seq(length)))
+    }
+
+    "error if telephone number too long" in {
+
+      val result = form.bind(Map(fieldName -> "0123456789", "value" -> "02"))(fieldName)
+      result.errors shouldBe List(FormError(fieldName, "phoneNumber.error.length", Seq(length)))
+    }
+
+    "error if telephone number invalid" in {
+
+      val result = form.bind(Map(fieldName -> "12345678901", "value" -> "02"))(fieldName)
+      result.errors shouldBe List(FormError(fieldName, "phoneNumber.error.invalid", Seq(Validation.phoneNumberPattern)))
+    }
 
   }
 }
