@@ -63,24 +63,19 @@ class WhomToPayController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
-            updatedAnswers <- request.userAnswers.get(WhomToPayPage) match {
-              case Some(payee) if payee != value => Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage))
-              case _ => Future.successful(updatedAnswers)
-            }
-            updatedAnswers <- request.userAnswers.get(WhomToPayPage) match {
-              case Some(payee) if payee != value => Future.fromTry(updatedAnswers.remove(BankDetailsPage))
-              case _ => Future.successful(updatedAnswers)
-            }
-            updatedAnswers <- request.userAnswers.get(WhomToPayPage) match {
-              case Some(payee) if payee != value => Future.successful(updatedAnswers.copy(fileUploadState = updatedAnswers.fileUploadState.map(fs => fs.remove(ProofOfAuthority))))
-              case _ => Future.successful(updatedAnswers)
-            }
-
-
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(nextPage(updatedAnswers))
+          if( !request.userAnswers.get(WhomToPayPage).contains(value)) {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage))
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(BankDetailsPage))
+              updatedAnswers <- Future.successful(updatedAnswers.copy(fileUploadState = updatedAnswers.fileUploadState.map(fs => fs.remove(ProofOfAuthority))))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(nextPage(updatedAnswers))
+          } else
+            for {
+              userAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
+              _           <- sessionRepository.set(userAnswers)
+            } yield Redirect(nextPage(userAnswers))
       )
   }
 
