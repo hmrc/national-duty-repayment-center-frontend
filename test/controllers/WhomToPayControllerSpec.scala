@@ -18,11 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.WhomToPayFormProvider
-import models.{UserAnswers, WhomToPay}
+import models.{BankDetails, UserAnswers, WhomToPay}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhomToPayPage
+import pages.{BankDetailsPage, IndirectRepresentativePage, WhomToPayPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhomToPayView
@@ -52,6 +52,62 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
       contentAsString(result) mustEqual
         view(form, defaultBackLink)(request, messages).toString
+
+      application.stop()
+    }
+
+    "removes bank details if answer changes" in {
+
+      val userAnswers = UserAnswers(userIdentification).set(WhomToPayPage, WhomToPay.Representative).success.value
+
+      userAnswers.set(BankDetailsPage, BankDetails("Natural Numbers Inc","123456", "12345678"))
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, whomToPayRoute)
+          .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
+
+      val result = route(application, request).value
+
+
+      userAnswers.get(BankDetailsPage) mustBe None
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
+    "removes indirect representative if answer changes" in {
+
+      val userAnswers = UserAnswers(userIdentification).set(WhomToPayPage, WhomToPay.Representative).success.value
+
+      userAnswers.set(IndirectRepresentativePage, true)
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, whomToPayRoute)
+          .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
+
+      val result = route(application, request).value
+
+
+      userAnswers.get(IndirectRepresentativePage) mustBe None
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
