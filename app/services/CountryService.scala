@@ -41,6 +41,8 @@ class ForeignOfficeCountryService extends CountryService {
 
   implicit val fcoCountryFormat = Json.format[FcoCountry]
 
+  private val nullCountry = Country("", "")
+
   private val countriesEN: Seq[Country] =
     Json.parse(getClass.getResourceAsStream("/resources/countriesEN.json")).as[Map[String, FcoCountry]].map { country =>
       Country(country._2.country, country._2.name)
@@ -58,10 +60,10 @@ class ForeignOfficeCountryService extends CountryService {
   override def find(code: String, welshFlag: Boolean = false): Country =
     if (!welshFlag) {
       val filtered = countriesEN.filter(_.code == code)
-      filtered.head
+      filtered.headOption.getOrElse(nullCountry)
     } else {
       val filtered = countriesCY.filter(_.code == code)
-      filtered.head
+      filtered.headOption.getOrElse(nullCountry)
     }
 
 }
