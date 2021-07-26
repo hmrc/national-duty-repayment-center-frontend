@@ -60,7 +60,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userIdentification).set(WhomToPayPage, WhomToPay.Representative).success.value
 
-      userAnswers.set(BankDetailsPage, BankDetails("Natural Numbers Inc","123456", "12345678"))
+      userAnswers.set(BankDetailsPage, BankDetails("Natural Numbers Inc", "123456", "12345678"))
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
@@ -73,7 +73,6 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
           .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
 
       val result = route(application, request).value
-
 
       userAnswers.get(BankDetailsPage) mustBe None
 
@@ -101,7 +100,6 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
           .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
 
       val result = route(application, request).value
-
 
       userAnswers.get(IndirectRepresentativePage) mustBe None
 

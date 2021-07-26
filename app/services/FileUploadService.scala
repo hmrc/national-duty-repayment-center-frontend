@@ -57,6 +57,7 @@ case class UploadFile(
 
   override def remove(fileType: FileType): FileUploadState =
     this.copy(fileUploads = FileUploads(fileUploads.files.filter(f => !f.fileType.contains(fileType))))
+
 }
 
 object UploadFile {
@@ -67,6 +68,7 @@ case class FileUploaded(fileUploads: FileUploads, acknowledged: Boolean = false)
 
   override def remove(fileType: FileType): FileUploadState =
     this.copy(fileUploads = FileUploads(fileUploads.files.filter(f => !f.fileType.contains(fileType))))
+
 }
 
 object FileUploaded {

@@ -63,15 +63,19 @@ class WhomToPayController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
-          if( !request.userAnswers.get(WhomToPayPage).contains(value)) {
+          if (!request.userAnswers.get(WhomToPayPage).contains(value))
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
               updatedAnswers <- Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage))
               updatedAnswers <- Future.fromTry(updatedAnswers.remove(BankDetailsPage))
-              updatedAnswers <- Future.successful(updatedAnswers.copy(fileUploadState = updatedAnswers.fileUploadState.map(fs => fs.remove(ProofOfAuthority))))
+              updatedAnswers <- Future.successful(
+                updatedAnswers.copy(fileUploadState =
+                  updatedAnswers.fileUploadState.map(fs => fs.remove(ProofOfAuthority))
+                )
+              )
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(nextPage(updatedAnswers))
-          } else
+          else
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
               _           <- sessionRepository.set(userAnswers)
