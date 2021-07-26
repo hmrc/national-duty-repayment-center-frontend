@@ -17,19 +17,12 @@
 package forms
 
 import forms.mappings.Mappings
-import models.{AmendCaseResponseType, IsContactProvided}
-import play.api.data.{Form, Mapping}
+import javax.inject.Inject
+import models.IsContactProvided
 import play.api.data.Forms.{mapping, set}
+import play.api.data.{Form, Mapping}
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.voa.play.form.{Condition, ConditionalMapping, MandatoryOptionalMapping}
-import uk.gov.voa.play.form.ConditionalMappings.{
-  mandatoryAndOnlyIfAnyOf,
-  mandatoryIfEqual,
-  mandatoryIfEqualToAny,
-  mandatoryIfTrue
-}
-
-import javax.inject.Inject
 
 case class EmailAndPhoneNumber(emailOrPhone: Set[IsContactProvided], email: Option[String], phone: Option[String])
 
@@ -68,7 +61,7 @@ class EmailAddressAndPhoneNumberFormProvider @Inject() extends Mappings {
           textNoSpaces("phoneNumber.error.required")
             .verifying(
               firstError(
-                maxLength(11, "phoneNumber.error.length"),
+                exactLength(11, "phoneNumber.error.length"),
                 regexp(Validation.phoneNumberPattern, "phoneNumber.error.invalid")
               )
             )
