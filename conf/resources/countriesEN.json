@@ -14,15 +14,7 @@
     "country": "GG",
     "name": "Guernsey"
   },
-  "PT": {
-    "entry-number": "147",
-    "entry-timestamp": "2016-04-05T13:23:05Z",
-    "item-hash": "sha-256:237f7100bbbdcf670f0b0087a07350cd824007e230795acef6835883a68f9a37",
-    "country": "PT",
-    "official-name": "The Portuguese Republic",
-    "name": "Portugal",
-    "citizen-names": "Portuguese"
-  },
+
   "PW": {
     "entry-number": "140",
     "entry-timestamp": "2016-04-05T13:23:05Z",

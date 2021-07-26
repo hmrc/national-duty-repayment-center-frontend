@@ -19,6 +19,7 @@ package services
 import com.google.inject.ImplementedBy
 import javax.inject.Singleton
 import models.Country
+import play.api.Logger
 import play.api.libs.json.Json
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 
@@ -39,6 +40,8 @@ trait CountryService {
 @Singleton
 class ForeignOfficeCountryService extends CountryService {
 
+  private val logger = Logger(this.getClass)
+
   implicit val fcoCountryFormat = Json.format[FcoCountry]
 
   private val nullCountry = Country("", "")
@@ -58,12 +61,15 @@ class ForeignOfficeCountryService extends CountryService {
     else countriesCY
 
   override def find(code: String, welshFlag: Boolean = false): Country =
-    if (!welshFlag) {
-      val filtered = countriesEN.filter(_.code == code)
-      filtered.headOption.getOrElse(nullCountry)
-    } else {
-      val filtered = countriesCY.filter(_.code == code)
-      filtered.headOption.getOrElse(nullCountry)
+    if (!welshFlag)
+      countryOrWarning(countriesEN, code)
+    else
+      countryOrWarning(countriesCY, code)
+
+  private def countryOrWarning(countries: Seq[Country], code: String) =
+    countries.find(_.code == code).getOrElse {
+      logger.warn(s"Unknown country: $code")
+      nullCountry
     }
 
 }
