@@ -21,7 +21,7 @@ import forms.AgentImporterManualAddressFormProvider
 import javax.inject.Inject
 import models.addresslookup.MissingAddressIdException
 import models.requests.DataRequest
-import models.{Address, Country, UserAnswers}
+import models.{Address, UserAnswers}
 import navigation.CreateNavigator
 import pages.{AgentImporterAddressPage, Page}
 import play.api.data.Form
@@ -104,7 +104,8 @@ class AgentImporterAddressFrontendController @Inject() (
             el._2,
             el._4,
             None,
-            Country(confirmedAddress.address.country.code, confirmedAddress.address.country.name),
+            // ensure country returned from ALF exists in our service
+            countriesService.find(confirmedAddress.address.country.code),
             confirmedAddress.address.postcode,
             Some(confirmedAddress.auditRef)
           )

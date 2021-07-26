@@ -1,4 +1,19 @@
 {
+  "IM": {
+    "_comment": "Manually added for NF-738",
+    "country": "IM",
+    "name": "Isle of Man"
+  },
+  "JE": {
+    "_comment": "Manually added for NF-738",
+    "country": "JE",
+    "name": "Jersey"
+  },
+  "GG": {
+    "_comment": "Manually added for NF-738",
+    "country": "GG",
+    "name": "Guernsey"
+  },
   "PT": {
     "entry-number": "147",
     "entry-timestamp": "2016-04-05T13:23:05Z",
