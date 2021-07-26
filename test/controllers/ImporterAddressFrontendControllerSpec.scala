@@ -23,7 +23,7 @@ import data.TestData
 import data.TestData.addressLookupConfirmation
 import forms.ImporterManualAddressFormProvider
 import models.addresslookup.AddressLookupOnRamp
-import models.{Address, UserAnswers}
+import models.{Address, Country, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -40,6 +40,7 @@ import scala.concurrent.Future
 class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
   implicit val testCountryService = TestData.testCountryService
+  val realCountryService          = injector.instanceOf[CountryService]
   val formProvider                = new ImporterManualAddressFormProvider()
   val form                        = formProvider()
 
@@ -289,6 +290,36 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
     }
 
+    "accept Crown Dependency address returned from address lookup" in {
+      val mockAddressLookupService = mock[AddressLookupService]
+
+      val auditRef = UUID.randomUUID().toString
+
+      when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+        Future.successful(addressLookupConfirmation(auditRef, "Isle of Man", Some("IM9 3AP"), "IM"))
+      )
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CountryService].toInstance(realCountryService))
+          .overrides(bind[AddressLookupService].toInstance(mockAddressLookupService))
+          .build()
+
+      val request = FakeRequest(GET, importerUpdateAddressRoute)
+      val result  = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      persistedAnswers.getValue.get(ImporterAddressPage).map(_.Country) mustBe Some(Country("IM", "Isle of Man"))
+
+      persistedAnswers.getValue.get(ImporterAddressPage).flatMap(_.PostalCode) mustBe Some("IM9 3AP")
+
+    }
+
     "show error page when invalid data returned from address lookup" in {
       val mockAddressLookupService = mock[AddressLookupService]
 
@@ -316,6 +347,33 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
       contentAsString(result) must include("City must be 64 characters or less")
       contentAsString(result) must include("Enter a UK postcode")
+    }
+
+    "show error page when unknown country returned from address lookup" in {
+      val mockAddressLookupService = mock[AddressLookupService]
+
+      when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+        Future.successful(
+          addressLookupConfirmation(
+            city = "Leeds",
+            postCode = Some("LS11AB"),
+            countryCode = "RY" // Republic of Yorkshire
+          )
+        )
+      )
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CountryService].toInstance(realCountryService))
+          .overrides(bind[AddressLookupService].toInstance(mockAddressLookupService))
+          .build()
+
+      val request = FakeRequest(GET, importerUpdateAddressRoute)
+      val result  = route(application, request).value
+
+      status(result) mustEqual BAD_REQUEST
+
+      contentAsString(result) must include("Enter Importer’s country code")
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {

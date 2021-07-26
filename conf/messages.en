@@ -830,6 +830,6 @@ amend.application.not.found.email.subject = Application reference {0}
 amend.application.closed.title = This application is closed
 amend.application.closed.heading = This application is closed
 amend.application.closed.p1 = We cannot add any information to this application as it is closed. You should have received correspondence via post confirming why your application was closed.
-amend.application.closed.p2 = If you feel this application has been closed in error, you can email us at {0} with the additional information.
+amend.application.closed.p2 = If you feel we closed this application in error you can email us at {0} with the additional information.
 amend.application.closed.p3 = You must include the application reference number <b>{0}</b> in the subject header.
 amend.application.closed.email.subject = Closed application reference {0}
