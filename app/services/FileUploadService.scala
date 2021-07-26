@@ -45,6 +45,7 @@ trait IsTransient
 
 trait FileUploadState {
   def fileUploads: FileUploads
+  def remove(fileType: FileType): FileUploadState
 }
 
 case class UploadFile(
@@ -52,13 +53,21 @@ case class UploadFile(
   uploadRequest: UploadRequest,
   fileUploads: FileUploads,
   maybeUploadError: Option[FileUploadError] = None
-) extends FileUploadState
+) extends FileUploadState {
+
+  override def remove(fileType: FileType): FileUploadState =
+    this.copy(fileUploads = FileUploads(fileUploads.files.filter(f => !f.fileType.contains(fileType))))
+}
 
 object UploadFile {
   implicit val formatter: Format[UploadFile] = Json.format[UploadFile]
 }
 
-case class FileUploaded(fileUploads: FileUploads, acknowledged: Boolean = false) extends FileUploadState
+case class FileUploaded(fileUploads: FileUploads, acknowledged: Boolean = false) extends FileUploadState {
+
+  override def remove(fileType: FileType): FileUploadState =
+    this.copy(fileUploads = FileUploads(fileUploads.files.filter(f => !f.fileType.contains(fileType))))
+}
 
 object FileUploaded {
   implicit val formatter: Format[FileUploaded] = Json.format[FileUploaded]

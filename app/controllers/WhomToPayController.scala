@@ -18,11 +18,12 @@ package controllers
 
 import controllers.actions._
 import forms.WhomToPayFormProvider
+import models.FileType.ProofOfAuthority
+
 import javax.inject.Inject
-import models.WhomToPay.Importer
 import models._
 import navigation.CreateNavigator
-import pages.{IndirectRepresentativePage, Page, WhomToPayPage}
+import pages.{BankDetailsPage, IndirectRepresentativePage, Page, WhomToPayPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -64,12 +65,22 @@ class WhomToPayController @Inject() (
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
-            updatedAnswersCleaned <- request.userAnswers.get(WhomToPayPage) match {
-              case Some(Importer) => Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage))
-              case _              => Future.successful(updatedAnswers)
+            updatedAnswers <- request.userAnswers.get(WhomToPayPage) match {
+              case Some(payee) if payee != value => Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage))
+              case _ => Future.successful(updatedAnswers)
             }
+            updatedAnswers <- request.userAnswers.get(WhomToPayPage) match {
+              case Some(payee) if payee != value => Future.fromTry(updatedAnswers.remove(BankDetailsPage))
+              case _ => Future.successful(updatedAnswers)
+            }
+            updatedAnswers <- request.userAnswers.get(WhomToPayPage) match {
+              case Some(payee) if payee != value => Future.successful(updatedAnswers.copy(fileUploadState = updatedAnswers.fileUploadState.map(fs => fs.remove(ProofOfAuthority))))
+              case _ => Future.successful(updatedAnswers)
+            }
+
+
             _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(nextPage(updatedAnswersCleaned))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 
