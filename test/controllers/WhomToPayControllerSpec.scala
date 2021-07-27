@@ -19,15 +19,19 @@ package controllers
 import base.SpecBase
 import forms.WhomToPayFormProvider
 import models.{BankDetails, UserAnswers, WhomToPay}
+import navigation.CreateNavigator
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{atLeastOnce, times, verify, when}
+import org.mockito.internal.verification.Times
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{BankDetailsPage, IndirectRepresentativePage, WhomToPayPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhomToPayView
 
-import scala.concurrent.Future
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
@@ -60,12 +64,13 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userIdentification).set(WhomToPayPage, WhomToPay.Representative).success.value
 
-      userAnswers.set(BankDetailsPage, BankDetails("Natural Numbers Inc", "123456", "12345678"))
+      val updatedAnswers =
+        userAnswers.set(BankDetailsPage, BankDetails("Natural Numbers Inc", "123456", "12345678")).success.value
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
+        applicationBuilder(userAnswers = Some(updatedAnswers), mockCreateNavigator)
           .build()
 
       val request =
@@ -74,11 +79,45 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      userAnswers.get(BankDetailsPage) mustBe None
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+      verify(mockCreateNavigator).nextPage(any(), answerCaptor.capture())
+
+      answerCaptor.getValue.get(BankDetailsPage) mustBe None
+
+      application.stop()
+    }
+
+    " does not remove bank details if answer does not change" in {
+
+      val userAnswers = UserAnswers(userIdentification).set(WhomToPayPage, WhomToPay.Importer).success.value
+
+      val updatedAnswers =
+        userAnswers.set(BankDetailsPage, BankDetails("Natural Numbers Inc", "123456", "12345678")).success.value
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(updatedAnswers), mockCreateNavigator)
+          .build()
+
+      val request =
+        FakeRequest(POST, whomToPayRoute)
+          .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual defaultNextPage.url
+
+      val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+      verify(mockCreateNavigator, atLeastOnce()).nextPage(any(), answerCaptor.capture())
+
+      answerCaptor.getValue.get(BankDetailsPage) mustBe Some(BankDetails("Natural Numbers Inc", "123456", "12345678"))
 
       application.stop()
     }
@@ -87,12 +126,12 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
       val userAnswers = UserAnswers(userIdentification).set(WhomToPayPage, WhomToPay.Representative).success.value
 
-      userAnswers.set(IndirectRepresentativePage, true)
+      val updatedAnswers = userAnswers.set(IndirectRepresentativePage, true).success.value
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers))
+        applicationBuilder(userAnswers = Some(updatedAnswers))
           .build()
 
       val request =
@@ -101,11 +140,44 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      userAnswers.get(IndirectRepresentativePage) mustBe None
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+      verify(mockCreateNavigator, atLeastOnce()).nextPage(any(), answerCaptor.capture())
+
+      answerCaptor.getValue.get(IndirectRepresentativePage) mustBe None
+
+      application.stop()
+    }
+
+    "does not remove indirect representative if answer does not change" in {
+
+      val userAnswers = UserAnswers(userIdentification).set(WhomToPayPage, WhomToPay.Importer).success.value
+
+      val updatedAnswers = userAnswers.set(IndirectRepresentativePage, true).success.value
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(updatedAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, whomToPayRoute)
+          .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
+
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual defaultNextPage.url
+
+      val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+      verify(mockCreateNavigator, atLeastOnce()).nextPage(any(), answerCaptor.capture())
+
+      answerCaptor.getValue.get(IndirectRepresentativePage) mustBe Some(true)
 
       application.stop()
     }
