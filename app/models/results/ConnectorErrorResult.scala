@@ -24,12 +24,4 @@ case object InvalidJson extends ConnectorErrorResult {
   override val body: String = "Invalid JSON received"
 }
 
-case object NotFound extends ConnectorErrorResult {
-  override val body: String = "Not found"
-}
-
 case class UnexpectedResponseStatus(status: Int, body: String) extends ConnectorErrorResult
-
-case class UnexpectedException(message: String) extends ConnectorErrorResult {
-  override val body: String = message
-}
