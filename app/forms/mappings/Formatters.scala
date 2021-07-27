@@ -142,41 +142,4 @@ trait Formatters extends TrimWhitespace {
 
     }
 
-  def emailAddressMapping(
-    keyLength: String,
-    keyInvalid: String,
-    keyRequired: String,
-    keySelectionRequired: String
-  ): Mapping[Option[String]] = {
-
-    val emailFieldName     = "email"
-    val selectionFieldName = "value"
-
-    def bind(data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
-
-      val emailAddress = data.get(emailFieldName)
-      val useEmail     = data.get("value")
-
-      val maxLengthEmailAddress = 85
-
-      (emailAddress, useEmail) match {
-        case (Some(""), Some("01")) => Left(Seq(FormError(emailFieldName, keyRequired)))
-        case (_, None)              => Left(Seq(FormError(selectionFieldName, keySelectionRequired)))
-        case (Some(email), Some("01")) if email.length > 0 && email.length > maxLengthEmailAddress =>
-          Left(Seq(FormError(emailFieldName, keyLength)))
-        case (Some(email), Some("01")) if !email.matches(Validation.emailRegex) =>
-          Left(Seq(FormError(emailFieldName, keyInvalid)))
-        case (Some(email), Some("01")) => Right(Some(email))
-        case _                         => Right(None)
-      }
-
-    }
-
-    def unbind(value: Option[String]): Map[String, String] =
-      Map(emailFieldName -> value.getOrElse(""))
-
-    new CustomBindMapping(emailFieldName, bind, unbind)
-
-  }
-
 }

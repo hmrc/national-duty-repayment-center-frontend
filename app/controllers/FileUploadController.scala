@@ -24,7 +24,7 @@ import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
 import controllers.actions._
-import forms.{AdditionalFileUploadFormProvider, UpscanS3ErrorFormProvider}
+import forms.UpscanS3ErrorFormProvider
 import javax.inject.{Inject, Named}
 import models.FileType.SupportingEvidence
 import models.requests.DataRequest
@@ -37,7 +37,7 @@ import play.api.mvc._
 import repositories.SessionRepository
 import services._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.{FileUploadView, FileUploadedView}
+import views.html.FileUploadView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -50,10 +50,8 @@ class FileUploadController @Inject() (
   navigator: CreateNavigator,
   upscanInitiateConnector: UpscanInitiateConnector,
   val controllerComponents: MessagesControllerComponents,
-  additionalFileUploadFormProvider: AdditionalFileUploadFormProvider,
   val upscanS3ErrorFormProvider: UpscanS3ErrorFormProvider,
   val fileUtils: FileUploadUtils,
-  fileUploadedView: FileUploadedView,
   requireData: DataRequiredAction,
   @Named("check-state-actor") checkStateActor: ActorRef,
   fileUploadView: FileUploadView
