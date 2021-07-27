@@ -46,8 +46,31 @@ object AddressLookupRequest {
     editPageHeadingKey: String,
     confirmationHeadingKey: String
   )(implicit messagesApi: MessagesApi, config: FrontendAppConfig): AddressLookupRequest = {
-    val eng: Messages = MessagesImpl(Lang("en"), messagesApi)
-    val cy: Messages  = MessagesImpl(Lang("cy"), messagesApi)
+    val englishMessages: Messages = MessagesImpl(Lang("en"), messagesApi)
+    val welshMessages: Messages   = MessagesImpl(Lang("cy"), messagesApi)
+
+    def labels(messages: Messages) = AddressLookupRequest.Labels.Language(
+      AppLevelLabels(navTitle = Some(messages("site.service_name"))),
+      SelectPageLabels(
+        title = Some(messages("address.label.select.title")),
+        heading = Some(messages("address.label.select.title"))
+      ),
+      LookupPageLabels(
+        title = Some(messages(lookupPageHeadingKey)),
+        heading = Some(messages(lookupPageHeadingKey)),
+        afterHeadingText = Some(messages(hintKey))
+      ),
+      ConfirmPageLabels(
+        title = Some(messages(confirmationHeadingKey)),
+        heading = Some(messages(confirmationHeadingKey))
+      ),
+      EditPageLabels(
+        postcodeLabel = Some(messages("address.label.edit.postcode")),
+        title = Some(messages(editPageHeadingKey)),
+        heading = Some(messages(editPageHeadingKey))
+      )
+    )
+
     new AddressLookupRequest(
       2,
       Options(
@@ -66,33 +89,8 @@ object AddressLookupRequest {
         )
       ),
       Labels(
-        en =
-          AddressLookupRequest.Labels.Language(
-            AppLevelLabels(navTitle = Some(eng("site.service_name"))),
-            SelectPageLabels(
-              title = Some(eng("address.label.select.title")),
-              heading = Some(eng("address.label.select.title"))
-            ),
-            LookupPageLabels(
-              title = Some(eng(lookupPageHeadingKey)),
-              heading = Some(eng(lookupPageHeadingKey)),
-              afterHeadingText = Some(eng(hintKey))
-            ),
-            ConfirmPageLabels(title = Some(eng(confirmationHeadingKey)), heading = Some(eng(confirmationHeadingKey))),
-            EditPageLabels(
-              postcodeLabel = Some(eng("address.label.edit.postcode")),
-              title = Some(eng(editPageHeadingKey)),
-              heading = Some(eng(editPageHeadingKey))
-            )
-          ),
-        cy =
-          AddressLookupRequest.Labels.Language(
-            AppLevelLabels(navTitle = Some(cy("site.service_name"))),
-            SelectPageLabels(),
-            LookupPageLabels(heading = Some(eng(lookupPageHeadingKey))),
-            ConfirmPageLabels(),
-            EditPageLabels()
-          )
+        en = labels(englishMessages),
+        cy = labels(if (config.languageTranslationEnabled) welshMessages else englishMessages)
       )
     )
   }

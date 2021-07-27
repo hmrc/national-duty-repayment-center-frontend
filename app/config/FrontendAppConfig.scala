@@ -20,7 +20,7 @@ import com.google.inject.{ImplementedBy, Inject}
 import controllers.routes
 import javax.inject.Singleton
 import play.api.Configuration
-import play.api.i18n.Lang
+import play.api.i18n.{Lang, Langs}
 import play.api.mvc.Call
 
 import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
@@ -99,7 +99,7 @@ trait FrontendAppConfig {
 }
 
 @Singleton
-class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends FrontendAppConfig {
+class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Langs) extends FrontendAppConfig {
 
   override val appName: String              = configuration.get[String]("appName")
   override val contactHost                  = configuration.get[String]("contact-frontend.host")
@@ -145,8 +145,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   override val loginUrl: String         = configuration.get[String]("urls.login")
   override val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
 
-  override val languageTranslationEnabled: Boolean =
-    configuration.get[Boolean]("microservice.services.features.welsh-translation")
+  override val languageTranslationEnabled: Boolean = langs.availables.exists(_.language == "cy")
 
   override val signOutUrl: String       = configuration.get[String]("urls.logout")
   private lazy val feedbackHost: String = configuration.get[String]("feedback-frontend.host")
@@ -186,10 +185,12 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
 
   lazy val locationCanonicalList: String = loadConfig("location.canonical.list")
 
-  override def languageMap: Map[String, Lang] = Map("english" -> Lang("en"), "cymraeg" -> Lang("cy"))
-
   override val routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
+
+  override def languageMap: Map[String, Lang] = if (languageTranslationEnabled)
+    Map("english"    -> Lang("en"), "cymraeg" -> Lang("cy"))
+  else Map("english" -> Lang("en"))
 
   private def loadConfig(key: String): String =
     configuration.getOptional[String](key).getOrElse(throw new Exception(s"Missing configuration key: $key"))

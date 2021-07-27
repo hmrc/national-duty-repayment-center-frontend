@@ -24,6 +24,7 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, spy, when}
 import org.scalatest.BeforeAndAfterEach
 import play.api.Configuration
+import play.api.i18n.Langs
 import play.api.mvc.{BodyParsers, Result, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
@@ -38,8 +39,9 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
   val authConnector: AuthConnector = mock[AuthConnector]
 
   val realConfig                = injector.instanceOf[Configuration]
+  val realLangs                 = injector.instanceOf[Langs]
   val mockConfig: Configuration = spy(realConfig)
-  def appConfig                 = new FrontendAppConfigImpl(mockConfig)
+  def appConfig                 = new FrontendAppConfigImpl(mockConfig, realLangs)
 
   val enrolmentsWithoutEORI: Enrolments = Enrolments(
     Set(Enrolment(key = "IR-SA", identifiers = Seq(EnrolmentIdentifier("UTR", "123")), state = "Activated"))
