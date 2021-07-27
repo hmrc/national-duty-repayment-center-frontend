@@ -16,9 +16,18 @@
 
 package models
 
+import models.NumberOfEntriesType.Multiple
 import play.api.libs.json.{Json, OFormat}
 
-case class Entries(numberOfEntriesType: NumberOfEntriesType, entries: Option[String])
+import scala.util.Try
+
+case class Entries(numberOfEntriesType: NumberOfEntriesType, entries: Option[String]) {
+
+  val isMultipleSmall: Boolean =
+    numberOfEntriesType == Multiple && entries.flatMap(ent => Try(ent.toInt).toOption).exists(num => num <= 10)
+
+  val isMultipleLarge: Boolean = numberOfEntriesType == Multiple && !isMultipleSmall
+}
 
 object Entries {
   implicit val format: OFormat[Entries] = Json.format[Entries]
