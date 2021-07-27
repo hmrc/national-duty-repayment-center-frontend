@@ -54,6 +54,8 @@
 
             @claimReason.map(reason => claimReasonDocuments(reason))
 
+            @html.p{ @messages("claimReason.documents.additional.documents.para") }
+
             @html.h2("evidenceSupportingDocs.h2", classes = "govuk-heading-s")
             @supportedFileTypeList()
         }
