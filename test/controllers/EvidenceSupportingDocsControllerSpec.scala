@@ -17,8 +17,9 @@
 package controllers
 
 import base.SpecBase
-import models.{ClaimReasonType, UserAnswers}
-import pages.ClaimReasonTypePage
+import models.NumberOfEntriesType.{Multiple, Single}
+import models.{ClaimReasonType, Entries, UserAnswers}
+import pages.{ClaimReasonTypePage, NumberOfEntriesTypePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EvidenceSupportingDocsView
@@ -40,7 +41,7 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(None, defaultBackLink)(request, messages).toString
+        view(None, None, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -61,12 +62,65 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(Some(claimReason), defaultBackLink)(request, messages).toString
+          view(Some(claimReason), None, defaultBackLink)(request, messages).toString
 
         application.stop()
 
       }
+    }
 
+    "return OK and the correct view for single entry" in {
+
+      val userAnswers =
+        UserAnswers(userIdentification).set(NumberOfEntriesTypePage, Entries(Single, None)).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.EvidenceSupportingDocsController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual OK
+
+      contentAsString(result) must include(messages("evidenceSupportingDocs.paragraph1.single"))
+
+      application.stop()
+    }
+
+    "return OK and the correct view for 'small' multiple entry" in {
+
+      val userAnswers =
+        UserAnswers(userIdentification).set(NumberOfEntriesTypePage, Entries(Multiple, Some("10"))).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.EvidenceSupportingDocsController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual OK
+
+      contentAsString(result) must include(messages("evidenceSupportingDocs.paragraph1.multiple-small"))
+
+      application.stop()
+    }
+
+    "return OK and the correct view for 'large' multiple entry" in {
+
+      val userAnswers =
+        UserAnswers(userIdentification).set(NumberOfEntriesTypePage, Entries(Multiple, Some("15"))).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.EvidenceSupportingDocsController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual OK
+
+      contentAsString(result) must include(messages("evidenceSupportingDocs.paragraph2.multiple-large"))
+
+      application.stop()
     }
   }
 }

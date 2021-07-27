@@ -20,7 +20,7 @@ import controllers.actions._
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{ClaimReasonTypePage, EvidenceSupportingDocsPage, Page}
+import pages.{ClaimReasonTypePage, EvidenceSupportingDocsPage, NumberOfEntriesTypePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -43,7 +43,13 @@ class EvidenceSupportingDocsController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      Ok(view(request.userAnswers.get(ClaimReasonTypePage), backLink(request.userAnswers)))
+      Ok(
+        view(
+          request.userAnswers.get(ClaimReasonTypePage),
+          request.userAnswers.get(NumberOfEntriesTypePage),
+          backLink(request.userAnswers)
+        )
+      )
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {

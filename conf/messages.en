@@ -239,7 +239,14 @@ claimRepaymentType.error.required = Select what you want to reclaim
 
 evidenceSupportingDocs.title = Required supporting documents
 evidenceSupportingDocs.heading = Required supporting documents
-evidenceSupportingDocs.paragraph1 = These are the documents we must have to process your claim.
+evidenceSupportingDocs.paragraph1.single = The documents you must have to process your claim are:
+evidenceSupportingDocs.paragraph1.multiple-small = The documents you must have <b>for each entry</b> to process your claim are:
+evidenceSupportingDocs.paragraph1.multiple-large = We must have the:
+evidenceSupportingDocs.paragraph2.multiple-large = As you are claiming for multiple entries, you can either give us:
+evidenceSupportingDocs.bullet1.multiple-large = the documents above <b>for each entry</b>
+evidenceSupportingDocs.bullet2.multiple-large = the documents for the oldest entry you have listed. We will ask for more information later.
+
+
 evidenceSupportingDocs.h2 = Types of files you can upload
 evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
