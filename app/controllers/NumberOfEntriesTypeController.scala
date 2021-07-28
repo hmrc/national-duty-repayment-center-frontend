@@ -19,9 +19,10 @@ package controllers
 import controllers.actions._
 import forms.NumberOfEntriesTypeFormProvider
 import javax.inject.Inject
+import models.FileType.Bulk
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{ClaimantTypePage, NumberOfEntriesTypePage, Page}
+import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -61,25 +62,24 @@ class NumberOfEntriesTypeController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
-          // TODO - remove this logic of clearing answers if number of entries is changed
-          if (
-            !request.userAnswers.get(NumberOfEntriesTypePage).contains(value)
-            && request.userAnswers.changePage.contains(NumberOfEntriesTypePage.toString)
-          ) {
-            val claimantType = request.userAnswers.get(ClaimantTypePage).get
+          if (!request.userAnswers.get(NumberOfEntriesTypePage).contains(value))
             for {
-              _           <- sessionRepository.resetData(request.userAnswers)
-              sessionData <- sessionRepository.get(request.internalId)
-              userAnswers <- Future.fromTry(
-                sessionData.map(_.copy(id = request.internalId)).getOrElse(UserAnswers(request.identification)).set(
-                  NumberOfEntriesTypePage,
-                  value
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
+              updatedAnswers <- Future.fromTry(
+                updatedAnswers.remove(
+                  EntryDetailsPage,
+                  ClaimRepaymentTypePage,
+                  CustomsDutyPaidPage,
+                  VATPaidPage,
+                  OtherDutiesPaidPage,
+                  WhomToPayPage,
+                  RepaymentTypePage
                 )
               )
-              claimantTypeAnswers <- Future.fromTry(userAnswers.set(ClaimantTypePage, claimantType))
-              res                 <- sessionRepository.set(claimantTypeAnswers)
-            } yield Redirect(nextPage(userAnswers))
-          } else
+              updatedAnswers <- Future.fromTry(updatedAnswers.removeFile(Bulk))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(nextPage(updatedAnswers))
+          else
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesTypePage, value))
               res         <- sessionRepository.set(userAnswers)

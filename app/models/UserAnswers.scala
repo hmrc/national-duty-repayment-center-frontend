@@ -73,7 +73,17 @@ final case class UserAnswers(
     }
   }
 
-  def remove[A](page: QuestionPage[A]): Try[UserAnswers] = {
+  def removeFile(fileType: FileType): Try[UserAnswers] = Success(
+    copy(fileUploadState = fileUploadState.map(_.remove(fileType)))
+  )
+
+  def remove(page: QuestionPage[_]*): Try[UserAnswers] = {
+    var triedUserAnswers: Try[UserAnswers] = remove(page.head)
+    page.tail.foreach(page => triedUserAnswers = triedUserAnswers.flatMap(_.remove(page)))
+    triedUserAnswers
+  }
+
+  private def remove(page: QuestionPage[_]): Try[UserAnswers] = {
 
     val updatedData = data.setObject(page.path, JsNull) match {
       case JsSuccess(jsValue, _) =>

@@ -18,9 +18,8 @@ package controllers
 
 import controllers.actions._
 import forms.WhomToPayFormProvider
-import models.FileType.ProofOfAuthority
-
 import javax.inject.Inject
+import models.FileType.ProofOfAuthority
 import models._
 import navigation.CreateNavigator
 import pages.{BankDetailsPage, IndirectRepresentativePage, Page, WhomToPayPage}
@@ -66,14 +65,9 @@ class WhomToPayController @Inject() (
           if (!request.userAnswers.get(WhomToPayPage).contains(value))
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(WhomToPayPage, value))
-              updatedAnswers <- Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage))
-              updatedAnswers <- Future.fromTry(updatedAnswers.remove(BankDetailsPage))
-              updatedAnswers <- Future.successful(
-                updatedAnswers.copy(fileUploadState =
-                  updatedAnswers.fileUploadState.map(fs => fs.remove(ProofOfAuthority))
-                )
-              )
-              _ <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(IndirectRepresentativePage, BankDetailsPage))
+              updatedAnswers <- Future.fromTry(updatedAnswers.removeFile(ProofOfAuthority))
+              _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(nextPage(updatedAnswers))
           else
             for {

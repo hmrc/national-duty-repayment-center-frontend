@@ -16,15 +16,24 @@
 
 package controllers
 
+import java.time.ZonedDateTime
+
 import base.SpecBase
+import data.TestData.{testClaimRepaymentType, testEntryDetails, testRepaymentAmounts}
 import forms.NumberOfEntriesTypeFormProvider
-import models.{Entries, NumberOfEntriesType, UserAnswers}
+import models.FileType.Bulk
+import models.NumberOfEntriesType.Single
+import models.RepaymentType.CMA
+import models.WhomToPay.Importer
+import models.{Entries, FileUpload, FileUploads, NumberOfEntriesType, UserAnswers}
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.NumberOfEntriesTypePage
+import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FileUploaded
 import views.html.NumberOfEntriesTypeView
 
 import scala.concurrent.Future
@@ -98,6 +107,119 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
+    }
+
+    "remove answers when number of entries changes" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              fileType = Some(Bulk)
+            )
+          )
+        ),
+        acknowledged = true
+      )
+
+      val completeUserAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
+        .set(EntryDetailsPage, testEntryDetails)
+        .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
+        .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(VATPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(OtherDutiesPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(WhomToPayPage, Importer))
+        .flatMap(_.set(RepaymentTypePage, CMA))
+        .get
+
+      val application =
+        applicationBuilder(userAnswers = Some(completeUserAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, numberOfEntriesTypeRoute)
+          .withFormUrlEncodedBody(("value", "02"), ("entries", "100"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+
+      persistedAnswers.getValue.get(EntryDetailsPage) mustBe None
+      persistedAnswers.getValue.get(ClaimRepaymentTypePage) mustBe None
+      persistedAnswers.getValue.get(CustomsDutyPaidPage) mustBe None
+      persistedAnswers.getValue.get(VATPaidPage) mustBe None
+      persistedAnswers.getValue.get(OtherDutiesPaidPage) mustBe None
+      persistedAnswers.getValue.get(WhomToPayPage) mustBe None
+      persistedAnswers.getValue.get(RepaymentTypePage) mustBe None
+
+      persistedAnswers.getValue.fileUploadState mustBe Some(FileUploaded(FileUploads(Seq.empty), acknowledged = true))
+    }
+
+    "not remove answers when number of entries doesn't changes" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              fileType = Some(Bulk)
+            )
+          )
+        ),
+        acknowledged = true
+      )
+
+      val completeUserAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
+        .set(EntryDetailsPage, testEntryDetails)
+        .flatMap(_.set(NumberOfEntriesTypePage, Entries(Single, None)))
+        .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
+        .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(VATPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(OtherDutiesPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(WhomToPayPage, Importer))
+        .flatMap(_.set(RepaymentTypePage, CMA))
+        .get
+
+      val application =
+        applicationBuilder(userAnswers = Some(completeUserAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, numberOfEntriesTypeRoute)
+          .withFormUrlEncodedBody(("value", Single.toString))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+
+      persistedAnswers.getValue mustBe completeUserAnswers
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
