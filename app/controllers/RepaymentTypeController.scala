@@ -65,21 +65,21 @@ class RepaymentTypeController @Inject() (
         value =>
           for {
             updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.set(RepaymentTypePage, value))
-            updatesAnswersWithWhomToPay <- {
-              request.userAnswers.get(ClaimantTypePage) match {
+            updatedAnswers <- {
+              updatedAnswers.get(ClaimantTypePage) match {
                 case Some(Importer) => Future.fromTry(updatedAnswers.set(WhomToPayPage, models.WhomToPay.Importer))
                 case _              => Future.successful(updatedAnswers)
               }
             }
-            updatedAnswersWithCMA <- {
-              request.userAnswers.get(RepaymentTypePage) match {
-                case Some(CMA) => Future.fromTry(updatesAnswersWithWhomToPay.remove(BankDetailsPage))
-                case _         => Future.successful(updatesAnswersWithWhomToPay)
+            updatedAnswers <- {
+              updatedAnswers.get(RepaymentTypePage) match {
+                case Some(CMA) => Future.fromTry(updatedAnswers.remove(BankDetailsPage))
+                case _         => Future.successful(updatedAnswers)
               }
             }
-            _ <- sessionRepository.set(updatedAnswersWithCMA)
+            _ <- sessionRepository.set(updatedAnswers)
 
-          } yield Redirect(nextPage(updatedAnswersWithCMA))
+          } yield Redirect(nextPage(updatedAnswers))
       )
   }
 
