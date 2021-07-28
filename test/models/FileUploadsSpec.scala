@@ -36,6 +36,8 @@ class FileUploadsSpec extends WordSpec with Matchers {
       FileUpload.trimFileName("a" * (MAX - 5) + ".ext") shouldBe "a" * (MAX - 5) + ".ext"
       FileUpload.trimFileName("a" * (MAX - 4) + ".ext") shouldBe "a" * (MAX - 4) + ".ext"
       FileUpload.trimFileName("a" * (MAX + 1) + ".ext") shouldBe "a" * (MAX - 4) + ".ext"
+      FileUpload.trimFileName("a" * MAX + ".xml.ext") shouldBe "a" * (MAX - 4) + ".ext"
+      FileUpload.trimFileName("a" * (MAX - 7) + ".xml.ext") shouldBe "a" * (MAX - 7) + "xml.ext"
       FileUpload.trimFileName("a" * (MAX - 2) + ".") shouldBe "a" * (MAX - 2) + "."
       FileUpload.trimFileName("a" * (MAX - 1) + ".") shouldBe "a" * (MAX - 1) + "."
       FileUpload.trimFileName("a" * MAX + ".") shouldBe "a" * (MAX - 1) + "."
