@@ -19,10 +19,12 @@ package controllers
 import java.time.ZonedDateTime
 
 import base.SpecBase
-import data.TestData.populateUserAnswersWithRepresentativeAndMultipleEntries
+import data.TestData.{testClaimRepaymentType, testEntryDetails, testRepaymentAmounts}
 import forms.NumberOfEntriesTypeFormProvider
 import models.FileType.Bulk
 import models.NumberOfEntriesType.Single
+import models.RepaymentType.CMA
+import models.WhomToPay.Importer
 import models.{Entries, FileUpload, FileUploads, NumberOfEntriesType, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
@@ -130,10 +132,15 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val completeUserAnswers =
-        populateUserAnswersWithRepresentativeAndMultipleEntries(emptyUserAnswers).copy(fileUploadState =
-          Some(fileUploadedState)
-        )
+      val completeUserAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
+        .set(EntryDetailsPage, testEntryDetails)
+        .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
+        .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(VATPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(OtherDutiesPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(WhomToPayPage, Importer))
+        .flatMap(_.set(RepaymentTypePage, CMA))
+        .get
 
       val application =
         applicationBuilder(userAnswers = Some(completeUserAnswers))
@@ -153,6 +160,9 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
       persistedAnswers.getValue.get(EntryDetailsPage) mustBe None
       persistedAnswers.getValue.get(ClaimRepaymentTypePage) mustBe None
+      persistedAnswers.getValue.get(CustomsDutyPaidPage) mustBe None
+      persistedAnswers.getValue.get(VATPaidPage) mustBe None
+      persistedAnswers.getValue.get(OtherDutiesPaidPage) mustBe None
       persistedAnswers.getValue.get(WhomToPayPage) mustBe None
       persistedAnswers.getValue.get(RepaymentTypePage) mustBe None
 
@@ -182,10 +192,16 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val completeUserAnswers =
-        populateUserAnswersWithRepresentativeAndMultipleEntries(emptyUserAnswers).copy(fileUploadState =
-          Some(fileUploadedState)
-        )
+      val completeUserAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
+        .set(EntryDetailsPage, testEntryDetails)
+        .flatMap(_.set(NumberOfEntriesTypePage, Entries(Single, None)))
+        .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
+        .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(VATPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(OtherDutiesPaidPage, testRepaymentAmounts))
+        .flatMap(_.set(WhomToPayPage, Importer))
+        .flatMap(_.set(RepaymentTypePage, CMA))
+        .get
 
       val application =
         applicationBuilder(userAnswers = Some(completeUserAnswers))
@@ -193,7 +209,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, numberOfEntriesTypeRoute)
-          .withFormUrlEncodedBody(("value", "02"), ("entries", "2"))
+          .withFormUrlEncodedBody(("value", Single.toString))
 
       val result = route(application, request).value
 
