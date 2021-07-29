@@ -48,9 +48,6 @@ protected trait AmendAnswerConditions {
   protected val showFileUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(AmendCaseResponseTypePage).exists(_.contains(SupportingDocuments))
 
-  protected val showFileUploaded: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(AmendCaseResponseTypePage).exists(_.contains(SupportingDocuments))
-
   protected val showFurtherInformation: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(AmendCaseResponseTypePage).exists(_.contains(FurtherInformation))
 
@@ -59,7 +56,6 @@ protected trait AmendAnswerConditions {
 protected trait AmendHasAnsweredConditions {
 
   protected val never: UserAnswers => Boolean                      = (_: UserAnswers) => false
-  protected val createOrAmendAnswered: UserAnswers => Boolean      = _.get(CreateOrAmendCasePage).nonEmpty
   protected val caseReferenceAnswered: UserAnswers => Boolean      = _.get(ReferenceNumberPage).nonEmpty
   protected val caseResponseTypeAnswered: UserAnswers => Boolean   = _.get(AmendCaseResponseTypePage).nonEmpty
   protected val furtherInformationAnswered: UserAnswers => Boolean = _.get(FurtherInformationPage).nonEmpty
