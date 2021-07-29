@@ -147,11 +147,6 @@ trait ModelGenerators {
     } yield RepaymentAmounts(paid.toString, due.toString)
   }
 
-  implicit lazy val arbitraryNoOfEntries: Arbitrary[NoOfEntries] =
-    Arbitrary {
-      Gen.listOfN(2, Gen.numStr).map(_.mkString).map(NoOfEntries.apply)
-    }
-
   implicit lazy val userName: Arbitrary[UserName] =
     Arbitrary {
       self.stringsWithMaxLength(512).map(UserName.apply)

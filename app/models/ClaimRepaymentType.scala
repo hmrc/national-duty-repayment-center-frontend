@@ -16,11 +16,6 @@
 
 package models
 
-import play.api.data.Form
-import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
-
 sealed trait ClaimRepaymentType
 
 object ClaimRepaymentType extends Enumerable.Implicits {
@@ -30,17 +25,6 @@ object ClaimRepaymentType extends Enumerable.Implicits {
   case object Other   extends WithName("03") with ClaimRepaymentType
 
   val values: Seq[ClaimRepaymentType] = Seq(Customs, Vat, Other)
-
-  def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {
-    value =>
-      CheckboxItem(
-        name = Some("value[]"),
-        id = Some(value.toString),
-        value = value.toString,
-        content = Text(messages(s"claimRepaymentType.${value.toString}")),
-        checked = form.data.exists(_._2 == value.toString)
-      )
-  }
 
   implicit val enumerable: Enumerable[ClaimRepaymentType] =
     Enumerable(values.map(v => v.toString -> v): _*)
