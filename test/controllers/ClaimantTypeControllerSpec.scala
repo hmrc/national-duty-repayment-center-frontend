@@ -39,7 +39,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
   "ClaimantType Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET (with no back link)" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -57,9 +57,12 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "populate the view correctly on a GET from CYA (with back link)" in {
 
-      val userAnswers = UserAnswers(userIdentification).set(ClaimantTypePage, ClaimantType.values.head).success.value
+      val userAnswers = UserAnswers(userIdentification).copy(changePage = Some(ClaimantTypePage)).set(
+        ClaimantTypePage,
+        ClaimantType.values.head
+      ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +75,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ClaimantType.values.head), NavigatorBack(None))(request, messages).toString
+        view(form.fill(ClaimantType.values.head), defaultBackLink)(request, messages).toString
 
       application.stop()
     }

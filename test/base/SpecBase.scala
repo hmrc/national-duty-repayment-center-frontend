@@ -27,7 +27,7 @@ import models.AmendCaseResponseType.FurtherInformation
 import models._
 import models.eis.EISAddress
 import models.requests.{AmendClaimRequest, CreateClaimRequest, Identification, UploadRequest}
-import navigation.{CreateNavigator, NavigatorBack}
+import navigation.{AmendNavigator, CreateNavigator, NavigatorBack}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.TryValues
@@ -97,11 +97,16 @@ trait SpecBase
   when(mockCreateNavigator.previousPage(any(), any())).thenReturn(defaultBackLink)
   when(mockCreateNavigator.nextPage(any(), any())).thenReturn(defaultNextPage)
 
+  val mockAmendNavigator = mock[AmendNavigator]
+  when(mockAmendNavigator.previousPage(any(), any())).thenReturn(defaultBackLink)
+  when(mockAmendNavigator.nextPage(any(), any())).thenReturn(defaultNextPage)
+
   val mockClaimService = mock[ClaimService]
 
   protected def applicationBuilder(
     userAnswers: Option[UserAnswers] = None,
-    createNavigator: CreateNavigator = mockCreateNavigator
+    createNavigator: CreateNavigator = mockCreateNavigator,
+    amendNavigator: AmendNavigator = mockAmendNavigator
   ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .configure("metrics.enabled" -> false, "auditing.enabled" -> false, "metrics.jvm" -> false).overrides(
@@ -112,6 +117,7 @@ trait SpecBase
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers)),
         bind[SessionRepository].toInstance(mockSessionRepository),
         bind[CreateNavigator].toInstance(createNavigator),
+        bind[AmendNavigator].toInstance(amendNavigator),
         bind[ClaimService].toInstance(mockClaimService),
         bind[Metrics].to[MetricsImpl]
       )

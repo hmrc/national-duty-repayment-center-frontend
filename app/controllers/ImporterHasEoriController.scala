@@ -57,8 +57,6 @@ class ImporterHasEoriController @Inject() (
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val oldEORI = request.userAnswers.get(ImporterHasEoriPage).nonEmpty &&
-        request.userAnswers.get(ImporterHasEoriPage).get
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(

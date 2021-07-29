@@ -137,7 +137,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       val request = FakeRequest(POST, continueUrl)
       val result  = route(application, request).value
 
-      redirectLocation(result) mustEqual Some(routes.FurtherInformationController.onPageLoad().url)
+      redirectLocation(result) mustEqual Some(defaultNextPage.url)
 
       application.stop()
     }
@@ -180,7 +180,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       val request = FakeRequest(POST, continueUrl)
       val result  = route(application, request).value
 
-      redirectLocation(result) mustEqual Some(routes.AmendCheckYourAnswersController.onPageLoad().url)
+      redirectLocation(result) mustEqual Some(defaultNextPage.url)
 
       application.stop()
     }

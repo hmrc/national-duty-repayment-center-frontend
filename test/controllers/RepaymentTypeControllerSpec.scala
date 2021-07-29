@@ -18,11 +18,13 @@ package controllers
 
 import base.SpecBase
 import forms.RepaymentTypeFormProvider
-import models.{RepaymentType, UserAnswers}
+import models.RepaymentType.CMA
+import models.{BankDetails, RepaymentType, UserAnswers, _}
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.RepaymentTypePage
+import pages.{BankDetailsPage, ClaimantTypePage, RepaymentTypePage, WhomToPayPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RepaymentTypeView
@@ -93,6 +95,34 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
+    "update user answers when valid data is submitted " in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val userAnswers = emptyUserAnswers.set(ClaimantTypePage, ClaimantType.Importer).flatMap(
+        _.set(BankDetailsPage, BankDetails("name", "123456", "12345678"))
+      ).get
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, repaymentTypeRoute)
+          .withFormUrlEncodedBody(("value", CMA.toString))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      persistedAnswers.getValue.get(RepaymentTypePage) mustBe Some(CMA)
+      persistedAnswers.getValue.get(BankDetailsPage) mustBe None // not required for CMA
+      persistedAnswers.getValue.get(WhomToPayPage) mustBe Some(WhomToPay.Importer)
 
       application.stop()
     }

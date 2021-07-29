@@ -59,6 +59,8 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
   "Amend Check Your Answers Controller" must {
 
+    when(mockAmendNavigator.firstMissingAnswer(any())).thenReturn(None)
+
     "return OK and the correct view for a GET when only Documents are selected" in {
       val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments)
 
@@ -204,6 +206,11 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
     }
 
     "redirect to missing answers for a GET onResolve when both Documents and Further information are selected but documents not supplied" in {
+
+      when(mockAmendNavigator.firstMissingAnswer(any())).thenReturn(
+        Some(routes.AmendCaseSendInformationController.showFileUpload())
+      )
+
       val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments, FurtherInformation)
 
       val userAnswers = emptyUserAnswers
@@ -280,7 +287,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AmendConfirmationController.onPageLoad().url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }

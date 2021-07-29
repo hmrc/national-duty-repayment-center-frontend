@@ -18,12 +18,18 @@ package controllers
 
 import base.SpecBase
 import forms.{EmailAddressAndPhoneNumberFormProvider, EmailAndPhoneNumber}
+import models.IsContactProvided.Email
 import models.{IsContactProvided, UserAnswers}
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.EmailAddressAndPhoneNumberPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EmailAddressAndPhoneNumberView
+
+import scala.concurrent.Future
 
 class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSugar {
 
@@ -74,6 +80,31 @@ class EmailAddressAndPhoneNumberControllerSpec extends SpecBase with MockitoSuga
           form.fill(EmailAndPhoneNumber(Set(IsContactProvided.Email), Some("test@testing.com"), Some(""))),
           defaultBackLink
         )(request, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to the next page when valid data is submitted" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, emailAddressRoute)
+          .withFormUrlEncodedBody(("value[]", "01"), ("email", "a@b.com"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      persistedAnswers.getValue.get(EmailAddressAndPhoneNumberPage) mustBe Some(
+        EmailAndPhoneNumber(Set(Email), Some("a@b.com"), None)
+      )
 
       application.stop()
     }
