@@ -54,7 +54,13 @@ class AddressLookupRequestSpec extends WordSpec with MustMatchers with MockitoSu
     }
   }
 
-  val expectedRequest = new AddressLookupRequest(
+  val expectedRequest = AddressLookupRequestSpec.addressLookupRequest(appConfig.timeout)
+
+}
+
+object AddressLookupRequestSpec {
+
+  def addressLookupRequest(timeout: Int) = new AddressLookupRequest(
     2,
     Options(
       continueUrl = "http://continue",
@@ -66,7 +72,7 @@ class AddressLookupRequestSpec extends WordSpec with MustMatchers with MockitoSu
       ukMode = false,
       includeHMRCBranding = false,
       timeoutConfig = TimeoutConfig(
-        timeoutAmount = Some(appConfig.timeout),
+        timeoutAmount = Some(timeout),
         timeoutUrl = Some("http://leave"),
         timeoutKeepAliveUrl = Some("http://keepalive")
       )
