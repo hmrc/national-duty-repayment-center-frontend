@@ -76,7 +76,7 @@ class CheckYourAnswersController @Inject() (
     implicit request =>
       navigator.firstMissingAnswer(request.userAnswers) match {
         case Some(call) => Redirect(call)
-        case None       => Redirect(controllers.routes.IndexController.onPageLoad())
+        case None       => Redirect(controllers.routes.CheckYourAnswersController.onPageLoad())
       }
   }
 

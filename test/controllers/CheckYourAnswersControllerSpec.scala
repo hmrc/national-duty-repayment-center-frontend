@@ -225,6 +225,27 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
       verifyZeroInteractions(mockSessionRepository)
     }
 
+    "reload page on resolve if no answer is missing" in {
+
+      val userAnswers = emptyUserAnswers
+
+      when(mockCreateNavigator.firstMissingAnswer(any())).thenReturn(None)
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers), createNavigator = mockCreateNavigator).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onResolve().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.CheckYourAnswersController.onPageLoad().url
+
+      application.stop()
+
+      verifyZeroInteractions(mockSessionRepository)
+    }
+
     "not redirect and clear changePage when returning from changing repayment type" in {
       val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
@@ -245,6 +266,30 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
       application.stop()
 
       persistedAnswers.getValue.changePage mustBe None
+    }
+
+    "persist 'change page' and redirect onChange" in {
+
+      val userAnswers = emptyUserAnswers
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      when(mockCreateNavigator.gotoPage(any())).thenReturn(routes.BankDetailsController.onPageLoad())
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers), createNavigator = mockCreateNavigator).build()
+
+      val request = FakeRequest(GET, routes.CheckYourAnswersController.onChange("bankPage").url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.BankDetailsController.onPageLoad().url
+
+      application.stop()
+
+      persistedAnswers.getValue.changePage mustBe Some("bankPage")
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -279,6 +324,32 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
       redirectLocation(result).value mustEqual routes.IndexController.onPageLoad().url
 
       application.stop()
+    }
+
+    "submit claim and update state onSubmit" in {
+
+      val userAnswers = emptyUserAnswers
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      when(mockCreateNavigator.nextPage(any(), any())).thenReturn(routes.ConfirmationController.onPageLoad())
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers), createNavigator = mockCreateNavigator).build()
+
+      when(mockClaimService.submitClaim(any())(any(), any())).thenReturn(Future.successful("claimID"))
+
+      val request = FakeRequest(POST, routes.CheckYourAnswersController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad().url
+
+      application.stop()
+
+      persistedAnswers.getValue.get(ClaimIdQuery) mustBe Some("claimID")
     }
   }
 }

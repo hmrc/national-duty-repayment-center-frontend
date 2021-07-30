@@ -282,6 +282,69 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
     }
   }
 
+  "GET /file-verification" should {
+    "redirect to /file-upload when file is uploaded" in {
+
+      val fileUploadState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "f029444f-415c-4dec-9cf2-36774ec63ab8",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf"
+            )
+          )
+        ),
+        acknowledged = false
+      )
+      val userAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadState))
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(Some(fileUploadState), Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+
+        val request = buildRequest(GET, routes.AmendCaseSendInformationController.showWaitingForFileVerification.url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual 303
+        redirectLocation(result).value mustBe routes.AmendCaseSendInformationController.showFileUpload().url
+
+      }
+      application.stop()
+    }
+
+    "silently redirect to /file-upload when file upload state is missing" in {
+      val userAnswers = emptyUserAnswers
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(None, Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+
+        val request = buildRequest(GET, routes.AmendCaseSendInformationController.showWaitingForFileVerification.url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual 303
+        redirectLocation(result).value mustBe routes.AmendCaseSendInformationController.showFileUpload().url
+
+      }
+      application.stop()
+    }
+  }
+
   "GET /amend/file-uploaded/:reference/remove " should {
     "remove existing upload" in {
 
@@ -320,6 +383,26 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       application.stop()
 
       updatedState.getValue.fileUploads.isEmpty mustBe true
+    }
+
+    "silently redirect to /file-upload when file upload state is missing" in {
+      val userAnswers = emptyUserAnswers
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(None, Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = buildRequest(GET, routes.AmendCaseSendInformationController.onRemove("foo-bar-ref-1").url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual 303
+        redirectLocation(result).value mustEqual routes.AmendCaseSendInformationController.showFileUpload().url
+      }
+      application.stop()
     }
 
   }
