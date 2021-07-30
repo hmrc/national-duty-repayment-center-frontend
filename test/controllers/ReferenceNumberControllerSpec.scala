@@ -41,7 +41,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
   "ReferenceNumber Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a GET (with no back link)" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -59,10 +59,13 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "populate the view correctly on a GET when the question has previously been answered" in {
+    "populate the view correctly on a GET from CYA (with back link)" in {
 
       val userAnswers =
-        UserAnswers(userIdentification).set(ReferenceNumberPage, "NDRC000A00AB0ABCABC0AB0").success.value
+        UserAnswers(userIdentification).copy(changePage = Some(ReferenceNumberPage)).set(
+          ReferenceNumberPage,
+          "NDRC000A00AB0ABCABC0AB0"
+        ).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -75,7 +78,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("NDRC000A00AB0ABCABC0AB0"), NavigatorBack(None))(request, messages).toString
+        view(form.fill("NDRC000A00AB0ABCABC0AB0"), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -94,7 +97,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.AmendCaseResponseTypeController.onPageLoad.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }

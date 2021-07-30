@@ -19,7 +19,6 @@ package controllers
 import base.SpecBase
 import forms.FurtherInformationFormProvider
 import models.UserAnswers
-import navigation.NavigatorBack
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -31,8 +30,6 @@ import views.html.FurtherInformationView
 import scala.concurrent.Future
 
 class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
-
-  val backLink = NavigatorBack(Some(routes.AmendCaseResponseTypeController.onPageLoad))
 
   val formProvider = new FurtherInformationFormProvider()
   val form         = formProvider()
@@ -54,7 +51,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, backLink)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -74,7 +71,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), backLink)(request, messages).toString
+        view(form.fill("answer"), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -93,7 +90,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.AmendCheckYourAnswersController.onPageLoad.url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }
@@ -115,7 +112,7 @@ class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, backLink)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

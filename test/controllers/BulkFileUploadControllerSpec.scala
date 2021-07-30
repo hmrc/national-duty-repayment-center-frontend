@@ -147,7 +147,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
   "GET /file-verification/:reference/status" should {
     "return file verification status" in {
       def fileVerificationUrl(reference: String) =
-        s"${routes.FileUploadController.checkFileVerificationStatus(reference).url}"
+        s"${routes.BulkFileUploadController.checkFileVerificationStatus(reference).url}"
 
       val fileUploadState = FileUploaded(
         FileUploads(files =
@@ -199,6 +199,69 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         val request4 = buildRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0114c"))
         val result4  = route(application, request4).value
         status(result4) mustEqual 404
+      }
+      application.stop()
+    }
+  }
+
+  "GET /file-verification" should {
+    "redirect to /upload-multiple-entries when file is uploaded" in {
+
+      val fileUploadState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "f029444f-415c-4dec-9cf2-36774ec63ab8",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf"
+            )
+          )
+        ),
+        acknowledged = false
+      )
+      val userAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadState))
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(Some(fileUploadState), Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+
+        val request = buildRequest(GET, routes.BulkFileUploadController.showWaitingForFileVerification.url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual 303
+        redirectLocation(result).value mustBe routes.BulkFileUploadController.showFileUpload().url
+
+      }
+      application.stop()
+    }
+
+    "silently redirect to /file-upload when file upload state is missing" in {
+      val userAnswers = emptyUserAnswers
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(None, Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+
+        val request = buildRequest(GET, routes.BulkFileUploadController.showWaitingForFileVerification.url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual 303
+        redirectLocation(result).value mustBe routes.BulkFileUploadController.showFileUpload().url
+
       }
       application.stop()
     }
@@ -306,6 +369,25 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
       updatedState.getValue.fileUploads.isEmpty mustBe true
     }
 
+    "silently redirect to /upload-multiple-entries when file upload state is missing" in {
+      val userAnswers = emptyUserAnswers
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(None, Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = buildRequest(GET, routes.BulkFileUploadController.onRemove("foo-bar-ref-1").url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual 303
+        redirectLocation(result).value mustEqual routes.BulkFileUploadController.showFileUpload().url
+      }
+      application.stop()
+    }
   }
 
   def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString

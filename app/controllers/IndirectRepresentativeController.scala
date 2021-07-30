@@ -26,11 +26,11 @@ import pages.{IndirectRepresentativePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import services.{FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.IndirectRepresentativeView
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Success
 
 class IndirectRepresentativeController @Inject() (
   override val messagesApi: MessagesApi,
@@ -65,28 +65,15 @@ class IndirectRepresentativeController @Inject() (
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IndirectRepresentativePage, value))
-            _              <- sessionRepository.set(updatedAnswers.copy(fileUploadState = updatedFs(updatedAnswers, value)))
+            updatedAnswers <- Future.fromTry(checkProofOfAuthority(updatedAnswers, value))
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(nextPage(updatedAnswers))
       )
   }
 
-  private def updatedFs(ua: UserAnswers, isIndirectRepresentative: Boolean): Option[FileUploadState] =
+  private def checkProofOfAuthority(ua: UserAnswers, isIndirectRepresentative: Boolean) =
     if (isIndirectRepresentative)
-      ua.fileUploadState match {
-        case Some(s @ FileUploaded(fileUploads, _)) =>
-          Some(
-            s.copy(fileUploads =
-              fileUploads.copy(files = fileUploads.files.filterNot(_.fileType.contains(ProofOfAuthority)))
-            )
-          )
-        case Some(s @ UploadFile(_, _, fileUploads, _)) =>
-          Some(
-            s.copy(fileUploads =
-              fileUploads.copy(files = fileUploads.files.filterNot(_.fileType.contains(ProofOfAuthority)))
-            )
-          )
-        case _ => ua.fileUploadState
-      }
-    else ua.fileUploadState
+      ua.removeFile(ProofOfAuthority)
+    else Success(ua)
 
 }

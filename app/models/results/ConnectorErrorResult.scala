@@ -20,8 +20,4 @@ sealed trait ConnectorErrorResult {
   val body: String
 }
 
-case object InvalidJson extends ConnectorErrorResult {
-  override val body: String = "Invalid JSON received"
-}
-
 case class UnexpectedResponseStatus(status: Int, body: String) extends ConnectorErrorResult

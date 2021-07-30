@@ -16,16 +16,21 @@
 
 package controllers
 
+import java.time.ZonedDateTime
+
 import base.SpecBase
 import forms.AmendCaseResponseTypeFormProvider
-import models.{AmendCaseResponseType, UserAnswers}
+import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
+import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
 import navigation.NavigatorBack
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.AmendCaseResponseTypePage
+import pages.{AmendCaseResponseTypePage, FurtherInformationPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FileUploaded
 import views.html.AmendCaseResponseTypeView
 
 import scala.concurrent.Future
@@ -33,8 +38,6 @@ import scala.concurrent.Future
 class AmendCaseResponseTypeControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val amendCaseResponseTypeRoute = routes.AmendCaseResponseTypeController.onPageLoad().url
-
-  val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad))
 
   val formProvider = new AmendCaseResponseTypeFormProvider()
   val form         = formProvider()
@@ -54,7 +57,7 @@ class AmendCaseResponseTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, backLink)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -75,7 +78,7 @@ class AmendCaseResponseTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(AmendCaseResponseType.values.toSet), backLink)(request, messages).toString
+        view(form.fill(AmendCaseResponseType.values.toSet), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -95,7 +98,68 @@ class AmendCaseResponseTypeControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AmendCaseSendInformationController.showFileUpload().url
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
+    "remove existing further information when not selected" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val userAnswersWithFurtherInformation = emptyUserAnswers.set(FurtherInformationPage, "further information").get
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswersWithFurtherInformation)).build()
+
+      val request =
+        FakeRequest(POST, amendCaseResponseTypeRoute)
+          .withFormUrlEncodedBody(("value[0]", SupportingDocuments.toString))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      persistedAnswers.getValue().get(FurtherInformationPage) mustBe None
+
+      application.stop()
+    }
+
+    "remove existing supporting documents when not selected" in {
+
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf"
+            )
+          )
+        ),
+        acknowledged = true
+      )
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val userAnswersWithSupportingDocuments = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswersWithSupportingDocuments)).build()
+
+      val request =
+        FakeRequest(POST, amendCaseResponseTypeRoute)
+          .withFormUrlEncodedBody(("value[0]", FurtherInformation.toString))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      persistedAnswers.getValue().fileUploadState mustBe None
 
       application.stop()
     }
@@ -117,7 +181,7 @@ class AmendCaseResponseTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, backLink)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

@@ -23,12 +23,18 @@ import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.FileType.SupportingEvidence
 import models.responses.ClientClaimResponse
 import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
-import navigation.NavigatorBack
+import navigation.{AmendNavigator, CreateNavigatorImpl, NavigatorBack}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, when}
+import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
 import org.scalatest.BeforeAndAfterEach
-import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
+import pages.{
+  AmendCaseResponseTypePage,
+  AmendCheckYourAnswersPage,
+  CheckYourAnswersPage,
+  FurtherInformationPage,
+  ReferenceNumberPage
+}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -58,6 +64,8 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
   val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad))
 
   "Amend Check Your Answers Controller" must {
+
+    when(mockAmendNavigator.firstMissingAnswer(any())).thenReturn(None)
 
     "return OK and the correct view for a GET when only Documents are selected" in {
       val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments)
@@ -186,31 +194,41 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
         .set(ReferenceNumberPage, "1234").success.value
         .set(FurtherInformationPage, "aaa").success.value
         .set(AmendCaseResponseTypePage, values.toSet).success.value
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val navigator = injector.instanceOf[AmendNavigator]
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), amendNavigator = navigator).build()
 
       val request = FakeRequest(GET, routes.AmendCheckYourAnswersController.onPageLoad().url)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[AmendCheckYourMissingAnswersView]
-
       status(result) mustEqual OK
-      contentAsString(result) must contain
-      view(checkYourAnswersHelper.getAmendCheckYourAnswerSections, backLink)(request, messages).toString
+
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val view                   = application.injector.instanceOf[AmendCheckYourMissingAnswersView]
+
+      contentAsString(result) mustEqual
+        view(
+          checkYourAnswersHelper.getAmendCheckYourAnswerSections,
+          navigator.previousPage(AmendCheckYourAnswersPage, userAnswers)
+        )(request, messages).toString
 
       application.stop()
     }
 
     "redirect to missing answers for a GET onResolve when both Documents and Further information are selected but documents not supplied" in {
+
+      when(mockAmendNavigator.firstMissingAnswer(any())).thenReturn(
+        Some(routes.AmendCaseSendInformationController.showFileUpload())
+      )
+
       val values: Seq[AmendCaseResponseType] = Seq(SupportingDocuments, FurtherInformation)
 
       val userAnswers = emptyUserAnswers
         .set(ReferenceNumberPage, "1234").success.value
         .set(FurtherInformationPage, "aaa").success.value
         .set(AmendCaseResponseTypePage, values.toSet).success.value
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -223,6 +241,51 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
       redirectLocation(result).value mustEqual routes.AmendCaseSendInformationController.showFileUpload().url
 
       application.stop()
+    }
+
+    "reload page on resolve if no answer is missing" in {
+
+      val userAnswers = emptyUserAnswers
+
+      when(mockAmendNavigator.firstMissingAnswer(any())).thenReturn(None)
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers), amendNavigator = mockAmendNavigator).build()
+
+      val request = FakeRequest(GET, routes.AmendCheckYourAnswersController.onResolve().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.AmendCheckYourAnswersController.onPageLoad().url
+
+      application.stop()
+
+      verifyZeroInteractions(mockSessionRepository)
+    }
+
+    "persist 'change page' and redirect onChange" in {
+
+      val userAnswers = emptyUserAnswers
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      when(mockAmendNavigator.gotoPage(any())).thenReturn(routes.FurtherInformationController.onPageLoad())
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers), amendNavigator = mockAmendNavigator).build()
+
+      val request = FakeRequest(GET, routes.AmendCheckYourAnswersController.onChange("further-info-page").url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.FurtherInformationController.onPageLoad().url
+
+      application.stop()
+
+      persistedAnswers.getValue.changePage mustBe Some("further-info-page")
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -280,7 +343,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AmendConfirmationController.onPageLoad().url
+      redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
     }

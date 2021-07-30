@@ -29,6 +29,7 @@ import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 import utils.WireMockHelper
 
 class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
@@ -103,6 +104,39 @@ class NDRCConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
         val result = connector.submitAmendClaim(amendClaimRequest, "111").futureValue
 
         result mustEqual ClientClaimResponse(correlationId = "111", caseId = Some("DEF456"))
+      }
+    }
+
+    "must return a failed result when the server responds with 400" in {
+      val app = application
+
+      running(app) {
+
+        val url = s"/amend-case"
+        val responseBody =
+          s"""{"correlationId":"111",
+             |"error":{
+             |"errorCode":"ERROR_UPSTREAM_UNDEFINED",
+             |"errorMessage":"9xx : 03- Invalid Case ID"
+             |}}""".stripMargin
+        val connector = app.injector.instanceOf[NDRCConnector]
+        server.stubFor(
+          post(urlEqualTo(url))
+            .willReturn(aResponse.withStatus(400).withBody(responseBody))
+        )
+
+        val result = connector.submitAmendClaim(amendClaimRequest, "111").futureValue
+
+        result mustEqual ClientClaimResponse(
+          correlationId = "111",
+          caseId = Some("Risk-2507"),
+          error = Some(
+            ApiError(
+              "400",
+              Some(s"POST of 'http://localhost:11111/amend-case' returned 400. Response body: '$responseBody'")
+            )
+          )
+        )
       }
     }
 

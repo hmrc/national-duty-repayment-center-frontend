@@ -19,11 +19,11 @@ package controllers
 import base.SpecBase
 import forms.ImporterHasEoriFormProvider
 import models.ClaimantType.Importer
-import models.UserAnswers
-import org.mockito.Matchers.any
+import models.{EORI, UserAnswers}
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{ClaimantTypePage, ImporterHasEoriPage}
+import pages.{ClaimantTypePage, ImporterEoriPage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ImporterHasEoriView
@@ -82,23 +82,29 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to the next page and update answers when valid data is submitted" in {
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val userAnswers = emptyUserAnswers.set(ImporterEoriPage, EORI("GB1234567890")).get
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .build()
 
       val request =
         FakeRequest(POST, importerHasEoriRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+          .withFormUrlEncodedBody(("value", "false"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual defaultNextPage.url
+
+      persistedAnswers.getValue.get(ImporterHasEoriPage) mustBe Some(false)
+      persistedAnswers.getValue.get(ImporterEoriPage) mustBe None
 
       application.stop()
     }

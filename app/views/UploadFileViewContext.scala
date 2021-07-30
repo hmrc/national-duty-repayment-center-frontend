@@ -16,8 +16,6 @@
 
 package views
 
-import com.google.inject.Inject
-import config.FrontendAppConfig
 import javax.inject.Singleton
 import models.{
   DuplicateFileUpload,
@@ -31,12 +29,12 @@ import models.{
 import play.api.data.FormError
 
 @Singleton
-class UploadFileViewContext @Inject() (appConfig: FrontendAppConfig) {
+class UploadFileViewContext {
 
   def toFormError(error: FileUploadError): FormError =
     error match {
       case FileTransmissionFailed(error) =>
-        FormError("file", Seq(toMessageKey(error)), Seq(appConfig.fileFormats.maxFileSizeMb))
+        FormError("file", Seq(toMessageKey(error)))
 
       case FileVerificationFailed(details) =>
         FormError("file", Seq(toMessageKey(details)))
@@ -48,7 +46,7 @@ class UploadFileViewContext @Inject() (appConfig: FrontendAppConfig) {
         FormError("file", Seq("error.file-upload.timeout"))
     }
 
-  def toMessageKey(error: S3UploadError): String =
+  private def toMessageKey(error: S3UploadError): String =
     error.errorCode match {
       case "400" | "InvalidArgument" | "MissingFile" => "error.file-upload.required"
       case "InternalError"                           => "error.file-upload.try-again"
@@ -57,7 +55,7 @@ class UploadFileViewContext @Inject() (appConfig: FrontendAppConfig) {
       case _                                         => "error.file-upload.unknown"
     }
 
-  def toMessageKey(details: UpscanNotification.FailureDetails): String =
+  private def toMessageKey(details: UpscanNotification.FailureDetails): String =
     details.failureReason match {
       case UpscanNotification.QUARANTINE => "error.file-upload.quarantine"
       case UpscanNotification.REJECTED   => "error.file-upload.invalid-type"

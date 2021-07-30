@@ -16,15 +16,20 @@
 
 package controllers
 
+import java.time.ZonedDateTime
+
 import base.SpecBase
 import forms.IndirectRepresentativeFormProvider
-import models.UserAnswers
+import models.FileType.ProofOfAuthority
+import models.{FileUpload, FileUploads, UserAnswers}
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.IndirectRepresentativePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FileUploaded
 import views.html.IndirectRepresentativeView
 
 import scala.concurrent.Future
@@ -93,6 +98,84 @@ class IndirectRepresentativeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
+    "remove proof of authority upload when indirect representative" in {
+
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(ProofOfAuthority)
+            )
+          )
+        ),
+        acknowledged = true
+      )
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val userAnswersWithProofOfAuthority = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswersWithProofOfAuthority)).build()
+
+      val request =
+        FakeRequest(POST, indirectRepresentativeRoute)
+          .withFormUrlEncodedBody(("value", "true"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      persistedAnswers.getValue().fileUploadState mustBe Some(FileUploaded(FileUploads(List()), true))
+
+      application.stop()
+    }
+
+    "retains proof of authority upload when direct representative" in {
+
+      val fileUploadedState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(ProofOfAuthority)
+            )
+          )
+        ),
+        acknowledged = true
+      )
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val userAnswersWithProofOfAuthority = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswersWithProofOfAuthority)).build()
+
+      val request =
+        FakeRequest(POST, indirectRepresentativeRoute)
+          .withFormUrlEncodedBody(("value", "false"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      persistedAnswers.getValue().fileUploadState mustBe Some(fileUploadedState)
 
       application.stop()
     }

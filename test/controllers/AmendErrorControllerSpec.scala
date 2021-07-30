@@ -73,6 +73,20 @@ class AmendErrorControllerSpec extends SpecBase with BeforeAndAfterEach {
       application.stop()
     }
 
+    "return NotFound when the case reference is missing onNotFound" in {
+      val userAnswers = emptyUserAnswers
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.AmendErrorController.onNotFound().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual NOT_FOUND
+
+      application.stop()
+    }
+
     "return OK and the correct view for 'case closed'" in {
       val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
       val userAnswers = emptyUserAnswers
@@ -92,6 +106,20 @@ class AmendErrorControllerSpec extends SpecBase with BeforeAndAfterEach {
         view("CASE1234")(request, messages).toString
 
       contentAsString(result) must include(frontendAppConfig.emails.customsAccountingRepayments)
+
+      application.stop()
+    }
+
+    "return NotFound when the case reference is missing onClosed" in {
+      val userAnswers = emptyUserAnswers
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.AmendErrorController.onClosed().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual NOT_FOUND
 
       application.stop()
     }
