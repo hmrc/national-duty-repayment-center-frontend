@@ -37,7 +37,7 @@ html: views.components.html
     backLinkNav = None
 ) {
 
-    @html.h1(messages("amend.application.closed.title"))
+    @html.h1(messages("amend.application.closed.heading"))
 
     @html.p {@Html(messages("amend.application.closed.p1"))}
     @html.p {@Html(messages("amend.application.closed.p2", html.a(emailUrl, appConfig.emails.customsAccountingRepayments, isExternal = true)))}

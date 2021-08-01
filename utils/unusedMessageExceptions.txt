@@ -1,0 +1,70 @@
+articleType.117 = Text(messages(s"articleType.${value.toString}"))
+articleType.119 = Text(messages(s"articleType.${value.toString}"))
+articleType.120 = Text(messages(s"articleType.${value.toString}"))
+
+whomToPay.01 = Text(messages(s"whomToPay.${value.toString}"))
+whomToPay.02 = Text(messages(s"whomToPay.${value.toString}"))
+
+doYouOwnTheGoods.01 = Text(messages(s"doYouOwnTheGoods.${value.toString}"))
+doYouOwnTheGoods.02 = Text(messages(s"doYouOwnTheGoods.${value.toString}"))
+
+createOrAmendCase.01 = Text(messages(s"createOrAmendCase.${value.toString}"))
+createOrAmendCase.02 = Text(messages(s"createOrAmendCase.${value.toString}"))
+
+isImporterVatRegistered.01 = Text(messages(s"isImporterVatRegistered.${value.toString}"))
+isImporterVatRegistered.02 = Text(messages(s"isImporterVatRegistered.${value.toString}"))
+
+claimantType.01 = Text(messages(s"claimantType.${value.toString}"))
+claimantType.02 = Text(messages(s"claimantType.${value.toString}"))
+
+isVATRegistered.01 = Text(messages(s"isVATRegistered.${value.toString}"))
+isVATRegistered.02 = Text(messages(s"isVATRegistered.${value.toString}"))
+
+customsRegulationType.01 = Text(messages(s"customsRegulationType.${value.toString}"))
+customsRegulationType.02 = Text(messages(s"customsRegulationType.${value.toString}"))
+
+claimReasonType.01 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.02 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.03 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.04 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.05 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.06 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.07 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.08 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.09 = Text(messages(s"claimReasonType.${value.toString}"))
+claimReasonType.10 = Text(messages(s"claimReasonType.${value.toString}"))
+
+ukRegulationType.048 = Text(messages(s"ukRegulationType.${value.toString}"))
+ukRegulationType.049 = Text(messages(s"ukRegulationType.${value.toString}"))
+ukRegulationType.050 = Text(messages(s"ukRegulationType.${value.toString}"))
+ukRegulationType.051 = Text(messages(s"ukRegulationType.${value.toString}"))
+ukRegulationType.052 = Text(messages(s"ukRegulationType.${value.toString}"))
+ukRegulationType.053 = Text(messages(s"ukRegulationType.${value.toString}"))
+
+declarantReferenceNumber.01 = Text(messages(s"declarantReferenceNumber.${value.toString}"))
+declarantReferenceNumber.02 = Text(messages(s"declarantReferenceNumber.${value.toString}"))
+
+repaymentType.01 = Text(messages(s"repaymentType.${value.toString}"))
+repaymentType.02 = Text(messages(s"repaymentType.${value.toString}"))
+
+agentImporterHasEORI.01 = Text(messages(s"agentImporterHasEORI.${value.toString}"))
+agentImporterHasEORI.02 = Text(messages(s"agentImporterHasEORI.${value.toString}"))
+
+createOrAmendCase.hint.01 = Text(messages(s"createOrAmendCase.hint.${value.toString}"))
+createOrAmendCase.hint.02 = Text(messages(s"createOrAmendCase.hint.${value.toString}"))
+
+amendCaseResponseType.supportingDocuments = Text(messages(s"amendCaseResponseType.${value.toString}"))
+amendCaseResponseType.furtherInformation = Text(messages(s"amendCaseResponseType.${value.toString}"))
+
+repaymentAmountSummary.customsduty.0 = messages(s"$dutyType.$index")
+repaymentAmountSummary.customsduty.1 = messages(s"$dutyType.$index")
+repaymentAmountSummary.customsduty.2 = messages(s"$dutyType.$index")
+repaymentAmountSummary.vat.0 = messages(s"$dutyType.$index")
+repaymentAmountSummary.vat.1 = messages(s"$dutyType.$index")
+repaymentAmountSummary.vat.2 = messages(s"$dutyType.$index")
+repaymentAmountSummary.otherduties.0 = messages(s"$dutyType.$index")
+repaymentAmountSummary.otherduties.1 = messages(s"$dutyType.$index")
+repaymentAmountSummary.otherduties.2 = messages(s"$dutyType.$index")
+
+numberOfEntriesType.01 = Text(messages(s"numberOfEntriesType.${value.toString}"))
+numberOfEntriesType.02 = Text(messages(s"numberOfEntriesType.${value.toString}"))

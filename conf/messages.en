@@ -1,7 +1,5 @@
 checkYourAnswers.title = Check your answers before sending your information
 checkYourAnswers.amend.title = Check your additional information
-checkYourAnswers.heading = Check Your Answers
-checkYourAnswers.guidance = Guidance for check your answers
 
 checkYourAnswers.missing.icon = Warning
 checkYourAnswers.missing.warning = Some information is missing. This must be completed before sending your application.
@@ -22,16 +20,12 @@ date.year = Year
 
 error.browser.title.prefix = Error:
 error.boolean = Please give an answer
-error.invalid_date = Give a correct date
 error.date.day_blank = Enter a day
 error.date.day_invalid = Give a correct day using numbers 1 to 31
 error.date.month_blank = Enter a month
 error.date.month_invalid = Give a correct month using numbers 1 to 12
 error.date.year_blank = Enter a year
 error.date.year_invalid = Give a correct year
-error.integer = Give an answer in whole numbers
-error.non_numeric = Give a value using only numbers
-error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 
@@ -44,22 +38,13 @@ session_expired.heading = For your security, we signed you out
 session_expired.guidance = We did not save your answers.
 session_expired.button = Sign in
 
-timeout.title = For your security, we will sign you out 
-timeout.message = For your security, we will sign you out in $
-timeout.keepAlive = Stay signed in
-timeout.signOut = Sign out
-
 site.back = Back
-site.delete = Remove
 site.edit = Change
-site.hidden-delete = Delete {0}
 site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
 site.continue = Continue
-find.address = Find address
 site.service_name = Apply for repayment of import duty and import VAT
-site.textarea.char_limit = (Limit is {0} characters)
 site.govuk = GOV.UK
 
 footer.cookies = Cookies
@@ -102,12 +87,6 @@ isVATRegistered.details.header = Help with VAT registration
 isVATRegistered.details.p1 = You must register your business for VAT with HMRC if its VAT taxable turnover is over the current VAT registration threshold.
 isVATRegistered.details.p2 = You can register voluntarily if your turnover is under the threshold, unless everything you sell is exempt.
 
-importerClaimantVrn.title = What is your VRN number?
-importerClaimantVrn.heading = What is your VRN number?
-importerClaimantVrn.checkYourAnswersLabel = What is your VRN number?
-importerClaimantVrn.error.required = Enter your VRN number
-importerClaimantVrn.error.length = VRN number must be 9 characters or less
-
 customsRegulationType.title = What was the entry acceptance date?
 customsRegulationType.heading = What was the entry acceptance date?
 customsRegulationType.importer = You can find this on the E2 document under &#8216;Entry Acceptance Details&#x2019;, or by asking your shipping agent or courier.
@@ -143,13 +122,8 @@ numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = Multiple entries
 numberOfEntriesType.02.hint = Number of entries
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
-numberOfEntriesType.single.checkYourAnswersLabel = One entry
-numberOfEntriesType.multiple.checkYourAnswersLabel = Multiple entries
 numberOfEntriesType.error.required = Select if you want to submit one entry or more than one entry
 
-howManyEntries.title = How many entries are you claiming for?
-howManyEntries.heading = How many entries are you claiming for?
-howManyEntries.checkYourAnswersLabel = Number of entries
 howManyEntries.error.required = Enter the number of entries you are claiming for
 howManyEntries.error.length = The number of entries must be between 2 and 999,999
 
@@ -190,8 +164,6 @@ entryDetails.checkYourAnswersLabel = Entry information
 entryDetails.epu.checkYourAnswersLabel = EPU number
 entryDetails.number.checkYourAnswersLabel = Entry number
 entryDetails.date.checkYourAnswersLabel = Entry date
-claimEntryNumber.checkYourAnswersLabel = What is the entry number?
-claimEntryDate.checkYourAnswersLabel = What was the entry date?
 
 applicationInformation.checkYourAnswersLabel = Application information
 
@@ -248,7 +220,6 @@ evidenceSupportingDocs.bullet2.multiple-large = the documents for the oldest ent
 
 
 evidenceSupportingDocs.h2 = Types of files you can upload
-evidenceSupportingDocs.checkYourAnswersLabel = Supporting documents
 evidenceSupportingDocs.error.required = Select Supporting documents
 
 claimReason.documents.c88 = <b>C88</b>, which authorises imports from the country of origin
@@ -271,8 +242,6 @@ declarantReferenceNumber.hint2 = You will be given a separate application refere
 declarantReferenceNumber.01 = Yes
 declarantReferenceNumber.02 = No
 declarantReferenceNumber.checkYourAnswersLabel.answer = Your reference
-declarantReferenceNumber.yes.checkYourAnswersLabel = Yes
-declarantReferenceNumber.no.checkYourAnswersLabel = No
 declarantReferenceNumber.checkYourAnswersLabel.question = Do you want to use your own reference?
 declarantReferenceNumber.error.required.declarantReferenceNumber = Enter a reference
 declarantReferenceNumber.error.invalid.length = The reference must be 50 characters or less
@@ -283,25 +252,18 @@ importerName.heading = What is the name on the import documents?
 importerName.checkYourAnswersLabel = Name on import documents
 importerName.error.required = Enter the name on the import documents
 importerName.error.length = Name on the import documents must be 512 characters or less
-importerName.error.invalid = Name on the import documents must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
 
-phoneNumber.title = Enter your phone number
-phoneNumber.heading = Enter your phone number
 phoneNumber.checkYourAnswersLabel = Phone number
 phoneNumber.error.required = Enter your phone number
 phoneNumber.error.length = Phone number must be 11 numbers
 phoneNumber.error.invalid = Enter a phone number beginning with 0
-phoneNumber.hint = Enter a UK landline or mobile number, like 07700 900 982 or 01632 960 001.
 
 emailAddress.title = How can we contact you?
 emailAddress.heading = How can we contact you?
-emailAddress.01 = Yes
-emailAddress.02 = No
 emailAddress.hintText = <p>We will use these details if we need to contact you for further information.</p> <div class="govuk-hint">Select at least one option.</div>
-emailAddress.01.hint = Email address
+emailAddress.hint = Email address
 emailAddress.checkYourAnswersLabel = Email address
 emailAddress.error.required = Enter an email address
-emailAddress.error.selection.required = Select if we can contact you by email
 emailAddress.error.length = Email Address must be 85 characters or less
 emailAddress.error.invalid = Enter an email address in the correct format, like name@example.com
 
@@ -348,7 +310,6 @@ isImporterVatRegistered.checkYourAnswersLabel = Is the importer VAT registered?
 isImporterVatRegistered.error.required = Select yes if the importer is VAT registered
 
 vatPaid.title = VAT overpayment
-vatPaid.checkYourAnswersLabel = VAT overpayment
 vatPaid.single.entry.hint = Do not include any agent fees.
 vatPaid.multiple.entry.hint = This should be the total amount of overpayment for all entries. Do not include any agent fees.
 vatPaid.actualamountpaid.heading = Amount of VAT that was paid to HMRC
@@ -362,7 +323,6 @@ vatPaid.shouldhavepaid.heading = Amount of VAT that you think should have been p
 vatPaid.shouldhavepaid.hint = For refunded or destroyed goods, this amount can be £0.
 vatPaid.shouldhavepaid.error.required = Enter the amount of VAT that should have been paid
 vatPaid.shouldhavepaid.error.greaterThanZero = The amount cannot be a negative number
-vatPaid.shouldhavepaid.error.length = The amount of VAT that should have been paid must £99,999,999,999.99 or less
 vatPaid.shouldhavepaid.error.decimalPlaces = The amount of VAT that should have been paid must be an amount of money, like £123.45 or £248
 vatPaid.shouldhavepaid.error.notANumber = The amount of VAT that should have been paid must be a number
 
@@ -379,8 +339,6 @@ customsDutyPaid.actualamountpaid.error.greaterThanZero = The amount of Customs D
 customsDutyPaid.actualamountpaid.error.notANumber = The amount of Customs Duty that was paid to HMRC must be a number
 customsDutyPaid.actualamountpaid.error.length = The amount of Customs Duty that was paid to HMRC must £99,999,999,999.99 or less
 customsDutyPaid.actualamountpaid.error.decimalPlaces = The amount of Customs Duty that was paid to HMRC must be an amount of money, like £123.45 or £248
-customsDutyPaid.checkYourAnswersLabel = How much Customs Duty was paid to HMRC?
-customsDutyPaid.checkYourAnswersLabel.hint = This should be the total amount of overpayment for all entries.
 
 customsDutyPaid.shouldhavepaid.heading = Amount of Customs Duty that you think should have been paid
 customsDutyPaid.shouldhavepaid.hint = For refunded or destroyed goods, this amount can be £0.
@@ -415,49 +373,22 @@ otherDutiesPaid.shouldhavepaid.error.decimalPlaces = The amount of other duties 
 otherDutiesPaid.amounts.error.same = The amount of other duties that should have been paid cannot be the same as the amount of other duties that were paid to HMRC
 otherDutiesPaid.amounts.error.greater = The amount of other duties that should have been paid to HMRC cannot be more than the amount that was paid
 
-otherDutiesPaid.checkYourAnswersLabel = How much was paid in other duties to HMRC?
-
 importerAddress.title = What is your address?
-importerAddress.heading = What is your address?
 importerAddress.checkYourAnswersLabel = Importer address
 agent.importerAddress.title = What is the importer’s address?
-agent.importerAddress.heading = What is the importer’s address?
-agent.importerAddress.checkYourAnswersLabel = What is the importer’s address?
-importerAddress.manual = Enter address manually
 importerAddress.postCode = Postcode
-importerAddress.hint = Postcode
 importerAddress.line1.error.required = Enter Importer’s address line 1
 importerAddress.line1.error.length = Address line 1 must be 128 characters or less
 importerAddress.line2.error.length = Address line 2 must be 128 characters or less
 importerAddress.city.error.required = Enter Importer’s city
 importerAddress.city.error.length = City must be 64 characters or less
-importerAddress.region.error.required = Enter Importer’s region
 importerAddress.region.error.length = Region must be 64 characters or less
 importerAddress.countryCode.error.required = Enter Importer’s country code
 importerAddress.countryCode.error.length = Country code must be 2 characters or less
 importerAddress.postalCode.error.invalid = Enter a real postcode
-importerAddress.hint = We will use this to send letters about this application.
 
 agentImporterAddress.title = What is your business address?
-agentImporterAddress.heading = What is your business address?
 agentImporterAddress.checkYourAnswersLabel = Your address
-agentImporterAddress.hint = We will use this to send letters about this application.
-agentImporterAddress.line1.error.required = Enter Address line 1
-agentImporterAddress.line1.error.length = Address line 1 must be 128 characters or less
-agentImporterAddress.line1.error.invalid = Address line 1 must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
-agentImporterAddress.line2.error.length = Address line 2 must be 128 characters or less
-agentImporterAddress.line2.error.invalid = Address line 2 must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
-agentImporterAddress.city.error.required = Enter city
-agentImporterAddress.city.error.length = City must be 64 characters or less
-agentImporterAddress.city.error.invalid = City must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
-agentImporterAddress.region.error.required = Enter region
-agentImporterAddress.region.error.length = Region must be 64 characters or less
-agentImporterAddress.region.error.invalid = Region must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces
-agentImporterAddress.countryCode.error.required = Enter country code
-agentImporterAddress.countryCode.error.length = Country code must be 64 characters or less
-agentImporterAddress.countryCode.error.invalid = Country code includes 1 or more characters that cannot be used
-agentImporterAddress.postalCode.error.invalid = Enter a real postcode
-
 
 importerManualAddress.title = Enter the importer’s address
 importerManualAddress.heading = Enter the importer’s address
@@ -465,13 +396,9 @@ importerManualAddress.confirmation.title = Confirm the importer’s address
 importerManualAddress.addressLine1.heading = Address line 1
 importerManualAddress.addressLine2.heading = Address line 2 (optional)
 importerManualAddress.city.heading = Town or city
-importerManualAddress.county.heading = County
 importerManualAddress.country.heading = Country
-importerManualAddress.checkYourAnswersLabel = Importer address
-importerManualAddress.error.required = Enter the importer’s address
 importerManualAddress.hint = We will use this to send letters about this application.
 agent.importerManualAddress.hint = We may use these details to contact the importer about this claim.
-importerManualAddress.error.length = Address must be 128 characters or less
 importerYourAddress.title = Enter your address
 importerYourAddress.heading = Enter your address
 importerYourAddress.confirmation.title = Confirm your address
@@ -504,19 +431,12 @@ amend.confirmation.print.text = as we will not send you an email confirmation.
 amend.confirmation.review = View a summary of your additional information and reference number (opens in a new tab)
 amend.confirmation.amendWhatHappensNext.p1 = We will process your application and send our decision by post within 30 days.
 amend.confirmation.amendWhatHappensNext.p2 = We will contact you if we need more information to complete your application.
-amend.confirmation.moreInformation.heading = If we do not need more information
-amend.confirmation.moreInformation.p1 = We will continue processing your application.
-amend.confirmation.helpUs.heading = Help us improve our services
-amend.confirmation.helpUs.p1 = We use your feedback to make our services better.
-amend.confirmation.helpUs.p2 = What did you think of this service?
-amend.confirmation.helpUs.p3 = (takes one minute)
 amend.confirmation.summary.title = Your amended application details
 
 agentImporterManualAddress.title = Enter your business address
 agentImporterManualAddress.heading = Enter your business address
 agentImporterManualAddress.confirmation.title = Confirm your business address
 agentImporterManualAddress.hint = We will use this to send letters about this application.
-agentImporterManualAddress.checkYourAnswersLabel = Your address
 agentImporterManualAddress.line1.heading = Address line 1
 agentImporterManualAddress.line1.error.required = Enter address line 1
 agentImporterManualAddress.line1.error.length = Address line 1 must be 128 characters or less
@@ -525,10 +445,7 @@ agentImporterManualAddress.line2.error.length = Address line 2 must be 128 chara
 agentImporterManualAddress.city.heading = Town or city
 agentImporterManualAddress.city.error.required = Enter city
 agentImporterManualAddress.city.error.length = City must be 64 characters or less
-agentImporterManualAddress.region.heading = County
-agentImporterManualAddress.region.error.required = Enter region
 agentImporterManualAddress.region.error.length = Region must be 64 characters or less
-agentImporterManualAddress.countryCode.heading = Country
 agentImporterManualAddress.countryCode.error.required = Enter country code
 agentImporterManualAddress.countryCode.error.length = Country code must be 64 characters or less
 agentImporterManualAddress.postalCode.heading = Post Code
@@ -549,7 +466,6 @@ bankDetails.accountNumber.heading = Account number
 bankDetails.accountNumber.hint = Must be between 6 and 8 digits long.
 bankDetails.accountNumber.error.required = Enter an account number
 bankDetails.accountNumber.error.invalid = Enter a valid account number
-bankDetails.accountNumber.error.length = Account number must be between 6 and 8 digits
 
 bankDetails.bars.validation.failed = Unable to validate bank account details
 bankDetails.bars.validation.sortcodeNotFound = Enter a valid sort code
@@ -558,18 +474,6 @@ bankDetails.bars.validation.rollRequired = Enter details of a bank account or bu
 bankDetails.bars.validation.bacsNotSupported = This bank account cannot receive Bacs payments. Enter a bank account that can receive Bacs payments
 bankDetails.bars.validation.accountInvalid = Enter a real bank account
 bankDetails.bars.validation.companyNameInvalid = Enter the name as it appears on the bank account
-
-importerAddressConfirmation.title = Select your address
-importerAddressConfirmation.heading = Select your address
-importerAddressConfirmation.link1 = change
-importerAddressConfirmation.link2 = I can’t find my address in the list
-importerAddressConfirmation.address = Select an address
-
-agent.importerAddressConfirmation.title = Select the importer’s address
-agent.importerAddressConfirmation.title = Select the importer’s address
-agent.importerAddressConfirmation.heading = Select the importer’s address
-agentImporterAddressConfirmation.title = Select your business address
-agentImporterAddressConfirmation.heading = Select your business address
 
 repaymentAmountSummary.title = Return amount summary
 repaymentAmountSummary.heading = Return amount summary
@@ -589,30 +493,14 @@ repaymentAmountSummary.total=Total
 repaymentAmountSummary.total.amount=Total return amount
 repaymentAmountSummary.summary=The total return amount will be checked and the final return amount will be confirmed in writing.
 repaymentAmountSummary.total.checkYourAnswersLabel=Total return amount
-fileUpload.title = Upload a file
 fileUpload.heading = Upload a file
 
-additionalFileUpload.title = You have uploaded x file
-additionalFileUpload.heading = You have uploaded x file
-additionalFileUpload.01 = Yes
-additionalFileUpload.02 = No
-additionalFileUpload.checkYourAnswersLabel = Do you need to upload another file?
-additionalFileUpload.error.required = Select yes if you need to upload another file
-
-postcode.error.noneFound = Postcode cannot be found
-addressFound.error = Select the address or enter the address manually
 postcode.error.required = Enter a UK postcode
-postcode.error.length = Enter a postcode, like AA1 1AA
 indirectRepresentative.title = Are you an indirect representative of the importer?
 indirectRepresentative.heading = Are you an indirect representative of the importer?
 indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative?
 indirectRepresentative.error.required = Select if you are an indirect representative of the importer
 
-proofOfAuthority.title = Upload proof of authority
-proofOfAuthority.heading = Upload proof of authority
-proofOfAuthority.paragraph1 = You must show that the importer has given you authority to receive payment for this specific application
-proofOfAuthority.paragraph2 = Upload a file
-proofOfAuthority.error.required = Upload proof of authority
 proofOfAuthority.checkYourAnswersLabel = Proof of authority document
 
 bulkFileUpload.title = Upload the multiple entry document
@@ -652,32 +540,6 @@ amendCaseResponseType.checkYourAnswersLabel = What do you need to do?
 amendCaseResponseType.error.required = Select an option to continue
 amendCaseResponseType.hintText = Select all that apply.
 
-amendCaseSendInformation.error.length = AmendCaseSendInformation must be 1000 characters or less
-
-amendCaseSendInformation.title = Upload a file
-amendCaseSendInformation.heading = Upload a file
-amendCaseSendInformation.paragraph1 = You can upload as many files as you need to.
-amendCaseSendInformation.paragraph2 = You can only upload one file at a time.
-amendCaseSendInformation.subheading = Suggested supporting documents
-amendCaseSendInformation.paragraph3 = Send us any supporting documents you have. This could include:
-amendCaseSendInformation.01 = airway bill
-amendCaseSendInformation.02 = bill of lading
-amendCaseSendInformation.03 = C88
-amendCaseSendInformation.04 = E2
-amendCaseSendInformation.05 = invoice
-amendCaseSendInformation.06 = packing list
-amendCaseSendInformation.07 = proof of origin
-amendCaseSendInformation.08 = substitute entry
-amendCaseSendInformation.checkYourAnswersLabel = Upload a file
-amendCaseSendInformation.error.required = Select files
-
-amendCaseUploadAnotherFile.title = You have uploaded x file
-amendCaseUploadAnotherFile.heading = You have uploaded x file
-amendCaseUploadAnotherFile.01 = Yes
-amendCaseUploadAnotherFile.02 = No
-amendCaseUploadAnotherFile.checkYourAnswersLabel = Do you need to upload another file?
-amendCaseUploadAnotherFile.error.required = Select another file to upload
-
 amendCaseResponseType.sendInformation.checkYourAnswersLabel = Send additional Information
 amendCaseResponseType.sendDocuments.checkYourAnswersLabel = Send additional Documents
 amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel = Send additional Documents and Information
@@ -687,16 +549,12 @@ view.upload-file.heading = Upload your supporting documentation
 view.upload-file.line1 = You can upload as many files as you need to support your application.
 view.upload-file.line2 = Each file must be 6MB or smaller.
 view.upload-file.details =  What you must upload
-view.upload-file.types.heading = Types of files you can upload
 
 view.upload-file.label.upload.first = Upload your first file
 view.upload-file.label.upload.next = Upload another file (optional)
 
-view.upload-file.waiting=Your document is being uploaded. You’ll be redirected once the file has been processed.
 form.upload-file.submit= Continue
 view.upload-file.checkYourAnswersLabel = Supporting documents
-form.file-uploaded.continue=Continue
-site.file.remove = Remove
 error.file-upload.required=You must upload a file
 error.file-upload.invalid-size-small=The file cannot be empty
 error.file-upload.invalid-size-large=File size cannot be over 6mb
@@ -705,9 +563,7 @@ error.file-upload.quarantine=The file contains a virus and cannot be uploaded
 error.file-upload.unknown=The file could not be uploaded
 error.file-upload.try-again=The file could not be uploaded - try again
 error.file-upload.timeout=The file could not be uploaded - try again
-error.uploadAnotherFile.required=Select yes if you need to upload another file
 error.file-upload.duplicate=This file has already been uploaded
-view.upload-file.documents.added = documents added
 
 proof-of-authority.title = Upload proof of authority
 proof-of-authority.heading = Upload proof of authority
@@ -733,16 +589,12 @@ view.amend-upload-file.title = Upload your additional documents
 view.amend-upload-file.heading = Upload your additional documents
 view.amend-upload-file.label.upload.first = Upload a file
 view.amend-upload-file.label.upload.next = Upload another file (optional)
-view.amend-upload-file.waiting=Your document is being uploaded. You’ll be redirected once the file has been processed.
 form.amend-upload-file.submit= Continue
-form.amend-file-uploaded.continue=Continue
-site.amend-file.remove = Remove
 view.amend-upload-file.checkYourAnswersLabel = Additional uploads
 amend.next.step.heading = Send your amended application
 amend.next.step.p1 = Before sending your amended application, ensure that you have fully reviewed the information you have provided and that it is correct.
 amend.next.step.p2 = You can print a summary of your application on the next page.
 amend.site.continue = Accept and send
-amend-file-upload.help.linkText = Help with file types
 amend-file-upload.help.line1 = Each file must be 6MB or less.
 amend-file-upload.help.line2 = Types of files you can upload
 
@@ -805,14 +657,6 @@ representative.importer.title = Who is the importer?
 representative.importer.heading = Who is the importer?
 representative.importer.checkYourAnswersLabel = Importer name
 
-representative.importer.firstName = First Name
-representative.importer.lastName = Last Name
-representative.importer.firstName.error.required = Enter your first name
-representative.importer.lastName.error.required = Enter your last name
-representative.importer.firstName.error.length= First name must be 255 characters or less
-representative.importer.lastName.error.length= Last name must be 255 characters or less
-
-# BETA Banner
 feedback.before = This is a new service - your
 feedback.link = feedback
 feedback.after = will help us to improve it.
