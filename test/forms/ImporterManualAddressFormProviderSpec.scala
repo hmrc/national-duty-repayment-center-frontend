@@ -22,9 +22,7 @@ import play.api.data.{Form, FormError}
 
 class ImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "importerManualAddress.error.required"
-  val lengthKey   = "importerManualAddress.error.length"
-  val maxLength   = 128
+  val maxLength = 128
 
   implicit val countriesService = TestData.testCountryService
   val form: Form[_]             = new ImporterManualAddressFormProvider().apply()
