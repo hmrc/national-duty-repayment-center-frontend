@@ -85,6 +85,6 @@ class ClaimService @Inject() (
     response.error.map(_.errorMessage).getOrElse("")
 
   private def correlationId(hc: HeaderCarrier): String =
-    hc.requestId.map(_.value).getOrElse(UUID.randomUUID().toString)
+    hc.requestId.map(_.value).getOrElse(UUID.randomUUID().toString).takeRight(36)
 
 }

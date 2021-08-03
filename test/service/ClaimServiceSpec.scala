@@ -16,11 +16,15 @@
 
 package service
 
+import java.util.UUID
+
 import base.SpecBase
 import connectors.NDRCConnector
 import data.TestData.{populateUserAnswersRepresentativeWithEmail, populateUserAnswersWithAmendData}
+import models.UserAnswers
 import models.requests.{AmendClaimBuilder, CreateClaimBuilder, DataRequest, Identification}
 import models.responses.ClientClaimResponse
+import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{MustMatchers, OptionValues}
@@ -28,7 +32,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.mvc.Request
 import play.api.test.FakeRequest
 import services.ClaimService
-import uk.gov.hmrc.http.{HeaderCarrier, SessionKeys}
+import uk.gov.hmrc.http.{HeaderCarrier, RequestId, SessionKeys}
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -144,6 +148,53 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
         service.submitAmendClaim(testUserAnswers)(hc, dataRequest).futureValue
       }
       thrown.getMessage contains message
+    }
+
+    "should create a trimmed correlationId from the header carrier" in {
+
+      val uuid = UUID.randomUUID().toString
+      uuid.length mustBe 36
+      implicit val hc: HeaderCarrier = HeaderCarrier(requestId = Some(RequestId("extra-" + uuid)))
+
+      val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
+
+      implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
+      val dataRequest                  = DataRequest(request, Identification("12", None), testUserAnswers)
+
+      val connector                             = mock[NDRCConnector]
+      val response                              = ClientClaimResponse("1", Some("ABC123"))
+      val correlationId: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
+      when(connector.submitClaim(any(), correlationId.capture())(any())).thenReturn(Future.successful(response))
+
+      val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
+      val result  = service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
+      result mustBe "ABC123"
+
+      correlationId.getValue mustBe uuid
+
+    }
+
+    "should not fail if the request id is less than 36 characters" in {
+
+      val requestId                  = "1234"
+      implicit val hc: HeaderCarrier = HeaderCarrier(requestId = Some(RequestId(requestId)))
+
+      val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
+
+      implicit val request: Request[_] = FakeRequest().withSession(SessionKeys.authToken -> "Bearer XYZ")
+      val dataRequest                  = DataRequest(request, Identification("12", None), testUserAnswers)
+
+      val connector                             = mock[NDRCConnector]
+      val response                              = ClientClaimResponse("1", Some("ABC123"))
+      val correlationId: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
+      when(connector.submitClaim(any(), correlationId.capture())(any())).thenReturn(Future.successful(response))
+
+      val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
+      val result  = service.submitClaim(testUserAnswers)(hc, dataRequest).futureValue
+      result mustBe "ABC123"
+
+      correlationId.getValue mustBe requestId
+
     }
   }
 }
