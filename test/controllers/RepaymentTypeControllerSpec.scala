@@ -24,7 +24,15 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{BankDetailsPage, ClaimantTypePage, RepaymentTypePage, WhomToPayPage}
+import pages.{
+  BankDetailsPage,
+  ClaimRepaymentTypePage,
+  ClaimantTypePage,
+  CustomsDutyPaidPage,
+  NumberOfEntriesTypePage,
+  RepaymentTypePage,
+  WhomToPayPage
+}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RepaymentTypeView
@@ -38,11 +46,18 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new RepaymentTypeFormProvider()
   val form         = formProvider()
 
+  val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
+
+  val validAnswersForRepaymentType = emptyUserAnswers
+    .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+    .set(ClaimRepaymentTypePage, duties).success.value
+    .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
+
   "RepaymentType Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(validAnswersForRepaymentType)).build()
 
       val request = FakeRequest(GET, repaymentTypeRoute)
 
@@ -58,9 +73,24 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
+    "redirect if RepaymentType not valid on a GET" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, repaymentTypeRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userIdentification).set(RepaymentTypePage, RepaymentType.values.head).success.value
+      val userAnswers = validAnswersForRepaymentType.set(RepaymentTypePage, RepaymentType.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -83,7 +113,7 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(validAnswersForRepaymentType))
           .build()
 
       val request =
@@ -104,7 +134,7 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
 
-      val userAnswers = emptyUserAnswers.set(ClaimantTypePage, ClaimantType.Importer).flatMap(
+      val userAnswers = validAnswersForRepaymentType.set(ClaimantTypePage, ClaimantType.Importer).flatMap(
         _.set(BankDetailsPage, BankDetails("name", "123456", "12345678"))
       ).get
 

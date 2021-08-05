@@ -18,6 +18,7 @@ package models
 
 import java.time.Instant
 
+import config.FrontendAppConfig
 import models.requests.Identification
 import pages._
 import play.api.libs.json._
@@ -48,6 +49,10 @@ final case class UserAnswers(
 
   def isMultipleEntry: Boolean =
     get(NumberOfEntriesTypePage).map(_.numberOfEntriesType).contains(NumberOfEntriesType.Multiple)
+
+  def isCmaAllowed(implicit appConfig: FrontendAppConfig): Boolean =
+    isSingleEntry &&
+      dutyTypeTaxDetails.totalClaim >= appConfig.allowCmaThresholds.reclaimTotal
 
   def dutyTypeTaxDetails: DutyTypeTaxDetails =
     DutyTypeTaxDetails(

@@ -58,7 +58,7 @@ class RepaymentAmountSummaryController @Inject() (
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      if (request.userAnswers.dutyTypeTaxDetails.totalClaim < appConfig.allowCmaThresholds.reclaimTotal)
+      if (!request.userAnswers.isCmaAllowed(appConfig))
         for {
           updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.remove(RepaymentTypePage))
           _                           <- sessionRepository.set(updatedAnswers)

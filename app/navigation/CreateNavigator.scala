@@ -104,7 +104,7 @@ class CreateNavigatorImpl @Inject() (val appConfig: FrontendAppConfig)
 
 protected trait CreateAnswerConditions {
 
-  protected val appConfig: FrontendAppConfig
+  protected implicit val appConfig: FrontendAppConfig
 
   protected val always: UserAnswers => Boolean = (_: UserAnswers) => true
 
@@ -148,7 +148,7 @@ protected trait CreateAnswerConditions {
     answers.isImporterJourney && answers.get(DoYouOwnTheGoodsPage).contains(DoYouOwnTheGoods.No)
 
   protected val showRepaymentType: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.isSingleEntry && answers.dutyTypeTaxDetails.totalClaim >= appConfig.allowCmaThresholds.reclaimTotal
+    answers.isSingleEntry && answers.isCmaAllowed
 
   protected val showWhomToRepay: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && (answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry)
@@ -160,8 +160,7 @@ protected trait CreateAnswerConditions {
     answers.isAgentJourney && answers.get(IndirectRepresentativePage).contains(false)
 
   protected val showBankDetails: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry ||
-      answers.dutyTypeTaxDetails.totalClaim < appConfig.allowCmaThresholds.reclaimTotal ||
+    answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || !answers.isCmaAllowed ||
       (answers.isAgentJourney && answers.get(WhomToPayPage).contains(WhomToPay.Importer)) ||
       (answers.isAgentJourney && answers.get(IndirectRepresentativePage).contains(true))
 

@@ -498,10 +498,12 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
       "go to the Check your answers page after the Declarant Reference page" in {
         val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
         val userAnswers = changeAnswers(DeclarantReferenceNumberPage)
+          .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
           .set(
             DeclarantReferenceNumberPage,
             DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("this is a reference"))
           ).success.value
+          .set(RepaymentTypePage, RepaymentType.CMA).success.value
           .set(ClaimRepaymentTypePage, duties).success.value
           .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
 

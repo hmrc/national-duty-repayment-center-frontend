@@ -17,11 +17,11 @@
 package controllers
 
 import base.SpecBase
-import models.{ClaimRepaymentType, RepaymentAmounts, RepaymentType, UserAnswers}
+import models.{ClaimRepaymentType, Entries, NumberOfEntriesType, RepaymentAmounts, RepaymentType, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verify, verifyZeroInteractions, when}
-import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage, RepaymentTypePage}
+import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
+import pages._
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -201,6 +201,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       reset(mockSessionRepository)
 
       val answers = userAnswersWithDuty
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
         .set(RepaymentTypePage, RepaymentType.CMA).success.value
         .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
       val application =
