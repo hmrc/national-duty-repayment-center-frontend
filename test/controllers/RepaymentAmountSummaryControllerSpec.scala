@@ -17,14 +17,19 @@
 package controllers
 
 import base.SpecBase
-import models.{ClaimRepaymentType, UserAnswers}
-import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, OtherDutiesPaidPage}
+import models.{ClaimRepaymentType, Entries, NumberOfEntriesType, RepaymentAmounts, RepaymentType, UserAnswers}
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
+import pages._
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 import views.html.RepaymentAmountSummaryView
+
+import scala.concurrent.Future
 
 class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
@@ -123,21 +128,21 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
     )
   )
 
+  val userAnswersWithDuty = UserAnswers(
+    userAnswersId,
+    None,
+    Json.obj(
+      CustomsDutyPaidPage.toString -> Json.obj("ActualPaidAmount" -> "0.00", "ShouldHavePaidAmount" -> "0.00"),
+      OtherDutiesPaidPage.toString -> Json.obj("ActualPaidAmount" -> "0.00", "ShouldHavePaidAmount" -> "0.00")
+    )
+  )
+    .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+
   "RepaymentAmountSummary Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = UserAnswers(
-        userAnswersId,
-        None,
-        Json.obj(
-          CustomsDutyPaidPage.toString -> Json.obj("ActualPaidAmount" -> "0.00", "ShouldHavePaidAmount" -> "0.00"),
-          OtherDutiesPaidPage.toString -> Json.obj("ActualPaidAmount" -> "0.00", "ShouldHavePaidAmount" -> "0.00")
-        )
-      )
-        .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithDuty)).build()
 
       val request = FakeRequest(GET, routes.RepaymentAmountSummaryController.onPageLoad().url)
 
@@ -155,6 +160,8 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
     "redirect to the next page for a POST" in {
 
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -165,6 +172,50 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual defaultNextPage.url
+
+    }
+
+    "remove RepaymentType answer when total claim is less than threshold" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val answers = userAnswersWithDuty.set(RepaymentTypePage, RepaymentType.CMA).success.value
+      val application =
+        applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request =
+        FakeRequest(POST, routes.RepaymentAmountSummaryController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      persistedAnswers.getValue.get(RepaymentTypePage) mustBe None
+
+    }
+
+    "retain RepaymentType answer when total claim is more than threshold" in {
+
+      reset(mockSessionRepository)
+
+      val answers = userAnswersWithDuty
+        .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+        .set(RepaymentTypePage, RepaymentType.CMA).success.value
+        .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
+      val application =
+        applicationBuilder(userAnswers = Some(answers)).build()
+
+      val request =
+        FakeRequest(POST, routes.RepaymentAmountSummaryController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      verifyZeroInteractions(mockSessionRepository)
 
     }
   }

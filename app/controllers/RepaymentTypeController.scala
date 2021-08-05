@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import controllers.actions._
 import forms.RepaymentTypeFormProvider
 import javax.inject.Inject
@@ -39,6 +40,7 @@ class RepaymentTypeController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  appConfig: FrontendAppConfig,
   formProvider: RepaymentTypeFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: RepaymentTypeView
@@ -50,12 +52,16 @@ class RepaymentTypeController @Inject() (
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(RepaymentTypePage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+      if (!request.userAnswers.isCmaAllowed(appConfig))
+        Redirect(nextPage(request.userAnswers))
+      else {
+        val preparedForm = request.userAnswers.get(RepaymentTypePage) match {
+          case None        => form
+          case Some(value) => form.fill(value)
+        }
 
-      Ok(view(preparedForm, backLink(request.userAnswers)))
+        Ok(view(preparedForm, backLink(request.userAnswers)))
+      }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {

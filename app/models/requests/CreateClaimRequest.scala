@@ -43,8 +43,8 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
           userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
             case NumberOfEntriesType.Single =>
               userAnswers.get(RepaymentTypePage) match {
-                case Some(RepaymentType.CMA)  => Some(WhomToPay.CMA)
-                case Some(RepaymentType.BACS) => Some(WhomToPay.Importer)
+                case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
+                case _                       => Some(WhomToPay.Importer)
               }
             case NumberOfEntriesType.Multiple => Some(WhomToPay.Importer)
           }
@@ -52,8 +52,8 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
           userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
             case NumberOfEntriesType.Single =>
               userAnswers.get(RepaymentTypePage) match {
-                case Some(RepaymentType.CMA)  => Some(WhomToPay.CMA)
-                case Some(RepaymentType.BACS) => userAnswers.get(WhomToPayPage)
+                case Some(RepaymentType.CMA) => Some(WhomToPay.CMA)
+                case _                       => userAnswers.get(WhomToPayPage)
               }
             case _ => userAnswers.get(WhomToPayPage)
           }
@@ -62,7 +62,7 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
     def getPaymentMethod(userAnswers: UserAnswers): Option[RepaymentType] =
       userAnswers.get(NumberOfEntriesTypePage).get.numberOfEntriesType match {
         case NumberOfEntriesType.Multiple => Some(RepaymentType.BACS)
-        case NumberOfEntriesType.Single   => userAnswers.get(RepaymentTypePage)
+        case NumberOfEntriesType.Single   => Some(userAnswers.get(RepaymentTypePage).getOrElse(RepaymentType.BACS))
       }
 
     def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
@@ -209,92 +209,8 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
     def cleanseBankDetails(bankDetails: BankDetails): BankDetails =
       bankDetails.copy(SortCode = bankDetails.sortCodeTrimmed, AccountNumber = bankDetails.accountNumberPadded)
 
-    def getCustomsValues(userAnswers: UserAnswers): DutyTypeTaxList = {
-
-      val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
-
-      val getCustomsDutyPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
-        case true => userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount)
-        case _    => Some("0.00")
-      }
-
-      val getCustomsDutyDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Customs) match {
-        case true => userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount)
-        case _    => Some("0.00")
-      }
-
-      val CustomsDutyPaidAsBigDecimal = BigDecimal(getCustomsDutyPaid.getOrElse("0.00")).setScale(2)
-      val CustomsDutyDueAsBigDecimal  = BigDecimal(getCustomsDutyDue.getOrElse("0.00")).setScale(2)
-
-      val CustomsDutyOwedAsString = (CustomsDutyPaidAsBigDecimal - CustomsDutyDueAsBigDecimal).toString()
-
-      DutyTypeTaxList(
-        ClaimRepaymentType.Customs,
-        CustomsDutyPaidAsBigDecimal.toString(),
-        CustomsDutyDueAsBigDecimal.toString(),
-        CustomsDutyOwedAsString
-      )
-    }
-
-    def getVatValues(userAnswers: UserAnswers): DutyTypeTaxList = {
-
-      val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
-
-      val getVatPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Vat) match {
-        case true  => userAnswers.get(VATPaidPage).map(_.ActualPaidAmount)
-        case false => Some("0.00")
-      }
-
-      val getVatDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Vat) match {
-        case true  => userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount)
-        case false => Some("0.00")
-      }
-
-      val VatPaidAsBigDecimal = BigDecimal(getVatPaid.getOrElse("0.00")).setScale(2)
-      val VatDueAsBigDecimal  = BigDecimal(getVatDue.getOrElse("0.00")).setScale(2)
-
-      val VatOwedAsString = (VatPaidAsBigDecimal - VatDueAsBigDecimal).toString
-
-      DutyTypeTaxList(
-        ClaimRepaymentType.Vat,
-        VatPaidAsBigDecimal.toString(),
-        VatDueAsBigDecimal.toString,
-        VatOwedAsString
-      )
-    }
-
-    def getOtherDutyValues(userAnswers: UserAnswers): DutyTypeTaxList = {
-
-      val selectedDuties: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).get
-
-      val getOtherDutyPaid: Option[String] = selectedDuties.contains(ClaimRepaymentType.Other) match {
-        case true => userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount)
-        case _    => Some("0.00")
-      }
-
-      val getOtherDutyDue: Option[String] = selectedDuties.contains(ClaimRepaymentType.Other) match {
-        case true => userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount)
-        case _    => Some("0.00")
-      }
-
-      val OtherDutyPaidAsBigDecimal = BigDecimal(getOtherDutyPaid.getOrElse("0.0")).setScale(2)
-      val OtherDutyDueAsBigDecimal  = BigDecimal(getOtherDutyDue.getOrElse("0.0")).setScale(2)
-
-      val OtherDutyOwedAsString = (OtherDutyPaidAsBigDecimal - OtherDutyDueAsBigDecimal).toString
-
-      DutyTypeTaxList(
-        ClaimRepaymentType.Other,
-        OtherDutyPaidAsBigDecimal.toString(),
-        OtherDutyDueAsBigDecimal.toString(),
-        OtherDutyOwedAsString
-      )
-    }
-
-    def getDutyTypeTaxDetails(answers: UserAnswers): Seq[DutyTypeTaxList] =
-      Seq(getCustomsValues(answers), getVatValues(answers), getOtherDutyValues(answers))
-
     def getTypeTaxDetails(userAnswers: UserAnswers): DutyTypeTaxDetails =
-      DutyTypeTaxDetails(getDutyTypeTaxDetails(userAnswers))
+      userAnswers.dutyTypeTaxDetails
 
     def getDocumentList(): DocumentList =
       DocumentList(EvidenceSupportingDocs.Other, None)

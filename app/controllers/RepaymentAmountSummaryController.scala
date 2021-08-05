@@ -16,16 +16,20 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
-import models.UserAnswers
+import models.{RepaymentType, UserAnswers}
 import navigation.CreateNavigator
-import pages.{Page, RepaymentAmountSummaryPage}
+import pages.{Page, RepaymentAmountSummaryPage, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.RepaymentAmountSummaryAnswersHelper
 import views.html.RepaymentAmountSummaryView
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class RepaymentAmountSummaryController @Inject() (
   override val messagesApi: MessagesApi,
@@ -33,9 +37,12 @@ class RepaymentAmountSummaryController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  appConfig: FrontendAppConfig,
+  sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
   view: RepaymentAmountSummaryView
-) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = RepaymentAmountSummaryPage
 
@@ -49,9 +56,16 @@ class RepaymentAmountSummaryController @Inject() (
       Ok(view(sections, backLink(request.userAnswers)))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      Redirect(nextPage(request.userAnswers))
+      if (!request.userAnswers.isCmaAllowed(appConfig))
+        for {
+          updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.remove(RepaymentTypePage))
+          _                           <- sessionRepository.set(updatedAnswers)
+
+        } yield Redirect(nextPage(updatedAnswers))
+      else
+        Future.successful(Redirect(nextPage(request.userAnswers)))
   }
 
 }
