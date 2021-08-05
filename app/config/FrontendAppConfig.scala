@@ -54,6 +54,8 @@ object FrontendAppConfig {
   case class EoriIntegration(enabled: Boolean, enrolmentKey: String, enrolmentUrl: Option[String])
 
   case class Emails(customsAccountingRepayments: String)
+
+  case class AllowCmaThresholds(reclaimTotal: BigDecimal, entryAgeDays: Int)
 }
 
 @ImplementedBy(classOf[FrontendAppConfigImpl])
@@ -96,6 +98,8 @@ trait FrontendAppConfig {
   def selfUrl(url: String): String
 
   val fileUploadTimeout: FiniteDuration
+
+  val allowCmaThresholds: FrontendAppConfig.AllowCmaThresholds
 }
 
 @Singleton
@@ -158,6 +162,11 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
     approvedFileTypes = configuration.get[String]("file-formats.approved-file-types"),
     proofOfAuthorityExtensions = configuration.get[String]("file-formats.proof-of-authority-file-extensions"),
     bulkExtensions = configuration.get[String]("file-formats.bulk-file-extensions")
+  )
+
+  override val allowCmaThresholds: FrontendAppConfig.AllowCmaThresholds = FrontendAppConfig.AllowCmaThresholds(
+    reclaimTotal = configuration.get[Int]("allow-cma-threshold.reclaim-total-amount"),
+    entryAgeDays = configuration.get[Int]("allow-cma-threshold.entry-age-days")
   )
 
   override val eoriIntegration: FrontendAppConfig.EoriIntegration = {

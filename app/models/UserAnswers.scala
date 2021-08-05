@@ -49,6 +49,40 @@ final case class UserAnswers(
   def isMultipleEntry: Boolean =
     get(NumberOfEntriesTypePage).map(_.numberOfEntriesType).contains(NumberOfEntriesType.Multiple)
 
+  def dutyTypeTaxDetails: DutyTypeTaxDetails =
+    DutyTypeTaxDetails(
+      Seq(
+        getDutyTypeTaxList(ClaimRepaymentType.Customs, CustomsDutyPaidPage),
+        getDutyTypeTaxList(ClaimRepaymentType.Vat, VATPaidPage),
+        getDutyTypeTaxList(ClaimRepaymentType.Other, OtherDutiesPaidPage)
+      )
+    )
+
+  private def getDutyTypeTaxList(
+    repaymentType: ClaimRepaymentType,
+    page: QuestionPage[RepaymentAmounts]
+  ): DutyTypeTaxList = {
+
+    val selectedDuties: Set[ClaimRepaymentType] = get(ClaimRepaymentTypePage).getOrElse(Set.empty)
+
+    val dutyPaid: Option[String] = selectedDuties.contains(repaymentType) match {
+      case true  => get(page).map(_.ActualPaidAmount)
+      case false => Some("0.00")
+    }
+
+    val dutyDue: Option[String] = selectedDuties.contains(repaymentType) match {
+      case true  => get(page).map(_.ShouldHavePaidAmount)
+      case false => Some("0.00")
+    }
+
+    val paidAsBigDecimal = BigDecimal(dutyPaid.getOrElse("0.00")).setScale(2)
+    val dueAsBigDecimal  = BigDecimal(dutyDue.getOrElse("0.00")).setScale(2)
+
+    val owedAsString = (paidAsBigDecimal - dueAsBigDecimal).toString
+
+    DutyTypeTaxList(repaymentType, paidAsBigDecimal.toString(), dueAsBigDecimal.toString, owedAsString)
+  }
+
   def fileUploadPath: JsPath = JsPath \ "fileUploadState"
   def changePagePath: JsPath = JsPath \ "changePage"
 

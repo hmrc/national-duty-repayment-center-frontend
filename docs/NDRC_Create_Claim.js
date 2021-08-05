@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         NDRC AutoComplete
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 
 // @description  NDRC AutoComplete
 // @author       NDRC Team
 // @match        http*://*/apply-for-repayment-of-import-duty-and-import-vat/*
+// @match        http*://*/lookup-address/*
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/hmrc/national-duty-repayment-center-frontend/master/docs/NDRC_Create_Claim.js
 // ==/UserScript==
@@ -154,14 +155,27 @@ function completePage() {
         document.getElementById("value").checked = true;
         submit();
     }
-    if (currentPageIs("/your-business-address")) {
-        document.getElementById("PostalCode").value = "AA000AA";
+
+    if (currentPageIs(".*/lookup-address/.*/lookup")) {
+        if (window.location.host.includes("localhost")) {
+            document.getElementById("postcode").value = "AA000AA";
+        }
+        else{
+            document.getElementById("postcode").value = "WS1 2AB";
+        }
         submit();
     }
-    if (currentPageIs("/select-importer-address")) {
-        document.getElementById("PostalCode").value = "AA000AA";
+    if (currentPageIs(".*/lookup-address/.*/edit")) {
+        document.getElementById("line1").value = "Unit 42";
+        document.getElementById("line2").value = "West Industrial Estate";
+        document.getElementById("town").value = "Walsall";
+        document.getElementById("postcode").value = "WS1 2AB";
         submit();
     }
+    if (currentPageIs(".*/lookup-address/.*/confirm")) {
+        submit();
+    }
+
     if (currentPageIs("/enter-importer-address")) {
         document.getElementById("AddressLine1").value = "ACME Importer Ltd";
         document.getElementById("AddressLine2").value = "West Industrial Estate";

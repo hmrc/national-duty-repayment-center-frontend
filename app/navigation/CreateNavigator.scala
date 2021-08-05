@@ -16,6 +16,8 @@
 
 package navigation
 
+import config.FrontendAppConfig
+import javax.inject.Inject
 import models.FileType.{Bulk, ProofOfAuthority}
 import models.{
   AgentImporterHasEORI,
@@ -31,7 +33,8 @@ import play.api.mvc.Call
 
 trait CreateNavigator extends Navigator[UserAnswers]
 
-class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions with CreateHasAnsweredConditions {
+class CreateNavigatorImpl @Inject() (val appConfig: FrontendAppConfig)
+    extends CreateNavigator with CreateAnswerConditions with CreateHasAnsweredConditions {
 
   override protected def checkYourAnswersPage: Call = controllers.routes.CheckYourAnswersController.onPageLoad()
 
@@ -101,6 +104,8 @@ class CreateNavigatorImpl extends CreateNavigator with CreateAnswerConditions wi
 
 protected trait CreateAnswerConditions {
 
+  protected val appConfig: FrontendAppConfig
+
   protected val always: UserAnswers => Boolean = (_: UserAnswers) => true
 
   protected val isImporter: UserAnswers => Boolean = _.isImporterJourney
@@ -143,7 +148,7 @@ protected trait CreateAnswerConditions {
     answers.isImporterJourney && answers.get(DoYouOwnTheGoodsPage).contains(DoYouOwnTheGoods.No)
 
   protected val showRepaymentType: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.isSingleEntry
+    answers.isSingleEntry && answers.dutyTypeTaxDetails.totalClaim >= appConfig.allowCmaThresholds.reclaimTotal
 
   protected val showWhomToRepay: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && (answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry)
@@ -156,6 +161,7 @@ protected trait CreateAnswerConditions {
 
   protected val showBankDetails: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry ||
+      answers.dutyTypeTaxDetails.totalClaim < appConfig.allowCmaThresholds.reclaimTotal ||
       (answers.isAgentJourney && answers.get(WhomToPayPage).contains(WhomToPay.Importer)) ||
       (answers.isAgentJourney && answers.get(IndirectRepresentativePage).contains(true))
 

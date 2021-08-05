@@ -158,12 +158,26 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.DeclarantReferenceNumberController.onPageLoad())
       }
 
-      "go to RepaymentType page after DeclarantReferenceNumber page when Importers/Representative single entry journeys selected " in {
+      "go to RepaymentType page after DeclarantReferenceNumber page when single entry journey and total being claimed is >= £250" in {
+        val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+            .set(ClaimRepaymentTypePage, duties).success.value
+            .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
         navigator.nextPage(DeclarantReferenceNumberPage, answers)
           .mustBe(routes.RepaymentTypeController.onPageLoad())
+      }
+
+      "go to BankDetails page after DeclarantReferenceNumber page when single entry journey and total being claimed is < £250" in {
+        val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
+        val answers =
+          emptyUserAnswers
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+            .set(ClaimRepaymentTypePage, duties).success.value
+            .set(CustomsDutyPaidPage, RepaymentAmounts("249", "0")).success.value
+        navigator.nextPage(DeclarantReferenceNumberPage, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad())
       }
 
       "go to EnterAgentEORI page after agentImporterHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
@@ -482,11 +496,14 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.BankDetailsController.onPageLoad())
       }
       "go to the Check your answers page after the Declarant Reference page" in {
+        val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
         val userAnswers = changeAnswers(DeclarantReferenceNumberPage)
           .set(
             DeclarantReferenceNumberPage,
             DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some("this is a reference"))
           ).success.value
+          .set(ClaimRepaymentTypePage, duties).success.value
+          .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
 
         navigator.nextPage(DeclarantReferenceNumberPage, userAnswers)
           .mustBe(routes.CheckYourAnswersController.onPageLoad())
