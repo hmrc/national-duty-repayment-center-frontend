@@ -278,11 +278,9 @@ repaymentType.title = Select repayment method
 repaymentType.heading = Select repayment method
 repaymentType.01 = Current month amendment (CMA)
 repaymentType.02 = Bank transfer (Bacs)
+repaymentType.hint.01 = You can only use this option if you made the original payment using a duty deferment account.
 repaymentType.checkYourAnswersLabel = Payment method
 repaymentType.error.required = Select how you want to receive the repayment
-repaymentType..help.header = What is a current month amendment?
-repaymentType.help.p1 = A current month amendment is an accounting adjustment to a deferment account.
-repaymentType.help.p2 = This can only be made if the original payment was from a deferment account.
 
 enterAgentEORI.title = What is the importer’s EORI number?
 enterAgentEORI.heading = What is the importer’s EORI number?
