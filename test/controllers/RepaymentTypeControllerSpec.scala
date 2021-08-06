@@ -16,6 +16,8 @@
 
 package controllers
 
+import java.time.LocalDate
+
 import base.SpecBase
 import forms.RepaymentTypeFormProvider
 import models.RepaymentType.CMA
@@ -24,15 +26,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{
-  BankDetailsPage,
-  ClaimRepaymentTypePage,
-  ClaimantTypePage,
-  CustomsDutyPaidPage,
-  NumberOfEntriesTypePage,
-  RepaymentTypePage,
-  WhomToPayPage
-}
+import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RepaymentTypeView
@@ -52,6 +46,7 @@ class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
     .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
     .set(ClaimRepaymentTypePage, duties).success.value
     .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
+    .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now().minusDays(1))).success.value
 
   "RepaymentType Controller" must {
 

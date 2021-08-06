@@ -16,8 +16,18 @@
 
 package controllers
 
+import java.time.LocalDate
+
 import base.SpecBase
-import models.{ClaimRepaymentType, Entries, NumberOfEntriesType, RepaymentAmounts, RepaymentType, UserAnswers}
+import models.{
+  ClaimRepaymentType,
+  Entries,
+  EntryDetails,
+  NumberOfEntriesType,
+  RepaymentAmounts,
+  RepaymentType,
+  UserAnswers
+}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
@@ -137,6 +147,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
     )
   )
     .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
+    .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now().minusDays(1))).success.value
 
   "RepaymentAmountSummary Controller" must {
 

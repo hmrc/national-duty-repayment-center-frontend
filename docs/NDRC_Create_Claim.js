@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NDRC AutoComplete
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 
 // @description  NDRC AutoComplete
 // @author       NDRC Team
@@ -66,11 +66,13 @@ function completePage() {
         submit();
     }
     if (currentPageIs("/oldest-entry-date")) {
+        let now = new Date();
+        now.setDate(now.getDate() - 7);
         document.getElementById("EPU").value = "123";
         document.getElementById("EntryNumber").value = "123456Q";
-        document.getElementById("EntryDate.day").value = "12";
-        document.getElementById("EntryDate.month").value = "12";
-        document.getElementById("EntryDate.year").value = "2020";
+        document.getElementById("EntryDate.day").value = now.getDate();
+        document.getElementById("EntryDate.month").value = now.getMonth()+1;
+        document.getElementById("EntryDate.year").value = now.getFullYear();
         submit();
     }
     if (currentPageIs("/application-reason")) {
@@ -86,8 +88,8 @@ function completePage() {
         submit();
     }
     if (currentPageIs("/customs-duty-overpayment")) {
-        document.getElementById("ActualPaidAmount").value = "100.00";
-        document.getElementById("ShouldHavePaidAmount").value = "89.99";
+        document.getElementById("ActualPaidAmount").value = "300.00";
+        document.getElementById("ShouldHavePaidAmount").value = "49.99";
         submit();
     }
     if (currentPageIs("/import-vat-overpayment")) {

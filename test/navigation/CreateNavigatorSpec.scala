@@ -16,14 +16,15 @@
 
 package navigation
 
+import java.time.LocalDate
+
 import base.SpecBase
 import controllers.routes
 import models.ClaimRepaymentType.{Customs, Other, Vat}
 import models._
 import pages._
-import views.behaviours.ViewBehaviours
 
-class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
+class CreateNavigatorSpec extends SpecBase {
 
   val navigator = injector.instanceOf[CreateNavigatorImpl]
 
@@ -158,15 +159,28 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.DeclarantReferenceNumberController.onPageLoad())
       }
 
-      "go to RepaymentType page after DeclarantReferenceNumber page when single entry journey and total being claimed is >= £250" in {
+      "go to RepaymentType page after DeclarantReferenceNumber page when single entry journey and CMA is allowed" in {
         val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
             .set(ClaimRepaymentTypePage, duties).success.value
             .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now().minusDays(1))).success.value
         navigator.nextPage(DeclarantReferenceNumberPage, answers)
           .mustBe(routes.RepaymentTypeController.onPageLoad())
+      }
+
+      "go to BankDetails page after DeclarantReferenceNumber page when single entry journey and entry date is too old" in {
+        val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
+        val answers =
+          emptyUserAnswers
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+            .set(ClaimRepaymentTypePage, duties).success.value
+            .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now().minusDays(50))).success.value
+        navigator.nextPage(DeclarantReferenceNumberPage, answers)
+          .mustBe(routes.BankDetailsController.onPageLoad())
       }
 
       "go to BankDetails page after DeclarantReferenceNumber page when single entry journey and total being claimed is < £250" in {
@@ -176,6 +190,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
             .set(ClaimRepaymentTypePage, duties).success.value
             .set(CustomsDutyPaidPage, RepaymentAmounts("249", "0")).success.value
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now().minusDays(1))).success.value
         navigator.nextPage(DeclarantReferenceNumberPage, answers)
           .mustBe(routes.BankDetailsController.onPageLoad())
       }
@@ -188,6 +203,20 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
             .set(ClaimRepaymentTypePage, duties).success.value
             .set(CustomsDutyPaidPage, RepaymentAmounts("249", "0")).success.value
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now().minusDays(1))).success.value
+        navigator.nextPage(DeclarantReferenceNumberPage, answers)
+          .mustBe(routes.WhomToPayController.onPageLoad())
+      }
+
+      "go to WhoToRepay page after DeclarantReferenceNumber page when single entry representative journey and entry date is too old" in {
+        val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+            .set(ClaimRepaymentTypePage, duties).success.value
+            .set(CustomsDutyPaidPage, RepaymentAmounts("500", "0")).success.value
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now().minusDays(50))).success.value
         navigator.nextPage(DeclarantReferenceNumberPage, answers)
           .mustBe(routes.WhomToPayController.onPageLoad())
       }
@@ -518,6 +547,7 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           .set(RepaymentTypePage, RepaymentType.CMA).success.value
           .set(ClaimRepaymentTypePage, duties).success.value
           .set(CustomsDutyPaidPage, RepaymentAmounts("250", "0")).success.value
+          .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now().minusDays(1))).success.value
 
         navigator.nextPage(DeclarantReferenceNumberPage, userAnswers)
           .mustBe(routes.CheckYourAnswersController.onPageLoad())

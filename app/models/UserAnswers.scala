@@ -52,7 +52,8 @@ final case class UserAnswers(
 
   def isCmaAllowed(implicit appConfig: FrontendAppConfig): Boolean =
     isSingleEntry &&
-      dutyTypeTaxDetails.totalClaim >= appConfig.allowCmaThresholds.reclaimTotal
+      dutyTypeTaxDetails.totalClaim >= appConfig.allowCmaThresholds.reclaimTotal &&
+      get(EntryDetailsPage).exists(_.EntryDate.isAfter(appConfig.allowCmaThresholds.earliestEntryDate))
 
   def dutyTypeTaxDetails: DutyTypeTaxDetails =
     DutyTypeTaxDetails(
