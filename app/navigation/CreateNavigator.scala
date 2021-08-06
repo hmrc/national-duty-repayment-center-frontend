@@ -151,7 +151,7 @@ protected trait CreateAnswerConditions {
     answers.isSingleEntry && answers.isCmaAllowed
 
   protected val showWhomToRepay: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.isAgentJourney && (answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry)
+    answers.isAgentJourney && (answers.get(RepaymentTypePage).contains(RepaymentType.BACS) || answers.isMultipleEntry || !answers.isCmaAllowed)
 
   protected val showIndirectRepresentative: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isAgentJourney && answers.get(WhomToPayPage).contains(WhomToPay.Representative)

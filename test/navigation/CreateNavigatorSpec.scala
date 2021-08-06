@@ -180,6 +180,18 @@ class CreateNavigatorSpec extends SpecBase with ViewBehaviours {
           .mustBe(routes.BankDetailsController.onPageLoad())
       }
 
+      "go to WhoToRepay page after DeclarantReferenceNumber page when single entry representative journey and total being claimed is < £250" in {
+        val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+            .set(ClaimRepaymentTypePage, duties).success.value
+            .set(CustomsDutyPaidPage, RepaymentAmounts("249", "0")).success.value
+        navigator.nextPage(DeclarantReferenceNumberPage, answers)
+          .mustBe(routes.WhomToPayController.onPageLoad())
+      }
+
       "go to EnterAgentEORI page after agentImporterHasEORI with Yes page when Representative single/multiple entry journeys selected " in {
         val answers =
           emptyUserAnswers
