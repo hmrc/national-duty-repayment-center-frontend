@@ -21,7 +21,7 @@ import forms.BankDetailsFormProvider
 import javax.inject.Inject
 import models.{RepaymentType, UserAnswers}
 import navigation.CreateNavigator
-import pages.{BankDetailsPage, Page, RepaymentTypePage}
+import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -55,13 +55,30 @@ class BankDetailsController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, backLink(request.userAnswers)))
+      Ok(
+        view(
+          preparedForm,
+          request.userAnswers.get(ClaimantTypePage),
+          request.userAnswers.get(WhomToPayPage),
+          backLink(request.userAnswers)
+        )
+      )
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
+        formWithErrors =>
+          Future.successful(
+            BadRequest(
+              view(
+                formWithErrors,
+                request.userAnswers.get(ClaimantTypePage),
+                request.userAnswers.get(WhomToPayPage),
+                backLink(request.userAnswers)
+              )
+            )
+          ),
         bankDetails =>
           bankAccountReputationService.validate(bankDetails) flatMap { barsResult =>
             formProvider.processBarsResult(barsResult, bankDetails) match {
@@ -78,7 +95,16 @@ class BankDetailsController @Inject() (
                   _ <- sessionRepository.set(removeCMA)
                 } yield Redirect(nextPage(removeCMA))
               case Some(barsErrorForm) =>
-                Future.successful(BadRequest(view(barsErrorForm, backLink(request.userAnswers))))
+                Future.successful(
+                  BadRequest(
+                    view(
+                      barsErrorForm,
+                      request.userAnswers.get(ClaimantTypePage),
+                      request.userAnswers.get(WhomToPayPage),
+                      backLink(request.userAnswers)
+                    )
+                  )
+                )
             }
           }
       )
