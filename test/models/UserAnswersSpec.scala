@@ -42,48 +42,48 @@ class UserAnswersSpec extends SpecBase {
       }
 
       "when claim amount equals limit" in {
-        val answersWithMinimumClaim = answers
+        val updatedAnswers = answers
           .set(
             CustomsDutyPaidPage,
             RepaymentAmounts(config.allowCmaThresholds.reclaimTotal.toString(), "0")
           ).success.value
-        answersWithMinimumClaim.isCmaAllowed mustBe true
+        updatedAnswers.isCmaAllowed mustBe true
       }
 
       "when entry age equals limit" in {
-        val answersWithMinimumClaim = answers
+        val updatedAnswers = answers
           .set(
             EntryDetailsPage,
             EntryDetails("123", "123456Q", LocalDate.now().minusDays(config.allowCmaThresholds.entryAgeDays))
           ).success.value
-        answersWithMinimumClaim.isCmaAllowed mustBe true
+        updatedAnswers.isCmaAllowed mustBe true
       }
     }
 
     "disallows CMA" when {
 
       "when claim is for multiple entries" in {
-        val answersWithMinimumClaim = answers
+        val updatedAnswers = answers
           .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
-        answersWithMinimumClaim.isCmaAllowed mustBe false
+        updatedAnswers.isCmaAllowed mustBe false
       }
 
       "when claim amount is less than limit" in {
-        val answersWithMinimumClaim = answers
+        val updatedAnswers = answers
           .set(
             CustomsDutyPaidPage,
             RepaymentAmounts((config.allowCmaThresholds.reclaimTotal - 0.01).toString(), "0")
           ).success.value
-        answersWithMinimumClaim.isCmaAllowed mustBe false
+        updatedAnswers.isCmaAllowed mustBe false
       }
 
       "when entry age is older than limit" in {
-        val answersWithMinimumClaim = answers
+        val updatedAnswers = answers
           .set(
             EntryDetailsPage,
             EntryDetails("123", "123456Q", LocalDate.now().minusDays(config.allowCmaThresholds.entryAgeDays + 1))
           ).success.value
-        answersWithMinimumClaim.isCmaAllowed mustBe false
+        updatedAnswers.isCmaAllowed mustBe false
       }
     }
   }
