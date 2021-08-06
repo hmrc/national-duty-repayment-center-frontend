@@ -16,6 +16,8 @@
 
 package config
 
+import java.time.LocalDate
+
 import com.google.inject.{ImplementedBy, Inject}
 import controllers.routes
 import javax.inject.Singleton
@@ -55,7 +57,10 @@ object FrontendAppConfig {
 
   case class Emails(customsAccountingRepayments: String)
 
-  case class AllowCmaThresholds(reclaimTotal: BigDecimal, entryAgeDays: Int)
+  case class AllowCmaThresholds(reclaimTotal: BigDecimal, entryAgeDays: Int) {
+    def earliestEntryDate: LocalDate = LocalDate.now().minusDays(entryAgeDays + 1)
+  }
+
 }
 
 @ImplementedBy(classOf[FrontendAppConfigImpl])
