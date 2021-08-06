@@ -18,6 +18,7 @@ package models
 
 import play.api.data.Form
 import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.Aliases.Hint
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
@@ -35,6 +36,10 @@ object RepaymentType extends Enumerable.Implicits {
       RadioItem(
         value = Some(value.toString),
         content = Text(messages(s"repaymentType.${value.toString}")),
+        hint = value match {
+          case RepaymentType.CMA => Option(Hint(content = Text(messages(s"repaymentType.hint.${value.toString}"))))
+          case _                 => None
+        },
         checked = form("value").value.contains(value.toString)
       )
   }
