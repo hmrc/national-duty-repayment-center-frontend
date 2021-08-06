@@ -450,10 +450,13 @@ agentImporterManualAddress.postalCode.heading = Post Code
 agentImporterManualAddress.postalCode.error.invalid = Enter a real postcode
 
 bankDetails.title = Enter UK bank details
-bankDetails.heading = Enter UK bank details
+bankDetails.title.importer = Enter the importer’s business bank details
+bankDetails.title.representative = Enter your business bank details
 bankDetails.checkYourAnswersLabel = Bank details
 bankDetails.name.heading = Name on the account
-bankDetails.name.hint = Enter your name as it appears on your bank statement.
+bankDetails.name.hint = Enter the name as it appears on your bank statement.
+bankDetails.name.importer.hint = Enter the name as it appears on their bank statement.
+bankDetails.name.representative.hint = Enter the name as it appears on your bank statement.
 bankDetails.name.error.required = Enter the name on the account
 bankDetails.name.error.length = Name on the account must be 40 characters or less
 bankDetails.sortCode.heading = Sort code

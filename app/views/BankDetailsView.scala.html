@@ -24,10 +24,30 @@
     html: views.components.html
 )
 
-@(form: Form[_], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], claimantType: Option[ClaimantType],  whomToPay: Option[WhomToPay], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+
+@titleHeading = @{
+    claimantType match {
+        case Some(ClaimantType.Importer) => "bankDetails.title"
+        case _ => whomToPay match {
+            case Some(WhomToPay.Importer) => "bankDetails.title.importer"
+            case _ => "bankDetails.title.representative"
+        }
+    }
+}
+
+@accountNameHint = @{
+    claimantType match {
+        case Some(ClaimantType.Importer) => "bankDetails.name.hint"
+        case _ => whomToPay match {
+            case Some(WhomToPay.Importer) => "bankDetails.name.importer.hint"
+            case _ => "bankDetails.name.representative.hint"
+        }
+    }
+}
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("bankDetails.title"))}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages(titleHeading))}"),
     backLinkNav = Some(backLink)
 ) {
 
@@ -36,7 +56,7 @@
         @components.error_summary(form.errors)
 
         @forms.fieldset(
-            legend = "bankDetails.heading"
+            legend = titleHeading
         ) {
 
             @forms.inputText(
@@ -44,7 +64,7 @@
                 id = "AccountName",
                 name = "AccountName",
                 label = "bankDetails.name.heading",
-                hint = Some(messages("bankDetails.name.hint")),
+                hint = Some(messages(accountNameHint)),
                 isPageHeading = false,
                 isInFieldset = true,
                 attributes = Map("autocomplete" -> "off")

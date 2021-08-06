@@ -19,13 +19,12 @@ package controllers
 import base.SpecBase
 import data.BarsTestData
 import forms.BankDetailsFormProvider
-import models.{BankDetails, UserAnswers}
+import models.{BankDetails, ClaimantType, WhomToPay}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.BankDetailsPage
+import pages.{BankDetailsPage, ClaimantTypePage, WhomToPayPage}
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.BankAccountReputationService
@@ -40,23 +39,17 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
 
   private lazy val bankDetailsRoute = routes.BankDetailsController.onPageLoad().url
 
-  private val userAnswers = UserAnswers(
-    userAnswersId,
-    None,
-    Json.obj(
-      BankDetailsPage.toString -> Json.obj(
-        "AccountName"   -> "name",
-        "SortCode"      -> "123456",
-        "AccountNumber" -> "00123456"
-      )
-    )
-  )
+  private val userAnswersWithoutBankDetails =
+    emptyUserAnswers.set(ClaimantTypePage, ClaimantType.Importer).success.value
+
+  private val userAnswersWithBankDetails =
+    userAnswersWithoutBankDetails.set(BankDetailsPage, BankDetails("name", "123456", "00123456")).success.value
 
   "BankDetails Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithoutBankDetails)).build()
 
       val request = FakeRequest(GET, bankDetailsRoute)
 
@@ -67,14 +60,68 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, defaultBackLink)(request, messages).toString
+        view(form, Some(ClaimantType.Importer), None, defaultBackLink)(request, messages).toString
+
+      application.stop()
+    }
+
+    "return correct view for a representative paying the importer" in {
+
+      val application = applicationBuilder(userAnswers =
+        Some(
+          userAnswersWithoutBankDetails
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(WhomToPayPage, WhomToPay.Importer).success.value
+        )
+      ).build()
+
+      val request = FakeRequest(GET, bankDetailsRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BankDetailsView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, Some(ClaimantType.Representative), Some(WhomToPay.Importer), defaultBackLink)(
+          request,
+          messages
+        ).toString
+
+      application.stop()
+    }
+
+    "return correct view for a representative paying themselves" in {
+
+      val application = applicationBuilder(userAnswers =
+        Some(
+          userAnswersWithoutBankDetails
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(WhomToPayPage, WhomToPay.Representative).success.value
+        )
+      ).build()
+
+      val request = FakeRequest(GET, bankDetailsRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BankDetailsView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, Some(ClaimantType.Representative), Some(WhomToPay.Representative), defaultBackLink)(
+          request,
+          messages
+        ).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithBankDetails)).build()
 
       val request = FakeRequest(GET, bankDetailsRoute)
 
@@ -85,7 +132,10 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(BankDetails("name", "123456", "00123456")), defaultBackLink)(request, messages).toString
+        view(form.fill(BankDetails("name", "123456", "00123456")), Some(ClaimantType.Importer), None, defaultBackLink)(
+          request,
+          messages
+        ).toString
 
       application.stop()
     }
@@ -98,7 +148,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
       when(mockBankAccountReputationService.validate(any())(any())) thenReturn Future.successful(barsSuccessResult)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithoutBankDetails))
           .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
           .build()
 
@@ -122,7 +172,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
       when(mockBankAccountReputationService.validate(any())(any())) thenReturn Future.successful(barsSuccessResult)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithoutBankDetails))
           .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
           .build()
 
@@ -148,7 +198,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
       )
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithoutBankDetails))
           .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
           .build()
 
@@ -166,7 +216,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
         formProvider.processBarsResult(barsSortcodeDoesNotExistResult, BankDetails("name", "123456", "00123456")).get
 
       contentAsString(result) mustEqual
-        view(errorForm, defaultBackLink)(request, messages).toString
+        view(errorForm, Some(ClaimantType.Importer), None, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -177,7 +227,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
       when(mockBankAccountReputationService.validate(any())(any())) thenReturn Future.successful(barsSuccessResult)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithoutBankDetails))
           .overrides(bind[BankAccountReputationService].toInstance(mockBankAccountReputationService))
           .build()
 
@@ -194,7 +244,7 @@ class BankDetailsControllerSpec extends SpecBase with MockitoSugar with BarsTest
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, defaultBackLink)(request, messages).toString
+        view(boundForm, Some(ClaimantType.Importer), None, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
