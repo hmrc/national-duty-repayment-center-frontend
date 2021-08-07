@@ -57,6 +57,7 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
               }
             case _ => userAnswers.get(WhomToPayPage)
           }
+        case None => None
       }
 
     def getPaymentMethod(userAnswers: UserAnswers): Option[RepaymentType] =

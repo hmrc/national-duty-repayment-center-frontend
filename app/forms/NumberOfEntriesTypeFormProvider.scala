@@ -36,7 +36,7 @@ class NumberOfEntriesTypeFormProvider @Inject() extends Mappings {
             decimal("howManyEntries.error.required", "howManyEntries.error.length")
               .verifying(regexp(Validation.numberOfEntries, "howManyEntries.error.length"))
           )
-      )(Entries.apply)(en => Some(en.numberOfEntriesType, en.entries))
+      )(Entries.apply)(en => Some((en.numberOfEntriesType, en.entries)))
     )
 
 }
