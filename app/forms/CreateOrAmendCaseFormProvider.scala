@@ -17,10 +17,9 @@
 package forms
 
 import forms.mappings.Mappings
-import models.{ClaimantType, CreateOrAmendCase}
-import play.api.data.Form
-
 import javax.inject.Inject
+import models.CreateOrAmendCase
+import play.api.data.Form
 
 class CreateOrAmendCaseFormProvider @Inject() extends Mappings {
 

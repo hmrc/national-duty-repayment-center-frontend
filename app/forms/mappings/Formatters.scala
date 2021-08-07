@@ -16,10 +16,10 @@
 
 package forms.mappings
 
-import forms.{TrimWhitespace, Validation}
+import forms.TrimWhitespace
 import models.Enumerable
+import play.api.data.FormError
 import play.api.data.format.Formatter
-import play.api.data.{FormError, Mapping}
 
 import scala.util.control.Exception.nonFatalCatch
 import scala.util.{Failure, Success, Try}

@@ -337,7 +337,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
       val application =
         applicationBuilder(userAnswers = Some(userAnswers), createNavigator = mockCreateNavigator).build()
 
-      when(mockClaimService.submitClaim(any())(any(), any())).thenReturn(Future.successful("claimID"))
+      when(mockClaimService.submitClaim(any())(any())).thenReturn(Future.successful("claimID"))
 
       val request = FakeRequest(POST, routes.CheckYourAnswersController.onSubmit().url)
 

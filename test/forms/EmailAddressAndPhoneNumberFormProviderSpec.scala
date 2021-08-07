@@ -25,14 +25,7 @@ class EmailAddressAndPhoneNumberFormProviderSpec extends StringFieldBehaviours {
   val form = new EmailAddressAndPhoneNumberFormProvider()()
 
   ".email" must {
-
-    val requiredKey = "emailAddress.error.required"
-    val lengthKey   = "emailAddress.error.length"
-    val invalidKey  = "emailAddress.error.invalid"
-
-    val fieldName     = "email"
-    val fieldName2    = "emailOrPhone"
-    val fieldValueYes = "01"
+    val fieldName = "email"
 
     val basicEmail            = Gen.const("foo@example.com")
     val emailWithSpecialChars = Gen.const("aBcD.!#$%&'*+/=?^_`{|}~-123@foo-bar.example.com")
@@ -46,10 +39,6 @@ class EmailAddressAndPhoneNumberFormProviderSpec extends StringFieldBehaviours {
 
     val fieldName = "phone"
     val length    = 11
-
-    val validData = for {
-      numDigits <- Gen.choose(length, length)
-    } yield s"$numDigits"
 
     "bind telephone number" in {
 

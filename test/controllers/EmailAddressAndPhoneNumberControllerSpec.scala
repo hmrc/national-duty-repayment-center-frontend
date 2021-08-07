@@ -21,7 +21,6 @@ import forms.{EmailAddressAndPhoneNumberFormProvider, EmailAndPhoneNumber}
 import models.IsContactProvided.Email
 import models.{IsContactProvided, UserAnswers}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.EmailAddressAndPhoneNumberPage

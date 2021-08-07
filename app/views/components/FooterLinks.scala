@@ -17,7 +17,6 @@
 package views.components
 
 import play.api.i18n.Messages
-import play.api.mvc.Request
 import uk.gov.hmrc.govukfrontend.views.viewmodels.footer.FooterItem
 
 object FooterLinks {
@@ -39,7 +38,7 @@ object FooterLinks {
   def govukHelpLink(implicit messages: Messages) =
     FooterItem(Some(messages("footer.govukHelp")), Some(govukHelp))
 
-  def items(implicit messages: Messages, request: Request[_]) =
+  def items(implicit messages: Messages) =
     Seq(cookieLink, privacyLink, termsConditionsLink, govukHelpLink)
 
 }

@@ -39,7 +39,6 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
     val fieldName   = accountNameField
     val requiredKey = "bankDetails.name.error.required"
     val lengthKey   = "bankDetails.name.error.length"
-    val invalidKey  = "bankDetails.name.error.invalid"
 
     val maxLength = 40
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))

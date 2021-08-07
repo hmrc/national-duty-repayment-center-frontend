@@ -23,8 +23,6 @@ package connectors
 
 import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.BankDetails
-import models.bars.{AssessBusinessBankDetailsRequest, AssessBusinessBankDetailsResponse}
 import org.scalatest.MustMatchers
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder

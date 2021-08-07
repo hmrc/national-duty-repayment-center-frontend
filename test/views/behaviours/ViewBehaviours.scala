@@ -26,11 +26,6 @@ trait ViewBehaviours extends ViewSpecBase {
 
       "rendered" must {
 
-        "have the correct banner title" in {
-
-          val doc = asDocument(view)
-        }
-
         "display the correct browser title" in {
 
           val doc = asDocument(view)
