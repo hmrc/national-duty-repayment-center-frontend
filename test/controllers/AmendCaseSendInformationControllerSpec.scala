@@ -20,7 +20,7 @@ import java.time.ZonedDateTime
 
 import base.SpecBase
 import models.FileType.SupportingEvidence
-import models.{AmendCaseResponseType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import models.{AmendCaseResponseType, FileType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.{any, anyObject}
 import org.mockito.Mockito.when
@@ -242,7 +242,8 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
               3,
               "4b1e15a4-4152-4328-9448-4924d9aee6e2",
               UpscanNotification.FailureDetails(UpscanNotification.QUARANTINE, "some reason")
-            )
+            ),
+            FileUpload.TimedOut(5, "8d3eae37-fdeb-411c-b38c-0380be472fbc", Some(FileType.SupportingEvidence))
           )
         ),
         acknowledged = false
@@ -274,9 +275,14 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         status(result3) mustEqual 200
         contentAsString(result3) mustEqual """{"fileStatus":"FAILED"}"""
 
-        val request4 = buildRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0114c"))
+        val request4 = buildRequest(GET, fileVerificationUrl("8d3eae37-fdeb-411c-b38c-0380be472fbc"))
         val result4  = route(application, request4).value
-        status(result4) mustEqual 404
+        status(result4) mustEqual 200
+        contentAsString(result4) mustEqual """{"fileStatus":"TIMEDOUT"}"""
+
+        val request5 = buildRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0114c"))
+        val result5  = route(application, request5).value
+        status(result5) mustEqual 404
       }
       application.stop()
     }
