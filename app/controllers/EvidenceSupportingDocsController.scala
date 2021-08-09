@@ -20,13 +20,7 @@ import controllers.actions._
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{
-  ClaimReasonTypeMultiplePage,
-  ClaimReasonTypePage,
-  EvidenceSupportingDocsPage,
-  NumberOfEntriesTypePage,
-  Page
-}
+import pages.{ClaimReasonTypeMultiplePage, EvidenceSupportingDocsPage, NumberOfEntriesTypePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController

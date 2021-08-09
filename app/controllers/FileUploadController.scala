@@ -30,7 +30,7 @@ import models.FileType.SupportingEvidence
 import models.requests.DataRequest
 import models.{SessionState, UpscanNotification}
 import navigation.CreateNavigator
-import pages.{ClaimReasonTypeMultiplePage, ClaimReasonTypePage, FileUploadPage}
+import pages.{ClaimReasonTypeMultiplePage, FileUploadPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
