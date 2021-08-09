@@ -25,26 +25,23 @@
   html: views.components.html
 )
 
-@(form: Form[_], selectedReasons: Set[ClaimReasonType], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
-    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimReasonType.title"))}"),
+    pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("claimReasonType.multiple.title"))}"),
     backLinkNav = Some(backLink)
 ) {
 
-  @forms.formWithCSRF(action = ClaimReasonTypeController.onSubmit(), args = 'novalidate -> "novalidate") {
+  @forms.formWithCSRF(action = ClaimReasonTypeMultipleController.onSubmit(), args = 'novalidate -> "novalidate") {
 
     @components.error_summary(form.errors)
 
-    @forms.inputRadio(
+    @forms.inputCheckboxes(
       form = form,
-      idPrefix = "value",
-      name = "value",
-      items = ClaimReasonType.options(form, selectedReasons),
-      inline = false,
       legendAsHeading = true,
-      legend = Some(messages("claimReasonType.heading")),
-      hint = Some(Html(messages("claimReasonType.hint")))
+      legend = messages("claimReasonType.multiple.heading"),
+      items = ClaimReasonType.options(form),
+      hint = Some(Html(messages("claimReasonType.multiple.hintText")))
     )
 
     @html.button("site.continue")

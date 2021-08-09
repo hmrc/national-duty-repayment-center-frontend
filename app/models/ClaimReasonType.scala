@@ -18,6 +18,8 @@ package models
 
 import play.api.data.Form
 import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import viewmodels.RadioOptionHelper
 
@@ -49,11 +51,19 @@ object ClaimReasonType extends Enumerable.Implicits {
     Other
   )
 
-  private val insertDividerAfter: ClaimReasonType = Value
-  private val radioOptionHelper                   = new RadioOptionHelper(values)
+  def options(form: Form[_], reasons: Set[ClaimReasonType])(implicit messages: Messages): Seq[RadioItem] =
+    new RadioOptionHelper(values.filter(v => reasons.contains(v))).options(form)
 
-  def optionsWithDivider(form: Form[_])(implicit messages: Messages): Seq[RadioItem] =
-    radioOptionHelper.optionsWithDivider(form, messages("claimReasonType.or"), insertDividerAfter)
+  def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {
+    value =>
+      CheckboxItem(
+        name = Some("value[]"),
+        id = Some(value.toString),
+        value = value.toString,
+        content = Text(messages(s"claimReasonType.${value.toString}")),
+        checked = form.data.values.exists(_ == value.toString)
+      )
+  }
 
   implicit val enumerable: Enumerable[ClaimReasonType] =
     Enumerable(values.map(v => v.toString -> v): _*)

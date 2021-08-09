@@ -130,9 +130,27 @@ class CreateNavigatorSpec extends SpecBase {
 
       }
 
-      "go to ClaimReasonType page after EntryDetails page " in {
+      "go to ClaimReasonTypeMultiple page after EntryDetails page " in {
         navigator.nextPage(EntryDetailsPage, emptyUserAnswers)
+          .mustBe(routes.ClaimReasonTypeMultipleController.onPageLoad())
+      }
+
+      "go to ClaimReasonType page after ClaimReasonTypeMultiple page if more than one reason selected" in {
+        val reasons: Set[ClaimReasonType] = Set(ClaimReasonType.CommodityCodeChange, ClaimReasonType.CurrencyChanges)
+        navigator.nextPage(
+          ClaimReasonTypeMultiplePage,
+          emptyUserAnswers.set(ClaimReasonTypeMultiplePage, reasons).success.value
+        )
           .mustBe(routes.ClaimReasonTypeController.onPageLoad())
+      }
+
+      "go to ReasonForOverpayment page after ClaimReasonTypeMultiple page if single reason selected" in {
+        val reasons: Set[ClaimReasonType] = Set(ClaimReasonType.CommodityCodeChange)
+        navigator.nextPage(
+          ClaimReasonTypeMultiplePage,
+          emptyUserAnswers.set(ClaimReasonTypeMultiplePage, reasons).success.value
+        )
+          .mustBe(routes.ReasonForOverpaymentController.onPageLoad())
       }
 
       "go to ReasonForOverpayment page after ClaimReasonType page " in {

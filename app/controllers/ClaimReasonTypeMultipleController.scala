@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.ClaimReasonTypeFormProvider
+import forms.ClaimReasonTypeMultipleFormProvider
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
@@ -26,56 +26,49 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ClaimReasonTypeView
+import views.html.ClaimReasonTypeMultipleView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClaimReasonTypeController @Inject() (
+class ClaimReasonTypeMultipleController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   val navigator: CreateNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: ClaimReasonTypeFormProvider,
+  formProvider: ClaimReasonTypeMultipleFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ClaimReasonTypeView
+  view: ClaimReasonTypeMultipleView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
-  override val page: Page = ClaimReasonTypePage
+  override val page: Page = ClaimReasonTypeMultiplePage
   val form                = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      request.userAnswers.get(ClaimReasonTypeMultiplePage) match {
-        case Some(reasons) if reasons.size > 1 =>
-          val preparedForm = request.userAnswers.get(ClaimReasonTypePage) match {
-            case None        => form
-            case Some(value) => form.fill(value)
-          }
-          Ok(view(preparedForm, reasons, backLink(request.userAnswers)))
-        case _ => Redirect(nextPage(request.userAnswers))
+      val preparedForm = request.userAnswers.get(ClaimReasonTypeMultiplePage) match {
+        case None        => form
+        case Some(value) => form.fill(value)
       }
+
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(ClaimReasonTypeMultiplePage) match {
-        case Some(reasons) if reasons.size > 1 =>
-          form.bindFromRequest().fold(
-            formWithErrors =>
-              Future.successful(BadRequest(view(formWithErrors, reasons, backLink(request.userAnswers)))),
-            value =>
-              for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(ClaimReasonTypePage, value))
-                _              <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(nextPage(updatedAnswers))
-          )
-
-        case _ => Future.successful(Redirect(nextPage(request.userAnswers)))
-      }
-
+      form.bindFromRequest().fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
+        value =>
+          for {
+            updatedAnswers <- if (request.userAnswers.get(ClaimReasonTypeMultiplePage).contains(value))
+              Future.successful(request.userAnswers)
+            else Future.fromTry(request.userAnswers.remove(ClaimReasonTypePage))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(ClaimReasonTypeMultiplePage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(nextPage(updatedAnswers))
+      )
   }
 
 }

@@ -50,6 +50,9 @@ final case class UserAnswers(
   def isMultipleEntry: Boolean =
     get(NumberOfEntriesTypePage).map(_.numberOfEntriesType).contains(NumberOfEntriesType.Multiple)
 
+  def isMultipleClaimReason: Boolean =
+    get(ClaimReasonTypeMultiplePage).exists(_.size > 1)
+
   def isCmaAllowed(implicit appConfig: FrontendAppConfig): Boolean =
     isSingleEntry &&
       dutyTypeTaxDetails.totalClaim >= appConfig.allowCmaThresholds.reclaimTotal &&

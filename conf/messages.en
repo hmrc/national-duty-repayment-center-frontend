@@ -167,8 +167,14 @@ entryDetails.date.checkYourAnswersLabel = Entry date
 
 applicationInformation.checkYourAnswersLabel = Application information
 
-claimReasonType.title = What does your application relate to?
-claimReasonType.heading = What does your application relate to?
+claimReasonType.multiple.title = Why are you making an application?
+claimReasonType.multiple.heading = Why are you making an application?
+claimReasonType.multiple.hintText = Select all that apply
+claimReasonType.multiple.error.required = Select why you are making an application
+
+claimReasonType.title = What is the main reason for making an application?
+claimReasonType.heading = What is the main reason for making an application?
+claimReasonType.hint = This would be the reason that applies to most of your application
 claimReasonType.01 = Retroactive quota
 claimReasonType.02 = Customs procedure code change
 claimReasonType.03 = Currency change
@@ -180,8 +186,10 @@ claimReasonType.08 = Return of unwanted goods
 claimReasonType.09 = Value
 claimReasonType.10 = Something not listed
 claimReasonType.or = or
-claimReasonType.checkYourAnswersLabel = Reason for overpayment
-claimReasonType.error.required = Select what your application relates to
+claimReasonType.checkYourAnswersLabel.single = Reason for overpayment
+claimReasonType.checkYourAnswersLabel.multiple = Reasons for overpayment
+claimReasonType.checkYourAnswersLabel.main = Main reason for overpayment
+claimReasonType.error.required = Select the main reason for making an application
 
 reasonForOverpayment.title = Tell us why the overpayment happened
 reasonForOverpayment.heading = Tell us why the overpayment happened
@@ -198,6 +206,7 @@ reasonForOverpayment.bullet5 = whether any items were replaced or refunded, and 
 reasonForOverpayment.bullet6 = changes to the value of goods
 reasonForOverpayment.bullet7 = the number of items or goods
 reasonForOverpayment.bullet8 = a description of the items or goods
+reasonForOverpayment.bullet.claimReasonMultiple = if your application has more than one reason
 
 claimRepaymentType.title = What do you want to reclaim?
 claimRepaymentType.heading = What do you want to reclaim?
@@ -212,7 +221,7 @@ claimRepaymentType.error.required = Select what you want to reclaim
 evidenceSupportingDocs.title = Documents we need from you
 evidenceSupportingDocs.heading = Documents we need from you
 evidenceSupportingDocs.paragraph1.single = The documents we need to process your claim must include:
-evidenceSupportingDocs.paragraph1.multiple-small = The documents we need for each entry must include:
+evidenceSupportingDocs.paragraph1.multiple-small = The documents we need <b>for each entry</b> must include:
 evidenceSupportingDocs.paragraph1.multiple-large = We must have:
 evidenceSupportingDocs.paragraph2.multiple-large = As you are claiming for multiple entries, you can either give us:
 evidenceSupportingDocs.bullet1.multiple-large = the documents above <b>for each entry</b>
