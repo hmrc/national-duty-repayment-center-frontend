@@ -26,7 +26,7 @@
         html: views.components.html
 )
 
-@(claimReason: Option[ClaimReasonType], entries: Option[Entries], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(claimReasons: Set[ClaimReasonType], entries: Option[Entries], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
 @govukLayout(
     pageTitle = Some(s"${titleNoForm(messages("evidenceSupportingDocs.title"))}"),
@@ -43,7 +43,7 @@
         }}
     }
 
-    @claimReason.map(reason => claimReasonDocuments(reason))
+    @claimReasonDocuments(claimReasons)
 
     @if(entries.exists(_.isMultipleLarge)) {
         @html.p(Html(messages ("evidenceSupportingDocs.paragraph2.multiple-large")))

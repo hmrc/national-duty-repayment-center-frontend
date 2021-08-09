@@ -28,18 +28,18 @@
 
 
 @bulletPoints = @{
-  val bullets = Seq(messages("reasonForOverpayment.bullet1"),
-      messages("reasonForOverpayment.bullet2"),
-      messages("reasonForOverpayment.bullet3"),
-      messages("reasonForOverpayment.bullet4"),
-      messages("reasonForOverpayment.bullet5"),
-      messages("reasonForOverpayment.bullet6"),
-      messages("reasonForOverpayment.bullet7"),
-      messages("reasonForOverpayment.bullet8")
+  val bullets = Seq("reasonForOverpayment.bullet1",
+      "reasonForOverpayment.bullet2",
+      "reasonForOverpayment.bullet3",
+      "reasonForOverpayment.bullet4",
+      "reasonForOverpayment.bullet5",
+      "reasonForOverpayment.bullet6",
+      "reasonForOverpayment.bullet7",
+      "reasonForOverpayment.bullet8"
   )
 
   if(multipleClaimReason)
-      bullets :+ messages("reasonForOverpayment.bullet.claimReasonMultiple")
+      bullets :+ "reasonForOverpayment.bullet.claimReasonMultiple"
   else
       bullets
 }

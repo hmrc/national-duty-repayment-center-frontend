@@ -30,7 +30,7 @@ import models.FileType.SupportingEvidence
 import models.requests.DataRequest
 import models.{SessionState, UpscanNotification}
 import navigation.CreateNavigator
-import pages.{ClaimReasonTypePage, FileUploadPage}
+import pages.{ClaimReasonTypeMultiplePage, ClaimReasonTypePage, FileUploadPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -199,7 +199,7 @@ class FileUploadController @Inject() (
             uploadRequest,
             fileUploads.toFilesOfType(SupportingEvidence),
             maybeUploadError,
-            request.userAnswers.get(ClaimReasonTypePage),
+            request.userAnswers.get(ClaimReasonTypeMultiplePage).getOrElse(Set.empty),
             navigator.previousPage(FileUploadPage, request.userAnswers)
           )
         )

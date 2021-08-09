@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NDRC AutoComplete
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 
 // @description  NDRC AutoComplete
 // @author       NDRC Team
@@ -76,6 +76,11 @@ function completePage() {
         submit();
     }
     if (currentPageIs("/application-reason")) {
+        document.getElementById("04").checked = true;
+        document.getElementById("01").checked = true;
+        submit();
+    }
+    if (currentPageIs("/main-reason")) {
         document.getElementById("04").checked = true;
         submit();
     }

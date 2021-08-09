@@ -18,56 +18,54 @@
 
 @this(html: views.components.html)
 
-@(claimReason: ClaimReasonType)(implicit request: Request[_], messages: Messages)
+@(claimReasons: Set[ClaimReasonType])(implicit request: Request[_], messages: Messages)
 
-@{
- claimReason match {
-  case ClaimReasonType.CommodityCodeChange => html.ul(
-   "claimReason.documents.c88",
-   "claimReason.documents.e2",
-   "claimReason.documents.commercial_invoice",
-   "claimReason.documents.substitute_entry"
-  )
-  case ClaimReasonType.CurrencyChanges => html.ul(
-   "claimReason.documents.c88",
-   "claimReason.documents.e2",
-   "claimReason.documents.commercial_invoice",
-   "claimReason.documents.substitute_entry",
-   "claimReason.documents.currency_charge_evicence"
-  )
-  case ClaimReasonType.Cpuchange => html.ul(
-   "claimReason.documents.c88",
-   "claimReason.documents.e2",
-   "claimReason.documents.commercial_invoice",
-   "claimReason.documents.substitute_entry"
-  )
-  case ClaimReasonType.CustomsSpecialProcedures => html.ul(
-   "claimReason.documents.c88",
-   "claimReason.documents.e2",
-   "claimReason.documents.commercial_invoice",
-   "claimReason.documents.substitute_entry"
-  )
-  case ClaimReasonType.Preference => html.ul(
-   "claimReason.documents.c88",
-   "claimReason.documents.e2",
-   "claimReason.documents.commercial_invoice",
-   "claimReason.documents.airway_bill",
-   "claimReason.documents.proof_of_origin",
-   "claimReason.documents.substitute_entry"
-  )
-  case ClaimReasonType.Retroactivequota => html.ul(
-   "claimReason.documents.c88",
-   "claimReason.documents.e2",
-   "claimReason.documents.commercial_invoice",
-   "claimReason.documents.substitute_entry",
-   "claimReason.documents.proof_of_quota"
-  )
-  case ClaimReasonType.ReturnOfUnwantedGoods => html.ul(
+@documentList = @{
+  val documentMap: Map[ClaimReasonType, Set[String]] = Map(
+   ClaimReasonType.CommodityCodeChange -> Set("claimReason.documents.c88",
+    "claimReason.documents.e2",
+    "claimReason.documents.commercial_invoice",
+    "claimReason.documents.substitute_entry"),
+   ClaimReasonType.CurrencyChanges -> Set(
+    "claimReason.documents.c88",
+    "claimReason.documents.e2",
+    "claimReason.documents.commercial_invoice",
+    "claimReason.documents.substitute_entry",
+    "claimReason.documents.currency_charge_evicence"
+   ),
+   ClaimReasonType.Cpuchange -> Set(
+    "claimReason.documents.c88",
+    "claimReason.documents.e2",
+    "claimReason.documents.commercial_invoice",
+    "claimReason.documents.substitute_entry"
+   ),
+   ClaimReasonType.CustomsSpecialProcedures -> Set(
+    "claimReason.documents.c88",
+    "claimReason.documents.e2",
+    "claimReason.documents.commercial_invoice",
+    "claimReason.documents.substitute_entry"
+   ),
+   ClaimReasonType.Preference -> Set(
+    "claimReason.documents.c88",
+    "claimReason.documents.e2",
+    "claimReason.documents.commercial_invoice",
+    "claimReason.documents.airway_bill",
+    "claimReason.documents.proof_of_origin",
+    "claimReason.documents.substitute_entry"
+   ),
+   ClaimReasonType.Retroactivequota -> Set(
+    "claimReason.documents.c88",
+    "claimReason.documents.e2",
+    "claimReason.documents.commercial_invoice",
+    "claimReason.documents.substitute_entry",
+    "claimReason.documents.proof_of_quota"
+   ),
+   ClaimReasonType.ReturnOfUnwantedGoods -> Set(
    "claimReason.documents.commercial_invoice",
    "claimReason.documents.airway_bill",
    "claimReason.documents.proof_of_return"
-  )
-  case ClaimReasonType.ReturnedGoodsRelief => html.ul(
+   ),
+   ClaimReasonType.ReturnedGoodsRelief -> Set(
    "claimReason.documents.c88",
    "claimReason.documents.e2",
    "claimReason.documents.commercial_invoice",
@@ -75,19 +73,24 @@
    "claimReason.documents.substitute_entry",
    "claimReason.documents.proof_of_return",
    "claimReason.documents.evidence_of_export"
+  ),
+   ClaimReasonType.Value -> Set(
+    "claimReason.documents.c88",
+    "claimReason.documents.e2",
+    "claimReason.documents.commercial_invoice",
+    "claimReason.documents.evidence_of_corrected_invoice"
+  ),
+   ClaimReasonType.Other -> Set(
+    "claimReason.documents.c88",
+    "claimReason.documents.e2",
+    "claimReason.documents.commercial_invoice"
+   )
   )
-  case ClaimReasonType.Value => html.ul(
-   "claimReason.documents.c88",
-   "claimReason.documents.e2",
-   "claimReason.documents.commercial_invoice",
-   "claimReason.documents.evidence_of_corrected_invoice"
-  )
-  case ClaimReasonType.Other => html.ul(
-   "claimReason.documents.c88",
-   "claimReason.documents.e2",
-   "claimReason.documents.commercial_invoice"
-  )
-  case _ => ""
- }
+
+  claimReasons.flatMap(reason => documentMap(reason)).toSeq
+}
+
+@{
+ html.ul(documentList:_*)
 }
 

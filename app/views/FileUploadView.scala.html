@@ -33,7 +33,7 @@
         appConfig: FrontendAppConfig,
         context : UploadFileViewContext
 )
-@(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], claimReason: Option[ClaimReasonType], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
+@(uploadRequest: UploadRequest, uploadedFiles: Seq[UploadedFile], maybeUploadError: Option[FileUploadError], claimReasons: Set[ClaimReasonType], backLink: NavigatorBack)(implicit request: Request[_], messages: Messages)
 
     @govukLayout(
         pageTitle = Some(s"${errorPrefix(maybeUploadError)}${titleNoForm(messages("view.upload-file.title"))}"),
@@ -52,7 +52,7 @@
 
         @details(messages("view.upload-file.details")) {
 
-            @claimReason.map(reason => claimReasonDocuments(reason))
+            @claimReasonDocuments(claimReasons)
 
             @html.p{ @messages("claimReason.documents.additional.documents.para") }
 
