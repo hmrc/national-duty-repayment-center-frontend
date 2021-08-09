@@ -22,7 +22,6 @@ import base.SpecBase
 import forms.AmendCaseResponseTypeFormProvider
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
-import navigation.NavigatorBack
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when

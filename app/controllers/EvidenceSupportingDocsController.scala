@@ -26,8 +26,6 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.EvidenceSupportingDocsView
 
-import scala.concurrent.ExecutionContext
-
 class EvidenceSupportingDocsController @Inject() (
   override val messagesApi: MessagesApi,
   val navigator: CreateNavigator,
@@ -36,8 +34,7 @@ class EvidenceSupportingDocsController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: EvidenceSupportingDocsView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+) extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
   override val page: Page = EvidenceSupportingDocsPage
 

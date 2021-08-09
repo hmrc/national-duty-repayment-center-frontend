@@ -21,7 +21,7 @@ import forms.ImporterHasEoriFormProvider
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{ImportHasEoriOnAgentJourneyPage, ImporterEoriPage, ImporterHasEoriPage, Page}
+import pages.{ImportHasEoriOnAgentJourneyPage, ImporterEoriPage, ImporterHasEoriPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

@@ -52,7 +52,6 @@ class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours wit
 
     val fieldName   = "declarantReferenceNumber"
     val requiredKey = "declarantReferenceNumber.error.required.declarantReferenceNumber"
-    val invalidKey  = "declarantReferenceNumber.error.invalid"
     val maxLength   = 50
     val minLength   = 1
 

@@ -19,6 +19,7 @@ package controllers
 import controllers.actions._
 import forms.CreateOrAmendCaseFormProvider
 import javax.inject.Inject
+import models.CreateOrAmendCase.{AmendCase, CreateCase}
 import models.{CreateOrAmendCase, UserAnswers}
 import navigation.{AmendNavigator, CreateNavigator, FirstPage}
 import pages.CreateOrAmendCasePage
@@ -73,13 +74,13 @@ class CreateOrAmendCaseController @Inject() (
               ).set(CreateOrAmendCasePage, value)
             )
             res <- sessionRepository.resetData(userAnswers).flatMap(_ => sessionRepository.set(updatedUserAnswers))
-          } yield Redirect(firstPageForJourney(updatedUserAnswers))
+          } yield Redirect(firstPageForJourney(value, updatedUserAnswers))
       )
   }
 
-  private def firstPageForJourney(answers: UserAnswers): Call = answers.get(CreateOrAmendCasePage) match {
-    case Some(CreateOrAmendCase.CreateCase) => createNavigator.nextPage(FirstPage, answers)
-    case Some(CreateOrAmendCase.AmendCase)  => amendNavigator.nextPage(FirstPage, answers)
+  private def firstPageForJourney(journey: CreateOrAmendCase, answers: UserAnswers): Call = journey match {
+    case CreateCase => createNavigator.nextPage(FirstPage, answers)
+    case AmendCase  => amendNavigator.nextPage(FirstPage, answers)
   }
 
 }

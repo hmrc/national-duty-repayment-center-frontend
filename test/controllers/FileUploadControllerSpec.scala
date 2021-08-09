@@ -20,7 +20,7 @@ import java.time.ZonedDateTime
 
 import base.SpecBase
 import models.ClaimantType.{Importer, Representative}
-import models.FileType.{Bulk, SupportingEvidence}
+import models.FileType.SupportingEvidence
 import models.requests.UploadRequest
 import models.{AgentImporterHasEORI, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import navigation.CreateNavigator

@@ -45,6 +45,7 @@ object FileVerificationStatus {
       case f: FileUpload.Rejected  => FileVerificationStatus("REJECTED")
       case f: FileUpload.Initiated => FileVerificationStatus("NOT_UPLOADED")
       case f: FileUpload.Duplicate => FileVerificationStatus("DUPLICATE")
+      case f: FileUpload.TimedOut  => FileVerificationStatus("TIMEDOUT")
     }
 
   implicit val formats: Format[FileVerificationStatus] = Json.format[FileVerificationStatus]

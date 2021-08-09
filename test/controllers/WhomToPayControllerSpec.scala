@@ -19,19 +19,16 @@ package controllers
 import base.SpecBase
 import forms.WhomToPayFormProvider
 import models.{BankDetails, UserAnswers, WhomToPay}
-import navigation.CreateNavigator
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{atLeastOnce, times, verify, when}
-import org.mockito.internal.verification.Times
+import org.mockito.Mockito.{atLeastOnce, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{BankDetailsPage, IndirectRepresentativePage, WhomToPayPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.WhomToPayView
 
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 

@@ -62,6 +62,7 @@ class CheckStateActor @Inject() (sessionRepository: SessionRepository, val appCo
                   Future.successful(s)
                 else
                   (self ? CheckState(id, exitTime, s))
+              case _ => Future.failed(new IllegalStateException("No FileUploadState"))
             }
         ).pipeTo(sender)
   }

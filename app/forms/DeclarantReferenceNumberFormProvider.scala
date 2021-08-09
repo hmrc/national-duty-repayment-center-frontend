@@ -16,11 +16,11 @@
 
 package forms
 
-import javax.inject.Inject
 import forms.mappings.Mappings
-import play.api.data.{Form, Forms}
+import javax.inject.Inject
 import models.{DeclarantReferenceNumber, DeclarantReferenceType}
-import play.api.data.Forms.{mapping, optional}
+import play.api.data.Form
+import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
 class DeclarantReferenceNumberFormProvider @Inject() extends Mappings {
@@ -39,7 +39,7 @@ class DeclarantReferenceNumberFormProvider @Inject() extends Mappings {
             text("declarantReferenceNumber.error.required.declarantReferenceNumber")
               .verifying(firstError(maxLength(maxLength, "declarantReferenceNumber.error.invalid.length")))
           )
-      )(DeclarantReferenceNumber.apply)(en => Some(en.declarantReferenceType, en.declarantReferenceNumber))
+      )(DeclarantReferenceNumber.apply)(en => Some((en.declarantReferenceType, en.declarantReferenceNumber)))
     )
 
 }

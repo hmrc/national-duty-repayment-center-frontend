@@ -17,15 +17,15 @@
 package controllers
 
 import controllers.FileUploadUtils.ConvertStateApi
+import javax.inject.Inject
 import models.{FileVerificationStatus, SessionState}
+import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Results._
-import play.api.mvc.{Call, Request, Result}
+import play.api.mvc.{Call, Result}
 import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services.{FileUploadState, FileUploaded}
-import javax.inject.Inject
-import play.api.Logger
 
 import scala.concurrent.Future
 
@@ -57,15 +57,13 @@ object FileUploadUtils {
     Redirect(call)
   }
 
-  def acknowledgeFileUploadRedirect(state: FileUploadState)(implicit request: Request[_]): Result =
+  def acknowledgeFileUploadRedirect(state: FileUploadState): Result =
     (state match {
       case _: FileUploaded => Created
       case _               => NoContent
     }).withHeaders(HeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN -> "*")
 
-  def renderFileVerificationStatus(reference: String, state: Option[FileUploadState])(implicit
-    request: Request[_]
-  ): Result =
+  def renderFileVerificationStatus(reference: String, state: Option[FileUploadState]): Result =
     state match {
       case Some(s: FileUploadState) =>
         s.fileUploads.files.find(_.reference == reference) match {

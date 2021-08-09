@@ -37,7 +37,7 @@ class ClaimService @Inject() (
 
   private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
-  def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[String] = {
+  def submitClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[String] = {
     val maybeRegistrationRequest: Option[CreateClaimRequest] = createClaimBuilder.buildValidClaimRequest(userAnswers)
 
     maybeRegistrationRequest match {
@@ -59,9 +59,7 @@ class ClaimService @Inject() (
     }
   }
 
-  def submitAmendClaim(
-    userAnswers: UserAnswers
-  )(implicit hc: HeaderCarrier, request: DataRequest[_]): Future[ClientClaimResponse] = {
+  def submitAmendClaim(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[ClientClaimResponse] = {
     val maybeAmendRequest: Option[AmendClaimRequest] = amendClaimBuilder.buildValidAmendRequest(userAnswers)
 
     maybeAmendRequest match {

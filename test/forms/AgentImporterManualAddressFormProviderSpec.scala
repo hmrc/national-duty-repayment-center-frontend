@@ -34,7 +34,6 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
     val fieldName   = "AddressLine1"
     val requiredKey = "agentImporterManualAddress.line1.error.required"
     val lengthKey   = "agentImporterManualAddress.line1.error.length"
-    val invalidKey  = "agentImporterManualAddress.line1.error.invalid"
     val maxLength   = 128
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
@@ -51,10 +50,9 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
 
   ".AddressLine2" must {
 
-    val fieldName  = "AddressLine2"
-    val lengthKey  = "agentImporterManualAddress.line2.error.length"
-    val invalidKey = "agentImporterManualAddress.line2.error.invalid"
-    val maxLength  = 128
+    val fieldName = "AddressLine2"
+    val lengthKey = "agentImporterManualAddress.line2.error.length"
+    val maxLength = 128
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
@@ -73,7 +71,6 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
     val fieldName   = "City"
     val requiredKey = "agentImporterManualAddress.city.error.required"
     val lengthKey   = "agentImporterManualAddress.city.error.length"
-    val invalidKey  = "agentImporterManualAddress.city.error.invalid"
     val maxLength   = 64
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
@@ -90,10 +87,9 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
 
   ".Region" must {
 
-    val fieldName  = "Region"
-    val lengthKey  = "agentImporterManualAddress.region.error.length"
-    val invalidKey = "agentImporterManualAddress.region.error.invalid"
-    val maxLength  = 64
+    val fieldName = "Region"
+    val lengthKey = "agentImporterManualAddress.region.error.length"
+    val maxLength = 64
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))
 
@@ -110,7 +106,6 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
     val fieldName   = "CountryCode"
     val requiredKey = "agentImporterManualAddress.countryCode.error.required"
     val lengthKey   = "agentImporterManualAddress.countryCode.error.length"
-    val invalidKey  = "agentImporterManualAddress.countryCode.error.invalid"
     val maxLength   = 2
 
     behave like fieldThatBindsValidData(form, fieldName, safeInputsWithMaxLength(maxLength))

@@ -25,8 +25,6 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.{ApplicationClosedView, ApplicationNotFoundView}
 
-import scala.concurrent.ExecutionContext
-
 class AmendErrorController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
@@ -36,8 +34,7 @@ class AmendErrorController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   viewNotFound: ApplicationNotFoundView,
   viewClosed: ApplicationClosedView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+) extends FrontendBaseController with I18nSupport {
 
   def onNotFound: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>

@@ -19,7 +19,7 @@ package controllers
 import config.FrontendAppConfig
 import controllers.actions._
 import javax.inject.Inject
-import models.{RepaymentType, UserAnswers}
+import models.UserAnswers
 import navigation.CreateNavigator
 import pages.{Page, RepaymentAmountSummaryPage, RepaymentTypePage}
 import play.api.i18n.{I18nSupport, MessagesApi}

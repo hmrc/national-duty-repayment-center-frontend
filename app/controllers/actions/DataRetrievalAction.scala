@@ -20,8 +20,6 @@ import javax.inject.Inject
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.mvc.ActionTransformer
 import repositories.SessionRepository
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -29,17 +27,13 @@ class DataRetrievalActionImpl @Inject() (val sessionRepository: SessionRepositor
   val executionContext: ExecutionContext
 ) extends DataRetrievalAction {
 
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = {
-
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-
+  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
     sessionRepository.get(request.internalId).map {
       case None =>
         OptionalDataRequest(request.request, request.identification, None)
       case Some(userAnswers) =>
         OptionalDataRequest(request.request, request.identification, Some(userAnswers))
     }
-  }
 
 }
 

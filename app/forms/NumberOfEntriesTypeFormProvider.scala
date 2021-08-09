@@ -16,11 +16,11 @@
 
 package forms
 
-import javax.inject.Inject
 import forms.mappings.Mappings
-import play.api.data.{Form, Forms}
+import javax.inject.Inject
 import models.{Entries, NumberOfEntriesType}
-import play.api.data.Forms.{mapping, optional}
+import play.api.data.Form
+import play.api.data.Forms.mapping
 import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfEqual
 
 class NumberOfEntriesTypeFormProvider @Inject() extends Mappings {
@@ -36,7 +36,7 @@ class NumberOfEntriesTypeFormProvider @Inject() extends Mappings {
             decimal("howManyEntries.error.required", "howManyEntries.error.length")
               .verifying(regexp(Validation.numberOfEntries, "howManyEntries.error.length"))
           )
-      )(Entries.apply)(en => Some(en.numberOfEntriesType, en.entries))
+      )(Entries.apply)(en => Some((en.numberOfEntriesType, en.entries)))
     )
 
 }

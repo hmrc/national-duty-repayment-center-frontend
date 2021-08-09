@@ -18,11 +18,11 @@ package models
 
 import play.api.data.Form
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.Aliases.{ErrorMessage, Hint, Label}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-import uk.gov.hmrc.govukfrontend.views.viewmodels.input.Input
+import uk.gov.hmrc.govukfrontend.views.Aliases.{ErrorMessage, Label}
 import uk.gov.hmrc.govukfrontend.views.html.components.{govukErrorMessage, govukHint, govukInput, govukLabel}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.input.Input
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
 sealed trait DeclarantReferenceType
 

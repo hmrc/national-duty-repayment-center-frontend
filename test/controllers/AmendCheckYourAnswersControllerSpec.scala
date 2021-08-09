@@ -23,18 +23,12 @@ import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.FileType.SupportingEvidence
 import models.responses.ClientClaimResponse
 import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
-import navigation.{AmendNavigator, CreateNavigatorImpl, NavigatorBack}
+import navigation.{AmendNavigator, NavigatorBack}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
 import org.scalatest.BeforeAndAfterEach
-import pages.{
-  AmendCaseResponseTypePage,
-  AmendCheckYourAnswersPage,
-  CheckYourAnswersPage,
-  FurtherInformationPage,
-  ReferenceNumberPage
-}
+import pages.{AmendCaseResponseTypePage, AmendCheckYourAnswersPage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -333,7 +327,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
       val successResponse = ClientClaimResponse("id", Some("case-id"))
 
-      when(mockClaimService.submitAmendClaim(any())(any(), any())).thenReturn(Future.successful(successResponse))
+      when(mockClaimService.submitAmendClaim(any())(any())).thenReturn(Future.successful(successResponse))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -360,7 +354,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
       val errorResponse =
         ClientClaimResponse("id", Some("case-id"), Some(ApiError("code", Some("03- Invalid Case ID"))))
 
-      when(mockClaimService.submitAmendClaim(any())(any(), any())).thenReturn(Future.successful(errorResponse))
+      when(mockClaimService.submitAmendClaim(any())(any())).thenReturn(Future.successful(errorResponse))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -387,7 +381,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
       val errorResponse =
         ClientClaimResponse("id", Some("case-id"), Some(ApiError("code", Some("04 - Requested case already closed"))))
 
-      when(mockClaimService.submitAmendClaim(any())(any(), any())).thenReturn(Future.successful(errorResponse))
+      when(mockClaimService.submitAmendClaim(any())(any())).thenReturn(Future.successful(errorResponse))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

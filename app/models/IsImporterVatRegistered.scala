@@ -16,13 +16,10 @@
 
 package models
 
-import models.IsVATRegistered.values
 import play.api.data.Form
 import play.api.i18n.Messages
-import play.api.libs.json._
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-import viewmodels.RadioOption
 
 sealed trait IsImporterVatRegistered
 
