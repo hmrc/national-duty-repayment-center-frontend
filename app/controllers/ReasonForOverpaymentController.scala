@@ -53,13 +53,16 @@ class ReasonForOverpaymentController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, backLink(request.userAnswers)))
+      Ok(view(preparedForm, request.userAnswers.isMultipleClaimReason, backLink(request.userAnswers)))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
+        formWithErrors =>
+          Future.successful(
+            BadRequest(view(formWithErrors, request.userAnswers.isMultipleClaimReason, backLink(request.userAnswers)))
+          ),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReasonForOverpaymentPage, value))

@@ -50,8 +50,10 @@ POST        /how-many-entries-submitting                                        
 GET         /oldest-entry-date                                                         controllers.EntryDetailsController.onPageLoad()
 POST        /oldest-entry-date                                                         controllers.EntryDetailsController.onSubmit()
 
-GET         /application-reason                                                        controllers.ClaimReasonTypeController.onPageLoad()
-POST        /application-reason                                                        controllers.ClaimReasonTypeController.onSubmit()
+GET         /application-reason                                                        controllers.ClaimReasonTypeMultipleController.onPageLoad()
+POST        /application-reason                                                        controllers.ClaimReasonTypeMultipleController.onSubmit()
+GET         /main-reason                                                               controllers.ClaimReasonTypeController.onPageLoad()
+POST        /main-reason                                                               controllers.ClaimReasonTypeController.onSubmit()
 
 GET         /reason-for-overpayment                                                    controllers.ReasonForOverpaymentController.onPageLoad()
 POST        /reason-for-overpayment                                                    controllers.ReasonForOverpaymentController.onSubmit()

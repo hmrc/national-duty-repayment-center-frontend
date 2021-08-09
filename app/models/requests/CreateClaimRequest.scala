@@ -74,7 +74,9 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
       claimType              <- userAnswers.get(NumberOfEntriesTypePage).map(_.numberOfEntriesType)
       noOfEntries            <- userAnswers.get(NumberOfEntriesTypePage).map(_.entries)
       entryDetails           <- userAnswers.get(EntryDetailsPage)
-      claimReason            <- userAnswers.get(ClaimReasonTypePage)
+      claimReason <- userAnswers.get(ClaimReasonTypePage).orElse(
+        userAnswers.get(ClaimReasonTypeMultiplePage).flatMap(_.headOption)
+      )
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage).map(
         description => ClaimDescription(quoteFormatter.format(description.value))
       )

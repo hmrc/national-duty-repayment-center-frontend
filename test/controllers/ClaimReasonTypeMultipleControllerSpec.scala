@@ -17,24 +17,24 @@
 package controllers
 
 import base.SpecBase
-import forms.ClaimReasonTypeFormProvider
+import forms.ClaimReasonTypeMultipleFormProvider
 import models.ClaimReasonType
 import models.ClaimReasonType.{CommodityCodeChange, CurrencyChanges}
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{ClaimReasonTypeMultiplePage, ClaimReasonTypePage}
+import pages.ClaimReasonTypeMultiplePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.ClaimReasonTypeView
+import views.html.ClaimReasonTypeMultipleView
 
 import scala.concurrent.Future
 
-class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
+class ClaimReasonTypeMultipleControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val claimReasonTypeRoute = routes.ClaimReasonTypeController.onPageLoad().url
+  lazy val claimReasonTypeMultipleRoute = routes.ClaimReasonTypeMultipleController.onPageLoad().url
 
-  val formProvider = new ClaimReasonTypeFormProvider()
+  val formProvider = new ClaimReasonTypeMultipleFormProvider()
   val form         = formProvider()
 
   val reasons: Set[ClaimReasonType] = Set(CurrencyChanges, CommodityCodeChange)
@@ -42,58 +42,40 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
   val multipleClaimReasonsAnswers =
     emptyUserAnswers.set(ClaimReasonTypeMultiplePage, reasons).success.value
 
-  "ClaimReasonType Controller" must {
+  "ClaimReasonTypeMultiple Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(multipleClaimReasonsAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, claimReasonTypeRoute)
+      val request = FakeRequest(GET, claimReasonTypeMultipleRoute)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ClaimReasonTypeView]
+      val view = application.injector.instanceOf[ClaimReasonTypeMultipleView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, reasons, defaultBackLink)(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers =
-        multipleClaimReasonsAnswers.set(ClaimReasonTypePage, ClaimReasonType.values.head).success.value
+      val application = applicationBuilder(userAnswers = Some(multipleClaimReasonsAnswers)).build()
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val request = FakeRequest(GET, claimReasonTypeMultipleRoute)
 
-      val request = FakeRequest(GET, claimReasonTypeRoute)
-
-      val view = application.injector.instanceOf[ClaimReasonTypeView]
+      val view = application.injector.instanceOf[ClaimReasonTypeMultipleView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ClaimReasonType.values.head), reasons, defaultBackLink)(request, messages).toString
-
-      application.stop()
-    }
-
-    "redirect to next page for a GET if not a multiple reason claim" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      val request = FakeRequest(GET, claimReasonTypeRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual defaultNextPage.url
+        view(form.fill(reasons), defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -107,8 +89,8 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
           .build()
 
       val request =
-        FakeRequest(POST, claimReasonTypeRoute)
-          .withFormUrlEncodedBody(("value", reasons.head.toString))
+        FakeRequest(POST, claimReasonTypeMultipleRoute)
+          .withFormUrlEncodedBody(("value[0]", ClaimReasonType.values.head.toString))
 
       val result = route(application, request).value
 
@@ -117,29 +99,6 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       application.stop()
-    }
-
-    "redirect to the next page on submit if not a multiple reason claim" in {
-
-      reset(mockSessionRepository)
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .build()
-
-      val request =
-        FakeRequest(POST, claimReasonTypeRoute)
-          .withFormUrlEncodedBody(("value", reasons.head.toString))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual defaultNextPage.url
-
-      application.stop()
-
-      verifyZeroInteractions(mockSessionRepository)
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
@@ -147,19 +106,19 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(multipleClaimReasonsAnswers)).build()
 
       val request =
-        FakeRequest(POST, claimReasonTypeRoute)
+        FakeRequest(POST, claimReasonTypeMultipleRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[ClaimReasonTypeView]
+      val view = application.injector.instanceOf[ClaimReasonTypeMultipleView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, reasons, defaultBackLink)(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -168,7 +127,7 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, claimReasonTypeRoute)
+      val request = FakeRequest(GET, claimReasonTypeMultipleRoute)
 
       val result = route(application, request).value
 
@@ -183,7 +142,7 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, claimReasonTypeRoute)
+        FakeRequest(POST, claimReasonTypeMultipleRoute)
           .withFormUrlEncodedBody(("value", ClaimReasonType.values.head.toString))
 
       val result = route(application, request).value

@@ -18,11 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.ReasonForOverpaymentFormProvider
-import models.{ClaimDescription, UserAnswers}
+import models.ClaimReasonType.{CommodityCodeChange, CurrencyChanges}
+import models.{ClaimDescription, ClaimReasonType}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ReasonForOverpaymentPage
+import pages.{ClaimReasonTypeMultiplePage, ReasonForOverpaymentPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ReasonForOverpaymentView
@@ -36,11 +37,14 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val reasonForOverpaymentRoute = routes.ReasonForOverpaymentController.onPageLoad().url
 
+  val reasons: Set[ClaimReasonType] = Set(CurrencyChanges, CommodityCodeChange)
+  val answers                       = emptyUserAnswers
+
   "ReasonForOverpayment Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request = FakeRequest(GET, reasonForOverpaymentRoute)
 
@@ -51,7 +55,26 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, defaultBackLink)(request, messages).toString
+        view(form, answers.isMultipleClaimReason, defaultBackLink)(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET for multiple reason claim" in {
+
+      val multipleClaimAnswers = answers.set(ClaimReasonTypeMultiplePage, reasons).success.value
+      val application          = applicationBuilder(userAnswers = Some(multipleClaimAnswers)).build()
+
+      val request = FakeRequest(GET, reasonForOverpaymentRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[ReasonForOverpaymentView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, multipleClaimAnswers.isMultipleClaimReason, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -59,7 +82,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userIdentification).set(ReasonForOverpaymentPage, ClaimDescription("answer")).success.value
+        answers.set(ReasonForOverpaymentPage, ClaimDescription("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -72,7 +95,10 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ClaimDescription("answer")), defaultBackLink)(request, messages).toString
+        view(form.fill(ClaimDescription("answer")), userAnswers.isMultipleClaimReason, defaultBackLink)(
+          request,
+          messages
+        ).toString
 
       application.stop()
     }
@@ -82,7 +108,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(answers))
           .build()
 
       val request =
@@ -99,7 +125,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request =
         FakeRequest(POST, reasonForOverpaymentRoute)
@@ -114,7 +140,7 @@ class ReasonForOverpaymentControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, defaultBackLink)(request, messages).toString
+        view(boundForm, answers.isMultipleClaimReason, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

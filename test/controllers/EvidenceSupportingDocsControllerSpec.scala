@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import models.NumberOfEntriesType.{Multiple, Single}
 import models.{ClaimReasonType, Entries, UserAnswers}
-import pages.{ClaimReasonTypePage, NumberOfEntriesTypePage}
+import pages.{ClaimReasonTypeMultiplePage, ClaimReasonTypePage, NumberOfEntriesTypePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EvidenceSupportingDocsView
@@ -41,7 +41,7 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(None, None, defaultBackLink)(request, messages).toString
+        view(Set.empty, None, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -49,7 +49,8 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
     "return OK and the correct view for each ClaimReasonType" in {
 
       ClaimReasonType.values.foreach { claimReason =>
-        val userAnswers = UserAnswers(userIdentification).set(ClaimReasonTypePage, claimReason).success.value
+        val reasons: Set[ClaimReasonType] = Set(claimReason)
+        val userAnswers                   = UserAnswers(userIdentification).set(ClaimReasonTypeMultiplePage, reasons).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -62,11 +63,35 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(Some(claimReason), None, defaultBackLink)(request, messages).toString
+          view(Set(claimReason), None, defaultBackLink)(request, messages).toString
 
         application.stop()
 
       }
+    }
+
+    "return OK and the correct view for multiple ClaimReasonTypes" in {
+
+      val reasons: Set[ClaimReasonType] = ClaimReasonType.values.toSet
+      val userAnswers = UserAnswers(userIdentification)
+        .set(ClaimReasonTypeMultiplePage, reasons).success.value
+        .set(ClaimReasonTypePage, reasons.head).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, routes.EvidenceSupportingDocsController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[EvidenceSupportingDocsView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(reasons, None, defaultBackLink)(request, messages).toString
+
+      application.stop()
+
     }
 
     "return OK and the correct view for single entry" in {

@@ -20,7 +20,7 @@ import controllers.actions._
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{ClaimReasonTypePage, EvidenceSupportingDocsPage, NumberOfEntriesTypePage, Page}
+import pages.{ClaimReasonTypeMultiplePage, EvidenceSupportingDocsPage, NumberOfEntriesTypePage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -42,7 +42,7 @@ class EvidenceSupportingDocsController @Inject() (
     implicit request =>
       Ok(
         view(
-          request.userAnswers.get(ClaimReasonTypePage),
+          request.userAnswers.get(ClaimReasonTypeMultiplePage).getOrElse(Set.empty),
           request.userAnswers.get(NumberOfEntriesTypePage),
           backLink(request.userAnswers)
         )

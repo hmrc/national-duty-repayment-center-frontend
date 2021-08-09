@@ -42,6 +42,9 @@ object TestData {
   val testClaimDescription: ClaimDescription          = ClaimDescription("this is a claim description")
   val testClaimRepaymentType: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
 
+  val testClaimReasonTypes: Set[ClaimReasonType] =
+    Set(ClaimReasonType.CurrencyChanges, ClaimReasonType.Cpuchange)
+
   val amendCaseResponseType: Set[AmendCaseResponseType] =
     Set(AmendCaseResponseType.FurtherInformation, AmendCaseResponseType.SupportingDocuments)
 
@@ -353,6 +356,7 @@ object TestData {
       .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
       .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(ClaimReasonTypeMultiplePage, testClaimReasonTypes))
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
       .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))

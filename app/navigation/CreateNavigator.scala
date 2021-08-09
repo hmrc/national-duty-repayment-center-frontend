@@ -52,7 +52,10 @@ class CreateNavigatorImpl @Inject() (val appConfig: FrontendAppConfig)
     P(BulkFileUploadPage, controllers.routes.BulkFileUploadController.showFileUpload, showBulkUpload, bulkUploadAnswered),
 
     P(EntryDetailsPage, controllers.routes.EntryDetailsController.onPageLoad, always, entryDetailsAnswered),
-    P(ClaimReasonTypePage, controllers.routes.ClaimReasonTypeController.onPageLoad, always, claimReasonAnswered),
+
+    P(ClaimReasonTypeMultiplePage, controllers.routes.ClaimReasonTypeMultipleController.onPageLoad, always, claimReasonMultipleAnswered),
+    P(ClaimReasonTypePage, controllers.routes.ClaimReasonTypeController.onPageLoad, showClaimReasonType, claimReasonAnswered),
+
     P(ReasonForOverpaymentPage, controllers.routes.ReasonForOverpaymentController.onPageLoad, always, reasonForOverpaymentAnswered),
     P(ClaimRepaymentTypePage, controllers.routes.ClaimRepaymentTypeController.onPageLoad, always, claimRepaymentTypeAnswered),
     P(CustomsDutyPaidPage, controllers.routes.CustomsDutyPaidController.onPageLoad, showCustomsDutyPaid, customsDutyPaidAnswered),
@@ -120,6 +123,9 @@ protected trait CreateAnswerConditions {
   protected val showBulkUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isMultipleEntry
 
+  protected val showClaimReasonType: UserAnswers => Boolean = (answers: UserAnswers) =>
+    answers.isMultipleClaimReason
+
   protected val showCustomsDutyPaid: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.get(ClaimRepaymentTypePage).exists(_.contains(ClaimRepaymentType.Customs))
 
@@ -176,6 +182,7 @@ protected trait CreateHasAnsweredConditions {
   protected val articleTypeAnswered: UserAnswers => Boolean          = _.get(ArticleTypePage).nonEmpty
   protected val entryDetailsAnswered: UserAnswers => Boolean         = _.get(EntryDetailsPage).nonEmpty
   protected val claimReasonAnswered: UserAnswers => Boolean          = _.get(ClaimReasonTypePage).nonEmpty
+  protected val claimReasonMultipleAnswered: UserAnswers => Boolean          = _.get(ClaimReasonTypeMultiplePage).nonEmpty
   protected val reasonForOverpaymentAnswered: UserAnswers => Boolean = _.get(ReasonForOverpaymentPage).nonEmpty
   protected val claimRepaymentTypeAnswered: UserAnswers => Boolean   = _.get(ClaimRepaymentTypePage).nonEmpty
   protected val customsDutyPaidAnswered: UserAnswers => Boolean      = _.get(CustomsDutyPaidPage).nonEmpty

@@ -314,10 +314,24 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
       )
   }
 
+  private def claimReasonTypeMultiple: Option[AnswerRow] = userAnswers.get(ClaimReasonTypeMultiplePage) map {
+    x =>
+      AnswerRow(
+        HtmlFormat.escape(
+          messages(
+            if (userAnswers.isMultipleClaimReason) "claimReasonType.checkYourAnswersLabel.multiple"
+            else "claimReasonType.checkYourAnswersLabel.single"
+          )
+        ),
+        Html(x.map(reason => HtmlFormat.escape(messages(s"claimReasonType.$reason"))).mkString("<br>")),
+        Some(routes.CheckYourAnswersController.onChange(ClaimReasonTypeMultiplePage).url)
+      )
+  }
+
   private def claimReasonType: Option[AnswerRow] = userAnswers.get(ClaimReasonTypePage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("claimReasonType.checkYourAnswersLabel")),
+        HtmlFormat.escape(messages("claimReasonType.checkYourAnswersLabel.main")),
         HtmlFormat.escape(messages(s"claimReasonType.$x")),
         Some(routes.CheckYourAnswersController.onChange(ClaimReasonTypePage).url)
       )
@@ -429,7 +443,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   private def getApplicationInformationAnswerSection: AnswerSection =
     AnswerSection(
       Some(messages("applicationInformation.checkYourAnswersLabel")),
-      getAnswerRow(claimReasonType) ++
+      getAnswerRow(claimReasonTypeMultiple) ++
+        getAnswerRow(claimReasonType) ++
         getAnswerRow(reasonForOverpayment) ++
         getAnswerRow(claimRepaymentType) ++
         Seq(repaymentAmountSummary, evidenceFileUploads)
