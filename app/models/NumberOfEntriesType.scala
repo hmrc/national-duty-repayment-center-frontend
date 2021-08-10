@@ -46,6 +46,9 @@ object NumberOfEntriesType extends Enumerable.Implicits {
           case true  => form("value").value.contains(value.toString)
           case false => form.value.head.asInstanceOf[Entries].numberOfEntriesType == value
         },
+        hint =
+          if (value.toString.equals("02")) Some(Hint(content = Text(messages("numberOfEntriesType.02.hint"))))
+          else None,
         conditionalHtml =
           if (value.toString.equals("02"))
             Some(
@@ -54,7 +57,6 @@ object NumberOfEntriesType extends Enumerable.Implicits {
                   id = "entries",
                   value = form("entries").value,
                   label = Label(content = Text(messages("numberOfEntriesType.02.label")), isPageHeading = false),
-                  hint = Some(Hint(content = Text(messages("numberOfEntriesType.02.hint")))),
                   errorMessage =
                     if (form("entries").hasErrors)
                       Some(ErrorMessage(content = Text(messages(form("entries").errors.head.message))))

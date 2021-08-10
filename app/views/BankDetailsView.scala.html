@@ -58,6 +58,9 @@
         @forms.fieldset(
             legend = titleHeading
         ) {
+            @html.p {
+                @messages("bankDetails.hint")
+            }
 
             @forms.inputText(
                 form = form,
