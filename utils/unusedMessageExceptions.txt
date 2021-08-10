@@ -68,3 +68,5 @@ repaymentAmountSummary.otherduties.2 = messages(s"$dutyType.$index")
 
 numberOfEntriesType.01 = Text(messages(s"numberOfEntriesType.${value.toString}"))
 numberOfEntriesType.02 = Text(messages(s"numberOfEntriesType.${value.toString}"))
+
+repaymentType.hint.01 = Text(messages(s"repaymentType.hint.${value.toString}"))

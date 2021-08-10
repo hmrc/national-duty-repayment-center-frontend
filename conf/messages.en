@@ -175,7 +175,6 @@ claimReasonType.07 = Returned goods relief
 claimReasonType.08 = Return of unwanted goods
 claimReasonType.09 = Value
 claimReasonType.10 = Something not listed
-claimReasonType.or = or
 claimReasonType.checkYourAnswersLabel.single = Reason for overpayment
 claimReasonType.checkYourAnswersLabel.multiple = Reasons for overpayment
 claimReasonType.checkYourAnswersLabel.main = Main reason for overpayment
