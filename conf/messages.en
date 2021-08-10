@@ -459,9 +459,10 @@ agentImporterManualAddress.countryCode.error.length = Country code must be 64 ch
 agentImporterManualAddress.postalCode.heading = Post Code
 agentImporterManualAddress.postalCode.error.invalid = Enter a real postcode
 
-bankDetails.title = Enter UK bank details
-bankDetails.title.importer = Enter the importer’s business bank details
-bankDetails.title.representative = Enter your business bank details
+bankDetails.title = Enter your bank details
+bankDetails.title.importer = Enter the importer’s bank details
+bankDetails.title.representative = Enter your bank details
+bankDetails.hint = This must be a UK account that accepts Bacs payments.
 bankDetails.checkYourAnswersLabel = Bank details
 bankDetails.name.heading = Name on the account
 bankDetails.name.hint = Enter the name as it appears on your bank statement.
