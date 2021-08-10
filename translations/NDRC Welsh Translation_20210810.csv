@@ -1,0 +1,728 @@
+Key	English	Welsh	Comments	Screenshot	NEW/Changed
+checkYourAnswers.title	Check your answers before sending your information	Gwiriwch eich atebion cyn anfon eich gwybodaeth		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.amend.title	Check your additional information	Gwriwch eich gwybodaeth ychwanegol		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.heading	Check Your Answers	Gwiriwch eich atebion		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.guidance	Guidance for check your answers		Not used. No translation required		
+checkYourAnswers.missing.icon	Warning	Rhybudd		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.missing.warning	Some information is missing. This must be completed before sending your application.	Mae rhywfaint o wybodaeth ar goll. Rhaid llenwi hyn cyn anfon eich cais.		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.missing.subheading	Some information is missing	Mae rhywfaint o wybodaeth ar goll		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.missing.paragraph	Please review your answers above and complete any missing information. Alternatively, you can use the button below.	Edrychwch dros eich atebion uchod ac ychwanegwch unrhyw wybodaeth sydd ar goll. Fel arall, gallwch ddefnyddio’r botwm isod.		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.missing.resolve.link	Resolve missing answers	Datrys yr atebion sydd ar goll		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.missing.resolve	Resolve missing answers	Datrys yr atebion sydd ar goll		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.submit.heading	Send your application	Anfon eich cais		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.submit.before.send	Before you send your application, ensure that you have fully reviewed the information you have provided and that it is correct.	Cyn i chi anfon eich cais, gwnewch yn siŵr eich bod wedi adolygu’r holl wybodaeth rydych wedi’i rhoi a’i bod yn gywir.		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+checkYourAnswers.submit.print	You can print a summary of your application on the next page.	Gallwch argraffu crynodeb o’ch cais ar y dudalen nesaf.		21-07-21_16_42_06_-_Check_your_answers_before_sending_your_information_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+site.switchLanguage	Newid yr iaith i’r Gymraeg	Change the language to English			
+date.day	Day	Diwrnod		21-07-21_16_29_25_-_Enter_the_details_of_the_oldest_entry_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+date.month	Month	Mis		21-07-21_16_29_25_-_Enter_the_details_of_the_oldest_entry_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+date.year	Year	Blwyddyn		21-07-21_16_29_25_-_Enter_the_details_of_the_oldest_entry_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+error.browser.title.prefix	Error:	Gwall:	Is this used anywhere?		
+error.boolean	Please give an answer	Rhowch ateb	Is this used anywhere?		
+error.invalid_date	Give a correct date	Rhowch ddyddiad cywir	Is this used anywhere?		
+error.integer	Give an answer in whole numbers	Rhowch ateb mewn rhifau cyfain	Is this used anywhere?		
+error.non_numeric	Give a value using only numbers	Rhowch werth gan ddefnyddio rhifau yn unig	Is this used anywhere?		
+error.number	Please enter a valid number	Nodwch rif dilys	Is this used anywhere?		
+error.required	Please enter a value	Nodwch werth	Is this used anywhere?		
+error.summary.title	There is a problem	Mae problem wedi codi	Used as a header for the error summary box whenever a page is in error	21-07-21_16_40_03_-_Error_Enter_UK_bank_details_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+index.title	Apply for repayment of import duty and import VAT	Gwneud cais am ad-daliad o dollau mewnforio a TAW mewnforio		21-07-21_16_26_41_-_What_do_you_want_to_do_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+index.heading	Apply for repayment of import duty and import VAT	Gwneud cais am ad-daliad o dollau mewnforio a TAW mewnforio		21-07-21_16_26_41_-_What_do_you_want_to_do_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+index.guidance	Welcome to your new frontend. Please see the README file for a guide to getting started.		Not used. No translation required		
+session_expired.title	For your security, we signed you out	Er eich diogelwch, gwnaethom eich allgofnodi	Shown after a period of inactivity		
+session_expired.heading	For your security, we signed you out	Er eich diogelwch, gwnaethom eich allgofnodi	Shown after a period of inactivity		
+session_expired.guidance	We did not save your answers.	Ni wnaethom gadw’ch atebion.	Shown after a period of inactivity		
+session_expired.button	Sign in	Mewngofnodi	Shown after a period of inactivity		
+timeout.title	For your security, we will sign you out	Er eich diogelwch, byddwn yn eich allgofnodi	Shown after a period of inactivity		
+timeout.message	For your security, we will sign you out in $	Er eich diogelwch, byddwn yn eich allgofnodi ymhen $	Shown after a period of inactivity ($ represents the time until you are signed out)		
+timeout.keepAlive	Stay signed in	Parhau i fod wedi’ch mewngofnodi	Shown after a period of inactivity		
+timeout.signOut	Sign out	Allgofnodi	Shown after a period of inactivity		
+site.back	Back	Yn ôl	Shown on every page	21-07-21_16_26_41_-_What_do_you_want_to_do_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+site.delete	Remove	Tynnu			
+site.edit	Change	Newid			
+site.hidden-delete	Delete {0}	Dileu {0}			
+site.hidden-edit	Change {0}	Newid {0}			
+site.no	No	Na			
+site.yes	Yes	Iawn			
+site.continue	Continue	Yn eich blaen	Shown on most pages	21-07-21_16_40_31_-_What_is_the_application_reference_number_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+find.address	Find address	Dod o hyd i gyfeiriad	Is this used anywhere?		
+site.service_name	Apply for repayment of import duty and import VAT	Gwneud cais am ad-daliad o dollau mewnforio a TAW mewnforio			
+site.textarea.char_limit	(Limit is {0} characters)	(Y terfyn yw {0} o gymeriadau)			
+site.govuk	GOV.UK	GOV.UK/CYMRAEG			
+footer.cookies	Cookies	Cwcis			
+footer.privacy	Privacy policy	Polisi preifatrwydd			
+footer.termsConditions	Terms and conditions	Telerau ac amodau			
+footer.govukHelp	Help using GOV.UK	Help wrth ddefnyddio GOV.UK			
+footer.accessibilityStatement	Accessibility statement	Datganiad hygyrchedd			
+unauthorised.title	You can’t access this service with this account	Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn			
+unauthorised.heading	You can’t access this service with this account	Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn			
+importerHasEori.title	Do you have an EORI number?	A oes gennych rif EORI?			
+importerHasEori.heading	Do you have an EORI number?	A oes gennych rif EORI?			
+importerHasEori.checkYourAnswersLabel	Do you have an EORI number?	A oes gennych rif EORI?			
+importerHasEori.error.required	Select yes if you have an EORI number	Dewiswch ‘Iawn’ os oes gennych rif EORI			
+claimantType.title	Are you the importer or their representative?	Ai’r mewnforiwr neu gynrychiolydd y mewnforiwr ydych chi?			
+claimantType.heading	Are you the importer or their representative?	Ai’r mewnforiwr neu gynrychiolydd y mewnforiwr ydych chi?			
+claimantType.01	I am the importer	Y mewnforiwr ydw i			
+claimantType.02	I am a representative of the importer	Cynrychiolydd y mewnforiwr ydw i			
+claimantType.checkYourAnswersLabel	Are you the importer or representative?	Ai’r mewnforiwr neu’r cynrychiolydd ydych chi?			
+claimantType.error.required	Select if you are the importer or a representative of the importer	Dewiswch ai chi yw’r mewnforiwr neu gynrychiolydd y mewnforiwr			
+claimantType.importer	Importer	Mewnforiwr			
+claimantType.representative	Representative	Cynrychiolydd			
+impInfo.checkYourAnswersLabel	Import information	Gwybodaeth fewnforio			
+importerEori.title	What is your EORI number?	Beth yw’ch rhif EORI?			
+importerEori.heading	What is your EORI number?	Beth yw’ch rhif EORI?			
+importerEori.checkYourAnswersLabel	Your EORI number	Eich rhif EORI			
+importerEori.error.invalid	Enter your EORI number	Nodwch eich rhif EORI			
+isVATRegistered.title	Are you VAT registered?	A ydych wedi’ch cofrestru ar gyfer TAW?		21-07-22_15_07_09_-_Are_you_VAT_registered_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+isVATRegistered.heading	Are you VAT registered?	A ydych wedi’ch cofrestru ar gyfer TAW?		21-07-22_15_07_09_-_Are_you_VAT_registered_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+isVATRegistered.01	Yes	Iawn		21-07-22_15_07_09_-_Are_you_VAT_registered_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+isVATRegistered.02	No	Na		21-07-22_15_07_09_-_Are_you_VAT_registered_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+isVATRegistered.checkYourAnswersLabel	Are you VAT registered?	A ydych wedi’ch cofrestru ar gyfer TAW?		21-07-22_15_07_09_-_Are_you_VAT_registered_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+isVATRegistered.error.required	Select yes if you are VAT registered	Dewiswch ‘Iawn’ os ydych wedi’ch cofrestru ar gyfer TAW	Is this used anywhere?		
+isVATRegistered.details.header	Help with VAT registration	Help gyda chofrestru ar gyfer TAW		21-07-22_15_07_09_-_Are_you_VAT_registered_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+isVATRegistered.details.p1	You must register your business for VAT with HMRC if its VAT taxable turnover is over the current VAT registration threshold.	Mae’n rhaid i chi gofrestru’ch busnes ar gyfer TAW gyda CThEM os yw ei drosiant trethadwy TAW dros y trothwy cofrestru TAW presennol.		21-07-22_15_07_09_-_Are_you_VAT_registered_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+isVATRegistered.details.p2	You can register voluntarily if your turnover is under the threshold, unless everything you sell is exempt.	Gallwch gofrestru’n wirfoddol os yw’ch trosiant o dan y trothwy, oni bai bod popeth yr ydych yn ei werthu wedi’i eithrio.		21-07-22_15_07_09_-_Are_you_VAT_registered_-_Apply_for_repayment_of_import_duty_and_import_VAT_-_GOV_UK.jpg	
+importerClaimantVrn.title	What is your VRN number?	Beth yw’ch Rhif Cofrestru TAW (VRN)?			
+importerClaimantVrn.heading	What is your VRN number?	Beth yw’ch Rhif Cofrestru TAW (VRN)?			
+importerClaimantVrn.checkYourAnswersLabel	What is your VRN number?	Beth yw’ch Rhif Cofrestru TAW (VRN)?			
+importerClaimantVrn.error.required	Enter your VRN number	Nodwch eich rhif VRN			
+importerClaimantVrn.error.length	VRN number must be 9 characters or less	Mae’n rhaid i’r rhif VRN fod yn 9 o gymeriadau neu lai			
+customsRegulationType.title	What was the entry acceptance date?	Beth oedd y dyddiad derbyn ar gyfer y cofnod?			
+customsRegulationType.heading	What was the entry acceptance date?	Beth oedd y dyddiad derbyn ar gyfer y cofnod?			
+customsRegulationType.importer	You can find this on the E2 document under &#8216;Entry Acceptance Details&#x2019;, or by asking your shipping agent or courier.	Gallwch ddod o hyd i hyn yn y ddogfen E2 o dan &#8216;Manylion Derbyn y Cofnod&#x2019; (‘Entry Acceptance Details’), neu drwy ofyn i’ch asiant cludo neu’ch cludwr.			
+customsRegulationType.representative	You can find this on the E2 document.	Gallwch ddod o hyd i hyn yn y ddogfen E2.			
+customsRegulationType.01	On or before 31 December 2020	Ar neu cyn 31 Rhagfyr 2020			
+customsRegulationType.02	From 1 January 2021	O 1 Ionawr 2021 ymlaen			
+customsRegulationType.checkYourAnswersLabel	Acceptance date	Dyddiad derbyn			
+customsRegulationType.error.required	Select an option to continue	Dewiswch opsiwn i fynd yn eich blaen			
+articleType.title	Why are you applying for this repayment?	Pam yr ydych yn gwneud cais am yr ad-daliad hwn?			
+articleType.heading	Why are you applying for this repayment?	Pam yr ydych yn gwneud cais am yr ad-daliad hwn?			
+articleType.117	Overpayment of duty or VAT (Article 117)	Gordaliad o doll neu TAW (Erthygl 117)			
+articleType.119	Error by customs (Article 119)	Gwall ar ran yr awdurdodau tollau (Erthygl 119)			
+articleType.120	Exceptional circumstances (Article 120)	Amgylchiadau eithriadol (Erthygl 120)			
+articleType.checkYourAnswersLabel	Reason for application	Rheswm dros wneud cais			
+articleType.error.required	Select the reason you are applying for this repayment	Dewiswch y rheswm dros wneud cais am yr ad-daliad hwn			
+ukRegulationType.title	Why are you applying for this repayment?	Pam yr ydych yn gwneud cais am yr ad-daliad hwn?			
+ukRegulationType.heading	Why are you applying for this repayment?	Pam yr ydych yn gwneud cais am yr ad-daliad hwn?			
+ukRegulationType.048	Error by Customs (Regulation 48)	Gwall ar ran yr awdurdodau tollau (Rheoliad 48)			
+ukRegulationType.049	Lower rate was applicable (Regulation 49)	Roedd cyfradd is yn berthnasol (Rheoliad 49)			
+ukRegulationType.050	Overpayment of duty or VAT (Regulation 50)	Gordaliad o doll neu TAW (Rheoliad 50)			
+ukRegulationType.051	Rejected (Regulation 51)	Fe’i gwrthodwyd (Rheoliad 51)			
+ukRegulationType.052	Special circumstances (Regulation 52)	Amgylchiadau arbennig (Rheoliad 52)			
+ukRegulationType.053	Withdrawal of customs declaration (Regulation 53)	Tynnu datganiad tollau yn ôl (Rheoliad 53)			
+ukRegulationType.checkYourAnswersLabel	Reason for application	Rheswm dros wneud cais			
+ukRegulationType.error.required	Select why you are applying for this repayment	Dewiswch pam yr ydych yn gwneud cais am yr ad-daliad hwn			
+numberOfEntriesType.title	How many entries do you want to submit?	Faint o gofnodion yr ydych am eu cyflwyno?			
+numberOfEntriesType.heading	How many entries do you want to submit?	Faint o gofnodion yr ydych am eu cyflwyno?			
+numberOfEntriesType.hint	Multiple entries must be from the same importer, and have the same reason for overpayment.	Mae’n rhaid i gofnodion lluosog ddod o’r un mewnforiwr ac mae’n rhaid iddynt gynnwys yr un rheswm dros ordalu.			
+numberOfEntriesType.01	One entry	Un cofnod			
+numberOfEntriesType.02	Multiple entries	Cofnodion lluosog			
+numberOfEntriesType.02.hint	Number of entries	Nifer y cofnodion			
+numberOfEntriesType.checkYourAnswersLabel	How many entries do you want to submit?	Faint o gofnodion yr ydych am eu cyflwyno?			
+numberOfEntriesType.single.checkYourAnswersLabel	One entry	Un cofnod			
+numberOfEntriesType.multiple.checkYourAnswersLabel	Multiple entries	Cofnodion lluosog			
+numberOfEntriesType.error.required	Select if you want to submit one entry or more than one entry	Dewiswch a ydych am gyflwyno un cofnod neu fwy nag un cofnod			
+howManyEntries.title	How many entries are you claiming for?	Faint o gofnodion yr ydych yn hawlio ar eu cyfer?			
+howManyEntries.heading	How many entries are you claiming for?	Faint o gofnodion yr ydych yn hawlio ar eu cyfer?			
+howManyEntries.checkYourAnswersLabel	Number of entries	Nifer y cofnodion			
+howManyEntries.error.required	Enter the number of entries you are claiming for	Nodwch nifer y cofnodion rydych yn hawlio ar eu cyfer			
+howManyEntries.error.length	The number of entries must be between 2 and 999,999	Mae’n rhaid i nifer y cofnodion fod rhwng 2 a 999,999			
+entryDetails.single.title	Add the details for this entry	Ychwanegwch y manylion ar gyfer y cofnod hwn			
+entryDetails.multiple.title	Enter the details of the oldest entry	Nodwch fanylion y cofnod hynaf			
+entryDetails.single.heading	Add the details for this entry	Ychwanegwch y manylion ar gyfer y cofnod hwn			
+entryDetails.multiple.heading	Enter the details of the oldest entry	Nodwch fanylion y cofnod hynaf			
+entryDetails.importer.hint	These can be found in box 1 of the C88 document, or by asking your shipping agent or courier.	Gellir dod o hyd i’r rhain ym mlwch 1 yn y ddogfen C88, neu drwy ofyn i’ch asiant cludo neu’ch cludwr amdanynt			
+entryDetails.representative.hint	These can be found on the C88 document.	Gellir dod o hyd i’r rhain yn y ddogfen C88.			
+entryDetails.claimEpu.heading	Entry processing unit (EPU) number	Rhif yr Uned Prosesu Cofnodion (EPU)			
+entryDetails.claimEpu.hint	This is 3 numbers, for example 131.	Rhif 3 digid yw hwn, er enghraifft 131.			
+entryDetails.claimEpu.error.required	Enter the entry processing unit (EPU) number	Nodwch rif yr Uned Prosesu Cofnodion (EPU)			
+entryDetails.claimEpu.error.valid	Enter a three digit entry processing unit (EPU) number	Nodwch rif Uned Prosesu Cofnodion (EPU) tri digid			
+entryDetails.entryNumber.heading	Entry number	Rhif y cofnod			
+entryDetails.entryNumber.hint	This is 6 numbers and a letter, for example 123456Q.	Mae hwn yn cynnwys 6 rhif a llythyren, er enghraifft 123456Q.			
+entryDetails.entryNumber.error.required	Enter the entry number	Nodwch rif y cofnod			
+entryDetails.entryNumber.error.valid	Enter a valid entry number	Nodwch rif cofnod dilys			
+entryDetails.entryDate.heading	Entry date	Dyddiad y cofnod			
+entryDetails.entryDate.hint	For example, 25 3 2019.	Er enghraifft, 25 3 2019.			
+entryDetails.claimEntryDate.error.required	Enter the entry date	Nodwch ddyddiad y cofnod			
+entryDetails.claimEntryDate.error.invalid	Enter the entry date in the correct format	Nodwch ddyddiad y cofnod yn y fformat cywir			
+entryDetails.claimEntryDate.error.invalid_future	The entry date must be today or in the past	Mae’n rhaid i ddyddiad y cofnod fod heddiw neu yn y gorffennol			
+error.date.day_blank	Entry date must include a day	Mae’n rhaid i ddyddiad y cofnod gynnwys diwrnod			
+error.date.day_invalid	Enter the day in the correct format	Nodwch y diwrnod yn y fformat cywir			
+error.date.month_blank	Entry date must include a month	Mae’n rhaid i ddyddiad y cofnod gynnwys mis			
+error.date.month_invalid	Enter the month in the correct format	Nodwch y mis yn y fformat cywir			
+error.date.year_blank	Entry date must include a year	Mae’n rhaid i ddyddiad y cofnod gynnwys blwyddyn			
+error.date.year_invalid	Enter the year in the correct format	Nodwch y flwyddyn yn y fformat cywir			
+error.date.all	Entry date must be a real date	Mae’n rhaid i ddyddiad y cofnod fod yn ddyddiad go iawn			
+error.date.day_month	Entry date must include a day and month	Mae’n rhaid i ddyddiad y cofnod gynnwys diwrnod a mis			
+error.date.day_year	Entry date must include a day and year	Mae’n rhaid i ddyddiad y cofnod gynnwys diwrnod a blwyddyn			
+error.date.month_year	Entry date must include a month and year	Mae’n rhaid i ddyddiad y cofnod gynnwys mis a blwyddyn			
+entryDetails.checkYourAnswersLabel	Entry information	Gwybodaeth am y cofnod			
+entryDetails.epu.checkYourAnswersLabel	EPU number	Rhif EPU			
+entryDetails.number.checkYourAnswersLabel	Entry number	Rhif y cofnod			
+entryDetails.date.checkYourAnswersLabel	Entry date	Dyddiad y cofnod			
+claimEntryNumber.checkYourAnswersLabel	What is the entry number?	Beth yw rhif y cofnod?			
+claimEntryDate.checkYourAnswersLabel	What was the entry date?	Beth oedd dyddiad y cofnod?			
+applicationInformation.checkYourAnswersLabel	Application information	Gwybodaeth am y cais			
+claimReasonType.title	What does your application relate to?	Beth mae’ch cais yn ymwneud ag ef?			
+claimReasonType.heading	What does your application relate to?	Beth mae’ch cais yn ymwneud ag ef?			
+claimReasonType.01	Retroactive quota	Cwota ôl-weithredol			
+claimReasonType.02	Customs procedure code change	Newid i’r cod gweithdrefnau tollau			
+claimReasonType.03	Currency change	Newid i’r arian cyfred			
+claimReasonType.04	Commodity code change	Newid i’r cod nwyddau			
+claimReasonType.05	Customs special procedures	Gweithdrefnau arbennig y tollau			
+claimReasonType.06	Preference	Ffafriaeth			
+claimReasonType.07	Returned goods relief	Rhyddhad ar nwyddau a ddychwelwyd			
+claimReasonType.08	Return of unwanted goods	Dychwelyd nwyddau nad oes eu hangen			
+claimReasonType.09	Value	Gwerth			
+claimReasonType.10	Something not listed	Rhywbeth heb ei restru			
+claimReasonType.or	or	neu			
+claimReasonType.checkYourAnswersLabel	Reason for overpayment	Rheswm dros y gordaliad			
+claimReasonType.error.required	Select what your application relates to	Dewiswch beth mae’ch cais yn ymwneud ag ef			
+reasonForOverpayment.title	Tell us why the overpayment happened	Dywedwch wrthym pam y digwyddodd y gordaliad			
+reasonForOverpayment.heading	Tell us why the overpayment happened	Dywedwch wrthym pam y digwyddodd y gordaliad			
+reasonForOverpayment.checkYourAnswersLabel	Why the overpayment happened	Pam y digwyddodd y gordaliad			
+reasonForOverpayment.error.required	Tell us why the overpayment happened	Dywedwch wrthym pam y digwyddodd y gordaliad			
+reasonForOverpayment.error.length	Overpayment reason must be 1400 characters or less	Mae’n rhaid i’r rheswm dros y gordaliad fod yn 1400 o gymeriadau neu lai			
+reasonForOverpayment.hint	If you do not provide enough information, we may be unable to process your application.	Os na fyddwch yn rhoi digon o wybodaeth, mae’n bosibl na fyddwn yn gallu prosesu’ch cais.			
+reasonForOverpayment.p1	You can tell us about:	Gallwch roi gwybod i ni am:			
+reasonForOverpayment.bullet1	any commodity codes	unrhyw godau nwyddau			
+reasonForOverpayment.bullet2	changes in currency or exchange rates	newidiadau mewn arian cyfred neu gyfraddau cyfnewid			
+reasonForOverpayment.bullet3	changes to customs procedures	newidiadau mewn gweithdrefnau tollau			
+reasonForOverpayment.bullet4	any preferential rates or schemes that applied	unrhyw gynlluniau neu gyfraddau ffafriol a oedd yn berthnasol			
+reasonForOverpayment.bullet5	whether any items were replaced or refunded, and why	p’un a gafodd unrhyw eitemau eu newid neu eu had-dalu, a pham			
+reasonForOverpayment.bullet6	changes to the value of goods	newidiadau i werth nwyddau			
+reasonForOverpayment.bullet7	the number of items or goods	nifer yr eitemau neu’r nwyddau			
+reasonForOverpayment.bullet8	a description of the items or goods	disgrifiad o’r eitemau neu’r nwyddau			
+claimRepaymentType.title	What do you want to reclaim?	Beth hoffech ei adennill?			
+claimRepaymentType.heading	What do you want to reclaim?	Beth hoffech ei adennill?			
+claimRepaymentType.representative.hint	Select all that apply.	Dewiswch bob un sy’n berthnasol.			
+claimRepaymentType.importer.hint	<p>You can check with your shipping courier if you are not sure.</p> <div class="govuk-hint">Select all that apply.</div>	<p>Gallwch wirio gyda’ch cludwr os nad ydych yn siŵr.</p> <div class="govuk-hint">Dewiswch bob un sy’n berthnasol.</div>			
+claimRepaymentType.01	Customs Duty	Toll Dramor			
+claimRepaymentType.02	VAT	TAW			
+claimRepaymentType.03	Another type of duty	Math arall o doll			
+claimRepaymentType.checkYourAnswersLabel	What do you want to reclaim?	Beth hoffech ei adennill?			
+claimRepaymentType.error.required	Select what you want to reclaim	Dewiswch beth yr hoffech ei adennill			
+evidenceSupportingDocs.title	Required supporting documents	Dogfennau ategol angenrheidiol			
+evidenceSupportingDocs.heading	Required supporting documents	Dogfennau ategol angenrheidiol			
+evidenceSupportingDocs.paragraph1	These are the documents we must have to process your claim.	Dyma’r dogfennau y mae’n rhaid i ni eu cael i brosesu’ch hawliad.			
+evidenceSupportingDocs.h2	Types of files you can upload	Y mathau o ffeiliau y gallwch eu huwchlwytho			
+evidenceSupportingDocs.checkYourAnswersLabel	Supporting documents	Dogfennau ategol			
+evidenceSupportingDocs.error.required	Select Supporting documents	Dewiswch ddogfennau ategol			
+claimReason.documents.c88	<b>C88</b>, which authorises imports from the country of origin	<b>C88</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol			
+claimReason.documents.e2	<b>E2</b>, which authorises imports from the country of origin	<b>E2</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol			
+claimReason.documents.commercial_invoice	<b>Commercial invoice</b>, which shows the value of the goods	<b>Anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau			
+claimReason.documents.substitute_entry	<b>Substitute entry</b>, which shows changes made to the original entry	<b>Cofnod cyfnewid</b>, sy’n dangos newidiadau a wnaed i’r cofnod gwreiddiol			
+claimReason.documents.currency_charge_evicence	Evidence that the invoice has been corrected in another currency	Tystiolaeth bod yr anfoneb wedi’i chywiro mewn arian cyfred arall			
+claimReason.documents.airway_bill	<b>Airway bill</b> or <b>bill of lading</b> that show shipping details	<b>Bil teithrestr awyr</b> neu <b>bil llwytho</b>, sy’n dangos y manylion cludo			
+claimReason.documents.proof_of_origin	<b>Proof of origin documents</b>, such as a GSP certificate	<b>Dogfennau tystiolaeth o darddiad</b>, megis tystysgrif GSP			
+claimReason.documents.proof_of_quota	Proof of the quota and commodity codes that are being claimed against	Tystiolaeth o’r cwota a’r codau nwyddau y gwneir hawliad yn eu herbyn			
+claimReason.documents.proof_of_return	Proof of return	Prawf o ddychwelyd			
+claimReason.documents.evidence_of_export	Evidence of the original export	Tystiolaeth o’r allforio gwreiddiol			
+claimReason.documents.evidence_of_corrected_invoice	Evidence of corrected invoice	Tystiolaeth o anfoneb wedi’i chywiro			
+claimReason.documents.additional.documents.para	You may also include additional documents if you think they are relevant.	Gallwch hefyd gynnwys dogfennau ychwanegol os ydych yn credu eu bod yn berthnasol.			
+declarantReferenceNumber.title	Do you want to use your own reference?	A hoffech ddefnyddio’ch cyfeirnod eich hun?			
+declarantReferenceNumber.heading	Do you want to use your own reference?	A hoffech ddefnyddio’ch cyfeirnod eich hun?			
+declarantReferenceNumber.hint1	This could be an employee reference or something else to help identify who is making this application. We will only include it in letters about this application.	Gallai hyn fod yn gyfeirnod cyflogai neu’n rhywbeth arall i helpu i amlygu pwy sy’n gwneud y cais hwn. Byddwn ond yn ei gynnwys mewn llythyrau ynghylch y cais hwn.			
+declarantReferenceNumber.hint2	You will be given a separate application reference when this application is complete.	Rhoddir cyfeirnod cais ar wahân i chi pan fydd y cais hwn wedi’i gwblhau.			
+declarantReferenceNumber.01	Yes	Iawn			
+declarantReferenceNumber.02	No	Na			
+declarantReferenceNumber.checkYourAnswersLabel.answer	Your reference	Eich cyfeirnod			
+declarantReferenceNumber.yes.checkYourAnswersLabel	Yes	Iawn			
+declarantReferenceNumber.no.checkYourAnswersLabel	No	Na			
+declarantReferenceNumber.checkYourAnswersLabel.question	Do you want to use your own reference?	A hoffech ddefnyddio’ch cyfeirnod eich hun?			
+declarantReferenceNumber.error.required.declarantReferenceNumber	Enter a reference	Nodwch gyfeirnod			
+declarantReferenceNumber.error.invalid.length	The reference must be 50 characters or less	Rhaid i’r cyfeirnod fod yn 50 o gymeriadau neu lai			
+declarantReferenceNumber.error.required	Select yes if you want to use your own reference	Dewiswch ‘Iawn’ os hoffech ddefnyddio’ch cyfeirnod eich hun			
+importerName.title	What is the name on the import documents?	Beth yw’r enw ar y dogfennau mewnforio?			
+importerName.heading	What is the name on the import documents?	Beth yw’r enw ar y dogfennau mewnforio?			
+importerName.checkYourAnswersLabel	Name on import documents	Enw ar y dogfennau mewnforio			
+importerName.error.required	Enter the name on the import documents	Nodwch yr enw sydd ar y dogfennau mewnforio			
+importerName.error.length	Name on the import documents must be 512 characters or less	Mae’n rhaid i’r enw sydd ar y dogfennau mewnforio fod yn 512 o gymeriadau neu lai			
+importerName.error.invalid	Name on the import documents must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces	Mae’r enw sydd ar y dogfennau mewnforio ond yn gallu cynnwys y llythrennau a i z, y rhifau 0 i 9, ampersandau (&), collnodau, comas, ebychnodau, blaenslaesau, atalnodau llawn, cysylltnodau, cromfachau crwn, dyfynodau, tanlinellau a bylchau			
+phoneNumber.title	Enter your phone number	Nodwch eich rhif ffôn			
+phoneNumber.heading	Enter your phone number	Nodwch eich rhif ffôn			
+phoneNumber.checkYourAnswersLabel	Phone number	Rhif ffôn			
+phoneNumber.error.required	Enter your phone number	Nodwch eich rhif ffôn			
+phoneNumber.error.length	Phone number must be 11 numbers	Mae’n rhaid i’r rhif ffôn fod yn 11 rhif			
+phoneNumber.error.invalid	Enter a phone number beginning with 0	Nodwch rif ffôn gan ddechrau gyda 0			
+phoneNumber.hint	Enter a UK landline or mobile number, like 07700 900 982 or 01632 960 001.	Nodwch rif ffôn llinell dir neu rif ffôn symudol yn y DU, fel 07700 900 982 neu 01632 960 001.			
+emailAddress.title	How can we contact you?	Sut y gallwn gysylltu â chi?			
+emailAddress.heading	How can we contact you?	Sut y gallwn gysylltu â chi?			
+emailAddress.01	Yes	Iawn			
+emailAddress.02	No	Na			
+emailAddress.hintText	<p>We will use these details if we need to contact you for further information.</p> <div class="govuk-hint">Select at least one option.</div>	<p>Byddwn yn defnyddio’r manylion hyn os bydd angen i ni gysylltu â chi i gael rhagor o wybodaeth.</p> <div class="govuk-hint">Dewiswch o leiaf un opsiwn.</div>			
+emailAddress.01.hint	Email address	Cyfeiriad e-bost			
+emailAddress.checkYourAnswersLabel	Email address	Cyfeiriad e-bost			
+emailAddress.error.required	Enter an email address	Nodwch gyfeiriad e-bost			
+emailAddress.error.selection.required	Select if we can contact you by email	Dewiswch p’un a allwn gysylltu â chi drwy e-bost neu beidio			
+emailAddress.error.length	Email Address must be 85 characters or less	Mae’n rhaid i’r cyfeiriad e-bost fod yn 85 o gymeriadau neu lai			
+emailAddress.error.invalid	Enter an email address in the correct format, like name@example.com	Nodwch gyfeiriad e-bost yn y fformat cywir, megis enw@enghraifft.com			
+whomToPay.title	Who is to be repaid?	Pwy sydd i’w ad-dalu?			
+whomToPay.heading	Who is to be repaid?	Pwy sydd i’w ad-dalu?			
+whomToPay.01	Importer	Mewnforiwr			
+whomToPay.02	Representative	Cynrychiolydd			
+whomToPay.checkYourAnswersLabel	Who is to be repaid?	Pwy sydd i’w ad-dalu?			
+whomToPay.error.required	Select who you want to send the repayment to	Dewiswch at bwy yr hoffech anfon yr ad-daliad			
+repaymentType.title	Select repayment method	Dewiswch ddull ad-dalu			
+repaymentType.heading	Select repayment method	Dewiswch ddull ad-dalu			
+repaymentType.01	Current month amendment (CMA)	Diwygiad mis cyfredol (CMA)			
+repaymentType.02	Bank transfer (Bacs)	Trosglwyddiad banc (Bacs)			
+repaymentType.checkYourAnswersLabel	Payment method	Dull talu			
+repaymentType.error.required	Select how you want to receive the repayment	Dewiswch sut yr hoffech gael yr ad-daliad			
+repaymentType..help.header	What is a current month amendment?	Beth yw diwygiad mis cyfredol?			
+repaymentType.help.p1	A current month amendment is an accounting adjustment to a deferment account.	Mae diwygiad mis cyfredol yn addasiad cyfrifyddu a wneir i gyfrif gohirio.			
+repaymentType.help.p2	This can only be made if the original payment was from a deferment account.	Gellir ond gwneud hyn os oedd y taliad gwreiddiol yn dod o gyfrif gohirio.			
+enterAgentEORI.title	What is the importer’s EORI number?	Beth yw rhif EORI y mewnforiwr?			
+enterAgentEORI.heading	What is the importer’s EORI number?	Beth yw rhif EORI y mewnforiwr?			
+enterAgentEORI.hint	This is 2 letters, followed by either 12 or 15 numbers, like ‘GB123456789123’ or ‘GB123456789123000’.	Mae hyn yn 2 lythyren, wedi’u dilyn gan naill ai 12 neu 15 rhif, fel ‘GB123456789123’ neu ‘GB123456789123000’.			
+enterAgentEORI.checkYourAnswersLabel	Importer EORI number	Rhif EORI y mewnforiwr			
+enterAgentEORI.error.required	Enter the importer’s EORI number	Nodwch rif EORI y mewnforiwr			
+enterAgentEORI.error.valid	Enter the importer’s EORI number in the correct format	Nodwch rif EORI y mewnforiwr yn y fformat cywir			
+agentImporterHasEORI.title	Does the importer have an EORI number?	A oes gan y mewnforiwr rif EORI?			
+agentImporterHasEORI.heading	Does the importer have an EORI number?	A oes gan y mewnforiwr rif EORI?			
+agentImporterHasEORI.01	Yes	Iawn			
+agentImporterHasEORI.02	No	Na			
+agentImporterHasEORI.checkYourAnswersLabel	Does the importer have an EORI number?	A oes gan y mewnforiwr rif EORI?			
+agentImporterHasEORI.error.required	Select yes if the importer has an EORI number	Dewiswch ‘Iawn’ os oes gan y mewnforiwr rif EORI			
+importerHasEori.details.header	Help with EORI numbers	Help gyda rhifau EORI			
+importerHasEori.details.p1	EORI numbers are needed to move goods between Great Britain and other countries.	Mae angen rhifau EORI i symud nwyddau rhwng Prydain Fawr a gwledydd eraill.			
+importerHasEori.details.p2	If a trader is registered for VAT, they will already have an EORI number.	Os yw masnachwr wedi’i gofrestru ar gyfer TAW, bydd ganddo rif EORI yn barod.			
+importerHasEori.details.p3	Private individuals do not need an EORI number where goods are imported for personal use.	Nid oes angen rhif EORI ar unigolion preifat os yw nwyddau’n cael eu mewnforio at ddefnydd personol.			
+isImporterVatRegistered.title	Is the importer VAT registered?	A yw’r mewnforiwr wedi’i gofrestru ar gyfer TAW?			
+isImporterVatRegistered.heading	Is the importer VAT registered?	A yw’r mewnforiwr wedi’i gofrestru ar gyfer TAW?			
+isImporterVatRegistered.01	Yes	Iawn			
+isImporterVatRegistered.02	No	Na			
+isImporterVatRegistered.checkYourAnswersLabel	Is the importer VAT registered?	A yw’r mewnforiwr wedi’i gofrestru ar gyfer TAW?			
+isImporterVatRegistered.error.required	Select yes if the importer is VAT registered	Dewiswch ‘Iawn’ os yw’r mewnforiwr wedi’i gofrestru ar gyfer TAW			
+vatPaid.title	VAT overpayment	Gordaliad TAW			
+vatPaid.checkYourAnswersLabel	VAT overpayment	Gordaliad TAW			
+vatPaid.single.entry.hint	Do not include any agent fees.	Peidiwch â chynnwys unrhyw ffioedd asiant.			
+vatPaid.multiple.entry.hint	This should be the total amount of overpayment for all entries. Do not include any agent fees.	Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.			
+vatPaid.actualamountpaid.heading	Amount of VAT that was paid to HMRC	Swm y TAW a dalwyd i CThEM			
+vatPaid.actualamountpaid.error.required	Enter the amount of VAT that was paid to HMRC	Nodwch swm y TAW a dalwyd i CThEM			
+vatPaid.actualamountpaid.error.notANumber	The amount of VAT that was paid to HMRC must be a number	Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn rhif			
+vatPaid.actualamountpaid.error.greaterThanZero	The amount of VAT that was paid to HMRC must be more than £0	Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn fwy na £0			
+vatPaid.actualamountpaid.error.length	The amount of VAT that was paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai			
+vatPaid.actualamountpaid.error.decimalPlaces	The amount of VAT that was paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248			
+vatPaid.shouldhavepaid.heading	Amount of VAT that you think should have been paid	Swm y TAW y credwch y dylid bod wedi’i thalu			
+vatPaid.shouldhavepaid.hint	For refunded or destroyed goods, this amount can be £0.	Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.			
+vatPaid.shouldhavepaid.error.required	Enter the amount of VAT that should have been paid	Nodwch swm y TAW y dylid bod wedi’i thalu			
+vatPaid.shouldhavepaid.error.greaterThanZero	The amount cannot be a negative number	Ni all y swm fod yn rhif negyddol			
+vatPaid.shouldhavepaid.error.length	The amount of VAT that should have been paid must £99,999,999,999.99 or less	Mae’n rhaid i swm y TAW y dylid bod wedi’i thalu fod yn £99,999,999,999.99 neu lai			
+vatPaid.shouldhavepaid.error.decimalPlaces	The amount of VAT that should have been paid must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y TAW y dylid bod wedi’i thalu fod yn swm o arian, megis £123.45 neu £248			
+vatPaid.shouldhavepaid.error.notANumber	The amount of VAT that should have been paid must be a number	Mae’n rhaid i swm y TAW y dylid bod wedi’i thalu fod yn rhif			
+vatPaid.amounts.error.same	The amount of VAT that should have been paid cannot be the same as the amount of VAT that was paid to HMRC	Ni all swm y TAW y dylid bod wedi’i thalu fod yr un fath â swm y TAW a dalwyd i CThEM			
+vatPaid.amounts.error.greater	The amount of import VAT that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y TAW mewnforio y dylid bod wedi’i thalu i CThEM fod yn fwy na’r swm a dalwyd			
+customsDutyPaid.title	Customs Duty overpayment	Gordaliad o’r Doll Dramor			
+customsDutyPaid.heading	Customs Duty overpayment	Gordaliad o’r Doll Dramor			
+customsDutyPaid.single_entry.hint	Do not include any agent fees.	Peidiwch â chynnwys unrhyw ffioedd asiant.			
+customsDutyPaid.multiple_entry.hint	This should be the total amount of overpayment for all entries. Do not include any agent fees.	Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.			
+customsDutyPaid.actualamountpaid.heading	Amount of Customs Duty that was paid to HMRC	Swm y Doll Dramor a dalwyd i CThEM			
+customsDutyPaid.actualamountpaid.error.required	Enter the amount of Customs Duty that was paid to HMRC	Nodwch swm y Doll Dramor a dalwyd i CThEM			
+customsDutyPaid.actualamountpaid.error.greaterThanZero	The amount of Customs Duty that was paid to HMRC must be more than £0	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn fwy na £0			
+customsDutyPaid.actualamountpaid.error.notANumber	The amount of Customs Duty that was paid to HMRC must be a number	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn rhif			
+customsDutyPaid.actualamountpaid.error.length	The amount of Customs Duty that was paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai			
+customsDutyPaid.actualamountpaid.error.decimalPlaces	The amount of Customs Duty that was paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248			
+customsDutyPaid.checkYourAnswersLabel	How much Customs Duty was paid to HMRC?	Faint o Doll Dramor a dalwyd i CThEM?			
+customsDutyPaid.checkYourAnswersLabel.hint	This should be the total amount of overpayment for all entries.	Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod.			
+customsDutyPaid.shouldhavepaid.heading	Amount of Customs Duty that you think should have been paid	Swm y Doll Dramor y credwch y dylid bod wedi’i thalu			
+customsDutyPaid.shouldhavepaid.hint	For refunded or destroyed goods, this amount can be £0.	Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.			
+customsDutyPaid.shouldhavepaid.error.required	Enter the amount of Customs Duty that should have been paid	Nodwch swm y Doll Dramor y dylid bod wedi’i thalu			
+customsDutyPaid.shouldhavepaid.error.greaterThanZero	The amount cannot be a negative number	Ni all y swm fod yn rhif negyddol			
+customsDutyPaid.shouldhavepaid.error.notANumber	The amount of Customs Duty that should have been paid must be a number	Mae’n rhaid i swm y Doll Dramor y dylid bod wedi’i thalu fod yn rhif			
+customsDutyPaid.shouldhavepaid.error.length	The amount of Customs Duty that should have been paid must £99,999,999,999.99 or less	Mae’n rhaid i swm y Doll Dramor y dylid bod wedi’i thalu fod yn £99,999,999,999.99 neu lai			
+customsDutyPaid.shouldhavepaid.error.decimalPlaces	The amount of Customs Duty that should have been paid must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y Doll Dramor y dylid bod wedi’i thalu fod yn swm o arian, megis £123.45 neu £248			
+customsDutyPaid.amounts.error.same	The amount of Customs Duty that should have been paid cannot be the same as the amount of Customs Duty that was paid to HMRC	Ni all swm y Doll Dramor y dylid bod wedi’i thalu fod yr un fath â swm y Doll Dramor a dalwyd i CThEM			
+customsDutyPaid.amounts.error.greater	The amount of customs duty that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y Doll Dramor y dylid bod wedi’i thalu i CThEM fod yn fwy na’r swm a dalwyd			
+otherDutiesPaid.title	Overpayment of other duties	Gordaliad o dollau eraill			
+otherDutiesPaid.heading	Overpayment of other duties	Gordaliad o dollau eraill			
+otherDutiesPaid.single_entry.hint	Do not include any agent fees.	Peidiwch â chynnwys unrhyw ffioedd asiant.			
+otherDutiesPaid.multiple_entry.hint	This should be the total amount of overpayment for all entries. Do not include any agent fees.	Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.			
+otherDutiesPaid.actualamountpaid.heading	Amount of other duties that were paid to HMRC	Swm y tollau eraill a dalwyd i CThEM			
+otherDutiesPaid.actualamountpaid.error.required	Enter the amount of other duties that were paid to HMRC	Nodwch swm y tollau eraill a dalwyd i CThEM			
+otherDutiesPaid.actualamountpaid.error.greaterThanZero	The amount of other duties that were paid to HMRC must be more than £0	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn fwy na £0			
+otherDutiesPaid.actualamountpaid.error.notANumber	The amount of other duties that were paid to HMRC must be a number	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn rhif			
+otherDutiesPaid.actualamountpaid.error.length	The amount of other duties that were paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai			
+otherDutiesPaid.actualamountpaid.error.decimalPlaces	The amount of other duties that were paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248			
+otherDutiesPaid.shouldhavepaid.heading	Amount of other duties that you think should have been paid	Swm y tollau eraill y credwch y dylid bod wedi’u talu			
+otherDutiesPaid.shouldhavepaid.hint	For refunded or destroyed goods, this amount can be £0.	Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.			
+otherDutiesPaid.shouldhavepaid.error.required	Enter the amount of other duties that should have been paid	Nodwch swm y tollau eraill y dylid bod wedi’u talu			
+otherDutiesPaid.shouldhavepaid.error.greaterThanZero	The amount cannot be a negative number	Ni all y swm fod yn rhif negyddol			
+otherDutiesPaid.shouldhavepaid.error.notANumber	The amount of other duties that should have been paid must be a number	Mae’n rhaid i swm y tollau eraill y dylid bod wedi’u talu fod yn rhif			
+otherDutiesPaid.shouldhavepaid.error.length	The amount of other duties that should have been paid must £99,999,999,999.99 or less	Mae’n rhaid i swm y tollau eraill y dylid bod wedi’u talu fod yn £99,999,999,999.99 neu lai			
+otherDutiesPaid.shouldhavepaid.error.decimalPlaces	The amount of other duties that should have been paid must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y tollau eraill y dylid bod wedi’u talu fod yn swm o arian, megis £123.45 neu £248			
+otherDutiesPaid.amounts.error.same	The amount of other duties that should have been paid cannot be the same as the amount of other duties that were paid to HMRC	Ni all swm y tollau eraill y dylid bod wedi’u talu fod yr un fath â swm y tollau eraill a dalwyd i CThEM			
+otherDutiesPaid.amounts.error.greater	The amount of other duties that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y tollau eraill y dylid bod wedi’u talu i CThEM fod yn fwy na’r swm a dalwyd			
+otherDutiesPaid.checkYourAnswersLabel	How much was paid in other duties to HMRC?	Faint a dalwyd mewn tollau eraill i CThEM?			
+importerAddress.title	What is your address?	Beth yw’ch cyfeiriad?			
+importerAddress.heading	What is your address?	Beth yw’ch cyfeiriad?			
+importerAddress.checkYourAnswersLabel	Importer address	Cyfeiriad y mewnforiwr			
+agent.importerAddress.title	What is the importer’s address?	Beth yw cyfeiriad y mewnforiwr?			
+agent.importerAddress.heading	What is the importer’s address?	Beth yw cyfeiriad y mewnforiwr?			
+agent.importerAddress.checkYourAnswersLabel	What is the importer’s address?	Beth yw cyfeiriad y mewnforiwr?			
+importerAddress.manual	Enter address manually	Nodwch y cyfeiriad â llaw			
+importerAddress.postCode	Postcode	Cod post			
+importerAddress.line1.error.required	Enter Importer’s address line 1	Nodwch gyfeiriad – llinell 1 y mewnforiwr
+importerAddress.line1.error.length	Address line 1 must be 128 characters or less	Mae’n rhaid i gyfeiriad – llinell 1 fod yn 128 o gymeriadau neu lai			
+importerAddress.line2.error.length	Address line 2 must be 128 characters or less	Mae’n rhaid i gyfeiriad – llinell 2 fod yn 128 o gymeriadau neu lai			
+importerAddress.city.error.required	Enter Importer’s city	Nodwch ddinas y mewnforiwr			
+importerAddress.city.error.length	City must be 64 characters or less	Mae’n rhaid i’r ddinas fod yn 64 o gymeriadau neu lai			
+importerAddress.region.error.required	Enter Importer’s region	Nodwch ranbarth y mewnforiwr			
+importerAddress.region.error.length	Region must be 64 characters or less	Mae’n rhaid i’r rhanbarth fod yn 64 o gymeriadau neu lai			
+importerAddress.countryCode.error.required	Enter Importer’s country code	Rhowch god gwlad y mewnforiwr			
+importerAddress.countryCode.error.length	Country code must be 2 characters or less	Mae’n rhaid i god y wlad fod yn 2 gymeriad neu lai			
+importerAddress.postalCode.error.invalid	Enter a real postcode	Nodwch god post go iawn			
+importerAddress.hint	We will use this to send letters about this application.	Byddwn yn defnyddio hwn i anfon llythyrau ynghylch y cais hwn.			
+agentImporterAddress.title	What is your business address?	Beth yw cyfeiriad eich busnes?			
+agentImporterAddress.heading	What is your business address?	Beth yw cyfeiriad eich busnes?			
+agentImporterAddress.checkYourAnswersLabel	Your address	Eich cyfeiriad			
+agentImporterAddress.hint	We will use this to send letters about this application.	Byddwn yn defnyddio hwn i anfon llythyrau ynghylch y cais hwn.			
+agentImporterAddress.line1.error.required	Enter Address line 1	Nodwch gyfeiriad – llinell 1			
+agentImporterAddress.line1.error.length	Address line 1 must be 128 characters or less	Mae’n rhaid i gyfeiriad – llinell 1 fod yn 128 o gymeriadau neu lai			
+agentImporterAddress.line1.error.invalid	Address line 1 must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces	Mae cyfeiriad – llinell 1 ond yn gallu cynnwys y llythrennau a i z, y rhifau 0 i 9, ampersandau (&), collnodau, comas, ebychnodau, blaenslaesau, atalnodau llawn, cysylltnodau, cromfachau crwn, dyfynodau, tanlinellau a bylchau			
+agentImporterAddress.line2.error.length	Address line 2 must be 128 characters or less	Mae’n rhaid i gyfeiriad – llinell 2 fod yn 128 o gymeriadau neu lai			
+agentImporterAddress.line2.error.invalid	Address line 2 must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces	Mae cyfeiriad – llinell 2 ond yn gallu cynnwys y llythrennau a i z, y rhifau 0 i 9, ampersandau (&), collnodau, comas, ebychnodau, blaenslaesau, atalnodau llawn, cysylltnodau, cromfachau crwn, dyfynodau, tanlinellau a bylchau			
+agentImporterAddress.city.error.required	Enter city	Nodwch ddinas			
+agentImporterAddress.city.error.length	City must be 64 characters or less	Mae’n rhaid i’r ddinas fod yn 64 o gymeriadau neu lai			
+agentImporterAddress.city.error.invalid	City must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces	Mae’r ddinas ond yn gallu cynnwys y llythrennau a i z, y rhifau 0 i 9, ampersandau (&), collnodau, comas, ebychnodau, blaenslaesau, atalnodau llawn, cysylltnodau, cromfachau crwn, dyfynodau, tanlinellau a bylchau			
+agentImporterAddress.region.error.required	Enter region	Nodwch ranbarth			
+agentImporterAddress.region.error.length	Region must be 64 characters or less	Mae’n rhaid i’r rhanbarth fod yn 64 o gymeriadau neu lai			
+agentImporterAddress.region.error.invalid	Region must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, exclamation marks, forward slashes, full stops, hyphens, round brackets, speech marks, underscores and spaces	Mae’r rhanbarth ond yn gallu cynnwys y llythrennau a i z, y rhifau 0 i 9, ampersandau (&), collnodau, comas, ebychnodau, blaenslaesau, atalnodau llawn, cysylltnodau, cromfachau crwn, dyfynodau, tanlinellau a bylchau			
+agentImporterAddress.countryCode.error.required	Enter country code	Nodwch god y wlad			
+agentImporterAddress.countryCode.error.length	Country code must be 64 characters or less	Mae’n rhaid i god y wlad fod yn 64 o gymeriadau neu lai			
+agentImporterAddress.countryCode.error.invalid	Country code includes 1 or more characters that cannot be used	Mae cod y wlad yn cynnwys 1 neu fwy o gymeriadau nad oes modd eu defnyddio			
+agentImporterAddress.postalCode.error.invalid	Enter a real postcode	Nodwch god post go iawn			
+importerManualAddress.title	Enter the importer’s address	Nodwch gyfeiriad y mewnforiwr			
+importerManualAddress.heading	Enter the importer’s address	Nodwch gyfeiriad y mewnforiwr			
+importerManualAddress.confirmation.title	Confirm the importer’s address	Cadarnhewch gyfeiriad y mewnforiwr			
+importerManualAddress.addressLine1.heading	Address line 1	Cyfeiriad – llinell 1			
+importerManualAddress.addressLine2.heading	Address line 2 (optional)	Cyfeiriad – llinell 2 (dewisol)			
+importerManualAddress.city.heading	Town or city	Tref neu ddinas			
+importerManualAddress.county.heading	County	Sir			
+importerManualAddress.country.heading	Country	Gwlad			
+importerManualAddress.checkYourAnswersLabel	Importer address	Cyfeiriad y mewnforiwr			
+importerManualAddress.error.required	Enter the importer’s address	Nodwch gyfeiriad y mewnforiwr			
+importerManualAddress.hint	We will use this to send letters about this application.	Byddwn yn defnyddio hwn i anfon llythyrau ynghylch y cais hwn.			
+agent.importerManualAddress.hint	We may use these details to contact the importer about this claim.	Efallai y byddwn yn defnyddio’r manylion hyn i gysylltu â’r mewnforiwr ynghylch yr hawliad hwn.			
+importerManualAddress.error.length	Address must be 128 characters or less	Mae’n rhaid i’r cyfeiriad fod yn 128 o gymeriadau neu lai			
+importerYourAddress.title	Enter your address	Nodwch eich cyfeiriad			
+importerYourAddress.heading	Enter your address	Nodwch eich cyfeiriad			
+importerYourAddress.confirmation.title	Confirm your address	Cadarnhewch eich cyfeiriad			
+confirmation.title	Application complete	Cais wedi’i gwblhau			
+confirmation.heading	Application complete	Cais wedi’i gwblhau			
+confirmation.referenceNumber	Your application reference number	Cyfeirnod eich cais			
+confirmation.application.received	We have received your application.	Mae’ch cais wedi dod i law.			
+confirmation.print	Print or save a summary of your application and reference number	Argraffwch neu cadwch grynodeb o’ch cais a’ch cyfeirnod			
+confirmation.print.text	as we will not send you an email confirmation.	gan na fyddwn yn anfon cadarnhad atoch drwy e-bost.			
+confirmation.review	View a summary of your application and reference number (opens in a new tab)	Bwrw golwg dros grynodeb o’ch cais a’ch cyfeirnod (yn agor tab newydd)			
+confirmation.start	Start a new application	Dechrau cais newydd			
+confirmation.whatHappensNext.heading	What happens next	Yr hyn sy’n digwydd nesaf			
+confirmation.whatHappensNext.p1	We will process your application and send our decision by post within 30 days.	Byddwn yn prosesu’ch cais ac yn anfon ein penderfyniad drwy’r post cyn pen 30 diwrnod.			
+confirmation.whatHappensNext.p2	We will contact you if we need more information to complete your application.	Byddwn yn cysylltu â chi os bydd angen rhagor o wybodaeth arnom i gwblhau’ch cais.			
+confirmation.improveService.link.text1	What did you think of this service?	Beth oedd eich barn am y gwasanaeth hwn?			
+confirmation.amend.title	Information sent	Gwybodaeth wedi’i hanfon			
+confirmation.amend.heading	Information sent	Gwybodaeth wedi’i hanfon			
+confirmation.summary.title	Your application details	Manylion eich cais			
+confirmation.summary.section.heading	Application	Cais			
+confirmation.summary.reference	Application reference number	Cyfeirnod y cais			
+confirmation.summary.datetime	Submitted	Wedi cyflwyno			
+amend.confirmation.whatHappensNext.heading	What happens next	Yr hyn sy’n digwydd nesaf			
+amend.confirmation.receivedInformation	We have received your information.	Mae’ch gwybodaeth wedi dod i law.			
+amend.confirmation.print	Print or save a summary of your additional information and reference number	Argraffwch neu cadwch grynodeb o’ch gwybodaeth ychwanegol a’ch cyfeirnod			
+amend.confirmation.print.text	as we will not send you an email confirmation.	gan na fyddwn yn anfon cadarnhad atoch drwy e-bost.			
+amend.confirmation.review	View a summary of your additional information and reference number (opens in a new tab)	Bwrw golwg dros grynodeb o’ch gwybodaeth ychwanegol a’ch cyfeirnod (yn agor tab newydd)			
+amend.confirmation.amendWhatHappensNext.p1	We will process your application and send our decision by post within 30 days.	Byddwn yn prosesu’ch cais ac yn anfon ein penderfyniad drwy’r post cyn pen 30 diwrnod.			
+amend.confirmation.amendWhatHappensNext.p2	We will contact you if we need more information to complete your application.	Byddwn yn cysylltu â chi os bydd angen rhagor o wybodaeth arnom i gwblhau’ch cais.			
+amend.confirmation.moreInformation.heading	If we do not need more information	Os nad oes angen rhagor o wybodaeth arnom			
+amend.confirmation.moreInformation.p1	We will continue processing your application.	Byddwn yn parhau i brosesu’ch cais.			
+amend.confirmation.helpUs.heading	Help us improve our services	Helpu ni i wella ein gwasanaethau			
+amend.confirmation.helpUs.p1	We use your feedback to make our services better.	Rydym yn defnyddio’ch adborth i wella ein gwasanaethau.			
+amend.confirmation.helpUs.p2	What did you think of this service?	Beth oedd eich barn am y gwasanaeth hwn?			
+amend.confirmation.helpUs.p3	(takes one minute)	(mae’n cymryd munud)			
+amend.confirmation.summary.title	Your amended application details	Manylion eich cais diwygiedig			
+agentImporterManualAddress.title	Enter your business address	Nodwch gyfeiriad eich busnes			
+agentImporterManualAddress.heading	Enter your business address	Nodwch gyfeiriad eich busnes			
+agentImporterManualAddress.confirmation.title	Confirm your business address	Cadarnhewch gyfeiriad eich busnes			
+agentImporterManualAddress.hint	We will use this to send letters about this application.	Byddwn yn defnyddio hwn i anfon llythyrau ynghylch y cais hwn.			
+agentImporterManualAddress.checkYourAnswersLabel	Your address	Eich cyfeiriad			
+agentImporterManualAddress.line1.heading	Address line 1	Cyfeiriad – llinell 1			
+agentImporterManualAddress.line1.error.required	Enter address line 1	Nodwch gyfeiriad – llinell 1			
+agentImporterManualAddress.line1.error.length	Address line 1 must be 128 characters or less	Mae’n rhaid i gyfeiriad – llinell 1 fod yn 128 o gymeriadau neu lai			
+agentImporterManualAddress.line2.heading	Address line 2 (optional)	Cyfeiriad – llinell 2 (dewisol)			
+agentImporterManualAddress.line2.error.length	Address line 2 must be 128 characters or less	Mae’n rhaid i gyfeiriad – llinell 2 fod yn 128 o gymeriadau neu lai			
+agentImporterManualAddress.city.heading	Town or city	Tref neu ddinas			
+agentImporterManualAddress.city.error.required	Enter city	Nodwch ddinas			
+agentImporterManualAddress.city.error.length	City must be 64 characters or less	Mae’n rhaid i’r ddinas fod yn 64 o gymeriadau neu lai			
+agentImporterManualAddress.region.heading	County	Sir			
+agentImporterManualAddress.region.error.required	Enter region	Nodwch ranbarth			
+agentImporterManualAddress.region.error.length	Region must be 64 characters or less	Mae’n rhaid i’r rhanbarth fod yn 64 o gymeriadau neu lai			
+agentImporterManualAddress.countryCode.heading	Country	Gwlad			
+agentImporterManualAddress.countryCode.error.required	Enter country code	Nodwch god y wlad			
+agentImporterManualAddress.countryCode.error.length	Country code must be 64 characters or less	Mae’n rhaid i god y wlad fod yn 64 o gymeriadau neu lai			
+agentImporterManualAddress.postalCode.heading	Post Code	Cod post			
+agentImporterManualAddress.postalCode.error.invalid	Enter a real postcode	Nodwch god post go iawn			
+bankDetails.title	Enter UK bank details	Nodwch fanylion banc yn y DU			
+bankDetails.heading	Enter UK bank details	Nodwch fanylion banc yn y DU			
+bankDetails.checkYourAnswersLabel	Bank details	Manylion banc			
+bankDetails.name.heading	Name on the account	Yr enw sydd ar y cyfrif			
+bankDetails.name.hint	Enter your name as it appears on your bank statement.	Nodwch eich enw fel y mae’n ymddangos ar eich cyfriflen banc			
+bankDetails.name.error.required	Enter the name on the account	Nodwch yr enw sydd ar y cyfrif			
+bankDetails.name.error.length	Name on the account must be 40 characters or less	Mae’n rhaid i’r enw sydd ar y cyfrif fod yn 40 o gymeriadau neu lai			
+bankDetails.sortCode.heading	Sort code	Cod didoli			
+bankDetails.sortCode.hint	Must be 6 digits long.	Mae’n rhaid i hyn fod yn 6 digid.			
+bankDetails.sortCode.error.required	Enter a sort code	Nodwch god didoli			
+bankDetails.sortCode.error.invalid	Enter a valid sort code	Nodwch god didoli dilys			
+bankDetails.accountNumber.heading	Account number	Rhif y cyfrif			
+bankDetails.accountNumber.hint	Must be between 6 and 8 digits long.	Mae’n rhaid i hyn fod rhwng 6 ac 8 digid.			
+bankDetails.accountNumber.error.required	Enter an account number	Nodwch rif cyfrif			
+bankDetails.accountNumber.error.invalid	Enter a valid account number	Nodwch rif cyfrif dilys			
+bankDetails.accountNumber.error.length	Account number must be between 6 and 8 digits	Mae’n rhaid i rif y cyfrif fod rhwng 6 ac 8 digid			
+bankDetails.bars.validation.failed	Unable to validate bank account details	Methu dilysu manylion cyfrif banc			
+bankDetails.bars.validation.sortcodeNotFound	Enter a valid sort code	Nodwch god didoli dilys			
+bankDetails.bars.validation.modCheckFailed	Account number must be valid for the given sort code	Mae’n rhaid i rif y cyfrif fod yn ddilys ar gyfer y cod didoli a roddwyd			
+bankDetails.bars.validation.rollRequired	Enter details of a bank account or building society account that does not require a roll number	Nodwch fanylion cyfrif banc neu gyfrif cymdeithas adeiladu nad oes angen rhif rôl arno			
+bankDetails.bars.validation.bacsNotSupported	This bank account cannot receive Bacs payments. Enter a bank account that can receive Bacs payments	Ni all y cyfrif banc hwn dderbyn taliadau BACS. Nodwch gyfrif banc sy’n gallu derbyn taliadau BACS			
+bankDetails.bars.validation.accountInvalid	Enter a real bank account	Nodwch gyfrif banc go iawn			
+bankDetails.bars.validation.companyNameInvalid	Enter the name as it appears on the bank account	Nodwch yr enw fel y mae’n ymddangos ar y cyfrif banc			
+importerAddressConfirmation.title	Select your address	Dewiswch eich cyfeiriad			
+importerAddressConfirmation.heading	Select your address	Dewiswch eich cyfeiriad			
+importerAddressConfirmation.link1	change	newid			
+importerAddressConfirmation.link2	I can’t find my address in the list	Ni allaf ddod o hyd i’m cyfeiriad yn y rhestr			
+importerAddressConfirmation.address	Select an address	Dewiswch gyfeiriad			
+agent.importerAddressConfirmation.title	Select the importer’s address	Dewiswch gyfeiriad y mewnforiwr			
+agent.importerAddressConfirmation.heading	Select the importer’s address	Dewiswch gyfeiriad y mewnforiwr
+agentImporterAddressConfirmation.title	Select your business address	Dewiswch gyfeiriad eich busnes			
+agentImporterAddressConfirmation.heading	Select your business address	Dewiswch gyfeiriad eich busnes			
+repaymentAmountSummary.title	Return amount summary	Crynodeb o’r symiau i’w talu’n ôl			
+repaymentAmountSummary.heading	Return amount summary	Crynodeb o’r symiau i’w talu’n ôl			
+repaymentAmountSummary.customsduty	Customs Duty	Toll Dramor			
+repaymentAmountSummary.customsduty.0	Amount that was paid	Y swm a dalwyd			
+repaymentAmountSummary.customsduty.1	Amount that should have been paid	Y swm y dylid bod wedi’i dalu			
+repaymentAmountSummary.customsduty.2	Total Customs Duty return amount	Cyfanswm y Doll Dramor i’w thalu’n ôl			
+repaymentAmountSummary.vat	VAT	TAW			
+repaymentAmountSummary.vat.0	Amount that was paid	Y swm a dalwyd			
+repaymentAmountSummary.vat.1	Amount that should have been paid	Y swm y dylid bod wedi’i dalu			
+repaymentAmountSummary.vat.2	Total VAT return amount	Cyfanswm y TAW i’w thalu’n ôl			
+repaymentAmountSummary.otherduties	Other duties	Tollau eraill			
+repaymentAmountSummary.otherduties.0	Amount that was paid	Y swm a dalwyd			
+repaymentAmountSummary.otherduties.1	Amount that should have been paid	Y swm y dylid bod wedi’i dalu			
+repaymentAmountSummary.otherduties.2	Total other duties return amount	Cyfanswm y tollau eraill i’w talu’n ôl			
+repaymentAmountSummary.total	Total	Cyfanswm			
+repaymentAmountSummary.total.amount	Total return amount	Cyfanswm i’w dalu’n ôl			
+repaymentAmountSummary.summary	The total return amount will be checked and the final return amount will be confirmed in writing.	Bydd y cyfanswm i’w dalu’n ôl yn cael ei wirio a bydd y swm terfynol i’w dalu’n ôl yn cael ei gadarnhau’n ysgrifenedig.			
+repaymentAmountSummary.total.checkYourAnswersLabel	Total return amount	Cyfanswm i’w dalu’n ôl			
+fileUpload.title	Upload a file	Uwchlwytho ffeil			
+fileUpload.heading	Upload a file	Uwchlwytho ffeil			
+additionalFileUpload.title	You have uploaded x file	Rydych wedi uwchlwytho x ffeil			
+additionalFileUpload.heading	You have uploaded x file	Rydych wedi uwchlwytho x ffeil			
+additionalFileUpload.01	Yes	Iawn			
+additionalFileUpload.02	No	Na			
+additionalFileUpload.checkYourAnswersLabel	Do you need to upload another file?	A oes angen i chi uwchlwytho ffeil arall?			
+additionalFileUpload.error.required	Select yes if you need to upload another file	Dewiswch ‘Iawn’ os oes angen i chi uwchlwytho ffeil arall			
+postcode.error.noneFound	Postcode cannot be found	Ni ellir dod o hyd i’r cod post			
+addressFound.error	Select the address or enter the address manually	Dewiswch y cyfeiriad neu nodwch y cyfeiriad â llaw			
+postcode.error.required	Enter a UK postcode	Nodwch god post yn y DU			
+postcode.error.length	Enter a postcode, like AA1 1AA	Nodwch god post, megis AA1 1AA			
+indirectRepresentative.title	Are you an indirect representative of the importer?	A ydych yn gynrychiolydd anuniongyrchol i’r mewnforiwr?			
+indirectRepresentative.heading	Are you an indirect representative of the importer?	A ydych yn gynrychiolydd anuniongyrchol i’r mewnforiwr?			
+indirectRepresentative.checkYourAnswersLabel	Are you an indirect representative?	A ydych yn gynrychiolydd anuniongyrchol?			
+indirectRepresentative.error.required	Select if you are an indirect representative of the importer	Dewiswch a ydych yn gynrychiolydd anuniongyrchol i’r mewnforiwr			
+proofOfAuthority.title	Upload proof of authority	Uwchlwytho tystiolaeth o awdurdod			
+proofOfAuthority.heading	Upload proof of authority	Uwchlwytho tystiolaeth o awdurdod			
+proofOfAuthority.paragraph1	You must show that the importer has given you authority to receive payment for this specific application	Mae’n rhaid i chi ddangos bod y mewnforiwr wedi rhoi’r awdurdod i chi gael taliadau ar gyfer y cais penodol hwn			
+proofOfAuthority.paragraph2	Upload a file	Uwchlwytho ffeil			
+proofOfAuthority.error.required	Upload proof of authority	Uwchlwytho tystiolaeth o awdurdod			
+proofOfAuthority.checkYourAnswersLabel	Proof of authority document	Dogfen tystiolaeth o awdurdod			
+bulkFileUpload.title	Upload the multiple entry document	Uwchlwytho’r ddogfen cofnodion lluosog			
+bulkFileUpload.heading	Upload the multiple entry document	Uwchlwytho’r ddogfen cofnodion lluosog			
+bulkFileUpload.paragraph1	Your uploaded file must include:	Mae’n rhaid i’r ffeil rydych yn ei huwchlwytho gynnwys:			
+bulkFileUpload.01	the entry processing unit (EPU) number, entry number and entry date	rhif yr Uned Prosesu Cofnodion (EPU), rhif y cofnod a dyddiad y cofnod			
+bulkFileUpload.02	all item numbers	rhif pob eitem			
+bulkFileUpload.03	the type of duty or tax you are claiming for each entry	y math o doll neu dreth yr ydych yn ei hawlio ar gyfer pob cofnod			
+bulkFileUpload.04	the amount that was paid to HMRC	y swm a dalwyd i CThEM			
+bulkFileUpload.05	the amount that should have been paid to HMRC	y swm y dylid bod wedi’i dalu i CThEM			
+bulkFileUpload.paragraph2	The file must be 6MB or less.	Mae’n rhaid i’r ffeil fod yn 6MB neu lai.			
+bulkFileUpload.file.details.heading	Types of files you can upload	Y mathau o ffeiliau y gallwch eu huwchlwytho			
+bulkFileUpload.checkYourAnswersLabel	Multiple entries spreadsheet	Taenlen cofnodion lluosog			
+bulkFileUpload.error.required	You must upload a file	Mae’n rhaid i chi uwchlwytho ffeil			
+referenceNumber.title	What is the application reference number?	Beth yw cyfeirnod y cais?			
+referenceNumber.heading	What is the application reference number?	Beth yw cyfeirnod y cais?			
+referenceNumber.checkYourAnswersLabel	Application reference number	Cyfeirnod y cais			
+referenceNumber.error.required	Enter the reference number	Nodwch y cyfeirnod			
+referenceNumber.error.length	The reference number must be 23 characters long	Mae’n rhaid i’r cyfeirnod fod yn 23 o gymeriadau			
+referenceNumber.hintText	This is the 23 character reference number issued when you submitted your application. This will start with NDRC. For example, NDRC000A00AB0ABCABC0AB0.	Dyma’r cyfeirnod 23 cymeriad a roddwyd wrth i chi gyflwyno’ch cais. Bydd yn dechrau gydag NDRC. Er enghraifft, NDRC000A00AB0ABCABC0AB0.			
+referenceNumber.error.prefix	Enter the reference number in the right format	Nodwch y cyfeirnod yn y fformat cywir			
+referenceNumber.error.invalid.chars	The reference number must only include letters a to z and numbers 0 to 9	Mae’n rhaid i’r cyfeirnod gynnwys y llythrennau a i z a’r rhifau 0 i 9 yn unig			
+furtherInformation.title	Give us further information	Rhowch wybodaeth bellach i ni			
+furtherInformation.heading	Give us further information	Rhowch wybodaeth bellach i ni			
+furtherInformation.checkYourAnswersLabel	Additional information	Gwybodaeth ychwanegol			
+furtherInformation.error.required	Enter the further information	Nodwch yr wybodaeth bellach			
+furtherInformation.error.length	Further information must be 1400 characters or less	Mae’n rhaid i’r wybodaeth bellach fod yn 1400 o gymeriadau neu lai			
+furtherInformation.hintText	Send the information that HMRC has asked for.	Anfonwch yr wybodaeth y mae CThEM wedi gofyn amdani.			
+amendCaseResponseType.title	What do you need to do?	Beth y mae angen i chi ei wneud?			
+amendCaseResponseType.heading	What do you need to do?	Beth y mae angen i chi ei wneud?			
+amendCaseResponseType.supportingDocuments	Send more supporting documents	Anfon rhagor o ddogfennau ategol			
+amendCaseResponseType.furtherInformation	Give us further information in writing	Rhoi rhagor o wybodaeth i ni yn ysgrifenedig			
+amendCaseResponseType.checkYourAnswersLabel	What do you need to do?	Beth y mae angen i chi ei wneud?			
+amendCaseResponseType.error.required	Select an option to continue	Dewiswch opsiwn i fynd yn eich blaen			
+amendCaseResponseType.hintText	Select all that apply.	Dewiswch bob un sy’n berthnasol.			
+amendCaseSendInformation.error.length	AmendCaseSendInformation must be 1000 characters or less	Mae’n rhaid i AmendCaseSendInformation fod yn 1000 o gymeriadau neu lai			
+amendCaseSendInformation.title	Upload a file	Uwchlwytho ffeil			
+amendCaseSendInformation.heading	Upload a file	Uwchlwytho ffeil			
+amendCaseSendInformation.paragraph1	You can upload as many files as you need to.	Gallwch uwchlwytho cymaint o ffeiliau ag sydd angen.			
+amendCaseSendInformation.paragraph2	You can only upload one file at a time.	Dim ond un ffeil y gallwch ei huwchlwytho ar y tro.			
+amendCaseSendInformation.subheading	Suggested supporting documents	Dogfennau ategol awgrymedig			
+amendCaseSendInformation.paragraph3	Send us any supporting documents you have. This could include:	Anfonwch atom unrhyw ddogfennau ategol sydd gennych. Gallai’r rhain gynnwys:			
+amendCaseSendInformation.01	airway bill	bil teithrestr awyr (AWB)			
+amendCaseSendInformation.02	bill of lading	bil llwytho			
+amendCaseSendInformation.03	C88	C88			
+amendCaseSendInformation.04	E2	E2			
+amendCaseSendInformation.05	invoice	anfoneb			
+amendCaseSendInformation.06	packing list	rhestr bacio			
+amendCaseSendInformation.07	proof of origin	tystiolaeth o darddiad			
+amendCaseSendInformation.08	substitute entry	cofnod cyfnewid			
+amendCaseSendInformation.checkYourAnswersLabel	Upload a file	Uwchlwytho ffeil			
+amendCaseSendInformation.error.required	Select files	Dewiswch ffeiliau			
+amendCaseUploadAnotherFile.title	You have uploaded x file	Rydych wedi uwchlwytho x ffeil			
+amendCaseUploadAnotherFile.heading	You have uploaded x file	Rydych wedi uwchlwytho x ffeil			
+amendCaseUploadAnotherFile.01	Yes	Iawn			
+amendCaseUploadAnotherFile.02	No	Na			
+amendCaseUploadAnotherFile.checkYourAnswersLabel	Do you need to upload another file?	A oes angen i chi uwchlwytho ffeil arall?			
+amendCaseUploadAnotherFile.error.required	Select another file to upload	Dewiswch ffeil arall i’w huwchlwytho			
+amendCaseResponseType.sendInformation.checkYourAnswersLabel	Send additional Information	Anfon gwybodaeth ychwanegol			
+amendCaseResponseType.sendDocuments.checkYourAnswersLabel	Send additional Documents	Anfon dogfennau ychwanegol			
+amendCaseResponseType.sendInformationAndDocuments.checkYourAnswersLabel	Send additional Documents and Information	Anfon dogfennau a gwybodaeth ychwanegol			
+view.upload-file.title	Upload your supporting documentation	Uwchlwythwch eich dogfennau ategol			
+view.upload-file.heading	Upload your supporting documentation	Uwchlwythwch eich dogfennau ategol			
+view.upload-file.line1	You can upload as many files as you need to support your application.	Gallwch uwchlwytho cymaint o ffeiliau ag sydd angen i ategu’ch cais.			
+view.upload-file.line2	Each file must be 6MB or smaller.	Mae’n rhaid i bob ffeil fod yn 6MB neu lai.			
+view.upload-file.details	What you must upload	Beth mae’n rhaid i chi ei uwchlwytho			
+view.upload-file.types.heading	Types of files you can upload	Y mathau o ffeiliau y gallwch eu huwchlwytho			
+view.upload-file.label.upload.first	Upload your first file	Uwchlwythwch eich ffeil gyntaf			
+view.upload-file.label.upload.next	Upload another file (optional)	Uwchlwytho ffeil arall (dewisol)			
+view.upload-file.waiting	Your document is being uploaded. You’ll be redirected once the file has been processed.	Mae’ch dogfen wrthi’n cael ei huwchlwytho. Cewch eich ailgyfeirio unwaith y bydd y ffeil wedi’i phrosesu.			
+form.upload-file.submit	Continue	Yn eich blaen			
+view.upload-file.checkYourAnswersLabel	Supporting documents	Dogfennau ategol			
+form.file-uploaded.continue	Continue	Yn eich blaen			
+site.file.remove	Remove	Tynnu			
+error.file-upload.required	You must upload a file	Mae’n rhaid i chi uwchlwytho ffeil			
+error.file-upload.invalid-size-small	The file cannot be empty	Ni all y ffeil fod yn wag			
+error.file-upload.invalid-size-large	File size cannot be over 6mb	Ni all maint y ffeil fod dros 6MB			
+error.file-upload.invalid-type	Upload a valid file type	Uwchlwythwch fath dilys o ffeil			
+error.file-upload.quarantine	The file contains a virus and cannot be uploaded	Mae’r ffeil yn cynnwys feirws ac ni ellir ei huwchlwytho			
+error.file-upload.unknown	The file could not be uploaded	Nid oedd modd uwchlwytho’r ffeil			
+error.file-upload.try-again	The file could not be uploaded - try again	Nid oedd modd uwchlwytho’r ffeil – rhowch gynnig arall arni			
+error.file-upload.timeout	The file could not be uploaded - try again	Nid oedd modd uwchlwytho’r ffeil – rhowch gynnig arall arni			
+error.uploadAnotherFile.required	Select yes if you need to upload another file	Dewiswch ‘Iawn’ os oes angen i chi uwchlwytho ffeil arall			
+error.file-upload.duplicate	This file has already been uploaded	Mae’r ffeil eisoes wedi’i huwchlwytho			
+view.upload-file.documents.added	documents added	dogfennau wedi’u hychwanegu			
+proof-of-authority.title	Upload proof of authority	Uwchlwytho tystiolaeth o awdurdod			
+proof-of-authority.heading	Upload proof of authority	Uwchlwytho tystiolaeth o awdurdod			
+proof-of-authority.paragraph1	You must show that the importer has given you authority to receive payment for this specific application.	Mae’n rhaid i chi ddangos bod y mewnforiwr wedi rhoi’r awdurdod i chi gael taliadau ar gyfer y cais penodol hwn.			
+proof-of-authority.paragraph2	This document must be 6MB or less	Mae’n rhaid i’r ddogfen hon fod yn 6MB neu lai			
+proof-of-authority.filetypes	Types of files you can upload	Y mathau o ffeiliau y gallwch eu huwchlwytho			
+proof-of-authority.filetype1	Image (.jpeg, .jpg or .png)	Delwedd (.jpeg, .jpg neu .png)			
+proof-of-authority.filetype2	PDF (.pdf)	PDF (.pdf)			
+proof-of-authority.filetype3	MS Word document (.doc or .docx)	Dogfen MS Word (.doc neu .docx)			
+proof-of-authority.filetype4	MS Excel spreadsheet (.xls or .xlsx)	Taenlen MS Excel (.xls neu .xlsx)			
+proof-of-authority.filetype5	MS PowerPoint (.ppt or .pptx)	MS PowerPoint (.ppt neu .pptx)			
+proof-of-authority.filetype6	Open Document Format (.odt, .ods or .odp)	Fformat Dogfen Agored (.odt, .ods neu .odp)			
+proof-of-authority.filetype7	Text files (.csv or .txt)	Ffeiliau testun (.csv neu .txt)			
+upload_documents.status.in_progress	Uploading your file	Wrthi’n uwchlwytho’ch ffeil			
+upload_documents.status.ready	Ready to submit	Barod i gyflwyno			
+upload_documents_summary.remove.label	Remove	Tynnu			
+upload_documents_summary.remove.label.hidden	Remove file {0}	Tynnu ffeil {0}			
+view.amend-upload-file.title	Upload your additional documents	Uwchlwythwch eich dogfennau ychwanegol			
+view.amend-upload-file.heading	Upload your additional documents	Uwchlwythwch eich dogfennau ychwanegol			
+view.amend-upload-file.label.upload.first	Upload a file	Uwchlwytho ffeil			
+view.amend-upload-file.label.upload.next	Upload another file (optional)	Uwchlwytho ffeil arall (dewisol)			
+view.amend-upload-file.waiting	Your document is being uploaded. You’ll be redirected once the file has been processed.	Mae’ch dogfen wrthi’n cael ei huwchlwytho. Cewch eich ailgyfeirio unwaith y bydd y ffeil wedi’i phrosesu.			
+form.amend-upload-file.submit	Continue	Yn eich blaen			
+form.amend-file-uploaded.continue	Continue	Yn eich blaen			
+site.amend-file.remove	Remove	Tynnu			
+view.amend-upload-file.checkYourAnswersLabel	Additional uploads	Ffeiliau ychwanegol a uwchlwythwyd			
+amend.next.step.heading	Send your amended application	Anfon eich cais diwygiedig			
+amend.next.step.p1	Before sending your amended application, ensure that you have fully reviewed the information you have provided and that it is correct.	Cyn i chi anfon eich cais diwygiedig, gwnewch yn siŵr eich bod wedi adolygu’r holl wybodaeth rydych wedi’i rhoi a’i bod yn gywir.			
+amend.next.step.p2	You can print a summary of your application on the next page.	Gallwch argraffu crynodeb o’ch cais ar y dudalen nesaf.			
+amend.site.continue	Accept and send	Derbyn ac anfon			
+amend-file-upload.help.linkText	Help with file types	Help gyda mathau o ffeil			
+amend-file-upload.help.line1	Each file must be 6MB or less.	Mae’n rhaid i bob ffeil fod yn 6MB neu lai.			
+amend-file-upload.help.line2	Types of files you can upload	Y mathau o ffeiliau y gallwch eu huwchlwytho			
+supported-file-type.help.fileFormat1	Image (.jpeg, .jpg or .png)	Delwedd (.jpeg, .jpg neu .png)			
+supported-file-type.help.fileFormat2	PDF (.pdf)	PDF (.pdf)			
+supported-file-type.help.fileFormat3	MS Word document (.doc or .docx)	Dogfen MS Word (.doc neu .docx)			
+supported-file-type.help.fileFormat4	MS Excel spreadsheet (.xls or .xlsx)	Taenlen MS Excel (.xls neu .xlsx)			
+supported-file-type.help.fileFormat5	MS PowerPoint (.ppt or .pptx)	MS PowerPoint (.ppt neu .pptx)			
+supported-file-type.help.fileFormat6	Open Document Format (.odt, .ods or .odp)	Fformat Dogfen Agored (.odt, .ods neu .odp)			
+supported-file-type.help.fileFormat7	Text files (.csv or .txt)	Ffeiliau testun (.csv neu .txt)			
+your.details.checkYourAnswersLabel	Your details	Eich manylion			
+contact.details.checkYourAnswersLabel	Contact details	Manylion cyswllt			
+payment.information.checkYourAnswersLabel	Payment information	Gwybodaeth talu			
+importer.details.checkYourAnswersLabel	Importer details	Manylion y mewnforiwr			
+create.cya.continue	Accept and send	Derbyn ac anfon			
+isContactProvided.error.required	Select an option to continue	Dewiswch opsiwn i fynd yn eich blaen			
+isContactProvided.01	Email	E-bost			
+isContactProvided.02	Phone	Ffôn			
+phoneNumber.02.hint	Phone number	Rhif ffôn			
+createOrAmendCase.title	What do you want to do?	Beth hoffech ei wneud?			
+createOrAmendCase.heading	What do you want to do?	Beth hoffech ei wneud?			
+createOrAmendCase.01	Start a new application	Dechrau cais newydd			
+createOrAmendCase.02	Amend an existing application	Diwygio cais sy’n bodoli eisoes			
+createOrAmendCase.hint.01	Apply for repayment of overpaid import duties or import VAT.	Gwneud cais am ad-daliad o dollau mewnforio neu TAW mewnforio a ordalwyd.			
+createOrAmendCase.hint.02	Add further information or make changes to an existing application. You will need the claim reference number.	Ychwanegu rhagor o wybodaeth neu wneud newidiadau i gais sy’n bodoli eisoes. Bydd angen y cyfeirnod hawlio arnoch.			
+createOrAmendCase.error.required	Select if you want to start a new application or amend an existing application	Dewiswch a ydych am ddechrau cais newydd neu ddiwygio cais sy’n bodoli eisoes			
+doYouOwnTheGoods.title	Is {0} the name on the import documents?	Ai {0} yw’r enw ar y dogfennau mewnforio?			
+doYouOwnTheGoods.heading	Is {0} the name on the import documents?	Ai {0} yw’r enw ar y dogfennau mewnforio?			
+doYouOwnTheGoods.error.required	Select if {0} is named on the import documents	Dewiswch ai {0} yw’r enw ar y dogfennau mewnforio			
+doYouOwnTheGoods.01	Yes	Iawn			
+doYouOwnTheGoods.02	No	Na			
+doYouOwnTheGoods.checkYourAnswersLabel	Is {0} the name on the import documents?	Ai {0} yw’r enw ar y dogfennau mewnforio?			
+declarantName.title	What is your name?	Beth yw’ch enw?			
+declarantName.heading	What is your name?	Beth yw’ch enw?			
+declarantName.checkYourAnswersLabel	Your name	Eich enw			
+declarantName.firstName	First name	Enw cyntaf			
+declarantName.lastName	Last name	Enw olaf			
+declarantName.firstName.error.required	Enter your first name	Nodwch eich enw cyntaf			
+declarantName.lastName.error.required	Enter your last name	Nodwch eich enw olaf			
+declarantName.firstName.error.length	First name must be 255 characters or less	Mae’n rhaid i’r enw cyntaf fod yn 255 o gymeriadau neu lai			
+declarantName.lastName.error.length	Last name must be 255 characters or less	Mae’n rhaid i’r enw olaf fod yn 255 o gymeriadau neu lai			
+representative.declarantAndBusinessName.title	Your details	Eich manylion			
+representative.declarantAndBusinessName.heading	Your details	Eich manylion			
+representative.declarantAndBusinessName.declarantName.checkYourAnswersLabel	Your name	Eich enw			
+representative.declarantAndBusinessName.declarantName	Your name	Eich enw			
+representative.declarantAndBusinessName.agentName	Business name	Enw’r busnes			
+representative.declarantAndBusinessName.agentName.checkYourAnswersLabel	Your business name	Enw eich busnes			
+representative.declarantAndBusinessName.declarantName.error.required	Enter your name	Nodwch eich enw			
+representative.declarantAndBusinessName.agentName.error.required	Enter your business name	Nodwch enw eich busnes			
+representative.declarantAndBusinessName.declarantName.error.length	Your name must be 512 characters or less	Mae’n rhaid i’ch enw fod yn 512 o gymeriadau neu lai			
+representative.declarantAndBusinessName.agentName.error.length	Your business name must be 512 characters or less	Mae’n rhaid i enw eich busnes fod yn 512 o gymeriadau neu lai			
+representative.importer.title	Who is the importer?	Pwy yw’r mewnforiwr?			
+representative.importer.heading	Who is the importer?	Pwy yw’r mewnforiwr?			
+representative.importer.checkYourAnswersLabel	Importer name	Enw’r mewnforiwr			
+representative.importer.firstName	First Name	Enw cyntaf			
+representative.importer.lastName	Last Name	Enw olaf			
+representative.importer.firstName.error.required	Enter your first name	Nodwch eich enw cyntaf			
+representative.importer.lastName.error.required	Enter your last name	Nodwch eich enw olaf			
+representative.importer.firstName.error.length	First name must be 255 characters or less	Mae’n rhaid i’r enw cyntaf fod yn 255 o gymeriadau neu lai			
+representative.importer.lastName.error.length	Last name must be 255 characters or less	Mae’n rhaid i’r enw olaf fod yn 255 o gymeriadau neu lai			
+feedback.before	This is a new service - your	Gwasanaeth newydd yw hwn – bydd eich			
+feedback.link	feedback	adborth			
+feedback.after	will help us to improve it.	yn ein helpu i’w wella.			
+representative.importer.hint	This must match the information on the import documents.	Mae’n rhaid i hyn gyd-fynd â’r wybodaeth ar y dogfennau mewnforio.			
+representative.importer.importerName.error.required	Enter the importer’s name	Nodwch enw’r mewnforiwr			
+representative.importer.importerName.error.length	Importer name must be 512 characters or less	Mae’n rhaid i enw’r mewnforiwr fod yn 512 o gymeriadau neu lai			
+address.label.select.title	Select an address	Dewiswch gyfeiriad			
+address.label.edit.postcode	Postcode	Cod post			
+address.change	Search for a new address	Chwilio am gyfeiriad newydd			
+amend.application.not.found.title	Application not found	Heb ddod o hyd i’r cais			
+amend.application.not.found.heading	Application not found	Heb ddod o hyd i’r cais			
+amend.application.not.found.p1	We cannot find an application with the reference number {0}.	Ni allwn ddod o hyd i gais sydd â’r cyfeirnod {0}.			
+amend.application.not.found.p2	You can:	Gallwch:			
+amend.application.not.found.b1	check and	gwirio a			
+amend.application.not.found.b1.link	enter the application reference number again	nodi cyfeirnod y cais eto			
+amend.application.not.found.b2	email us at {0} with the additional information, the entry details and name of the importer. Please ensure to include the application reference number <b>{1}</b> in the subject header.	anfon e-bost atom yn {0} gyda’r wybodaeth ychwanegol, manylion y cofnod ac enw’r mewnforiwr. Gwnewch yn siŵr eich bod yn cynnwys cyfeirnod y cais, sef <b>{1}</b>, yn y pennawd pwnc.			
+amend.application.not.found.email.subject	Application reference {0}	Cyfeirnod y cais {0}			
+amend.application.closed.title	This application is closed	Mae’r cais hwn wedi cau			
+amend.application.closed.heading	This application is closed	Mae’r cais hwn wedi cau			
+amend.application.closed.p1	We cannot add any information to this application as it is closed. You should have received correspondence via post confirming why your application was closed.	Ni allwn ychwanegu unrhyw wybodaeth at y cais hwn gan ei fod wedi cau. Dylech fod wedi derbyn gohebiaeth drwy’r post yn cadarnhau pam y cafodd eich cais ei gau.			
+amend.application.closed.p2	If you feel this application has been closed in error, you can email us at {0} with the additional information.	Os ydych yn teimlo bod y cais hwn wedi cael ei gau drwy gamgymeriad, gallwch anfon e-bost atom yn {0} gyda’r wybodaeth ychwanegol.			
+amend.application.closed.p3	You must include the application reference number <b>{0}</b> in the subject header.	Mae’n rhaid i chi gynnwys cyfeirnod y cais, sef <b>{0}</b>, yn y pennawd pwnc.			
+amend.application.closed.email.subject	Closed application reference {0}	Cyfeirnod y cais sydd wedi cau {0}			
