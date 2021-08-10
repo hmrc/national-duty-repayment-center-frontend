@@ -18,7 +18,7 @@ package models
 
 import play.api.data.Form
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.Aliases.{ErrorMessage, Label}
+import uk.gov.hmrc.govukfrontend.views.Aliases.{ErrorMessage, Hint, Label}
 import uk.gov.hmrc.govukfrontend.views.html.components.{govukErrorMessage, govukHint, govukInput, govukLabel}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.input.Input
@@ -53,7 +53,8 @@ object NumberOfEntriesType extends Enumerable.Implicits {
                 Input(
                   id = "entries",
                   value = form("entries").value,
-                  label = Label(content = Text(messages("numberOfEntriesType.02.hint")), isPageHeading = false),
+                  label = Label(content = Text(messages("numberOfEntriesType.02.label")), isPageHeading = false),
+                  hint = Some(Hint(content = Text(messages("numberOfEntriesType.02.hint")))),
                   errorMessage =
                     if (form("entries").hasErrors)
                       Some(ErrorMessage(content = Text(messages(form("entries").errors.head.message))))

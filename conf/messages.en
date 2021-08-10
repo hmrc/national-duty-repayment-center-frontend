@@ -120,7 +120,8 @@ numberOfEntriesType.heading = How many entries do you want to submit?
 numberOfEntriesType.hint = Multiple entries must be from the same importer, and have the same reason for overpayment.
 numberOfEntriesType.01 = One entry
 numberOfEntriesType.02 = Multiple entries
-numberOfEntriesType.02.hint = Number of entries
+numberOfEntriesType.02.label = Number of entries
+numberOfEntriesType.02.hint = Multiple entries must all be from the same importer, involve the same reasons for the application and be from before 1 January 2021 or from that date onwards.
 numberOfEntriesType.checkYourAnswersLabel = How many entries do you want to submit?
 numberOfEntriesType.error.required = Select if you want to submit one entry or more than one entry
 
