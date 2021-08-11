@@ -24,8 +24,8 @@ import models.addresslookup.AddressLookupRequest.Labels.Language.{
   LookupPageLabels,
   SelectPageLabels
 }
-import models.addresslookup.AddressLookupRequest.{Labels, Options}
 import models.addresslookup.AddressLookupRequest.Options.TimeoutConfig
+import models.addresslookup.AddressLookupRequest.{Labels, Options}
 import org.scalatest.{MustMatchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.MessagesApi
@@ -95,20 +95,19 @@ object AddressLookupRequestSpec {
           )
         ),
       cy =
-        // Note - the strings below will need updating when Welsh translations are available
         AddressLookupRequest.Labels.Language(
-          AppLevelLabels(navTitle = Some("Apply for repayment of import duty and import VAT")),
-          SelectPageLabels(title = Some("Select an address"), heading = Some("Select an address")),
+          AppLevelLabels(navTitle = Some("Gwneud cais am ad-daliad o dollau mewnforio a TAW mewnforio")),
+          SelectPageLabels(title = Some("Dewiswch gyfeiriad"), heading = Some("Dewiswch gyfeiriad")),
           LookupPageLabels(
-            title = Some("What is your address?"),
-            heading = Some("What is your address?"),
-            afterHeadingText = Some("We will use this to send letters about this application.")
+            title = Some("Beth yw’ch cyfeiriad?"),
+            heading = Some("Beth yw’ch cyfeiriad?"),
+            afterHeadingText = Some("Byddwn yn defnyddio hwn i anfon llythyrau ynghylch y cais hwn.")
           ),
-          ConfirmPageLabels(title = Some("Confirm your address"), heading = Some("Confirm your address")),
+          ConfirmPageLabels(title = Some("Cadarnhewch eich cyfeiriad"), heading = Some("Cadarnhewch eich cyfeiriad")),
           EditPageLabels(
-            title = Some("Enter your address"),
-            heading = Some("Enter your address"),
-            postcodeLabel = Some("Postcode")
+            title = Some("Nodwch eich cyfeiriad"),
+            heading = Some("Nodwch eich cyfeiriad"),
+            postcodeLabel = Some("Cod post")
           )
         )
     )
