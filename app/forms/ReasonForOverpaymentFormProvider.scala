@@ -20,16 +20,16 @@ import javax.inject.Inject
 import forms.mappings.Mappings
 import models.ClaimDescription
 import play.api.data.Form
+import viewmodels.TextAreaHelper.removeCarriageReturn
 
 class ReasonForOverpaymentFormProvider @Inject() extends Mappings {
 
   def apply(): Form[ClaimDescription] =
     Form(
       "value" -> text("reasonForOverpayment.error.required")
-        .verifying(maxLength(1400, "reasonForOverpayment.error.length")).transform[ClaimDescription](
-          ClaimDescription.apply,
-          _.value
-        )
+        .verifying(maxLength(1200, "reasonForOverpayment.error.length", removeCarriageReturn)).transform[
+          ClaimDescription
+        ](x => ClaimDescription.apply(removeCarriageReturn(x)), _.value)
     )
 
 }

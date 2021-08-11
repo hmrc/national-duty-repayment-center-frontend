@@ -78,7 +78,11 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
         userAnswers.get(ClaimReasonTypeMultiplePage).flatMap(_.headOption)
       )
       claimDescription <- userAnswers.get(ReasonForOverpaymentPage).map(
-        description => ClaimDescription(quoteFormatter.format(description.value))
+        description =>
+          ClaimDescription(
+            quoteFormatter.format(description.value),
+            userAnswers.get(ClaimReasonTypeMultiplePage).getOrElse(Set.empty)
+          )
       )
       payeeIndicator    <- getPayeeIndicator(userAnswers)
       paymentMethod     <- getPaymentMethod(userAnswers)

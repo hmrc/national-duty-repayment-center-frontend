@@ -17,16 +17,17 @@
 package forms
 
 import javax.inject.Inject
-
 import forms.mappings.Mappings
 import play.api.data.Form
+import viewmodels.TextAreaHelper.removeCarriageReturn
 
 class FurtherInformationFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
       "value" -> text("furtherInformation.error.required")
-        .verifying(maxLength(1400, "furtherInformation.error.length"))
+        .verifying(maxLength(1400, "furtherInformation.error.length", removeCarriageReturn))
+        .transform[String](x => removeCarriageReturn(x), identity)
     )
 
 }

@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package models
+package viewmodels
 
-import play.api.libs.json.Format
+object TextAreaHelper {
 
-case class ClaimDescription(value: String)
-
-object ClaimDescription {
-
-  implicit val format: Format[ClaimDescription] =
-    JsonFormatUtils.stringFormat(ClaimDescription.apply)(_.value)
-
-  def apply(value: String, reasons: Set[ClaimReasonType]): ClaimDescription = {
-    val reasonString = s"Claim reason${if (reasons.size > 1) "s" else ""}: ${reasons.map(
-      reason => s"${ClaimReasonType.abbreviation(reason)}($reason)"
-    ).mkString(", ")}"
-    new ClaimDescription(s"$reasonString\n\n$value")
-  }
+  def removeCarriageReturn: String => String = _.replace("\r\n", "\n")
 
 }

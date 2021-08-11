@@ -51,6 +51,19 @@ object ClaimReasonType extends Enumerable.Implicits {
     Other
   )
 
+  def abbreviation(reason: ClaimReasonType): String = reason match {
+    case CommodityCodeChange      => "Comm Code"
+    case CurrencyChanges          => "Value"
+    case Cpuchange                => "CPC"
+    case CustomsSpecialProcedures => "CPC"
+    case Preference               => "Preference"
+    case Retroactivequota         => "Quota"
+    case ReturnOfUnwantedGoods    => "Returned Goods"
+    case ReturnedGoodsRelief      => "RGR"
+    case Value                    => "Value"
+    case Other                    => "Other"
+  }
+
   def options(form: Form[_], reasons: Set[ClaimReasonType])(implicit messages: Messages): Seq[RadioItem] =
     new RadioOptionHelper(values.filter(v => reasons.contains(v))).options(form)
 
