@@ -259,7 +259,6 @@ phoneNumber.error.invalid = Enter a phone number beginning with 0
 emailAddress.title = How can we contact you?
 emailAddress.heading = How can we contact you?
 emailAddress.hintText = <p>We will use these details if we need to contact you for further information.</p> <div class="govuk-hint">Select at least one option.</div>
-emailAddress.hint = Email address
 emailAddress.checkYourAnswersLabel = Email address
 emailAddress.error.required = Enter an email address
 emailAddress.error.length = Email Address must be 85 characters or less
@@ -615,7 +614,6 @@ create.cya.continue = Accept and send
 isContactProvided.error.required = Select an option to continue
 isContactProvided.01 = Email
 isContactProvided.02 = Phone
-phoneNumber.02.hint = Phone number
 
 createOrAmendCase.title = What do you want to do?
 createOrAmendCase.heading = What do you want to do?
