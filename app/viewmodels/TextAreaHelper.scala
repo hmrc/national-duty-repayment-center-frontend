@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package forms
+package viewmodels
 
-import javax.inject.Inject
-import forms.mappings.Mappings
-import models.ClaimDescription
-import play.api.data.Form
-import viewmodels.TextAreaHelper.removeCarriageReturn
+object TextAreaHelper {
 
-class ReasonForOverpaymentFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[ClaimDescription] =
-    Form(
-      "value" -> text("reasonForOverpayment.error.required")
-        .verifying(maxLength(1200, "reasonForOverpayment.error.length", removeCarriageReturn)).transform[
-          ClaimDescription
-        ](x => ClaimDescription.apply(removeCarriageReturn(x)), _.value)
-    )
+  def removeCarriageReturn: String => String = _.replace("\r\n", "\n")
 
 }

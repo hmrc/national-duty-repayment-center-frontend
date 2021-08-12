@@ -21,13 +21,15 @@ import java.util.UUID
 import base.SpecBase
 import connectors.NDRCConnector
 import data.TestData.{populateUserAnswersRepresentativeWithEmail, populateUserAnswersWithAmendData}
-import models.requests.{AmendClaimBuilder, CreateClaimBuilder}
+import models.requests.{AmendClaimBuilder, CreateClaimBuilder, CreateClaimRequest}
 import models.responses.ClientClaimResponse
+import models.{ClaimDescription, ClaimReasonType}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages.{ClaimReasonTypeMultiplePage, ReasonForOverpaymentPage}
 import services.ClaimService
 import uk.gov.hmrc.http.{HeaderCarrier, RequestId}
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
@@ -173,6 +175,28 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       result mustBe "ABC123"
 
       correlationId.getValue mustBe requestId
+
+    }
+
+    "should submit an updated ClaimDescription" in {
+
+      val reasons: Set[ClaimReasonType] = Set(ClaimReasonType.Preference, ClaimReasonType.Value)
+      val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
+        .set(ReasonForOverpaymentPage, ClaimDescription("some description")).success.value
+        .set(ClaimReasonTypeMultiplePage, reasons).success.value
+
+      implicit val hc: HeaderCarrier = HeaderCarrier()
+
+      val connector                                   = mock[NDRCConnector]
+      val response                                    = ClientClaimResponse("1", Some("ABC123"))
+      val request: ArgumentCaptor[CreateClaimRequest] = ArgumentCaptor.forClass(classOf[CreateClaimRequest])
+      when(connector.submitClaim(request.capture(), any())(any())).thenReturn(Future.successful(response))
+
+      val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
+      val result  = service.submitClaim(testUserAnswers)(hc).futureValue
+      result mustBe "ABC123"
+
+      request.getValue.Content.ClaimDetails.ClaimDescription mustBe ClaimDescription("some description", reasons)
 
     }
   }

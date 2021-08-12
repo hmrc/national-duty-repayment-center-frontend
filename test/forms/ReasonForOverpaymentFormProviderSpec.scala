@@ -17,13 +17,14 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
+import models.ClaimDescription
 import play.api.data.FormError
 
 class ReasonForOverpaymentFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "reasonForOverpayment.error.required"
   val lengthKey   = "reasonForOverpayment.error.length"
-  val maxLength   = 1400
+  val maxLength   = 1200
 
   val form = new ReasonForOverpaymentFormProvider()()
 
@@ -42,5 +43,10 @@ class ReasonForOverpaymentFormProviderSpec extends StringFieldBehaviours {
 
     behave like mandatoryField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
     behave like mandatoryNotSpaceField(form, fieldName, requiredError = FormError(fieldName, requiredKey))
+
+    "remove carriage returns from submitted value" in {
+      form.bind(Map("value" -> "Line1\r\nLine2")).value shouldBe Some(ClaimDescription("Line1\nLine2"))
+    }
+
   }
 }
