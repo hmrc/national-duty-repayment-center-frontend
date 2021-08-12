@@ -14,10 +14,10 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.charactercount.CharacterCount
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.charactercount.CharacterCount
 
-@this(govukCharacterCount : GovukCharacterCount)
+@this(hmrcCharacterCount: HmrcCharacterCount)
 
 @(
     form: Form[_],
@@ -32,7 +32,7 @@
 )(implicit messages: Messages)
 
 
-@govukCharacterCount(CharacterCount(
+@hmrcCharacterCount(CharacterCount(
     id,
     name,
     maxLength = maxLength,
