@@ -25,10 +25,10 @@ object ClaimDescription {
   implicit val format: Format[ClaimDescription] =
     JsonFormatUtils.stringFormat(ClaimDescription.apply)(_.value)
 
-  def apply(value: String, reasons: Set[ClaimReasonType]): ClaimDescription = {
-    val reasonString = s"Claim reason${if (reasons.size > 1) "s" else ""}: ${reasons.map(
-      reason => s"${ClaimReasonType.abbreviation(reason)}($reason)"
-    ).mkString(", ")}"
+  def apply(value: String, claimReasonTypes: Set[ClaimReasonType]): ClaimDescription = {
+    val abbreviations =
+      claimReasonTypes.map(reason => s"${ClaimReasonType.abbreviation(reason)}($reason)").mkString(", ")
+    val reasonString = s"Claim reason${if (claimReasonTypes.size > 1) "s" else ""}: $abbreviations"
     new ClaimDescription(s"$reasonString\n\n$value")
   }
 
