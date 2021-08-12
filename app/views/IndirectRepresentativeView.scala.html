@@ -38,7 +38,8 @@
         @forms.yesNoRadio(
             form,
             "indirectRepresentative.heading",
-            isPageHeading = true
+            isPageHeading = true,
+            hint = Some(Html(messages("indirectRepresentative.hintText")))
         )
 
         @html.button("site.continue")

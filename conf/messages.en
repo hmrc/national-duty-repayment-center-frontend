@@ -1,4 +1,4 @@
-checkYourAnswers.title = Check your answers before sending your information
+checkYourAnswers.title = Check your answers before sending your application
 checkYourAnswers.amend.title = Check your additional information
 
 checkYourAnswers.missing.icon = Warning
@@ -51,16 +51,16 @@ importerHasEori.heading = Do you have an EORI number?
 importerHasEori.checkYourAnswersLabel = Do you have an EORI number?
 importerHasEori.error.required = Select yes if you have an EORI number
 
-claimantType.title = Are you the importer or their representative?
-claimantType.heading = Are you the importer or their representative?
-claimantType.01 = I am the importer
-claimantType.02 = I am a representative of the importer
+claimantType.title = Are you the importer?
+claimantType.heading = Are you the importer?
+claimantType.01 = Yes
+claimantType.02 = No, I am a representative of the importer
 claimantType.checkYourAnswersLabel = Are you the importer or representative?
-claimantType.error.required = Select if you are the importer or a representative of the importer
+claimantType.error.required = Confirm if you are the importer or their representative
 claimantType.importer = Importer
 claimantType.representative = Representative
 
-impInfo.checkYourAnswersLabel = Import information
+impInfo.checkYourAnswersLabel = Important information
 
 importerEori.title = What is your EORI number?
 importerEori.heading = What is your EORI number?
@@ -185,7 +185,7 @@ reasonForOverpayment.heading = Tell us why the overpayment happened
 reasonForOverpayment.checkYourAnswersLabel = Why the overpayment happened
 reasonForOverpayment.error.required = Tell us why the overpayment happened
 reasonForOverpayment.error.length = Overpayment reason must be 1400 characters or less
-reasonForOverpayment.hint = If you do not provide enough information, we may be unable to process your application.
+reasonForOverpayment.hint = Provide as much information as possible. This will help us to process your application faster.
 reasonForOverpayment.p1 = You can tell us about:
 reasonForOverpayment.bullet1 = any commodity codes
 reasonForOverpayment.bullet2 = changes in currency or exchange rates
@@ -195,6 +195,8 @@ reasonForOverpayment.bullet5 = whether any items were replaced or refunded, and 
 reasonForOverpayment.bullet6 = changes to the value of goods
 reasonForOverpayment.bullet7 = the number of items or goods
 reasonForOverpayment.bullet8 = a description of the items or goods
+reasonForOverpayment.bullet9 = why any goods were returned
+reasonForOverpayment.bullet10 = if any goods have been destroyed by request
 reasonForOverpayment.bullet.claimReasonMultiple = if your application has more than one reason
 
 claimRepaymentType.title = What do you want to reclaim?
@@ -264,12 +266,12 @@ emailAddress.error.required = Enter an email address
 emailAddress.error.length = Email Address must be 85 characters or less
 emailAddress.error.invalid = Enter an email address in the correct format, like name@example.com
 
-whomToPay.title = Who is to be repaid?
-whomToPay.heading = Who is to be repaid?
+whomToPay.title = Who do you want HMRC to repay?
+whomToPay.heading = Who do you want HMRC to repay?
 whomToPay.01 = Importer
 whomToPay.02 = Representative
 whomToPay.checkYourAnswersLabel = Who is to be repaid?
-whomToPay.error.required = Select who you want to send the repayment to
+whomToPay.error.required = Select who you want HMRC to repay
 
 repaymentType.title = Select repayment method
 repaymentType.heading = Select repayment method
@@ -281,7 +283,7 @@ repaymentType.error.required = Select how you want to receive the repayment
 
 enterAgentEORI.title = What is the importer’s EORI number?
 enterAgentEORI.heading = What is the importer’s EORI number?
-enterAgentEORI.hint = This is 2 letters, followed by either 12 or 15 numbers, like ‘GB123456789123’ or ‘GB123456789123000’.
+enterAgentEORI.hint = This has 2 letters, followed by either 12 or 15 numbers. For example, GB123456789123 or GB123456789123000.
 enterAgentEORI.checkYourAnswersLabel = Importer EORI number
 enterAgentEORI.error.required = Enter the importer’s EORI number
 enterAgentEORI.error.valid = Enter the importer’s EORI number in the correct format
@@ -497,6 +499,7 @@ fileUpload.heading = Upload a file
 postcode.error.required = Enter a UK postcode
 indirectRepresentative.title = Are you an indirect representative of the importer?
 indirectRepresentative.heading = Are you an indirect representative of the importer?
+indirectRepresentative.hintText = An indirect representative acts in their own name but on behalf of another party. Both parties accept joint liability for the information provided.
 indirectRepresentative.checkYourAnswersLabel = Are you an indirect representative?
 indirectRepresentative.error.required = Select if you are an indirect representative of the importer
 
@@ -524,12 +527,12 @@ referenceNumber.hintText = This is the 23 character reference number issued when
 referenceNumber.error.prefix = Enter the reference number in the right format
 referenceNumber.error.invalid.chars =The reference number must only include letters a to z and numbers 0 to 9
 
-furtherInformation.title = Give us further information
-furtherInformation.heading = Give us further information
+furtherInformation.title = Add more information to your application
+furtherInformation.heading = Add more information to your application
 furtherInformation.checkYourAnswersLabel = Additional information
-furtherInformation.error.required = Enter the further information
-furtherInformation.error.length = Further information must be 1400 characters or less
-furtherInformation.hintText = Send the information that HMRC has asked for.
+furtherInformation.error.required = Enter the additional information
+furtherInformation.error.length = Additional information must be 1400 characters or less
+furtherInformation.hintText = This may be information that HMRC has asked for, information you choose to add or a request to cancel your application.
 
 amendCaseResponseType.title = What do you need to do?
 amendCaseResponseType.heading = What do you need to do?
