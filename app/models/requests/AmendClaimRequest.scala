@@ -22,7 +22,7 @@ import models.eis.QuoteFormatter
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.libs.json.{Json, OFormat}
 
-final case class AmendClaimRequest(Content: AmendContent, uploadedFiles: Seq[UploadedFile])
+final case class AmendClaimRequest(Content: AmendContent, uploadedFiles: Seq[UploadedFile], EORI: Option[EORI])
 
 object AmendClaimRequest {
   implicit val formats: OFormat[AmendClaimRequest] = Json.format[AmendClaimRequest]
@@ -51,7 +51,8 @@ class AmendClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
     } yield AmendClaimRequest(
       content,
       if (!hasSupportingDocs(userAnswers)) Nil
-      else userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil)
+      else userAnswers.fileUploadState.map(_.fileUploads.toUploadedFiles).getOrElse(Nil),
+      userAnswers.userEori
     )
   }
 

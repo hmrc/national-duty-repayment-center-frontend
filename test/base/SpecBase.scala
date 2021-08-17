@@ -218,7 +218,8 @@ trait SpecBase
       Description = "update request for Risk-2507",
       TypeOfAmendments = Seq(FurtherInformation)
     ),
-    Nil
+    Nil,
+    Some(EORI("GB123456789123456"))
   )
 
   val amendJson = Json.obj(
@@ -227,7 +228,8 @@ trait SpecBase
       "Description"      -> "update request for Risk-2507",
       "TypeOfAmendments" -> JsArray(Seq(Json.toJson(FurtherInformation.toString)))
     ),
-    "uploadedFiles" -> JsArray()
+    "uploadedFiles" -> JsArray(),
+    "EORI"          -> "GB123456789123456"
   )
 
   val json = Json.obj(

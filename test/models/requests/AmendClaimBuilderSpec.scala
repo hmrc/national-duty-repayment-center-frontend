@@ -18,6 +18,7 @@ package models.requests
 
 import base.SpecBase
 import data.TestData._
+import models.EORI
 import models.eis.QuoteFormatter
 import org.mockito.Mockito.verify
 import org.scalatest.MustMatchers
@@ -38,6 +39,20 @@ class AmendClaimBuilderSpec extends SpecBase with MustMatchers with MockitoSugar
 
       verify(formatter).format(furtherInformation)
 
+    }
+
+    "add user EORI to request when present" in {
+
+      val formatter = injector.instanceOf[QuoteFormatter]
+
+      val builder = new AmendClaimBuilder(formatter)
+
+      val eori        = EORI("GB123456789012")
+      val userAnswers = populateUserAnswersWithAmendData(emptyUserAnswers).copy(userEori = Some(eori))
+
+      val request = builder.buildValidAmendRequest(userAnswers)
+
+      request.flatMap(_.EORI) mustBe Some(eori)
     }
   }
 }
