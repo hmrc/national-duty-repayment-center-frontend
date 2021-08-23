@@ -283,7 +283,7 @@ repaymentType.error.required = Dewiswch sut yr hoffech gael yr ad-daliad
 
 enterAgentEORI.title = Beth yw rhif EORI y mewnforiwr?
 enterAgentEORI.heading = Beth yw rhif EORI y mewnforiwr?
-enterAgentEORI.hint = Mae hwn yn cynnwys 2 lythyren, wedi’u dilyn gan naill ai 12 neu 15 rhif. Er enghraifft, ‘GB123456789123’ neu ‘GB123456789123000’.
+enterAgentEORI.hint = Mae hwn yn cynnwys 2 lythyren, wedi’u dilyn gan naill ai 12 neu 15 rhif. Er enghraifft, GB123456789123 neu GB123456789123000.
 enterAgentEORI.checkYourAnswersLabel = Rhif EORI y mewnforiwr
 enterAgentEORI.error.required = Nodwch rif EORI y mewnforiwr
 enterAgentEORI.error.valid = Nodwch rif EORI y mewnforiwr yn y fformat cywir

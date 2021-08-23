@@ -986,7 +986,7 @@ reasonForOverpayment.bullet8	a description of the items or goods	disgrifiad o’
 claimRepaymentType.title	What do you want to reclaim?	Beth hoffech ei adennill?	Unchanged.
 claimRepaymentType.heading	What do you want to reclaim?	Beth hoffech ei adennill?	Unchanged.
 claimRepaymentType.representative.hint	Select all that apply.	Dewiswch bob un sy’n berthnasol.	Unchanged.
-claimRepaymentType.importer.hint	"<p>You can check with your shipping courier if you are not sure.</p> <div class=""govuk-hint"">Select all that apply.</div>"	"<p>Gallwch wirio gyda’ch cludwr os nad ydych yn siŵr.</p> <div class=""govuk-hint"">Dewiswch bob un sy’n berthnasol.</div>"	Unchanged.
+claimRepaymentType.importer.hint	"<p>You can check with your shipping courier if you are not sure.</p> <div class="govuk-hint">Select all that apply.</div>"	"<p>Gallwch wirio gyda’ch cludwr os nad ydych yn siŵr.</p> <div class="govuk-hint">Dewiswch bob un sy’n berthnasol.</div>"	Unchanged.
 claimRepaymentType.01	Customs Duty	Toll Dramor	Unchanged.
 claimRepaymentType.02	VAT	TAW	Unchanged.
 claimRepaymentType.03	Another type of duty	Math arall o doll	Unchanged.
@@ -1040,7 +1040,7 @@ emailAddress.title	How can we contact you?	Sut y gallwn gysylltu â chi?	Unchang
 emailAddress.heading	How can we contact you?	Sut y gallwn gysylltu â chi?	Unchanged.
 emailAddress.01	Yes	Iawn	Unchanged.
 emailAddress.02	No	Na	Unchanged.
-emailAddress.hintText	"<p>We will use these details if we need to contact you for further information.</p> <div class="govuk-hint">Select at least one option.</div>"	"<p>Byddwn yn defnyddio’r manylion hyn os bydd angen i ni gysylltu â chi i gael rhagor o wybodaeth.</p> <div class=""govuk-hint"">Dewiswch o leiaf un opsiwn.</div>"	Unchanged.
+emailAddress.hintText	"<p>We will use these details if we need to contact you for further information.</p> <div class="govuk-hint">Select at least one option.</div>"	"<p>Byddwn yn defnyddio’r manylion hyn os bydd angen i ni gysylltu â chi i gael rhagor o wybodaeth.</p> <div class="govuk-hint">Dewiswch o leiaf un opsiwn.</div>"	Unchanged.
 emailAddress.01.hint	Email address	Cyfeiriad e-bost	Unchanged.
 emailAddress.checkYourAnswersLabel	Email address	Cyfeiriad e-bost	Unchanged.
 emailAddress.error.required	Enter an email address	Nodwch gyfeiriad e-bost	Unchanged.
@@ -1552,7 +1552,7 @@ whomToPay.error.required	Select who you want HMRC to repay	Dewiswch pwy yr hoffe
 furtherInformation.hintText	This may be information that HMRC has asked for, information you choose to add or a request to cancel your application.	Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth y byddwch yn dewis ei hychwanegu neu gais i ganslo’ch cais.	
 entryDetails.importer.hint	You can find these on the E2 or C88 documents. If you’re unsure, you can speak to your shipping agent or courier.	Gallwch ddod o hyd i’r rhain ar y dogfennau E2 neu C88. Os ydych yn ansicr, gallwch siarad â’ch asiant cludo neu’ch cludwr.	
 entryDetails.representative.hint	You can find these on the E2 or C88 documents.	Gallwch ddod o hyd i’r rhain ar y dogfennau E2 neu C88.	
-enterAgentEORI.hint	This has 2 letters, followed by either 12 or 15 numbers. For example, GB123456789123 or GB123456789123000.	Mae hwn yn cynnwys 2 lythyren, wedi’u dilyn gan naill ai 12 neu 15 rhif. Er enghraifft, ‘GB123456789123’ neu ‘GB123456789123000’.	
+enterAgentEORI.hint	This has 2 letters, followed by either 12 or 15 numbers. For example, GB123456789123 or GB123456789123000.	Mae hwn yn cynnwys 2 lythyren, wedi’u dilyn gan naill ai 12 neu 15 rhif. Er enghraifft, GB123456789123 neu GB123456789123000.
 claimReasonType.title	What is the main reason for making an application?	Beth yw’r prif reswm dros wneud cais?	
 claimReasonType.heading	What is the main reason for making an application?	Beth yw’r prif reswm dros wneud cais?	
 whomToPay.title	Who do you want HMRC to repay?	Pwy ydych am i CThEM ad-dalu?	
