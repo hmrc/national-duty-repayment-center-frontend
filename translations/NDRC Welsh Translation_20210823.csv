@@ -194,7 +194,7 @@ reasonForOverpayment.bullet8	a description of the items or goods	disgrifiad o’
 claimRepaymentType.title	What do you want to reclaim?	Beth hoffech ei adennill?	Added.
 claimRepaymentType.heading	What do you want to reclaim?	Beth hoffech ei adennill?	Added.
 claimRepaymentType.representative.hint	Select all that apply.	Dewiswch bob un sy’n berthnasol.	Added.
-claimRepaymentType.importer.hint	"<p>You can check with your shipping courier if you are not sure.</p> <div class=""govuk-hint"">Select all that apply.</div>"	"<p>Gallwch wirio gyda’ch cludwr os nad ydych yn siŵr.</p> <div class=""govuk-hint"">Dewiswch bob un sy’n berthnasol.</div>"	Added.
+claimRepaymentType.importer.hint	"<p>You can check with your shipping courier if you are not sure.</p> <div class="govuk-hint">Select all that apply.</div>"	"<p>Gallwch wirio gyda’ch cludwr os nad ydych yn siŵr.</p> <div class="govuk-hint">Dewiswch bob un sy’n berthnasol.</div>"	Added.
 claimRepaymentType.01	Customs Duty	Toll Dramor	Added.
 claimRepaymentType.02	VAT	TAW	Added.
 claimRepaymentType.03	Another type of duty	Math arall o doll	Added.
@@ -248,7 +248,7 @@ emailAddress.title	How can we contact you?	Sut y gallwn gysylltu â chi?	Added.
 emailAddress.heading	How can we contact you?	Sut y gallwn gysylltu â chi?	Added.
 emailAddress.01	Yes	Iawn	Added.
 emailAddress.02	No	Na	Added.
-emailAddress.hintText	"<p>We will use these details if we need to contact you for further information.</p> <div class=""govuk-hint"">Select at least one option.</div>"	"<p>Byddwn yn defnyddio’r manylion hyn os bydd angen i ni gysylltu â chi i gael rhagor o wybodaeth.</p> <div class=""govuk-hint"">Dewiswch o leiaf un opsiwn.</div>"	Added.
+emailAddress.hintText	"<p>We will use these details if we need to contact you for further information.</p> <div class="govuk-hint">Select at least one option.</div>"	"<p>Byddwn yn defnyddio’r manylion hyn os bydd angen i ni gysylltu â chi i gael rhagor o wybodaeth.</p> <div class="govuk-hint">Dewiswch o leiaf un opsiwn.</div>"	Added.
 emailAddress.01.hint	Email address	Cyfeiriad e-bost	Added.
 emailAddress.checkYourAnswersLabel	Email address	Cyfeiriad e-bost	Added.
 emailAddress.error.required	Enter an email address	Nodwch gyfeiriad e-bost	Added.

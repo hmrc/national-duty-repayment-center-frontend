@@ -202,7 +202,7 @@ reasonForOverpayment.bullet.claimReasonMultiple = os oes gan eich cais mwy nag u
 claimRepaymentType.title = Beth hoffech ei adennill?
 claimRepaymentType.heading = Beth hoffech ei adennill?
 claimRepaymentType.representative.hint = Dewiswch bob un sy’n berthnasol.
-claimRepaymentType.importer.hint = <p>Gallwch wirio gyda’ch cludwr os nad ydych yn siŵr.</p> <div class=""govuk-hint"">Dewiswch bob un sy’n berthnasol.</div>
+claimRepaymentType.importer.hint = <p>Gallwch wirio gyda’ch cludwr os nad ydych yn siŵr.</p> <div class="govuk-hint">Dewiswch bob un sy’n berthnasol.</div>
 claimRepaymentType.01 = Toll Dramor
 claimRepaymentType.02 = TAW
 claimRepaymentType.03 = Math arall o doll
