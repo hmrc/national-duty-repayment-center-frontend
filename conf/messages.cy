@@ -1,4 +1,4 @@
-checkYourAnswers.title = Gwiriwch eich atebion cyn anfon eich gwybodaeth
+checkYourAnswers.title = Gwiriwch eich atebion cyn anfon eich cais
 checkYourAnswers.amend.title = Gwriwch eich gwybodaeth ychwanegol
 
 checkYourAnswers.missing.icon = Rhybudd
@@ -51,16 +51,16 @@ importerHasEori.heading = A oes gennych rif EORI?
 importerHasEori.checkYourAnswersLabel = A oes gennych rif EORI?
 importerHasEori.error.required = Dewiswch ‘Iawn’ os oes gennych rif EORI
 
-claimantType.title = Ai’r mewnforiwr neu gynrychiolydd y mewnforiwr ydych chi?
-claimantType.heading = Ai’r mewnforiwr neu gynrychiolydd y mewnforiwr ydych chi?
-claimantType.01 = Y mewnforiwr ydw i
-claimantType.02 = Cynrychiolydd y mewnforiwr ydw i
+claimantType.title = Ai chi yw’r mewnforiwr?
+claimantType.heading = Ai chi yw’r mewnforiwr?
+claimantType.01 = Iawn
+claimantType.02 = Na, fi yw cynrychiolydd y mewnforiwr
 claimantType.checkYourAnswersLabel = Ai’r mewnforiwr neu’r cynrychiolydd ydych chi?
-claimantType.error.required = Dewiswch ai chi yw’r mewnforiwr neu gynrychiolydd y mewnforiwr
+claimantType.error.required = Cadarnhewch ai’r mewnforiwr neu gynrychiolydd y mewnforiwr ydych chi
 claimantType.importer = Mewnforiwr
 claimantType.representative = Cynrychiolydd
 
-impInfo.checkYourAnswersLabel = Gwybodaeth fewnforio
+impInfo.checkYourAnswersLabel = Gwybodaeth bwysig
 
 importerEori.title = Beth yw’ch rhif EORI?
 importerEori.heading = Beth yw’ch rhif EORI?
@@ -109,7 +109,8 @@ numberOfEntriesType.title = Faint o gofnodion yr ydych am eu cyflwyno?
 numberOfEntriesType.heading = Faint o gofnodion yr ydych am eu cyflwyno?
 numberOfEntriesType.01 = Un cofnod
 numberOfEntriesType.02 = Cofnodion lluosog
-numberOfEntriesType.02.hint = Nifer y cofnodion
+numberOfEntriesType.02.label = Nifer y cofnodion
+numberOfEntriesType.02.hint = Mae’n rhaid i gofnodion lluosog ddod o’r un mewnforiwr, cynnwys yr un rhesymau dros y cais a bod o gyn 1 Ionawr 2021 neu o’r dyddiad hwnnw ymlaen.
 numberOfEntriesType.checkYourAnswersLabel = Faint o gofnodion yr ydych am eu cyflwyno?
 numberOfEntriesType.error.required = Dewiswch a ydych am gyflwyno un cofnod neu fwy nag un cofnod
 
@@ -120,8 +121,8 @@ entryDetails.single.title = Ychwanegwch y manylion ar gyfer y cofnod hwn
 entryDetails.multiple.title = Nodwch fanylion y cofnod hynaf
 entryDetails.single.heading = Ychwanegwch y manylion ar gyfer y cofnod hwn
 entryDetails.multiple.heading = Nodwch fanylion y cofnod hynaf
-entryDetails.importer.hint = Gellir dod o hyd i’r rhain ym mlwch 1 yn y ddogfen C88, neu drwy ofyn i’ch asiant cludo neu’ch cludwr amdanynt
-entryDetails.representative.hint = Gellir dod o hyd i’r rhain yn y ddogfen C88.
+entryDetails.importer.hint = Gallwch ddod o hyd i’r rhain ar y dogfennau E2 neu C88. Os ydych yn ansicr, gallwch siarad â’ch asiant cludo neu’ch cludwr.
+entryDetails.representative.hint = Gallwch ddod o hyd i’r rhain ar y dogfennau E2 neu C88.
 entryDetails.claimEpu.heading = Rhif yr Uned Prosesu Cofnodion (EPU)
 entryDetails.claimEpu.hint = Rhif 3 digid yw hwn, er enghraifft 131.
 entryDetails.claimEpu.error.required = Nodwch rif yr Uned Prosesu Cofnodion (EPU)
@@ -156,9 +157,14 @@ entryDetails.date.checkYourAnswersLabel = Dyddiad y cofnod
 
 applicationInformation.checkYourAnswersLabel = Gwybodaeth am y cais
 
+claimReasonType.multiple.title = Pam ydych yn gwneud cais?
+claimReasonType.multiple.heading = Pam ydych yn gwneud cais?
+claimReasonType.multiple.hintText = Dewiswch bob un sy’n gymwys
+claimReasonType.multiple.error.required = Dewiswch pam eich bod yn gwneud cais
 
-claimReasonType.title = Beth mae’ch cais yn ymwneud ag ef?
-claimReasonType.heading = Beth mae’ch cais yn ymwneud ag ef?
+claimReasonType.title = Beth yw’r prif reswm dros wneud cais?
+claimReasonType.heading = Beth yw’r prif reswm dros wneud cais?
+claimReasonType.hint = Dyma fyddai’r rheswm sy’n berthnasol i’r rhan fwyaf o’ch cais
 claimReasonType.01 = Cwota ôl-weithredol
 claimReasonType.02 = Newid i’r cod gweithdrefnau tollau
 claimReasonType.03 = Newid i’r arian cyfred
@@ -169,14 +175,17 @@ claimReasonType.07 = Rhyddhad ar nwyddau a ddychwelwyd
 claimReasonType.08 = Dychwelyd nwyddau nad oes eu hangen
 claimReasonType.09 = Gwerth
 claimReasonType.10 = Rhywbeth heb ei restru
-claimReasonType.error.required = Dewiswch beth mae’ch cais yn ymwneud ag ef
+claimReasonType.checkYourAnswersLabel.single = Rheswm dros y gordaliad
+claimReasonType.checkYourAnswersLabel.multiple = Rhesymau dros ordalu
+claimReasonType.checkYourAnswersLabel.main = Prif reswm dros ordalu
+claimReasonType.error.required = Dewiswch y prif reswm dros wneud cais
 
 reasonForOverpayment.title = Dywedwch wrthym pam y digwyddodd y gordaliad
 reasonForOverpayment.heading = Dywedwch wrthym pam y digwyddodd y gordaliad
 reasonForOverpayment.checkYourAnswersLabel = Pam y digwyddodd y gordaliad
 reasonForOverpayment.error.required = Dywedwch wrthym pam y digwyddodd y gordaliad
 reasonForOverpayment.error.length = Mae’n rhaid i’r rheswm dros y gordaliad fod yn 1200 o gymeriadau neu lai
-reasonForOverpayment.hint = Os na fyddwch yn rhoi digon o wybodaeth, mae’n bosibl na fyddwn yn gallu prosesu’ch cais.
+reasonForOverpayment.hint = Darparwch gymaint o wybodaeth â phosibl. Bydd hyn yn ein helpu i brosesu’ch cais yn gyflymach.
 reasonForOverpayment.p1 = Gallwch roi gwybod i ni am:
 reasonForOverpayment.bullet1 = unrhyw godau nwyddau
 reasonForOverpayment.bullet2 = newidiadau mewn arian cyfred neu gyfraddau cyfnewid
@@ -186,6 +195,9 @@ reasonForOverpayment.bullet5 = p’un a gafodd unrhyw eitemau eu newid neu eu ha
 reasonForOverpayment.bullet6 = newidiadau i werth nwyddau
 reasonForOverpayment.bullet7 = nifer yr eitemau neu’r nwyddau
 reasonForOverpayment.bullet8 = disgrifiad o’r eitemau neu’r nwyddau
+reasonForOverpayment.bullet9 = pam y dychwelwyd unrhyw nwyddau
+reasonForOverpayment.bullet10 = os oes unrhyw nwyddau wedi’u dinistrio ar gais
+reasonForOverpayment.bullet.claimReasonMultiple = os oes gan eich cais mwy nag un rheswm
 
 claimRepaymentType.title = Beth hoffech ei adennill?
 claimRepaymentType.heading = Beth hoffech ei adennill?
@@ -197,24 +209,30 @@ claimRepaymentType.03 = Math arall o doll
 claimRepaymentType.checkYourAnswersLabel = Beth hoffech ei adennill?
 claimRepaymentType.error.required = Dewiswch beth yr hoffech ei adennill
 
-evidenceSupportingDocs.title = Dogfennau ategol angenrheidiol
-evidenceSupportingDocs.heading = Dogfennau ategol angenrheidiol
+evidenceSupportingDocs.title = Dogfennau sydd eu hangen arnom gennych
+evidenceSupportingDocs.heading = Dogfennau sydd eu hangen arnom gennych
+evidenceSupportingDocs.paragraph1.single = Mae’n rhaid i’r dogfennau sydd eu hangen arnom i brosesu’ch hawliad gynnwys:
+evidenceSupportingDocs.paragraph1.multiple-small = Mae’n rhaid i’r dogfennau sydd eu hangen arnom <b>ar gyfer pob cofnod</b> gynnwys:
+evidenceSupportingDocs.paragraph1.multiple-large = Mae’n rhaid i ni gael:
+evidenceSupportingDocs.paragraph2.multiple-large = Gan eich bod yn hawlio ar gyfer cofnodion lluosog, gallwch naill ai roi i ni:
+evidenceSupportingDocs.bullet1.multiple-large = y dogfennau uchod <b>ar gyfer pob cofnod</b>
+evidenceSupportingDocs.bullet2.multiple-large = y dogfennau ar gyfer y cofnod hynaf rydych wedi’i nodi. Byddwn yn gofyn am ragor o wybodaeth yn nes ymlaen.
 
 
 evidenceSupportingDocs.h2 = Y mathau o ffeiliau y gallwch eu huwchlwytho
 evidenceSupportingDocs.error.required = Dewiswch ddogfennau ategol
 
-claimReason.documents.c88 = <b>C88</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol
-claimReason.documents.e2 = <b>E2</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol
-claimReason.documents.commercial_invoice = <b>Anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
-claimReason.documents.substitute_entry = <b>Cofnod cyfnewid</b>, sy’n dangos newidiadau a wnaed i’r cofnod gwreiddiol
-claimReason.documents.currency_charge_evicence = Tystiolaeth bod yr anfoneb wedi’i chywiro mewn arian cyfred arall
-claimReason.documents.airway_bill = <b>Bil teithrestr awyr</b> neu <b>bil llwytho</b>, sy’n dangos y manylion cludo
-claimReason.documents.proof_of_origin = <b>Dogfennau tystiolaeth o darddiad</b>, megis tystysgrif GSP
-claimReason.documents.proof_of_quota = Tystiolaeth o’r cwota a’r codau nwyddau y gwneir hawliad yn eu herbyn
-claimReason.documents.proof_of_return = Prawf o ddychwelyd
-claimReason.documents.evidence_of_export = Tystiolaeth o’r allforio gwreiddiol
-claimReason.documents.evidence_of_corrected_invoice = Tystiolaeth o anfoneb wedi’i chywiro
+claimReason.documents.c88 = y ddogfen <b>C88</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol
+claimReason.documents.e2 = y ddogfen <b>E2</b>, sy’n cadarnhau bod eich cofnod mewnforio wedi’i nodi gan CThEM
+claimReason.documents.commercial_invoice = a<b>anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
+claimReason.documents.substitute_entry = <b>cofnod cyfnewid</b>, sy’n dangos newidiadau a wnaed i’r cofnod gwreiddiol
+claimReason.documents.currency_charge_evicence = tystiolaeth bod yr anfoneb wedi’i chywiro mewn arian cyfred arall
+claimReason.documents.airway_bill = <b>bil teithrestr awyr</b> neu <b>bil llwytho</b>, sy’n dangos y manylion cludo
+claimReason.documents.proof_of_origin = <b>dogfennau tystiolaeth o darddiad</b>, megis tystysgrif GSP
+claimReason.documents.proof_of_quota = tystiolaeth o’r cwota a’r codau nwyddau y gwneir hawliad yn eu herbyn
+claimReason.documents.proof_of_return = tystiolaeth o’r adenillion
+claimReason.documents.evidence_of_export = tystiolaeth o’r allforio gwreiddiol
+claimReason.documents.evidence_of_corrected_invoice = tystiolaeth o anfoneb wedi’i chywiro
 claimReason.documents.additional.documents.para = Gallwch hefyd gynnwys dogfennau ychwanegol os ydych yn credu eu bod yn berthnasol.
 
 declarantReferenceNumber.title = A hoffech ddefnyddio’ch cyfeirnod eich hun?
@@ -248,23 +266,24 @@ emailAddress.error.required = Nodwch gyfeiriad e-bost
 emailAddress.error.length = Mae’n rhaid i’r cyfeiriad e-bost fod yn 85 o gymeriadau neu lai
 emailAddress.error.invalid = Nodwch gyfeiriad e-bost yn y fformat cywir, megis enw@enghraifft.com
 
-whomToPay.title = Pwy sydd i’w ad-dalu?
-whomToPay.heading = Pwy sydd i’w ad-dalu?
+whomToPay.title = Pwy ydych am i CThEM ad-dalu?
+whomToPay.heading = Pwy ydych am i CThEM ad-dalu?
 whomToPay.01 = Mewnforiwr
 whomToPay.02 = Cynrychiolydd
 whomToPay.checkYourAnswersLabel = Pwy sydd i’w ad-dalu?
-whomToPay.error.required = Dewiswch at bwy yr hoffech anfon yr ad-daliad
+whomToPay.error.required = Dewiswch pwy yr hoffech i CThEM ad-dalu
 
 repaymentType.title = Dewiswch ddull ad-dalu
 repaymentType.heading = Dewiswch ddull ad-dalu
 repaymentType.01 = Diwygiad mis cyfredol (CMA)
 repaymentType.02 = Trosglwyddiad banc (Bacs)
+repaymentType.hint.01 = Dim ond os gwnaethoch y taliad gwreiddiol gan ddefnyddio cyfrif gohirio tollau y gallwch ddefnyddio’r opsiwn hwn.
 repaymentType.checkYourAnswersLabel = Dull talu
 repaymentType.error.required = Dewiswch sut yr hoffech gael yr ad-daliad
 
 enterAgentEORI.title = Beth yw rhif EORI y mewnforiwr?
 enterAgentEORI.heading = Beth yw rhif EORI y mewnforiwr?
-enterAgentEORI.hint = Mae hyn yn 2 lythyren, wedi’u dilyn gan naill ai 12 neu 15 rhif, fel ‘GB123456789123’ neu ‘GB123456789123000’.
+enterAgentEORI.hint = Mae hwn yn cynnwys 2 lythyren, wedi’u dilyn gan naill ai 12 neu 15 rhif. Er enghraifft, GB123456789123 neu GB123456789123000.
 enterAgentEORI.checkYourAnswersLabel = Rhif EORI y mewnforiwr
 enterAgentEORI.error.required = Nodwch rif EORI y mewnforiwr
 enterAgentEORI.error.valid = Nodwch rif EORI y mewnforiwr yn y fformat cywir
@@ -429,10 +448,15 @@ agentImporterManualAddress.countryCode.error.length = Mae’n rhaid i god y wlad
 agentImporterManualAddress.postalCode.heading = Cod post
 agentImporterManualAddress.postalCode.error.invalid = Nodwch god post go iawn
 
-bankDetails.title = Nodwch fanylion banc yn y DU
+bankDetails.title = Nodwch eich manylion banc
+bankDetails.title.importer = Nodwch fanylion banc y mewnforiwr
+bankDetails.title.representative = Nodwch eich manylion banc
+bankDetails.hint = Mae’n rhaid i’r cyfrif hwn fod yn gyfrif yn y DU sy’n derbyn taliadau Bacs.
 bankDetails.checkYourAnswersLabel = Manylion banc
 bankDetails.name.heading = Yr enw sydd ar y cyfrif
-bankDetails.name.hint = Nodwch eich enw fel y mae’n ymddangos ar eich cyfriflen banc
+bankDetails.name.hint = Nodwch yr enw fel y mae’n ymddangos ar eich cyfriflen banc.
+bankDetails.name.importer.hint = Nodwch yr enw fel y mae’n ymddangos ar ei gyfriflen banc.
+bankDetails.name.representative.hint = Nodwch yr enw fel y mae’n ymddangos ar eich cyfriflen banc.
 bankDetails.name.error.required = Nodwch yr enw sydd ar y cyfrif
 bankDetails.name.error.length = Mae’n rhaid i’r enw sydd ar y cyfrif fod yn 40 o gymeriadau neu lai
 bankDetails.sortCode.heading = Cod didoli
@@ -475,6 +499,7 @@ fileUpload.heading = Uwchlwytho ffeil
 postcode.error.required = Nodwch god post yn y DU
 indirectRepresentative.title = A ydych yn gynrychiolydd anuniongyrchol i’r mewnforiwr?
 indirectRepresentative.heading = A ydych yn gynrychiolydd anuniongyrchol i’r mewnforiwr?
+indirectRepresentative.hintText = Mae cynrychiolydd anuniongyrchol yn gweithredu yn ei enw ei hun ond ar ran parti arall. Mae’r ddwy ochr yn derbyn rhwymedigaeth ar y cyd am yr wybodaeth a ddarperir.
 indirectRepresentative.checkYourAnswersLabel = A ydych yn gynrychiolydd anuniongyrchol?
 indirectRepresentative.error.required = Dewiswch a ydych yn gynrychiolydd anuniongyrchol i’r mewnforiwr
 
@@ -502,12 +527,12 @@ referenceNumber.hintText = Dyma’r cyfeirnod 23 cymeriad a roddwyd wrth i chi g
 referenceNumber.error.prefix = Nodwch y cyfeirnod yn y fformat cywir
 referenceNumber.error.invalid.chars = Mae’n rhaid i’r cyfeirnod gynnwys y llythrennau a i z a’r rhifau 0 i 9 yn unig
 
-furtherInformation.title = Rhowch wybodaeth bellach i ni
-furtherInformation.heading = Rhowch wybodaeth bellach i ni
+furtherInformation.title = Ychwanegwch mwy o wybodaeth i’ch cais
+furtherInformation.heading = Ychwanegwch mwy o wybodaeth i’ch cais
 furtherInformation.checkYourAnswersLabel = Gwybodaeth ychwanegol
-furtherInformation.error.required = Nodwch yr wybodaeth bellach
-furtherInformation.error.length = Mae’n rhaid i’r wybodaeth bellach fod yn 1400 o gymeriadau neu lai
-furtherInformation.hintText = Anfonwch yr wybodaeth y mae CThEM wedi gofyn amdani.
+furtherInformation.error.required = Nodwch yr wybodaeth ychwanegol
+furtherInformation.error.length = Mae’n rhaid i’r wybodaeth ychwanegol fod yn 1400 o gymeriadau neu lai
+furtherInformation.hintText = Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth y byddwch yn dewis ei hychwanegu neu gais i ganslo’ch cais.
 
 amendCaseResponseType.title = Beth y mae angen i chi ei wneud?
 amendCaseResponseType.heading = Beth y mae angen i chi ei wneud?
@@ -657,6 +682,6 @@ amend.application.not.found.email.subject = Cyfeirnod y cais {0}
 amend.application.closed.title = Mae’r cais hwn wedi cau
 amend.application.closed.heading = Mae’r cais hwn wedi cau
 amend.application.closed.p1 = Ni allwn ychwanegu unrhyw wybodaeth at y cais hwn gan ei fod wedi cau. Dylech fod wedi derbyn gohebiaeth drwy’r post yn cadarnhau pam y cafodd eich cais ei gau.
-amend.application.closed.p2 = Os ydych yn teimlo bod y cais hwn wedi cael ei gau drwy gamgymeriad, gallwch anfon e-bost atom yn {0} gyda’r wybodaeth ychwanegol.
+amend.application.closed.p2 = Os ydych yn teimlo ein bod wedi cau’r cais drwy gamgymeriad, gallwch anfon e-bost atom yn {0} gyda’r wybodaeth ychwanegol.
 amend.application.closed.p3 = Mae’n rhaid i chi gynnwys cyfeirnod y cais, sef <b>{0}</b>, yn y pennawd pwnc.
 amend.application.closed.email.subject = Cyfeirnod y cais sydd wedi cau {0}
