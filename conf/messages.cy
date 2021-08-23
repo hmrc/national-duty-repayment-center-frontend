@@ -260,7 +260,7 @@ phoneNumber.error.invalid = Nodwch rif ffôn gan ddechrau gyda 0
 
 emailAddress.title = Sut y gallwn gysylltu â chi?
 emailAddress.heading = Sut y gallwn gysylltu â chi?
-emailAddress.hintText = <p>Byddwn yn defnyddio’r manylion hyn os bydd angen i ni gysylltu â chi i gael rhagor o wybodaeth.</p> <div class=""govuk-hint"">Dewiswch o leiaf un opsiwn.</div>
+emailAddress.hintText = <p>Byddwn yn defnyddio’r manylion hyn os bydd angen i ni gysylltu â chi i gael rhagor o wybodaeth.</p> <div class="govuk-hint">Dewiswch o leiaf un opsiwn.</div>
 emailAddress.checkYourAnswersLabel = Cyfeiriad e-bost
 emailAddress.error.required = Nodwch gyfeiriad e-bost
 emailAddress.error.length = Mae’n rhaid i’r cyfeiriad e-bost fod yn 85 o gymeriadau neu lai
