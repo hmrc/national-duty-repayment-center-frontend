@@ -56,6 +56,16 @@ Open your browser and navigate to the following url:
 
 The service uses MongoDB to store user session answers.
 
+## Welsh translations
+Welsh translations are enabled for an environment by ensuring that `cy` is present in the following `application.conf`
+setting
+
+```
+play.i18n.langs = ["en", "cy"]
+```
+
+The process for maintaining the Welsh translation file is described [here](translations/README.md). 
+
 ### License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").

@@ -1,3 +1,6 @@
+# GENERATED FILE - DO NOT EDIT
+# See translations/README.md
+
 checkYourAnswers.title = Gwiriwch eich atebion cyn anfon eich cais
 checkYourAnswers.amend.title = Gwriwch eich gwybodaeth ychwanegol
 

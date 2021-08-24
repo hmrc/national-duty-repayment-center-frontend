@@ -726,11 +726,11 @@ amend.application.closed.p1	We cannot add any information to this application as
 amend.application.closed.p2	If you feel this application has been closed in error, you can email us at {0} with the additional information.	Os ydych yn teimlo bod y cais hwn wedi cael ei gau drwy gamgymeriad, gallwch anfon e-bost atom yn {0} gyda’r wybodaeth ychwanegol.
 amend.application.closed.p3	You must include the application reference number <b>{0}</b> in the subject header.	Mae’n rhaid i chi gynnwys cyfeirnod y cais, sef <b>{0}</b>, yn y pennawd pwnc.
 amend.application.closed.email.subject	Closed application reference {0}	Cyfeirnod y cais sydd wedi cau {0}
-		
-		
-		
-		
-		
+
+
+
+
+
 claimReason.documents.airway_bill	an <b>airway bill</b> or <b>bill of lading</b> that show shipping details	<b>bil teithrestr awyr</b> neu <b>bil llwytho</b>, sy’n dangos y manylion cludo
 claimReason.documents.c88	the <b>C88</b>, which authorises imports from the country of origin	y ddogfen <b>C88</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol
 claimReason.documents.commercial_invoice	a <b>commercial invoice</b>, which shows the value of the goods	a<b>anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
