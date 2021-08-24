@@ -6,7 +6,7 @@
 
 import os
 
-MESSAGE_FILE = "../conf/messages.cy"
+MESSAGE_FILE = "../conf/messages.en"
 
 
 messageMap = dict()
