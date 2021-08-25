@@ -44,7 +44,7 @@ class CheckYourAnswersHelperSpec extends SpecBase {
           .set(ClaimReasonTypeMultiplePage, testClaimReasonTypes).success.value
           .set(ClaimReasonTypePage, testClaimReasonTypes.head).success.value
 
-        val sections = new CheckYourAnswersHelper(userAnswers).getCheckYourAnswerSections
+        val sections = cyaFactory.instance(userAnswers).getCheckYourAnswerSections
 
         findRow(
           sections,
@@ -70,7 +70,7 @@ class CheckYourAnswersHelperSpec extends SpecBase {
         val userAnswers = emptyUserAnswers
           .set(ClaimReasonTypeMultiplePage, singleReason).success.value
 
-        val sections = new CheckYourAnswersHelper(userAnswers).getCheckYourAnswerSections
+        val sections = cyaFactory.instance(userAnswers).getCheckYourAnswerSections
 
         findRow(
           sections,

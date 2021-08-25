@@ -36,7 +36,6 @@ import play.twirl.api.HtmlFormat
 import queries.AmendClaimIdQuery
 import services.FileUploaded
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
-import utils.CheckYourAnswersHelper
 import views.html.{AmendCheckYourAnswersView, AmendCheckYourMissingAnswersView}
 
 import scala.concurrent.Future
@@ -84,7 +83,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
       val userAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
         .set(ReferenceNumberPage, "1234").success.value
         .set(AmendCaseResponseTypePage, values.toSet).success.value
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -115,7 +114,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
         .set(FurtherInformationPage, "hello").success.value
         .copy(changePage = Some(ReferenceNumberPage))
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -161,7 +160,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
         .set(ReferenceNumberPage, "1234").success.value
         .set(FurtherInformationPage, "aaa").success.value
         .set(AmendCaseResponseTypePage, values.toSet).success.value
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -199,7 +198,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
       status(result) mustEqual OK
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
       val view                   = application.injector.instanceOf[AmendCheckYourMissingAnswersView]
 
       contentAsString(result) mustEqual

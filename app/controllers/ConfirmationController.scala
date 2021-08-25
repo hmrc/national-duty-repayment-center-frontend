@@ -24,7 +24,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.ClaimIdQuery
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
+import utils.CheckYourAnswersHelperFactory
 import views.html.{ClaimSummaryView, ConfirmationView}
 
 import scala.concurrent.ExecutionContext
@@ -37,7 +37,8 @@ class ConfirmationController @Inject() (
   sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
   confirmationView: ConfirmationView,
-  reviewView: ClaimSummaryView
+  reviewView: ClaimSummaryView,
+  cyaFactory: CheckYourAnswersHelperFactory
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
@@ -45,7 +46,7 @@ class ConfirmationController @Inject() (
     implicit request =>
       request.userAnswers.get(ClaimIdQuery) match {
         case Some(claimId) =>
-          val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+          val checkYourAnswersHelper = cyaFactory.instance(request.userAnswers)
           Ok(confirmationView(claimId, checkYourAnswersHelper.getCreateConfirmationSections))
         case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }
@@ -55,7 +56,7 @@ class ConfirmationController @Inject() (
     implicit request =>
       request.userAnswers.get(ClaimIdQuery) match {
         case Some(_) =>
-          val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+          val checkYourAnswersHelper = cyaFactory.instance(request.userAnswers)
           Ok(reviewView(checkYourAnswersHelper.getCreateConfirmationSections, "confirmation.summary.title"))
         case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }

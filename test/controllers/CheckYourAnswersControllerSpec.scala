@@ -28,7 +28,6 @@ import pages.{CheckYourAnswersPage, ClaimRepaymentTypePage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
-import utils.CheckYourAnswersHelper
 import views.html.{CheckYourAnswersView, CheckYourMissingAnswersView}
 
 import scala.concurrent.Future
@@ -52,7 +51,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
     "return OK and the correct view for an Importer Journey GET" in {
       val userAnswers = populateUserAnswersWithImporterInformation(emptyUserAnswers)
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -73,7 +72,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
     "return OK and the correct view for an Importer Journey UKCustomsRegulation GET" in {
       val userAnswers = populateUserAnswersWithImporterUKCustomsRegulationInformation(emptyUserAnswers)
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -94,7 +93,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
     "return OK and the correct view for Representative Single BACS Journey GET" in {
       val userAnswers = populateUserAnswersWithRepresentativeSingleBACSJourney(emptyUserAnswers)
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -115,7 +114,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
     "return OK and the correct view for Representative Single Paying Representative Journey GET" in {
       val userAnswers = populateUserAnswersWithRepresentativeSinglePayingRepresentativeJourney(emptyUserAnswers)
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -136,7 +135,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
     "return OK and the correct view for Representative Single CMA Journey GET" in {
       val userAnswers = populateUserAnswersWithRepresentativeSingleCMAJourney(emptyUserAnswers)
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -157,7 +156,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
     "return OK and the correct view for Representative Multiple Journey GET" in {
       val userAnswers = populateUserAnswersWithRepresentativeMultipleJourney(emptyUserAnswers)
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -191,7 +190,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       val view = application.injector.instanceOf[CheckYourMissingAnswersView]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(userAnswers)
+      val checkYourAnswersHelper = cyaFactory.instance(userAnswers)
 
       contentAsString(result) mustEqual
         view(

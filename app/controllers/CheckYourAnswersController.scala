@@ -29,7 +29,7 @@ import queries.{ClaimDateQuery, ClaimIdQuery}
 import repositories.SessionRepository
 import services.ClaimService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
+import utils.CheckYourAnswersHelperFactory
 import views.html.{CheckYourAnswersView, CheckYourMissingAnswersView}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,7 +44,8 @@ class CheckYourAnswersController @Inject() (
   val navigator: CreateNavigator,
   val controllerComponents: MessagesControllerComponents,
   view: CheckYourAnswersView,
-  viewMissing: CheckYourMissingAnswersView
+  viewMissing: CheckYourMissingAnswersView,
+  cyaFactory: CheckYourAnswersHelperFactory
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
 
@@ -58,7 +59,7 @@ class CheckYourAnswersController @Inject() (
         }
       else {
         val updatedAnswers         = request.userAnswers.copy(changePage = None)
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(updatedAnswers)
+        val checkYourAnswersHelper = cyaFactory.instance(updatedAnswers)
         navigator.firstMissingAnswer(updatedAnswers) match {
           case Some(_) =>
             Future.successful(

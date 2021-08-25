@@ -16,9 +16,8 @@
 
 package utils
 
-import java.time.format.DateTimeFormatter
-
 import controllers.routes
+import javax.inject.Inject
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.DeclarantReferenceType.{No, Yes}
 import models.FileType.{Bulk, ProofOfAuthority, SupportingEvidence}
@@ -32,9 +31,14 @@ import queries.{ClaimDateQuery, ClaimIdQuery}
 import viewmodels.{AnswerRow, AnswerSection}
 import views.DateTimeFormats
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
+class CheckYourAnswersHelperFactory @Inject() (dateTimeFormats: DateTimeFormats) {
 
-  val dateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
+  def instance(userAnswers: UserAnswers)(implicit messages: Messages): CheckYourAnswersHelper =
+    new CheckYourAnswersHelper(userAnswers, dateTimeFormats)
+
+}
+
+class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTimeFormats)(implicit messages: Messages) {
 
   val amendCaseResponseTypePage      = userAnswers.get(AmendCaseResponseTypePage)
   val furtherInformationPage         = userAnswers.get(FurtherInformationPage)
@@ -271,7 +275,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
           Some(
             AnswerRow(
               HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-              HtmlFormat.escape(changeToYesNo(Yes.toString)),
+              changeToYesNo(Yes.toString),
               Some(routes.CheckYourAnswersController.onChange(DeclarantReferenceNumberPage).url)
             )
           ),
@@ -281,7 +285,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         Seq(
           AnswerRow(
             HtmlFormat.escape(messages("declarantReferenceNumber.checkYourAnswersLabel.question")),
-            HtmlFormat.escape(changeToYesNo(No.toString)),
+            changeToYesNo(No.toString),
             Some(routes.CheckYourAnswersController.onChange(DeclarantReferenceNumberPage).url)
           )
         )
@@ -360,7 +364,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("doYouOwnTheGoods.checkYourAnswersLabel", declarantName)),
-        HtmlFormat.escape(changeToYesNo(x.toString)),
+        changeToYesNo(x.toString),
         Some(routes.CheckYourAnswersController.onChange(DoYouOwnTheGoodsPage).url)
       )
   }
@@ -421,7 +425,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("confirmation.summary.datetime")),
-        HtmlFormat.escape(DateTimeFormats.formatDateAtTime(x))
+        HtmlFormat.escape(dateTimeFormats.formatDateAtTime(x))
       )
   }
 
@@ -564,7 +568,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     x =>
       AnswerRow(
         HtmlFormat.escape(messages("entryDetails.date.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(DateTimeFormats.formatDate(x.EntryDate))),
+        HtmlFormat.escape(messages(dateTimeFormats.formatDate(x.EntryDate))),
         Some(routes.CheckYourAnswersController.onChange(EntryDetailsPage).url)
       )
   }
@@ -700,10 +704,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     def format2d = "%.2f".format(s)
   }
 
-  private def changeToYesNo(string: String): String =
+  private def changeToYesNo(string: String): Html =
     string match {
-      case "01" => "Yes"
-      case "02" => "No"
+      case "01" => yesOrNo(true)
+      case "02" => yesOrNo(false)
     }
 
 }
