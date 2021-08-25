@@ -25,7 +25,6 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.ClaimIdQuery
-import utils.CheckYourAnswersHelper
 import views.html.{ClaimSummaryView, ConfirmationView}
 
 import scala.concurrent.Future
@@ -53,7 +52,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+        val checkYourAnswersHelper = cyaFactory.instance(answers)
 
         contentAsString(result) mustEqual
           view(claimId, checkYourAnswersHelper.getCreateConfirmationSections)(request, messages).toString
@@ -99,7 +98,7 @@ class ConfirmationControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+        val checkYourAnswersHelper = cyaFactory.instance(answers)
 
         contentAsString(result) mustEqual
           view(checkYourAnswersHelper.getCreateConfirmationSections, "confirmation.summary.title")(

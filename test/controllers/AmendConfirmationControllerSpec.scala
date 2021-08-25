@@ -20,7 +20,6 @@ import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import queries.AmendClaimIdQuery
-import utils.CheckYourAnswersHelper
 import views.html.{AmendConfirmationView, ClaimSummaryView}
 
 class AmendConfirmationControllerSpec extends SpecBase {
@@ -45,7 +44,7 @@ class AmendConfirmationControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+        val checkYourAnswersHelper = cyaFactory.instance(answers)
 
         contentAsString(result) mustEqual
           view(claimId, checkYourAnswersHelper.getAmendConfirmationSections)(request, messages).toString
@@ -90,7 +89,7 @@ class AmendConfirmationControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(answers)
+        val checkYourAnswersHelper = cyaFactory.instance(answers)
 
         contentAsString(result) mustEqual
           view(checkYourAnswersHelper.getAmendConfirmationSections, "amend.confirmation.summary.title")(

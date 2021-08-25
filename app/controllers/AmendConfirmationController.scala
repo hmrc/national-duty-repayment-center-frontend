@@ -22,7 +22,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.AmendClaimIdQuery
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
+import utils.CheckYourAnswersHelperFactory
 import views.html.{AmendConfirmationView, ClaimSummaryView}
 
 class AmendConfirmationController @Inject() (
@@ -32,14 +32,15 @@ class AmendConfirmationController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: AmendConfirmationView,
-  reviewView: ClaimSummaryView
+  reviewView: ClaimSummaryView,
+  cyaFactory: CheckYourAnswersHelperFactory
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       request.userAnswers.get(AmendClaimIdQuery) match {
         case Some(claimId) =>
-          val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+          val checkYourAnswersHelper = cyaFactory.instance(request.userAnswers)
           Ok(view(claimId, checkYourAnswersHelper.getAmendConfirmationSections))
         case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }
@@ -49,7 +50,7 @@ class AmendConfirmationController @Inject() (
     implicit request =>
       request.userAnswers.get(AmendClaimIdQuery) match {
         case Some(_) =>
-          val checkYourAnswersHelper = new CheckYourAnswersHelper(request.userAnswers)
+          val checkYourAnswersHelper = cyaFactory.instance(request.userAnswers)
           Ok(reviewView(checkYourAnswersHelper.getAmendConfirmationSections, "amend.confirmation.summary.title"))
         case None => Redirect(controllers.routes.IndexController.onPageLoad())
       }

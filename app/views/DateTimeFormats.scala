@@ -16,21 +16,17 @@
 
 package views
 
-import java.time.format.DateTimeFormatter
-import java.time.{LocalDate, LocalDateTime, ZoneId}
+import java.time.{LocalDate, LocalDateTime}
 
-object DateTimeFormats {
+import javax.inject.Inject
+import play.api.i18n.Messages
+import uk.gov.hmrc.play.language.LanguageUtils
 
-  private val dateFormatter               = DateTimeFormatter.ofPattern("d MMMM yyyy")
-  def formatDate(date: LocalDate): String = dateFormatter.format(date)
+class DateTimeFormats @Inject() (languageUtils: LanguageUtils) {
 
-  private val ukZone: ZoneId      = ZoneId.of("Europe/London")
-  private val dateAtTimeFormatter = DateTimeFormatter.ofPattern("d MMMM uuu 'at' h:mma").withZone(ukZone)
+  def formatDate(date: LocalDate)(implicit messages: Messages): String = languageUtils.Dates.formatDate(date)
 
-  def formatDateAtTime(datetime: LocalDateTime): String =
-    dateAtTimeFormatter
-      .format(datetime)
-      .replace("AM", "am")
-      .replace("PM", "pm")
+  def formatDateAtTime(datetime: LocalDateTime)(implicit messages: Messages): String =
+    languageUtils.Dates.formatEasyReadingTimestamp(Some(datetime), "")
 
 }

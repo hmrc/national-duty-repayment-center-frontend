@@ -45,6 +45,7 @@ import play.api.test.FakeRequest
 import repositories.SessionRepository
 import services.ClaimService
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.CheckYourAnswersHelperFactory
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -70,6 +71,8 @@ trait SpecBase
   val mockAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
 
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+
+  val cyaFactory: CheckYourAnswersHelperFactory = injector.instanceOf[CheckYourAnswersHelperFactory]
 
   def fakeRequest = FakeRequest("", "")
 
