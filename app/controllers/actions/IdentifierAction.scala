@@ -48,8 +48,8 @@ class AuthenticatedIdentifierAction @Inject() (
     implicit val hc: HeaderCarrier =
       HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    authorised().retrieve(internalId and allEnrolments) {
-      case userInternalId ~ allUsersEnrolments =>
+    authorised().retrieve(allEnrolments) {
+      case allUsersEnrolments =>
         def eori: Option[EORI] =
           if (config.eoriIntegration.enabled)
             Some(
@@ -68,7 +68,7 @@ class AuthenticatedIdentifierAction @Inject() (
           IdentifierRequest(
             request,
             Identification(
-              userInternalId.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id")),
+              hc.sessionId.map(_.value).getOrElse(throw new UnauthorizedException("Unable to retrieve session Id")),
               eori
             )
           )

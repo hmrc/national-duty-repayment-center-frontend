@@ -28,8 +28,8 @@ import play.api.i18n.Langs
 import play.api.mvc.{BodyParsers, Result, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{allEnrolments, internalId}
-import uk.gov.hmrc.auth.core.retrieve.~
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allEnrolments
+import uk.gov.hmrc.http.SessionKeys
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -213,13 +213,14 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
   }
 
   private def handleAuthWithEnrolments(enrolments: Enrolments): Future[Result] = {
-    when(authConnector.authorise(any(), Matchers.eq(internalId and allEnrolments))(any(), any())).thenReturn(
-      Future.successful(new ~(Some("identifier"), enrolments))
+    when(authConnector.authorise(any(), Matchers.eq(allEnrolments))(any(), any())).thenReturn(
+      Future.successful(enrolments)
     )
 
     val authAction = new AuthenticatedIdentifierAction(authConnector, appConfig, bodyParsers)
     val controller = new Harness(authAction)
-    controller.onPageLoad()(fakeRequest)
+    val request    = fakeRequest.withSession(SessionKeys.sessionId -> "sessionId")
+    controller.onPageLoad()(request)
   }
 
   private def whenEoriIntegrationEnabled(enabled: Boolean) = {
