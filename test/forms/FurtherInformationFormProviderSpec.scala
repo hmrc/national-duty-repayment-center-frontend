@@ -17,7 +17,6 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
-import models.ClaimDescription
 import play.api.data.FormError
 
 class FurtherInformationFormProviderSpec extends StringFieldBehaviours {

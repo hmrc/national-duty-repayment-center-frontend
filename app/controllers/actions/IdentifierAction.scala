@@ -24,8 +24,7 @@ import models.requests.{Identification, IdentifierRequest}
 import play.api.mvc.Results._
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{allEnrolments, internalId}
-import uk.gov.hmrc.auth.core.retrieve.~
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allEnrolments
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
@@ -48,8 +47,8 @@ class AuthenticatedIdentifierAction @Inject() (
     implicit val hc: HeaderCarrier =
       HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    authorised().retrieve(internalId and allEnrolments) {
-      case userInternalId ~ allUsersEnrolments =>
+    authorised().retrieve(allEnrolments) {
+      case allUsersEnrolments =>
         def eori: Option[EORI] =
           if (config.eoriIntegration.enabled)
             Some(
@@ -68,7 +67,7 @@ class AuthenticatedIdentifierAction @Inject() (
           IdentifierRequest(
             request,
             Identification(
-              userInternalId.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id")),
+              hc.sessionId.map(_.value).getOrElse(throw new UnauthorizedException("Unable to retrieve session Id")),
               eori
             )
           )
