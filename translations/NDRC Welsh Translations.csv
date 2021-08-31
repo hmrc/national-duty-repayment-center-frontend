@@ -795,3 +795,14 @@ bankDetails.hint	This must be a UK account that accepts Bacs payments.	Mae’n r
 bankDetails.name.importer.hint	Enter the name as it appears on their bank statement.	Nodwch yr enw fel y mae’n ymddangos ar ei gyfriflen banc.
 bankDetails.name.representative.hint	Enter the name as it appears on your bank statement.	Nodwch yr enw fel y mae’n ymddangos ar eich cyfriflen banc.
 indirectRepresentative.hintText	An indirect representative acts in their own name but on behalf of another party. Both parties accept joint liability for the information provided.	Mae cynrychiolydd anuniongyrchol yn gweithredu yn ei enw ei hun ond ar ran parti arall. Mae’r ddwy ochr yn derbyn rhwymedigaeth ar y cyd am yr wybodaeth a ddarperir.
+
+numberOfEntriesType.02.hint	Multiple entries must all be from the same importer, involve the same reasons for the application and be from before 1 January 2021 or from that date onwards.	Mae’n rhaid i gofnodion lluosog ddod o’r un mewnforiwr, rhaid iddynt gynnwys yr un rhesymau dros wneud y cais, a rhaid iddynt fod o gyfnod cyn 1 Ionawr 2021 neu o’r dyddiad hwnnw ymlaen.
+claimReasonType.multiple.title	Why are you making an application?	Pam yr ydych yn gwneud cais?
+claimReasonType.multiple.heading	Why are you making an application?	Pam yr ydych yn gwneud cais?
+claimReasonType.multiple.error.required	Select why you are making an application	Dewiswch pam yr ydych yn gwneud cais
+reasonForOverpayment.bullet10	if any goods have been destroyed by request	p’un a gafodd unrhyw nwyddau eu dinistrio ar gais
+reasonForOverpayment.bullet.claimReasonMultiple	if your application has more than one reason	p’un a oes gan eich cais fwy nag un rheswm
+claimReason.documents.commercial_invoice	a <b>commercial invoice</b>, which shows the value of the goods	<b>anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
+furtherInformation.title	Add more information to your application	Ychwanegwch ragor o wybodaeth at eich cais
+furtherInformation.heading	Add more information to your application	Ychwanegwch ragor o wybodaeth at eich cais
+furtherInformation.hintText	This may be information that HMRC has asked for, information you choose to add or a request to cancel your application.	Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth yr ydych yn dewis ei hychwanegu neu neges yn gofyn am gael canslo’ch cais.

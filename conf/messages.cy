@@ -113,7 +113,7 @@ numberOfEntriesType.heading = Faint o gofnodion yr ydych am eu cyflwyno?
 numberOfEntriesType.01 = Un cofnod
 numberOfEntriesType.02 = Cofnodion lluosog
 numberOfEntriesType.02.label = Nifer y cofnodion
-numberOfEntriesType.02.hint = Mae’n rhaid i gofnodion lluosog ddod o’r un mewnforiwr, cynnwys yr un rhesymau dros y cais a bod o gyn 1 Ionawr 2021 neu o’r dyddiad hwnnw ymlaen.
+numberOfEntriesType.02.hint = Mae’n rhaid i gofnodion lluosog ddod o’r un mewnforiwr, rhaid iddynt gynnwys yr un rhesymau dros wneud y cais, a rhaid iddynt fod o gyfnod cyn 1 Ionawr 2021 neu o’r dyddiad hwnnw ymlaen.
 numberOfEntriesType.checkYourAnswersLabel = Faint o gofnodion yr ydych am eu cyflwyno?
 numberOfEntriesType.error.required = Dewiswch a ydych am gyflwyno un cofnod neu fwy nag un cofnod
 
@@ -160,10 +160,10 @@ entryDetails.date.checkYourAnswersLabel = Dyddiad y cofnod
 
 applicationInformation.checkYourAnswersLabel = Gwybodaeth am y cais
 
-claimReasonType.multiple.title = Pam ydych yn gwneud cais?
-claimReasonType.multiple.heading = Pam ydych yn gwneud cais?
+claimReasonType.multiple.title = Pam yr ydych yn gwneud cais?
+claimReasonType.multiple.heading = Pam yr ydych yn gwneud cais?
 claimReasonType.multiple.hintText = Dewiswch bob un sy’n gymwys
-claimReasonType.multiple.error.required = Dewiswch pam eich bod yn gwneud cais
+claimReasonType.multiple.error.required = Dewiswch pam yr ydych yn gwneud cais
 
 claimReasonType.title = Beth yw’r prif reswm dros wneud cais?
 claimReasonType.heading = Beth yw’r prif reswm dros wneud cais?
@@ -199,8 +199,8 @@ reasonForOverpayment.bullet6 = newidiadau i werth nwyddau
 reasonForOverpayment.bullet7 = nifer yr eitemau neu’r nwyddau
 reasonForOverpayment.bullet8 = disgrifiad o’r eitemau neu’r nwyddau
 reasonForOverpayment.bullet9 = pam y dychwelwyd unrhyw nwyddau
-reasonForOverpayment.bullet10 = os oes unrhyw nwyddau wedi’u dinistrio ar gais
-reasonForOverpayment.bullet.claimReasonMultiple = os oes gan eich cais mwy nag un rheswm
+reasonForOverpayment.bullet10 = p’un a gafodd unrhyw nwyddau eu dinistrio ar gais
+reasonForOverpayment.bullet.claimReasonMultiple = p’un a oes gan eich cais fwy nag un rheswm
 
 claimRepaymentType.title = Beth hoffech ei adennill?
 claimRepaymentType.heading = Beth hoffech ei adennill?
@@ -227,7 +227,7 @@ evidenceSupportingDocs.error.required = Dewiswch ddogfennau ategol
 
 claimReason.documents.c88 = y ddogfen <b>C88</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol
 claimReason.documents.e2 = y ddogfen <b>E2</b>, sy’n cadarnhau bod eich cofnod mewnforio wedi’i nodi gan CThEM
-claimReason.documents.commercial_invoice = a<b>anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
+claimReason.documents.commercial_invoice = <b>anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
 claimReason.documents.substitute_entry = <b>cofnod cyfnewid</b>, sy’n dangos newidiadau a wnaed i’r cofnod gwreiddiol
 claimReason.documents.currency_charge_evicence = tystiolaeth bod yr anfoneb wedi’i chywiro mewn arian cyfred arall
 claimReason.documents.airway_bill = <b>bil teithrestr awyr</b> neu <b>bil llwytho</b>, sy’n dangos y manylion cludo
@@ -530,12 +530,12 @@ referenceNumber.hintText = Dyma’r cyfeirnod 23 cymeriad a roddwyd wrth i chi g
 referenceNumber.error.prefix = Nodwch y cyfeirnod yn y fformat cywir
 referenceNumber.error.invalid.chars = Mae’n rhaid i’r cyfeirnod gynnwys y llythrennau a i z a’r rhifau 0 i 9 yn unig
 
-furtherInformation.title = Ychwanegwch mwy o wybodaeth i’ch cais
-furtherInformation.heading = Ychwanegwch mwy o wybodaeth i’ch cais
+furtherInformation.title = Ychwanegwch ragor o wybodaeth at eich cais
+furtherInformation.heading = Ychwanegwch ragor o wybodaeth at eich cais
 furtherInformation.checkYourAnswersLabel = Gwybodaeth ychwanegol
 furtherInformation.error.required = Nodwch yr wybodaeth ychwanegol
 furtherInformation.error.length = Mae’n rhaid i’r wybodaeth ychwanegol fod yn 1400 o gymeriadau neu lai
-furtherInformation.hintText = Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth y byddwch yn dewis ei hychwanegu neu gais i ganslo’ch cais.
+furtherInformation.hintText = Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth yr ydych yn dewis ei hychwanegu neu neges yn gofyn am gael canslo’ch cais.
 
 amendCaseResponseType.title = Beth y mae angen i chi ei wneud?
 amendCaseResponseType.heading = Beth y mae angen i chi ei wneud?
