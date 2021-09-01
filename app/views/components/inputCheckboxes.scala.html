@@ -18,8 +18,7 @@
 
 @(
     form: Form[_],
-    idPrefix: Option[String] = None,
-    name: Option[String] = None,
+    name: String = "value",
     legend: String,
     items: Seq[CheckboxItem],
     legendAsHeading: Boolean = true,
@@ -27,7 +26,7 @@
 )(implicit messages: Messages)
 
     @govukCheckboxes(Checkboxes(
-            name = "value",
+            name = name,
             fieldset = Some(Fieldset(
             legend = Some(Legend(
                 content = Text(messages(legend)),
