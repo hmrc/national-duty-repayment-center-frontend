@@ -76,8 +76,8 @@ function completePage() {
         submit();
     }
     if (currentPageIs("/application-reason")) {
-        document.getElementById("04").checked = true;
-        document.getElementById("01").checked = true;
+        document.getElementById("value").checked = true;
+        document.getElementById("value-6").checked = true;
         submit();
     }
     if (currentPageIs("/main-reason")) {
@@ -234,7 +234,7 @@ function completePage() {
         submit();
     }
     if (currentPageIs("/amend/what-do-you-need-to-do")) {
-        document.getElementById("furtherInformation").checked = true;
+        document.getElementById("value-2").checked = true;
         submit();
     }
     if (currentPageIs("/amend/further-information")) {

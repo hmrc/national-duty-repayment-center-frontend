@@ -71,7 +71,6 @@ object ClaimReasonType extends Enumerable.Implicits {
     value =>
       CheckboxItem(
         name = Some("value[]"),
-        id = Some(value.toString),
         value = value.toString,
         content = Text(messages(s"claimReasonType.${value.toString}")),
         checked = form.data.values.exists(_ == value.toString)

@@ -28,8 +28,7 @@ class RadioOptionHelper(values: Seq[Any]) {
       RadioItem(
         value = Some(value.toString),
         content = Text(messages(s"claimReasonType.${value.toString}")),
-        checked = form("value").value.contains(value.toString),
-        id = Some(value.toString)
+        checked = form("value").value.contains(value.toString)
       )
   }
 
