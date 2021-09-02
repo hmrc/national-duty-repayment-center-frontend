@@ -28,6 +28,9 @@ session_expired.heading = For your security, we signed you out
 session_expired.guidance = We did not save your answers.
 session_expired.button = Sign in
 
+timeout.title = You’re about to signed out
+timeout.messageSuffix = Your answers will not be saved.
+
 site.back = Back
 site.edit = Change
 site.hidden-edit = Change {0}

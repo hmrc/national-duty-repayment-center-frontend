@@ -31,6 +31,9 @@ session_expired.heading = Er eich diogelwch, gwnaethom eich allgofnodi
 session_expired.guidance = Ni wnaethom gadw’ch atebion.
 session_expired.button = Mewngofnodi
 
+timeout.title = Rydych ar fin cael eich allgofnodi
+timeout.messageSuffix = Ni chaiff eich atebion eu cadw.
+
 site.back = Yn ôl
 site.edit = Newid
 site.hidden-edit = Newid {0}

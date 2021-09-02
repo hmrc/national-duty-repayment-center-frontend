@@ -74,6 +74,8 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
         keepAliveUrl = Some(routes.KeepAliveController.keepAlive().url),
         signOutUrl = Some(routes.SignOutController.signOut().url),
         timeoutUrl = Some(routes.SessionExpiredController.onPageLoad().url),
+        title = Some(messages("timeout.title")),
+        messageSuffix = Some(messages("timeout.messageSuffix")),
         language = Some(messages.lang.code)
     ))
 }
