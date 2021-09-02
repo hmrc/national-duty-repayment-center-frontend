@@ -806,3 +806,6 @@ claimReason.documents.commercial_invoice	a <b>commercial invoice</b>, which show
 furtherInformation.title	Add more information to your application	Ychwanegwch ragor o wybodaeth at eich cais
 furtherInformation.heading	Add more information to your application	Ychwanegwch ragor o wybodaeth at eich cais
 furtherInformation.hintText	This may be information that HMRC has asked for, information you choose to add or a request to cancel your application.	Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth yr ydych yn dewis ei hychwanegu neu neges yn gofyn am gael canslo’ch cais.
+
+timeout.title	You’re about to be signed out	Rydych ar fin cael eich allgofnodi
+timeout.messageSuffix	Your answers will not be saved.	Ni chaiff eich atebion eu cadw.
