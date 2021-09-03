@@ -81,7 +81,7 @@ function completePage() {
         submit();
     }
     if (currentPageIs("/main-reason")) {
-        document.getElementById("04").checked = true;
+        document.getElementById("value").checked = true;
         submit();
     }
     if (currentPageIs("/reason-for-overpayment")) {
