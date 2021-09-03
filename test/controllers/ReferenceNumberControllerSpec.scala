@@ -41,7 +41,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
   "ReferenceNumber Controller" must {
 
-    "return OK and the correct view for a GET (with no back link)" in {
+    "return OK and the correct view for a GET (with back link)" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -54,7 +54,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NavigatorBack(None))(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -119,7 +119,7 @@ class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NavigatorBack(None))(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
