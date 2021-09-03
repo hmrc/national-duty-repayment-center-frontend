@@ -54,26 +54,13 @@ class ClaimantTypeController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(
-        view(
-          preparedForm,
-          request.userAnswers.changePage.map(_ => backLink(request.userAnswers)).getOrElse(NavigatorBack(None))
-        )
-      )
+      Ok(view(preparedForm, backLink(request.userAnswers)))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(
-            BadRequest(
-              view(
-                formWithErrors,
-                request.userAnswers.changePage.map(_ => backLink(request.userAnswers)).getOrElse(NavigatorBack(None))
-              )
-            )
-          ),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
           // TODO - remove this logic of clearing answers if claimant type is changed
           if (

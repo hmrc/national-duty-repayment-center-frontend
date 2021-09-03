@@ -19,7 +19,6 @@ package controllers
 import base.SpecBase
 import forms.ClaimantTypeFormProvider
 import models.{ClaimantType, UserAnswers}
-import navigation.NavigatorBack
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -39,7 +38,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
 
   "ClaimantType Controller" must {
 
-    "return OK and the correct view for a GET (with no back link)" in {
+    "return OK and the correct view for a GET (with back link)" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -52,7 +51,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NavigatorBack(None))(request, messages).toString
+        view(form, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
@@ -120,7 +119,7 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NavigatorBack(None))(request, messages).toString
+        view(boundForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }
