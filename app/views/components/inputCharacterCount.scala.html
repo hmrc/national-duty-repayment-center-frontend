@@ -26,7 +26,7 @@
     label: String,
     isPageHeading: Boolean = false,
     maxLength: Option[Int],
-    threshold: Option[Int] = Some(80),
+    threshold: Option[Int] = None,
     hint: Option[Content] = None,
     hintClasses: Option[String] = None
 )(implicit messages: Messages)
