@@ -45,13 +45,11 @@ class CreateNavigatorImpl @Inject() (val appConfig: FrontendAppConfig)
     P(FirstPage, controllers.routes.ClaimantTypeController.onPageLoad, never, always),
     P(ClaimantTypePage, controllers.routes.ClaimantTypeController.onPageLoad, always, claimantTypeAnswered),
     P(NumberOfEntriesTypePage, controllers.routes.NumberOfEntriesTypeController.onPageLoad, always, numberOfEntriesAnswered),
-    P(CustomsRegulationTypePage, controllers.routes.CustomsRegulationTypeController.onPageLoad, always, customsRegulationAnswered),
+    P(EntryDetailsPage, controllers.routes.EntryDetailsController.onPageLoad, always, entryDetailsAnswered),
     P(UkRegulationTypePage, controllers.routes.UkRegulationTypeController.onPageLoad, showUkRegulationType, ukRegulationTypeAnswered),
     P(ArticleTypePage, controllers.routes.ArticleTypeController.onPageLoad, showArticleType, articleTypeAnswered),
 
     P(BulkFileUploadPage, controllers.routes.BulkFileUploadController.showFileUpload, showBulkUpload, bulkUploadAnswered),
-
-    P(EntryDetailsPage, controllers.routes.EntryDetailsController.onPageLoad, always, entryDetailsAnswered),
 
     P(ClaimReasonTypeMultiplePage, controllers.routes.ClaimReasonTypeMultipleController.onPageLoad, always, claimReasonMultipleAnswered),
     P(ClaimReasonTypePage, controllers.routes.ClaimReasonTypeController.onPageLoad, showClaimReasonType, claimReasonAnswered),
@@ -115,10 +113,10 @@ protected trait CreateAnswerConditions {
   protected val isAgent: UserAnswers => Boolean    = _.isAgentJourney
 
   protected val showUkRegulationType: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UKCustomsCodeRegulation)
+    answers.customsRegulationType.contains(CustomsRegulationType.UKCustomsCodeRegulation)
 
   protected val showArticleType: UserAnswers => Boolean = (answers: UserAnswers) =>
-    answers.get(CustomsRegulationTypePage).contains(CustomsRegulationType.UnionsCustomsCodeRegulation)
+    answers.customsRegulationType.contains(CustomsRegulationType.UnionsCustomsCodeRegulation)
 
   protected val showBulkUpload: UserAnswers => Boolean = (answers: UserAnswers) =>
     answers.isMultipleEntry
@@ -177,7 +175,6 @@ protected trait CreateHasAnsweredConditions {
   protected val never: UserAnswers => Boolean                        = (_: UserAnswers) => false
   protected val claimantTypeAnswered: UserAnswers => Boolean         = _.get(ClaimantTypePage).nonEmpty
   protected val numberOfEntriesAnswered: UserAnswers => Boolean      = _.get(NumberOfEntriesTypePage).nonEmpty
-  protected val customsRegulationAnswered: UserAnswers => Boolean    = _.get(CustomsRegulationTypePage).nonEmpty
   protected val ukRegulationTypeAnswered: UserAnswers => Boolean     = _.get(UkRegulationTypePage).nonEmpty
   protected val articleTypeAnswered: UserAnswers => Boolean          = _.get(ArticleTypePage).nonEmpty
   protected val entryDetailsAnswered: UserAnswers => Boolean         = _.get(EntryDetailsPage).nonEmpty

@@ -20,6 +20,7 @@ import java.time.LocalDate
 
 import base.SpecBase
 import controllers.routes
+import data.TestData.{testEntryDetailsJan2021, testEntryDetailsPreJan2021}
 import models.ClaimRepaymentType.{Customs, Other, Vat}
 import models._
 import pages._
@@ -48,13 +49,13 @@ class CreateNavigatorSpec extends SpecBase {
           .mustBe(routes.IndirectRepresentativeController.onPageLoad())
       }
 
-      "go to UK Regulations page after Customs Regulation Type page when selected UKCustomsCodeRegulation and one entry journey " in {
+      "go to UK Regulations page after Entry Details page when entry date Jan 2021 and one entry journey " in {
         val answers =
           emptyUserAnswers
             .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
-            .set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
+            .set(EntryDetailsPage, testEntryDetailsJan2021).success.value
 
-        navigator.nextPage(CustomsRegulationTypePage, answers)
+        navigator.nextPage(EntryDetailsPage, answers)
           .mustBe(routes.UkRegulationTypeController.onPageLoad())
 
       }
@@ -102,22 +103,22 @@ class CreateNavigatorSpec extends SpecBase {
 
       }
 
-      "go to ArticleTypeController page after the customsRegulationType page when the UnionsCustomsCodeRegulation has been selected" in {
+      "go to ArticleTypeController page after the Entry Details page when entry date Dec 2020" in {
 
         val answers =
           emptyUserAnswers
-            .set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation).success.value
-        navigator.nextPage(CustomsRegulationTypePage, answers)
+            .set(EntryDetailsPage, testEntryDetailsPreJan2021).success.value
+        navigator.nextPage(EntryDetailsPage, answers)
           .mustBe(routes.ArticleTypeController.onPageLoad())
 
       }
 
-      "go to UkRegulationType page after the customsRegulationType page when the UKCustomsCodeRegulation has been selected" in {
+      "go to UkRegulationType page after the Entry Details page when entry date Jan 2021" in {
 
         val answers =
           emptyUserAnswers
-            .set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation).success.value
-        navigator.nextPage(CustomsRegulationTypePage, answers)
+            .set(EntryDetailsPage, testEntryDetailsJan2021).success.value
+        navigator.nextPage(EntryDetailsPage, answers)
           .mustBe(routes.UkRegulationTypeController.onPageLoad())
       }
 

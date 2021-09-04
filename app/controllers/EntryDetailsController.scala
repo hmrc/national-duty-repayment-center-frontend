@@ -19,6 +19,7 @@ package controllers
 import controllers.actions._
 import forms.EntryDetailsFormProvider
 import javax.inject.Inject
+import models.CustomsRegulationType.UnionsCustomsCodeRegulation
 import models.UserAnswers
 import navigation.CreateNavigator
 import pages.{EntryDetailsPage, _}
@@ -80,9 +81,16 @@ class EntryDetailsController @Inject() (
           ),
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(nextPage(updatedAnswers))
+            // save entry details
+            userAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
+            // clear redundant regulation/article answer
+            userAnswers <- userAnswers.customsRegulationType match {
+              case Some(UnionsCustomsCodeRegulation) =>
+                Future.fromTry(userAnswers.remove(UkRegulationTypePage))
+              case _ => Future.fromTry(userAnswers.remove(ArticleTypePage))
+            }
+            _ <- sessionRepository.set(userAnswers)
+          } yield Redirect(nextPage(userAnswers))
       )
   }
 

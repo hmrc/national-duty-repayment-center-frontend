@@ -67,7 +67,7 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
       }
 
     def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
-      customRegulationType   <- userAnswers.get(CustomsRegulationTypePage)
+      customRegulationType   <- userAnswers.customsRegulationType
       claimedUnderArticle    <- Some(userAnswers.get(ArticleTypePage))
       claimedUnderRegulation <- Some(userAnswers.get(UkRegulationTypePage))
       claimant               <- userAnswers.get(ClaimantTypePage)

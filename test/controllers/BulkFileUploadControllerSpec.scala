@@ -20,12 +20,11 @@ import java.time.ZonedDateTime
 
 import base.SpecBase
 import models.FileType.Bulk
-import models.{CustomsRegulationType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import models.{FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.{any, anyObject}
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CustomsRegulationTypePage
 import play.api.http.Status.SEE_OTHER
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
@@ -89,10 +88,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val userAnswers = UserAnswers(userIdentification).set(
-        CustomsRegulationTypePage,
-        CustomsRegulationType.UnionsCustomsCodeRegulation
-      ).success.value.copy(fileUploadState = Some(fileUploadedState))
+      val userAnswers = UserAnswers(userIdentification).copy(fileUploadState = Some(fileUploadedState))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
       running(application) {
@@ -125,10 +121,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         acknowledged = true
       )
 
-      val userAnswers = UserAnswers(userIdentification).set(
-        CustomsRegulationTypePage,
-        CustomsRegulationType.UKCustomsCodeRegulation
-      ).success.value.copy(fileUploadState = Some(fileUploadedState))
+      val userAnswers = UserAnswers(userIdentification).copy(fileUploadState = Some(fileUploadedState))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
       running(application) {
@@ -171,10 +164,7 @@ class BulkFileUploadControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = false
       )
-      val userAnswers = UserAnswers(userIdentification).set(
-        CustomsRegulationTypePage,
-        CustomsRegulationType.UKCustomsCodeRegulation
-      ).success.value.copy(fileUploadState = Some(fileUploadState))
+      val userAnswers = UserAnswers(userIdentification).copy(fileUploadState = Some(fileUploadState))
       val application =
         applicationBuilder(userAnswers = Some(userAnswers.copy(fileUploadState = Some(fileUploadState)))).build()
 
