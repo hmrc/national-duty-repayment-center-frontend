@@ -38,7 +38,9 @@ object TestData {
 
   val testClaimantTypeRepresentative: ClaimantType = ClaimantType.Representative
   val testClaimantTypeImporter: ClaimantType       = ClaimantType.Importer
-  val testEntryDetails: EntryDetails               = EntryDetails("123", "123456A", LocalDate.parse("2012-12-12"))
+  val testEntryDetailsPreJan2021: EntryDetails     = EntryDetails("123", "123456A", LocalDate.parse("2012-12-12"))
+  val testEntryDetailsDec2020: EntryDetails        = EntryDetails("123", "123456A", LocalDate.parse("2020-12-31"))
+  val testEntryDetailsJan2021: EntryDetails        = EntryDetails("123", "123456A", LocalDate.parse("2021-01-01"))
   val testClaimDescription: ClaimDescription       = ClaimDescription("this is a claim description")
 
   val testClaimReasonTypes: Set[ClaimReasonType] =
@@ -100,7 +102,7 @@ object TestData {
     testClaimantTypeRepresentative,
     NumberOfEntriesType.Single,
     None,
-    testEntryDetails,
+    testEntryDetailsPreJan2021,
     ClaimReasonType.Cpuchange,
     testClaimDescriptionSubmitted,
     LocalDate.now(),
@@ -119,7 +121,7 @@ object TestData {
     testClaimantTypeRepresentative,
     NumberOfEntriesType.Multiple,
     Some("2"),
-    testEntryDetails,
+    testEntryDetailsPreJan2021,
     ClaimReasonType.Cpuchange,
     testClaimDescriptionSubmitted,
     LocalDate.now(),
@@ -138,7 +140,7 @@ object TestData {
     testClaimantTypeRepresentative,
     NumberOfEntriesType.Single,
     None,
-    testEntryDetails,
+    testEntryDetailsPreJan2021,
     ClaimReasonType.Cpuchange,
     testClaimDescriptionSubmitted,
     LocalDate.now(),
@@ -157,7 +159,7 @@ object TestData {
     testClaimantTypeImporter,
     NumberOfEntriesType.Single,
     None,
-    testEntryDetails,
+    testEntryDetailsPreJan2021,
     ClaimReasonType.Cpuchange,
     testClaimDescriptionSubmitted,
     LocalDate.now(),
@@ -176,7 +178,7 @@ object TestData {
     testClaimantTypeImporter,
     NumberOfEntriesType.Single,
     None,
-    testEntryDetails,
+    testEntryDetailsJan2021,
     ClaimReasonType.Cpuchange,
     testClaimDescriptionSubmitted,
     LocalDate.now(),
@@ -195,7 +197,7 @@ object TestData {
     testClaimantTypeRepresentative,
     NumberOfEntriesType.Single,
     None,
-    testEntryDetails,
+    testEntryDetailsPreJan2021,
     ClaimReasonType.Cpuchange,
     testClaimDescriptionSubmitted,
     LocalDate.now(),
@@ -246,9 +248,8 @@ object TestData {
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
       .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))))
-      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
-      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetailsPreJan2021))
       .flatMap(_.set(ClaimReasonTypeMultiplePage, testClaimReasonTypes))
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
@@ -284,9 +285,8 @@ object TestData {
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
       .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
-      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
-      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetailsPreJan2021))
       .flatMap(_.set(ClaimReasonTypeMultiplePage, testClaimReasonTypes))
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
@@ -323,9 +323,8 @@ object TestData {
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
       .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
-      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
-      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetailsPreJan2021))
       .flatMap(_.set(ClaimReasonTypeMultiplePage, testClaimReasonTypes))
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
@@ -360,9 +359,8 @@ object TestData {
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeImporter)
       .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
-      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
-      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetailsPreJan2021))
       .flatMap(_.set(ClaimReasonTypeMultiplePage, testClaimReasonTypes))
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
@@ -389,9 +387,8 @@ object TestData {
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeImporter)
       .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
-      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UKCustomsCodeRegulation))
       .flatMap(_.set(UkRegulationTypePage, UkRegulationType.Rejected))
-      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetailsJan2021))
       .flatMap(_.set(ClaimReasonTypeMultiplePage, testClaimReasonTypes))
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
@@ -418,9 +415,8 @@ object TestData {
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
       .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
-      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
-      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetailsPreJan2021))
       .flatMap(_.set(ClaimReasonTypeMultiplePage, testClaimReasonTypes))
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))
@@ -457,9 +453,8 @@ object TestData {
     userAnswers
       .set(ClaimantTypePage, testClaimantTypeRepresentative)
       .flatMap(_.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)))
-      .flatMap(_.set(CustomsRegulationTypePage, CustomsRegulationType.UnionsCustomsCodeRegulation))
       .flatMap(_.set(ArticleTypePage, ArticleType.ErrorByCustoms))
-      .flatMap(_.set(EntryDetailsPage, testEntryDetails))
+      .flatMap(_.set(EntryDetailsPage, testEntryDetailsPreJan2021))
       .flatMap(_.set(ClaimReasonTypeMultiplePage, testClaimReasonTypes))
       .flatMap(_.set(ClaimReasonTypePage, ClaimReasonType.Cpuchange))
       .flatMap(_.set(ReasonForOverpaymentPage, testClaimDescription))

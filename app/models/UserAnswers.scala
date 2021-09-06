@@ -16,9 +16,10 @@
 
 package models
 
-import java.time.Instant
+import java.time.{Instant, LocalDate}
 
 import config.FrontendAppConfig
+import models.CustomsRegulationType.{UKCustomsCodeRegulation, UnionsCustomsCodeRegulation}
 import models.requests.Identification
 import pages._
 import play.api.libs.json._
@@ -52,6 +53,14 @@ final case class UserAnswers(
 
   def isMultipleClaimReason: Boolean =
     get(ClaimReasonTypeMultiplePage).exists(_.size > 1)
+
+  def customsRegulationType: Option[CustomsRegulationType] = {
+    val ukCustomsRegulationStartDate: LocalDate = LocalDate.of(2021, 1, 1)
+    get(EntryDetailsPage).map(_.EntryDate match {
+      case date if date.isBefore(ukCustomsRegulationStartDate) => UnionsCustomsCodeRegulation
+      case _                                                   => UKCustomsCodeRegulation
+    })
+  }
 
   def isCmaAllowed(implicit appConfig: FrontendAppConfig): Boolean =
     isSingleEntry &&

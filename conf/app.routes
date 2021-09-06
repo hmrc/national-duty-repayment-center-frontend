@@ -35,9 +35,6 @@ POST        /enter-your-eori-number                                             
 GET         /vat-registered                                                            controllers.IsVATRegisteredController.onPageLoad()
 POST        /vat-registered                                                            controllers.IsVATRegisteredController.onSubmit()
 
-GET         /acceptance-date-all-entries                                               controllers.CustomsRegulationTypeController.onPageLoad()
-POST        /acceptance-date-all-entries                                               controllers.CustomsRegulationTypeController.onSubmit()
-
 GET         /why-are-you-applying                                                      controllers.ArticleTypeController.onPageLoad()
 POST        /why-are-you-applying                                                      controllers.ArticleTypeController.onSubmit()
 

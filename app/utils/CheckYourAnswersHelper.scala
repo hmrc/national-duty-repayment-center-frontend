@@ -19,6 +19,7 @@ package utils
 import controllers.routes
 import javax.inject.Inject
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
+import models.CustomsRegulationType.UnionsCustomsCodeRegulation
 import models.DeclarantReferenceType.{No, Yes}
 import models.FileType.{Bulk, ProofOfAuthority, SupportingEvidence}
 import models.FileUpload.Accepted
@@ -54,9 +55,9 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
   val claimantTypePage               = userAnswers.get(ClaimantTypePage)
   val numberOfEntriesTypePage        = userAnswers.get(NumberOfEntriesTypePage)
   val entryDetailsPage               = userAnswers.get(EntryDetailsPage)
-  val customsRegulationTypePage      = userAnswers.get(CustomsRegulationTypePage)
   val claimIdQuery                   = userAnswers.get(ClaimIdQuery)
   val claimDateQuery                 = userAnswers.get(ClaimDateQuery)
+  val customsRegulationType          = userAnswers.customsRegulationType
 
   def getCheckYourAnswerSections: Seq[AnswerSection] =
     Seq(getImportantInformationAnswerSection, getEntryDetailsAnswerSection, getApplicationInformationAnswerSection) ++
@@ -401,12 +402,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
     AnswerSection(
       Some(messages("impInfo.checkYourAnswersLabel")),
       getAnswerRow(claimantType) ++
-        getAnswerRow(numberOfEntriesType) ++
-        getAnswerRow(customsRegulationType) ++
-        (customsRegulationTypePage match {
-          case Some(CustomsRegulationType.UnionsCustomsCodeRegulation) => getAnswerRow(articleType)
-          case _                                                       => getAnswerRow(ukRegulationType)
-        })
+        getAnswerRow(numberOfEntriesType)
     )
 
   private def getApplicationSentSection: AnswerSection =
@@ -447,7 +443,11 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
   private def getApplicationInformationAnswerSection: AnswerSection =
     AnswerSection(
       Some(messages("applicationInformation.checkYourAnswersLabel")),
-      getAnswerRow(claimReasonTypeMultiple) ++
+      (customsRegulationType match {
+        case Some(UnionsCustomsCodeRegulation) => getAnswerRow(articleType)
+        case _                                 => getAnswerRow(ukRegulationType)
+      }) ++
+        getAnswerRow(claimReasonTypeMultiple) ++
         getAnswerRow(claimReasonType) ++
         getAnswerRow(reasonForOverpayment) ++
         getAnswerRow(claimRepaymentType) ++
@@ -600,15 +600,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
         HtmlFormat.escape(messages("ukRegulationType.checkYourAnswersLabel")),
         HtmlFormat.escape(messages(s"ukRegulationType.$x")),
         Some(routes.CheckYourAnswersController.onChange(UkRegulationTypePage).url)
-      )
-  }
-
-  private def customsRegulationType: Option[AnswerRow] = customsRegulationTypePage map {
-    x =>
-      AnswerRow(
-        HtmlFormat.escape(messages("customsRegulationType.checkYourAnswersLabel")),
-        HtmlFormat.escape(messages(s"customsRegulationType.$x")),
-        Some(routes.CheckYourAnswersController.onChange(CustomsRegulationTypePage).url)
       )
   }
 

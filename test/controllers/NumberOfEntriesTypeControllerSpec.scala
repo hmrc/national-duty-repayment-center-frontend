@@ -19,7 +19,7 @@ package controllers
 import java.time.ZonedDateTime
 
 import base.SpecBase
-import data.TestData.{testClaimRepaymentType, testEntryDetails, testRepaymentAmounts}
+import data.TestData.{testClaimRepaymentType, testEntryDetailsPreJan2021, testRepaymentAmounts}
 import forms.NumberOfEntriesTypeFormProvider
 import models.FileType.Bulk
 import models.NumberOfEntriesType.Single
@@ -133,7 +133,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       )
 
       val completeUserAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
-        .set(EntryDetailsPage, testEntryDetails)
+        .set(EntryDetailsPage, testEntryDetailsPreJan2021)
         .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
         .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))
         .flatMap(_.set(VATPaidPage, testRepaymentAmounts))
@@ -193,7 +193,7 @@ class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
       )
 
       val completeUserAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadedState))
-        .set(EntryDetailsPage, testEntryDetails)
+        .set(EntryDetailsPage, testEntryDetailsPreJan2021)
         .flatMap(_.set(NumberOfEntriesTypePage, Entries(Single, None)))
         .flatMap(_.set(ClaimRepaymentTypePage, testClaimRepaymentType))
         .flatMap(_.set(CustomsDutyPaidPage, testRepaymentAmounts))

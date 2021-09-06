@@ -20,13 +20,11 @@ import java.time.ZonedDateTime
 
 import base.SpecBase
 import models.FileType.ProofOfAuthority
-import models.{CustomsRegulationType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import models.{FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.{any, anyObject}
-
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CustomsRegulationTypePage
 import play.api.http.Status.SEE_OTHER
 import play.api.i18n.Messages
 import play.api.test.Helpers.{
@@ -94,10 +92,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         ),
         acknowledged = false
       )
-      val userAnswers = UserAnswers(userIdentification).set(
-        CustomsRegulationTypePage,
-        CustomsRegulationType.UKCustomsCodeRegulation
-      ).success.value.copy(fileUploadState = Some(fileUploadState))
+      val userAnswers = UserAnswers(userIdentification).copy(fileUploadState = Some(fileUploadState))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .build()
