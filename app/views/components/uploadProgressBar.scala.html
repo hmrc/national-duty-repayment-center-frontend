@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@()
+@()(implicit request: Request[_], messages: Messages)
 
 <div class="ndrc_progress_bar_container">
- <div id="ndrc-progress-bar" class="ndrc_progress_bar"></div>
+ <div id="ndrc-progress-bar" class="ndrc_progress_bar" aria-live="polite" aria-label=@messages("upload_documents.status.in_progress")></div>
 </div>
