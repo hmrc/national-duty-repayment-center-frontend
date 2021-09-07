@@ -24,7 +24,7 @@ function onFileSelect() {
   }
   finally {
     // timeout before submitting is to give Safari time to render un-hidden element
-    // animations stop in Safari once form is submitted so animation start is delayed by 1000 ms
-    setTimeout(function () {  document.getElementById("upload-form").submit(); }, 1000);
+    // animations stop in Safari once form is submitted so animation start is delayed by 500 ms
+    setTimeout(function () {  document.getElementById("upload-form").submit(); }, 500);
   }
 }
