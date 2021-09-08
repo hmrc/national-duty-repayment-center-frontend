@@ -47,11 +47,6 @@ find.address	Find address	Dod o hyd i gyfeiriad
 site.service_name	Apply for repayment of import duty and import VAT	Gwneud cais am ad-daliad o dollau mewnforio a TAW mewnforio
 site.textarea.char_limit	(Limit is {0} characters)	(Y terfyn yw {0} o gymeriadau)
 site.govuk	GOV.UK	GOV.UK/CYMRAEG
-footer.cookies	Cookies	Cwcis
-footer.privacy	Privacy policy	Polisi preifatrwydd
-footer.termsConditions	Terms and conditions	Telerau ac amodau
-footer.govukHelp	Help using GOV.UK	Help wrth ddefnyddio GOV.UK
-footer.accessibilityStatement	Accessibility statement	Datganiad hygyrchedd
 unauthorised.title	You can’t access this service with this account	Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 unauthorised.heading	You can’t access this service with this account	Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 importerHasEori.title	Do you have an EORI number?	A oes gennych rif EORI?

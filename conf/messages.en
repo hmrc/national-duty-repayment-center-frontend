@@ -40,12 +40,6 @@ site.continue = Continue
 site.service_name = Apply for repayment of import duty and import VAT
 site.govuk = GOV.UK
 
-footer.cookies = Cookies
-footer.privacy = Privacy policy
-footer.termsConditions = Terms and conditions
-footer.govukHelp = Help using GOV.UK
-footer.accessibilityStatement = Accessibility statement
-
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 

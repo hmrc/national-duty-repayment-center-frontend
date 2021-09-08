@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components.{Header => _, _}
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcTrackingConsentSnippet
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcReportTechnicalIssueHelper
-@import views.components.FooterLinks
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardFooter
 @import config.FrontendAppConfig
 @import navigation.NavigatorBack
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcScripts
@@ -40,7 +40,8 @@ reportAProblemLink: ReportAProblemLink,
 appConfig: config.FrontendAppConfig,
 languageSelection: components.languageSelection,
 hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet,
-hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
+hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+hmrcStandardFooter: HmrcStandardFooter
 )
 
 @(
@@ -128,7 +129,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
   headBlock = Some(head),
   headerBlock = Some(siteHeader(timeout)),
   beforeContentBlock = Some(beforeContentBlock),
-  footerItems = FooterLinks.items,
+  footerBlock = Some(hmrcStandardFooter()),
   bodyEndBlock = None,
   scriptsBlock = Some(scripts)
 )(content)
