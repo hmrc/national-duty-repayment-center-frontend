@@ -43,12 +43,6 @@ site.continue = Yn eich blaen
 site.service_name = Gwneud cais am ad-daliad o dollau mewnforio a TAW mewnforio
 site.govuk = GOV.UK/CYMRAEG
 
-footer.cookies = Cwcis
-footer.privacy = Polisi preifatrwydd
-footer.termsConditions = Telerau ac amodau
-footer.govukHelp = Help wrth ddefnyddio GOV.UK
-footer.accessibilityStatement = Datganiad hygyrchedd
-
 unauthorised.title = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 unauthorised.heading = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 
