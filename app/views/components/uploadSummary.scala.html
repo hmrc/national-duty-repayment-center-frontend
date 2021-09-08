@@ -27,7 +27,7 @@
     </span>
 }
 @uploadingMessage = {
-    <span tabindex="-1" id="uploadingMessage" class="govuk-body govuk-!-font-weight-bold govuk-!-width-three-quarters">@messages("upload_documents.status.in_progress")</span>
+    <span tabindex="-1" id="uploadingMessage" class="govuk-body govuk-!-font-weight-bold govuk-!-width-three-quarters" role="status">@messages("upload_documents.status.in_progress")</span>
 }
 
 @progressRow = @{
@@ -40,6 +40,8 @@
         )
     )
 }
+
+<span id="uploadInProgressTitle" class="govuk-!-display-none">@titleNoForm(messages("upload_documents.status.in_progress"))</span>
 
 @govukSummaryList(SummaryList(
     attributes = Map("id" -> "summary"),

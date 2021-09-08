@@ -15,6 +15,7 @@ function onFileSelect() {
       errorBlock.classList.add("govuk-!-display-none");
     }
     document.getElementById("uploadingMessage").focus();
+    document.title = document.getElementById("uploadInProgressTitle").innerText;
   }
   finally {
     // timeout before submitting is to give Safari time to render un-hidden element
