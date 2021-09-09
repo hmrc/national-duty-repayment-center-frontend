@@ -20,7 +20,7 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class forms @Inject() (
-  val formWithCSRF: uk.gov.hmrc.govukfrontend.views.html.helpers.formWithCSRF,
+  val formWithCSRF: uk.gov.hmrc.govukfrontend.views.html.components.FormWithCSRF,
   val fieldset: views.html.components.fieldset,
   val inputText: views.html.components.inputText,
   val inputNumber: views.html.components.inputNumber,

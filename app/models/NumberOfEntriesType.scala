@@ -19,7 +19,7 @@ package models
 import play.api.data.Form
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.{ErrorMessage, Hint, Label}
-import uk.gov.hmrc.govukfrontend.views.html.components.{govukErrorMessage, govukHint, govukInput, govukLabel}
+import uk.gov.hmrc.govukfrontend.views.html.components.{GovukErrorMessage, GovukHint, GovukInput, GovukLabel}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.input.Input
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
@@ -31,9 +31,9 @@ object NumberOfEntriesType extends Enumerable.Implicits {
   case object Single   extends WithName("01") with NumberOfEntriesType
   case object Multiple extends WithName("02") with NumberOfEntriesType
 
-  private val govukErrorMessage: govukErrorMessage = new govukErrorMessage()
-  private val govukHint: govukHint                 = new govukHint()
-  private val govukLabel: govukLabel               = new govukLabel()
+  private val govukErrorMessage: GovukErrorMessage = new GovukErrorMessage()
+  private val govukHint: GovukHint                 = new GovukHint()
+  private val govukLabel: GovukLabel               = new GovukLabel()
 
   val values: Seq[NumberOfEntriesType] = Seq(Single, Multiple)
 
@@ -52,7 +52,7 @@ object NumberOfEntriesType extends Enumerable.Implicits {
         conditionalHtml =
           if (value.toString.equals("02"))
             Some(
-              new govukInput(govukErrorMessage, govukHint, govukLabel)(
+              new GovukInput(govukErrorMessage, govukHint, govukLabel)(
                 Input(
                   id = "entries",
                   value = form("entries").value,

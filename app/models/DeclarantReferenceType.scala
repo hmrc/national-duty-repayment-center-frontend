@@ -19,7 +19,7 @@ package models
 import play.api.data.Form
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.{ErrorMessage, Label}
-import uk.gov.hmrc.govukfrontend.views.html.components.{govukErrorMessage, govukHint, govukInput, govukLabel}
+import uk.gov.hmrc.govukfrontend.views.html.components.{GovukErrorMessage, GovukHint, GovukInput, GovukLabel}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.input.Input
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
@@ -31,9 +31,9 @@ object DeclarantReferenceType extends Enumerable.Implicits {
   case object Yes extends WithName("01") with DeclarantReferenceType
   case object No  extends WithName("02") with DeclarantReferenceType
 
-  private val govukErrorMessage: govukErrorMessage = new govukErrorMessage()
-  private val govukHint: govukHint                 = new govukHint()
-  private val govukLabel: govukLabel               = new govukLabel()
+  private val govukErrorMessage: GovukErrorMessage = new GovukErrorMessage()
+  private val govukHint: GovukHint                 = new GovukHint()
+  private val govukLabel: GovukLabel               = new GovukLabel()
 
   val values: Seq[DeclarantReferenceType] = Seq(Yes, No)
 
@@ -49,7 +49,7 @@ object DeclarantReferenceType extends Enumerable.Implicits {
         conditionalHtml =
           if (value.toString.equals("01"))
             Some(
-              new govukInput(govukErrorMessage, govukHint, govukLabel)(
+              new GovukInput(govukErrorMessage, govukHint, govukLabel)(
                 Input(
                   id = "declarantReferenceNumber",
                   value = form("declarantReferenceNumber").value,
