@@ -14,24 +14,18 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.header.Header
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import config.FrontendAppConfig
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardHeader
+
 @this(
-    hmrcHeader: HmrcHeader,
-    govukBackLink: GovukBackLink,
-    govukPhaseBanner : GovukPhaseBanner,
-    appConfig:FrontendAppConfig
+    hmrcStandardHeader: HmrcStandardHeader,
+    appConfig: config.FrontendAppConfig,
 )
 
-@(showSignOut: Boolean = true)(implicit messages: Messages)
+@(showSignOut: Boolean = true)(implicit request: Request[_], messages: Messages)
 
-@hmrcHeader(Header(
-    homepageUrl = "https://www.gov.uk/",
+@hmrcStandardHeader(
     serviceName = Some(messages("site.service_name")),
-    containerClasses = "govuk-width-container",
-    navigation = None,
-    serviceUrl = controllers.routes.IndexController.onPageLoad().url,
-    signOutHref = if (showSignOut) Some(controllers.routes.SignOutController.signOut.url) else None,
-    language = if (messages.lang.code == "cy") Cy else En
-))
+    serviceUrl = Some(controllers.routes.IndexController.onPageLoad().url),
+    signOutUrl = if (showSignOut) Some(controllers.routes.SignOutController.signOut.url) else None,
+    userResearchBanner = appConfig.researchBannerUrl.map(bannerUrl => UserResearchBanner(url = bannerUrl))
+)

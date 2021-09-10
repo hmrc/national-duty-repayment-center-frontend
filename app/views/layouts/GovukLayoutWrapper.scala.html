@@ -20,7 +20,6 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcTrackingConsentSnippet
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcReportTechnicalIssueHelper
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardFooter
-@import config.FrontendAppConfig
 @import navigation.NavigatorBack
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcScripts
 @import views.html.helper.CSPNonce
@@ -54,35 +53,33 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 
 @head = {
 
-<noscript>
-    <style type="text/css">
-            a[href^="javascript:"].govuk-back-link { visibility: hidden; }
-            p.ndrc-print-link { display: none; }
-            div.ndrc-display-only-non-javascript { display: block; }
-            div.ndrc-display-none-non-javascript { display: none; }
-    </style>
-</noscript>
+    <noscript>
+        <style type="text/css">
+                a[href^="javascript:"].govuk-back-link { visibility: hidden; }
+                p.ndrc-print-link { display: none; }
+                div.ndrc-display-only-non-javascript { display: block; }
+                div.ndrc-display-none-non-javascript { display: none; }
+        </style>
+    </noscript>
 
-<!--[if lte IE 8]><link href='@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")' rel="stylesheet" type="text/css" /><![endif]-->
-<!--[if gt IE 8]><!--><link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
+    <!--[if lte IE 8]><link href='@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")' rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if gt IE 8]><!--><link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
 
-@hmrcTrackingConsentSnippet()
+    @hmrcTrackingConsentSnippet()
 
-@if(timeout) {
-    @hmrcTimeoutDialog(TimeoutDialog(
-        timeout = Some(appConfig.timeout),
-        countdown = Some(appConfig.countdown),
-        keepAliveUrl = Some(routes.KeepAliveController.keepAlive().url),
-        signOutUrl = Some(routes.SignOutController.signOut().url),
-        timeoutUrl = Some(routes.SessionExpiredController.onPageLoad().url),
-        title = Some(messages("timeout.title")),
-        messageSuffix = Some(messages("timeout.messageSuffix")),
-        language = Some(messages.lang.code)
-    ))
-}
+    @if(timeout) {
+        @hmrcTimeoutDialog(TimeoutDialog(
+            timeout = Some(appConfig.timeout),
+            countdown = Some(appConfig.countdown),
+            keepAliveUrl = Some(routes.KeepAliveController.keepAlive().url),
+            signOutUrl = Some(routes.SignOutController.signOut().url),
+            timeoutUrl = Some(routes.SessionExpiredController.onPageLoad().url),
+            title = Some(messages("timeout.title")),
+            messageSuffix = Some(messages("timeout.messageSuffix")),
+            language = Some(messages.lang.code)
+        ))
+    }
 
-  <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="screen" rel="stylesheet"
-  type="text/css" />
 }
 
 @scripts = {

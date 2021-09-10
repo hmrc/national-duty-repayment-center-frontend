@@ -1,7 +1,7 @@
 $govuk-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/assets/lib/govuk-frontend/govuk/assets/";
 $hmrc-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/assets/lib/hmrc-frontend/hmrc/";
-@import "lib/hmrc-frontend/hmrc/all";
 @import "lib/govuk-frontend/govuk/all";
+@import "lib/hmrc-frontend/hmrc/all";
 
 // Components
 @import "accessible-autocomplete.min.css";
