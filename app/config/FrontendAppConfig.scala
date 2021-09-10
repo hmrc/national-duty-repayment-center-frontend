@@ -87,6 +87,9 @@ trait FrontendAppConfig {
   val baseExternalCallbackUrl: String
   val baseInternalCallbackUrl: String
 
+  val showResearchBanner: Boolean
+  val researchBannerUrl: Option[String]
+
   val eoriIntegration: FrontendAppConfig.EoriIntegration
   val emails: FrontendAppConfig.Emails
 
@@ -155,6 +158,11 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
   override val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
 
   override val languageTranslationEnabled: Boolean = langs.availables.exists(_.language == "cy")
+
+  override val showResearchBanner: Boolean = configuration.get[Boolean]("researchBanner.display")
+
+  override val researchBannerUrl: Option[String] =
+    if (showResearchBanner) configuration.getOptional[String]("urls.researchBanner") else None
 
   override val signOutUrl: String       = configuration.get[String]("urls.logout")
   private lazy val feedbackHost: String = configuration.get[String]("feedback-frontend.host")
