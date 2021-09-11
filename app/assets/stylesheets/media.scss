@@ -19,15 +19,16 @@ from the view and the page (url/page number, etc.)
   .govuk-section-break {
     page-break-inside: avoid;
   }
-  .hmrc-sign-out-nav__link {
-    display: none;
-  }
   .ndrc-\21-display-only-print {
     display: block; // For browsers that don't support contents
     display: contents;
   }
-  footer {
-    display: none;
+  footer,
+  .hmrc-sign-out-nav__link,
+  .govuk-phase-banner,
+  .hmrc-user-research-banner,
+  .govuk-button{
+    display: none !important;
   }
   .govuk-summary-list__key {
     width: 40%;
