@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NDRC AutoComplete
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.7
 
 // @description  NDRC AutoComplete
 // @author       NDRC Team

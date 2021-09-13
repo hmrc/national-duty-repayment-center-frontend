@@ -1,7 +1,7 @@
 $govuk-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/assets/lib/govuk-frontend/govuk/assets/";
 $hmrc-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/assets/lib/hmrc-frontend/hmrc/";
-@import "lib/govuk-frontend/govuk/all";
 @import "lib/hmrc-frontend/hmrc/all";
+@import "lib/govuk-frontend/govuk/all";
 
 // Components
 @import "accessible-autocomplete.min.css";
@@ -32,4 +32,8 @@ nav.hmrc-language-select {
 .govuk-panel__body {
   font-size: 2rem;
   overflow-wrap: break-word;
+}
+
+.hmrc-user-research-banner__link {
+  color: #fff !important;
 }
