@@ -368,7 +368,7 @@ class CreateNavigatorSpec extends SpecBase {
 
       "skip ImporterHasEori page after FileUploadedPage page when the claimant is importer and has EORI" in {
         val answers =
-          emptyUserAnswersWithEORI
+          emptyUserAnswersWithEORI()
             .set(ClaimantTypePage, ClaimantType.Importer).success.value
 
         navigator.nextPage(FileUploadPage, answers)
@@ -386,7 +386,7 @@ class CreateNavigatorSpec extends SpecBase {
 
       "skip ImporterHasEori page after ImporterManualAddress page when the claimant is representative and has EORI" in {
         val answers =
-          emptyUserAnswersWithEORI
+          emptyUserAnswersWithEORI()
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
         navigator.nextPage(ImporterAddressPage, answers)
@@ -404,7 +404,7 @@ class CreateNavigatorSpec extends SpecBase {
 
       "go to AgentImporterHasEORIPage page after FileUploadedPage page when the claimant is representative and has EORI" in {
         val answers =
-          emptyUserAnswersWithEORI
+          emptyUserAnswersWithEORI()
             .set(ClaimantTypePage, ClaimantType.Representative).success.value
 
         navigator.nextPage(FileUploadPage, answers)

@@ -32,11 +32,16 @@ class AmendClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
 
   def buildValidAmendRequest(userAnswers: UserAnswers): Option[AmendClaimRequest] = {
 
-    def getFurtherInformation(userAnswers: UserAnswers): Option[String] =
-      userAnswers.get(AmendCaseResponseTypePage).get.contains(AmendCaseResponseType.FurtherInformation) match {
-        case true => userAnswers.get(FurtherInformationPage).map(info => quoteFormatter.format(info))
-        case _    => Some("Files Uploaded")
-      }
+    def getFurtherInformation(userAnswers: UserAnswers): Option[String] = {
+      val formattedDescription =
+        userAnswers.get(AmendCaseResponseTypePage).map(_.contains(AmendCaseResponseType.FurtherInformation)) match {
+          case Some(true) => userAnswers.get(FurtherInformationPage).map(info => s"\n\n${quoteFormatter.format(info)}")
+          case _          => Some("")
+        }
+      formattedDescription.map(
+        description => s"[EORINumber=${userAnswers.userEori.map(_.value).getOrElse("GBPR")}]$description"
+      )
+    }
 
     def getAmendCaseResponseType(userAnswers: UserAnswers): Seq[AmendCaseResponseType] =
       userAnswers.get(AmendCaseResponseTypePage).getOrElse(Nil).toSeq

@@ -24,7 +24,6 @@ import models.{CreateOrAmendCase, UserAnswers}
 import navigation.{AmendNavigator, CreateNavigator, FirstPage}
 import pages.CreateOrAmendCasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -64,17 +63,9 @@ class CreateOrAmendCaseController @Inject() (
         formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
-            userAnswers <- Future.successful(request.userAnswers.getOrElse(UserAnswers(request.identification)))
-            updatedUserAnswers <- Future.fromTry(
-              userAnswers.copy(
-                id = request.internalId,
-                fileUploadState = None,
-                data = Json.obj(),
-                changePage = None
-              ).set(CreateOrAmendCasePage, value)
-            )
-            res <- sessionRepository.resetData(userAnswers).flatMap(_ => sessionRepository.set(updatedUserAnswers))
-          } yield Redirect(firstPageForJourney(value, updatedUserAnswers))
+            userAnswers <- Future.fromTry(UserAnswers(request.identification).set(CreateOrAmendCasePage, value))
+            _           <- sessionRepository.set(userAnswers)
+          } yield Redirect(firstPageForJourney(value, userAnswers))
       )
   }
 
