@@ -56,8 +56,10 @@ trait SpecBase
   val userAnswersId      = "id"
   val userIdentification = Identification(userAnswersId, None)
 
-  def emptyUserAnswers         = UserAnswers(userAnswersId, None, Json.obj())
-  def emptyUserAnswersWithEORI = UserAnswers(userAnswersId, Some(EORI("GB74584535835457535")), Json.obj())
+  def emptyUserAnswers = UserAnswers(userAnswersId, None, Json.obj())
+
+  def emptyUserAnswersWithEORI(eori: String = "GB74584535835457535") =
+    UserAnswers(userAnswersId, Some(EORI(eori)), Json.obj())
 
   def injector: Injector = app.injector
 
