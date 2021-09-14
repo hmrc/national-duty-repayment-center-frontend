@@ -18,8 +18,6 @@ package base
 
 import java.time.{LocalDate, ZoneId, ZonedDateTime}
 
-import com.codahale.metrics.MetricRegistry
-import com.kenshoo.play.metrics.{Metrics, MetricsFilterImpl, MetricsImpl}
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
 import controllers.actions._
@@ -64,11 +62,6 @@ trait SpecBase
   def injector: Injector = app.injector
 
   def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
-
-  val metrics: Metrics         = mock[Metrics]
-  val registry: MetricRegistry = metrics.defaultRegistry
-  val metricFilter             = mock[MetricsFilterImpl]
-  when(metricFilter.registry).thenReturn(registry)
 
   val mockAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
 
@@ -123,8 +116,7 @@ trait SpecBase
         bind[SessionRepository].toInstance(mockSessionRepository),
         bind[CreateNavigator].toInstance(createNavigator),
         bind[AmendNavigator].toInstance(amendNavigator),
-        bind[ClaimService].toInstance(mockClaimService),
-        bind[Metrics].to[MetricsImpl]
+        bind[ClaimService].toInstance(mockClaimService)
       )
 
   val claimDetails = ClaimDetails(
