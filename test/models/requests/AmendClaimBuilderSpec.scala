@@ -79,7 +79,7 @@ class AmendClaimBuilderSpec extends SpecBase with MustMatchers with MockitoSugar
 
         val request = builder.buildValidAmendRequest(userAnswers)
 
-        request.map(_.Content.Description) mustBe Some(s"[EORINumber=GB534535623443523]")
+        request.map(_.Content.Description) mustBe Some(s"[EORINumber=GB534535623443523]\n\nFiles Uploaded")
 
       }
 
@@ -97,7 +97,7 @@ class AmendClaimBuilderSpec extends SpecBase with MustMatchers with MockitoSugar
 
         val request = builder.buildValidAmendRequest(userAnswers)
 
-        request.map(_.Content.Description) mustBe Some(s"[EORINumber=GBPR]")
+        request.map(_.Content.Description) mustBe Some(s"[EORINumber=GBPR]\n\nFiles Uploaded")
 
       }
     }

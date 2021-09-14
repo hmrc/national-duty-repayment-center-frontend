@@ -35,11 +35,11 @@ class AmendClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
     def getFurtherInformation(userAnswers: UserAnswers): Option[String] = {
       val formattedDescription =
         userAnswers.get(AmendCaseResponseTypePage).map(_.contains(AmendCaseResponseType.FurtherInformation)) match {
-          case Some(true) => userAnswers.get(FurtherInformationPage).map(info => s"\n\n${quoteFormatter.format(info)}")
-          case _          => Some("")
+          case Some(true) => userAnswers.get(FurtherInformationPage).map(info => s"${quoteFormatter.format(info)}")
+          case _          => Some("Files Uploaded")
         }
       formattedDescription.map(
-        description => s"[EORINumber=${userAnswers.userEori.map(_.value).getOrElse("GBPR")}]$description"
+        description => s"[EORINumber=${userAnswers.userEori.map(_.value).getOrElse("GBPR")}]\n\n$description"
       )
     }
 
