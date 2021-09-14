@@ -49,13 +49,13 @@ class CheckYourAnswersHelperSpec extends SpecBase {
         findRow(
           sections,
           "applicationInformation.checkYourAnswersLabel",
-          "claimReasonType.checkYourAnswersLabel.multiple"
+          "claimReasonType.multiple.heading"
         ).isDefined mustBe true
 
         findRow(
           sections,
           "applicationInformation.checkYourAnswersLabel",
-          "claimReasonType.checkYourAnswersLabel.main"
+          "claimReasonType.heading"
         ).isDefined mustBe true
 
       }
@@ -75,7 +75,7 @@ class CheckYourAnswersHelperSpec extends SpecBase {
         findRow(
           sections,
           "applicationInformation.checkYourAnswersLabel",
-          "claimReasonType.checkYourAnswersLabel.single"
+          "claimReasonType.multiple.heading"
         ).isDefined mustBe true
 
         findRow(

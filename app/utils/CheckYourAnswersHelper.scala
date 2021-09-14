@@ -322,12 +322,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
   private def claimReasonTypeMultiple: Option[AnswerRow] = userAnswers.get(ClaimReasonTypeMultiplePage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(
-          messages(
-            if (userAnswers.isMultipleClaimReason) "claimReasonType.checkYourAnswersLabel.multiple"
-            else "claimReasonType.checkYourAnswersLabel.single"
-          )
-        ),
+        HtmlFormat.escape(messages("claimReasonType.multiple.heading")),
         Html(x.map(reason => HtmlFormat.escape(messages(s"claimReasonType.$reason"))).mkString("<br>")),
         Some(routes.CheckYourAnswersController.onChange(ClaimReasonTypeMultiplePage).url)
       )
@@ -336,7 +331,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
   private def claimReasonType: Option[AnswerRow] = userAnswers.get(ClaimReasonTypePage) map {
     x =>
       AnswerRow(
-        HtmlFormat.escape(messages("claimReasonType.checkYourAnswersLabel.main")),
+        HtmlFormat.escape(messages("claimReasonType.heading")),
         HtmlFormat.escape(messages(s"claimReasonType.$x")),
         Some(routes.CheckYourAnswersController.onChange(ClaimReasonTypePage).url)
       )

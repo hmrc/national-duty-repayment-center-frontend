@@ -804,3 +804,11 @@ furtherInformation.hintText	This may be information that HMRC has asked for, inf
 
 timeout.title	You’re about to be signed out	Rydych ar fin cael eich allgofnodi
 timeout.messageSuffix	Your answers will not be saved.	Ni chaiff eich atebion eu cadw.
+
+claimReasonType.multiple.title	What does your application relate to?	Beth mae’ch cais yn ymwneud ag ef?
+claimReasonType.multiple.heading	What does your application relate to?	Beth mae’ch cais yn ymwneud ag ef?
+claimReasonType.multiple.error.required	Select what your application relates to	Dewiswch beth mae’ch cais yn ymwneud ag ef
+
+claimReasonType.title	What is the main reason for your application?	Beth yw’r prif reswm dros eich cais?
+claimReasonType.heading	What is the main reason for your application?	Beth yw’r prif reswm dros eich cais?
+claimReasonType.error.required	Select the main reason for your application	Dewiswch y prif reswm dros eich cais

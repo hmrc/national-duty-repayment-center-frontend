@@ -157,13 +157,13 @@ entryDetails.date.checkYourAnswersLabel = Dyddiad y cofnod
 
 applicationInformation.checkYourAnswersLabel = Gwybodaeth am y cais
 
-claimReasonType.multiple.title = Pam yr ydych yn gwneud cais?
-claimReasonType.multiple.heading = Pam yr ydych yn gwneud cais?
+claimReasonType.multiple.title = Beth mae’ch cais yn ymwneud ag ef?
+claimReasonType.multiple.heading = Beth mae’ch cais yn ymwneud ag ef?
 claimReasonType.multiple.hintText = Dewiswch bob un sy’n gymwys
-claimReasonType.multiple.error.required = Dewiswch pam yr ydych yn gwneud cais
+claimReasonType.multiple.error.required = Dewiswch beth mae’ch cais yn ymwneud ag ef
 
-claimReasonType.title = Beth yw’r prif reswm dros wneud cais?
-claimReasonType.heading = Beth yw’r prif reswm dros wneud cais?
+claimReasonType.title = Beth yw’r prif reswm dros eich cais?
+claimReasonType.heading = Beth yw’r prif reswm dros eich cais?
 claimReasonType.hint = Dyma fyddai’r rheswm sy’n berthnasol i’r rhan fwyaf o’ch cais
 claimReasonType.01 = Cwota ôl-weithredol
 claimReasonType.02 = Newid i’r cod gweithdrefnau tollau
@@ -175,10 +175,7 @@ claimReasonType.07 = Rhyddhad ar nwyddau a ddychwelwyd
 claimReasonType.08 = Dychwelyd nwyddau nad oes eu hangen
 claimReasonType.09 = Gwerth
 claimReasonType.10 = Rhywbeth heb ei restru
-claimReasonType.checkYourAnswersLabel.single = Rheswm dros y gordaliad
-claimReasonType.checkYourAnswersLabel.multiple = Rhesymau dros ordalu
-claimReasonType.checkYourAnswersLabel.main = Prif reswm dros ordalu
-claimReasonType.error.required = Dewiswch y prif reswm dros wneud cais
+claimReasonType.error.required = Dewiswch y prif reswm dros eich cais
 
 reasonForOverpayment.title = Dywedwch wrthym pam y digwyddodd y gordaliad
 reasonForOverpayment.heading = Dywedwch wrthym pam y digwyddodd y gordaliad
