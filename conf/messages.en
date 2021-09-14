@@ -154,13 +154,13 @@ entryDetails.date.checkYourAnswersLabel = Entry date
 
 applicationInformation.checkYourAnswersLabel = Application information
 
-claimReasonType.multiple.title = Why are you making an application?
-claimReasonType.multiple.heading = Why are you making an application?
+claimReasonType.multiple.title = What does your application relate to?
+claimReasonType.multiple.heading = What does your application relate to?
 claimReasonType.multiple.hintText = Select all that apply
-claimReasonType.multiple.error.required = Select why you are making an application
+claimReasonType.multiple.error.required = Select what your application relates to
 
-claimReasonType.title = What is the main reason for making an application?
-claimReasonType.heading = What is the main reason for making an application?
+claimReasonType.title = What is the main reason for your application?
+claimReasonType.heading = What is the main reason for your application?
 claimReasonType.hint = This would be the reason that applies to most of your application
 claimReasonType.01 = Retroactive quota
 claimReasonType.02 = Customs procedure code change
@@ -172,10 +172,7 @@ claimReasonType.07 = Returned goods relief
 claimReasonType.08 = Return of unwanted goods
 claimReasonType.09 = Value
 claimReasonType.10 = Something not listed
-claimReasonType.checkYourAnswersLabel.single = Reason for overpayment
-claimReasonType.checkYourAnswersLabel.multiple = Reasons for overpayment
-claimReasonType.checkYourAnswersLabel.main = Main reason for overpayment
-claimReasonType.error.required = Select the main reason for making an application
+claimReasonType.error.required = Select the main reason for your application
 
 reasonForOverpayment.title = Tell us why the overpayment happened
 reasonForOverpayment.heading = Tell us why the overpayment happened
