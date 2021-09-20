@@ -146,11 +146,12 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
   override val barsBusinessAssessUrl: String =
     s"$barsBaseUrl${configuration.get[String]("microservice.services.bank-account-reputation.businessAssess")}"
 
-  private val accessibilityLookupBaseUrl: String =
-    configuration.get[Service]("microservice.services.accessibility-statement").baseUrl
+  private val accessibilityLookupBaseUrl: String = configuration.getOptional[String](
+    "platform.frontend.host"
+  ).getOrElse(configuration.get[String]("accessibility-statement.host"))
 
   private val accessibilityLookupServiceBaseUrl: String =
-    s"$accessibilityLookupBaseUrl${configuration.get[String]("microservice.services.accessibility-statement.serviceBase")}"
+    s"$accessibilityLookupBaseUrl${configuration.get[String]("accessibility-statement.path")}"
 
   override val accessibilityReportUrl: String =
     s"$accessibilityLookupServiceBaseUrl${configuration.get[String]("accessibility-statement.service-path")}"
