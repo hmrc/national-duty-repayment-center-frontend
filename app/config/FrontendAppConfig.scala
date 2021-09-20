@@ -102,6 +102,7 @@ trait FrontendAppConfig {
   val addressLookupConfirmedUrl: String
   val showPhaseBanner: Boolean
   val barsBusinessAssessUrl: String
+  val accessibilityReportUrl: Option[String]
 
   def selfUrl(url: String): String
 
@@ -144,6 +145,15 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
 
   override val barsBusinessAssessUrl: String =
     s"$barsBaseUrl${configuration.get[String]("microservice.services.bank-account-reputation.businessAssess")}"
+
+  override val accessibilityReportUrl: Option[String] =
+    for {
+      host <- configuration.getOptional[String]("platform.frontend.host").orElse(
+        configuration.getOptional[String]("accessibility-statement.host")
+      )
+      path        <- configuration.getOptional[String]("accessibility-statement.path")
+      servicePath <- configuration.getOptional[String]("accessibility-statement.service-path")
+    } yield s"$host$path$servicePath"
 
   private val selfBaseUrl: String = configuration
     .getOptional[String]("platform.frontend.host")

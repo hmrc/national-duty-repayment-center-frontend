@@ -49,6 +49,7 @@ class AddressLookupService @Inject() (
         appConfig.selfUrl(callBackUrl),
         appConfig.selfUrl(homeUrl),
         appConfig.selfUrl(signOutUrl),
+        appConfig.accessibilityReportUrl,
         appConfig.selfUrl(keepAliveUrl),
         lookupPageHeadingKey,
         hintKey,
