@@ -86,24 +86,25 @@ customsRegulationType.02 = O 1 Ionawr 2021 ymlaen
 customsRegulationType.checkYourAnswersLabel = Dyddiad derbyn
 customsRegulationType.error.required = Dewiswch opsiwn i fynd yn eich blaen
 
-articleType.title = Pam yr ydych yn gwneud cais am yr ad-daliad hwn?
-articleType.heading = Pam yr ydych yn gwneud cais am yr ad-daliad hwn?
+articleType.title = Pam ddigwyddodd y gordaliad?
+articleType.heading = Pam ddigwyddodd y gordaliad?
 articleType.117 = Gordaliad o doll neu TAW (Erthygl 117)
 articleType.119 = Gwall ar ran yr awdurdodau tollau (Erthygl 119)
 articleType.120 = Amgylchiadau eithriadol (Erthygl 120)
-articleType.checkYourAnswersLabel = Rheswm dros wneud cais
-articleType.error.required = Dewiswch y rheswm dros wneud cais am yr ad-daliad hwn
+articleType.checkYourAnswersLabel = Pam ddigwyddodd y gordaliad?
+articleType.error.required = Dewiswch pam y digwyddodd y gordaliad
 
-ukRegulationType.title = Pam yr ydych yn gwneud cais am yr ad-daliad hwn?
-ukRegulationType.heading = Pam yr ydych yn gwneud cais am yr ad-daliad hwn?
+.
+ukRegulationType.title = Pam ddigwyddodd y gordaliad?
+ukRegulationType.heading = Pam ddigwyddodd y gordaliad?
 ukRegulationType.048 = Gwall ar ran yr awdurdodau tollau (Rheoliad 48)
 ukRegulationType.049 = Roedd cyfradd is yn berthnasol (Rheoliad 49)
 ukRegulationType.050 = Gordaliad o doll neu TAW (Rheoliad 50)
 ukRegulationType.051 = Fe’i gwrthodwyd (Rheoliad 51)
 ukRegulationType.052 = Amgylchiadau arbennig (Rheoliad 52)
 ukRegulationType.053 = Tynnu datganiad tollau yn ôl (Rheoliad 53)
-ukRegulationType.checkYourAnswersLabel = Rheswm dros wneud cais
-ukRegulationType.error.required = Dewiswch pam yr ydych yn gwneud cais am yr ad-daliad hwn
+ukRegulationType.checkYourAnswersLabel = Pam y digwyddodd y gordaliad?
+ukRegulationType.error.required = Dewiswch pam y digwyddodd y gordaliad
 
 numberOfEntriesType.title = Faint o gofnodion yr ydych am eu cyflwyno?
 numberOfEntriesType.heading = Faint o gofnodion yr ydych am eu cyflwyno?
@@ -177,10 +178,10 @@ claimReasonType.09 = Gwerth
 claimReasonType.10 = Rhywbeth heb ei restru
 claimReasonType.error.required = Dewiswch y prif reswm dros eich cais
 
-reasonForOverpayment.title = Dywedwch wrthym pam y digwyddodd y gordaliad
-reasonForOverpayment.heading = Dywedwch wrthym pam y digwyddodd y gordaliad
-reasonForOverpayment.checkYourAnswersLabel = Pam y digwyddodd y gordaliad
-reasonForOverpayment.error.required = Dywedwch wrthym pam y digwyddodd y gordaliad
+reasonForOverpayment.title = Rhowch ragor o fanylion i ni am y gordaliad
+reasonForOverpayment.heading = Rhowch ragor o fanylion i ni am y gordaliad
+reasonForOverpayment.checkYourAnswersLabel = Rhagor o fanylion am y gordaliad
+reasonForOverpayment.error.required = Rhowch ragor o fanylion i ni am y gordaliad
 reasonForOverpayment.error.length = Mae’n rhaid i’r rheswm dros y gordaliad fod yn 1200 o gymeriadau neu lai
 reasonForOverpayment.hint = Darparwch gymaint o wybodaeth â phosibl. Bydd hyn yn ein helpu i brosesu’ch cais yn gyflymach.
 reasonForOverpayment.p1 = Gallwch roi gwybod i ni am:
@@ -476,20 +477,20 @@ bankDetails.bars.validation.companyNameInvalid = Nodwch yr enw fel y mae’n ymd
 repaymentAmountSummary.title = Crynodeb o’r symiau i’w talu’n ôl
 repaymentAmountSummary.heading = Crynodeb o’r symiau i’w talu’n ôl
 repaymentAmountSummary.customsduty = Toll Dramor
-repaymentAmountSummary.customsduty.0 = Y swm a dalwyd
-repaymentAmountSummary.customsduty.1 = Y swm y dylid bod wedi’i dalu
+repaymentAmountSummary.customsduty.0 = Y swm a dalwyd gennych
+repaymentAmountSummary.customsduty.1 = Y swm y dylech fod wedi’i dalu
 repaymentAmountSummary.customsduty.2 = Cyfanswm y Doll Dramor i’w thalu’n ôl
 repaymentAmountSummary.vat = TAW
-repaymentAmountSummary.vat.0 = Y swm a dalwyd
-repaymentAmountSummary.vat.1 = Y swm y dylid bod wedi’i dalu
+repaymentAmountSummary.vat.0 = Y swm a dalwyd gennych
+repaymentAmountSummary.vat.1 = Y swm y dylech fod wedi’i dalu
 repaymentAmountSummary.vat.2 = Cyfanswm y TAW i’w thalu’n ôl
 repaymentAmountSummary.otherduties = Tollau eraill
-repaymentAmountSummary.otherduties.0 = Y swm a dalwyd
-repaymentAmountSummary.otherduties.1 = Y swm y dylid bod wedi’i dalu
+repaymentAmountSummary.otherduties.0 = Y swm a dalwyd gennych
+repaymentAmountSummary.otherduties.1 = Y swm y dylech fod wedi’i dalu
 repaymentAmountSummary.otherduties.2 = Cyfanswm y tollau eraill i’w talu’n ôl
 repaymentAmountSummary.total = Cyfanswm
 repaymentAmountSummary.total.amount = Cyfanswm i’w dalu’n ôl
-repaymentAmountSummary.summary = Bydd y cyfanswm i’w dalu’n ôl yn cael ei wirio a bydd y swm terfynol i’w dalu’n ôl yn cael ei gadarnhau’n ysgrifenedig.
+repaymentAmountSummary.summary = Byddwn yn gwirio’r cyfanswm i’w dalu’n ôl a chadarnhau hwn ar bapur
 repaymentAmountSummary.total.checkYourAnswersLabel = Cyfanswm i’w dalu’n ôl
 fileUpload.heading = Uwchlwytho ffeil
 
@@ -502,8 +503,8 @@ indirectRepresentative.error.required = Dewiswch a ydych yn gynrychiolydd anunio
 
 proofOfAuthority.checkYourAnswersLabel = Dogfen tystiolaeth o awdurdod
 
-bulkFileUpload.title = Uwchlwytho’r ddogfen cofnodion lluosog
-bulkFileUpload.heading = Uwchlwytho’r ddogfen cofnodion lluosog
+bulkFileUpload.title = Uwchlwytho’ch dogfen gyda chofnodion lluosog
+bulkFileUpload.heading = Uwchlwytho’ch dogfen gyda chofnodion lluosog
 bulkFileUpload.paragraph1 = Mae’n rhaid i’r ffeil rydych yn ei huwchlwytho gynnwys:
 bulkFileUpload.01 = rhif yr Uned Prosesu Cofnodion (EPU), rhif y cofnod a dyddiad y cofnod
 bulkFileUpload.02 = rhif pob eitem
@@ -512,7 +513,7 @@ bulkFileUpload.04 = y swm a dalwyd i CThEM
 bulkFileUpload.05 = y swm y dylid bod wedi’i dalu i CThEM
 bulkFileUpload.paragraph2 = Mae’n rhaid i’r ffeil fod yn 6MB neu lai.
 bulkFileUpload.file.details.heading = Y mathau o ffeiliau y gallwch eu huwchlwytho
-bulkFileUpload.checkYourAnswersLabel = Taenlen cofnodion lluosog
+bulkFileUpload.checkYourAnswersLabel = Dogfen cofnodion lluosog
 bulkFileUpload.error.required = Mae’n rhaid i chi uwchlwytho ffeil
 
 referenceNumber.title = Beth yw cyfeirnod y cais?

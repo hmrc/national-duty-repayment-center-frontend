@@ -83,24 +83,25 @@ customsRegulationType.02 = From 1 January 2021
 customsRegulationType.checkYourAnswersLabel = Acceptance date
 customsRegulationType.error.required = Select an option to continue
 
-articleType.title = Why are you applying for this repayment?
-articleType.heading = Why are you applying for this repayment?
+articleType.title = Why did the overpayment happen?
+articleType.heading = Why did the overpayment happen?
 articleType.117 = Overpayment of duty or VAT (Article 117)
 articleType.119 = Error by customs (Article 119)
 articleType.120 = Exceptional circumstances (Article 120)
-articleType.checkYourAnswersLabel = Reason for application
-articleType.error.required = Select the reason you are applying for this repayment
+articleType.checkYourAnswersLabel = Why did the overpayment happen?
+articleType.error.required = Select why the overpayment happened
 
-ukRegulationType.title = Why are you applying for this repayment?
-ukRegulationType.heading = Why are you applying for this repayment?
+.
+ukRegulationType.title = Why did the overpayment happen?
+ukRegulationType.heading = Why did the overpayment happen?
 ukRegulationType.048 = Error by Customs (Regulation 48)
 ukRegulationType.049 = Lower rate was applicable (Regulation 49)
 ukRegulationType.050 = Overpayment of duty or VAT (Regulation 50)
 ukRegulationType.051 = Rejected (Regulation 51)
 ukRegulationType.052 = Special circumstances (Regulation 52)
 ukRegulationType.053 = Withdrawal of customs declaration (Regulation 53)
-ukRegulationType.checkYourAnswersLabel = Reason for application
-ukRegulationType.error.required = Select why you are applying for this repayment
+ukRegulationType.checkYourAnswersLabel = Why did the overpayment happen?
+ukRegulationType.error.required = Select why the overpayment happened
 
 numberOfEntriesType.title = How many entries do you want to submit?
 numberOfEntriesType.heading = How many entries do you want to submit?
@@ -174,10 +175,10 @@ claimReasonType.09 = Value
 claimReasonType.10 = Something not listed
 claimReasonType.error.required = Select the main reason for your application
 
-reasonForOverpayment.title = Tell us why the overpayment happened
-reasonForOverpayment.heading = Tell us why the overpayment happened
-reasonForOverpayment.checkYourAnswersLabel = Why the overpayment happened
-reasonForOverpayment.error.required = Tell us why the overpayment happened
+reasonForOverpayment.title = Give us more details about the overpayment
+reasonForOverpayment.heading = Give us more details about the overpayment
+reasonForOverpayment.checkYourAnswersLabel = More details about the overpayment
+reasonForOverpayment.error.required = Give us more details about the overpayment
 reasonForOverpayment.error.length = Overpayment reason must be 1200 characters or less
 reasonForOverpayment.hint = Provide as much information as possible. This will help us to process your application faster.
 reasonForOverpayment.p1 = You can tell us about:
@@ -473,20 +474,20 @@ bankDetails.bars.validation.companyNameInvalid = Enter the name as it appears on
 repaymentAmountSummary.title = Return amount summary
 repaymentAmountSummary.heading = Return amount summary
 repaymentAmountSummary.customsduty=Customs Duty
-repaymentAmountSummary.customsduty.0=Amount that was paid
-repaymentAmountSummary.customsduty.1=Amount that should have been paid
+repaymentAmountSummary.customsduty.0=Amount you paid
+repaymentAmountSummary.customsduty.1=Amount you should have paid
 repaymentAmountSummary.customsduty.2=Total Customs Duty return amount
 repaymentAmountSummary.vat=VAT
-repaymentAmountSummary.vat.0=Amount that was paid
-repaymentAmountSummary.vat.1=Amount that should have been paid
+repaymentAmountSummary.vat.0=Amount you paid
+repaymentAmountSummary.vat.1=Amount you should have paid
 repaymentAmountSummary.vat.2=Total VAT return amount
 repaymentAmountSummary.otherduties=Other duties
-repaymentAmountSummary.otherduties.0=Amount that was paid
-repaymentAmountSummary.otherduties.1=Amount that should have been paid
+repaymentAmountSummary.otherduties.0=Amount you paid
+repaymentAmountSummary.otherduties.1=Amount you should have paid
 repaymentAmountSummary.otherduties.2=Total other duties return amount
 repaymentAmountSummary.total=Total
 repaymentAmountSummary.total.amount=Total return amount
-repaymentAmountSummary.summary=The total return amount will be checked and the final return amount will be confirmed in writing.
+repaymentAmountSummary.summary=We will check the total return amount and confirm this in writing.
 repaymentAmountSummary.total.checkYourAnswersLabel=Total return amount
 fileUpload.heading = Upload a file
 
@@ -499,8 +500,8 @@ indirectRepresentative.error.required = Select if you are an indirect representa
 
 proofOfAuthority.checkYourAnswersLabel = Proof of authority document
 
-bulkFileUpload.title = Upload the multiple entry document
-bulkFileUpload.heading = Upload the multiple entry document
+bulkFileUpload.title = Upload your document with multiple entries
+bulkFileUpload.heading = Upload your document with multiple entries
 bulkFileUpload.paragraph1 = Your uploaded file must include:
 bulkFileUpload.01 = the entry processing unit (EPU) number, entry number and entry date
 bulkFileUpload.02 = all item numbers
@@ -509,7 +510,7 @@ bulkFileUpload.04 = the amount that was paid to HMRC
 bulkFileUpload.05 = the amount that should have been paid to HMRC
 bulkFileUpload.paragraph2 = The file must be 6MB or less.
 bulkFileUpload.file.details.heading = Types of files you can upload
-bulkFileUpload.checkYourAnswersLabel = Multiple entries spreadsheet
+bulkFileUpload.checkYourAnswersLabel = Multiple entries document
 bulkFileUpload.error.required = You must upload a file
 
 referenceNumber.title = What is the application reference number?
