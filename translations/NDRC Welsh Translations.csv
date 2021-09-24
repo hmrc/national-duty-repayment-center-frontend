@@ -812,3 +812,26 @@ claimReasonType.multiple.error.required	Select what your application relates to	
 claimReasonType.title	What is the main reason for your application?	Beth yw’r prif reswm dros eich cais?
 claimReasonType.heading	What is the main reason for your application?	Beth yw’r prif reswm dros eich cais?
 claimReasonType.error.required	Select the main reason for your application	Dewiswch y prif reswm dros eich cais
+
+articleType.title	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
+articleType.heading	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
+articleType.checkYourAnswersLabel	Why did the overpayment happen?	Pam y digwyddodd y gordaliad?
+articleType.error.required	Select why the overpayment happened	Dewiswch pam y digwyddodd y gordaliad
+ukRegulationType.title	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
+ukRegulationType.heading	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
+ukRegulationType.checkYourAnswersLabel	Why did the overpayment happen?	Pam y digwyddodd y gordaliad?
+ukRegulationType.error.required	Select why the overpayment happened	Dewiswch pam y digwyddodd y gordaliad
+reasonForOverpayment.title	Give us more details about the overpayment	Rhowch ragor o fanylion i ni am y gordaliad
+reasonForOverpayment.heading	Give us more details about the overpayment	Rhowch ragor o fanylion i ni am y gordaliad
+reasonForOverpayment.checkYourAnswersLabel	More details about the overpayment	Rhagor o fanylion am y gordaliad
+reasonForOverpayment.error.required	Give us more details about the overpayment	Rhowch ragor o fanylion i ni am y gordaliad
+repaymentAmountSummary.customsduty.0	Amount you paid	Y swm a dalwyd gennych
+repaymentAmountSummary.customsduty.1	Amount you should have paid	Y swm y dylech fod wedi’i dalu
+repaymentAmountSummary.vat.0	Amount you paid	Y swm a dalwyd gennych
+repaymentAmountSummary.vat.1	Amount you should have paid	Y swm y dylech fod wedi’i dalu
+repaymentAmountSummary.otherduties.0	Amount you paid	Y swm a dalwyd gennych
+repaymentAmountSummary.otherduties.1	Amount you should have paid	Y swm y dylech fod wedi’i dalu
+repaymentAmountSummary.summary	We will check the total return amount and confirm this in writing.	Byddwn yn gwirio’r cyfanswm i’w dalu’n ôl a chadarnhau hwn ar bapur
+bulkFileUpload.title	Upload your document with multiple entries	Uwchlwytho’ch dogfen gyda chofnodion lluosog
+bulkFileUpload.heading	Upload your document with multiple entries	Uwchlwytho’ch dogfen gyda chofnodion lluosog
+bulkFileUpload.checkYourAnswersLabel	Multiple entries document	Dogfen cofnodion lluosog
