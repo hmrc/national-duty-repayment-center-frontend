@@ -52,14 +52,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       Some("Customs Duty"),
       Seq(
         AnswerRow(
-          Html("Amount that was paid"),
+          Html("Amount you paid"),
           Html("£0.00"),
           rowClass = Some("govuk-summary-list__row--no-border"),
           keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
           valueClass = Some("govuk-!-padding-bottom-0")
         ),
         AnswerRow(
-          Html("Amount that should have been paid"),
+          Html("Amount you should have paid"),
           Html("£0.00"),
           rowClass = Some("govuk-!-padding-top-0"),
           keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
@@ -78,14 +78,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       Some("VAT"),
       Seq(
         AnswerRow(
-          Html("Amount that was paid"),
+          Html("Amount you paid"),
           Html("£0.00"),
           rowClass = Some("govuk-summary-list__row--no-border"),
           keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
           valueClass = Some("govuk-!-padding-bottom-0")
         ),
         AnswerRow(
-          Html("Amount that should have been paid"),
+          Html("Amount you should have paid"),
           Html("£0.00"),
           rowClass = Some("govuk-!-padding-top-0"),
           keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
@@ -104,14 +104,14 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       Some("Other duties"),
       Seq(
         AnswerRow(
-          Html("Amount that was paid"),
+          Html("Amount you paid"),
           Html("£0.00"),
           rowClass = Some("govuk-summary-list__row--no-border"),
           keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
           valueClass = Some("govuk-!-padding-bottom-0")
         ),
         AnswerRow(
-          Html("Amount that should have been paid"),
+          Html("Amount you should have paid"),
           Html("£0.00"),
           rowClass = Some("govuk-!-padding-top-0"),
           keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
