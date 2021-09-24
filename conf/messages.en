@@ -91,7 +91,6 @@ articleType.120 = Exceptional circumstances (Article 120)
 articleType.checkYourAnswersLabel = Why did the overpayment happen?
 articleType.error.required = Select why the overpayment happened
 
-.
 ukRegulationType.title = Why did the overpayment happen?
 ukRegulationType.heading = Why did the overpayment happen?
 ukRegulationType.048 = Error by Customs (Regulation 48)

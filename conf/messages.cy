@@ -91,10 +91,9 @@ articleType.heading = Pam ddigwyddodd y gordaliad?
 articleType.117 = Gordaliad o doll neu TAW (Erthygl 117)
 articleType.119 = Gwall ar ran yr awdurdodau tollau (Erthygl 119)
 articleType.120 = Amgylchiadau eithriadol (Erthygl 120)
-articleType.checkYourAnswersLabel = Pam ddigwyddodd y gordaliad?
+articleType.checkYourAnswersLabel = Pam y digwyddodd y gordaliad?
 articleType.error.required = Dewiswch pam y digwyddodd y gordaliad
 
-.
 ukRegulationType.title = Pam ddigwyddodd y gordaliad?
 ukRegulationType.heading = Pam ddigwyddodd y gordaliad?
 ukRegulationType.048 = Gwall ar ran yr awdurdodau tollau (Rheoliad 48)

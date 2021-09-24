@@ -815,7 +815,7 @@ claimReasonType.error.required	Select the main reason for your application	Dewis
 
 articleType.title	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
 articleType.heading	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
-articleType.checkYourAnswersLabel	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
+articleType.checkYourAnswersLabel	Why did the overpayment happen?	Pam y digwyddodd y gordaliad?
 articleType.error.required	Select why the overpayment happened	Dewiswch pam y digwyddodd y gordaliad
 ukRegulationType.title	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
 ukRegulationType.heading	Why did the overpayment happen?	Pam ddigwyddodd y gordaliad?
