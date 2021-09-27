@@ -88,7 +88,8 @@ object AddressLookupRequest {
           timeoutAmount = Some(config.timeout),
           timeoutUrl = Some(signOutUrl),
           timeoutKeepAliveUrl = Some(keepAliveUrl)
-        )
+        ),
+        pageHeadingStyle = config.addressLookupPageHeadingStyle
       ),
       Labels(
         en = labels(englishMessages),
@@ -107,7 +108,8 @@ object AddressLookupRequest {
     deskProServiceName: String,
     ukMode: Boolean,
     includeHMRCBranding: Boolean,
-    timeoutConfig: AddressLookupRequest.Options.TimeoutConfig
+    timeoutConfig: AddressLookupRequest.Options.TimeoutConfig,
+    pageHeadingStyle: String
   )
 
   object Options {

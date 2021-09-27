@@ -100,6 +100,7 @@ trait FrontendAppConfig {
   val feedbackSurvey: String
   val addressLookupInitUrl: String
   val addressLookupConfirmedUrl: String
+  val addressLookupPageHeadingStyle: String
   val showPhaseBanner: Boolean
   val barsBusinessAssessUrl: String
   val accessibilityReportUrl: Option[String]
@@ -139,6 +140,9 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
 
   override val addressLookupConfirmedUrl: String =
     s"$addressLookupBaseUrl${configuration.get[String]("microservice.services.address-lookup-frontend.confirmed")}"
+
+  override val addressLookupPageHeadingStyle: String =
+    configuration.get[String]("address-lookup-frontend.pageHeadingStyle")
 
   private val barsBaseUrl: String =
     configuration.get[Service]("microservice.services.bank-account-reputation").baseUrl
