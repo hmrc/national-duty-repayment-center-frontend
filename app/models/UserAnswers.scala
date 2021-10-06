@@ -159,16 +159,14 @@ object UserAnswers {
   def apply(identification: Identification): UserAnswers =
     new UserAnswers(identification.identifier, identification.eori)
 
-  implicit def uploadReads: Reads[FileUploadState] =
-    //TODO error cases
+  implicit lazy val uploadReads: Reads[FileUploadState] =
     Reads {
       case jsObject: JsObject if (jsObject \ "acknowledged").isDefined =>
         FileUploaded.formatter.reads(jsObject)
       case jsObject: JsObject => services.UploadFile.formatter.reads(jsObject)
     }
 
-  implicit def uploadWrites: Writes[FileUploadState] =
-    //TODO error cases
+  implicit lazy val uploadWrites: Writes[FileUploadState] =
     new Writes[FileUploadState] {
 
       override def writes(o: FileUploadState): JsValue =
