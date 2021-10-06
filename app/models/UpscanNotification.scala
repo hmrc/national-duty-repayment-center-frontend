@@ -161,6 +161,7 @@ object UpscanNotification {
 
   implicit lazy val writes: Writes[UpscanNotification] =
     new Writes[UpscanNotification] {
+
       override def writes(o: UpscanNotification): JsValue =
         o match {
           case i: UpscanFileReady =>
