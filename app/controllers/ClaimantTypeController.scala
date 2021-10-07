@@ -61,7 +61,6 @@ class ClaimantTypeController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
         value =>
-          // TODO - remove this logic of clearing answers if claimant type is changed
           if (
             !request.userAnswers.get(ClaimantTypePage).contains(value)
             && request.userAnswers.changePage.contains(ClaimantTypePage.toString)

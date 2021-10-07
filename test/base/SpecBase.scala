@@ -71,7 +71,7 @@ trait SpecBase
 
   def fakeRequest = FakeRequest("", "")
 
-  implicit def messages: Messages = messagesApi.preferred(fakeRequest)
+  implicit lazy val messages: Messages = messagesApi.preferred(fakeRequest)
 
   val upscanMock = mock[UpscanInitiateConnector]
 
