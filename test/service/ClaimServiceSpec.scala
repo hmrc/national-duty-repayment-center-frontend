@@ -16,8 +16,6 @@
 
 package service
 
-import java.util.UUID
-
 import base.SpecBase
 import connectors.NDRCConnector
 import data.TestData.{populateUserAnswersRepresentativeWithEmail, populateUserAnswersWithAmendData}
@@ -31,15 +29,17 @@ import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.{ClaimReasonTypeMultiplePage, ReasonForOverpaymentPage}
 import services.ClaimService
-import uk.gov.hmrc.http.{HeaderCarrier, RequestId}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.matching.Regex
 
 class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   val createClaimBuilder = injector.instanceOf[CreateClaimBuilder]
   val amendClaimBuilder  = injector.instanceOf[AmendClaimBuilder]
+  val uuidMatcher: Regex = "[A-Za-z0-9-]{36}".r
 
   "Claim service" should {
 
@@ -55,6 +55,26 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
       val result  = service.submitClaim(testUserAnswers)(hc).futureValue
       result mustBe "ABC123"
+    }
+
+    "should create a UUID based correlationId for create claim" in {
+
+      implicit val hc: HeaderCarrier = HeaderCarrier()
+
+      val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
+
+      val connector                             = mock[NDRCConnector]
+      val response                              = ClientClaimResponse("1", Some("ABC321"))
+      val correlationId: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
+      when(connector.submitClaim(any(), correlationId.capture())(any())).thenReturn(Future.successful(response))
+
+      val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
+      val result  = service.submitClaim(testUserAnswers)(hc).futureValue
+      result mustBe "ABC321"
+
+      correlationId.getValue.length mustBe 36
+      uuidMatcher.findFirstMatchIn(correlationId.getValue) must not be empty
+
     }
 
     "should throw error when duplicate caseID is submitted" in {
@@ -105,6 +125,25 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
       result mustBe response
     }
 
+    "should create a UUID based correlationId for amend claim" in {
+
+      val testUserAnswers            = populateUserAnswersWithAmendData(emptyUserAnswers)
+      implicit val hc: HeaderCarrier = HeaderCarrier()
+
+      val connector                             = mock[NDRCConnector]
+      val response                              = ClientClaimResponse("1", Some("caseId"))
+      val correlationId: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
+      when(connector.submitAmendClaim(any(), correlationId.capture())(any())).thenReturn(Future.successful(response))
+
+      val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
+      val result  = service.submitAmendClaim(testUserAnswers)(hc).futureValue
+      result mustBe response
+
+      correlationId.getValue.length mustBe 36
+      uuidMatcher.findFirstMatchIn(correlationId.getValue) must not be empty
+
+    }
+
     "should return failed claim response when amend case is a 'known' failure" in {
       val testUserAnswers = populateUserAnswersWithAmendData(emptyUserAnswers)
 
@@ -135,47 +174,6 @@ class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropert
         service.submitAmendClaim(testUserAnswers)(hc).futureValue
       }
       thrown.getMessage contains message
-    }
-
-    "should create a trimmed correlationId from the header carrier" in {
-
-      val uuid = UUID.randomUUID().toString
-      uuid.length mustBe 36
-      implicit val hc: HeaderCarrier = HeaderCarrier(requestId = Some(RequestId("extra-" + uuid)))
-
-      val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
-
-      val connector                             = mock[NDRCConnector]
-      val response                              = ClientClaimResponse("1", Some("ABC123"))
-      val correlationId: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
-      when(connector.submitClaim(any(), correlationId.capture())(any())).thenReturn(Future.successful(response))
-
-      val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
-      val result  = service.submitClaim(testUserAnswers)(hc).futureValue
-      result mustBe "ABC123"
-
-      correlationId.getValue mustBe uuid
-
-    }
-
-    "should not fail if the request id is less than 36 characters" in {
-
-      val requestId                  = "1234"
-      implicit val hc: HeaderCarrier = HeaderCarrier(requestId = Some(RequestId(requestId)))
-
-      val testUserAnswers = populateUserAnswersRepresentativeWithEmail(emptyUserAnswers)
-
-      val connector                             = mock[NDRCConnector]
-      val response                              = ClientClaimResponse("1", Some("ABC123"))
-      val correlationId: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
-      when(connector.submitClaim(any(), correlationId.capture())(any())).thenReturn(Future.successful(response))
-
-      val service = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
-      val result  = service.submitClaim(testUserAnswers)(hc).futureValue
-      result mustBe "ABC123"
-
-      correlationId.getValue mustBe requestId
-
     }
 
     "should submit an updated ClaimDescription" in {

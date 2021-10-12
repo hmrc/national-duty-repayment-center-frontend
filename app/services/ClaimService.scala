@@ -42,7 +42,7 @@ class ClaimService @Inject() (
 
     maybeRegistrationRequest match {
       case Some(value) =>
-        connector.submitClaim(value, correlationId(hc)).map { clientClaimResponse =>
+        connector.submitClaim(value, UUID.randomUUID().toString).map { clientClaimResponse =>
           clientClaimResponse.caseId match {
             case Some(value) => value
             case None =>
@@ -64,7 +64,7 @@ class ClaimService @Inject() (
 
     maybeAmendRequest match {
       case Some(value) =>
-        connector.submitAmendClaim(value, correlationId(hc)) map {
+        connector.submitAmendClaim(value, UUID.randomUUID().toString) map {
           case response if response.isSuccess || response.isKnownError => response
           case errorResponse =>
             val message = errorMessage(errorResponse)
@@ -81,8 +81,5 @@ class ClaimService @Inject() (
 
   private def errorMessage(response: ClientClaimResponse) = response.error.map(_.errorCode).map(_ + " ").getOrElse("") +
     response.error.map(_.errorMessage).getOrElse("")
-
-  private def correlationId(hc: HeaderCarrier): String =
-    hc.requestId.map(_.value).getOrElse(UUID.randomUUID().toString).takeRight(36)
 
 }
