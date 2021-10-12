@@ -679,3 +679,6 @@ amend.application.closed.p1 = We cannot add any information to this application 
 amend.application.closed.p2 = If you feel we closed this application in error you can email us at {0} with the additional information.
 amend.application.closed.p3 = You must include the application reference number <b>{0}</b> in the subject header.
 amend.application.closed.email.subject = Closed application reference {0}
+
+helpline.header = Need help?
+helpline.content = Call 0300 322 7064, Monday to Friday, 9am to 5pm, excluding bank holidays.
