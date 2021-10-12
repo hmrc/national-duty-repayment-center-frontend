@@ -682,3 +682,6 @@ amend.application.closed.p1 = Ni allwn ychwanegu unrhyw wybodaeth at y cais hwn 
 amend.application.closed.p2 = Os ydych yn teimlo ein bod wedi cau’r cais drwy gamgymeriad, gallwch anfon e-bost atom yn {0} gyda’r wybodaeth ychwanegol.
 amend.application.closed.p3 = Mae’n rhaid i chi gynnwys cyfeirnod y cais, sef <b>{0}</b>, yn y pennawd pwnc.
 amend.application.closed.email.subject = Cyfeirnod y cais sydd wedi cau {0}
+
+helpline.header = Angen help?
+helpline.content = Ffoniwch 0300 322 7064, dydd Llun i ddydd Gwener, rhwng 9am a 5pm, ac eithrio gwyliau cyhoeddus.
