@@ -18,19 +18,23 @@ package forms
 
 import java.time.LocalDate
 import formats.Format
+
 import javax.inject.Inject
 import forms.mappings.Mappings
 import models.EntryDetails
+import play.api.Logger
 import play.api.data.Form
 import play.api.data.Forms._
 
 class EntryDetailsFormProvider @Inject() extends Mappings {
 
+  private val logger = Logger(this.getClass)
+
   def apply(): Form[EntryDetails] = {
 
     val limitDate    = LocalDate.now
     val minDateLimit = LocalDate.parse("1900-01-01")
-
+    logger.info(s"LocalDate.now ${limitDate} : ${Format.formattedDate(limitDate)}")
     Form(
       mapping(
         "EPU" -> textNoSpaces("entryDetails.claimEpu.error.required")

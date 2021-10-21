@@ -130,6 +130,17 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
 
   }
 
+  "Accept valid form date data for today" in {
+    val today = LocalDate.now()
+    val form2 = new EntryDetailsFormProvider().apply().bind(buildFormData(Some("123"),
+      Some("123456Q"),
+      Some(""+today.getDayOfMonth),
+      Some(""+today.getMonthValue),
+      Some(""+today.getYear)))
+    form2.value shouldBe Some(EntryDetails("123", "123456Q", LocalDate.of(today.getYear, today.getMonthValue, today.getDayOfMonth)))
+
+  }
+
   "fail to bind an empty date" in {
     val result = form.bind(Map.empty[String, String])
 
