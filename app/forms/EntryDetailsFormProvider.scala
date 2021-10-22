@@ -28,7 +28,6 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
 
   def apply(): Form[EntryDetails] = {
 
-    val limitDate    = LocalDate.now
     val minDateLimit = LocalDate.parse("1900-01-01")
 
     Form(
@@ -42,7 +41,11 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
           requiredKey = "entryDetails.claimEntryDate.error.required"
         )
           .verifying(
-            maxDate(limitDate, "entryDetails.claimEntryDate.error.invalid_future", Format.formattedDate(limitDate))
+            maxDate(
+              LocalDate.now,
+              "entryDetails.claimEntryDate.error.invalid_future",
+              Format.formattedDate(LocalDate.now)
+            )
           )
           .verifying(
             minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid", Format.formattedDate(minDateLimit))
