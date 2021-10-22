@@ -116,28 +116,50 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
     result.errors shouldEqual Seq(expectedError)
   }
 
-  "Accept valid form data" in {
-    val form2 = new EntryDetailsFormProvider().apply().bind(buildFormData())
+  ".EntryDate" must {
+    "Fail if the Date has a future day" in {
+      val futureDate = LocalDate.now.plusDays(1)
+      val form2 = new EntryDetailsFormProvider().apply().bind(
+        buildFormData(
+          day = Some(s"${futureDate.getDayOfMonth}"),
+          month = Some(s"${futureDate.getMonthValue}"),
+          year = Some(s"${futureDate.getYear}")
+        )
+      )
+      form2.errors.size shouldBe 1
+      form2.errors.head.key shouldBe "EntryDate"
+      form2.errors.head.message shouldBe "entryDetails.claimEntryDate.error.invalid_future"
+    }
 
-    form2.hasErrors shouldBe false
+    "Fail if the Date is too early" in {
+      val form2 = new EntryDetailsFormProvider().apply().bind(
+        buildFormData(year = Some("1899"), day = Some("31"), month = Some("12"))
+      )
+      form2.errors.size shouldBe 1
+      form2.errors.head.key shouldBe "EntryDate"
+      form2.errors.head.message shouldBe "entryDetails.claimEntryDate.error.invalid_past"
+    }
+    "Accept valid form data" in {
+      val form2 = new EntryDetailsFormProvider().apply().bind(buildFormData())
 
-  }
+      form2.hasErrors shouldBe false
 
-  "Accept valid form date data" in {
-    val form2 = new EntryDetailsFormProvider().apply().bind(buildFormData())
+    }
+    "Accept valid form date data" in {
+      val form2 = new EntryDetailsFormProvider().apply().bind(buildFormData())
 
-    form2.value shouldBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
+      form2.value shouldBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
 
-  }
+    }
+    "fail to bind an empty date" in {
+      val result = form.bind(Map.empty[String, String])
 
-  "fail to bind an empty date" in {
-    val result = form.bind(Map.empty[String, String])
-
-    result.errors should contain allElementsOf List(
-      FormError(s"EntryDate.day", LocalDateFormatter.dayBlankErrorKey),
-      FormError(s"EntryDate.month", LocalDateFormatter.monthBlankErrorKey),
-      FormError(s"EntryDate.year", LocalDateFormatter.yearBlankErrorKey)
-    )
+      result.errors should contain allElementsOf List(
+        FormError(s"EntryDate.day", LocalDateFormatter.dayBlankErrorKey),
+        FormError(s"EntryDate.month", LocalDateFormatter.monthBlankErrorKey),
+        FormError(s"EntryDate.year", LocalDateFormatter.yearBlankErrorKey)
+      )
+    }
   }
 
   "trim white spaces in EntryDetails" in {

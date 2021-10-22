@@ -137,6 +137,7 @@ entryDetails.entryDate.hint = Er enghraifft, 25 3 2019.
 entryDetails.claimEntryDate.error.required = Nodwch ddyddiad y cofnod
 entryDetails.claimEntryDate.error.invalid = Nodwch ddyddiad y cofnod yn y fformat cywir
 entryDetails.claimEntryDate.error.invalid_future = Mae’n rhaid i ddyddiad y cofnod fod heddiw neu yn y gorffennol
+entryDetails.claimEntryDate.error.invalid_past = Mae’n rhaid i ddyddiad y cofnod fod ar ôl 1 Ionawr 1900
 
 error.date.day_blank = Mae’n rhaid i ddyddiad y cofnod gynnwys diwrnod
 error.date.day_invalid = Nodwch y diwrnod yn y fformat cywir
