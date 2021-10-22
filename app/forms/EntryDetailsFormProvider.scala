@@ -45,7 +45,7 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
             maxDate(limitDate, "entryDetails.claimEntryDate.error.invalid_future", Format.formattedDate(limitDate))
           )
           .verifying(
-            minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid", Format.formattedDate(minDateLimit))
+            minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid_past", Format.formattedDate(minDateLimit))
           )
       )(EntryDetails.apply)(EntryDetails.unapply)
     )

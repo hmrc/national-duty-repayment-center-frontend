@@ -835,3 +835,4 @@ repaymentAmountSummary.summary	We will check the total return amount and confirm
 bulkFileUpload.title	Upload your document with multiple entries	Uwchlwytho’ch dogfen gyda chofnodion lluosog
 bulkFileUpload.heading	Upload your document with multiple entries	Uwchlwytho’ch dogfen gyda chofnodion lluosog
 bulkFileUpload.checkYourAnswersLabel	Multiple entries document	Dogfen cofnodion lluosog
+entryDetails.claimEntryDate.error.invalid_past	The entry date must be after 1 January 1900	Mae’n rhaid i ddyddiad y cofnod fod ar ôl 1 Ionawr 1900

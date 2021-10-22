@@ -134,6 +134,7 @@ entryDetails.entryDate.hint = For example, 25 3 2019.
 entryDetails.claimEntryDate.error.required = Enter the entry date
 entryDetails.claimEntryDate.error.invalid = Enter the entry date in the correct format
 entryDetails.claimEntryDate.error.invalid_future = The entry date must be today or in the past
+entryDetails.claimEntryDate.error.invalid_past = The entry date must be after 1 January 1900
 
 error.date.day_blank = Entry date must include a day
 error.date.day_invalid = Enter the day in the correct format
