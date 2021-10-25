@@ -18,6 +18,7 @@ package forms
 
 import java.time.LocalDate
 import formats.Format
+
 import javax.inject.Inject
 import forms.mappings.Mappings
 import models.EntryDetails
@@ -40,13 +41,7 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
           invalidKey = "entryDetails.claimEntryDate.error.invalid",
           requiredKey = "entryDetails.claimEntryDate.error.required"
         )
-          .verifying(
-            maxDate(
-              LocalDate.now,
-              "entryDetails.claimEntryDate.error.invalid_future",
-              Format.formattedDate(LocalDate.now)
-            )
-          )
+          .verifying(maxDateToday("entryDetails.claimEntryDate.error.invalid_future"))
           .verifying(
             minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid_past", Format.formattedDate(minDateLimit))
           )

@@ -17,7 +17,6 @@
 package forms.mappings
 
 import java.time.LocalDate
-
 import play.api.data.validation.{Constraint, Invalid, Valid}
 
 import scala.util.{Success, Try}
@@ -118,10 +117,10 @@ trait Constraints {
         Invalid(errorKey)
     }
 
-  protected def maxDate(maximum: LocalDate, errorKey: String, args: Any*): Constraint[LocalDate] =
+  protected def maxDateToday(errorKey: String): Constraint[LocalDate] =
     Constraint {
-      case date if date.isAfter(maximum) =>
-        Invalid(errorKey, args: _*)
+      case date if date.isAfter(LocalDate.now()) =>
+        Invalid(errorKey)
       case _ =>
         Valid
     }
