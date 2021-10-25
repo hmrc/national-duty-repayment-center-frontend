@@ -127,33 +127,31 @@ class ConstraintsSpec
     }
   }
 
-  "maxDate" must {
+  "maxDateToday" must {
 
-    "return Valid for a date before or equal to the maximum" in {
+    "return Valid for a date before or equal to today" in {
 
-      val gen: Gen[(LocalDate, LocalDate)] = for {
-        max  <- datesBetween(LocalDate.of(2000, 1, 1), LocalDate.of(3000, 1, 1))
-        date <- datesBetween(LocalDate.of(2000, 1, 1), max)
-      } yield (max, date)
+      val gen: Gen[LocalDate] = for {
+        date <- datesBetween(LocalDate.of(2000, 1, 1), LocalDate.now())
+      } yield date
 
       forAll(gen) {
-        case (max, date) =>
-          val result = maxDate(max, "error.future")(date)
+        date =>
+          val result = maxDateToday("error.future")(date)
           result mustEqual Valid
       }
     }
 
-    "return Invalid for a date after the maximum" in {
+    "return Invalid for a date after today" in {
 
-      val gen: Gen[(LocalDate, LocalDate)] = for {
-        max  <- datesBetween(LocalDate.of(2000, 1, 1), LocalDate.of(3000, 1, 1))
-        date <- datesBetween(max.plusDays(1), LocalDate.of(3000, 1, 2))
-      } yield (max, date)
+      val gen: Gen[LocalDate] = for {
+        date <- datesBetween(LocalDate.now().plusDays(1), LocalDate.of(3000, 1, 2))
+      } yield date
 
       forAll(gen) {
-        case (max, date) =>
-          val result = maxDate(max, "error.future", "foo")(date)
-          result mustEqual Invalid("error.future", "foo")
+        date =>
+          val result = maxDateToday("error.future")(date)
+          result mustEqual Invalid("error.future")
       }
     }
   }
