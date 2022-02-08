@@ -19,10 +19,10 @@ package models.bars
 case class BARSResult(assessBusinessBankDetailsResponse: AssessBusinessBankDetailsResponse) {
 
   val sortcodeExists: Boolean              = assessBusinessBankDetailsResponse.sortcodeExists
-  val validAccountAndSortCode: Boolean     = assessBusinessBankDetailsResponse.validAccountAndSortCode
+  val validAccountAndSortCode: Boolean     = assessBusinessBankDetailsResponse.accountNumberWellFormatted
   val rollNotRequired: Boolean             = assessBusinessBankDetailsResponse.rollNotRequired
   val accountValid: Boolean                = assessBusinessBankDetailsResponse.accountValid
-  val companyNameValid: Boolean            = assessBusinessBankDetailsResponse.companyNameValid
+  val companyNameValid: Boolean            = assessBusinessBankDetailsResponse.nameValid
   val sortcodeAcceptsDirectCredit: Boolean = assessBusinessBankDetailsResponse.sortcodeSupportsDirectCredit
 
   val isValid: Boolean =

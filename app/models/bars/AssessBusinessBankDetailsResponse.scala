@@ -21,18 +21,18 @@ import models.bars.AssessBusinessBankDetailsResponse.{indeterminate, no, yes}
 
 case class AssessBusinessBankDetailsResponse(
   sortCodeIsPresentOnEISCD: String,
-  accountNumberWithSortCodeIsValid: String,
+  accountNumberIsWellFormatted: String,
   nonStandardAccountDetailsRequiredForBacs: String,
   accountExists: String,
-  companyNameMatches: String,
+  nameMatches: String,
   sortCodeSupportsDirectCredit: String
 ) {
   val sortcodeExists: Boolean               = sortCodeIsPresentOnEISCD == yes
-  val validAccountAndSortCode: Boolean      = Set(yes, indeterminate).contains(accountNumberWithSortCodeIsValid)
+  val accountNumberWellFormatted: Boolean   = Set(yes, indeterminate).contains(accountNumberIsWellFormatted)
   val sortcodeSupportsDirectCredit: Boolean = sortCodeSupportsDirectCredit == yes
   val rollNotRequired: Boolean              = nonStandardAccountDetailsRequiredForBacs == no
   val accountValid: Boolean                 = Set(yes, indeterminate).contains(accountExists)
-  val companyNameValid: Boolean             = Set(yes, indeterminate).contains(companyNameMatches)
+  val nameValid: Boolean                    = Set(yes, indeterminate).contains(nameMatches)
 }
 
 object AssessBusinessBankDetailsResponse {
