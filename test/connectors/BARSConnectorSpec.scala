@@ -47,14 +47,14 @@ class BARSConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
       val app = application
       running(app) {
 
-        val url = "/business/v2/assess"
+        val url = "/verify/business"
         val responseBody =
           s"""{
              |    "sortCodeIsPresentOnEISCD" : "yes",
-             |    "accountNumberWithSortCodeIsValid" : "yes",
+             |    "accountNumberIsWellFormatted" : "yes",
              |    "nonStandardAccountDetailsRequiredForBacs" : "no",
              |    "accountExists" : "yes",
-             |    "companyNameMatches" : "yes",
+             |    "nameMatches" : "yes",
              |    "sortCodeSupportsDirectCredit" : "yes"
              |}""".stripMargin
         val connector = app.injector.instanceOf[BARSConnector]

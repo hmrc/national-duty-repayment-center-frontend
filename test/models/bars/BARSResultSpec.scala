@@ -30,12 +30,12 @@ class BARSResultSpec extends WordSpec with MustMatchers with BarsTestData {
 
     "be invalid if sort code does not match account" in {
 
-      BARSResult(validAssessResponse.copy(accountNumberWithSortCodeIsValid = "no")).isValid mustBe false
+      BARSResult(validAssessResponse.copy(accountNumberIsWellFormatted = "no")).isValid mustBe false
     }
 
     "be valid if it is indeterminate if sort code and account match" in {
 
-      BARSResult(validAssessResponse.copy(accountNumberWithSortCodeIsValid = "indeterminate")).isValid mustBe true
+      BARSResult(validAssessResponse.copy(accountNumberIsWellFormatted = "indeterminate")).isValid mustBe true
     }
 
     "be invalid if roll IS required" in {

@@ -24,15 +24,15 @@ class AssessBusinessBankDetailsResponseSpec extends WordSpec with MustMatchers w
   "AssessBusinessBankDetailsResponse" should {
 
     "be valid with a valid response" in {
-      validAssessResponse.validAccountAndSortCode mustBe true
+      validAssessResponse.accountNumberWellFormatted mustBe true
       validAssessResponse.rollNotRequired mustBe true
       validAssessResponse.accountValid mustBe true
-      validAssessResponse.companyNameValid mustBe true
+      validAssessResponse.nameValid mustBe true
     }
 
     "have invalid account and sortcode " in {
-      validAssessResponse.copy(accountNumberWithSortCodeIsValid = "no").validAccountAndSortCode mustBe false
-      validAssessResponse.copy(accountNumberWithSortCodeIsValid = "indeterminate").validAccountAndSortCode mustBe true
+      validAssessResponse.copy(accountNumberIsWellFormatted = "no").accountNumberWellFormatted mustBe false
+      validAssessResponse.copy(accountNumberIsWellFormatted = "indeterminate").accountNumberWellFormatted mustBe true
     }
 
     "require roll number " in {
@@ -44,7 +44,7 @@ class AssessBusinessBankDetailsResponseSpec extends WordSpec with MustMatchers w
     }
 
     "have wrong account name " in {
-      validAssessResponse.copy(companyNameMatches = "no").companyNameValid mustBe false
+      validAssessResponse.copy(nameMatches = "no").nameValid mustBe false
     }
   }
 }
