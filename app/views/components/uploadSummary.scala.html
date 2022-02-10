@@ -27,7 +27,7 @@
     </span>
 }
 @uploadingMessage = {
-    <span tabindex="-1" id="uploadingMessage" class="govuk-body govuk-!-font-weight-bold govuk-!-width-three-quarters" role="status">@messages("upload_documents.status.in_progress")</span>
+    <span tabindex="-1" id="uploadingMessage" class="govuk-body govuk-!-font-weight-bold govuk-!-width-two-quarters" role="status">@messages("upload_documents.status.in_progress")</span>
 }
 
 @progressRow = @{
@@ -49,12 +49,13 @@
         Some(SummaryListRow(
             key = Key(
                 content = Text(doc._1.fileName),
-                classes = "govuk-!-width-three-quarters"
+                classes = "govuk-!-width-two-quarters"
             ),
             value = Value(
                 content = HtmlContent(govukTag(Tag(
                     content = Text(messages("upload_documents.status.ready"))))
-                )
+                ),
+                classes = "govuk-!-width-one-third"
             ),
             classes = s"upload_row_${doc._2 + 1}",
             actions = Some(Actions(
