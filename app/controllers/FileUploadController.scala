@@ -165,7 +165,7 @@ class FileUploadController @Inject() (
       )
     }
 
-  // POST /ndrc/:id/callback-from-upscan
+  // POST /callback-from-upscan/ndrc/:id
   final def callbackFromUpscan(id: String): Action[UpscanNotification] =
     Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
       sessionRepository.getFileUploadState(id).flatMap { ss =>

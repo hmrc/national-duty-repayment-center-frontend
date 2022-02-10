@@ -125,7 +125,7 @@ class ProofOfAuthorityController @Inject() (
       )
     }
 
-  // POST /upload-proof-of-authority/:id/callback-from-upscan
+  // POST /callback-from-upscan/upload-proof-of-authority/:id
   final def callbackFromUpscan(id: String): Action[UpscanNotification] =
     Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
       sessionRepository.getFileUploadState(id).flatMap { ss =>
