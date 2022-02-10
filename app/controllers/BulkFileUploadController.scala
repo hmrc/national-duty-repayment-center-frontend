@@ -125,7 +125,7 @@ class BulkFileUploadController @Inject() (
       )
     }
 
-  // POST /bulk/:id/callback-from-upscan
+  // POST /callback-from-upscan/bulk/:id
   final def callbackFromUpscan(id: String): Action[UpscanNotification] =
     Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
       sessionRepository.getFileUploadState(id).flatMap { ss =>
