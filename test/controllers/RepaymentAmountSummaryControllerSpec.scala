@@ -55,22 +55,22 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
           Html("Amount you paid"),
           Html("£0.00"),
           rowClass = Some("govuk-summary-list__row--no-border"),
-          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
-          valueClass = Some("govuk-!-padding-bottom-0")
+          keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
+          valueClass = Some("govuk-!-padding-bottom-0 govuk-!-width-one-third")
         ),
         AnswerRow(
           Html("Amount you should have paid"),
           Html("£0.00"),
           rowClass = Some("govuk-!-padding-top-0"),
-          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
-          valueClass = Some("govuk-!-padding-top-0")
+          keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-top-0"),
+          valueClass = Some("govuk-!-padding-top-0 govuk-!-width-one-third")
         ),
         AnswerRow(
           Html("Total Customs Duty return amount"),
           Html("<span class=\"govuk-!-font-weight-bold\">£0.00</span>"),
           Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/customsDutyPaid"),
           Some("customs-duty-overpayment"),
-          keyClass = Some("govuk-!-width-three-quarters")
+          keyClass = Some("govuk-!-width-two-thirds")
         )
       )
     ),
@@ -81,22 +81,22 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
           Html("Amount you paid"),
           Html("£0.00"),
           rowClass = Some("govuk-summary-list__row--no-border"),
-          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
-          valueClass = Some("govuk-!-padding-bottom-0")
+          keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
+          valueClass = Some("govuk-!-padding-bottom-0 govuk-!-width-one-third")
         ),
         AnswerRow(
           Html("Amount you should have paid"),
           Html("£0.00"),
           rowClass = Some("govuk-!-padding-top-0"),
-          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
-          valueClass = Some("govuk-!-padding-top-0")
+          keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-top-0"),
+          valueClass = Some("govuk-!-padding-top-0 govuk-!-width-one-third")
         ),
         AnswerRow(
           Html("Total VAT return amount"),
           Html("<span class=\"govuk-!-font-weight-bold\">£0.00</span>"),
           Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/vATPaid"),
           Some("change-import-vat-overpayment"),
-          keyClass = Some("govuk-!-width-three-quarters")
+          keyClass = Some("govuk-!-width-two-thirds")
         )
       )
     ),
@@ -107,22 +107,22 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
           Html("Amount you paid"),
           Html("£0.00"),
           rowClass = Some("govuk-summary-list__row--no-border"),
-          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
-          valueClass = Some("govuk-!-padding-bottom-0")
+          keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
+          valueClass = Some("govuk-!-padding-bottom-0 govuk-!-width-one-third")
         ),
         AnswerRow(
           Html("Amount you should have paid"),
           Html("£0.00"),
           rowClass = Some("govuk-!-padding-top-0"),
-          keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
-          valueClass = Some("govuk-!-padding-top-0")
+          keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-top-0"),
+          valueClass = Some("govuk-!-padding-top-0 govuk-!-width-one-third")
         ),
         AnswerRow(
           Html("Total other duties return amount"),
           Html("<span class=\"govuk-!-font-weight-bold\">£0.00</span>"),
           Some("/apply-for-repayment-of-import-duty-and-import-vat/check-answers/change/otherDutiesPaid"),
           Some("other-duties-overpayment"),
-          keyClass = Some("govuk-!-width-three-quarters")
+          keyClass = Some("govuk-!-width-two-thirds")
         )
       )
     ),
@@ -132,7 +132,8 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
         AnswerRow(
           Html("Total return amount"),
           Html("<span class=\"govuk-!-font-weight-bold\">£0.00</span>"),
-          keyClass = Some("govuk-!-width-three-quarters")
+          keyClass = Some("govuk-!-width-two-thirds"),
+          valueClass = Some("govuk-!-width-one-third")
         )
       )
     )

@@ -138,7 +138,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
               "0",
               dutyPaid,
               "repaymentAmountSummary.total.amount",
-              keyClass = Some("govuk-!-width-three-quarters")
+              keyClass = Some("govuk-!-width-two-thirds"),
+              valueClass = Some("govuk-!-width-one-third")
             )
           )
         )
@@ -151,18 +152,18 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
               dutyPaid,
               dutyType,
               rowClass = Some("govuk-summary-list__row--no-border"),
-              keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-bottom-0"),
-              valueClass = Some("govuk-!-padding-bottom-0")
+              keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
+              valueClass = Some("govuk-!-padding-bottom-0 govuk-!-width-one-third")
             ),
             displayDuty(
               "1",
               dutyDue,
               dutyType,
               rowClass = Some("govuk-!-padding-top-0"),
-              keyClass = Some("govuk-!-width-three-quarters govuk-!-padding-top-0"),
-              valueClass = Some("govuk-!-padding-top-0")
+              keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-top-0"),
+              valueClass = Some("govuk-!-padding-top-0 govuk-!-width-one-third")
             ),
-            displayDuty("2", (dutyPaid - dutyDue), dutyType, keyClass = Some("govuk-!-width-three-quarters"))
+            displayDuty("2", (dutyPaid - dutyDue), dutyType, keyClass = Some("govuk-!-width-two-thirds"))
           )
         )
     }
