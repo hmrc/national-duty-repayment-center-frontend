@@ -38,6 +38,11 @@ class BARSResultSpec extends WordSpec with MustMatchers with BarsTestData {
       BARSResult(validAssessResponse.copy(accountNumberIsWellFormatted = "indeterminate")).isValid mustBe true
     }
 
+    "be valid if it is partial response for account name" in {
+
+      BARSResult(validAssessResponse.copy(nameMatches = "partial")).isValid mustBe true
+    }
+
     "be invalid if roll IS required" in {
 
       BARSResult(validAssessResponse.copy(nonStandardAccountDetailsRequiredForBacs = "yes")).isValid mustBe false

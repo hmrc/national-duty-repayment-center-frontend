@@ -17,7 +17,7 @@
 package models.bars
 
 import play.api.libs.json.{Json, OFormat}
-import models.bars.AssessBusinessBankDetailsResponse.{indeterminate, no, yes}
+import models.bars.AssessBusinessBankDetailsResponse.{indeterminate, no, partial, yes}
 
 case class AssessBusinessBankDetailsResponse(
   sortCodeIsPresentOnEISCD: String,
@@ -26,13 +26,14 @@ case class AssessBusinessBankDetailsResponse(
   accountExists: String,
   nameMatches: String,
   sortCodeSupportsDirectCredit: String
+  //accountName: Option[String] - Field which will contains account name if the name match is partial, not yet supported in NDRC
 ) {
   val sortcodeExists: Boolean               = sortCodeIsPresentOnEISCD == yes
   val accountNumberWellFormatted: Boolean   = Set(yes, indeterminate).contains(accountNumberIsWellFormatted)
   val sortcodeSupportsDirectCredit: Boolean = sortCodeSupportsDirectCredit == yes
   val rollNotRequired: Boolean              = nonStandardAccountDetailsRequiredForBacs == no
   val accountValid: Boolean                 = Set(yes, indeterminate).contains(accountExists)
-  val nameValid: Boolean                    = Set(yes, indeterminate).contains(nameMatches)
+  val nameValid: Boolean                    = Set(yes, indeterminate, partial).contains(nameMatches)
 }
 
 object AssessBusinessBankDetailsResponse {
@@ -41,5 +42,6 @@ object AssessBusinessBankDetailsResponse {
   private val yes           = "yes"
   private val no            = "no"
   private val indeterminate = "indeterminate"
+  private val partial       = "partial"
 
 }
