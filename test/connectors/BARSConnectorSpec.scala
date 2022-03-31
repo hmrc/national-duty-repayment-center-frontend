@@ -16,11 +16,6 @@
 
 package connectors
 
-/*
- * Copyright 2020 HM Revenue & Customs
- *
- */
-
 import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock._
 import models.BankDetails
@@ -68,6 +63,35 @@ class BARSConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
         ).futureValue
 
         result mustBe AssessBusinessBankDetailsResponse("yes", "yes", "no", "yes", "yes", "yes")
+      }
+    }
+
+    "must return a result when the server responds with partial response for account name" in {
+      val app = application
+      running(app) {
+
+        val url = "/verify/business"
+        val responseBody =
+          s"""{
+             |    "sortCodeIsPresentOnEISCD" : "yes",
+             |    "accountNumberIsWellFormatted" : "yes",
+             |    "nonStandardAccountDetailsRequiredForBacs" : "no",
+             |    "accountExists" : "yes",
+             |    "nameMatches" : "partial",
+             |    "sortCodeSupportsDirectCredit" : "yes",
+             |    "accountName" : "Correct account name"
+             |}""".stripMargin
+        val connector = app.injector.instanceOf[BARSConnector]
+        server.stubFor(
+          post(urlEqualTo(url))
+            .willReturn(ok(responseBody))
+        )
+
+        val result = connector.assessBusinessBankDetails(
+          AssessBusinessBankDetailsRequest(BankDetails("name", "123456", "12345678"))
+        ).futureValue
+
+        result mustBe AssessBusinessBankDetailsResponse("yes", "yes", "no", "yes", "partial", "yes")
       }
     }
   }
