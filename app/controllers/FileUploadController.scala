@@ -58,7 +58,7 @@ class FileUploadController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with FileUploadService with CheckStateSupport {
 
-  final val controller = routes.FileUploadController
+  final val controller                           = routes.FileUploadController
   val UpscanUploadErrorForm: Form[S3UploadError] = upscanS3ErrorFormProvider()
 
   // GET /file-verification
