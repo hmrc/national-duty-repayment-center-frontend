@@ -23,7 +23,7 @@ package connectors
 
 import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock._
-import org.scalatest.MustMatchers
+import org.scalatest.{BeforeAndAfterEach, MustMatchers}
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
@@ -32,45 +32,78 @@ import utils.WireMockHelper
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class UpscanInitiateConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
+class UpscanInitiateConnectorSpec extends SpecBase with WireMockHelper with MustMatchers with BeforeAndAfterEach {
 
   implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  private def application: Application =
+  implicit private lazy val application: Application =
     new GuiceApplicationBuilder()
       .configure("microservice.services.upscan-initiate.port" -> server.port)
       .build()
 
+  lazy val connector: UpscanInitiateConnector = application.injector.instanceOf[UpscanInitiateConnector]
+
+  override def beforeEach(): Unit = server.resetAll()
+
+  val url = "/upscan/v2/initiate"
+
   "initiate" must {
 
-    "must return a result when the server responds with OK" in {
-      val app = application
-      running(app) {
+    "return a successful result when the server responds with OK" in {
 
-        val url = "/upscan/v2/initiate"
-        val responseBody =
-          s"""{
-             |    "reference": "11370e18-6e24-453e-b45a-76d3e32ea33d",
-             |    "uploadRequest": {
-             |        "href": "https://xxxx/upscan-upload-proxy/bucketName",
-             |        "fields": {
-             |            "Content-Type": "application/xml",
-             |            "success_action_redirect": "https://myservice.com/nextPage",
-             |            "error_action_redirect": "https://myservice.com/errorPage"
-             |        }
-             |    }
-             |}""".stripMargin
-        val connector = app.injector.instanceOf[UpscanInitiateConnector]
-        server.stubFor(
-          post(urlEqualTo(url))
-            .willReturn(ok(responseBody))
-        )
+      val responseBody =
+        s"""{
+           |    "reference": "11370e18-6e24-453e-b45a-76d3e32ea33d",
+           |    "uploadRequest": {
+           |        "href": "https://xxxx/upscan-upload-proxy/bucketName",
+           |        "fields": {
+           |            "Content-Type": "application/xml",
+           |            "success_action_redirect": "https://myservice.com/nextPage",
+           |            "error_action_redirect": "https://myservice.com/errorPage"
+           |        }
+           |    }
+           |}""".stripMargin
 
-        val result = connector.initiate(UpscanInitiateRequest("/some-callback-url")).futureValue
+      server.stubFor(
+        post(urlEqualTo(url))
+          .willReturn(ok(responseBody))
+      )
 
-        result.reference mustBe "11370e18-6e24-453e-b45a-76d3e32ea33d"
+      val result = connector.initiate(UpscanInitiateRequest("/some-callback-url")).futureValue
+
+      result.reference mustBe "11370e18-6e24-453e-b45a-76d3e32ea33d"
+    }
+
+    "return a failure result when the server responds with 400" in {
+
+      val exMessage = "Bad request, try again"
+
+      server.stubFor(
+        post(urlEqualTo(url))
+          .willReturn(badRequest().withBody(exMessage))
+      )
+
+      lazy val thrown = intercept[UpscanInitiateError] {
+        await(connector.initiate(UpscanInitiateRequest("/some-callback-url")))
       }
+
+      thrown.getMessage must include(exMessage)
+    }
+
+    "return a failure result when the server responds with 500" in {
+
+      val exMessage = "Bad data"
+
+      server.stubFor(
+        post(urlEqualTo(url))
+          .willReturn(serverError().withBody(exMessage))
+      )
+
+      lazy val thrown = intercept[UpscanInitiateError] {
+        await(connector.initiate(UpscanInitiateRequest("/some-callback-url")))
+      }
+
+      thrown.getMessage must include(exMessage)
     }
   }
-
 }

@@ -28,7 +28,7 @@ import forms.UpscanS3ErrorFormProvider
 import javax.inject.{Inject, Named}
 import models.FileType.SupportingEvidence
 import models.requests.DataRequest
-import models.{SessionState, UpscanNotification}
+import models.{S3UploadError, SessionState, UpscanNotification}
 import navigation.CreateNavigator
 import pages.{ClaimReasonTypeMultiplePage, FileUploadPage}
 import play.api.data.Form
@@ -58,8 +58,8 @@ class FileUploadController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with FileUploadService with CheckStateSupport {
 
-  final val controller      = routes.FileUploadController
-  val UpscanUploadErrorForm = upscanS3ErrorFormProvider()
+  final val controller = routes.FileUploadController
+  val UpscanUploadErrorForm: Form[S3UploadError] = upscanS3ErrorFormProvider()
 
   // GET /file-verification
   final def showWaitingForFileVerification(): Action[AnyContent] =
@@ -115,7 +115,7 @@ class FileUploadController @Inject() (
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(SupportingEvidence)).contains(Seq.empty))
-        redirectInternalError(routes.FileUploadController.markFileUploadAsRejected, "MissingFile")
+        redirectInternalError(routes.FileUploadController.markFileUploadAsRejected(), "MissingFile")
       else
         Redirect(navigator.nextPage(FileUploadPage, request.userAnswers))
   }
@@ -135,7 +135,7 @@ class FileUploadController @Inject() (
           case _ => sessionRepository.updateSession(fs, ss.userAnswers)
         }
         if b
-      } yield renderState(fs, None)
+      } yield renderState(fs)
   }
 
   // GET /file-rejected
@@ -189,11 +189,9 @@ class FileUploadController @Inject() (
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
     )
 
-  final def renderState(fileUploadState: FileUploadState, formWithErrors: Option[Form[_]] = None)(implicit
-    request: DataRequest[_]
-  ): Result =
+  final def renderState(fileUploadState: FileUploadState)(implicit request: DataRequest[_]): Result =
     fileUploadState match {
-      case UploadFile(reference, uploadRequest, fileUploads, maybeUploadError) =>
+      case UploadFile(_, uploadRequest, fileUploads, maybeUploadError) =>
         Ok(
           fileUploadView(
             uploadRequest,
@@ -203,7 +201,6 @@ class FileUploadController @Inject() (
             navigator.previousPage(FileUploadPage, request.userAnswers)
           )
         )
-
       case _ => fileStateErrror
     }
 
