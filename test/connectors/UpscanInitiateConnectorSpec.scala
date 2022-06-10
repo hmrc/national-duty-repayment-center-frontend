@@ -83,11 +83,9 @@ class UpscanInitiateConnectorSpec extends SpecBase with WireMockHelper with Must
           .willReturn(badRequest().withBody(exMessage))
       )
 
-      lazy val thrown = intercept[UpscanInitiateError] {
+      intercept[UpscanInitiateError] {
         await(connector.initiate(UpscanInitiateRequest("/some-callback-url")))
-      }
-
-      thrown.getMessage must include(exMessage)
+      }.getMessage must include(exMessage)
     }
 
     "return a failure result when the server responds with 500" in {
@@ -99,11 +97,9 @@ class UpscanInitiateConnectorSpec extends SpecBase with WireMockHelper with Must
           .willReturn(serverError().withBody(exMessage))
       )
 
-      lazy val thrown = intercept[UpscanInitiateError] {
+      intercept[UpscanInitiateError] {
         await(connector.initiate(UpscanInitiateRequest("/some-callback-url")))
-      }
-
-      thrown.getMessage must include(exMessage)
+      }.getMessage must include(exMessage)
     }
   }
 }
