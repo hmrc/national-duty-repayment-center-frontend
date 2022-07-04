@@ -16,17 +16,24 @@
 
 package views.components
 
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.ActionItem
+import base.SpecBase
+import uk.gov.hmrc.govukfrontend.views.Aliases.Empty
 
-object ActionItemBuilder {
+class ActionItemBuilderSpec extends SpecBase {
 
-  def actionItem(href: String, content: Content, visuallyHiddenText: Option[String]): ActionItem =
-    ActionItem(
-      href = href,
-      content = content,
-      visuallyHiddenText = visuallyHiddenText,
-      classes = "govuk-link--no-visited-state govuk-!-display-none-print"
-    )
+  "Action Item Builder" should {
 
+    "build actionItem correctly" in {
+
+      val href               = "example.com"
+      val content            = Empty
+      val visuallyHiddenText = Some("visually hidden text")
+
+      val result = ActionItemBuilder.actionItem(href, content, visuallyHiddenText)
+
+      result.href mustBe href
+      result.content mustBe content
+      result.visuallyHiddenText mustBe visuallyHiddenText
+    }
+  }
 }

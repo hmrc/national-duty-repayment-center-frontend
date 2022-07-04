@@ -35,7 +35,7 @@ trait HttpErrorRateMeter {
       case Failure(exception: Upstream5xxResponse)                   => record(meterName(serviceName, exception.upstreamResponseCode))
       case Failure(exception: Upstream4xxResponse)                   => record(meterName(serviceName, exception.upstreamResponseCode))
       case Failure(exception: HttpException)                         => record(meterName(serviceName, exception.responseCode))
-      case Failure(exception: Throwable)                             => record(meterName(serviceName, 500))
+      case Failure(_: Throwable)                                     => record(meterName(serviceName, 500))
     }
 
   private def record[T](name: String): Unit = {
