@@ -9,7 +9,7 @@ lazy val appName: String = "national-duty-repayment-center-frontend"
 PlayKeys.devSettings := Seq("play.server.http.port" -> "8450")
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin, SbtArtifactory)
+  .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
   .settings(DefaultBuildSettings.scalaSettings: _*)
   .settings(DefaultBuildSettings.defaultSettings(): _*)
@@ -29,10 +29,10 @@ lazy val root = (project in file("."))
       "controllers.routes._"
     ),
     PlayKeys.playDefaultPort := 9000,
-    ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;.*repositories.*;" +
-      ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;" +
+    ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*components.*;" +
+      ".*BuildInfo.*;.*javascript.*;.*Routes.*;.*GuiceInjector;" +
       ".*ControllerConfiguration;.*LanguageSwitchController",
-    ScoverageKeys.coverageMinimum := 90,
+    ScoverageKeys.coverageMinimumStmtTotal := 90,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
     scalacOptions ++= Seq("-feature"),
@@ -40,15 +40,13 @@ lazy val root = (project in file("."))
     libraryDependencies += "org.webjars.bower" % "bootstrap-sass" % "3.3.6",
     libraryDependencies += "org.webjars.bower" % "compass-mixins" % "0.12.7",
     retrieveManaged := true,
-    evictionWarningOptions in update :=
+    update / evictionWarningOptions in update :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    resolvers += "third-party-maven-releases" at "https://artefacts.tax.service.gov.uk/artifactory/third-party-maven-releases/",
-
     // prevent removal of unused code which generates warning errors due to use of third-party libs
     uglifyCompressOptions := Seq("unused=false", "dead_code=false"),
     pipelineStages := Seq(digest),
     // below line required to force asset pipeline to operate in dev rather than only prod
-    pipelineStages in Assets := Seq(concat,uglify),
+    Assets / pipelineStages := Seq(concat,uglify),
   )
   .settings(silencerSettings)
 
