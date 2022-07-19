@@ -16,13 +16,11 @@
 
 package controllers
 
-import java.time.ZonedDateTime
-
 import base.SpecBase
 import models.ClaimantType.{Importer, Representative}
 import models.FileType.SupportingEvidence
 import models.requests.UploadRequest
-import models.{AgentImporterHasEORI, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import models._
 import navigation.CreateNavigator
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.{any, anyObject}
@@ -31,42 +29,34 @@ import org.scalatestplus.mockito.MockitoSugar
 import pages.{AgentImporterHasEORIPage, ClaimantTypePage, ImporterHasEoriPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{
-  contentAsString,
-  defaultAwaitTimeout,
-  redirectLocation,
-  route,
-  running,
-  status,
-  writeableOf_AnyContentAsEmpty,
-  GET,
-  POST
-}
+import play.api.test.Helpers._
 import play.twirl.api.HtmlFormat
 import services.{FileUploadState, FileUploaded, UploadFile}
 
+import java.time.ZonedDateTime
 import scala.concurrent.Future
 
 class FileUploadControllerSpec extends SpecBase with MockitoSugar {
   val id = "1"
 
+  val currentState: UploadFile =
+    UploadFile(
+      "foo-bar-ref-2",
+      UploadRequest(
+        href = "https://s3.bucket",
+        fields = Map(
+          "callbackUrl"     -> "https://foo.bar/callback",
+          "successRedirect" -> "https://foo.bar/success",
+          "errorRedirect"   -> "https://foo.bar/failure"
+        )
+      ),
+      FileUploads(files =
+        Seq(FileUpload.Initiated(1, "foo-bar-ref-1"))
+      )
+    )
+
   "GET /file-upload" should {
     "show the upload first document page" in {
-      val currentState =
-        UploadFile(
-          "foo-bar-ref-2",
-          UploadRequest(
-            href = "https://s3.bucket",
-            fields = Map(
-              "callbackUrl"     -> "https://foo.bar/callback",
-              "successRedirect" -> "https://foo.bar/success",
-              "errorRedirect"   -> "https://foo.bar/failure"
-            )
-          ),
-          FileUploads(files =
-            Seq(FileUpload.Initiated(1, "foo-bar-ref-1"))
-          )
-        )
       val fileUploadUrl = routes.FileUploadController.showFileUpload().url
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -162,7 +152,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
       val request = FakeRequest(POST, uploadAnotherFile)
       val result  = route(application, request).value
 
-      redirectLocation(result) mustEqual Some(routes.AgentImporterHasEORIController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.AgentImporterHasEORIController.onPageLoad().url)
 
       application.stop()
     }
@@ -203,7 +193,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
       val request = FakeRequest(POST, uploadAnotherFile)
       val result  = route(application, request).value
 
-      redirectLocation(result) mustEqual Some(routes.ImporterHasEoriController.onPageLoad().url)
+      redirectLocation(result) mustBe Some(routes.ImporterHasEoriController.onPageLoad().url)
 
       application.stop()
     }
@@ -265,9 +255,9 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
               UpscanNotification.FailureDetails(UpscanNotification.QUARANTINE, "some reason")
             )
           )
-        ),
-        acknowledged = false
+        )
       )
+
       val userAnswers = UserAnswers(userIdentification).set(
         AgentImporterHasEORIPage,
         AgentImporterHasEORI.values.head
@@ -318,8 +308,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
               "application/pdf"
             )
           )
-        ),
-        acknowledged = false
+        )
       )
       val userAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadState))
 
@@ -332,7 +321,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
 
-        val request = buildRequest(GET, routes.FileUploadController.showWaitingForFileVerification.url)
+        val request = buildRequest(GET, routes.FileUploadController.showWaitingForFileVerification().url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303
@@ -354,7 +343,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
 
-        val request = buildRequest(GET, routes.FileUploadController.showWaitingForFileVerification.url)
+        val request = buildRequest(GET, routes.FileUploadController.showWaitingForFileVerification().url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303
@@ -425,6 +414,64 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
+  }
+
+  "showFileUpload" should {
+
+    "return 200" when {
+
+      "the file upload has been successful" in {
+
+        when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+          Future.successful(SessionState(Some(currentState), Some(emptyUserAnswers)))
+        )
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        running(application) {
+          val request = buildRequest(GET, routes.FileUploadController.showFileUpload().url)
+          val result  = route(application, request).value
+
+          status(result) mustEqual 200
+        }
+
+        application.stop()
+      }
+
+      "file size is too large and returns the correct error in the response" in {
+
+        val fileUploadError: Option[FileTransmissionFailed] = Some(
+          FileTransmissionFailed(
+            S3UploadError(
+              id,
+              "EntityTooLarge",
+              "Your proposed upload exceeds the maximum allowed size",
+              Some("SomeRequestId"),
+              Some("NoFileReference")
+            )
+          )
+        )
+
+        val uploadFileStateWithError = currentState.copy(maybeUploadError = fileUploadError)
+
+        val userAnswers = emptyUserAnswers.copy(fileUploadState = Some(uploadFileStateWithError))
+
+        when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+          Future.successful(SessionState(Some(uploadFileStateWithError), Some(userAnswers)))
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        running(application) {
+          val request = buildRequest(GET, routes.FileUploadController.showFileUpload().url)
+          val result  = route(application, request).value
+
+          status(result) mustEqual 200
+          contentAsString(result) must include(messages("error.file-upload.invalid-size-large"))
+        }
+        application.stop()
+      }
+    }
   }
 
   def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString

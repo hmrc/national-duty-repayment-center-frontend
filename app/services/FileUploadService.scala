@@ -20,23 +20,10 @@ import connectors.{UpscanInitiateRequest, UpscanInitiateResponse}
 import models.FileType.SupportingEvidence
 import models.FileUpload.{Accepted, Initiated}
 import models.requests.{DataRequest, UploadRequest}
-import models.{
-  DuplicateFileUpload,
-  FileTransmissionFailed,
-  FileTransmissionTimedOut,
-  FileType,
-  FileUpload,
-  FileUploadError,
-  FileUploads,
-  FileVerificationFailed,
-  S3UploadError,
-  UpscanFileFailed,
-  UpscanFileReady,
-  UpscanNotification
-}
+import models._
 import play.api.http.Status.SEE_OTHER
 import play.api.libs.json.{Format, Json}
-import play.api.mvc.Call
+import play.api.mvc.{Call, Result}
 import play.api.mvc.Results.Redirect
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -78,11 +65,12 @@ object FileUploaded {
 trait FileUploadService {
   type UpscanInitiateApi = UpscanInitiateRequest => Future[UpscanInitiateResponse]
 
-  final def redirectInternalError(rejected: Call, errorCode: String)(implicit request: DataRequest[_]) = Redirect(
-    rejected.url,
-    Map("key" -> Seq(request.internalId), "errorMessage" -> Seq(errorCode), "errorCode" -> Seq(errorCode)),
-    SEE_OTHER
-  )
+  final def redirectInternalError(rejected: Call, errorCode: String)(implicit request: DataRequest[_]): Result =
+    Redirect(
+      rejected.url,
+      Map("key" -> Seq(request.internalId), "errorMessage" -> Seq(errorCode), "errorCode" -> Seq(errorCode)),
+      SEE_OTHER
+    )
 
   final def fileUploadOrUploaded(
     upscanRequest: UpscanInitiateRequest,
@@ -92,7 +80,7 @@ trait FileUploadService {
     fileType: Option[FileType]
   )(implicit ec: ExecutionContext): Future[FileUploadState] = {
     val fileUploads = fileUploadsOpt.getOrElse(FileUploads())
-    if ((showUploadSummaryIfAny && fileUploads.nonEmpty))
+    if (showUploadSummaryIfAny && fileUploads.nonEmpty)
       Future.successful(FileUploaded(fileUploads))
     else
       for {
@@ -180,7 +168,7 @@ trait FileUploadService {
                     duplicateFileName = uploadDetails.fileName,
                     fileType = Some(fileType)
                   )
-                case s @ _ =>
+                case _ =>
                   FileUpload.Accepted(
                     orderNumber,
                     ref,
