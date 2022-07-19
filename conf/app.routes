@@ -3,22 +3,22 @@
 
 GET         /assets/*file                                                         controllers.Assets.versioned(path = "/public", file: Asset)
 
-GET         /                                                                     controllers.IndexController.onPageLoad
+GET         /                                                                     controllers.IndexController.onPageLoad()
 
 GET         /language/:lang                                                       controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
-GET         /this-service-has-been-reset                                          controllers.SessionExpiredController.onPageLoad
+GET         /this-service-has-been-reset                                          controllers.SessionExpiredController.onPageLoad()
 
-GET         /keep-alive                                                           controllers.KeepAliveController.keepAlive
+GET         /keep-alive                                                           controllers.KeepAliveController.keepAlive()
 
 
-GET         /check-answers                                                        controllers.CheckYourAnswersController.onPageLoad
-POST        /check-answers                                                        controllers.CheckYourAnswersController.onSubmit
-GET         /check-answers/resolve                                                controllers.CheckYourAnswersController.onResolve
-POST        /check-answers/resolve                                                controllers.CheckYourAnswersController.onResolve
+GET         /check-answers                                                        controllers.CheckYourAnswersController.onPageLoad()
+POST        /check-answers                                                        controllers.CheckYourAnswersController.onSubmit()
+GET         /check-answers/resolve                                                controllers.CheckYourAnswersController.onResolve()
+POST        /check-answers/resolve                                                controllers.CheckYourAnswersController.onResolve()
 GET         /check-answers/change/:page                                           controllers.CheckYourAnswersController.onChange(page)
 
-GET         /unauthorised                                                         controllers.UnauthorisedController.onPageLoad
+GET         /unauthorised                                                         controllers.UnauthorisedController.onPageLoad()
 
 GET         /do-you-have-an-eori-number                                           controllers.ImporterHasEoriController.onPageLoad()
 POST        /do-you-have-an-eori-number                                           controllers.ImporterHasEoriController.onSubmit()
@@ -116,7 +116,7 @@ POST        /repayment-summary                                                  
 GET         /indirect-representative                                              controllers.IndirectRepresentativeController.onPageLoad()
 POST        /indirect-representative                                              controllers.IndirectRepresentativeController.onSubmit()
 
-GET         /signout                                                              controllers.SignOutController.signOut
+GET         /signout                                                              controllers.SignOutController.signOut()
 
 GET         /amend/application-reference-number                                   controllers.ReferenceNumberController.onPageLoad()
 POST        /amend/application-reference-number                                   controllers.ReferenceNumberController.onSubmit()
@@ -124,17 +124,17 @@ POST        /amend/application-reference-number                                 
 GET         /amend/further-information                                            controllers.FurtherInformationController.onPageLoad()
 POST        /amend/further-information                                            controllers.FurtherInformationController.onSubmit()
 
-GET         /amend/check-answers                                                  controllers.AmendCheckYourAnswersController.onPageLoad
-POST        /amend/check-answers                                                  controllers.AmendCheckYourAnswersController.onSubmit
-GET         /amend/check-answers/resolve                                          controllers.AmendCheckYourAnswersController.onResolve
-POST        /amend/check-answers/resolve                                          controllers.AmendCheckYourAnswersController.onResolve
+GET         /amend/check-answers                                                  controllers.AmendCheckYourAnswersController.onPageLoad()
+POST        /amend/check-answers                                                  controllers.AmendCheckYourAnswersController.onSubmit()
+GET         /amend/check-answers/resolve                                          controllers.AmendCheckYourAnswersController.onResolve()
+POST        /amend/check-answers/resolve                                          controllers.AmendCheckYourAnswersController.onResolve()
 GET         /amend-check-your-answers/change/:page                                controllers.AmendCheckYourAnswersController.onChange(page)
 
 GET         /amend/what-do-you-need-to-do                                         controllers.AmendCaseResponseTypeController.onPageLoad()
 POST        /amend/what-do-you-need-to-do                                         controllers.AmendCaseResponseTypeController.onSubmit()
 
-GET         /amend/application-not-found                                          controllers.AmendErrorController.onNotFound
-GET         /amend/application-closed                                             controllers.AmendErrorController.onClosed
+GET         /amend/application-not-found                                          controllers.AmendErrorController.onNotFound()
+GET         /amend/application-closed                                             controllers.AmendErrorController.onClosed()
 
 # File uploads
 GET         /file-upload                                                          controllers.FileUploadController.showFileUpload()
@@ -176,8 +176,8 @@ GET         /amend/file-uploaded/:reference/remove                              
 GET         /contact                                                              controllers.EmailAddressAndPhoneNumberController.onPageLoad()
 POST        /contact                                                              controllers.EmailAddressAndPhoneNumberController.onSubmit()
 
-GET         /what-do-you-want-to-do                                               controllers.CreateOrAmendCaseController.onPageLoad
-POST        /what-do-you-want-to-do                                               controllers.CreateOrAmendCaseController.onSubmit
+GET         /what-do-you-want-to-do                                               controllers.CreateOrAmendCaseController.onPageLoad()
+POST        /what-do-you-want-to-do                                               controllers.CreateOrAmendCaseController.onSubmit()
 
 GET         /your-name                                                            controllers.DeclarantNameController.onPageLoad()
 POST        /your-name                                                            controllers.DeclarantNameController.onSubmit()
