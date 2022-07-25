@@ -33,6 +33,10 @@ Run the code from source using
 
 `sbt run`
 
+Running the code from source to test acceptance tests using
+
+`sbt run -Dmicroservice.services.address-lookup-frontend.port=6001`
+
 Dependencies will also need to be started from source or using service manager.
 
 ## Running through service manager
