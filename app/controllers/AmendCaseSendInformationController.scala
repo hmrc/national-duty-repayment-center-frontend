@@ -17,7 +17,6 @@
 package controllers
 
 import java.time.LocalDateTime
-
 import akka.actor.ActorRef
 import akka.pattern.ask
 import config.FrontendAppConfig
@@ -116,7 +115,7 @@ class AmendCaseSendInformationController @Inject() (
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(SupportingEvidence)).contains(Seq.empty))
-        redirectInternalError(routes.AmendCaseSendInformationController.markFileUploadAsRejected, "MissingFile")
+        redirectInternalError(routes.AmendCaseSendInformationController.markFileUploadAsRejected(), "MissingFile")
       else
         Redirect(navigator.nextPage(AmendFileUploadPage, request.userAnswers))
   }

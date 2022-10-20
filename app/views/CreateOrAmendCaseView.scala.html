@@ -30,7 +30,7 @@
         pageTitle = Some(s"${errorPrefix(form)}${titleNoForm(messages("createOrAmendCase.title"))}")
     ) {
 
-        @forms.formWithCSRF(action = CreateOrAmendCaseController.onSubmit, args = 'novalidate -> "novalidate") {
+        @forms.formWithCSRF(action = CreateOrAmendCaseController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
 
             @components.error_summary(form.errors)
 

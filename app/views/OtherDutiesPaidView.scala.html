@@ -43,7 +43,7 @@
     backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = OtherDutiesPaidController.onSubmit(), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = OtherDutiesPaidController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
 
         @defining(updateGlobalErrorsTo("ShouldHavePaidAmount")) { newForm =>
 

@@ -26,13 +26,13 @@
 *@
 
 <script>
-        accessibleAutocomplete.enhanceSelectElement({
+        accessibleSymbol("autoComplete").enhanceSelectElement({
          selectElement: document.getElementById("CountryCode"),
-         name: 'CountryCodeAutocomplete',
+         name: 'CountryCodeSymbol("autoComplete")',
          defaultValue: '',
          @*
-           TF-640: Had to override the onConfirm function to include custom validation for countries because null / undefined values are not handled by the Autocomplete form:
-           https://github.com/alphagov/accessible-autocomplete/issues/260
+           TF-640: Had to override the onConfirm function to include custom validation for countries because null / undefined values are not handled by the Symbol("autoComplete") form:
+           https://github.com/alphagov/accessible-Symbol("autoComplete")/issues/260
            When this is fixed the custom validation / onConfirm bypass can be removed
          *@
          onConfirm: () => {

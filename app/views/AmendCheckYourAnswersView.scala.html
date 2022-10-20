@@ -34,7 +34,7 @@
 
     @html.h1("checkYourAnswers.amend.title", classes = "govuk-heading-l")
 
-    @forms.formWithCSRF(action = AmendCheckYourAnswersController.onSubmit(), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = AmendCheckYourAnswersController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
 
         @components.answers(sections)
 

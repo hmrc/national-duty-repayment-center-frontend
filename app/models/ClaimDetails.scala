@@ -50,13 +50,13 @@ object ClaimDetails {
     override def writes(o: LocalDate): JsValue = JsString(o.format(formatter))
 
     override def reads(json: JsValue): JsResult[LocalDate] = json match {
-      case JsString(s) ⇒
+      case JsString(s) =>
         Try(LocalDate.parse(s, formatter)) match {
-          case Success(date)  ⇒ JsSuccess(date)
-          case Failure(error) ⇒ JsError(s"Could not parse date as yyyyMMdd: ${error.getMessage}")
+          case Success(date)  => JsSuccess(date)
+          case Failure(error) => JsError(s"Could not parse date as yyyyMMdd: ${error.getMessage}")
         }
 
-      case other ⇒ JsError(s"Expected string but got $other")
+      case other => JsError(s"Expected string but got $other")
     }
 
   }

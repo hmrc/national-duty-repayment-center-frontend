@@ -23,9 +23,10 @@ import models.requests.{AmendClaimBuilder, CreateClaimBuilder, CreateClaimReques
 import models.responses.ClientClaimResponse
 import models.{ClaimDescription, ClaimReasonType}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatest.{MustMatchers, OptionValues}
+import org.scalatest.OptionValues
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.{ClaimReasonTypeMultiplePage, ReasonForOverpaymentPage}
 import services.ClaimService
@@ -35,7 +36,7 @@ import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.matching.Regex
 
-class ClaimServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class ClaimServiceSpec extends SpecBase with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
   val createClaimBuilder = injector.instanceOf[CreateClaimBuilder]
   val amendClaimBuilder  = injector.instanceOf[AmendClaimBuilder]

@@ -20,7 +20,7 @@ import base.SpecBase
 import forms.CreateOrAmendCaseFormProvider
 import models.{CreateOrAmendCase, UserAnswers}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CreateOrAmendCasePage
@@ -32,7 +32,7 @@ import scala.concurrent.Future
 
 class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val createOrAmendCaseRoute = routes.CreateOrAmendCaseController.onPageLoad.url
+  lazy val createOrAmendCaseRoute = routes.CreateOrAmendCaseController.onPageLoad().url
 
   val formProvider = new CreateOrAmendCaseFormProvider()
   val form         = formProvider()

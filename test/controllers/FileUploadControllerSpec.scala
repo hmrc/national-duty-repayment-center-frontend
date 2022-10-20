@@ -23,7 +23,7 @@ import models.requests.UploadRequest
 import models._
 import navigation.CreateNavigator
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.{any, anyObject}
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{AgentImporterHasEORIPage, ClaimantTypePage, ImporterHasEoriPage}
@@ -65,7 +65,7 @@ class FileUploadControllerSpec extends SpecBase with MockitoSugar {
         when(mockSessionRepository.getFileUploadState(emptyUserAnswers.id)) thenReturn Future.successful(
           SessionState(Some(currentState), Some(emptyUserAnswers))
         )
-        when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
+        when(mockSessionRepository.updateSession(any(), any())) thenReturn Future.successful(true)
 
         val request = buildRequest(GET, fileUploadUrl)
         val result  = route(application, request).value

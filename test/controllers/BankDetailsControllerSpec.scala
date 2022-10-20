@@ -20,7 +20,7 @@ import base.SpecBase
 import data.BarsTestData
 import forms.BankDetailsFormProvider
 import models.{BankDetails, ClaimantType, WhomToPay}
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{BankDetailsPage, ClaimantTypePage, WhomToPayPage}

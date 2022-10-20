@@ -22,7 +22,7 @@ import base.SpecBase
 import models.FileType.SupportingEvidence
 import models.{AmendCaseResponseType, FileType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.{any, anyObject}
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AmendCaseResponseTypePage
@@ -45,7 +45,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
           Future.successful(SessionState(None, Some(emptyUserAnswers)))
         )
-        when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
+        when(mockSessionRepository.updateSession(any(), any())) thenReturn Future.successful(true)
         val request = buildRequest(GET, fileUploadUrl)
         val result  = route(application, request).value
         status(result) mustEqual 200
@@ -87,7 +87,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
         when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
           Future.successful(SessionState(None, Some(userAnswers)))
         )
-        when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
+        when(mockSessionRepository.updateSession(any(), any())) thenReturn Future.successful(true)
 
         val request = buildRequest(GET, fileUploadedUrl)
         val result  = route(application, request).value
@@ -132,7 +132,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
         Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers)))
       )
-      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
+      when(mockSessionRepository.updateSession(any(), any())) thenReturn Future.successful(true)
 
       val request = FakeRequest(POST, continueUrl)
       val result  = route(application, request).value
@@ -173,7 +173,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
         Future.successful(SessionState(Some(fileUploadedState), Some(userAnswers)))
       )
-      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
+      when(mockSessionRepository.updateSession(any(), any())) thenReturn Future.successful(true)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -204,7 +204,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
         Future.successful(SessionState(None, Some(userAnswers)))
       )
-      when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
+      when(mockSessionRepository.updateSession(any(), any())) thenReturn Future.successful(true)
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -318,7 +318,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
       running(application) {
 
-        val request = buildRequest(GET, routes.AmendCaseSendInformationController.showWaitingForFileVerification.url)
+        val request = buildRequest(GET, routes.AmendCaseSendInformationController.showWaitingForFileVerification().url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303
@@ -340,7 +340,7 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
 
       running(application) {
 
-        val request = buildRequest(GET, routes.AmendCaseSendInformationController.showWaitingForFileVerification.url)
+        val request = buildRequest(GET, routes.AmendCaseSendInformationController.showWaitingForFileVerification().url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303

@@ -32,7 +32,7 @@
     backLinkNav = Some(backLink)
     ) {
 
-    @forms.formWithCSRF(action = NumberOfEntriesTypeController.onSubmit(), 'autoComplete -> "off") {
+    @forms.formWithCSRF(action = NumberOfEntriesTypeController.onSubmit(),Symbol("autoComplete") -> "off") {
 
         @components.error_summary(form.errors)
 

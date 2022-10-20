@@ -87,7 +87,7 @@
     </form>
 
     <div class="ndrc-display-none-non-javascript">
-        @forms.formWithCSRF(action = ProofOfAuthorityController.onContinue(), args = 'novalidate -> "novalidate") {
+        @forms.formWithCSRF(action = ProofOfAuthorityController.onContinue(), args = Symbol("novalidate") -> "novalidate") {
             @govukButton(Button(
                 attributes = Map("id" -> "ndrc-fileupload-continue"),
                 content = Text(messages("site.continue")),
@@ -97,7 +97,7 @@
     </div>
     <div class="ndrc-display-only-non-javascript">
         @if(!uploadedFiles.isEmpty){
-            @forms.formWithCSRF(action = ProofOfAuthorityController.onContinue(), args = 'novalidate -> "novalidate") {
+            @forms.formWithCSRF(action = ProofOfAuthorityController.onContinue(), args = Symbol("novalidate") -> "novalidate") {
                 @govukButton(Button(
                     content = Text(messages("site.continue")),
                     preventDoubleClick = true

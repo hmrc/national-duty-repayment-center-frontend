@@ -19,7 +19,7 @@
 
 @this(govukSummaryList: GovukSummaryList, govukTag : GovukTag)
 
-@(uploads: Seq[UploadedFile], removeUrl: String => String)(implicit request: Request[_], messages: Messages)
+@(uploads: Seq[UploadedFile], removeUrl: String => String)(implicit messages: Messages)
 
 @linkContent(message: String) = {
     <span aria-hidden="true">

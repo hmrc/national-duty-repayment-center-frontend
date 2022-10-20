@@ -26,6 +26,6 @@
 @hmrcStandardHeader(
     serviceName = Some(messages("site.service_name")),
     serviceUrl = Some(controllers.routes.IndexController.onPageLoad().url),
-    signOutUrl = if (showSignOut) Some(controllers.routes.SignOutController.signOut.url) else None,
+    signOutUrl = if (showSignOut) Some(controllers.routes.SignOutController.signOut().url) else None,
     userResearchBanner = appConfig.researchBannerUrl.map(bannerUrl => UserResearchBanner(url = bannerUrl))
 )

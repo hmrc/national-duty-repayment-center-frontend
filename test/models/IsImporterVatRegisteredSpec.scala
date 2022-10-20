@@ -19,10 +19,12 @@ package models
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatest.OptionValues
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.{JsError, JsString, Json}
 
-class IsImporterVatRegisteredSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class IsImporterVatRegisteredSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
   "IsImporterVatRegistered" must {
 

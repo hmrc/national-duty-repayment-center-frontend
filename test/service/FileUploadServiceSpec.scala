@@ -30,13 +30,14 @@ import models.{
   UpscanFileReady,
   UpscanNotification
 }
-import org.scalatest.{MustMatchers, OptionValues}
+import org.scalatest.OptionValues
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import services.{FileUploadService, FileUploaded, UploadFile}
 
 import java.time.ZonedDateTime
 
-class FileUploadServiceSpec extends SpecBase with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class FileUploadServiceSpec extends SpecBase with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
   val service = new FileUploadService {}
   "at state FileUpload" should {

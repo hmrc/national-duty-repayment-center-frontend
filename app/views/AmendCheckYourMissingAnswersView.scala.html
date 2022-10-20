@@ -54,7 +54,7 @@
         @messages("checkYourAnswers.missing.paragraph")
     }
 
-    @forms.formWithCSRF(action = AmendCheckYourAnswersController.onResolve(), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = AmendCheckYourAnswersController.onResolve(), args = Symbol("novalidate") -> "novalidate") {
         @html.button("checkYourAnswers.missing.resolve")
     }
 }

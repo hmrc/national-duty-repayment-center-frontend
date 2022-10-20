@@ -17,9 +17,11 @@
 package models.bars
 
 import data.BarsTestData
-import org.scalatest.{MustMatchers, WordSpec}
+import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class BARSResultSpec extends WordSpec with MustMatchers with BarsTestData {
+class BARSResultSpec extends AnyWordSpec with Matchers with BarsTestData {
 
   "BARSResult" should {
 

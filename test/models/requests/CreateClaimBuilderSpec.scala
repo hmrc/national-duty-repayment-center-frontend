@@ -21,10 +21,10 @@ import data.TestData._
 import models.EORI
 import models.eis.QuoteFormatter
 import org.mockito.Mockito.verify
-import org.scalatest.MustMatchers
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 
-class CreateClaimBuilderSpec extends SpecBase with MustMatchers with MockitoSugar {
+class CreateClaimBuilderSpec extends SpecBase with Matchers with MockitoSugar {
 
   "CreateClaimBuilder" must {
     "use QuoteFormatter when creating ClaimDescription" in {

@@ -20,7 +20,7 @@ import base.SpecBase
 import forms.ReferenceNumberFormProvider
 import models.UserAnswers
 import navigation.NavigatorBack
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ReferenceNumberPage
@@ -32,7 +32,7 @@ import scala.concurrent.Future
 
 class ReferenceNumberControllerSpec extends SpecBase with MockitoSugar {
 
-  val backLink = NavigatorBack(Some(routes.CreateOrAmendCaseController.onPageLoad))
+  val backLink = NavigatorBack(Some(routes.CreateOrAmendCaseController.onPageLoad()))
 
   val formProvider = new ReferenceNumberFormProvider()
   val form         = formProvider()

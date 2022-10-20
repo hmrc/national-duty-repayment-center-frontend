@@ -49,7 +49,7 @@ trait Mappings extends Formatters with Constraints {
     of(enumerableFormatter[A](requiredKey, invalidKey))
 
   protected def localDate(invalidKey: String, requiredKey: String): FieldMapping[LocalDate] =
-    of(new LocalDateFormatter(invalidKey, requiredKey))
+    of(new LocalDateFormatter(invalidKey))
 
   protected def decimal(
     requiredKey: String = "error.required",

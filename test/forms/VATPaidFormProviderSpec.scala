@@ -18,6 +18,7 @@ package forms
 
 import forms.behaviours.{DecimalFieldBehaviours, StringFieldBehaviours}
 import models.RepaymentAmounts
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.data.{Form, FormError}
 
 class VATPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBehaviours {

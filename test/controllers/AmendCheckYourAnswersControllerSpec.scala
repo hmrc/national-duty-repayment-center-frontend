@@ -17,7 +17,6 @@
 package controllers
 
 import java.time.ZonedDateTime
-
 import base.SpecBase
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.FileType.SupportingEvidence
@@ -25,8 +24,8 @@ import models.responses.ClientClaimResponse
 import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
 import navigation.{AmendNavigator, NavigatorBack}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, verifyNoInteractions, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.{AmendCaseResponseTypePage, AmendCheckYourAnswersPage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.i18n.Messages
@@ -54,7 +53,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
   def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString
 
-  val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad))
+  val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad()))
 
   "Amend Check Your Answers Controller" must {
 
@@ -254,7 +253,7 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
       application.stop()
 
-      verifyZeroInteractions(mockSessionRepository)
+      verifyNoInteractions(mockSessionRepository)
     }
 
     "persist 'change page' and redirect onChange" in {

@@ -17,15 +17,14 @@
 package models.requests
 
 import java.time.LocalDate
-
 import base.SpecBase
 import models._
 import models.eis.EISAddress
-import org.scalatest.MustMatchers
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
 
-class CreateClaimRequestSpec extends SpecBase with MustMatchers with MockitoSugar {
+class CreateClaimRequestSpec extends SpecBase with Matchers with MockitoSugar {
 
   "CreateClaimRequest" must {
     "serialise and deserialise to / from a claim period" in {

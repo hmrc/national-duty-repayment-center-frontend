@@ -77,7 +77,7 @@ class ProofOfAuthorityController @Inject() (
             Future.successful(
               redirectFileStateMissing(
                 "ProofOfAuthority.showWaitingForFileVerification",
-                routes.ProofOfAuthorityController.showFileUpload
+                routes.ProofOfAuthorityController.showFileUpload()
               )
             )
         }
@@ -117,7 +117,7 @@ class ProofOfAuthorityController @Inject() (
                 Future.successful(
                   redirectFileStateMissing(
                     "ProofOfAuthority.markFileUploadAsRejected",
-                    routes.ProofOfAuthorityController.showFileUpload
+                    routes.ProofOfAuthorityController.showFileUpload()
                   )
                 )
             }
@@ -170,7 +170,7 @@ class ProofOfAuthorityController @Inject() (
           ).map(_ => Redirect(routes.ProofOfAuthorityController.showFileUpload()))
         case None =>
           Future.successful(
-            redirectFileStateMissing("ProofOfAuthority.onRemove", routes.ProofOfAuthorityController.showFileUpload)
+            redirectFileStateMissing("ProofOfAuthority.onRemove", routes.ProofOfAuthorityController.showFileUpload())
           )
       }
     }
@@ -179,7 +179,7 @@ class ProofOfAuthorityController @Inject() (
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(ProofOfAuthority)).contains(Seq.empty))
-        redirectInternalError(routes.ProofOfAuthorityController.markFileUploadAsRejected, "MissingFile")
+        redirectInternalError(routes.ProofOfAuthorityController.markFileUploadAsRejected(), "MissingFile")
       else
         Redirect(navigator.nextPage(ProofOfAuthorityPage, request.userAnswers))
   }

@@ -24,6 +24,7 @@
     @{
         section match {
             case a: AnswerSection => components.answer_section(a)
+            case _ => throw new IllegalStateException("Only answer section supported")
         }
     }
 }

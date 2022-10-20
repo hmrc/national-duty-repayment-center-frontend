@@ -16,12 +16,14 @@
 
 package models
 
-import java.time.Instant
-
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.OptionValues
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.Json
 
-class MongoFormatsSpec extends FreeSpec with MustMatchers with OptionValues with MongoFormats {
+import java.time.Instant
+
+class MongoFormatsSpec extends AnyFreeSpec with Matchers with OptionValues with MongoFormats {
 
   "an Instant" - {
 

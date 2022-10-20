@@ -20,15 +20,16 @@ import base.SpecBase
 import connectors.BARSConnector
 import data.BarsTestData
 import data.TestData._
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, verify, when}
-import org.scalatest.{BeforeAndAfterEach, MustMatchers}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.must.Matchers
 import services.BankAccountReputationService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class BankAccountReputationServiceSpec extends SpecBase with MustMatchers with BeforeAndAfterEach with BarsTestData {
+class BankAccountReputationServiceSpec extends SpecBase with Matchers with BeforeAndAfterEach with BarsTestData {
 
   implicit val ec: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global

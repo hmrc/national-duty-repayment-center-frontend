@@ -18,6 +18,7 @@ package forms
 
 import data.TestData
 import forms.behaviours.StringFieldBehaviours
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.data.FormError
 
 class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {

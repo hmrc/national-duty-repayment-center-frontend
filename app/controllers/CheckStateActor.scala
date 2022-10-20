@@ -43,13 +43,13 @@ class CheckStateActor @Inject() (sessionRepository: SessionRepository, val appCo
   override def receive: Receive = {
     case CheckState(id, exitTime, state) =>
       if (state.isInstanceOf[FileUploaded])
-        Future.successful(state).pipeTo(sender)
+        Future.successful(state).pipeTo(sender())
       else if (LocalDateTime.now().isAfter(exitTime))
         sessionRepository.get(id).map { answers =>
           val newState = fileUploadTimedOut(state)
           sessionRepository.updateSession(newState, answers)
           newState
-        }.pipeTo(sender)
+        }.pipeTo(sender())
       else
         sessionRepository.get(id).flatMap(
           ss =>
@@ -64,7 +64,7 @@ class CheckStateActor @Inject() (sessionRepository: SessionRepository, val appCo
                   (self ? CheckState(id, exitTime, s))
               case _ => Future.failed(new IllegalStateException("No FileUploadState"))
             }
-        ).pipeTo(sender)
+        ).pipeTo(sender())
   }
 
 }

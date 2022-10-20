@@ -18,6 +18,7 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import org.scalacheck.Gen
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.data.FormError
 
 class ImporterEoriFormProviderSpec extends StringFieldBehaviours {

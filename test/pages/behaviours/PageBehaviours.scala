@@ -20,13 +20,15 @@ import generators.Generators
 import models.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import org.scalatest.{MustMatchers, OptionValues, TryValues, WordSpec}
+import org.scalatest.{OptionValues, TryValues}
+import org.scalatest.wordspec.AnyWordSpec
 import pages.QuestionPage
 import play.api.libs.json._
 
 trait PageBehaviours
-    extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with Generators with OptionValues with TryValues {
+    extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks with Generators with OptionValues with TryValues {
 
   class BeRetrievable[A] {
 

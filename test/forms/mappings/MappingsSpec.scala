@@ -16,14 +16,17 @@
 
 package forms.mappings
 
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
-import play.api.data.{Form, FormError}
 import models.Enumerable
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.{OptionValues, WordSpec}
+import play.api.data.{Form, FormError}
 
 object MappingsSpec {
 
   sealed trait Foo
+
   case object Bar extends Foo
+
   case object Baz extends Foo
 
   object Foo {
@@ -37,7 +40,7 @@ object MappingsSpec {
 
 }
 
-class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Mappings {
+class MappingsSpec extends WordSpec with Matchers with OptionValues with Mappings {
 
   import MappingsSpec._
 

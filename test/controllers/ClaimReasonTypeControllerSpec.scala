@@ -20,8 +20,8 @@ import base.SpecBase
 import forms.ClaimReasonTypeFormProvider
 import models.ClaimReasonType
 import models.ClaimReasonType.{CommodityCodeChange, CurrencyChanges}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, verifyNoInteractions, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimReasonTypeMultiplePage, ClaimReasonTypePage}
 import play.api.test.FakeRequest
@@ -139,7 +139,7 @@ class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
 
       application.stop()
 
-      verifyZeroInteractions(mockSessionRepository)
+      verifyNoInteractions(mockSessionRepository)
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {

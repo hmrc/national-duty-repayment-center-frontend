@@ -17,7 +17,6 @@
 package controllers
 
 import java.time.LocalDate
-
 import base.SpecBase
 import models.{
   ClaimRepaymentType,
@@ -29,8 +28,8 @@ import models.{
   UserAnswers
 }
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, verifyNoInteractions, when}
 import pages._
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
@@ -227,7 +226,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual defaultNextPage.url
 
-      verifyZeroInteractions(mockSessionRepository)
+      verifyNoInteractions(mockSessionRepository)
 
     }
   }
