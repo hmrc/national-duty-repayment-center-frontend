@@ -16,12 +16,14 @@
 
 package models
 
-import org.scalatest.Matchers.convertToAnyShouldWrapper
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.OptionValues
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 class UpscanNotificationUploadDetailsSpec
-    extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+    extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
   "UpscanNotification.UploadDetails" must {
     "decode single mime-encoded word" in {

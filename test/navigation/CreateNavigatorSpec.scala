@@ -127,7 +127,7 @@ class CreateNavigatorSpec extends SpecBase {
         val answers =
           emptyUserAnswers
         navigator.nextPage(BankDetailsPage, answers)
-          .mustBe(routes.CheckYourAnswersController.onPageLoad)
+          .mustBe(routes.CheckYourAnswersController.onPageLoad())
 
       }
 

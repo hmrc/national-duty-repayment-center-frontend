@@ -17,12 +17,14 @@
 package models
 
 import generators.Generators
-import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.OptionValues
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsString, Json}
 
 class BankDetailsSpec
-    extends WordSpec with MustMatchers with Generators with ScalaCheckPropertyChecks with OptionValues {
+    extends AnyWordSpec with Matchers with Generators with ScalaCheckPropertyChecks with OptionValues {
 
   "Bank Details" must {
     "must serialise" in {

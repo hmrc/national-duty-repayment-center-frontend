@@ -178,7 +178,7 @@ class BulkFileUploadController @Inject() (
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(Bulk)).contains(Seq.empty))
-        redirectInternalError(bulkFileUploadController.markFileUploadAsRejected, "MissingFile")
+        redirectInternalError(bulkFileUploadController.markFileUploadAsRejected(), "MissingFile")
       else
         Redirect(navigator.nextPage(BulkFileUploadPage, request.userAnswers))
   }

@@ -28,13 +28,7 @@
         contentHtml : Option[Html] = None,
         inline: Boolean = false
 )(implicit messages: Messages)
-@legendContent(messageKey: String) = {
-@if(legendAsH2) {
-    <h2 class="govuk-heading-m">@messages(messageKey)</h2>
-} else {
-    @messages(messageKey)
-}
-}
+
 @govukRadios(Radios(
         classes = s"${if(inline){"govuk-radios--inline"}}",
         idPrefix = Some(idPrefix),

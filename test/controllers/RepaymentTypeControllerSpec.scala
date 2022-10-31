@@ -23,7 +23,7 @@ import forms.RepaymentTypeFormProvider
 import models.RepaymentType.CMA
 import models.{BankDetails, RepaymentType, UserAnswers, _}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages._

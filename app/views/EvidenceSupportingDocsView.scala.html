@@ -53,7 +53,7 @@
 
     @html.p{ @messages("claimReason.documents.additional.documents.para") }
 
-    @forms.formWithCSRF(action = EvidenceSupportingDocsController.onSubmit(), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = EvidenceSupportingDocsController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
         @html.button("site.continue")
     }
 }

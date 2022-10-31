@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.OtherDutiesPaidFormProvider
 import models._
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, OtherDutiesPaidPage}

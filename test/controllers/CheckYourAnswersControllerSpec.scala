@@ -21,8 +21,8 @@ import data.TestData._
 import models.UserAnswers
 import navigation.CreateNavigatorImpl
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verifyZeroInteractions, when}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, verifyNoInteractions, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.{CheckYourAnswersPage, ClaimRepaymentTypePage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
@@ -200,7 +200,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       application.stop()
 
-      verifyZeroInteractions(mockSessionRepository)
+      verifyNoInteractions(mockSessionRepository)
     }
 
     "redirect to missing answer on resolve" in {
@@ -221,7 +221,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       application.stop()
 
-      verifyZeroInteractions(mockSessionRepository)
+      verifyNoInteractions(mockSessionRepository)
     }
 
     "reload page on resolve if no answer is missing" in {
@@ -242,7 +242,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       application.stop()
 
-      verifyZeroInteractions(mockSessionRepository)
+      verifyNoInteractions(mockSessionRepository)
     }
 
     "not redirect and clear changePage when returning from changing repayment type" in {

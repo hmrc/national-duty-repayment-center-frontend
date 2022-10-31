@@ -17,9 +17,9 @@
 package models.eis
 
 import base.SpecBase
-import org.scalatest.MustMatchers
+import org.scalatest.matchers.must.Matchers
 
-class QuoteFormatterSpec extends SpecBase with MustMatchers {
+class QuoteFormatterSpec extends SpecBase with Matchers {
 
   val quoteProtection = injector.instanceOf[QuoteFormatter]
 

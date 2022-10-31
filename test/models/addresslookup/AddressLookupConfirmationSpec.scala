@@ -16,9 +16,10 @@
 
 package models.addresslookup
 
-import org.scalatest.{MustMatchers, WordSpec}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class AddressLookupConfirmationSpec extends WordSpec with MustMatchers {
+class AddressLookupConfirmationSpec extends AnyWordSpec with Matchers {
 
   val addCountry: AddressLookupCountry = AddressLookupCountry(code = "UK", name = "United Kingdom")
 

@@ -82,7 +82,7 @@
         </form>
 
         <div class="ndrc-display-none-non-javascript">
-        @forms.formWithCSRF(action = FileUploadController.onContinue(), args = 'novalidate -> "novalidate") {
+        @forms.formWithCSRF(action = FileUploadController.onContinue(), args = Symbol("novalidate") -> "novalidate") {
             @govukButton(Button(
                 attributes = Map("id" -> "ndrc-fileupload-continue"),
                 content = Text(messages("site.continue")),

@@ -36,7 +36,7 @@
 
         @html.p{ @messages("repaymentAmountSummary.summary") }
 
-        @forms.formWithCSRF(action = RepaymentAmountSummaryController.onSubmit(), args = 'novalidate -> "novalidate") {
+        @forms.formWithCSRF(action = RepaymentAmountSummaryController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
             @html.button("site.continue")
         }
 

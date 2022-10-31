@@ -18,12 +18,14 @@ package models
 
 import generators.Generators
 import org.scalacheck.Gen
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.OptionValues
+import org.scalatest.freespec.AnyFreeSpec
 import play.api.libs.json._
 
 class RichJsValueSpec
-    extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues with Generators {
+    extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues with Generators {
 
   val min                           = 2
   val max                           = 10

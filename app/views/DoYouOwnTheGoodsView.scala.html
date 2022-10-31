@@ -32,7 +32,7 @@
     backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = DoYouOwnTheGoodsController.onSubmit(), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = DoYouOwnTheGoodsController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
 
         @components.error_summary(form.errors)
 

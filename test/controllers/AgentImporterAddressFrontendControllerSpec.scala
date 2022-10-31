@@ -25,7 +25,7 @@ import forms.AgentImporterManualAddressFormProvider
 import models.addresslookup.AddressLookupOnRamp
 import models.{Address, UserAnswers}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AgentImporterAddressPage

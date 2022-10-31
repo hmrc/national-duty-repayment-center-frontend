@@ -20,6 +20,7 @@ import data.BarsTestData
 import forms.behaviours.StringFieldBehaviours
 import models.BankDetails
 import org.scalacheck.Gen
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.data.FormError
 
 class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestData {

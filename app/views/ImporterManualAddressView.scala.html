@@ -36,7 +36,7 @@
     backLinkNav = Some(backLink)
     ) {
 
-    @forms.formWithCSRF(action = ImporterAddressFrontendController.onSubmit(), args = 'novalidate -> "novalidate", 'autoComplete -> "on") {
+    @forms.formWithCSRF(action = ImporterAddressFrontendController.onSubmit(), args = Symbol("novalidate") -> "novalidate", Symbol("autoComplete") -> "on") {
 
     @components.error_summary(form.errors)
 

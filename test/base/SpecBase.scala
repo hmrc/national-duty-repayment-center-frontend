@@ -26,7 +26,7 @@ import models._
 import models.eis.EISAddress
 import models.requests.{AmendClaimRequest, CreateClaimRequest, Identification, UploadRequest}
 import navigation.{AmendNavigator, CreateNavigator, NavigatorBack}
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}

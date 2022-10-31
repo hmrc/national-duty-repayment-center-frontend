@@ -42,63 +42,63 @@ class CreateNavigatorImpl @Inject() (val appConfig: FrontendAppConfig)
 
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
-    P(FirstPage, controllers.routes.ClaimantTypeController.onPageLoad, never, always),
-    P(ClaimantTypePage, controllers.routes.ClaimantTypeController.onPageLoad, always, claimantTypeAnswered),
-    P(NumberOfEntriesTypePage, controllers.routes.NumberOfEntriesTypeController.onPageLoad, always, numberOfEntriesAnswered),
-    P(EntryDetailsPage, controllers.routes.EntryDetailsController.onPageLoad, always, entryDetailsAnswered),
-    P(UkRegulationTypePage, controllers.routes.UkRegulationTypeController.onPageLoad, showUkRegulationType, ukRegulationTypeAnswered),
-    P(ArticleTypePage, controllers.routes.ArticleTypeController.onPageLoad, showArticleType, articleTypeAnswered),
+    P(FirstPage, () => controllers.routes.ClaimantTypeController.onPageLoad(), never, always),
+    P(ClaimantTypePage, () => controllers.routes.ClaimantTypeController.onPageLoad(), always, claimantTypeAnswered),
+    P(NumberOfEntriesTypePage, () => controllers.routes.NumberOfEntriesTypeController.onPageLoad(), always, numberOfEntriesAnswered),
+    P(EntryDetailsPage, () => controllers.routes.EntryDetailsController.onPageLoad(), always, entryDetailsAnswered),
+    P(UkRegulationTypePage, () => controllers.routes.UkRegulationTypeController.onPageLoad(), showUkRegulationType, ukRegulationTypeAnswered),
+    P(ArticleTypePage, () => controllers.routes.ArticleTypeController.onPageLoad(), showArticleType, articleTypeAnswered),
 
-    P(BulkFileUploadPage, controllers.routes.BulkFileUploadController.showFileUpload, showBulkUpload, bulkUploadAnswered),
+    P(BulkFileUploadPage, () => controllers.routes.BulkFileUploadController.showFileUpload(), showBulkUpload, bulkUploadAnswered),
 
-    P(ClaimReasonTypeMultiplePage, controllers.routes.ClaimReasonTypeMultipleController.onPageLoad, always, claimReasonMultipleAnswered),
-    P(ClaimReasonTypePage, controllers.routes.ClaimReasonTypeController.onPageLoad, showClaimReasonType, claimReasonAnswered),
+    P(ClaimReasonTypeMultiplePage, () => controllers.routes.ClaimReasonTypeMultipleController.onPageLoad(), always, claimReasonMultipleAnswered),
+    P(ClaimReasonTypePage, () => controllers.routes.ClaimReasonTypeController.onPageLoad(), showClaimReasonType, claimReasonAnswered),
 
-    P(ReasonForOverpaymentPage, controllers.routes.ReasonForOverpaymentController.onPageLoad, always, reasonForOverpaymentAnswered),
-    P(ClaimRepaymentTypePage, controllers.routes.ClaimRepaymentTypeController.onPageLoad, always, claimRepaymentTypeAnswered),
-    P(CustomsDutyPaidPage, controllers.routes.CustomsDutyPaidController.onPageLoad, showCustomsDutyPaid, customsDutyPaidAnswered),
-    P(VATPaidPage, controllers.routes.VATPaidController.onPageLoad, showVatPaid, vatPaidAnswered),
-    P(OtherDutiesPaidPage, controllers.routes.OtherDutiesPaidController.onPageLoad, showOtherDutyPaid, otherDutyPaidAnswered),
-    P(RepaymentAmountSummaryPage, controllers.routes.RepaymentAmountSummaryController.onPageLoad, always, repaymentSummaryAnswered),
-    P(EvidenceSupportingDocsPage, controllers.routes.EvidenceSupportingDocsController.onPageLoad, always, fileUploadedAnswered),
-    P(FileUploadPage, controllers.routes.FileUploadController.showFileUpload, always, fileUploadedAnswered),
+    P(ReasonForOverpaymentPage, () => controllers.routes.ReasonForOverpaymentController.onPageLoad(), always, reasonForOverpaymentAnswered),
+    P(ClaimRepaymentTypePage, () => controllers.routes.ClaimRepaymentTypeController.onPageLoad(), always, claimRepaymentTypeAnswered),
+    P(CustomsDutyPaidPage, () => controllers.routes.CustomsDutyPaidController.onPageLoad(), showCustomsDutyPaid, customsDutyPaidAnswered),
+    P(VATPaidPage, () => controllers.routes.VATPaidController.onPageLoad(), showVatPaid, vatPaidAnswered),
+    P(OtherDutiesPaidPage, () => controllers.routes.OtherDutiesPaidController.onPageLoad(), showOtherDutyPaid, otherDutyPaidAnswered),
+    P(RepaymentAmountSummaryPage, () => controllers.routes.RepaymentAmountSummaryController.onPageLoad(), always, repaymentSummaryAnswered),
+    P(EvidenceSupportingDocsPage, () => controllers.routes.EvidenceSupportingDocsController.onPageLoad(), always, fileUploadedAnswered),
+    P(FileUploadPage, () => controllers.routes.FileUploadController.showFileUpload(), always, fileUploadedAnswered),
 
-    P(ImporterHasEoriPage, controllers.routes.ImporterHasEoriController.onPageLoad, showWhatIsImporterEori, importerHasEoriAnswered),
-    P(ImporterEoriPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterEori, importerEoriAnswered),
+    P(ImporterHasEoriPage, () => controllers.routes.ImporterHasEoriController.onPageLoad(), showWhatIsImporterEori, importerHasEoriAnswered),
+    P(ImporterEoriPage, () => controllers.routes.ImporterEoriController.onPageLoad(), showImporterEori, importerEoriAnswered),
 
-    P(AgentImporterHasEORIPage, controllers.routes.AgentImporterHasEORIController.onPageLoad, isAgent, agentImporterHasEoriAnswered),
-    P(EnterAgentEORIPage, controllers.routes.EnterAgentEORIController.onPageLoad, showEnterAgentEori, enterAgentEoriAnswered),
+    P(AgentImporterHasEORIPage, () => controllers.routes.AgentImporterHasEORIController.onPageLoad(), isAgent, agentImporterHasEoriAnswered),
+    P(EnterAgentEORIPage,() => controllers.routes.EnterAgentEORIController.onPageLoad(), showEnterAgentEori, enterAgentEoriAnswered),
 
-    P(IsVATRegisteredPage, controllers.routes.IsVATRegisteredController.onPageLoad, isImporter, isVatRegisteredAnswered),
-    P(IsImporterVatRegisteredPage, controllers.routes.IsImporterVatRegisteredController.onPageLoad, isAgent, isImporterVatRegisteredAnswered),
-    P(RepresentativeImporterNamePage, controllers.routes.RepresentativeImporterNameController.onPageLoad, isAgent, representativeImporterNameAnswered),
+    P(IsVATRegisteredPage, () => controllers.routes.IsVATRegisteredController.onPageLoad(), isImporter, isVatRegisteredAnswered),
+    P(IsImporterVatRegisteredPage, () => controllers.routes.IsImporterVatRegisteredController.onPageLoad(), isAgent, isImporterVatRegisteredAnswered),
+    P(RepresentativeImporterNamePage, () => controllers.routes.RepresentativeImporterNameController.onPageLoad(), isAgent, representativeImporterNameAnswered),
 
-    P(DeclarantNamePage, controllers.routes.DeclarantNameController.onPageLoad, isImporter, declarantNameAnswered),
-    P(DoYouOwnTheGoodsPage, controllers.routes.DoYouOwnTheGoodsController.onPageLoad, isImporter, doYouOwnGoodsAnswered),
-    P(ImporterNamePage, controllers.routes.ImporterNameController.onPageLoad, showImporterName, importerNameAnswered),
+    P(DeclarantNamePage, () => controllers.routes.DeclarantNameController.onPageLoad(), isImporter, declarantNameAnswered),
+    P(DoYouOwnTheGoodsPage, () => controllers.routes.DoYouOwnTheGoodsController.onPageLoad(), isImporter, doYouOwnGoodsAnswered),
+    P(ImporterNamePage, () => controllers.routes.ImporterNameController.onPageLoad(), showImporterName, importerNameAnswered),
 
-    P(ImporterAddressPage, controllers.routes.ImporterAddressFrontendController.onPageLoad, always, importerAddressAnswered),
+    P(ImporterAddressPage, () => controllers.routes.ImporterAddressFrontendController.onPageLoad(), always, importerAddressAnswered),
 
-    P(ImportHasEoriOnAgentJourneyPage, controllers.routes.ImporterHasEoriController.onPageLoad, showWhatIsImporterAgentEori, importerHasAgentEoriAnswered),
-    P(ImporterEoriOnAgentJourneyPage, controllers.routes.ImporterEoriController.onPageLoad, showImporterAgentEori, importerAgentEoriAnswered),
+    P(ImportHasEoriOnAgentJourneyPage, () => controllers.routes.ImporterHasEoriController.onPageLoad(), showWhatIsImporterAgentEori, importerHasAgentEoriAnswered),
+    P(ImporterEoriOnAgentJourneyPage, () => controllers.routes.ImporterEoriController.onPageLoad(), showImporterAgentEori, importerAgentEoriAnswered),
 
-    P(RepresentativeDeclarantAndBusinessNamePage, controllers.routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad, isAgent, representativeDeclarantAndBusinessNameAnswered),
+    P(RepresentativeDeclarantAndBusinessNamePage, () => controllers.routes.RepresentativeDeclarantAndBusinessNameController.onPageLoad(), isAgent, representativeDeclarantAndBusinessNameAnswered),
 
-    P(AgentImporterAddressPage, controllers.routes.AgentImporterAddressFrontendController.onPageLoad, isAgent, agentImporterAddressAnswered),
+    P(AgentImporterAddressPage, () => controllers.routes.AgentImporterAddressFrontendController.onPageLoad(), isAgent, agentImporterAddressAnswered),
 
-    P(EmailAddressAndPhoneNumberPage, controllers.routes.EmailAddressAndPhoneNumberController.onPageLoad, always, emailAndPhoneNumberAnswered),
-    P(DeclarantReferenceNumberPage, controllers.routes.DeclarantReferenceNumberController.onPageLoad, always, declarantReferenceNumberAnswered),
+    P(EmailAddressAndPhoneNumberPage, () => controllers.routes.EmailAddressAndPhoneNumberController.onPageLoad(), always, emailAndPhoneNumberAnswered),
+    P(DeclarantReferenceNumberPage, () => controllers.routes.DeclarantReferenceNumberController.onPageLoad(), always, declarantReferenceNumberAnswered),
 
-    P(RepaymentTypePage, controllers.routes.RepaymentTypeController.onPageLoad, showRepaymentType, repaymentTypeAnswered),
+    P(RepaymentTypePage, () => controllers.routes.RepaymentTypeController.onPageLoad(), showRepaymentType, repaymentTypeAnswered),
 
-    P(WhomToPayPage, controllers.routes.WhomToPayController.onPageLoad, showWhomToRepay, whoToRepayAnsweredAnswered),
-    P(IndirectRepresentativePage, controllers.routes.IndirectRepresentativeController.onPageLoad, showIndirectRepresentative, indirectRepresentativeAnswered),
-    P(ProofOfAuthorityPage, controllers.routes.ProofOfAuthorityController.showFileUpload, showProofOfAuthority, proofOfAuthorityAnswered),
+    P(WhomToPayPage, () => controllers.routes.WhomToPayController.onPageLoad(), showWhomToRepay, whoToRepayAnsweredAnswered),
+    P(IndirectRepresentativePage, () => controllers.routes.IndirectRepresentativeController.onPageLoad(), showIndirectRepresentative, indirectRepresentativeAnswered),
+    P(ProofOfAuthorityPage, () => controllers.routes.ProofOfAuthorityController.showFileUpload(), showProofOfAuthority, proofOfAuthorityAnswered),
 
-    P(BankDetailsPage, controllers.routes.BankDetailsController.onPageLoad, showBankDetails, bankDetailsAnswered),
+    P(BankDetailsPage, () => controllers.routes.BankDetailsController.onPageLoad(), showBankDetails, bankDetailsAnswered),
 
-    P(CheckYourAnswersPage, controllers.routes.CheckYourAnswersController.onPageLoad, always, never),
-    P(ConfirmationPage, controllers.routes.ConfirmationController.onPageLoad, always, never)
+    P(CheckYourAnswersPage, () => controllers.routes.CheckYourAnswersController.onPageLoad(), always, never),
+    P(ConfirmationPage, () => controllers.routes.ConfirmationController.onPageLoad(), always, never)
   )
   // @formatter:off
 }

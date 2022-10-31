@@ -19,8 +19,8 @@ package controllers.actions
 import base.SpecBase
 import config.FrontendAppConfigImpl
 import controllers.routes
-import org.mockito.Matchers
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, spy, when}
 import org.scalatest.BeforeAndAfterEach
 import play.api.Configuration
@@ -213,7 +213,7 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
   }
 
   private def handleAuthWithEnrolments(enrolments: Enrolments): Future[Result] = {
-    when(authConnector.authorise(any(), Matchers.eq(allEnrolments))(any(), any())).thenReturn(
+    when(authConnector.authorise(any(), ArgumentMatchers.eq(allEnrolments))(any(), any())).thenReturn(
       Future.successful(enrolments)
     )
 

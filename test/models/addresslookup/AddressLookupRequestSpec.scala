@@ -26,12 +26,13 @@ import models.addresslookup.AddressLookupRequest.Labels.Language.{
 }
 import models.addresslookup.AddressLookupRequest.Options.TimeoutConfig
 import models.addresslookup.AddressLookupRequest.{Labels, Options}
-import org.scalatest.{MustMatchers, WordSpec}
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.MessagesApi
 import utils.Injector
 
-class AddressLookupRequestSpec extends WordSpec with MustMatchers with MockitoSugar with Injector {
+class AddressLookupRequestSpec extends AnyWordSpec with Matchers with MockitoSugar with Injector {
 
   val realMessagesApi: MessagesApi = instanceOf[MessagesApi]
   val appConfig: FrontendAppConfig = instanceOf[FrontendAppConfig]

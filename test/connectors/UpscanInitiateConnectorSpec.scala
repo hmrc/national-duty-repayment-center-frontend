@@ -23,7 +23,8 @@ package connectors
 
 import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock._
-import org.scalatest.{BeforeAndAfterEach, MustMatchers}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.BeforeAndAfterEach
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
@@ -32,7 +33,7 @@ import utils.WireMockHelper
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class UpscanInitiateConnectorSpec extends SpecBase with WireMockHelper with MustMatchers with BeforeAndAfterEach {
+class UpscanInitiateConnectorSpec extends SpecBase with WireMockHelper with Matchers with BeforeAndAfterEach {
 
   implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 

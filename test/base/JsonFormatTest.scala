@@ -16,8 +16,10 @@
 
 package base
 
-import org.scalatest.{Assertion, Matchers}
+import org.scalatest.Assertion
 import play.api.libs.json.{Format, Json}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 abstract class JsonFormatTest[A: Format] extends Matchers {
 

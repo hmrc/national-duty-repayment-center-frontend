@@ -33,12 +33,12 @@ To avoid problems, we need to remove [] from field.
 
 @allErrors = @{
     elements.errors ++ args.flatMap {
-        case ('otherErrors, otherErrors: Seq[_]) => otherErrors.map(_.toString)
+        case (Symbol("otherErrors"), otherErrors: Seq[_]) => otherErrors.map(_.toString)
         case _ => Seq.empty
     }
 }
 
-<div id="@fieldNameWithoutBrackets-autocomplete-outer" class="govuk-form-group @if(allErrors.nonEmpty) {govuk-form-group--error}">
+<div id="@fieldNameWithoutBrackets-Symbol("autoComplete")-outer" class="govuk-form-group @if(allErrors.nonEmpty) {govuk-form-group--error}">
 
     @section.map { key =>
         <span id="section-header" class="govuk-caption-xl">@messages(key)</span>

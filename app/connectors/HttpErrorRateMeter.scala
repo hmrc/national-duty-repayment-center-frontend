@@ -18,7 +18,7 @@ package connectors
 
 import com.codahale.metrics.MetricRegistry
 import play.api.Logger
-import uk.gov.hmrc.http._
+import uk.gov.hmrc.http.{HttpException, HttpResponse, UpstreamErrorResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
@@ -32,10 +32,12 @@ trait HttpErrorRateMeter {
   def countErrors[T](serviceName: String)(future: Future[T])(implicit ec: ExecutionContext): Future[T] =
     future.andThen {
       case Success(response: HttpResponse) if response.status >= 400 => record(meterName(serviceName, response.status))
-      case Failure(exception: Upstream5xxResponse)                   => record(meterName(serviceName, exception.upstreamResponseCode))
-      case Failure(exception: Upstream4xxResponse)                   => record(meterName(serviceName, exception.upstreamResponseCode))
-      case Failure(exception: HttpException)                         => record(meterName(serviceName, exception.responseCode))
-      case Failure(_: Throwable)                                     => record(meterName(serviceName, 500))
+      case Failure(UpstreamErrorResponse.Upstream5xxResponse(exception)) =>
+        record(meterName(serviceName, exception.statusCode))
+      case Failure(UpstreamErrorResponse.Upstream4xxResponse(exception)) =>
+        record(meterName(serviceName, exception.statusCode))
+      case Failure(exception: HttpException) => record(meterName(serviceName, exception.responseCode))
+      case Failure(_: Throwable)             => record(meterName(serviceName, 500))
     }
 
   private def record[T](name: String): Unit = {

@@ -16,10 +16,11 @@
 
 package models.responses
 
-import org.scalatest.{FreeSpec, MustMatchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.Json
 
-class AddressLookupResponseModelSpec extends FreeSpec with MustMatchers {
+class AddressLookupResponseModelSpec extends AnyFreeSpec with Matchers {
   "AddressLookupResponseModel" - {
     "deserialises correctly from a JSON array" in {
       val testJson = s"""[

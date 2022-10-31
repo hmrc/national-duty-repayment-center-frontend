@@ -16,14 +16,16 @@
 
 package models
 
+import models.FileType.SupportingEvidence
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.wordspec.AnyWordSpec
+
 import java.time.ZonedDateTime
 
-import models.FileType.SupportingEvidence
-import org.scalatest.{Matchers, WordSpec}
+class FileUploadsSpec extends AnyWordSpec with Matchers {
 
-class FileUploadsSpec extends WordSpec with Matchers {
-
-  "FileUploads" should {
+  "FileUploads" when {
     val MAX = FileUpload.MAX_FILENAME_LENGTH
 
     "trim the file name" in {

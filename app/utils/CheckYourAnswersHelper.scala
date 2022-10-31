@@ -575,6 +575,10 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
         HtmlFormat.escape(numberOfEntriesTypePage match {
           case Some(v) if v.numberOfEntriesType == Single   => "1"
           case Some(v) if v.numberOfEntriesType == Multiple => v.entries.getOrElse("")
+          case _ =>
+            throw new IllegalStateException(
+              "[CheckYourAnswersHelperFactory][numberOfEntriesType] no numberOfEntriesType return"
+            )
         }),
         Some(routes.CheckYourAnswersController.onChange(NumberOfEntriesTypePage).url)
       )

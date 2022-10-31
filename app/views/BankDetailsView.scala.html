@@ -51,7 +51,7 @@
     backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = BankDetailsController.onSubmit(), args = 'novalidate -> "novalidate") {
+    @forms.formWithCSRF(action = BankDetailsController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
 
         @components.error_summary(form.errors)
 

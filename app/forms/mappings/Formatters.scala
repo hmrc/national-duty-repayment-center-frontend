@@ -61,12 +61,11 @@ trait Formatters extends TrimWhitespace {
 
       override def bind(key: String, data: Map[String, String]) =
         baseFormatter
-          .bind(key, data)
-          .right.flatMap {
-            case "true"  => Right(true)
-            case "false" => Right(false)
-            case _       => Left(Seq(FormError(key, invalidKey)))
-          }
+          .bind(key, data) flatMap {
+          case "true"  => Right(true)
+          case "false" => Right(false)
+          case _       => Left(Seq(FormError(key, invalidKey)))
+        }
 
       def unbind(key: String, value: Boolean) = Map(key -> value.toString)
     }
@@ -85,16 +84,14 @@ trait Formatters extends TrimWhitespace {
 
       override def bind(key: String, data: Map[String, String]) =
         baseFormatter
-          .bind(key, data)
-          .right.map(_.replace(",", ""))
-          .right.flatMap {
-            case s if trimWhitespace(s).matches(decimalRegexp) =>
-              Left(Seq(FormError(key, wholeNumberKey, args)))
-            case s =>
-              nonFatalCatch
-                .either(trimWhitespace(s).toInt)
-                .left.map(_ => Seq(FormError(key, nonNumericKey, args)))
-          }
+          .bind(key, data) map (_.replace(",", "")) flatMap {
+          case s if trimWhitespace(s).matches(decimalRegexp) =>
+            Left(Seq(FormError(key, wholeNumberKey, args)))
+          case s =>
+            nonFatalCatch
+              .either(trimWhitespace(s).toInt)
+              .left.map(_ => Seq(FormError(key, nonNumericKey, args)))
+        }
 
       override def unbind(key: String, value: Int) =
         baseFormatter.unbind(key, value.toString)
@@ -109,7 +106,7 @@ trait Formatters extends TrimWhitespace {
       private val baseFormatter = stringFormatter(requiredKey)
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], A] =
-        baseFormatter.bind(key, data).right.flatMap {
+        baseFormatter.bind(key, data) flatMap {
           str =>
             ev.withName(str).map(Right.apply).getOrElse(Left(Seq(FormError(key, invalidKey))))
         }
@@ -125,17 +122,14 @@ trait Formatters extends TrimWhitespace {
       private val baseFormatter = stringFormatter(requiredKey)
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
-        baseFormatter.bind(key, data)
-          .right.map(_.replace(",", ""))
-          .right.map(_.replace("£", ""))
-          .right.flatMap {
-            s =>
-              val valueNoSpaces = trimWhitespace(s)
-              Try(valueNoSpaces.toDouble) match {
-                case Success(_) => Right(valueNoSpaces)
-                case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
-              }
-          }
+        baseFormatter.bind(key, data) map (_.replace(",", "")) map (_.replace("£", "")) flatMap {
+          s =>
+            val valueNoSpaces = trimWhitespace(s)
+            Try(valueNoSpaces.toDouble) match {
+              case Success(_) => Right(valueNoSpaces)
+              case Failure(_) => Left(Seq(FormError(key, nonNumericKey)))
+            }
+        }
 
       override def unbind(key: String, value: String): Map[String, String] =
         baseFormatter.unbind(key, value)

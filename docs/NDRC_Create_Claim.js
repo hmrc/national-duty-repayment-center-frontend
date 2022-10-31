@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         NDRC AutoComplete
+// @name         NDRC Symbol("autoComplete")
 // @namespace    http://tampermonkey.net/
 // @version      0.7
 
-// @description  NDRC AutoComplete
+// @description  NDRC Symbol("autoComplete")
 // @author       NDRC Team
 // @match        http*://*/apply-for-repayment-of-import-duty-and-import-vat/*
 // @match        http*://*/lookup-address/*

@@ -20,14 +20,14 @@ import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock._
 import models.BankDetails
 import models.bars.{AssessBusinessBankDetailsRequest, AssessBusinessBankDetailsResponse}
-import org.scalatest.MustMatchers
+import org.scalatest.matchers.must.Matchers
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
 
-class BARSConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
+class BARSConnectorSpec extends SpecBase with WireMockHelper with Matchers {
 
   implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 

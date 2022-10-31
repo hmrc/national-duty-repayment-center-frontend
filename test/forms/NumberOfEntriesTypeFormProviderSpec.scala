@@ -18,6 +18,7 @@ package forms
 
 import forms.behaviours.{OptionFieldBehaviours, StringFieldBehaviours}
 import models.{Entries, NumberOfEntriesType}
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.data.FormError
 
 class NumberOfEntriesTypeFormProviderSpec extends OptionFieldBehaviours with StringFieldBehaviours {

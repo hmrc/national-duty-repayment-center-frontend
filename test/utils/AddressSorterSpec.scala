@@ -17,9 +17,10 @@
 package utils
 
 import models.responses.{Location, LookedUpAddress, LookedUpAddressWrapper, Uprn}
-import org.scalatest.{FreeSpec, MustMatchers}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
 
-class AddressSorterSpec extends FreeSpec with MustMatchers {
+class AddressSorterSpec extends AnyFreeSpec with Matchers {
 
   val sorter = new AddressSorter
 

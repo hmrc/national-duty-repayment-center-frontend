@@ -20,7 +20,7 @@ import base.SpecBase
 import models.AmendCaseResponseType
 import models.AmendCaseResponseType.FurtherInformation
 import navigation.NavigatorBack
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.{AmendCaseResponseTypePage, ReferenceNumberPage}
@@ -46,7 +46,7 @@ class AmendErrorControllerSpec extends SpecBase with BeforeAndAfterEach {
 
   def htmlEscapedMessage(key: String): String = HtmlFormat.escape(Messages(key)).toString
 
-  val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad))
+  val backLink = NavigatorBack(Some(routes.ReferenceNumberController.onPageLoad()))
 
   "Amend Error Controller" must {
 

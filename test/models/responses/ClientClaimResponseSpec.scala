@@ -16,10 +16,11 @@
 
 package models.responses
 
-import org.scalatest.{FreeSpec, MustMatchers}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.freespec.AnyFreeSpec
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 
-class ClientClaimResponseSpec extends FreeSpec with MustMatchers {
+class ClientClaimResponseSpec extends AnyFreeSpec with Matchers {
   "ClientClaimResponse" - {
     "correctly reports Success" in {
       ClientClaimResponse("id", Some("caseRef"), None).isSuccess mustBe true

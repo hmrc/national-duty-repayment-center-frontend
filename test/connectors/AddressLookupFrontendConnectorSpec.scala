@@ -24,7 +24,7 @@ package connectors
 import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock._
 import models.addresslookup._
-import org.scalatest.MustMatchers
+import org.scalatest.matchers.must.Matchers
 import play.api.Application
 import play.api.http.HeaderNames.LOCATION
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -34,7 +34,7 @@ import utils.WireMockHelper
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class AddressLookupFrontendConnectorSpec extends SpecBase with WireMockHelper with MustMatchers {
+class AddressLookupFrontendConnectorSpec extends SpecBase with WireMockHelper with Matchers {
 
   implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 

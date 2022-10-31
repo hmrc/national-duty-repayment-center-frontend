@@ -16,9 +16,10 @@
 
 package models
 
-import org.scalatest.{MustMatchers, WordSpec}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class ClaimDescriptionSpec extends WordSpec with MustMatchers {
+class ClaimDescriptionSpec extends AnyWordSpec with Matchers {
 
   "ClaimDescription" must {
 

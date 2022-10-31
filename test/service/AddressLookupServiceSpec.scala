@@ -21,16 +21,17 @@ import config.FrontendAppConfig
 import connectors.AddressLookupFrontendConnector
 import data.TestData._
 import models.addresslookup.AddressLookupOnRamp
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, verify, when}
-import org.scalatest.{BeforeAndAfterEach, MustMatchers}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.must.Matchers
 import play.api.i18n.MessagesApi
 import services.AddressLookupService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AddressLookupServiceSpec extends SpecBase with MustMatchers with BeforeAndAfterEach {
+class AddressLookupServiceSpec extends SpecBase with Matchers with BeforeAndAfterEach {
 
   val realMessagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]

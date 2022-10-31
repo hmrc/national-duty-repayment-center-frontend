@@ -29,13 +29,13 @@ class AmendNavigator extends Navigator[UserAnswers] with AmendAnswerConditions w
 
   // @formatter:off
   override protected val pageOrder: Seq[P] = Seq(
-    P(FirstPage, controllers.routes.ReferenceNumberController.onPageLoad, never, always),
-    P(ReferenceNumberPage, controllers.routes.ReferenceNumberController.onPageLoad, always, caseReferenceAnswered),
-    P(AmendCaseResponseTypePage, controllers.routes.AmendCaseResponseTypeController.onPageLoad, always, caseResponseTypeAnswered),
-    P(AmendFileUploadPage, controllers.routes.AmendCaseSendInformationController.showFileUpload, showFileUpload, fileUploadedAnswered),
-    P(FurtherInformationPage, controllers.routes.FurtherInformationController.onPageLoad, showFurtherInformation, furtherInformationAnswered),
-    P(AmendCheckYourAnswersPage, controllers.routes.AmendCheckYourAnswersController.onPageLoad, always, never),
-    P(AmendConfirmationPage, controllers.routes.AmendConfirmationController.onPageLoad, always, never)
+    P(FirstPage, () => controllers.routes.ReferenceNumberController.onPageLoad(), never, always),
+    P(ReferenceNumberPage, () => controllers.routes.ReferenceNumberController.onPageLoad(), always, caseReferenceAnswered),
+    P(AmendCaseResponseTypePage, () => controllers.routes.AmendCaseResponseTypeController.onPageLoad(), always, caseResponseTypeAnswered),
+    P(AmendFileUploadPage, () => controllers.routes.AmendCaseSendInformationController.showFileUpload(), showFileUpload, fileUploadedAnswered),
+    P(FurtherInformationPage, () => controllers.routes.FurtherInformationController.onPageLoad(), showFurtherInformation, furtherInformationAnswered),
+    P(AmendCheckYourAnswersPage, () => controllers.routes.AmendCheckYourAnswersController.onPageLoad(), always, never),
+    P(AmendConfirmationPage, () => controllers.routes.AmendConfirmationController.onPageLoad(), always, never)
   )
   // @formatter:on
 

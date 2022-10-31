@@ -21,12 +21,12 @@ import data.TestData._
 import models.eis.QuoteFormatter
 import models.{AmendCaseResponseType, FileUploads}
 import org.mockito.Mockito.verify
-import org.scalatest.MustMatchers
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import services.FileUploaded
 
-class AmendClaimBuilderSpec extends SpecBase with MustMatchers with MockitoSugar {
+class AmendClaimBuilderSpec extends SpecBase with Matchers with MockitoSugar {
 
   "AmendClaimBuilder" must {
     "use QuoteFormatter when creating FurtherInformation" in {

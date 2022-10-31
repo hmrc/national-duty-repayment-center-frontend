@@ -22,7 +22,7 @@ import base.SpecBase
 import models.FileType.ProofOfAuthority
 import models.{FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.{any, anyObject}
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.Status.SEE_OTHER
@@ -55,7 +55,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         when(mockSessionRepository.getFileUploadState(userAnswersId)).thenReturn(
           Future.successful(SessionState(None, Some(emptyUserAnswers)))
         )
-        when(mockSessionRepository.updateSession(anyObject(), anyObject())) thenReturn Future.successful(true)
+        when(mockSessionRepository.updateSession(any(), any())) thenReturn Future.successful(true)
         val request = buildRequest(GET, fileUploadUrl)
         val result  = route(application, request).value
         status(result) mustEqual 200
@@ -153,7 +153,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
 
-        val request = buildRequest(GET, routes.ProofOfAuthorityController.showWaitingForFileVerification.url)
+        val request = buildRequest(GET, routes.ProofOfAuthorityController.showWaitingForFileVerification().url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303
@@ -175,7 +175,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
 
-        val request = buildRequest(GET, routes.ProofOfAuthorityController.showWaitingForFileVerification.url)
+        val request = buildRequest(GET, routes.ProofOfAuthorityController.showWaitingForFileVerification().url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303
