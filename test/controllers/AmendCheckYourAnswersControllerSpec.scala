@@ -16,7 +16,6 @@
 
 package controllers
 
-import java.time.ZonedDateTime
 import base.SpecBase
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.FileType.SupportingEvidence
@@ -25,7 +24,7 @@ import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
 import navigation.{AmendNavigator, NavigatorBack}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{reset, verifyNoInteractions, when}
+import org.mockito.Mockito.verifyNoInteractions
 import org.scalatest.BeforeAndAfterEach
 import pages.{AmendCaseResponseTypePage, AmendCheckYourAnswersPage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.i18n.Messages
@@ -37,6 +36,7 @@ import services.FileUploaded
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
 import views.html.{AmendCheckYourAnswersView, AmendCheckYourMissingAnswersView}
 
+import java.time.ZonedDateTime
 import scala.concurrent.Future
 
 class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEach {

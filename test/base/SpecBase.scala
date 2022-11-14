@@ -16,8 +16,6 @@
 
 package base
 
-import java.time.{LocalDate, ZoneId, ZonedDateTime}
-
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
 import controllers.actions._
@@ -27,15 +25,14 @@ import models.eis.EISAddress
 import models.requests.{AmendClaimRequest, CreateClaimRequest, Identification, UploadRequest}
 import navigation.{AmendNavigator, CreateNavigator, NavigatorBack}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.MockitoSugar
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.inject.{bind, Injector}
+import play.api.inject.{Injector, bind}
 import play.api.libs.json.{JsArray, Json}
 import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
@@ -45,6 +42,7 @@ import services.ClaimService
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.CheckYourAnswersHelperFactory
 
+import java.time.{LocalDate, ZoneId, ZonedDateTime}
 import scala.concurrent.{ExecutionContext, Future}
 
 trait SpecBase

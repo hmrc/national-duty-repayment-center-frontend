@@ -22,7 +22,6 @@ import connectors.AddressLookupFrontendConnector
 import data.TestData._
 import models.addresslookup.AddressLookupOnRamp
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.must.Matchers
 import play.api.i18n.MessagesApi

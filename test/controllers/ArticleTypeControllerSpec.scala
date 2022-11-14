@@ -20,8 +20,7 @@ import base.SpecBase
 import forms.ArticleTypeFormProvider
 import models.{ArticleType, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import pages.ArticleTypePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

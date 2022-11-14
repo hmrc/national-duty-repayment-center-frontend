@@ -24,7 +24,6 @@ import models.responses.ClientClaimResponse
 import models.{ClaimDescription, ClaimReasonType}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
 import org.scalatest.OptionValues
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks

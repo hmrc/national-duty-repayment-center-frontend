@@ -21,7 +21,7 @@ import base.SpecBase
 import models._
 import models.eis.EISAddress
 import org.scalatest.matchers.must.Matchers
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
 
 class CreateClaimRequestSpec extends SpecBase with Matchers with MockitoSugar {

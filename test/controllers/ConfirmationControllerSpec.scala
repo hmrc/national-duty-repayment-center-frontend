@@ -20,7 +20,6 @@ import base.SpecBase
 import data.TestData.populateUserAnswersWithCMAPaymentMethod
 import models.UserAnswers
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito.when
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

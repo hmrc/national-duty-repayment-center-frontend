@@ -20,8 +20,7 @@ import base.SpecBase
 import forms.UkRegulationTypeFormProvider
 import models.{UkRegulationType, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import pages.UkRegulationTypePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

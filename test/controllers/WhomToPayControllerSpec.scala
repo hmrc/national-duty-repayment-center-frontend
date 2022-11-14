@@ -19,10 +19,8 @@ package controllers
 import base.SpecBase
 import forms.WhomToPayFormProvider
 import models.{BankDetails, UserAnswers, WhomToPay}
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{atLeastOnce, verify, when}
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentCaptor, MockitoSugar}
 import pages.{BankDetailsPage, IndirectRepresentativePage, WhomToPayPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -112,7 +110,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-      verify(mockCreateNavigator, atLeastOnce()).nextPage(any(), answerCaptor.capture())
+      verify(mockCreateNavigator, atLeastOnce).nextPage(any(), answerCaptor.capture())
 
       answerCaptor.getValue.get(BankDetailsPage) mustBe Some(BankDetails("Natural Numbers Inc", "123456", "12345678"))
 
@@ -142,7 +140,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-      verify(mockCreateNavigator, atLeastOnce()).nextPage(any(), answerCaptor.capture())
+      verify(mockCreateNavigator, atLeastOnce).nextPage(any(), answerCaptor.capture())
 
       answerCaptor.getValue.get(IndirectRepresentativePage) mustBe None
 
@@ -172,7 +170,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-      verify(mockCreateNavigator, atLeastOnce()).nextPage(any(), answerCaptor.capture())
+      verify(mockCreateNavigator, atLeastOnce).nextPage(any(), answerCaptor.capture())
 
       answerCaptor.getValue.get(IndirectRepresentativePage) mustBe Some(true)
 

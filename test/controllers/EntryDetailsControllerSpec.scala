@@ -16,20 +16,18 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import base.SpecBase
 import forms.EntryDetailsFormProvider
 import models.{Entries, EntryDetails, NumberOfEntriesType, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import pages.{EntryDetailsPage, NumberOfEntriesTypePage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.EntryDetailsView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class EntryDetailsControllerSpec extends SpecBase with MockitoSugar {
