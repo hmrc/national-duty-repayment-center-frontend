@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.FileUploadUtils.ConvertStateApi
+
 import javax.inject.Inject
 import models.{FileVerificationStatus, SessionState}
 import play.api.Logger
@@ -27,13 +28,11 @@ import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services.{FileUploadState, FileUploaded}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 case class FileUploadException(message: String) extends RuntimeException(message)
 
-case class FileUploadUtils @Inject() (sessionRepository: SessionRepository) {
-
-  implicit val ec = scala.concurrent.ExecutionContext.global
+case class FileUploadUtils @Inject() (sessionRepository: SessionRepository)(implicit val ec: ExecutionContext) {
 
   def applyTransition(f: ConvertStateApi, s: FileUploadState, ss: SessionState): Future[FileUploadState] =
     for {

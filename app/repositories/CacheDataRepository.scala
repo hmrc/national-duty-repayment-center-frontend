@@ -18,9 +18,9 @@ package repositories
 
 import java.time.Instant
 import java.util.concurrent.TimeUnit
-
 import com.mongodb.client.model.Indexes.ascending
-import javax.inject.Inject
+
+import javax.inject.{Inject, Singleton}
 import models.{SessionState, UserAnswers}
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.{IndexModel, IndexOptions, ReplaceOptions, Updates}
@@ -33,6 +33,7 @@ import uk.gov.hmrc.play.http.logging.Mdc
 
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class CacheDataRepository @Inject() (mongoComponent: MongoComponent, config: Configuration)(implicit
   ec: ExecutionContext
 ) extends PlayMongoRepository[UserAnswers](
