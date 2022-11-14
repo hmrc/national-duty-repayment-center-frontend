@@ -41,8 +41,8 @@ lazy val root = (project in file("."))
     ScoverageKeys.coverageHighlighting := true,
     scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
-    libraryDependencies += "org.webjars.bower" % "bootstrap-sass" % "3.3.6",
-    libraryDependencies += "org.webjars.bower" % "compass-mixins" % "0.12.7",
+    libraryDependencies += "org.webjars.bower" % "bootstrap-sass" % "3.3.7",
+    libraryDependencies += "org.webjars.bower" % "compass-mixins" % "1.0.2",
     retrieveManaged := true,
     update / evictionWarningOptions :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),

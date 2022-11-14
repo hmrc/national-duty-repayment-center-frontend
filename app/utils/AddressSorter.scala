@@ -38,7 +38,7 @@ class AddressSorter {
         loop(in.tail, in.head :: charsOut, intsOut, lastWasInt = false)
 
     val sanitisedSource = getSource(in).toLowerCase.toCharArray
-    (in, loop(sanitisedSource, Nil, Nil, lastWasInt = false).mkString)
+    (in, loop(sanitisedSource.toIndexedSeq, Nil, Nil, lastWasInt = false).mkString)
   }
 
   def sort(addresses: Seq[LookedUpAddressWrapper]): Seq[LookedUpAddressWrapper] = {

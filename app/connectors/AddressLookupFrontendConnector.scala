@@ -59,6 +59,7 @@ object InitialiseAddressLookupHttpParser {
             case Some(redirectUrl) => AddressLookupOnRamp(redirectUrl)
             case None              => throw new IllegalStateException("Missing re-direct url")
           }
+        case status => throw new RuntimeException(s"Received status:$status from AddressLookupFrontend service")
       }
 
   }

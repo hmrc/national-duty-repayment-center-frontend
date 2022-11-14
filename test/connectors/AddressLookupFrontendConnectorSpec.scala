@@ -62,6 +62,25 @@ class AddressLookupFrontendConnectorSpec extends SpecBase with WireMockHelper wi
       }
     }
 
+    "must error a result when the server responds with InternalServerError" in {
+      val app = application
+      running(app) {
+
+        val url = "/api/init"
+        val connector = app.injector.instanceOf[AddressLookupFrontendConnector]
+        server.stubFor(
+          post(urlEqualTo(url))
+            .willReturn(aResponse.withStatus(INTERNAL_SERVER_ERROR))
+        )
+
+        val thrown = intercept[RuntimeException] {
+          connector.initialiseJourney(AddressLookupRequestSpec.addressLookupRequest(500)).futureValue
+        }
+
+        thrown.getMessage must include("Received status:500 from AddressLookupFrontend service")
+      }
+    }
+
     "must error when response does not include a location" in {
       val app = application
       running(app) {

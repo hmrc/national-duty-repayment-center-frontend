@@ -17,12 +17,12 @@
 package controllers
 
 import java.time.LocalDateTime
-
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
 import navigation.AmendNavigator
 import pages.{AmendCheckYourAnswersPage, Page}
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.{AmendClaimDateQuery, AmendClaimIdQuery}
@@ -47,7 +47,7 @@ class AmendCheckYourAnswersController @Inject() (
   viewMissing: AmendCheckYourMissingAnswersView,
   cyaFactory: CheckYourAnswersHelperFactory
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] {
+    extends FrontendBaseController with I18nSupport with Navigation[UserAnswers] with Logging {
 
   override val page: Page = AmendCheckYourAnswersPage
 
@@ -101,6 +101,10 @@ class AmendCheckYourAnswersController @Inject() (
           Future.successful(Redirect(controllers.routes.AmendErrorController.onNotFound()))
         case response if response.isCaseClosed =>
           Future.successful(Redirect(controllers.routes.AmendErrorController.onClosed()))
+        case _ =>
+          val message = "Amend claim submission failed"
+          logger.warn(message)
+          throw new RuntimeException(message)
       }
   }
 

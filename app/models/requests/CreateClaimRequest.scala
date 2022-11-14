@@ -113,9 +113,9 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
     }
 
     def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(AgentImporterAddressPage)
-    def getDecRef(userAnswers: UserAnswers): Option[String] = userAnswers.get(DeclarantReferenceNumberPage) match {
-      case Some(decRef) if decRef.declarantReferenceType == Yes => Some(decRef.declarantReferenceNumber.get)
-      case Some(decRef) if decRef.declarantReferenceType == No  => Some("NA")
+    def getDecRef(userAnswers: UserAnswers): Option[String] = userAnswers.get(DeclarantReferenceNumberPage) map {
+      case decRef if decRef.declarantReferenceType == Yes => decRef.declarantReferenceNumber.get
+      case decRef if decRef.declarantReferenceType == No  => "NA"
     }
 
     def getEmailAddress(userAnswers: UserAnswers): Option[String] =

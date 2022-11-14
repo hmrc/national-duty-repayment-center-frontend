@@ -25,7 +25,7 @@ import org.mockito.Mockito.{reset, spy, when}
 import org.scalatest.BeforeAndAfterEach
 import play.api.Configuration
 import play.api.i18n.Langs
-import play.api.mvc.{BodyParsers, Result, Results}
+import play.api.mvc.{Action, AnyContent, BodyParsers, Result, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allEnrolments
@@ -38,8 +38,8 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
 
   val authConnector: AuthConnector = mock[AuthConnector]
 
-  val realConfig                = injector.instanceOf[Configuration]
-  val realLangs                 = injector.instanceOf[Langs]
+  val realConfig: Configuration = injector.instanceOf[Configuration]
+  val realLangs: Langs = injector.instanceOf[Langs]
   val mockConfig: Configuration = spy(realConfig)
   def appConfig                 = new FrontendAppConfigImpl(mockConfig, realLangs)
 
@@ -59,10 +59,10 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
     )
   )
 
-  val bodyParsers = injector.instanceOf[BodyParsers.Default]
+  val bodyParsers: BodyParsers.Default = injector.instanceOf[BodyParsers.Default]
 
   class Harness(authAction: IdentifierAction) {
-    def onPageLoad() = authAction(_ => Results.Ok)
+    def onPageLoad(): Action[AnyContent] = authAction(_ => Results.Ok)
   }
 
   override protected def beforeEach(): Unit =
