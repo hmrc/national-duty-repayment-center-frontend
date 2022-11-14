@@ -110,8 +110,8 @@ class ProofOfAuthorityController @Inject() (
           sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
             ss.state match {
               case Some(s) =>
-                fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
-                  _ => Redirect(routes.ProofOfAuthorityController.showFileUpload())
+                fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(_ =>
+                  Redirect(routes.ProofOfAuthorityController.showFileUpload())
                 )
               case None =>
                 Future.successful(
@@ -131,8 +131,8 @@ class ProofOfAuthorityController @Inject() (
       sessionRepository.getFileUploadState(id).flatMap { ss =>
         ss.state match {
           case Some(s) =>
-            fileUtils.applyTransition(upscanCallbackArrived(request.body, ProofOfAuthority)(_), s, ss).map(
-              newState => acknowledgeFileUploadRedirect(newState)
+            fileUtils.applyTransition(upscanCallbackArrived(request.body, ProofOfAuthority)(_), s, ss).map(newState =>
+              acknowledgeFileUploadRedirect(newState)
             )
           case None => Future.successful(fileStateErrror)
         }
@@ -149,13 +149,13 @@ class ProofOfAuthorityController @Inject() (
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
     )
 
-  //GET /upload-proof-of-authority/file-verification/:reference/status
+  // GET /upload-proof-of-authority/file-verification/:reference/status
   final def checkFileVerificationStatus(reference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
     }
 
-  //GET /upload-proof-of-authority/remove
+  // GET /upload-proof-of-authority/remove
   final def onRemove(reference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers.fileUploadState match {
@@ -175,7 +175,7 @@ class ProofOfAuthorityController @Inject() (
       }
     }
 
-  //POST /upload-proof-of-authority/continue
+  // POST /upload-proof-of-authority/continue
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(ProofOfAuthority)).contains(Seq.empty))

@@ -22,7 +22,7 @@ final case class ClientClaimFailureResponse(
   //                                status: String,
   correlationID: String,
   processingDate: String,
-  errorCode: String, //confirm?
+  errorCode: String, // confirm?
   errorMessage: String,
   pxObjClass: Option[String]
 )

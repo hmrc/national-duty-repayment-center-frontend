@@ -38,7 +38,7 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
   val authConnector: AuthConnector = mock[AuthConnector]
 
   val realConfig: Configuration = injector.instanceOf[Configuration]
-  val realLangs: Langs = injector.instanceOf[Langs]
+  val realLangs: Langs          = injector.instanceOf[Langs]
   val mockConfig: Configuration = spy(realConfig)
   def appConfig                 = new FrontendAppConfigImpl(mockConfig, realLangs)
 

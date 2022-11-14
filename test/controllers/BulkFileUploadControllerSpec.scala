@@ -24,7 +24,17 @@ import org.mockito.{ArgumentCaptor, MockitoSugar}
 import play.api.http.Status.SEE_OTHER
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{GET, POST, contentAsString, defaultAwaitTimeout, redirectLocation, route, running, status, writeableOf_AnyContentAsEmpty}
+import play.api.test.Helpers.{
+  contentAsString,
+  defaultAwaitTimeout,
+  redirectLocation,
+  route,
+  running,
+  status,
+  writeableOf_AnyContentAsEmpty,
+  GET,
+  POST
+}
 import play.twirl.api.HtmlFormat
 import services.{FileUploadState, FileUploaded}
 

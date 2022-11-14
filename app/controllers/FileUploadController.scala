@@ -85,7 +85,7 @@ class FileUploadController @Inject() (
       }
     }
 
-  //GET /file-verification/:reference/status
+  // GET /file-verification/:reference/status
   final def checkFileVerificationStatus(reference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
@@ -111,7 +111,7 @@ class FileUploadController @Inject() (
 
     }
 
-  //POST /file-upload
+  // POST /file-upload
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(SupportingEvidence)).contains(Seq.empty))
@@ -120,7 +120,7 @@ class FileUploadController @Inject() (
         Redirect(navigator.nextPage(FileUploadPage, request.userAnswers))
   }
 
-  //GET /file-upload
+  // GET /file-upload
   def showFileUpload(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       for {
@@ -150,8 +150,8 @@ class FileUploadController @Inject() (
                 if (s3Error.isMissingFileError && s.fileUploads.nonEmpty)
                   Future.successful(Redirect(navigator.nextPage(FileUploadPage, request.userAnswers)))
                 else
-                  fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
-                    _ => Redirect(routes.FileUploadController.showFileUpload())
+                  fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(_ =>
+                    Redirect(routes.FileUploadController.showFileUpload())
                   )
               case None =>
                 Future.successful(
@@ -171,8 +171,8 @@ class FileUploadController @Inject() (
       sessionRepository.getFileUploadState(id).flatMap { ss =>
         ss.state match {
           case Some(s) =>
-            fileUtils.applyTransition(upscanCallbackArrived(request.body, SupportingEvidence)(_), s, ss).map(
-              newState => acknowledgeFileUploadRedirect(newState)
+            fileUtils.applyTransition(upscanCallbackArrived(request.body, SupportingEvidence)(_), s, ss).map(newState =>
+              acknowledgeFileUploadRedirect(newState)
             )
           case None => Future.successful(fileStateErrror)
         }

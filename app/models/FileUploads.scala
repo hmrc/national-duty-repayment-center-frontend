@@ -100,14 +100,14 @@ object FileUpload extends SealedTraitFormats[FileUpload] {
       filename
 
   /**
-    * Status when file upload attributes has been requested from upscan-initiate
-    * but the file itself has not been yet transmitted to S3 bucket.
-    */
+   * Status when file upload attributes has been requested from upscan-initiate but the file itself has not been yet
+   * transmitted to S3 bucket.
+   */
   case class Initiated(orderNumber: Int, reference: String, fileType: Option[FileType] = None) extends FileUpload
 
   /**
-    * Status when file upload times out.
-    */
+   * Status when file upload times out.
+   */
   case class TimedOut(orderNumber: Int, reference: String, fileType: Option[FileType] = None) extends FileUpload
 
   /** Status when file transmission has been rejected by AWS S3. */

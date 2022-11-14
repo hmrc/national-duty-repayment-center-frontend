@@ -110,8 +110,8 @@ class BulkFileUploadController @Inject() (
           sessionRepository.getFileUploadState(request.internalId).flatMap { ss =>
             ss.state match {
               case Some(s) =>
-                fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(
-                  _ => Redirect(routes.BulkFileUploadController.showFileUpload())
+                fileUtils.applyTransition(fileUploadWasRejected(s3Error)(_), s, ss).map(_ =>
+                  Redirect(routes.BulkFileUploadController.showFileUpload())
                 )
               case None =>
                 Future.successful(
@@ -131,8 +131,8 @@ class BulkFileUploadController @Inject() (
       sessionRepository.getFileUploadState(id).flatMap { ss =>
         ss.state match {
           case Some(s) =>
-            fileUtils.applyTransition(upscanCallbackArrived(request.body, Bulk)(_), s, ss).map(
-              newState => acknowledgeFileUploadRedirect(newState)
+            fileUtils.applyTransition(upscanCallbackArrived(request.body, Bulk)(_), s, ss).map(newState =>
+              acknowledgeFileUploadRedirect(newState)
             )
           case None => Future.successful(fileStateErrror)
         }
@@ -150,13 +150,13 @@ class BulkFileUploadController @Inject() (
       expectedContentType = Some(appConfig.fileFormats.approvedFileTypes)
     )
 
-  //GET /bulk/file-verification/:reference/status
+  // GET /bulk/file-verification/:reference/status
   final def checkFileVerificationStatus(reference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       renderFileVerificationStatus(reference, request.userAnswers.fileUploadState)
     }
 
-  //GET /upload-multiple-entries/remove
+  // GET /upload-multiple-entries/remove
   final def onRemove(reference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers.fileUploadState match {
@@ -174,7 +174,7 @@ class BulkFileUploadController @Inject() (
       }
     }
 
-  //POST /upload-multiple-entries/continue
+  // POST /upload-multiple-entries/continue
   def onContinue(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       if (request.userAnswers.fileUploadState.map(_.fileUploads.toFilesOfType(Bulk)).contains(Seq.empty))

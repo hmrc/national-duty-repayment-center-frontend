@@ -38,16 +38,16 @@ class AmendErrorController @Inject() (
 
   def onNotFound: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      request.userAnswers.get(ReferenceNumberPage) map (
-        caseReference => Ok(viewNotFound(caseReference))
+      request.userAnswers.get(ReferenceNumberPage) map (caseReference =>
+        Ok(viewNotFound(caseReference))
       ) getOrElse NotFound("")
 
   }
 
   def onClosed: Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      request.userAnswers.get(ReferenceNumberPage) map (
-        caseReference => Ok(viewClosed(caseReference))
+      request.userAnswers.get(ReferenceNumberPage) map (caseReference =>
+        Ok(viewClosed(caseReference))
       ) getOrElse NotFound("")
   }
 

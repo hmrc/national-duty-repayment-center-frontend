@@ -26,7 +26,7 @@ case class AssessBusinessBankDetailsResponse(
   accountExists: String,
   nameMatches: String,
   sortCodeSupportsDirectCredit: String
-  //accountName: Option[String] - Field which will contains account name if the name match is partial, not yet supported in NDRC
+  // accountName: Option[String] - Field which will contains account name if the name match is partial, not yet supported in NDRC
 ) {
   val sortcodeExists: Boolean               = sortCodeIsPresentOnEISCD == yes
   val accountNumberWellFormatted: Boolean   = Set(yes, indeterminate).contains(accountNumberIsWellFormatted)

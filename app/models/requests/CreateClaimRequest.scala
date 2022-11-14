@@ -66,50 +66,50 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
         case NumberOfEntriesType.Single   => Some(userAnswers.get(RepaymentTypePage).getOrElse(RepaymentType.BACS))
       }
 
-    def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] = for {
-      customRegulationType   <- userAnswers.customsRegulationType
-      claimedUnderArticle    <- Some(userAnswers.get(ArticleTypePage))
-      claimedUnderRegulation <- Some(userAnswers.get(UkRegulationTypePage))
-      claimant               <- userAnswers.get(ClaimantTypePage)
-      claimType              <- userAnswers.get(NumberOfEntriesTypePage).map(_.numberOfEntriesType)
-      noOfEntries            <- userAnswers.get(NumberOfEntriesTypePage).map(_.entries)
-      entryDetails           <- userAnswers.get(EntryDetailsPage)
-      claimReason <- userAnswers.get(ClaimReasonTypePage).orElse(
-        userAnswers.get(ClaimReasonTypeMultiplePage).flatMap(_.headOption)
-      )
-      claimDescription <- userAnswers.get(ReasonForOverpaymentPage).map(
-        description =>
+    def getClaimDetails(userAnswers: UserAnswers): Option[ClaimDetails] =
+      for {
+        customRegulationType   <- userAnswers.customsRegulationType
+        claimedUnderArticle    <- Some(userAnswers.get(ArticleTypePage))
+        claimedUnderRegulation <- Some(userAnswers.get(UkRegulationTypePage))
+        claimant               <- userAnswers.get(ClaimantTypePage)
+        claimType              <- userAnswers.get(NumberOfEntriesTypePage).map(_.numberOfEntriesType)
+        noOfEntries            <- userAnswers.get(NumberOfEntriesTypePage).map(_.entries)
+        entryDetails           <- userAnswers.get(EntryDetailsPage)
+        claimReason <- userAnswers.get(ClaimReasonTypePage).orElse(
+          userAnswers.get(ClaimReasonTypeMultiplePage).flatMap(_.headOption)
+        )
+        claimDescription <- userAnswers.get(ReasonForOverpaymentPage).map(description =>
           ClaimDescription(
             quoteFormatter.format(description.value),
             userAnswers.get(ClaimReasonTypeMultiplePage).getOrElse(Set.empty)
           )
+        )
+        payeeIndicator    <- getPayeeIndicator(userAnswers)
+        paymentMethod     <- getPaymentMethod(userAnswers)
+        declarantReNumber <- getDecRef(userAnswers)
+        declarantName     <- getDeclarantName(userAnswers)
+      } yield ClaimDetails(
+        FormType("01"),
+        customRegulationType,
+        claimedUnderArticle,
+        claimedUnderRegulation,
+        claimant,
+        claimType,
+        noOfEntries,
+        entryDetails,
+        claimReason,
+        claimDescription,
+        LocalDate.now(),
+        LocalDate.now(),
+        payeeIndicator,
+        paymentMethod,
+        declarantReNumber,
+        declarantName
       )
-      payeeIndicator    <- getPayeeIndicator(userAnswers)
-      paymentMethod     <- getPaymentMethod(userAnswers)
-      declarantReNumber <- getDecRef(userAnswers)
-      declarantName     <- getDeclarantName(userAnswers)
-    } yield ClaimDetails(
-      FormType("01"),
-      customRegulationType,
-      claimedUnderArticle,
-      claimedUnderRegulation,
-      claimant,
-      claimType,
-      noOfEntries,
-      entryDetails,
-      claimReason,
-      claimDescription,
-      LocalDate.now(),
-      LocalDate.now(),
-      payeeIndicator,
-      paymentMethod,
-      declarantReNumber,
-      declarantName
-    )
 
     def getDeclarantName(userAnswers: UserAnswers): Option[String] = userAnswers.get(ClaimantTypePage) match {
       case Some(ClaimantType.Importer) => userAnswers.get(DeclarantNamePage).map(_.toString)
-      case _                           => userAnswers.get(RepresentativeDeclarantAndBusinessNamePage).map(_.declarantName)
+      case _ => userAnswers.get(RepresentativeDeclarantAndBusinessNamePage).map(_.declarantName)
     }
 
     def getAgentImporterAddress(userAnswers: UserAnswers): Option[Address] = userAnswers.get(AgentImporterAddressPage)
@@ -120,7 +120,7 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
 
     def getEmailAddress(userAnswers: UserAnswers): Option[String] =
       userAnswers.get(EmailAddressAndPhoneNumberPage) match {
-        //case Some(email) if email.length > 0 => Some(email)
+        // case Some(email) if email.length > 0 => Some(email)
         case Some(emailAndPhone) if emailAndPhone.email.map(_.length).getOrElse(0) > 0 => Some(emailAndPhone.email.get)
         case _                                                                         => None
       }
@@ -179,24 +179,21 @@ class CreateClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
       address <- getImporterAddress(userAnswers)
     } yield {
       val eori = getImporterEORI(userAnswers)
-      val email = {
+      val email =
         userAnswers.get(ClaimantTypePage) match {
           case Some(ClaimantType.Importer) => getEmailAddress(userAnswers)
           case _                           => None
         }
-      }
-      val telephone = {
+      val telephone =
         userAnswers.get(ClaimantTypePage) match {
           case Some(ClaimantType.Importer) => getTelePhone(userAnswers)
           case _                           => None
         }
-      }
-      val isVATRegistered = {
+      val isVATRegistered =
         userAnswers.get(ClaimantTypePage) match {
           case Some(ClaimantType.Importer) => getIsVATRegistered(userAnswers)
           case _                           => getIsImporterVatRegistered(userAnswers)
         }
-      }
       UserDetails(isVATRegistered, eori, name, EISAddress(address), telephone, email)
     }
 

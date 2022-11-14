@@ -27,9 +27,9 @@ object ViewUtils {
     s"${messages(title, titleMessageArgs: _*)} - ${section.fold("")(messages(_) + " - ")}${messages("site.service_name")} - ${messages("site.govuk")}"
 
   def errorPrefix(form: Form[_])(implicit messages: Messages): String =
-    if (form.hasErrors || form.hasGlobalErrors) (messages("error.browser.title.prefix") + " ") else ""
+    if (form.hasErrors || form.hasGlobalErrors) messages("error.browser.title.prefix") + " " else ""
 
   def errorPrefix(errors: Option[_])(implicit messages: Messages): String =
-    if (errors.isDefined) (messages("error.browser.title.prefix") + " ") else ""
+    if (errors.isDefined) messages("error.browser.title.prefix") + " " else ""
 
 }

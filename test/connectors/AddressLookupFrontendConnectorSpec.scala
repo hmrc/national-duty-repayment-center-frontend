@@ -66,7 +66,7 @@ class AddressLookupFrontendConnectorSpec extends SpecBase with WireMockHelper wi
       val app = application
       running(app) {
 
-        val url = "/api/init"
+        val url       = "/api/init"
         val connector = app.injector.instanceOf[AddressLookupFrontendConnector]
         server.stubFor(
           post(urlEqualTo(url))

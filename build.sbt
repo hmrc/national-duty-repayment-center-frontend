@@ -53,7 +53,7 @@ lazy val root = (project in file("."))
     Assets / pipelineStages := Seq(concat,uglify),
     scalacOptions += "-Wconf:src=routes/.*:s",
     scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
-  )
+  ).settings(scalafmtOnCompile := true)
 
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   fork        := true,

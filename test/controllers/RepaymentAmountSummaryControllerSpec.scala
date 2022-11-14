@@ -17,7 +17,15 @@
 package controllers
 
 import base.SpecBase
-import models.{ClaimRepaymentType, Entries, EntryDetails, NumberOfEntriesType, RepaymentAmounts, RepaymentType, UserAnswers}
+import models.{
+  ClaimRepaymentType,
+  Entries,
+  EntryDetails,
+  NumberOfEntriesType,
+  RepaymentAmounts,
+  RepaymentType,
+  UserAnswers
+}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.verifyNoInteractions

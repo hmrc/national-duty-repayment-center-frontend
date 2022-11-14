@@ -43,7 +43,7 @@ trait ViewSpecBase extends SpecBase {
 
     if (elements.isEmpty) throw new IllegalArgumentException(s"CSS Selector $cssSelector wasn't rendered.")
 
-    //<p> HTML elements are rendered out with a carriage return on some pages, so discount for comparison
+    // <p> HTML elements are rendered out with a carriage return on some pages, so discount for comparison
     assert(elements.first().html().replace("\n", "") == expectedValue)
   }
 
@@ -80,7 +80,7 @@ trait ViewSpecBase extends SpecBase {
     val labels = doc.getElementsByAttributeValue("for", forElement)
     assert(labels.size == 1, s"\n\nLabel for $forElement was not rendered on the page.")
     val label = labels.first
-    //assert(label.text().contains(expectedText), s"\n\nLabel for $forElement was not $expectedText")
+    // assert(label.text().contains(expectedText), s"\n\nLabel for $forElement was not $expectedText")
 
     if (expectedHintText.isDefined)
       assert(
@@ -99,7 +99,7 @@ trait ViewSpecBase extends SpecBase {
     assert(radio.attr("value") == value, s"\n\nElement $id does not have value $value")
     isChecked match {
       case true => assert(radio.attr("checked") == "checked", s"\n\nElement $id is not checked")
-      case _    => assert(!radio.hasAttr("checked") && radio.attr("checked") != "checked", s"\n\nElement $id is checked")
+      case _ => assert(!radio.hasAttr("checked") && radio.attr("checked") != "checked", s"\n\nElement $id is checked")
     }
   }
 

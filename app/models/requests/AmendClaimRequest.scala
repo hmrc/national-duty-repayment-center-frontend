@@ -38,8 +38,8 @@ class AmendClaimBuilder @Inject() (quoteFormatter: QuoteFormatter) {
           case Some(true) => userAnswers.get(FurtherInformationPage).map(info => s"${quoteFormatter.format(info)}")
           case _          => Some("Files Uploaded")
         }
-      formattedDescription.map(
-        description => s"[EORINumber=${userAnswers.userEori.map(_.value).getOrElse("GBPR")}]\n\n$description"
+      formattedDescription.map(description =>
+        s"[EORINumber=${userAnswers.userEori.map(_.value).getOrElse("GBPR")}]\n\n$description"
       )
     }
 

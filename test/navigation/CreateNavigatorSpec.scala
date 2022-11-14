@@ -441,35 +441,35 @@ class CreateNavigatorSpec extends SpecBase {
 
       "go to Repayment Amount Summary page after the Customs Duty Paid page when VAT and Other Duties is not selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs)
-        val userAnswers                     = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(CustomsDutyPaidPage, userAnswers)
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
       }
       "go to Vat Paid page after the Customs Duty Paid page when VAT is selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs, Vat)
-        val userAnswers                     = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(CustomsDutyPaidPage, userAnswers)
           .mustBe(routes.VATPaidController.onPageLoad())
       }
       "go to Other Duties Paid page after the Customs Duty Paid page when VAT is not selected and Other Duties is selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs, Other)
-        val userAnswers                     = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers = changeAnswers(CustomsDutyPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(CustomsDutyPaidPage, userAnswers)
           .mustBe(routes.OtherDutiesPaidController.onPageLoad())
       }
       "go to Repayment Amount Summary page after the VAT Paid page when Other Duties is not selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Vat)
-        val userAnswers                     = changeAnswers(VATPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers = changeAnswers(VATPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(VATPaidPage, userAnswers)
           .mustBe(routes.RepaymentAmountSummaryController.onPageLoad())
       }
       "go to Other Duties page after the VAT Paid page when Other Duties is selected" in {
         val values: Seq[ClaimRepaymentType] = Seq(Other)
-        val userAnswers                     = changeAnswers(VATPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers = changeAnswers(VATPaidPage).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(VATPaidPage, userAnswers)
           .mustBe(routes.OtherDutiesPaidController.onPageLoad())
@@ -480,21 +480,21 @@ class CreateNavigatorSpec extends SpecBase {
       }
       "go to Customs Duty Paid page when Customs is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Customs)
-        val userAnswers                     = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(ClaimRepaymentTypePage, userAnswers)
           .mustBe(routes.CustomsDutyPaidController.onPageLoad())
       }
       "go to Vat Paid page when Vat is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Vat)
-        val userAnswers                     = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(ClaimRepaymentTypePage, userAnswers)
           .mustBe(routes.VATPaidController.onPageLoad())
       }
       "go to Other Duties Paid page when Other is selected as a Claim Repayment type" in {
         val values: Seq[ClaimRepaymentType] = Seq(Other)
-        val userAnswers                     = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
+        val userAnswers = changeAnswers(ClaimRepaymentTypePage).set(ClaimRepaymentTypePage, values.toSet).success.value
 
         navigator.nextPage(ClaimRepaymentTypePage, userAnswers)
           .mustBe(routes.OtherDutiesPaidController.onPageLoad())

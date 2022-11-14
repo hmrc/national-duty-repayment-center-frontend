@@ -151,13 +151,12 @@ trait FileUploadService {
         case FileUpload(orderNumber, ref) if ref == notification.reference =>
           notification match {
             case UpscanFileReady(_, url, uploadDetails) =>
-              //check for existing file uploads with duplicated checksum
+              // check for existing file uploads with duplicated checksum
               val modifiedFileUpload: FileUpload = fileUploads.files
-                .find(
-                  file =>
-                    file.checksumOpt.contains(
-                      uploadDetails.checksum
-                    ) && file.reference != notification.reference && file.fileType.contains(fileType)
+                .find(file =>
+                  file.checksumOpt.contains(
+                    uploadDetails.checksum
+                  ) && file.reference != notification.reference && file.fileType.contains(fileType)
                 ) match {
                 case Some(existingFileUpload: FileUpload.Accepted) =>
                   FileUpload.Duplicate(

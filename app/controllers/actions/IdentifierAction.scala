@@ -52,8 +52,8 @@ class AuthenticatedIdentifierAction @Inject() (
         def eori: Option[EORI] =
           if (config.eoriIntegration.enabled)
             Some(
-              allUsersEnrolments.getEnrolment(config.eoriIntegration.enrolmentKey).flatMap(
-                enrolment => enrolment.getIdentifier(eoriIdentifier).map(identifier => EORI(identifier.value))
+              allUsersEnrolments.getEnrolment(config.eoriIntegration.enrolmentKey).flatMap(enrolment =>
+                enrolment.getIdentifier(eoriIdentifier).map(identifier => EORI(identifier.value))
               ).getOrElse(
                 throw InsufficientEnrolments(
                   s"User does not have enrolment ${config.eoriIntegration.enrolmentKey} with EORI"

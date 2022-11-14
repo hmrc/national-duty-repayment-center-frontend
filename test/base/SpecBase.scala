@@ -32,7 +32,7 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.inject.{Injector, bind}
+import play.api.inject.{bind, Injector}
 import play.api.libs.json.{JsArray, Json}
 import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
@@ -234,15 +234,15 @@ trait SpecBase
         "Claimant"             -> "02",
         "ClaimType"            -> "02",
         "NoOfEntries"          -> "10",
-        "EntryDetails"         -> Json.obj("EPU" -> "account name", "EntryNumber" -> "123456", "EntryDate" -> "2020-08-05"),
-        "EntryNumber"          -> "123456A",
-        "EntryDate"            -> "20200101",
-        "ClaimReason"          -> "06",
-        "ClaimDescription"     -> "this is a claim description",
-        "DateReceived"         -> "20200805",
-        "ClaimDate"            -> "20200805",
-        "PayeeIndicator"       -> "01",
-        "PaymentMethod"        -> "02"
+        "EntryDetails"     -> Json.obj("EPU" -> "account name", "EntryNumber" -> "123456", "EntryDate" -> "2020-08-05"),
+        "EntryNumber"      -> "123456A",
+        "EntryDate"        -> "20200101",
+        "ClaimReason"      -> "06",
+        "ClaimDescription" -> "this is a claim description",
+        "DateReceived"     -> "20200805",
+        "ClaimDate"        -> "20200805",
+        "PayeeIndicator"   -> "01",
+        "PaymentMethod"    -> "02"
       ),
       "AgentDetails" -> Json.obj(
         "VATNumber" -> "123456789",

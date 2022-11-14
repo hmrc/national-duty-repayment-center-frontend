@@ -64,18 +64,16 @@ trait Navigator[T <: Answers] {
       .map(_.page)
 
   protected val nextPageAfterChangeFor: (Seq[P], Page, T) => Option[Page] =
-    (pages, currentPage, userAnswers) => {
+    (pages, currentPage, userAnswers) =>
       after(pages, currentPage)
         .find(p => p.canAccessGiven(userAnswers) && !p.hasAnswer(userAnswers))
         .map(_.page)
-    }
 
   private val viewFor: (Seq[P], Option[Page]) => Option[Call] = (pages, page) =>
-    page.flatMap(
-      p =>
-        pages
-          .find(_.page == p)
-          .map(_.destination())
+    page.flatMap(p =>
+      pages
+        .find(_.page == p)
+        .map(_.destination())
     )
 
   private def after(pages: Seq[P], page: Page): Seq[P] = pages.span(_.page != page)._2 match {

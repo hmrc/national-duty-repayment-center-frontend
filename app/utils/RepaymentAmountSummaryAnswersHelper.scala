@@ -95,12 +95,12 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
   def getSections(): Seq[AnswerSection] = {
 
     val claimRepaymentType: Set[ClaimRepaymentType] = userAnswers.get(ClaimRepaymentTypePage).getOrElse(Set.empty)
-    val customDutyPaid                              = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val customDutyDue                               = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
-    val vatPaid                                     = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val vatDue                                      = userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
-    val otherDutiesPaid                             = userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
-    val otherDutiesDue                              = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val customDutyPaid  = userAnswers.get(CustomsDutyPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val customDutyDue   = userAnswers.get(CustomsDutyPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val vatPaid         = userAnswers.get(VATPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val vatDue          = userAnswers.get(VATPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
+    val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
+    val otherDutiesDue  = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
 
     val sections: Seq[AnswerSection] = claimRepaymentType.map {
       case ClaimRepaymentType.Customs =>
@@ -121,8 +121,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
     val otherDutiesPaid = userAnswers.get(OtherDutiesPaidPage).map(_.ActualPaidAmount).getOrElse("0.0").toDouble
     val otherDutiesDue  = userAnswers.get(OtherDutiesPaidPage).map(_.ShouldHavePaidAmount).getOrElse("0.0").toDouble
 
-    (customDutyPaid - customDutyDue + vatPaid - vatDue +
-      otherDutiesPaid - otherDutiesDue)
+    customDutyPaid - customDutyDue + vatPaid - vatDue +
+      otherDutiesPaid - otherDutiesDue
   }
 
   def getTotalSection(): AnswerSection =
@@ -163,7 +163,7 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
               keyClass = Some("govuk-!-width-two-thirds govuk-!-padding-top-0"),
               valueClass = Some("govuk-!-padding-top-0 govuk-!-width-one-third")
             ),
-            displayDuty("2", (dutyPaid - dutyDue), dutyType, keyClass = Some("govuk-!-width-two-thirds"))
+            displayDuty("2", dutyPaid - dutyDue, dutyType, keyClass = Some("govuk-!-width-two-thirds"))
           )
         )
     }
