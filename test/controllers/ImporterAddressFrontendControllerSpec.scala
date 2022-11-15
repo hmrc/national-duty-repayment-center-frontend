@@ -16,18 +16,14 @@
 
 package controllers
 
-import java.util.UUID
-
 import base.SpecBase
 import data.TestData
 import data.TestData.addressLookupConfirmation
 import forms.ImporterManualAddressFormProvider
 import models.addresslookup.AddressLookupOnRamp
 import models.{Address, Country, UserAnswers}
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentCaptor, MockitoSugar}
 import pages.ImporterAddressPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -35,6 +31,7 @@ import play.api.test.Helpers._
 import services.{AddressLookupService, CountryService}
 import views.html.ImporterManualAddressView
 
+import java.util.UUID
 import scala.concurrent.Future
 
 class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {

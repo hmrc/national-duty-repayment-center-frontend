@@ -21,8 +21,8 @@ import forms.ClaimReasonTypeFormProvider
 import models.ClaimReasonType
 import models.ClaimReasonType.{CommodityCodeChange, CurrencyChanges}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{reset, verifyNoInteractions, when}
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.MockitoSugar
 import pages.{ClaimReasonTypeMultiplePage, ClaimReasonTypePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

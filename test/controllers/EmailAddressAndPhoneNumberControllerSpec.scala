@@ -20,9 +20,7 @@ import base.SpecBase
 import forms.{EmailAddressAndPhoneNumberFormProvider, EmailAndPhoneNumber}
 import models.IsContactProvided.Email
 import models.{IsContactProvided, UserAnswers}
-import org.mockito.ArgumentCaptor
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentCaptor, MockitoSugar}
 import pages.EmailAddressAndPhoneNumberPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

@@ -65,8 +65,8 @@ class DoYouOwnTheGoodsController @Inject() (
       form.bindFromRequest().fold(
         formWithErrors => {
           val errors: Seq[FormError] =
-            formWithErrors.errors.headOption.map(
-              x => Seq(x.copy(messages = Seq(formWithErrors.errors.head.message), args = Seq(declarantName)))
+            formWithErrors.errors.headOption.map(x =>
+              Seq(x.copy(messages = Seq(formWithErrors.errors.head.message), args = Seq(declarantName)))
             ).getOrElse(Nil)
           Future.successful(
             BadRequest(view(formWithErrors.copy(errors = errors), backLink(request.userAnswers), declarantName))

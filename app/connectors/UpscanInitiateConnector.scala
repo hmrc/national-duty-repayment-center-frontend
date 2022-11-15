@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
-  * Connects to the upscan-initiate service API.
-  */
+ * Connects to the upscan-initiate service API.
+ */
 import javax.inject.{Inject, Singleton}
 
 @Singleton

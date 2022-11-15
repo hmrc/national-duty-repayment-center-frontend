@@ -21,8 +21,7 @@ import data.BarsTestData
 import forms.BankDetailsFormProvider
 import models.{BankDetails, ClaimantType, WhomToPay}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import pages.{BankDetailsPage, ClaimantTypePage, WhomToPayPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest

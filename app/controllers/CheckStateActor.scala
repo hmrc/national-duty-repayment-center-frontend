@@ -51,19 +51,18 @@ class CheckStateActor @Inject() (sessionRepository: SessionRepository, val appCo
           newState
         }.pipeTo(sender())
       else
-        sessionRepository.get(id).flatMap(
-          ss =>
-            ss.flatMap(_.fileUploadState) match {
-              case Some(s @ FileUploaded(_, _)) =>
-                Future.successful(s)
+        sessionRepository.get(id).flatMap(ss =>
+          ss.flatMap(_.fileUploadState) match {
+            case Some(s @ FileUploaded(_, _)) =>
+              Future.successful(s)
 
-              case Some(s @ UploadFile(_, _, _, _)) =>
-                if (s.maybeUploadError.nonEmpty)
-                  Future.successful(s)
-                else
-                  (self ? CheckState(id, exitTime, s))
-              case _ => Future.failed(new IllegalStateException("No FileUploadState"))
-            }
+            case Some(s @ UploadFile(_, _, _, _)) =>
+              if (s.maybeUploadError.nonEmpty)
+                Future.successful(s)
+              else
+                self ? CheckState(id, exitTime, s)
+            case _ => Future.failed(new IllegalStateException("No FileUploadState"))
+          }
         ).pipeTo(sender())
   }
 

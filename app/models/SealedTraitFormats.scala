@@ -20,10 +20,11 @@ import play.api.libs.json._
 import scala.reflect.ClassTag
 
 /**
-  * Helper trait providing JSON formatter based on the set of case classse of the sealed trait.
-  * Designed to be mixed in the companion object of the sealed trait and as typeclass.
-  * @tparam A sealed trait type
-  */
+ * Helper trait providing JSON formatter based on the set of case classse of the sealed trait. Designed to be mixed in
+ * the companion object of the sealed trait and as typeclass.
+ * @tparam A
+ *   sealed trait type
+ */
 trait SealedTraitFormats[A] {
 
   /** Formatters of the member classes. */

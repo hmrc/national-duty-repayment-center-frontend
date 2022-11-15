@@ -89,7 +89,7 @@ class AddressLookupResponseModelSpec extends AnyFreeSpec with Matchers {
     }
 
     "deserialises correctly from a JSON object" in {
-      val testJson         = """{
+      val testJson = """{
                        |  "latitude" : 50.9986451,
                        |  "longitude" : -1.4690977
                        |}""".stripMargin

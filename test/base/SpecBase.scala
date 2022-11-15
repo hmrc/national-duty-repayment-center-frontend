@@ -16,8 +16,6 @@
 
 package base
 
-import java.time.{LocalDate, ZoneId, ZonedDateTime}
-
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
 import controllers.actions._
@@ -27,10 +25,9 @@ import models.eis.EISAddress
 import models.requests.{AmendClaimRequest, CreateClaimRequest, Identification, UploadRequest}
 import navigation.{AmendNavigator, CreateNavigator, NavigatorBack}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.MockitoSugar
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice._
 import play.api.i18n.{Messages, MessagesApi}
@@ -45,6 +42,7 @@ import services.ClaimService
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.CheckYourAnswersHelperFactory
 
+import java.time.{LocalDate, ZoneId, ZonedDateTime}
 import scala.concurrent.{ExecutionContext, Future}
 
 trait SpecBase
@@ -236,15 +234,15 @@ trait SpecBase
         "Claimant"             -> "02",
         "ClaimType"            -> "02",
         "NoOfEntries"          -> "10",
-        "EntryDetails"         -> Json.obj("EPU" -> "account name", "EntryNumber" -> "123456", "EntryDate" -> "2020-08-05"),
-        "EntryNumber"          -> "123456A",
-        "EntryDate"            -> "20200101",
-        "ClaimReason"          -> "06",
-        "ClaimDescription"     -> "this is a claim description",
-        "DateReceived"         -> "20200805",
-        "ClaimDate"            -> "20200805",
-        "PayeeIndicator"       -> "01",
-        "PaymentMethod"        -> "02"
+        "EntryDetails"     -> Json.obj("EPU" -> "account name", "EntryNumber" -> "123456", "EntryDate" -> "2020-08-05"),
+        "EntryNumber"      -> "123456A",
+        "EntryDate"        -> "20200101",
+        "ClaimReason"      -> "06",
+        "ClaimDescription" -> "this is a claim description",
+        "DateReceived"     -> "20200805",
+        "ClaimDate"        -> "20200805",
+        "PayeeIndicator"   -> "01",
+        "PaymentMethod"    -> "02"
       ),
       "AgentDetails" -> Json.obj(
         "VATNumber" -> "123456789",

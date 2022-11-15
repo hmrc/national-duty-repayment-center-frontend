@@ -20,9 +20,8 @@ import base.SpecBase
 import data.TestData._
 import models.EORI
 import models.eis.QuoteFormatter
-import org.mockito.Mockito.verify
+import org.mockito.MockitoSugar
 import org.scalatest.matchers.must.Matchers
-import org.scalatestplus.mockito.MockitoSugar
 
 class CreateClaimBuilderSpec extends SpecBase with Matchers with MockitoSugar {
 

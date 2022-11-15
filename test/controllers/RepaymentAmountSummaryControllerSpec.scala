@@ -16,7 +16,6 @@
 
 package controllers
 
-import java.time.LocalDate
 import base.SpecBase
 import models.{
   ClaimRepaymentType,
@@ -29,7 +28,7 @@ import models.{
 }
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{reset, verifyNoInteractions, when}
+import org.mockito.Mockito.verifyNoInteractions
 import pages._
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
@@ -38,6 +37,7 @@ import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 import views.html.RepaymentAmountSummaryView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class RepaymentAmountSummaryControllerSpec extends SpecBase {

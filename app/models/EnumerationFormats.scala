@@ -19,10 +19,11 @@ package models
 import play.api.libs.json._
 
 /**
-  * Helper trait providing JSON formatter based on the set of enum values.
-  * Designed to be mixed in the companion object of the enum type and as typeclass.
-  * @tparam A enum type
-  */
+ * Helper trait providing JSON formatter based on the set of enum values. Designed to be mixed in the companion object
+ * of the enum type and as typeclass.
+ * @tparam A
+ *   enum type
+ */
 trait EnumerationFormats[A] {
 
   /** Set of enum values recognized by the formatter. */
@@ -53,13 +54,12 @@ trait EnumerationFormats[A] {
 
       case json => JsError(s"Expected json string but got ${json.getClass.getSimpleName}")
     },
-    Writes.apply(
-      value =>
-        keyOf(value)
-          .map(JsString.apply)
-          .getOrElse(
-            throw new IllegalStateException(s"Unsupported enum value $value, should be one of ${values.mkString(",")}")
-          )
+    Writes.apply(value =>
+      keyOf(value)
+        .map(JsString.apply)
+        .getOrElse(
+          throw new IllegalStateException(s"Unsupported enum value $value, should be one of ${values.mkString(",")}")
+        )
     )
   )
 

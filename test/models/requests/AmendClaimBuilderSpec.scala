@@ -20,9 +20,8 @@ import base.SpecBase
 import data.TestData._
 import models.eis.QuoteFormatter
 import models.{AmendCaseResponseType, FileUploads}
-import org.mockito.Mockito.verify
+import org.mockito.MockitoSugar
 import org.scalatest.matchers.must.Matchers
-import org.scalatestplus.mockito.MockitoSugar
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import services.FileUploaded
 

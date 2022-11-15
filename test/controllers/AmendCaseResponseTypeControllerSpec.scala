@@ -16,22 +16,19 @@
 
 package controllers
 
-import java.time.ZonedDateTime
-
 import base.SpecBase
 import forms.AmendCaseResponseTypeFormProvider
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentCaptor, MockitoSugar}
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FileUploaded
 import views.html.AmendCaseResponseTypeView
 
+import java.time.ZonedDateTime
 import scala.concurrent.Future
 
 class AmendCaseResponseTypeControllerSpec extends SpecBase with MockitoSugar {

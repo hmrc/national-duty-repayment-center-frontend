@@ -50,7 +50,7 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
 
       ClaimReasonType.values.foreach { claimReason =>
         val reasons: Set[ClaimReasonType] = Set(claimReason)
-        val userAnswers                   = UserAnswers(userIdentification).set(ClaimReasonTypeMultiplePage, reasons).success.value
+        val userAnswers = UserAnswers(userIdentification).set(ClaimReasonTypeMultiplePage, reasons).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

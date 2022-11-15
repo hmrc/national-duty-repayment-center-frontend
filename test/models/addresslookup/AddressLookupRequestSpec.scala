@@ -28,7 +28,7 @@ import models.addresslookup.AddressLookupRequest.Options.TimeoutConfig
 import models.addresslookup.AddressLookupRequest.{Labels, Options}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import play.api.i18n.MessagesApi
 import utils.Injector
 

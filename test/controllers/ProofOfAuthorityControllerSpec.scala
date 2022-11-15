@@ -16,15 +16,11 @@
 
 package controllers
 
-import java.time.ZonedDateTime
-
 import base.SpecBase
 import models.FileType.ProofOfAuthority
 import models.{FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentCaptor, MockitoSugar}
 import play.api.http.Status.SEE_OTHER
 import play.api.i18n.Messages
 import play.api.test.Helpers.{
@@ -41,6 +37,7 @@ import play.api.test.Helpers.{
 import play.twirl.api.HtmlFormat
 import services.{FileUploadState, FileUploaded}
 
+import java.time.ZonedDateTime
 import scala.concurrent.Future
 
 class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {

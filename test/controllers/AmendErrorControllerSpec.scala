@@ -21,7 +21,6 @@ import models.AmendCaseResponseType
 import models.AmendCaseResponseType.FurtherInformation
 import navigation.NavigatorBack
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.{AmendCaseResponseTypePage, ReferenceNumberPage}
 import play.api.i18n.Messages

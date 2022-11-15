@@ -16,21 +16,18 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import base.SpecBase
 import forms.RepaymentTypeFormProvider
 import models.RepaymentType.CMA
 import models.{BankDetails, RepaymentType, UserAnswers, _}
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentCaptor, MockitoSugar}
 import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RepaymentTypeView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class RepaymentTypeControllerSpec extends SpecBase with MockitoSugar {

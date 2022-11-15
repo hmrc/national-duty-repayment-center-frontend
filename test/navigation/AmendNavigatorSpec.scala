@@ -30,9 +30,9 @@ class AmendNavigatorSpec extends SpecBase {
 
   private val navigator = injector.instanceOf[AmendNavigator]
 
-  val caseRefAnswer                                              = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
+  val caseRefAnswer = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
   val documentAndInformationResponse: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
-  val responseTypeAnswer                                         = caseRefAnswer.set(AmendCaseResponseTypePage, documentAndInformationResponse).get
+  val responseTypeAnswer = caseRefAnswer.set(AmendCaseResponseTypePage, documentAndInformationResponse).get
 
   val fileUploadedState = FileUploaded(
     FileUploads(files =
@@ -69,7 +69,7 @@ class AmendNavigatorSpec extends SpecBase {
       val answers = emptyUserAnswers.set(ReferenceNumberPage, "CASE-REF").get
       "documents selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments)
-        val docAnswer                                         = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        val docAnswer = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
         navigator.nextPage(
           AmendCaseResponseTypePage,
           docAnswer
@@ -77,12 +77,12 @@ class AmendNavigatorSpec extends SpecBase {
       }
       "further information selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(FurtherInformation)
-        val docAnswer                                         = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        val docAnswer = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
         navigator.nextPage(AmendCaseResponseTypePage, docAnswer) mustBe routes.FurtherInformationController.onPageLoad()
       }
       "both selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
-        val docAnswer                                         = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        val docAnswer = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
         navigator.nextPage(
           AmendCaseResponseTypePage,
           docAnswer
@@ -92,12 +92,12 @@ class AmendNavigatorSpec extends SpecBase {
     "goto next page after upload documents" when {
       "there is further info to add" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
-        val answers                                           = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        val answers = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
         navigator.nextPage(AmendFileUploadPage, answers) mustBe routes.FurtherInformationController.onPageLoad()
       }
       "there is no further info to add" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments)
-        val answers                                           = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
+        val answers = emptyUserAnswers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
         navigator.nextPage(AmendFileUploadPage, answers) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
       }
 

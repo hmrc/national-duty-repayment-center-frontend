@@ -17,7 +17,7 @@
 package forms
 
 import forms.mappings.Mappings
-import models.{RepresentativeDeclarantAndBusinessName}
+import models.RepresentativeDeclarantAndBusinessName
 import play.api.data.Form
 import play.api.data.Forms._
 

@@ -17,8 +17,9 @@
 package forms.mappings
 
 import models.Enumerable
+import org.scalatest.OptionValues
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.{OptionValues, WordSpec}
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.data.{Form, FormError}
 
 object MappingsSpec {
@@ -40,7 +41,7 @@ object MappingsSpec {
 
 }
 
-class MappingsSpec extends WordSpec with Matchers with OptionValues with Mappings {
+class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mappings {
 
   import MappingsSpec._
 

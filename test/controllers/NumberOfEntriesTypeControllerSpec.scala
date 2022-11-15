@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.ZonedDateTime
-
 import base.SpecBase
 import data.TestData.{testClaimRepaymentType, testEntryDetailsPreJan2021, testRepaymentAmounts}
 import forms.NumberOfEntriesTypeFormProvider
@@ -26,16 +24,15 @@ import models.NumberOfEntriesType.Single
 import models.RepaymentType.CMA
 import models.WhomToPay.Importer
 import models.{Entries, FileUpload, FileUploads, NumberOfEntriesType, UserAnswers}
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.{ArgumentCaptor, MockitoSugar}
 import pages._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FileUploaded
 import views.html.NumberOfEntriesTypeView
 
+import java.time.ZonedDateTime
 import scala.concurrent.Future
 
 class NumberOfEntriesTypeControllerSpec extends SpecBase with MockitoSugar {
