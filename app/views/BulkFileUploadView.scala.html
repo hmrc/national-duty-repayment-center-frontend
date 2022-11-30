@@ -97,6 +97,7 @@
         @if(!uploadedFiles.isEmpty){
             @forms.formWithCSRF(action = BulkFileUploadController.onContinue(), args = Symbol("novalidate") -> "novalidate") {
                 @govukButton(Button(
+                    attributes = Map("id" -> "continue"),
                     content = Text(messages("site.continue")),
                     preventDoubleClick = true
                 ))
