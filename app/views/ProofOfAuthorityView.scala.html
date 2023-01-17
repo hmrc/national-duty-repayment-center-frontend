@@ -78,7 +78,7 @@
             <div class="ndrc-display-only-non-javascript">
                 @govukButton(Button(
                     content = Text(messages("form.upload-file.submit")),
-                    preventDoubleClick = true,
+                    preventDoubleClick = Some(true),
                     classes = "file-upload__submit"
                 ))
             </div>
@@ -91,7 +91,7 @@
             @govukButton(Button(
                 attributes = Map("id" -> "ndrc-fileupload-continue"),
                 content = Text(messages("site.continue")),
-                preventDoubleClick = true
+                preventDoubleClick = Some(true)
             ))
         }
     </div>
@@ -101,7 +101,7 @@
                 @govukButton(Button(
                     attributes = Map("id" -> "continue"),
                     content = Text(messages("site.continue")),
-                    preventDoubleClick = true
+                    preventDoubleClick = Some(true)
                 ))
             }
         }
