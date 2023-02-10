@@ -8,7 +8,7 @@ object AppDependencies {
     "uk.gov.hmrc"       %% "bootstrap-frontend-play-28"     % "7.11.0",
     "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-28"             % "0.73.0",
     "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.12.0-play-28",
-    "uk.gov.hmrc"       %% "play-frontend-hmrc"             % "4.1.0-play-28",
+    "uk.gov.hmrc"       %% "play-frontend-hmrc"             % "6.4.0-play-28",
     "com.sun.mail"      % "javax.mail"                      % "1.6.2"
   )
 
