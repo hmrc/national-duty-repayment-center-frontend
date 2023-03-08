@@ -18,7 +18,7 @@ package models.responses
 
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import play.api.libs.json.Json
+import play.api.libs.json.{JsNumber, JsString, Json}
 
 class AddressLookupResponseModelSpec extends AnyFreeSpec with Matchers {
   "AddressLookupResponseModel" - {
@@ -74,6 +74,16 @@ class AddressLookupResponseModelSpec extends AnyFreeSpec with Matchers {
       val expectedUprn = Uprn(200000706253L)
 
       Json.parse(testJson).as[Uprn] must be(expectedUprn)
+    }
+
+    "fail to de-serialise for an invalid JSON input type" in {
+      val testJson = JsString("200000706253")
+      Uprn.format.reads(testJson).isError mustBe true
+    }
+
+    "fail to de-serialise for an invalid JSON input" in {
+      val testJson = JsNumber(20000.888883)
+      Uprn.format.reads(testJson).isError mustBe true
     }
   }
 

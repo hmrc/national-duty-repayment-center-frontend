@@ -16,12 +16,13 @@
 
 package models
 
+import models.ClaimReasonType._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatest.matchers.must.Matchers
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.OptionValues
+import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
 
 class ClaimReasonTypeSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
@@ -30,7 +31,7 @@ class ClaimReasonTypeSpec extends AnyWordSpec with Matchers with ScalaCheckPrope
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(ClaimReasonType.values.toSeq)
+      val gen = Gen.oneOf(ClaimReasonType.values)
 
       forAll(gen) {
         claimReasonType =>
@@ -50,12 +51,24 @@ class ClaimReasonTypeSpec extends AnyWordSpec with Matchers with ScalaCheckPrope
 
     "serialise" in {
 
-      val gen = Gen.oneOf(ClaimReasonType.values.toSeq)
+      val gen = Gen.oneOf(ClaimReasonType.values)
 
       forAll(gen) {
         claimReasonType =>
           Json.toJson(claimReasonType) mustEqual JsString(claimReasonType.toString)
       }
+    }
+
+    "check for abbreviations for the input ClaimReasonType" in {
+      ClaimReasonType.abbreviation(CommodityCodeChange) mustBe "Comm Code"
+      ClaimReasonType.abbreviation(CurrencyChanges) mustBe "Value"
+      ClaimReasonType.abbreviation(CustomsSpecialProcedures) mustBe "CPC"
+      ClaimReasonType.abbreviation(Preference) mustBe "Preference"
+      ClaimReasonType.abbreviation(Retroactivequota) mustBe "Quota"
+      ClaimReasonType.abbreviation(ReturnOfUnwantedGoods) mustBe "Returned Goods"
+      ClaimReasonType.abbreviation(ReturnedGoodsRelief) mustBe "RGR"
+      ClaimReasonType.abbreviation(Value) mustBe "Value"
+      ClaimReasonType.abbreviation(Other) mustBe "Other"
     }
   }
 }
