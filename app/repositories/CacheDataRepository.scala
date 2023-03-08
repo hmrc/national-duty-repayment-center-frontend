@@ -16,14 +16,21 @@
 
 package repositories
 
-import java.time.Instant
+import java.time.{Clock, Instant}
 import java.util.concurrent.TimeUnit
 import com.mongodb.client.model.Indexes.ascending
 
 import javax.inject.{Inject, Singleton}
 import models.{SessionState, UserAnswers}
 import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.{IndexModel, IndexOptions, ReplaceOptions, Updates}
+import org.mongodb.scala.model.{
+  FindOneAndUpdateOptions,
+  IndexModel,
+  IndexOptions,
+  ReplaceOptions,
+  ReturnDocument,
+  Updates
+}
 import play.api.Configuration
 import play.api.libs.json.Json
 import services.FileUploadState
@@ -34,7 +41,7 @@ import uk.gov.hmrc.play.http.logging.Mdc
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CacheDataRepository @Inject() (mongoComponent: MongoComponent, config: Configuration)(implicit
+class CacheDataRepository @Inject() (mongoComponent: MongoComponent, config: Configuration, clock: Clock)(implicit
   ec: ExecutionContext
 ) extends PlayMongoRepository[UserAnswers](
       collectionName = "cache-data",
@@ -59,13 +66,16 @@ class CacheDataRepository @Inject() (mongoComponent: MongoComponent, config: Con
   private val upsert = ReplaceOptions().upsert(true)
 
   def get(id: String): Future[Option[UserAnswers]] = Mdc.preservingMdc {
-    collection.findOneAndUpdate(filter(id), Updates.set("lastUpdated", Instant.now())).toFutureOption()
+    collection.findOneAndUpdate(
+      filter(id),
+      Updates.set("lastUpdated", Instant.now(clock))
+    ).toFutureOption()
   }
 
   def set(userAnswers: UserAnswers): Future[Boolean] = Mdc.preservingMdc {
     collection.replaceOne(
       filter(userAnswers.id),
-      userAnswers.copy(lastUpdated = Instant.now()),
+      userAnswers.copy(lastUpdated = Instant.now(clock)),
       upsert
     ).toFutureOption() map (result => result.exists(_.wasAcknowledged()))
   }

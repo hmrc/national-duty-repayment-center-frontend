@@ -15,6 +15,8 @@ lazy val root = (project in file("."))
   .settings(DefaultBuildSettings.defaultSettings(): _*)
   .settings(SbtDistributablesPlugin.publishingSettings: _*)
   .settings(inConfig(Test)(testSettings): _*)
+  .configs(IntegrationTest)
+  .settings(inConfig(IntegrationTest)(itSettings): _*)
   .settings(majorVersion := 0)
   .settings(
     // To resolve a bug with version 2.x.x of the scoverage plugin - https://github.com/sbt/sbt/issues/6997
@@ -59,6 +61,22 @@ lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   fork        := true,
   javaOptions ++= Seq(
     "-Dconfig.resource=test.application.conf"
+  )
+)
+
+
+lazy val itSettings = Defaults.itSettings ++ Seq(
+  unmanagedSourceDirectories := Seq(
+    baseDirectory.value / "it",
+    baseDirectory.value / "test" / "generators"
+  ),
+  unmanagedResourceDirectories := Seq(
+    baseDirectory.value / "it" / "resources"
+  ),
+  parallelExecution := false,
+  fork := true,
+  javaOptions ++= Seq(
+    "-Dconfig.resource=it.application.conf"
   )
 )
 
