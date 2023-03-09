@@ -23,7 +23,7 @@ lazy val root = (project in file("."))
     libraryDependencySchemes ++= Seq("org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always)
   )
   .settings(
-    name := appName,
+    name         := appName,
     scalaVersion := "2.13.10",
     RoutesKeys.routesImport += "models._",
     TwirlKeys.templateImports ++= Seq(
@@ -39,31 +39,30 @@ lazy val root = (project in file("."))
       ".*BuildInfo.*;.*javascript.*;.*Routes.*;.*GuiceInjector;" +
       ".*ControllerConfiguration;.*LanguageSwitchController",
     ScoverageKeys.coverageMinimumStmtTotal := 90,
-    ScoverageKeys.coverageFailOnMinimum := true,
-    ScoverageKeys.coverageHighlighting := true,
+    ScoverageKeys.coverageFailOnMinimum    := true,
+    ScoverageKeys.coverageHighlighting     := true,
     scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
     libraryDependencies += "org.webjars.bower" % "bootstrap-sass" % "3.3.7",
     libraryDependencies += "org.webjars.bower" % "compass-mixins" % "1.0.2",
-    retrieveManaged := true,
+    retrieveManaged                           := true,
     update / evictionWarningOptions :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     // prevent removal of unused code which generates warning errors due to use of third-party libs
     uglifyCompressOptions := Seq("unused=false", "dead_code=false"),
-    pipelineStages := Seq(digest),
+    pipelineStages        := Seq(digest),
     // below line required to force asset pipeline to operate in dev rather than only prod
-    Assets / pipelineStages := Seq(concat,uglify),
+    Assets / pipelineStages := Seq(concat, uglify),
     scalacOptions += "-Wconf:src=routes/.*:s",
-    scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
+    scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s"
   ).settings(scalafmtOnCompile := true)
 
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
-  fork        := true,
+  fork := true,
   javaOptions ++= Seq(
     "-Dconfig.resource=test.application.conf"
   )
 )
-
 
 lazy val itSettings = Defaults.itSettings ++ Seq(
   unmanagedSourceDirectories := Seq(
@@ -74,9 +73,8 @@ lazy val itSettings = Defaults.itSettings ++ Seq(
     baseDirectory.value / "it" / "resources"
   ),
   parallelExecution := false,
-  fork := true,
+  fork              := true,
   javaOptions ++= Seq(
     "-Dconfig.resource=it.application.conf"
   )
 )
-
