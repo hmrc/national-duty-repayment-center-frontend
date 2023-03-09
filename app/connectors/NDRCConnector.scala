@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class NDRCConnector @Inject() (config: Configuration, httpClient: HttpClient)(implicit ec: ExecutionContext)
     extends HttpErrorFunctions {
 
-  private val baseUrl = config.get[Service]("microservice.services.national-duty-repayment-center")
+  private val baseUrl: Service = config.get[Service]("microservice.services.national-duty-repayment-center")
 
   def submitClaim(request: CreateClaimRequest, correlationId: String)(implicit
     hc: HeaderCarrier

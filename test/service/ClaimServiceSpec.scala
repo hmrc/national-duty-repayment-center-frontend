@@ -57,6 +57,18 @@ class ClaimServiceSpec extends SpecBase with Matchers with ScalaCheckPropertyChe
       result mustBe "ABC123"
     }
 
+    "should throw Exception when create case is unsuccessful" in {
+      val testUserAnswers = emptyUserAnswers
+
+      implicit val hc: HeaderCarrier = HeaderCarrier()
+
+      val connector = mock[NDRCConnector]
+
+      val service   = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
+      val exception = intercept[RuntimeException](service.submitClaim(testUserAnswers)(hc))
+      exception.getMessage mustBe "UserAnswers did not contain sufficient data to construct CreateClaimRequest"
+    }
+
     "should create a UUID based correlationId for create claim" in {
 
       implicit val hc: HeaderCarrier = HeaderCarrier()
@@ -174,6 +186,19 @@ class ClaimServiceSpec extends SpecBase with Matchers with ScalaCheckPropertyChe
         service.submitAmendClaim(testUserAnswers)(hc).futureValue
       }
       thrown.getMessage contains message
+    }
+
+    "should throw exception when error returned for amend case" in {
+      val testUserAnswers = emptyUserAnswers
+
+      implicit val hc: HeaderCarrier = HeaderCarrier()
+
+      val connector = mock[NDRCConnector]
+      val service   = new ClaimService(connector, createClaimBuilder, amendClaimBuilder)(ExecutionContext.global)
+      val thrown = intercept[RuntimeException] {
+        service.submitAmendClaim(testUserAnswers)(hc).futureValue
+      }
+      thrown.getMessage contains "UserAnswers did not contain sufficient data to construct AmendClaimRequest"
     }
 
     "should submit an updated ClaimDescription" in {

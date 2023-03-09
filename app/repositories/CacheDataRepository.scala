@@ -16,21 +16,10 @@
 
 package repositories
 
-import java.time.{Clock, Instant}
-import java.util.concurrent.TimeUnit
 import com.mongodb.client.model.Indexes.ascending
-
-import javax.inject.{Inject, Singleton}
 import models.{SessionState, UserAnswers}
 import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.{
-  FindOneAndUpdateOptions,
-  IndexModel,
-  IndexOptions,
-  ReplaceOptions,
-  ReturnDocument,
-  Updates
-}
+import org.mongodb.scala.model.{IndexModel, IndexOptions, ReplaceOptions, Updates}
 import play.api.Configuration
 import play.api.libs.json.Json
 import services.FileUploadState
@@ -38,6 +27,9 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 import uk.gov.hmrc.play.http.logging.Mdc
 
+import java.time.{Clock, Instant}
+import java.util.concurrent.TimeUnit
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
