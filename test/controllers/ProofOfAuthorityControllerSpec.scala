@@ -17,12 +17,14 @@
 package controllers
 
 import base.SpecBase
-import models.FileType.ProofOfAuthority
-import models.{FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import models.FileType.{ProofOfAuthority, SupportingEvidence}
+import models.requests.UploadRequest
+import models.{FileType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.{ArgumentCaptor, MockitoSugar}
-import play.api.http.Status.SEE_OTHER
+import play.api.http.Status.{CREATED, NO_CONTENT, SEE_OTHER}
 import play.api.i18n.Messages
+import play.api.libs.json.{JsValue, Json}
 import play.api.test.Helpers.{
   contentAsString,
   defaultAwaitTimeout,
@@ -31,11 +33,13 @@ import play.api.test.Helpers.{
   running,
   status,
   writeableOf_AnyContentAsEmpty,
+  writeableOf_AnyContentAsFormUrlEncoded,
+  writeableOf_AnyContentAsJson,
   GET,
   POST
 }
 import play.twirl.api.HtmlFormat
-import services.{FileUploadState, FileUploaded}
+import services.{FileUploadState, FileUploaded, UploadFile}
 
 import java.time.ZonedDateTime
 import scala.concurrent.Future
@@ -301,6 +305,215 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual 303
         redirectLocation(result).value mustEqual routes.ProofOfAuthorityController.showFileUpload().url
+      }
+      application.stop()
+    }
+
+  }
+
+  "GET /file-rejected" should {
+    "return BAD_REQUEST and render page with error" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .build()
+
+      running(application) {
+
+        val request = buildRequest(
+          GET,
+          routes.ProofOfAuthorityController.markFileUploadAsRejected().url
+        ).withFormUrlEncodedBody("key" -> "")
+        val result = route(application, request).value
+
+        status(result) mustEqual 400
+      }
+      application.stop()
+    }
+
+    "redirect to showFileUpload page when errorCode is MissingFile" in {
+
+      val fileUploadState = UploadFile(
+        "foo-bar-ref-2",
+        UploadRequest(
+          href = "https://s3.bucket",
+          fields = Map(
+            "callbackUrl"     -> "https://foo.bar/callback",
+            "successRedirect" -> "https://foo.bar/success",
+            "errorRedirect"   -> "https://foo.bar/failure"
+          )
+        ),
+        FileUploads(files =
+          Seq(FileUpload.Initiated(1, "foo-bar-ref-1"))
+        )
+      )
+      val userAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadState))
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(Some(fileUploadState), Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = buildRequest(
+          GET,
+          routes.ProofOfAuthorityController.markFileUploadAsRejected().url
+        ).withFormUrlEncodedBody("key" -> "key", "errorCode" -> "MissingFile", "errorMessage" -> "errorMessage")
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.ProofOfAuthorityController.showFileUpload().url
+      }
+      application.stop()
+    }
+
+    "redirect to showFileUpload page when fileUploadState if None" in {
+
+      val userAnswers = emptyUserAnswers.copy(fileUploadState = None)
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(None, Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = buildRequest(
+          GET,
+          routes.ProofOfAuthorityController.markFileUploadAsRejected().url
+        ).withFormUrlEncodedBody("key" -> "key", "errorCode" -> "MissingFile", "errorMessage" -> "errorMessage")
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.ProofOfAuthorityController.showFileUpload().url
+      }
+      application.stop()
+    }
+  }
+
+  "POST /callback-from-upscan/upload-proof-of-authority/:id" should {
+    val json: JsValue = Json.parse(
+      """{
+        |"reference":"11370e18-6e24-453e-b45a-76d3e32ea33d",
+        |"fileStatus":"READY",
+        |"downloadUrl":"https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+        |"uploadDetails":{
+        |"uploadTimestamp":"2018-04-24T09:30:00Z",
+        |"checksum":"396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+        |"fileName":"test.pdf",
+        |"fileMimeType":"application/pdf"
+        |}
+        |}""".stripMargin
+    )
+
+    "return NO_CONTENT when fileUploadState is of type UploadFile" in {
+      val fileUploadState = UploadFile(
+        "foo-bar-ref-2",
+        UploadRequest(
+          href = "https://s3.bucket",
+          fields = Map(
+            "callbackUrl"     -> "https://foo.bar/callback",
+            "successRedirect" -> "https://foo.bar/success",
+            "errorRedirect"   -> "https://foo.bar/failure"
+          )
+        ),
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "f029444f-415c-4dec-9cf2-36774ec63ab8",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(SupportingEvidence)
+            )
+          )
+        )
+      )
+      val userAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadState))
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(Some(fileUploadState), Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+
+        val request =
+          buildRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
+        val result = route(application, request).value
+        status(result) mustBe NO_CONTENT
+      }
+      application.stop()
+    }
+
+    "return CREATED when fileUploadState is of type FileUploaded" in {
+      val fileUploadState = FileUploaded(
+        FileUploads(files =
+          Seq(
+            FileUpload.Initiated(1, "11370e18-6e24-453e-b45a-76d3e32ea33d"),
+            FileUpload.Accepted(
+              4,
+              "f029444f-415c-4dec-9cf2-36774ec63ab8",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf"
+            ),
+            FileUpload.Failed(
+              3,
+              "4b1e15a4-4152-4328-9448-4924d9aee6e2",
+              UpscanNotification.FailureDetails(UpscanNotification.QUARANTINE, "some reason")
+            ),
+            FileUpload.TimedOut(5, "8d3eae37-fdeb-411c-b38c-0380be472fbc", Some(FileType.SupportingEvidence))
+          )
+        ),
+        acknowledged = false
+      )
+
+      val userAnswers = emptyUserAnswers.copy(fileUploadState = Some(fileUploadState))
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(Some(fileUploadState), Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+
+        val request =
+          buildRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
+        val result = route(application, request).value
+        status(result) mustBe CREATED
+      }
+      application.stop()
+    }
+
+    "return fileStateError when fileUploadState is `None`" in {
+      val userAnswers = emptyUserAnswers
+
+      when(mockSessionRepository.getFileUploadState(any())).thenReturn(
+        Future.successful(SessionState(None, Some(userAnswers)))
+      )
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+
+        val request =
+          buildRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
+        val result = intercept[Exception](route(application, request).value.futureValue)
+        result.toString must include("File upload state error")
+
       }
       application.stop()
     }
