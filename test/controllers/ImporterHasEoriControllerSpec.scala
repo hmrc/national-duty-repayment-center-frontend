@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ImporterHasEoriFormProvider
-import models.ClaimantType.Importer
+import models.ClaimantType.{Importer, Representative}
 import models.{EORI, UserAnswers}
 import org.mockito.{ArgumentCaptor, MockitoSugar}
 import pages.{ClaimantTypePage, ImporterEoriPage, ImporterHasEoriPage}
@@ -53,6 +53,24 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       contentAsString(result) mustEqual
         view(form, defaultBackLink, true)(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET Representative journey" in {
+
+      val userAnswers = UserAnswers(userIdentification)
+        .set(ClaimantTypePage, Representative).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, importerHasEoriRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[ImporterHasEoriView]
+
+      status(result) mustEqual OK
 
       application.stop()
     }
@@ -102,6 +120,31 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
       redirectLocation(result).value mustEqual defaultNextPage.url
 
       persistedAnswers.getValue.get(ImporterHasEoriPage) mustBe Some(false)
+      persistedAnswers.getValue.get(ImporterEoriPage) mustBe None
+
+      application.stop()
+    }
+
+    "redirect to the next page and update answers when valid data is submitted when ImporterHasEoriPage is true" in {
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers.set(ClaimantTypePage, Importer).success.value))
+          .build()
+
+      val request =
+        FakeRequest(POST, importerHasEoriRoute)
+          .withFormUrlEncodedBody(("value", "true"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      persistedAnswers.getValue.get(ImporterHasEoriPage) mustBe Some(true)
       persistedAnswers.getValue.get(ImporterEoriPage) mustBe None
 
       application.stop()

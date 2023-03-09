@@ -21,10 +21,10 @@ import data.TestData
 import data.TestData.addressLookupConfirmation
 import forms.ImporterManualAddressFormProvider
 import models.addresslookup.AddressLookupOnRamp
-import models.{Address, Country, UserAnswers}
+import models.{Address, ClaimantType, Country, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.{ArgumentCaptor, MockitoSugar}
-import pages.ImporterAddressPage
+import pages.{ClaimantTypePage, ImporterAddressPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -83,6 +83,44 @@ class ImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
       ).thenReturn(Future.successful(AddressLookupOnRamp("http://localhost/AddressLookupReturnedRedirect")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[CountryService].toInstance(testCountryService))
+        .overrides(bind[AddressLookupService].toInstance(mockAddressLookupService))
+        .build()
+
+      val request = FakeRequest(GET, importerChangeAddressRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual "http://localhost/AddressLookupReturnedRedirect"
+
+      application.stop()
+
+      // make sure "id" query param is not part of the callback url
+      callBackUrlCaptor.getValue must not include "id="
+    }
+
+    "calls address lookup initialise with correct url in import journey" in {
+
+      val mockAddressLookupService = mock[AddressLookupService]
+      val userAnswers              = emptyUserAnswers.set(ClaimantTypePage, ClaimantType.Importer).success.value
+
+      val callBackUrlCaptor: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
+      when(
+        mockAddressLookupService.initialiseJourney(
+          callBackUrlCaptor.capture(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any(),
+          any()
+        )(any(), any())
+      ).thenReturn(Future.successful(AddressLookupOnRamp("http://localhost/AddressLookupReturnedRedirect")))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(bind[CountryService].toInstance(testCountryService))
         .overrides(bind[AddressLookupService].toInstance(mockAddressLookupService))
         .build()

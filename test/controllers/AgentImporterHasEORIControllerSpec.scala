@@ -76,7 +76,7 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to the next page when valid data is submitted when AgentImporterHasEORI is false" in {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
@@ -84,7 +84,26 @@ class AgentImporterHasEORIControllerSpec extends SpecBase with MockitoSugar {
 
       val request =
         FakeRequest(POST, agentImporterHasEORIRoute)
-          .withFormUrlEncodedBody(("value", AgentImporterHasEORI.options(form).head.value.get))
+          .withFormUrlEncodedBody(("value", AgentImporterHasEORI.Yes.toString))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
+    "redirect to the next page when valid data is submitted when AgentImporterHasEORI is true" in {
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request =
+        FakeRequest(POST, agentImporterHasEORIRoute)
+          .withFormUrlEncodedBody(("value", AgentImporterHasEORI.No.toString))
 
       val result = route(application, request).value
 

@@ -101,6 +101,31 @@ class ClaimantTypeControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
+    "redirect to the next page when valid data is submitted and changePage contains ClaimantTypePage" in {
+
+      val userAnswers = UserAnswers(userIdentification).copy(changePage = Some(ClaimantTypePage))
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.get(any())) thenReturn Future.successful(Some(userAnswers))
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, claimantTypeRoute)
+          .withFormUrlEncodedBody(("value", ClaimantType.options(form).head.value.get))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()

@@ -76,25 +76,27 @@ class ClaimRepaymentTypeControllerSpec extends SpecBase with MockitoSugar {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    ClaimRepaymentType.values.foreach { claimRepaymentType =>
+      s"redirect to the next page when valid data is submitted for claimRepaymentType $claimRepaymentType" in {
+        when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers))
+            .build()
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .build()
+        val request =
+          FakeRequest(POST, claimRepaymentTypeRoute)
+            .withFormUrlEncodedBody(("value[0]", claimRepaymentType.toString))
 
-      val request =
-        FakeRequest(POST, claimRepaymentTypeRoute)
-          .withFormUrlEncodedBody(("value[0]", ClaimRepaymentType.values.head.toString))
+        val result = route(application, request).value
 
-      val result = route(application, request).value
+        status(result) mustEqual SEE_OTHER
 
-      status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual defaultNextPage.url
 
-      redirectLocation(result).value mustEqual defaultNextPage.url
+        application.stop()
+      }
 
-      application.stop()
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
