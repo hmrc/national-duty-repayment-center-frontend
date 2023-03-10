@@ -285,6 +285,22 @@ class AmendCaseSendInformationControllerSpec extends SpecBase with MockitoSugar 
       }
       application.stop()
     }
+
+    "return NOT_FOUND when file verification status fails" in {
+      def fileVerificationUrl(reference: String) =
+        s"${routes.AmendCaseSendInformationController.checkFileVerificationStatus(reference).url}"
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .build()
+
+      running(application) {
+        when(mockSessionRepository.set(emptyUserAnswers)) thenReturn Future.successful(true)
+
+        val request = buildRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0223c"))
+        val result  = route(application, request).value
+        status(result) mustEqual 404
+      }
+      application.stop()
+    }
   }
 
   "GET /file-verification" should {

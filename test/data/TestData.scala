@@ -94,6 +94,15 @@ object TestData {
   val testRepresentativeDeclarantName: String = "Representative declarant name"
   val testImporterName: UserName              = UserName("Importer One")
 
+  val uploadedFiles: Seq[UploadedFile] = List(UploadedFile(
+    upscanReference = "ref-123",
+    downloadUrl = "/bucket/test1.jpeg",
+    uploadTimestamp = ZonedDateTime.of(2020, 10, 10, 10, 10, 10, 0, ZoneId.of("UTC")),
+    checksum = "f55a741917d512ab4c547ea97bdfdd8df72bed5fe51b6a248e0a5a0ae58061c8",
+    fileName = "test1.jpeg",
+    fileMimeType = "image/jpeg"
+  ))
+
   val testClaimDetails: ClaimDetails = ClaimDetails(
     FormType("01"),
     CustomsRegulationType.UnionsCustomsCodeRegulation,
@@ -171,22 +180,41 @@ object TestData {
   )
 
   val testClaimDetailsWithUKCustomsRegulationType: ClaimDetails = ClaimDetails(
-    FormType("01"),
-    CustomsRegulationType.UKCustomsCodeRegulation,
-    None,
-    Some(UkRegulationType.Rejected),
-    testClaimantTypeImporter,
-    NumberOfEntriesType.Single,
-    None,
-    testEntryDetailsJan2021,
-    ClaimReasonType.Cpuchange,
-    testClaimDescriptionSubmitted,
-    LocalDate.now(),
-    LocalDate.now(),
-    testWhomToPayCMA,
-    RepaymentType.CMA,
-    testDeclarantRefNumber,
-    testDeclarantName.toString
+    FormType = FormType("01"),
+    CustomRegulationType = CustomsRegulationType.UKCustomsCodeRegulation,
+    ClaimedUnderArticle = None,
+    ClaimedUnderRegulation = Some(UkRegulationType.Rejected),
+    Claimant = testClaimantTypeImporter,
+    ClaimType = NumberOfEntriesType.Single,
+    NoOfEntries = None,
+    EntryDetails = testEntryDetailsJan2021,
+    ClaimReason = ClaimReasonType.Cpuchange,
+    ClaimDescription = testClaimDescriptionSubmitted,
+    DateReceived = LocalDate.now(),
+    ClaimDate = LocalDate.now(),
+    PayeeIndicator = WhomToPay.Importer,
+    PaymentMethod = RepaymentType.BACS,
+    DeclarantRefNumber = testDeclarantRefNumber,
+    DeclarantName = testDeclarantName.toString
+  )
+
+  val testCreateClaimRequestWithUKCustomsRegulationTypeMultipleEntries: ClaimDetails = ClaimDetails(
+    FormType = FormType("01"),
+    CustomRegulationType = CustomsRegulationType.UKCustomsCodeRegulation,
+    ClaimedUnderArticle = None,
+    ClaimedUnderRegulation = Some(UkRegulationType.Rejected),
+    Claimant = testClaimantTypeImporter,
+    ClaimType = NumberOfEntriesType.Multiple,
+    NoOfEntries = Some("3"),
+    EntryDetails = testEntryDetailsJan2021,
+    ClaimReason = ClaimReasonType.Cpuchange,
+    ClaimDescription = testClaimDescriptionSubmitted,
+    DateReceived = LocalDate.now(),
+    ClaimDate = LocalDate.now(),
+    PayeeIndicator = WhomToPay.Importer,
+    PaymentMethod = RepaymentType.BACS,
+    DeclarantRefNumber = testDeclarantRefNumber,
+    DeclarantName = testDeclarantName.toString
   )
 
   val testClaimDetailsWithRepresentativeSinglePayingRepresentativeBacs: ClaimDetails = ClaimDetails(
@@ -402,13 +430,19 @@ object TestData {
       .flatMap(_.set(DeclarantNamePage, testDeclarantName))
       .flatMap(_.set(ImporterAddressPage, testImporterManualAddress))
       .flatMap(_.set(EmailAddressAndPhoneNumberPage, testEmailAndPhoneNumber))
-      .flatMap(_.set(RepaymentTypePage, RepaymentType.CMA))
+      .flatMap(_.set(RepaymentTypePage, RepaymentType.BACS))
       .flatMap(
         _.set(
           DeclarantReferenceNumberPage,
           DeclarantReferenceNumber(DeclarantReferenceType.Yes, Some(testDeclarantRefNumber))
         )
       )
+      .get
+
+  def populateUserAnswersWithUKCustomsRegulationTypeMultipleEntries(userAnswers: UserAnswers): UserAnswers =
+    populateUserAnswersWithUKCustomsRegulationType(userAnswers)
+      .copy(fileUploadState = Some(FileUploaded(fileUploads = FileUploads(Seq(fileUploaded)))))
+      .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("3")))
       .get
 
   def populateUserAnswersWithRepresentativeSinglePayingRepresentativeBacs(userAnswers: UserAnswers): UserAnswers =
@@ -612,6 +646,18 @@ object TestData {
       testDocumentList
     ),
     Nil
+  )
+
+  val testCreateClaimRequestWithUKCustomsRegulationTypeAndMultipleEntries: CreateClaimRequest = CreateClaimRequest(
+    Content(
+      testCreateClaimRequestWithUKCustomsRegulationTypeMultipleEntries,
+      None,
+      testImporterDetails,
+      None,
+      testDutyTypeTaxDetails,
+      testDocumentList
+    ),
+    uploadedFiles
   )
 
   val testCreateClaimRequestWithRepresentativeSinglePayingRepresentativeBacs: CreateClaimRequest = CreateClaimRequest(

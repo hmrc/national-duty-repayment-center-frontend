@@ -82,6 +82,14 @@ class CreateClaimBuilderSpec extends SpecBase with Matchers with MockitoSugar {
       result mustBe Some(testCreateClaimRequestWithUKCustomsRegulationType)
     }
 
+    "returns a valid CreateClaimRequest for a userAnswers containing UK Customs Regulation type and NumberOfEntries is multiple" in {
+      val testUserAnswers = populateUserAnswersWithUKCustomsRegulationTypeMultipleEntries(emptyUserAnswers)
+
+      val result = createClaimBuilder.buildValidClaimRequest(testUserAnswers)
+
+      result mustBe Some(testCreateClaimRequestWithUKCustomsRegulationTypeAndMultipleEntries)
+    }
+
     "returns a valid CreateClaimRequest for a userAnswers containing claimant type Representative, single entry, and paying representative by bacs" in {
       val testUserAnswers = populateUserAnswersWithRepresentativeSinglePayingRepresentativeBacs(emptyUserAnswers)
 

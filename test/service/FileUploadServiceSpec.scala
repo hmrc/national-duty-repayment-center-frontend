@@ -17,7 +17,6 @@
 package service
 
 import base.SpecBase
-import connectors.UpscanInitiateRequest
 import models.FileType.{Bulk, SupportingEvidence}
 import models.FileUpload.Initiated
 import models.requests.UploadRequest
@@ -834,41 +833,4 @@ class FileUploadServiceSpec extends SpecBase with Matchers with ScalaCheckProper
 
     fileUpload.remove(Bulk) mustBe expectedResult
   }
-
-  /*"fileUploadOrUploaded" should {
-    "return FileUploadState when showUploadSummaryIfAny is true" in {
-      val fileUpload = UploadFile(
-        "foo-bar-ref-2",
-        UploadRequest(
-          href = "https://s3.bucket",
-          fields = Map(
-            "callbackUrl" -> "https://foo.bar/callback",
-            "successRedirect" -> "https://foo.bar/success",
-            "errorRedirect" -> "https://foo.bar/failure"
-          )
-        ),
-        FileUploads(files =
-          Seq(
-            FileUpload.Accepted(
-              1,
-              "foo-bar-ref-1",
-              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
-              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-              "test.pdf",
-              "application/pdf",
-              Some(Bulk)
-            ),
-            FileUpload.Initiated(2, "foo-bar-ref-2")
-          )
-        )
-      )
-
-      whenReady(service.fileUploadOrUploaded(UpscanInitiateRequest("/some-callback-url"), SupportingEvidence)(currentState)) {
-        newState => assert(newState == expectedState)
-      }
-
-    }
-  }*/
-
 }
