@@ -147,5 +147,19 @@ class EvidenceSupportingDocsControllerSpec extends SpecBase {
 
       application.stop()
     }
+
+    "Redirect to next page on submission" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(POST, routes.EvidenceSupportingDocsController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustBe "/default-next-page"
+
+      application.stop()
+    }
   }
 }

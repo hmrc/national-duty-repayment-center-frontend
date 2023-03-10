@@ -219,7 +219,9 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
   override val upscanInitiateBaseUrl: String =
     configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
 
-  lazy val locationCanonicalList: String = loadConfig("location.canonical.list")
+  lazy val locationCanonicalList: String = configuration.getOptional[String]("location.canonical.list").getOrElse(
+    throw new Exception(s"Missing configuration key: location.canonical.list")
+  )
 
   override val routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
@@ -227,8 +229,5 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
   override def languageMap: Map[String, Lang] = if (languageTranslationEnabled)
     Map("english"    -> Lang("en"), "cymraeg" -> Lang("cy"))
   else Map("english" -> Lang("en"))
-
-  private def loadConfig(key: String): String =
-    configuration.getOptional[String](key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
 }

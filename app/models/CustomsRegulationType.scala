@@ -16,11 +16,6 @@
 
 package models
 
-import play.api.data.Form
-import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-
 sealed trait CustomsRegulationType
 
 object CustomsRegulationType extends Enumerable.Implicits {
@@ -29,15 +24,6 @@ object CustomsRegulationType extends Enumerable.Implicits {
   case object UKCustomsCodeRegulation     extends WithName("02") with CustomsRegulationType
 
   val values: Seq[CustomsRegulationType] = Seq(UKCustomsCodeRegulation, UnionsCustomsCodeRegulation)
-
-  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
-    value =>
-      RadioItem(
-        value = Some(value.toString),
-        content = Text(messages(s"customsRegulationType.${value.toString}")),
-        checked = form("value").value.contains(value.toString)
-      )
-  }
 
   implicit val enumerable: Enumerable[CustomsRegulationType] =
     Enumerable(values.map(v => v.toString -> v): _*)

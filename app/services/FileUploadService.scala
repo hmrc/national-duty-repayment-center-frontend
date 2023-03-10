@@ -79,7 +79,7 @@ trait FileUploadService {
     showUploadSummaryIfAny: Boolean,
     fileType: Option[FileType]
   )(implicit ec: ExecutionContext): Future[FileUploadState] = {
-    val fileUploads = fileUploadsOpt.getOrElse(FileUploads())
+    val fileUploads: FileUploads = fileUploadsOpt.getOrElse(FileUploads())
     if (showUploadSummaryIfAny && fileUploads.nonEmpty)
       Future.successful(FileUploaded(fileUploads))
     else
@@ -267,15 +267,6 @@ trait FileUploadService {
         )
       )
   }
-
-  final def submitedUploadAnotherFileChoice(upscanRequest: UpscanInitiateRequest, fileType: Option[FileType])(
-    upscanInitiate: UpscanInitiateApi
-  )(state: FileUploadState)(implicit ec: ExecutionContext): Future[FileUploadState] =
-    state match {
-      case _ @FileUploaded(fileUploads, _) =>
-        fileUploadOrUploaded(upscanRequest, upscanInitiate, Some(fileUploads), showUploadSummaryIfAny = false, fileType)
-      case _ => Future.successful(state)
-    }
 
   def fileUploadWasRejected(error: S3UploadError)(state: FileUploadState): Future[FileUploadState] = Future.successful {
     state match {

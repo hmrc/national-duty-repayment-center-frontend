@@ -32,20 +32,6 @@ object JsonFormatUtils {
     def writes(o: A): JsValue = JsString(makeString(o))
   }
 
-  def intFormat[A](fromInt: Int => A)(makeInt: A => Int): Format[A] = new Format[A] {
-
-    def reads(json: JsValue): JsResult[A] = json match {
-      case JsNumber(num) =>
-        Try(num.toIntExact) match {
-          case Failure(_)     => JsError("Expected number to be an integer")
-          case Success(value) => JsSuccess(fromInt(value))
-        }
-      case _ => JsError("Expected JSON number type")
-    }
-
-    def writes(o: A): JsValue = JsNumber(makeInt(o))
-  }
-
   def longFormat[A](fromLong: Long => A)(makeLong: A => Long): Format[A] = new Format[A] {
 
     def reads(json: JsValue): JsResult[A] = json match {

@@ -22,7 +22,7 @@ import javax.inject.Inject
 import models.CustomsRegulationType.UnionsCustomsCodeRegulation
 import models.UserAnswers
 import navigation.CreateNavigator
-import pages.{EntryDetailsPage, _}
+import pages._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

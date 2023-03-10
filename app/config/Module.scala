@@ -33,6 +33,7 @@ import uk.gov.hmrc.play.audit.http.HttpAuditing
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.http.ws.WSHttp
 
+import java.time.{Clock, ZoneOffset}
 import scala.util.matching.Regex
 
 class Module extends AbstractModule with AkkaGuiceSupport {
@@ -40,6 +41,7 @@ class Module extends AbstractModule with AkkaGuiceSupport {
   override def configure(): Unit = {
     bind(classOf[HttpGet]).to(classOf[CustomHttpClient])
     bind(classOf[HttpPost]).to(classOf[CustomHttpClient])
+    bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
     bind(classOf[FrontendAppConfig]).to(classOf[FrontendAppConfigImpl]).asEagerSingleton()
     bindActor[CheckStateActor]("check-state-actor")
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()

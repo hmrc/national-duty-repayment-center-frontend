@@ -18,10 +18,11 @@ package controllers
 
 import base.SpecBase
 import forms.ImporterEoriFormProvider
+import models.ClaimantType.Importer
 import models.{EORI, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
-import pages.ImporterEoriPage
+import pages.{ClaimantTypePage, ImporterEoriPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.ImporterEoriView
@@ -40,6 +41,25 @@ class ImporterEoriControllerSpec extends SpecBase with MockitoSugar {
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(GET, importerEoriRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[ImporterEoriView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(form, defaultBackLink)(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a GET importers journey" in {
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers.set(ClaimantTypePage, Importer).success.value)).build()
 
       val request = FakeRequest(GET, importerEoriRoute)
 
@@ -80,6 +100,25 @@ class ImporterEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, importerEoriRoute)
+          .withFormUrlEncodedBody(("value", "GB123456123456"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
+    "redirect to the next page when valid data is submitted Importers journey" in {
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers.set(ClaimantTypePage, Importer).success.value))
           .build()
 
       val request =
