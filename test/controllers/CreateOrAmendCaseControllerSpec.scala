@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.CreateOrAmendCaseFormProvider
+import models.CreateOrAmendCase.AmendCase
 import models.{CreateOrAmendCase, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.{ArgumentCaptor, MockitoSugar}
@@ -94,6 +95,36 @@ class CreateOrAmendCaseControllerSpec extends SpecBase with MockitoSugar {
       val request =
         FakeRequest(POST, createOrAmendCaseRoute)
           .withFormUrlEncodedBody(("value", CreateOrAmendCase.options(form).head.value.get))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+
+      persistedAnswers.getValue.changePage mustBe None
+    }
+
+    "redirect to the next page when valid data is submitted option as amend" in {
+
+      val userAnswers =
+        UserAnswers(userIdentification).set(CreateOrAmendCasePage, CreateOrAmendCase.values.head).success.value.copy(
+          changePage = Some("change-page-value")
+        )
+
+      val persistedAnswers: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
+      when(mockSessionRepository.set(persistedAnswers.capture())) thenReturn Future.successful(true)
+      when(mockSessionRepository.resetData(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .build()
+
+      val request =
+        FakeRequest(POST, createOrAmendCaseRoute)
+          .withFormUrlEncodedBody(("value", AmendCase.toString))
 
       val result = route(application, request).value
 

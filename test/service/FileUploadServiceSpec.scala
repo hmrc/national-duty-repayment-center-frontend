@@ -17,12 +17,14 @@
 package service
 
 import base.SpecBase
+import connectors.UpscanInitiateRequest
 import models.FileType.{Bulk, SupportingEvidence}
-import models.FileUpload.Initiated
+import models.FileUpload.{Initiated, TimedOut}
 import models.requests.UploadRequest
 import models.{
   DuplicateFileUpload,
   FileTransmissionFailed,
+  FileTransmissionTimedOut,
   FileUpload,
   FileUploads,
   FileVerificationFailed,
@@ -37,6 +39,8 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import services.{FileUploadService, FileUploaded, UploadFile}
 
 import java.time.ZonedDateTime
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class FileUploadServiceSpec extends SpecBase with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
@@ -832,5 +836,129 @@ class FileUploadServiceSpec extends SpecBase with Matchers with ScalaCheckProper
     val expectedResult = fileUpload.copy(fileUploads = FileUploads(List(Initiated(2, "foo-bar-ref-2", None))))
 
     fileUpload.remove(Bulk) mustBe expectedResult
+  }
+
+  "fileUploadOrUploaded" must {
+    "fileUploaded when showUploadSummaryIfAny is true and  fileUploads has data" in {
+      val upscanRequest = UpscanInitiateRequest("url")
+      val fileUploads = FileUploads(files =
+        Seq(
+          FileUpload.Accepted(
+            1,
+            "foo-bar-ref-1",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "test.pdf",
+            "application/pdf",
+            Some(SupportingEvidence)
+          ),
+          FileUpload.Initiated(2, "foo-bar-ref-2")
+        )
+      )
+
+      val expectedResult = FileUploaded(fileUploads)
+
+      service.fileUploadOrUploaded(
+        upscanRequest,
+        _ => Future(uscanResponse),
+        Some(fileUploads),
+        true,
+        None
+      ).futureValue mustBe expectedResult
+    }
+  }
+
+  "resetFileUploadStatusToInitiated" must {
+    "rest fileUpload status to initiated" in {
+
+      val uploadedFiles = UploadFile(
+        "foo-bar-ref-1",
+        UploadRequest(
+          href = "https://s3.bucket",
+          fields = Map(
+            "callbackUrl"     -> "https://foo.bar/callback",
+            "successRedirect" -> "https://foo.bar/success",
+            "errorRedirect"   -> "https://foo.bar/failure"
+          )
+        ),
+        FileUploads(files =
+          Seq(
+            FileUpload.Accepted(
+              1,
+              "foo-bar-ref-1",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "test.pdf",
+              "application/pdf",
+              Some(SupportingEvidence)
+            )
+          )
+        ),
+        maybeUploadError = Some(FileTransmissionTimedOut("timeeout"))
+      )
+
+      service.initiateFileUpload(UpscanInitiateRequest("url"), None)(_ => Future(uscanResponse))(
+        Some(uploadedFiles)
+      ).futureValue.fileUploads mustBe FileUploads(List(Initiated(1, "foo-bar-ref-1", Some(SupportingEvidence))))
+    }
+  }
+
+  "fileUploadTimedOut" must {
+    "return fileUploadTimedOut state" in {
+      val fileUploadState = UploadFile(
+        "foo-bar-ref-1",
+        UploadRequest(
+          href = "https://s3.bucket",
+          fields = Map(
+            "callbackUrl"     -> "https://foo.bar/callback",
+            "successRedirect" -> "https://foo.bar/success",
+            "errorRedirect"   -> "https://foo.bar/failure"
+          )
+        ),
+        FileUploads(files =
+          Seq(
+            FileUpload.Initiated(2, "foo-bar-ref-2")
+          )
+        ),
+        None
+      )
+
+      service.fileUploadTimedOut(fileUploadState).fileUploads mustBe FileUploads(List(TimedOut(
+        2,
+        "foo-bar-ref-2",
+        None
+      )))
+    }
+  }
+
+  "removeFileUploadBy" must {
+    "remove files by reference" in {
+      val fileAccepted = FileUpload.Accepted(
+        1,
+        "foo-bar-ref-1",
+        "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+        ZonedDateTime.parse("2018-04-24T09:30:00Z"),
+        "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+        "test.pdf",
+        "application/pdf",
+        Some(SupportingEvidence)
+      )
+      val fileUploadState = FileUploaded(FileUploads(files =
+        Seq(
+          fileAccepted.copy(reference = "foo-bar-ref-1"),
+          fileAccepted.copy(reference = "foo-bar-ref-2")
+        )
+      ))
+
+      val result = service.removeFileUploadBy("foo-bar-ref-1")(UpscanInitiateRequest("url"))(_ =>
+        Future(uscanResponse)
+      )(fileUploadState)
+      result.futureValue.fileUploads mustBe FileUploads(List(
+        fileAccepted.copy(reference = "foo-bar-ref-2")
+      ))
+
+    }
   }
 }
