@@ -82,12 +82,8 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @scripts = {
-    @hmrcScripts()
-    <script @CSPNonce.attr src='@controllers.routes.Assets.versioned("javascripts/ndrcfrontend.js")'></script>
-}
-
-@afterContentScripts = {
-    <script @CSPNonce.attr src='@controllers.routes.Assets.versioned("javascripts/backlinkfix.js")'></script>
+    @hmrcScripts(nonce = CSPNonce.get)
+    <script src='@controllers.routes.Assets.versioned("javascripts/ndrcfrontend.js")'></script>
 }
 
 @beforeContentBlock = {
@@ -130,6 +126,6 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
   headerBlock = Some(siteHeader(timeout)),
   beforeContentBlock = Some(beforeContentBlock),
   footerBlock = Some(hmrcStandardFooter()),
-  bodyEndBlock = Some(afterContentScripts),
+  bodyEndBlock = None,
   scriptsBlock = Some(scripts)
 )(content)

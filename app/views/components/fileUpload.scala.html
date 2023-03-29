@@ -16,16 +16,15 @@
 
 @import views.UploadFileViewContext
 @import config.FrontendAppConfig
-@import views.html.helper.CSPNonce
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.fileupload.FileUpload
 
 @this(govukFileUpload: GovukFileUpload,
       appConfig: FrontendAppConfig,
       context : UploadFileViewContext)
 
-@(labelKey: String, maybeUploadError: Option[FileUploadError])(implicit messages: Messages, header:RequestHeader)
+@(labelKey: String, maybeUploadError: Option[FileUploadError])(implicit messages: Messages)
 
-<script @CSPNonce.attr>
+<script>
 function addFileChangeEvent() {
     const select = document.querySelector('#file');
     select.addEventListener('change', onFileSelect);
