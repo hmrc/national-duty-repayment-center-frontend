@@ -25,6 +25,7 @@ import org.mockito.{ArgumentCaptor, MockitoSugar}
 import play.api.http.Status.{CREATED, NO_CONTENT, SEE_OTHER}
 import play.api.i18n.Messages
 import play.api.libs.json.{JsValue, Json}
+import play.api.test.FakeRequest
 import play.api.test.Helpers.{
   contentAsString,
   defaultAwaitTimeout,
@@ -57,7 +58,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
           Future.successful(SessionState(None, Some(emptyUserAnswers)))
         )
         when(mockSessionRepository.updateSession(any(), any())) thenReturn Future.successful(true)
-        val request = buildRequest(GET, fileUploadUrl)
+        val request = FakeRequest(GET, fileUploadUrl)
         val result  = route(application, request).value
         status(result) mustEqual 200
         contentAsString(result) must include(htmlEscapedMessage("proof-of-authority.heading"))
@@ -101,22 +102,22 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         when(mockSessionRepository.set(userAnswers)) thenReturn Future.successful(true)
 
-        val request = buildRequest(GET, fileVerificationUrl("11370e18-6e24-453e-b45a-76d3e32ea33d"))
+        val request = FakeRequest(GET, fileVerificationUrl("11370e18-6e24-453e-b45a-76d3e32ea33d"))
         val result  = route(application, request).value
         status(result) mustEqual 200
         contentAsString(result) mustEqual """{"fileStatus":"NOT_UPLOADED"}"""
 
-        val request2 = buildRequest(GET, fileVerificationUrl("f029444f-415c-4dec-9cf2-36774ec63ab8"))
+        val request2 = FakeRequest(GET, fileVerificationUrl("f029444f-415c-4dec-9cf2-36774ec63ab8"))
         val result2  = route(application, request2).value
         status(result2) mustEqual 200
         contentAsString(result2) mustEqual """{"fileStatus":"ACCEPTED"}"""
 
-        val request3 = buildRequest(GET, fileVerificationUrl("4b1e15a4-4152-4328-9448-4924d9aee6e2"))
+        val request3 = FakeRequest(GET, fileVerificationUrl("4b1e15a4-4152-4328-9448-4924d9aee6e2"))
         val result3  = route(application, request3).value
         status(result3) mustEqual 200
         contentAsString(result3) mustEqual """{"fileStatus":"FAILED"}"""
 
-        val request4 = buildRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0114c"))
+        val request4 = FakeRequest(GET, fileVerificationUrl("f0e317f5-d394-42cc-93f8-e89f4fc0114c"))
         val result4  = route(application, request4).value
         status(result4) mustEqual 404
       }
@@ -154,7 +155,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
 
-        val request = buildRequest(GET, routes.ProofOfAuthorityController.showWaitingForFileVerification().url)
+        val request = FakeRequest(GET, routes.ProofOfAuthorityController.showWaitingForFileVerification().url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303
@@ -176,7 +177,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
 
-        val request = buildRequest(GET, routes.ProofOfAuthorityController.showWaitingForFileVerification().url)
+        val request = FakeRequest(GET, routes.ProofOfAuthorityController.showWaitingForFileVerification().url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303
@@ -213,7 +214,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = buildRequest(POST, routes.ProofOfAuthorityController.onContinue().url)
+        val request = FakeRequest(POST, routes.ProofOfAuthorityController.onContinue().url)
         val result  = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
@@ -237,7 +238,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = buildRequest(POST, routes.ProofOfAuthorityController.onContinue().url)
+        val request = FakeRequest(POST, routes.ProofOfAuthorityController.onContinue().url)
         val result  = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
@@ -278,7 +279,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = buildRequest(GET, routes.ProofOfAuthorityController.onRemove("foo-bar-ref-1").url)
+        val request = FakeRequest(GET, routes.ProofOfAuthorityController.onRemove("foo-bar-ref-1").url)
         val result  = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
@@ -300,7 +301,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = buildRequest(GET, routes.ProofOfAuthorityController.onRemove("foo-bar-ref-1").url)
+        val request = FakeRequest(GET, routes.ProofOfAuthorityController.onRemove("foo-bar-ref-1").url)
         val result  = route(application, request).value
 
         status(result) mustEqual 303
@@ -319,7 +320,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
 
-        val request = buildRequest(
+        val request = FakeRequest(
           GET,
           routes.ProofOfAuthorityController.markFileUploadAsRejected().url
         ).withFormUrlEncodedBody("key" -> "")
@@ -356,7 +357,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = buildRequest(
+        val request = FakeRequest(
           GET,
           routes.ProofOfAuthorityController.markFileUploadAsRejected().url
         ).withFormUrlEncodedBody("key" -> "key", "errorCode" -> "MissingFile", "errorMessage" -> "errorMessage")
@@ -380,7 +381,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = buildRequest(
+        val request = FakeRequest(
           GET,
           routes.ProofOfAuthorityController.markFileUploadAsRejected().url
         ).withFormUrlEncodedBody("key" -> "key", "errorCode" -> "MissingFile", "errorMessage" -> "errorMessage")
@@ -446,7 +447,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
 
         val request =
-          buildRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
+          FakeRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
         val result = route(application, request).value
         status(result) mustBe NO_CONTENT
       }
@@ -490,7 +491,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
 
         val request =
-          buildRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
+          FakeRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
         val result = route(application, request).value
         status(result) mustBe CREATED
       }
@@ -510,7 +511,7 @@ class ProofOfAuthorityControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
 
         val request =
-          buildRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
+          FakeRequest(POST, routes.ProofOfAuthorityController.callbackFromUpscan("id").url).withJsonBody(json)
         val result = intercept[Exception](route(application, request).value.futureValue)
         result.toString must include("File upload state error")
 
