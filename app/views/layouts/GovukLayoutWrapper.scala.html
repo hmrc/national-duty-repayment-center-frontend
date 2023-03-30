@@ -53,7 +53,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 @head = {
 
     <noscript>
-        <style type="text/css">
+        <style @CSPNonce.attr type="text/css">
                 a[href^="javascript:"].govuk-back-link { visibility: hidden; }
                 p.ndrc-print-link { display: none; }
                 div.ndrc-display-only-non-javascript { display: block; }
