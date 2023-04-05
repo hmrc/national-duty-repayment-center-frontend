@@ -34,9 +34,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{bind, Injector}
 import play.api.libs.json.{JsArray, Json}
-import play.api.libs.typedmap.TypedMap
-import play.api.mvc.request.{Cell, RequestAttrKey}
-import play.api.mvc.{AnyContentAsEmpty, Call, Cookies, Session}
+import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
 import repositories.SessionRepository
