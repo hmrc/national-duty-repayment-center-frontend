@@ -161,6 +161,18 @@ class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehavi
         FormError(s"EntryDate.year", LocalDateFormatter.yearBlankErrorKey)
       )
     }
+
+    "fail to bind string date" in {
+      val result = new EntryDetailsFormProvider().apply().bind(
+        buildFormData(year = Some("year"), day = Some("day"), month = Some("month"))
+      )
+
+      result.errors should contain allElementsOf List(
+        FormError(s"EntryDate.day", LocalDateFormatter.dayInvalidErrorKey),
+        FormError(s"EntryDate.month", LocalDateFormatter.monthInvalidErrorKey),
+        FormError(s"EntryDate.year", LocalDateFormatter.yearInvalidErrorKey)
+      )
+    }
   }
 
   "trim white spaces in EntryDetails" in {
