@@ -14,9 +14,19 @@
  * limitations under the License.
  *@
 
-@(linkMessageKey: String, messageKey: Option[String] = None)(implicit messages: Messages)
+@import views.html.helper.CSPNonce
+
+@(linkMessageKey: String, messageKey: Option[String] = None)(implicit messages: Messages, header:RequestHeader)
 
 <p class="govuk-body ndrc-print-link govuk-!-display-none-print" >
- <a class="govuk-link govuk-link--no-visited-state govuk-link--visually-hidden" href="javascript:if(window.print)window.print()">@messages(linkMessageKey)</a>
+ <a id="printId" class="govuk-link govuk-link--no-visited-state govuk-link--visually-hidden" >@messages(linkMessageKey)</a>
  @messageKey.map(msg => messages(msg))
 </p>
+
+<script @CSPNonce.attr>
+          document.getElementById("printId").addEventListener("click", function() {
+           if(window.print) {
+               window.print()
+               }
+            });
+</script>
