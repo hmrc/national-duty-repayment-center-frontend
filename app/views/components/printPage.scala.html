@@ -19,7 +19,7 @@
 @(linkMessageKey: String, messageKey: Option[String] = None)(implicit messages: Messages, header:RequestHeader)
 
 <p class="govuk-body ndrc-print-link govuk-!-display-none-print" >
- <a id="printId" class="govuk-link govuk-link--no-visited-state govuk-link--visually-hidden" >@messages(linkMessageKey)</a>
+ <a id="printId" class="govuk-link govuk-link--no-visited-state govuk-link--visually-hidden" href="#">@messages(linkMessageKey)</a>
  @messageKey.map(msg => messages(msg))
 </p>
 
