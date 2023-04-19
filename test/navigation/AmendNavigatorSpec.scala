@@ -17,13 +17,14 @@
 package navigation
 
 import java.time.ZonedDateTime
-
 import base.SpecBase
 import controllers.routes
 import models.AmendCaseResponseType._
 import models.FileType.SupportingEvidence
-import models.{AmendCaseResponseType, FileUpload, FileUploads}
+import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
 import pages._
+import play.api.libs.json.Json
+import play.api.mvc.Call
 import services.FileUploaded
 
 class AmendNavigatorSpec extends SpecBase {
@@ -78,7 +79,10 @@ class AmendNavigatorSpec extends SpecBase {
       "further information selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(FurtherInformation)
         val docAnswer = answers.set(AmendCaseResponseTypePage, amendCaseResponseType).get
-        navigator.nextPage(AmendCaseResponseTypePage, docAnswer) mustBe routes.FurtherInformationController.onPageLoad()
+        navigator.nextPage(
+          AmendCaseResponseTypePage,
+          docAnswer
+        ) mustBe routes.FurtherInformationController.onPageLoad()
       }
       "both selected" in {
         val amendCaseResponseType: Set[AmendCaseResponseType] = Set(SupportingDocuments, FurtherInformation)
@@ -106,6 +110,11 @@ class AmendNavigatorSpec extends SpecBase {
       val answers = emptyUserAnswers.set(FurtherInformationPage, "Further information").get
       navigator.nextPage(FurtherInformationPage, answers) mustBe routes.AmendCheckYourAnswersController.onPageLoad()
     }
+
+    "goto next page after Amend Check Your Answers Page" in {
+      navigator.nextPage(AmendCheckYourAnswersPage, emptyUserAnswers)
+        .mustBe(routes.AmendConfirmationController.onPageLoad())
+    }
   }
 
   "Amend Navigator going back" should {
@@ -132,6 +141,23 @@ class AmendNavigatorSpec extends SpecBase {
     "go back from case reference" in {
       navigator.previousPage(ReferenceNumberPage, completeAnswers).maybeCall mustBe Some(
         routes.CreateOrAmendCaseController.onPageLoad()
+      )
+    }
+    "use javascript back if changePage has been set" in {
+      val userAnswersChange = UserAnswers(
+        userAnswersId,
+        None,
+        Json.obj(
+          CustomsDutyPaidPage.toString -> Json.obj(
+            "ActualPaidAmount"     -> "100.00",
+            "ShouldHavePaidAmount" -> "50.00"
+          )
+        ),
+        changePage = Some("Return amount summary")
+      )
+
+      navigator.previousPage(CustomsDutyPaidPage, userAnswersChange).maybeCall mustBe Some(
+        Call("GET", "javascript:history.back()")
       )
     }
   }
