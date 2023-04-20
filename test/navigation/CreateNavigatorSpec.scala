@@ -16,14 +16,20 @@
 
 package navigation
 
-import java.time.LocalDate
-
 import base.SpecBase
 import controllers.routes
-import data.TestData.{testEntryDetailsJan2021, testEntryDetailsPreJan2021}
+import data.TestData.{
+  testEntryDetailsJan2021,
+  testEntryDetailsPreJan2021,
+  testRepresentativeAgentName,
+  testRepresentativeDeclarantName
+}
 import models.ClaimRepaymentType.{Customs, Other, Vat}
 import models._
 import pages._
+import play.api.mvc.Call
+
+import java.time.LocalDate
 
 class CreateNavigatorSpec extends SpecBase {
 
@@ -31,12 +37,99 @@ class CreateNavigatorSpec extends SpecBase {
 
   "Navigator" when {
 
+    ".gotoPage" when {
+
+      "a valid page name has been provided" should {
+
+        "redirect to the url of the page provided" in {
+          navigator.gotoPage("FirstPage") mustBe Call(
+            "GET",
+            "/apply-for-repayment-of-import-duty-and-import-vat/importer-or-representative"
+          )
+        }
+      }
+
+      "an invalid page name has been provided" should {
+
+        "redirect to the url of the page provided" in {
+          navigator.gotoPage("NumberOfEntriesTypePage") mustBe Call(
+            "GET",
+            "/apply-for-repayment-of-import-duty-and-import-vat/importer-or-representative"
+          )
+        }
+      }
+    }
+
     "in Normal mode" must {
 
       "go to first question from a page that doesn't exist in the route map" in {
 
         case object UnknownPage extends Page
         navigator.nextPage(UnknownPage, UserAnswers("id", None)) mustBe routes.ClaimantTypeController.onPageLoad()
+      }
+
+      "go to Claimant Type Page after the first page" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+
+        navigator.nextPage(FirstPage, answers)
+          .mustBe(routes.ClaimantTypeController.onPageLoad())
+      }
+
+      "go to Number Of Entries Type Page after Claimant Type Page" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+
+        navigator.nextPage(ClaimantTypePage, answers)
+          .mustBe(routes.NumberOfEntriesTypeController.onPageLoad())
+      }
+
+      "go to Entry Details Page after Number Of Entries Type Page" in {
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+            .set(EntryDetailsPage, testEntryDetailsJan2021).success.value
+
+        navigator.nextPage(NumberOfEntriesTypePage, answers)
+          .mustBe(routes.EntryDetailsController.onPageLoad())
+      }
+
+      "go to Claim Repayment Type Page after Reason For Overpayment Page" in {
+
+        navigator.nextPage(ReasonForOverpaymentPage, emptyUserAnswers)
+          .mustBe(routes.ClaimRepaymentTypeController.onPageLoad())
+      }
+
+      "go to Evidence Supporting Docs Page after Repayment Amount Summary Page" in {
+
+        navigator.nextPage(RepaymentAmountSummaryPage, emptyUserAnswers)
+          .mustBe(routes.EvidenceSupportingDocsController.onPageLoad())
+      }
+
+      "go to Confirmation Page after Check Your Answers Page" in {
+
+        navigator.nextPage(CheckYourAnswersPage, emptyUserAnswers)
+          .mustBe(routes.ConfirmationController.onPageLoad())
+      }
+
+      "go to Agent Importer Address Page after Representative Declarant And Business Name Page" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(ClaimantTypePage, ClaimantType.Representative).success.value
+            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
+            .set(EntryDetailsPage, testEntryDetailsJan2021).success.value
+            .set(
+              RepresentativeDeclarantAndBusinessNamePage,
+              RepresentativeDeclarantAndBusinessName(testRepresentativeDeclarantName, testRepresentativeAgentName)
+            ).success.value
+
+        navigator.nextPage(RepresentativeDeclarantAndBusinessNamePage, answers)
+          .mustBe(routes.AgentImporterAddressFrontendController.onPageLoad())
       }
 
       "go to IndirectRepresentative after WhomToPay page when the claimant is representative and has selected representative to be paid" in {
