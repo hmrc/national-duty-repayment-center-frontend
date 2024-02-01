@@ -2,4 +2,3 @@
 ->         /apply-for-repayment-of-import-duty-and-import-vat                    app.Routes
 ->         /                          health.Routes
 
-GET        /admin/metrics             @com.kenshoo.play.metrics.MetricsController.metrics
