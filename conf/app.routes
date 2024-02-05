@@ -140,7 +140,6 @@ GET         /amend/application-closed                                           
 GET         /file-upload                                                          controllers.FileUploadController.showFileUpload()
 POST        /file-upload                                                          controllers.FileUploadController.onContinue()
 GET         /file-verification/:reference/status                                  controllers.FileUploadController.checkFileVerificationStatus(reference: String)
-POST        /callback-from-upscan/ndrc/:id                                        controllers.FileUploadController.callbackFromUpscan(id: String)
 GET         /file-verification                                                    controllers.FileUploadController.showWaitingForFileVerification()
 GET         /file-rejected                                                        controllers.FileUploadController.markFileUploadAsRejected()
 GET         /file-uploaded/:reference/remove                                      controllers.FileUploadController.onRemove(reference: String)
@@ -152,7 +151,6 @@ POST        /upload-multiple-entries                                            
 GET         /bulk/file-verification                                               controllers.BulkFileUploadController.showWaitingForFileVerification()
 GET         /bulk/file-rejected                                                   controllers.BulkFileUploadController.markFileUploadAsRejected()
 GET         /bulk/file-verification/:reference/status                             controllers.BulkFileUploadController.checkFileVerificationStatus(reference: String)
-POST        /callback-from-upscan/bulk/:id                                        controllers.BulkFileUploadController.callbackFromUpscan(id: String)
 
 # proof of authority
 GET         /upload-proof-of-authority                                            controllers.ProofOfAuthorityController.showFileUpload()
@@ -161,14 +159,12 @@ POST        /upload-proof-of-authority                                          
 GET         /upload-proof-of-authority/file-verification                          controllers.ProofOfAuthorityController.showWaitingForFileVerification()
 GET         /upload-proof-of-authority/file-rejected                              controllers.ProofOfAuthorityController.markFileUploadAsRejected()
 GET         /upload-proof-of-authority/file-verification/:reference/status        controllers.ProofOfAuthorityController.checkFileVerificationStatus(reference: String)
-POST        /callback-from-upscan/upload-proof-of-authority/:id                   controllers.ProofOfAuthorityController.callbackFromUpscan(id: String)
 
 #amend send information
 
 GET         /amend/upload-a-file                                                  controllers.AmendCaseSendInformationController.showFileUpload()
 POST        /amend/upload-a-file                                                  controllers.AmendCaseSendInformationController.onContinue()
 GET         /amend/file-verification/:reference/status                            controllers.AmendCaseSendInformationController.checkFileVerificationStatus(reference: String)
-POST        /callback-from-upscan/amend/ndrc/:id                                  controllers.AmendCaseSendInformationController.callbackFromUpscan(id: String)
 GET         /amend/file-verification                                              controllers.AmendCaseSendInformationController.showWaitingForFileVerification()
 GET         /amend/file-rejected                                                  controllers.AmendCaseSendInformationController.markFileUploadAsRejected()
 GET         /amend/file-uploaded/:reference/remove                                controllers.AmendCaseSendInformationController.onRemove(reference: String)

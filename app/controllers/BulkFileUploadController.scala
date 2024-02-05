@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.LocalDateTime
-
 import akka.actor.ActorRef
 import akka.pattern.ask
 import config.FrontendAppConfig
@@ -25,10 +23,9 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
 import controllers.actions._
 import forms.UpscanS3ErrorFormProvider
-import javax.inject.{Inject, Named}
 import models.FileType.Bulk
 import models.requests.DataRequest
-import models.{SessionState, UpscanNotification, UserAnswers}
+import models.{SessionState, UserAnswers}
 import navigation.CreateNavigator
 import pages.{BulkFileUploadPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -38,6 +35,8 @@ import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.BulkFileUploadView
 
+import java.time.LocalDateTime
+import javax.inject.{Inject, Named}
 import scala.concurrent.{ExecutionContext, Future}
 
 class BulkFileUploadController @Inject() (
@@ -125,23 +124,12 @@ class BulkFileUploadController @Inject() (
       )
     }
 
-  // POST /callback-from-upscan/bulk/:id
-  final def callbackFromUpscan(id: String): Action[UpscanNotification] =
-    Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
-      sessionRepository.getFileUploadState(id).flatMap { ss =>
-        ss.state match {
-          case Some(s) =>
-            fileUtils.applyTransition(upscanCallbackArrived(request.body, Bulk)(_), s, ss).map(newState =>
-              acknowledgeFileUploadRedirect(newState)
-            )
-          case None => Future.successful(fileStateErrror)
-        }
-      }
-    }
-
   final def upscanRequest(id: String): UpscanInitiateRequest =
     UpscanInitiateRequest(
-      callbackUrl = appConfig.baseInternalCallbackUrl + bulkFileUploadController.callbackFromUpscan(id).url,
+      callbackUrl =
+        appConfig.baseInternalCallbackUrl + internal.routes.BulkFileUploadUpscanCallbackController.callbackFromUpscan(
+          id
+        ).url,
       successRedirect =
         Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.showWaitingForFileVerification()),
       errorRedirect = Some(appConfig.baseExternalCallbackUrl + bulkFileUploadController.markFileUploadAsRejected()),
