@@ -127,7 +127,7 @@ class BulkFileUploadController @Inject() (
   final def upscanRequest(id: String): UpscanInitiateRequest =
     UpscanInitiateRequest(
       callbackUrl =
-        appConfig.baseInternalCallbackUrl + internal.routes.BulkFileUploadUpscanCallbackController.callbackFromUpscan(
+        appConfig.baseInternalCallbackUrl + internal.routes.UpscanCallbackController.bulkUploadCallbackFromUpscan(
           id
         ).url,
       successRedirect =

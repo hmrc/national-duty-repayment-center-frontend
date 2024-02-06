@@ -167,7 +167,7 @@ class FileUploadController @Inject() (
   final def upscanRequest(id: String): UpscanInitiateRequest =
     UpscanInitiateRequest(
       callbackUrl =
-        appConfig.baseInternalCallbackUrl + internal.routes.FileUploadUpscanCallbackController.callbackFromUpscan(
+        appConfig.baseInternalCallbackUrl + internal.routes.UpscanCallbackController.fileUploadCallbackFromUpscan(
           id
         ).url,
       successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification()),

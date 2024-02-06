@@ -1,8 +1,8 @@
 # bulk uploads
-POST        /callback-from-upscan/bulk/:id                                        controllers.internal.BulkFileUploadUpscanCallbackController.callbackFromUpscan(id: String)
+POST        /callback-from-upscan/bulk/:id                                        controllers.internal.UpscanCallbackController.bulkUploadCallbackFromUpscan(id: String)
 # proof of authority
-POST        /callback-from-upscan/upload-proof-of-authority/:id                   controllers.internal.ProofOfAuthorityUpscanCallbackController.callbackFromUpscan(id: String)
+POST        /callback-from-upscan/upload-proof-of-authority/:id                   controllers.internal.UpscanCallbackController.proofOfAuthorityCallbackFromUpscan(id: String)
 #amend send information
-POST        /callback-from-upscan/amend/ndrc/:id                                  controllers.internal.AmendCaseUpscanCallbackController.callbackFromUpscan(id: String)
+POST        /callback-from-upscan/amend/ndrc/:id                                  controllers.internal.UpscanCallbackController.amendFileUploadCallbackFromUpscan(id: String)
 # File uploads
-POST        /callback-from-upscan/ndrc/:id                                        controllers.internal.FileUploadUpscanCallbackController.callbackFromUpscan(id: String)
+POST        /callback-from-upscan/ndrc/:id                                        controllers.internal.UpscanCallbackController.fileUploadCallbackFromUpscan(id: String)

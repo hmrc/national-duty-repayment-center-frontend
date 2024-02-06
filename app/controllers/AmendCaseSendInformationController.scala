@@ -168,7 +168,7 @@ class AmendCaseSendInformationController @Inject() (
   final def upscanRequest(id: String): UpscanInitiateRequest =
     UpscanInitiateRequest(
       callbackUrl =
-        appConfig.baseInternalCallbackUrl + internal.routes.AmendCaseUpscanCallbackController.callbackFromUpscan(
+        appConfig.baseInternalCallbackUrl + internal.routes.UpscanCallbackController.amendFileUploadCallbackFromUpscan(
           id
         ).url,
       successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification()),

@@ -127,7 +127,7 @@ class ProofOfAuthorityController @Inject() (
   final def upscanRequest(id: String): UpscanInitiateRequest =
     UpscanInitiateRequest(
       callbackUrl =
-        appConfig.baseInternalCallbackUrl + internal.routes.ProofOfAuthorityUpscanCallbackController.callbackFromUpscan(
+        appConfig.baseInternalCallbackUrl + internal.routes.UpscanCallbackController.proofOfAuthorityCallbackFromUpscan(
           id
         ).url,
       successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification()),
