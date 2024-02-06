@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.LocalDateTime
-
 import akka.actor.ActorRef
 import akka.pattern.ask
 import config.FrontendAppConfig
@@ -25,10 +23,9 @@ import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
 import controllers.actions._
 import forms.UpscanS3ErrorFormProvider
-import javax.inject.{Inject, Named}
 import models.FileType.SupportingEvidence
 import models.requests.DataRequest
-import models.{S3UploadError, SessionState, UpscanNotification}
+import models.{S3UploadError, SessionState}
 import navigation.CreateNavigator
 import pages.{ClaimReasonTypeMultiplePage, FileUploadPage}
 import play.api.data.Form
@@ -39,6 +36,8 @@ import services._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.FileUploadView
 
+import java.time.LocalDateTime
+import javax.inject.{Inject, Named}
 import scala.concurrent.{ExecutionContext, Future}
 
 class FileUploadController @Inject() (
@@ -165,23 +164,12 @@ class FileUploadController @Inject() (
       )
     }
 
-  // POST /callback-from-upscan/ndrc/:id
-  final def callbackFromUpscan(id: String): Action[UpscanNotification] =
-    Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
-      sessionRepository.getFileUploadState(id).flatMap { ss =>
-        ss.state match {
-          case Some(s) =>
-            fileUtils.applyTransition(upscanCallbackArrived(request.body, SupportingEvidence)(_), s, ss).map(newState =>
-              acknowledgeFileUploadRedirect(newState)
-            )
-          case None => Future.successful(fileStateErrror)
-        }
-      }
-    }
-
   final def upscanRequest(id: String): UpscanInitiateRequest =
     UpscanInitiateRequest(
-      callbackUrl = appConfig.baseInternalCallbackUrl + controller.callbackFromUpscan(id).url,
+      callbackUrl =
+        appConfig.baseInternalCallbackUrl + internal.routes.UpscanCallbackController.fileUploadCallbackFromUpscan(
+          id
+        ).url,
       successRedirect = Some(appConfig.baseExternalCallbackUrl + controller.showWaitingForFileVerification()),
       errorRedirect = Some(appConfig.baseExternalCallbackUrl + controller.markFileUploadAsRejected()),
       minimumFileSize = Some(1),
