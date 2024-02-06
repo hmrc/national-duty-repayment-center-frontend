@@ -18,27 +18,29 @@ package controllers.internal
 
 import controllers.FileUploadUtils
 import controllers.FileUploadUtils._
-import models.FileType.{Bulk, SupportingEvidence}
-import models.UpscanNotification
-import play.api.i18n.I18nSupport
-import play.api.mvc._
+import models.{FileType, UpscanNotification}
+import play.api.mvc.{Action, Result}
 import repositories.SessionRepository
 import services.FileUploadService
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class BulkFileUploadUpscanCallbackController @Inject() (
-  val controllerComponents: MessagesControllerComponents,
-  upscanCallBackService: UpscanCallBackService
+class UpscanCallBackService @Inject() (
+  sessionRepository: SessionRepository,
+  val fileUtils: FileUploadUtils
 )(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport with FileUploadService {
+    extends FileUploadService {
 
-  // POST /callback-from-upscan/bulk/:id
-  final def callbackFromUpscan(id: String): Action[UpscanNotification] =
-    Action.async(parse.json.map(_.as[UpscanNotification])) { implicit request =>
-      upscanCallBackService.upscanCallBack(id, Bulk, request.body)
+  def upscanCallBack(id: String, fileType: FileType, notification: UpscanNotification): Future[Result] =
+    sessionRepository.getFileUploadState(id).flatMap { ss =>
+      ss.state match {
+        case Some(s) =>
+          fileUtils.applyTransition(upscanCallbackArrived(notification, fileType)(_), s, ss).map(newState =>
+            acknowledgeFileUploadRedirect(newState)
+          )
+        case None => Future.successful(fileStateErrror)
+      }
     }
 
 }
