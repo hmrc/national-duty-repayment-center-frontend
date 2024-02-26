@@ -1,5 +1,4 @@
 # Add all the application routes to the app.routes file
 ->         /apply-for-repayment-of-import-duty-and-import-vat                    app.Routes
 ->         /                          health.Routes
-->         /internal                  internal.Routes
 

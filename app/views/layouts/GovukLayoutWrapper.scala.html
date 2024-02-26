@@ -1,5 +1,5 @@
 @*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 @head = {
 
     <noscript>
-        <style @CSPNonce.attr type="text/css">
+        <style type="text/css">
                 a[href^="javascript:"].govuk-back-link { visibility: hidden; }
                 p.ndrc-print-link { display: none; }
                 div.ndrc-display-only-non-javascript { display: block; }
@@ -82,12 +82,8 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 }
 
 @scripts = {
-    @hmrcScripts()
-    <script @CSPNonce.attr src='@controllers.routes.Assets.versioned("javascripts/ndrcfrontend.js")'></script>
-}
-
-@afterContentScripts = {
-    <script @CSPNonce.attr src='@controllers.routes.Assets.versioned("javascripts/backlinkfix.js")'></script>
+    @hmrcScripts(scriptsBlock = Some(CSPNonce.attr))
+    <script src='@controllers.routes.Assets.versioned("javascripts/ndrcfrontend.js")'></script>
 }
 
 @beforeContentBlock = {
@@ -130,6 +126,6 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
   headerBlock = Some(siteHeader(timeout)),
   beforeContentBlock = Some(beforeContentBlock),
   footerBlock = Some(hmrcStandardFooter()),
-  bodyEndBlock = Some(afterContentScripts),
+  bodyEndBlock = None,
   scriptsBlock = Some(scripts)
 )(content)

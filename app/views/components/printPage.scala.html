@@ -1,5 +1,5 @@
 @*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,9 @@
  * limitations under the License.
  *@
 
-@import views.html.helper.CSPNonce
-
-@(linkMessageKey: String, messageKey: Option[String] = None)(implicit messages: Messages, header:RequestHeader)
+@(linkMessageKey: String, messageKey: Option[String] = None)(implicit messages: Messages)
 
 <p class="govuk-body ndrc-print-link govuk-!-display-none-print" >
- <a id="printId" class="govuk-link govuk-link--no-visited-state govuk-link--visually-hidden" href="#">@messages(linkMessageKey)</a>
+ <a class="govuk-link govuk-link--no-visited-state govuk-link--visually-hidden" href="javascript:if(window.print)window.print()">@messages(linkMessageKey)</a>
  @messageKey.map(msg => messages(msg))
 </p>
-
-<script @CSPNonce.attr>
-          document.getElementById("printId").addEventListener("click", function() {
-           if(window.print) {
-               window.print()
-               }
-            });
-</script>

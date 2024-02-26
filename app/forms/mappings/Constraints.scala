@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,17 @@ trait Constraints {
           Valid
         else
           Invalid(errorKey, maximum)
+    }
+
+  protected def inRange[A](minimum: A, maximum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
+    Constraint {
+      input =>
+        import ev._
+
+        if (input >= minimum && input <= maximum)
+          Valid
+        else
+          Invalid(errorKey, minimum, maximum)
     }
 
   protected def regexp(regex: String, errorKey: String): Constraint[String] =
