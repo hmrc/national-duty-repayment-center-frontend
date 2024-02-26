@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,8 @@ trait FrontendAppConfig {
   val contactFormServiceIdentifier: String
   val analyticsToken: String
   val analyticsHost: String
+  val reportAProblemPartialUrl: String
+  val reportAProblemNonJSUrl: String
   val betaFeedbackUrl: String
   val betaFeedbackUnauthenticatedUrl: String
   val timeout: Int
@@ -118,6 +120,12 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
   override val contactFormServiceIdentifier = configuration.get[String]("contact-frontend.serviceId")
   override val analyticsToken: String       = configuration.get[String](s"google-analytics.token")
   override val analyticsHost: String        = configuration.get[String](s"google-analytics.host")
+
+  override val reportAProblemPartialUrl =
+    s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
+
+  override val reportAProblemNonJSUrl =
+    s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 
   override val showPhaseBanner: Boolean = configuration.get[Boolean]("phaseBanner.display")
 

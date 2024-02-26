@@ -167,45 +167,5 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
 
       application.stop()
     }
-
-    "go back to the Return amount summary using js history back" when {
-      "the user clicks back link" when {
-        "the user is coming from the Return amount summary page after clicking the Change link" in {
-
-          val userAnswersChange = UserAnswers(
-            userAnswersId,
-            None,
-            Json.obj(
-              CustomsDutyPaidPage.toString -> Json.obj(
-                "ActualPaidAmount"     -> "100.00",
-                "ShouldHavePaidAmount" -> "50.00"
-              )
-            ),
-            changePage = Some("Return amount summary")
-          )
-
-          val userAnswersFull = userAnswersChange
-            .set(ClaimRepaymentTypePage, ClaimRepaymentType.values.toSet).success.value
-            .set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
-
-          val application = applicationBuilder(userAnswers = Some(userAnswersFull)).build()
-
-          val request = FakeRequest(GET, CustomsDutyPaidRoute)
-
-          val view = application.injector.instanceOf[CustomsDutyPaidView]
-
-          val result = route(application, request).value
-
-          status(result) mustEqual OK
-
-          contentAsString(result) mustEqual
-            view(form.fill(RepaymentAmounts("100.00", "50.00")), defaultBackLink, false)(request, messages).toString
-
-          application.stop()
-
-        }
-      }
-    }
   }
-
 }

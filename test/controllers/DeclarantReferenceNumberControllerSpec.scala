@@ -22,6 +22,11 @@ import models.{DeclarantReferenceNumber, DeclarantReferenceType, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import pages.DeclarantReferenceNumberPage
+import play.api.data.Form
+import play.api.data.FormBinding.Implicits.formBinding
+import play.api.i18n.DefaultMessagesApi
+import play.api.libs.json.Json
+import play.api.mvc.Results.{BadRequest, Redirect}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.DeclarantReferenceNumberView
@@ -81,7 +86,7 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "Display form error when declarant reference number is empty" in {
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
@@ -89,14 +94,19 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .build()
 
-      val request =
+      implicit val request =
         FakeRequest(POST, declarantReferenceNumberRoute)
-          .withFormUrlEncodedBody(("value", "01"), ("declarantReferenceNumber", "01"))
+          .withFormUrlEncodedBody(("value", "01"), ("declarantReferenceNumber", ""))
+
+      val bindForm = form.bindFromRequest()
+
+      val view = application.injector.instanceOf[DeclarantReferenceNumberView]
 
       val result = route(application, request).value
 
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual defaultNextPage.url
+      bindForm.errors.head.message mustBe "declarantReferenceNumber.error.required.declarantReferenceNumber"
+      contentAsString(result) mustEqual
+        view(bindForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

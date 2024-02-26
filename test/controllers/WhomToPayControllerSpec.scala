@@ -73,7 +73,6 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
           .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
 
       val result = route(application, request).value
-      val view   = application.injector.instanceOf[WhomToPayView]
 
       status(result) mustEqual SEE_OTHER
 
@@ -82,8 +81,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(mockCreateNavigator).nextPage(any(), answerCaptor.capture())
 
-      val answers: UserAnswers = answerCaptor.getValue
-      answers.get(BankDetailsPage) mustBe None
+      answerCaptor.getValue.get(BankDetailsPage) mustBe None
 
       application.stop()
     }
@@ -114,8 +112,7 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(mockCreateNavigator, atLeastOnce).nextPage(any(), answerCaptor.capture())
 
-      val answers: UserAnswers = answerCaptor.getValue
-      answers.get(BankDetailsPage) mustBe Some(BankDetails("Natural Numbers Inc", "123456", "12345678"))
+      answerCaptor.getValue.get(BankDetailsPage) mustBe Some(BankDetails("Natural Numbers Inc", "123456", "12345678"))
 
       application.stop()
     }
@@ -145,8 +142,8 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(mockCreateNavigator, atLeastOnce).nextPage(any(), answerCaptor.capture())
 
-      val answers: UserAnswers = answerCaptor.getValue
-      answers.get(IndirectRepresentativePage) mustBe None
+      answerCaptor.getValue.get(IndirectRepresentativePage) mustBe None
+
       application.stop()
     }
 
@@ -175,8 +172,8 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
       val answerCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(mockCreateNavigator, atLeastOnce).nextPage(any(), answerCaptor.capture())
 
-      val answers: UserAnswers = answerCaptor.getValue
-      answers.get(IndirectRepresentativePage) mustBe Some(true)
+      answerCaptor.getValue.get(IndirectRepresentativePage) mustBe Some(true)
+
       application.stop()
     }
 

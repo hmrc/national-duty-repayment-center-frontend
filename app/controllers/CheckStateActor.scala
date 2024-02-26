@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package controllers
 
 import java.time.LocalDateTime
 
-import akka.actor.Actor
-import akka.pattern.{ask, pipe}
-import akka.util.Timeout
+import org.apache.pekko.actor.Actor
+import org.apache.pekko.pattern.{ask, pipe}
+import org.apache.pekko.util.Timeout
 import config.FrontendAppConfig
 import javax.inject.Inject
 import repositories.SessionRepository

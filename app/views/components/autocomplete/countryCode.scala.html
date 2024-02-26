@@ -1,5 +1,5 @@
 @*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,10 @@
  * limitations under the License.
  *@
 
-@import views.html.helper.CSPNonce
-
-@()(implicit request: Request[_])
+@()
 
 
-<script @CSPNonce.attr src='@controllers.routes.Assets.versioned("javascripts/accessible-autocomplete.min.js")'></script>
+<script src='@controllers.routes.Assets.versioned("javascripts/accessible-autocomplete.min.js")'></script>
 
 @*
  Taken from address-lookup-frontend.
@@ -27,7 +25,7 @@
  Comments are not rendered in browser.
 *@
 
-<script @CSPNonce.attr>
+<script>
         accessibleSymbol("autoComplete").enhanceSelectElement({
          selectElement: document.getElementById("CountryCode"),
          name: 'CountryCodeSymbol("autoComplete")',
