@@ -16,8 +16,7 @@
 
 package controllers
 
-import akka.actor.ActorRef
-import akka.pattern.ask
+import org.apache.pekko.actor.ActorRef
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
@@ -27,6 +26,7 @@ import models.FileType.ProofOfAuthority
 import models.SessionState
 import models.requests.DataRequest
 import navigation.CreateNavigator
+import org.apache.pekko.pattern.ask
 import pages.ProofOfAuthorityPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._

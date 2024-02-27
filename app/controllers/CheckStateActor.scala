@@ -17,13 +17,13 @@
 package controllers
 
 import java.time.LocalDateTime
-
-import akka.actor.Actor
-import akka.pattern.{ask, pipe}
-import akka.util.Timeout
 import config.FrontendAppConfig
-import javax.inject.Inject
+import org.apache.pekko.actor.Actor
+import org.apache.pekko.pattern.{ask, pipe}
+import org.apache.pekko.util.Timeout
 import repositories.SessionRepository
+
+import javax.inject.Inject
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 
 import scala.concurrent.duration.{FiniteDuration, SECONDS}

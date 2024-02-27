@@ -16,8 +16,6 @@
 
 package controllers
 
-import akka.actor.ActorRef
-import akka.pattern.ask
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
@@ -27,6 +25,8 @@ import models.FileType.Bulk
 import models.requests.DataRequest
 import models.{SessionState, UserAnswers}
 import navigation.CreateNavigator
+import org.apache.pekko.actor.ActorRef
+import org.apache.pekko.pattern.ask
 import pages.{BulkFileUploadPage, Page}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._

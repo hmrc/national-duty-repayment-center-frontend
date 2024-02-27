@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.CreateOrAmendCaseFormProvider
+
 import javax.inject.Inject
 import models.CreateOrAmendCase.{AmendCase, CreateCase}
 import models.{CreateOrAmendCase, UserAnswers}

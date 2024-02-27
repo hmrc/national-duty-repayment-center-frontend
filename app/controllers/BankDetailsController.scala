@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.BankDetailsFormProvider
+
 import javax.inject.Inject
 import models.{RepaymentType, UserAnswers}
 import navigation.CreateNavigator

@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.EntryDetailsFormProvider
+
 import javax.inject.Inject
 import models.CustomsRegulationType.UnionsCustomsCodeRegulation
 import models.UserAnswers

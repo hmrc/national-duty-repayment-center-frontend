@@ -16,8 +16,7 @@
 
 package controllers
 
-import akka.actor.ActorRef
-import akka.pattern.ask
+import org.apache.pekko.actor.ActorRef
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
@@ -27,6 +26,7 @@ import models.FileType.SupportingEvidence
 import models.requests.DataRequest
 import models.{S3UploadError, SessionState}
 import navigation.CreateNavigator
+import org.apache.pekko.pattern.ask
 import pages.{ClaimReasonTypeMultiplePage, FileUploadPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}

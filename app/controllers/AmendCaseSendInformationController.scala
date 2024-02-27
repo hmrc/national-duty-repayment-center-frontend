@@ -16,8 +16,8 @@
 
 package controllers
 
-import akka.actor.ActorRef
-import akka.pattern.ask
+import org.apache.pekko.actor.ActorRef
+import org.apache.pekko.pattern.ask
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._

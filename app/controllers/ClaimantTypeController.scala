@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.ClaimantTypeFormProvider
+
 import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator

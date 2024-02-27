@@ -44,7 +44,7 @@
     @html.h1("checkYourAnswers.title", classes = "govuk-heading-l")
 
     @warning(WarningText(
-        iconFallbackText = messages("checkYourAnswers.missing.icon"),
+        iconFallbackText = Some(messages("checkYourAnswers.missing.icon")),
         content = HtmlContent(warningContent)
     ))
 

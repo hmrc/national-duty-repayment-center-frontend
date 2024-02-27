@@ -17,7 +17,6 @@
 package controllers
 
 import java.time.LocalDateTime
-
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.UserAnswers

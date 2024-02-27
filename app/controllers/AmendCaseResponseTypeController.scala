@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.AmendCaseResponseTypeFormProvider
+
 import javax.inject.Inject
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.UserAnswers

@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.IndirectRepresentativeFormProvider
+
 import javax.inject.Inject
 import models.FileType.ProofOfAuthority
 import models.UserAnswers

@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.DoYouOwnTheGoodsFormProvider
+
 import javax.inject.Inject
 import models.{DoYouOwnTheGoods, UserAnswers}
 import navigation.CreateNavigator
