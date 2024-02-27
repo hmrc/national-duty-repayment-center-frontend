@@ -17,10 +17,11 @@
 package services
 
 import com.google.inject.ImplementedBy
+
 import javax.inject.Singleton
 import models.Country
 import play.api.Logger
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 
 // Adapted from Address Lookup Frontend
@@ -42,7 +43,7 @@ class ForeignOfficeCountryService extends CountryService {
 
   private val logger = Logger(this.getClass)
 
-  implicit val fcoCountryFormat = Json.format[FcoCountry]
+  implicit val fcoCountryFormat: OFormat[FcoCountry] = Json.format[FcoCountry]
 
   private val nullCountry = Country("", "")
 

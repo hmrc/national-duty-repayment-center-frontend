@@ -68,8 +68,6 @@ class ImporterHasEoriControllerSpec extends SpecBase with MockitoSugar {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ImporterHasEoriView]
-
       status(result) mustEqual OK
 
       application.stop()

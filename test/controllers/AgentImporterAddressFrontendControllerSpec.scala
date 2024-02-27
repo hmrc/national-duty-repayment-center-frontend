@@ -37,9 +37,9 @@ import scala.concurrent.Future
 
 class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSugar {
 
-  implicit val countriesService = TestData.testCountryService
-  val formProvider              = new AgentImporterManualAddressFormProvider()
-  val form                      = formProvider()
+  implicit val countriesService: CountryService = TestData.testCountryService
+  val formProvider                              = new AgentImporterManualAddressFormProvider()
+  val form                                      = formProvider()
 
   lazy val agentImporterManualAddressRoute = routes.AgentImporterAddressFrontendController.onPageLoad().url
   lazy val agentImporterChangeAddressRoute = routes.AgentImporterAddressFrontendController.onChange().url

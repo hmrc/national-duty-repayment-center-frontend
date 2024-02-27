@@ -20,6 +20,7 @@ import data.TestData
 import forms.behaviours.StringFieldBehaviours
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import play.api.data.FormError
+import services.CountryService
 
 class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
 
@@ -27,8 +28,8 @@ class AgentImporterManualAddressFormProviderSpec extends StringFieldBehaviours {
   val lengthKey   = "agentImporterManualAddress.error.length"
   val maxLength   = 128
 
-  implicit val countriesService = TestData.testCountryService
-  val form                      = new AgentImporterManualAddressFormProvider().apply()
+  implicit val countriesService: CountryService = TestData.testCountryService
+  val form                                      = new AgentImporterManualAddressFormProvider().apply()
 
   ".AddressLine1" must {
 

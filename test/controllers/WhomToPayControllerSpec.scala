@@ -73,7 +73,6 @@ class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
           .withFormUrlEncodedBody(("value", WhomToPay.options(form).head.value.get))
 
       val result = route(application, request).value
-      val view   = application.injector.instanceOf[WhomToPayView]
 
       status(result) mustEqual SEE_OTHER
 

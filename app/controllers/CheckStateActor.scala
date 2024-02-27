@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait CheckStateSupport {
   val appConfig: FrontendAppConfig
-  implicit val checkStateActorTimeout = Timeout(appConfig.fileUploadTimeout.plus(FiniteDuration(5, SECONDS)))
+  implicit val checkStateActorTimeout: Timeout = Timeout(appConfig.fileUploadTimeout.plus(FiniteDuration(5, SECONDS)))
 }
 
 case class CheckState(id: String, exitTime: LocalDateTime, state: FileUploadState)

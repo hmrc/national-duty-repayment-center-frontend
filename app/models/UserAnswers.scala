@@ -179,7 +179,7 @@ object UserAnswers {
 
     }
 
-  implicit val formatInstant                 = MongoJavatimeFormats.instantFormat
-  implicit val formats: OFormat[UserAnswers] = Json.format[UserAnswers]
+  implicit val formatInstant: Format[Instant] = MongoJavatimeFormats.instantFormat
+  implicit val formats: OFormat[UserAnswers]  = Json.format[UserAnswers]
 
 }
