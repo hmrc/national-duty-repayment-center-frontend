@@ -16,8 +16,8 @@
 
 package connectors
 
-import play.api.libs.json.{Format, Json}
 import models.requests.UploadRequest
+import play.api.libs.json.{Format, Json}
 
 /**
  * Response from Upscan Initiate. see: https://github.com/hmrc/upscan-initiate#post-upscanv2initiate

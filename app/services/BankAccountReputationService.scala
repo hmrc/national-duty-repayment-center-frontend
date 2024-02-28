@@ -17,11 +17,11 @@
 package services
 
 import connectors.BARSConnector
-import javax.inject.Inject
 import models.BankDetails
 import models.bars.{AssessBusinessBankDetailsRequest, BARSResult}
 import uk.gov.hmrc.http.HeaderCarrier
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class BankAccountReputationService @Inject() (connector: BARSConnector)(implicit ec: ExecutionContext) {

@@ -19,8 +19,6 @@ package controllers
 import config.FrontendAppConfig
 import controllers.actions._
 import forms.RepaymentTypeFormProvider
-
-import javax.inject.Inject
 import models.ClaimantType.Importer
 import models.RepaymentType.CMA
 import models.UserAnswers
@@ -32,6 +30,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.RepaymentTypeView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RepaymentTypeController @Inject() (

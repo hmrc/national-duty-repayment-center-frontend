@@ -5,7 +5,6 @@ object AppDependencies {
   private val bootstrapVersion = "8.4.0"
   private val playVersion      = "30"
   private val mongoVersion     = "1.7.0"
-  private val pekkoVersion = "1.0.2"
 
   val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,

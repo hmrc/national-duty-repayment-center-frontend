@@ -17,13 +17,14 @@
 package controllers
 
 import controllers.actions._
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.AmendClaimIdQuery
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersHelperFactory
 import views.html.{AmendConfirmationView, ClaimSummaryView}
+
+import javax.inject.Inject
 
 class AmendConfirmationController @Inject() (
   override val messagesApi: MessagesApi,

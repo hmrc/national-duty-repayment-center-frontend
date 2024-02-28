@@ -16,9 +16,9 @@
 
 package models
 
-import java.time.Instant
-
 import play.api.libs.json._
+
+import java.time.Instant
 
 trait MongoFormats {
 

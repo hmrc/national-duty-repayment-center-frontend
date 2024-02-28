@@ -16,9 +16,9 @@
 
 package utils
 
-import javax.inject.Singleton
 import models.responses.LookedUpAddressWrapper
 
+import javax.inject.Singleton
 import scala.annotation.tailrec
 
 @Singleton

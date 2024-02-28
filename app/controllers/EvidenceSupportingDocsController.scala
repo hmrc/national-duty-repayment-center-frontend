@@ -17,7 +17,6 @@
 package controllers
 
 import controllers.actions._
-import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
 import pages.{ClaimReasonTypeMultiplePage, EvidenceSupportingDocsPage, NumberOfEntriesTypePage, Page}
@@ -25,6 +24,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.EvidenceSupportingDocsView
+
+import javax.inject.Inject
 
 class EvidenceSupportingDocsController @Inject() (
   override val messagesApi: MessagesApi,

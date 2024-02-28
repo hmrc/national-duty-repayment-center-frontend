@@ -18,8 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.ClaimantTypeFormProvider
-
-import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
 import pages.{ClaimantTypePage, Page}
@@ -29,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ClaimantTypeView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimantTypeController @Inject() (

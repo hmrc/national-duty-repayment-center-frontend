@@ -17,12 +17,12 @@
 package services
 
 import com.google.inject.ImplementedBy
-
-import javax.inject.Singleton
 import models.Country
 import play.api.Logger
 import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
+
+import javax.inject.Singleton
 
 // Adapted from Address Lookup Frontend
 

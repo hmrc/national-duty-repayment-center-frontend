@@ -18,11 +18,11 @@ package services
 
 import config.FrontendAppConfig
 import connectors.AddressLookupFrontendConnector
-import javax.inject.Inject
 import models.addresslookup.{AddressLookupConfirmation, AddressLookupOnRamp, AddressLookupRequest}
 import play.api.i18n.MessagesApi
 import uk.gov.hmrc.http.HeaderCarrier
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AddressLookupService @Inject() (

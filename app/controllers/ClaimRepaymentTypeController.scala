@@ -18,8 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.ClaimRepaymentTypeFormProvider
-
-import javax.inject.Inject
 import models.{ClaimRepaymentType, UserAnswers}
 import navigation.CreateNavigator
 import pages._
@@ -29,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ClaimRepaymentTypeView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ClaimRepaymentTypeController @Inject() (

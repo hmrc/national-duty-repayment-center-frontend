@@ -16,11 +16,12 @@
 
 package models.requests
 
-import javax.inject.Inject
 import models._
 import models.eis.QuoteFormatter
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.libs.json.{Json, OFormat}
+
+import javax.inject.Inject
 
 final case class AmendClaimRequest(Content: AmendContent, uploadedFiles: Seq[UploadedFile])
 

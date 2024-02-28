@@ -16,8 +16,6 @@
 
 package controllers
 
-import org.apache.pekko.actor.ActorRef
-import org.apache.pekko.pattern.ask
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest}
 import controllers.FileUploadUtils._
@@ -27,6 +25,8 @@ import models.FileType.SupportingEvidence
 import models.SessionState
 import models.requests.DataRequest
 import navigation.AmendNavigator
+import org.apache.pekko.actor.ActorRef
+import org.apache.pekko.pattern.ask
 import pages.AmendFileUploadPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._

@@ -16,9 +16,9 @@
 
 package models
 
+import play.api.libs.json.{Format, Json}
+
 import java.time.ZonedDateTime
-import play.api.libs.json.Format
-import play.api.libs.json.Json
 
 case class UploadedFile(
   upscanReference: String,

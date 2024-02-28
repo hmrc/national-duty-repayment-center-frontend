@@ -16,15 +16,15 @@
 
 package models.requests
 
-import java.time.LocalDate
-
-import javax.inject.Inject
 import models.DeclarantReferenceType.{No, Yes}
 import models.WhomToPay.Importer
 import models._
 import models.eis.{EISAddress, QuoteFormatter}
 import pages._
 import play.api.libs.json.{Json, OFormat}
+
+import java.time.LocalDate
+import javax.inject.Inject
 
 final case class CreateClaimRequest(Content: Content, uploadedFiles: Seq[UploadedFile])
 

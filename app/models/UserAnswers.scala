@@ -16,8 +16,6 @@
 
 package models
 
-import java.time.{Instant, LocalDate}
-
 import config.FrontendAppConfig
 import models.CustomsRegulationType.{UKCustomsCodeRegulation, UnionsCustomsCodeRegulation}
 import models.requests.Identification
@@ -27,6 +25,7 @@ import queries.{AmendClaimIdQuery, ClaimIdQuery, Gettable, Settable}
 import services.{FileUploadState, FileUploaded}
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
+import java.time.{Instant, LocalDate}
 import scala.util.{Failure, Success, Try}
 
 final case class UserAnswers(

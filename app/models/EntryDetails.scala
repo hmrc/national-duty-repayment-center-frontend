@@ -16,11 +16,10 @@
 
 package models
 
+import play.api.libs.json._
+
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-import play.api.libs.json.{Format, JsError, JsResult, JsString, JsSuccess, JsValue, Json, OFormat}
-
 import scala.util.{Failure, Success, Try}
 
 final case class EntryDetails(EPU: String, EntryNumber: String, EntryDate: LocalDate) {}

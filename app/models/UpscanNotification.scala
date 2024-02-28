@@ -16,10 +16,10 @@
 
 package models
 
-import java.time.ZonedDateTime
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
+import java.time.ZonedDateTime
 import javax.mail.internet.MimeUtility
 import scala.util.Try
 

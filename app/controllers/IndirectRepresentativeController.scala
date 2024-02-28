@@ -18,8 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.IndirectRepresentativeFormProvider
-
-import javax.inject.Inject
 import models.FileType.ProofOfAuthority
 import models.UserAnswers
 import navigation.CreateNavigator
@@ -30,6 +28,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.IndirectRepresentativeView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Success
 

@@ -19,12 +19,12 @@ package services
 import connectors.{UpscanInitiateRequest, UpscanInitiateResponse}
 import models.FileType.SupportingEvidence
 import models.FileUpload.{Accepted, Initiated}
-import models.requests.{DataRequest, UploadRequest}
 import models._
+import models.requests.{DataRequest, UploadRequest}
 import play.api.http.Status.SEE_OTHER
 import play.api.libs.json.{Format, Json}
-import play.api.mvc.{Call, Result}
 import play.api.mvc.Results.Redirect
+import play.api.mvc.{Call, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 

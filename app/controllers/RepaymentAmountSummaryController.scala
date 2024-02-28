@@ -18,8 +18,6 @@ package controllers
 
 import config.FrontendAppConfig
 import controllers.actions._
-
-import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
 import pages.{Page, RepaymentAmountSummaryPage, RepaymentTypePage}
@@ -30,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.RepaymentAmountSummaryAnswersHelper
 import views.html.RepaymentAmountSummaryView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RepaymentAmountSummaryController @Inject() (
