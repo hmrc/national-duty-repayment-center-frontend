@@ -17,14 +17,13 @@
 package connectors
 
 import com.codahale.metrics.MetricRegistry
-import uk.gov.hmrc.play.bootstrap.metrics.Metrics
 import config.FrontendAppConfig
+import org.slf4j.LoggerFactory
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http._
+import uk.gov.hmrc.play.bootstrap.metrics.Metrics
+
 import java.net.URL
-
-import org.slf4j.LoggerFactory
-
 import scala.concurrent.{ExecutionContext, Future}
 
 /**

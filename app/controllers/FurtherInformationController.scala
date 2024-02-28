@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.FurtherInformationFormProvider
-import javax.inject.Inject
 import models.UserAnswers
 import navigation.AmendNavigator
 import pages.{FurtherInformationPage, Page}
@@ -28,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.FurtherInformationView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class FurtherInformationController @Inject() (

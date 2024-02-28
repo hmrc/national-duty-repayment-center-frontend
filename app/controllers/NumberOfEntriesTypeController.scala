@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.NumberOfEntriesTypeFormProvider
-import javax.inject.Inject
 import models.FileType.Bulk
 import models.UserAnswers
 import navigation.CreateNavigator
@@ -29,6 +28,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NumberOfEntriesTypeView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class NumberOfEntriesTypeController @Inject() (

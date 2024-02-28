@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.DoYouOwnTheGoodsFormProvider
-import javax.inject.Inject
 import models.{DoYouOwnTheGoods, UserAnswers}
 import navigation.CreateNavigator
 import pages.{DeclarantNamePage, DoYouOwnTheGoodsPage, ImporterNamePage, Page}
@@ -29,6 +28,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.DoYouOwnTheGoodsView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DoYouOwnTheGoodsController @Inject() (

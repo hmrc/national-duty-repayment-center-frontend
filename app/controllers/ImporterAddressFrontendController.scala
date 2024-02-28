@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.ImporterManualAddressFormProvider
-import javax.inject.Inject
 import models.addresslookup.MissingAddressIdException
 import models.requests.DataRequest
 import models.{Address, UserAnswers}
@@ -32,6 +31,7 @@ import services.{AddressLookupService, CountryService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ImporterManualAddressView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ImporterAddressFrontendController @Inject() (

@@ -17,15 +17,14 @@
 package connectors
 
 import config.FrontendAppConfig
-import javax.inject.{Inject, Singleton}
+import connectors.InitialiseAddressLookupHttpParser.InitialiseAddressLookupReads
 import models.addresslookup.{AddressLookupConfirmation, AddressLookupOnRamp, AddressLookupRequest}
 import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.HttpClient
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
-import connectors.InitialiseAddressLookupHttpParser.InitialiseAddressLookupReads
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads, HttpResponse}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

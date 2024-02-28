@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.CreateOrAmendCaseFormProvider
-import javax.inject.Inject
 import models.CreateOrAmendCase.{AmendCase, CreateCase}
 import models.{CreateOrAmendCase, UserAnswers}
 import navigation.{AmendNavigator, CreateNavigator, FirstPage}
@@ -29,6 +28,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CreateOrAmendCaseView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CreateOrAmendCaseController @Inject() (

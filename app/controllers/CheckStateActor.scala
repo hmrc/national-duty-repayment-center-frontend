@@ -16,22 +16,21 @@
 
 package controllers
 
-import java.time.LocalDateTime
-
-import akka.actor.Actor
-import akka.pattern.{ask, pipe}
-import akka.util.Timeout
 import config.FrontendAppConfig
-import javax.inject.Inject
+import org.apache.pekko.actor.Actor
+import org.apache.pekko.pattern.{ask, pipe}
+import org.apache.pekko.util.Timeout
 import repositories.SessionRepository
 import services.{FileUploadService, FileUploadState, FileUploaded, UploadFile}
 
+import java.time.LocalDateTime
+import javax.inject.Inject
 import scala.concurrent.duration.{FiniteDuration, SECONDS}
 import scala.concurrent.{ExecutionContext, Future}
 
 trait CheckStateSupport {
   val appConfig: FrontendAppConfig
-  implicit val checkStateActorTimeout = Timeout(appConfig.fileUploadTimeout.plus(FiniteDuration(5, SECONDS)))
+  implicit val checkStateActorTimeout: Timeout = Timeout(appConfig.fileUploadTimeout.plus(FiniteDuration(5, SECONDS)))
 }
 
 case class CheckState(id: String, exitTime: LocalDateTime, state: FileUploadState)

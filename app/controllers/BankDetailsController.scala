@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.BankDetailsFormProvider
-import javax.inject.Inject
 import models.{RepaymentType, UserAnswers}
 import navigation.CreateNavigator
 import pages._
@@ -29,6 +28,7 @@ import services.BankAccountReputationService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.BankDetailsView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class BankDetailsController @Inject() (

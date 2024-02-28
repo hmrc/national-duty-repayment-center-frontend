@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package repositories
+package test.repositories
 
 import models.requests.Identification
 import models.{EORI, FileUpload, FileUploads, SessionState, UserAnswers}
@@ -26,6 +26,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import play.api.Configuration
 import play.api.libs.json.Json
+import repositories.CacheDataRepository
 import services.FileUploaded
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 

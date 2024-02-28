@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.WhomToPayFormProvider
-import javax.inject.Inject
 import models.FileType.ProofOfAuthority
 import models._
 import navigation.CreateNavigator
@@ -29,6 +28,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.WhomToPayView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhomToPayController @Inject() (

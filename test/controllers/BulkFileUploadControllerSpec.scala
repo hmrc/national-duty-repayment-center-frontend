@@ -17,14 +17,13 @@
 package controllers
 
 import base.SpecBase
-import models.FileType.{Bulk, SupportingEvidence}
+import models.FileType.Bulk
 import models.requests.UploadRequest
-import models.{FileType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import models.{FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.{ArgumentCaptor, MockitoSugar}
-import play.api.http.Status.{CREATED, NO_CONTENT, SEE_OTHER}
+import play.api.http.Status.SEE_OTHER
 import play.api.i18n.Messages
-import play.api.libs.json.{JsValue, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{
   contentAsString,
@@ -35,7 +34,6 @@ import play.api.test.Helpers.{
   status,
   writeableOf_AnyContentAsEmpty,
   writeableOf_AnyContentAsFormUrlEncoded,
-  writeableOf_AnyContentAsJson,
   GET,
   POST
 }

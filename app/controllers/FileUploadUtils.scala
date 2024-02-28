@@ -17,8 +17,6 @@
 package controllers
 
 import controllers.FileUploadUtils.ConvertStateApi
-
-import javax.inject.Inject
 import models.{FileVerificationStatus, SessionState}
 import play.api.Logger
 import play.api.libs.json.Json
@@ -28,6 +26,7 @@ import play.mvc.Http.HeaderNames
 import repositories.SessionRepository
 import services.{FileUploadState, FileUploaded}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 case class FileUploadException(message: String) extends RuntimeException(message)

@@ -16,16 +16,15 @@
 
 package services
 
-import java.util.UUID
-
 import connectors.NDRCConnector
-import javax.inject.Inject
 import models.UserAnswers
 import models.requests._
 import models.responses.ClientClaimResponse
 import org.slf4j.LoggerFactory
 import uk.gov.hmrc.http.HeaderCarrier
 
+import java.util.UUID
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 case class CaseAlreadyExists(msg: String) extends RuntimeException(msg)
 

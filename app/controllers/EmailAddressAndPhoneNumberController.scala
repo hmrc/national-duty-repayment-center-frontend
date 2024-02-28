@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.EmailAddressAndPhoneNumberFormProvider
-import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
 import pages.{EmailAddressAndPhoneNumberPage, Page}
@@ -28,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.EmailAddressAndPhoneNumberView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EmailAddressAndPhoneNumberController @Inject() (

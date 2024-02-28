@@ -16,8 +16,8 @@
 
 package models.bars
 
-import play.api.libs.json.{Json, OFormat}
 import models.bars.AssessBusinessBankDetailsResponse.{indeterminate, no, partial, yes}
+import play.api.libs.json.{Json, OFormat}
 
 case class AssessBusinessBankDetailsResponse(
   sortCodeIsPresentOnEISCD: String,

@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.DeclarantReferenceNumberFormProvider
-import javax.inject.Inject
 import models.UserAnswers
 import navigation.CreateNavigator
 import pages.{DeclarantReferenceNumberPage, Page}
@@ -28,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.DeclarantReferenceNumberView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DeclarantReferenceNumberController @Inject() (

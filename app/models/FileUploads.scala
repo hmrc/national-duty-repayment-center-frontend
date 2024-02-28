@@ -16,10 +16,10 @@
 
 package models
 
-import java.time.ZonedDateTime
-
 import models.FileType.SupportingEvidence
 import play.api.libs.json.{Format, Json}
+
+import java.time.ZonedDateTime
 
 case class FileUploads(files: Seq[FileUpload] = Seq.empty) {
 

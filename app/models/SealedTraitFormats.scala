@@ -17,6 +17,7 @@
 package models
 
 import play.api.libs.json._
+
 import scala.reflect.ClassTag
 
 /**

@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions._
 import forms.AgentImporterHasEORIFormProvider
-import javax.inject.Inject
 import models.{AgentImporterHasEORI, UserAnswers}
 import navigation.CreateNavigator
 import pages.{AgentImporterHasEORIPage, EnterAgentEORIPage, Page}
@@ -28,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.AgentImporterHasEORIView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentImporterHasEORIController @Inject() (

@@ -17,7 +17,6 @@
 package utils
 
 import controllers.routes
-import javax.inject.Inject
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.CustomsRegulationType.UnionsCustomsCodeRegulation
 import models.DeclarantReferenceType.{No, Yes}
@@ -31,6 +30,8 @@ import play.twirl.api.{Html, HtmlFormat}
 import queries.{ClaimDateQuery, ClaimIdQuery}
 import viewmodels.{AnswerRow, AnswerSection}
 import views.DateTimeFormats
+
+import javax.inject.Inject
 
 class CheckYourAnswersHelperFactory @Inject() (dateTimeFormats: DateTimeFormats) {
 

@@ -17,13 +17,13 @@
 package models
 
 import java.time.LocalDate
-
 import base.SpecBase
+import config.FrontendAppConfig
 import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, EntryDetailsPage, NumberOfEntriesTypePage}
 
 class UserAnswersSpec extends SpecBase {
 
-  implicit val config = frontendAppConfig
+  implicit val config: FrontendAppConfig = frontendAppConfig
 
   val duties: Set[ClaimRepaymentType] = Set(ClaimRepaymentType.Customs)
 

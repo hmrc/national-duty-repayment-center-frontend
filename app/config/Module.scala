@@ -16,15 +16,15 @@
 
 package config
 
-import akka.actor.ActorSystem
 import com.google.inject.name.Named
 import com.google.inject.{AbstractModule, Inject, Singleton}
 import com.typesafe.config.Config
 import controllers.CheckStateActor
 import controllers.actions._
 import navigation.{CreateNavigator, CreateNavigatorImpl}
+import org.apache.pekko.actor.ActorSystem
 import play.api.Configuration
-import play.api.libs.concurrent.AkkaGuiceSupport
+import play.api.libs.concurrent.PekkoGuiceSupport
 import play.api.libs.ws.WSClient
 import repositories.{CacheDataRepository, SessionRepository}
 import uk.gov.hmrc.http.hooks.HttpHook
@@ -36,7 +36,7 @@ import uk.gov.hmrc.play.http.ws.WSHttp
 import java.time.{Clock, ZoneOffset}
 import scala.util.matching.Regex
 
-class Module extends AbstractModule with AkkaGuiceSupport {
+class Module extends AbstractModule with PekkoGuiceSupport {
 
   override def configure(): Unit = {
     bind(classOf[HttpGet]).to(classOf[CustomHttpClient])
