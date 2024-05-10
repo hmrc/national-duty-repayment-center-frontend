@@ -74,7 +74,7 @@ isVATRegistered.02 = Na
 isVATRegistered.checkYourAnswersLabel = A ydych wedi’ch cofrestru ar gyfer TAW?
 isVATRegistered.error.required = Dewiswch ‘Iawn’ os ydych wedi’ch cofrestru ar gyfer TAW
 isVATRegistered.details.header = Help gyda chofrestru ar gyfer TAW
-isVATRegistered.details.p1 = Mae’n rhaid i chi gofrestru’ch busnes ar gyfer TAW gyda CThEM os yw ei drosiant trethadwy TAW dros y trothwy cofrestru TAW presennol.
+isVATRegistered.details.p1 = Mae’n rhaid i chi gofrestru’ch busnes ar gyfer TAW gyda CThEF os yw ei drosiant trethadwy TAW dros y trothwy cofrestru TAW presennol.
 isVATRegistered.details.p2 = Gallwch gofrestru’n wirfoddol os yw’ch trosiant o dan y trothwy, oni bai bod popeth yr ydych yn ei werthu wedi’i eithrio.
 
 customsRegulationType.title = Beth oedd y dyddiad derbyn ar gyfer y cofnod?
@@ -221,7 +221,7 @@ evidenceSupportingDocs.h2 = Y mathau o ffeiliau y gallwch eu huwchlwytho
 evidenceSupportingDocs.error.required = Dewiswch ddogfennau ategol
 
 claimReason.documents.c88 = y ddogfen <b>C88</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol
-claimReason.documents.e2 = y ddogfen <b>E2</b>, sy’n cadarnhau bod eich cofnod mewnforio wedi’i nodi gan CThEM
+claimReason.documents.e2 = y ddogfen <b>E2</b>, sy’n cadarnhau bod eich cofnod mewnforio wedi’i nodi gan CThEF
 claimReason.documents.commercial_invoice = <b>anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
 claimReason.documents.substitute_entry = <b>cofnod cyfnewid</b>, sy’n dangos newidiadau a wnaed i’r cofnod gwreiddiol
 claimReason.documents.currency_charge_evicence = tystiolaeth bod yr anfoneb wedi’i chywiro mewn arian cyfred arall
@@ -264,12 +264,12 @@ emailAddress.error.required = Nodwch gyfeiriad e-bost
 emailAddress.error.length = Mae’n rhaid i’r cyfeiriad e-bost fod yn 85 o gymeriadau neu lai
 emailAddress.error.invalid = Nodwch gyfeiriad e-bost yn y fformat cywir, megis enw@enghraifft.com
 
-whomToPay.title = Pwy ydych am i CThEM ad-dalu?
-whomToPay.heading = Pwy ydych am i CThEM ad-dalu?
+whomToPay.title = Pwy ydych am i CThEF ad-dalu?
+whomToPay.heading = Pwy ydych am i CThEF ad-dalu?
 whomToPay.01 = Mewnforiwr
 whomToPay.02 = Cynrychiolydd
 whomToPay.checkYourAnswersLabel = Pwy sydd i’w ad-dalu?
-whomToPay.error.required = Dewiswch pwy yr hoffech i CThEM ad-dalu
+whomToPay.error.required = Dewiswch pwy yr hoffech i CThEF ad-dalu
 
 repaymentType.title = Dewiswch ddull ad-dalu
 repaymentType.heading = Dewiswch ddull ad-dalu
@@ -307,12 +307,12 @@ isImporterVatRegistered.error.required = Dewiswch ‘Iawn’ os yw’r mewnforiw
 vatPaid.title = Gordaliad TAW
 vatPaid.single.entry.hint = Peidiwch â chynnwys unrhyw ffioedd asiant.
 vatPaid.multiple.entry.hint = Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.
-vatPaid.actualamountpaid.heading = Swm y TAW a dalwyd i CThEM
-vatPaid.actualamountpaid.error.required = Nodwch swm y TAW a dalwyd i CThEM
-vatPaid.actualamountpaid.error.notANumber = Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn rhif
-vatPaid.actualamountpaid.error.greaterThanZero = Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn fwy na £0
-vatPaid.actualamountpaid.error.length = Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai
-vatPaid.actualamountpaid.error.decimalPlaces = Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248
+vatPaid.actualamountpaid.heading = Swm y TAW a dalwyd i CThEF
+vatPaid.actualamountpaid.error.required = Nodwch swm y TAW a dalwyd i CThEF
+vatPaid.actualamountpaid.error.notANumber = Mae’n rhaid i swm y TAW a dalwyd i CThEF fod yn rhif
+vatPaid.actualamountpaid.error.greaterThanZero = Mae’n rhaid i swm y TAW a dalwyd i CThEF fod yn fwy na £0
+vatPaid.actualamountpaid.error.length = Mae’n rhaid i swm y TAW a dalwyd i CThEF fod yn £99,999,999,999.99 neu lai
+vatPaid.actualamountpaid.error.decimalPlaces = Mae’n rhaid i swm y TAW a dalwyd i CThEF fod yn swm o arian, megis £123.45 neu £248
 
 vatPaid.shouldhavepaid.heading = Swm y TAW y credwch y dylid bod wedi’i thalu
 vatPaid.shouldhavepaid.hint = Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.
@@ -321,19 +321,19 @@ vatPaid.shouldhavepaid.error.greaterThanZero = Ni all y swm fod yn rhif negyddol
 vatPaid.shouldhavepaid.error.decimalPlaces = Mae’n rhaid i swm y TAW y dylid bod wedi’i thalu fod yn swm o arian, megis £123.45 neu £248
 vatPaid.shouldhavepaid.error.notANumber = Mae’n rhaid i swm y TAW y dylid bod wedi’i thalu fod yn rhif
 
-vatPaid.amounts.error.same = Ni all swm y TAW y dylid bod wedi’i thalu fod yr un fath â swm y TAW a dalwyd i CThEM
-vatPaid.amounts.error.greater = Ni all swm y TAW mewnforio y dylid bod wedi’i thalu i CThEM fod yn fwy na’r swm a dalwyd
+vatPaid.amounts.error.same = Ni all swm y TAW y dylid bod wedi’i thalu fod yr un fath â swm y TAW a dalwyd i CThEF
+vatPaid.amounts.error.greater = Ni all swm y TAW mewnforio y dylid bod wedi’i thalu i CThEF fod yn fwy na’r swm a dalwyd
 
 customsDutyPaid.title = Gordaliad o’r Doll Dramor
 customsDutyPaid.heading = Gordaliad o’r Doll Dramor
 customsDutyPaid.single_entry.hint = Peidiwch â chynnwys unrhyw ffioedd asiant.
 customsDutyPaid.multiple_entry.hint = Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.
-customsDutyPaid.actualamountpaid.heading = Swm y Doll Dramor a dalwyd i CThEM
-customsDutyPaid.actualamountpaid.error.required = Nodwch swm y Doll Dramor a dalwyd i CThEM
-customsDutyPaid.actualamountpaid.error.greaterThanZero = Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn fwy na £0
-customsDutyPaid.actualamountpaid.error.notANumber = Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn rhif
-customsDutyPaid.actualamountpaid.error.length = Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai
-customsDutyPaid.actualamountpaid.error.decimalPlaces = Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248
+customsDutyPaid.actualamountpaid.heading = Swm y Doll Dramor a dalwyd i CThEF
+customsDutyPaid.actualamountpaid.error.required = Nodwch swm y Doll Dramor a dalwyd i CThEF
+customsDutyPaid.actualamountpaid.error.greaterThanZero = Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEF fod yn fwy na £0
+customsDutyPaid.actualamountpaid.error.notANumber = Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEF fod yn rhif
+customsDutyPaid.actualamountpaid.error.length = Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEF fod yn £99,999,999,999.99 neu lai
+customsDutyPaid.actualamountpaid.error.decimalPlaces = Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEF fod yn swm o arian, megis £123.45 neu £248
 
 customsDutyPaid.shouldhavepaid.heading = Swm y Doll Dramor y credwch y dylid bod wedi’i thalu
 customsDutyPaid.shouldhavepaid.hint = Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.
@@ -343,19 +343,19 @@ customsDutyPaid.shouldhavepaid.error.notANumber = Mae’n rhaid i swm y Doll Dra
 customsDutyPaid.shouldhavepaid.error.length = Mae’n rhaid i swm y Doll Dramor y dylid bod wedi’i thalu fod yn £99,999,999,999.99 neu lai
 customsDutyPaid.shouldhavepaid.error.decimalPlaces = Mae’n rhaid i swm y Doll Dramor y dylid bod wedi’i thalu fod yn swm o arian, megis £123.45 neu £248
 
-customsDutyPaid.amounts.error.same = Ni all swm y Doll Dramor y dylid bod wedi’i thalu fod yr un fath â swm y Doll Dramor a dalwyd i CThEM
-customsDutyPaid.amounts.error.greater = Ni all swm y Doll Dramor y dylid bod wedi’i thalu i CThEM fod yn fwy na’r swm a dalwyd
+customsDutyPaid.amounts.error.same = Ni all swm y Doll Dramor y dylid bod wedi’i thalu fod yr un fath â swm y Doll Dramor a dalwyd i CThEF
+customsDutyPaid.amounts.error.greater = Ni all swm y Doll Dramor y dylid bod wedi’i thalu i CThEF fod yn fwy na’r swm a dalwyd
 
 otherDutiesPaid.title = Gordaliad o dollau eraill
 otherDutiesPaid.heading = Gordaliad o dollau eraill
 otherDutiesPaid.single_entry.hint = Peidiwch â chynnwys unrhyw ffioedd asiant.
 otherDutiesPaid.multiple_entry.hint = Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.
-otherDutiesPaid.actualamountpaid.heading = Swm y tollau eraill a dalwyd i CThEM
-otherDutiesPaid.actualamountpaid.error.required = Nodwch swm y tollau eraill a dalwyd i CThEM
-otherDutiesPaid.actualamountpaid.error.greaterThanZero = Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn fwy na £0
-otherDutiesPaid.actualamountpaid.error.notANumber = Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn rhif
-otherDutiesPaid.actualamountpaid.error.length = Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai
-otherDutiesPaid.actualamountpaid.error.decimalPlaces = Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248
+otherDutiesPaid.actualamountpaid.heading = Swm y tollau eraill a dalwyd i CThEF
+otherDutiesPaid.actualamountpaid.error.required = Nodwch swm y tollau eraill a dalwyd i CThEF
+otherDutiesPaid.actualamountpaid.error.greaterThanZero = Mae’n rhaid i swm y tollau eraill a dalwyd i CThEF fod yn fwy na £0
+otherDutiesPaid.actualamountpaid.error.notANumber = Mae’n rhaid i swm y tollau eraill a dalwyd i CThEF fod yn rhif
+otherDutiesPaid.actualamountpaid.error.length = Mae’n rhaid i swm y tollau eraill a dalwyd i CThEF fod yn £99,999,999,999.99 neu lai
+otherDutiesPaid.actualamountpaid.error.decimalPlaces = Mae’n rhaid i swm y tollau eraill a dalwyd i CThEF fod yn swm o arian, megis £123.45 neu £248
 
 otherDutiesPaid.shouldhavepaid.heading = Swm y tollau eraill y credwch y dylid bod wedi’u talu
 otherDutiesPaid.shouldhavepaid.hint = Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.
@@ -365,8 +365,8 @@ otherDutiesPaid.shouldhavepaid.error.notANumber = Mae’n rhaid i swm y tollau e
 otherDutiesPaid.shouldhavepaid.error.length = Mae’n rhaid i swm y tollau eraill y dylid bod wedi’u talu fod yn £99,999,999,999.99 neu lai
 otherDutiesPaid.shouldhavepaid.error.decimalPlaces = Mae’n rhaid i swm y tollau eraill y dylid bod wedi’u talu fod yn swm o arian, megis £123.45 neu £248
 
-otherDutiesPaid.amounts.error.same = Ni all swm y tollau eraill y dylid bod wedi’u talu fod yr un fath â swm y tollau eraill a dalwyd i CThEM
-otherDutiesPaid.amounts.error.greater = Ni all swm y tollau eraill y dylid bod wedi’u talu i CThEM fod yn fwy na’r swm a dalwyd
+otherDutiesPaid.amounts.error.same = Ni all swm y tollau eraill y dylid bod wedi’u talu fod yr un fath â swm y tollau eraill a dalwyd i CThEF
+otherDutiesPaid.amounts.error.greater = Ni all swm y tollau eraill y dylid bod wedi’u talu i CThEF fod yn fwy na’r swm a dalwyd
 
 importerAddress.title = Beth yw’ch cyfeiriad?
 importerAddress.checkYourAnswersLabel = Cyfeiriad y mewnforiwr
@@ -509,8 +509,8 @@ bulkFileUpload.paragraph1 = Mae’n rhaid i’r ffeil rydych yn ei huwchlwytho g
 bulkFileUpload.01 = rhif yr Uned Prosesu Cofnodion (EPU), rhif y cofnod a dyddiad y cofnod
 bulkFileUpload.02 = rhif pob eitem
 bulkFileUpload.03 = y math o doll neu dreth yr ydych yn ei hawlio ar gyfer pob cofnod
-bulkFileUpload.04 = y swm a dalwyd i CThEM
-bulkFileUpload.05 = y swm y dylid bod wedi’i dalu i CThEM
+bulkFileUpload.04 = y swm a dalwyd i CThEF
+bulkFileUpload.05 = y swm y dylid bod wedi’i dalu i CThEF
 bulkFileUpload.paragraph2 = Mae’n rhaid i’r ffeil fod yn 6MB neu lai.
 bulkFileUpload.file.details.heading = Y mathau o ffeiliau y gallwch eu huwchlwytho
 bulkFileUpload.checkYourAnswersLabel = Dogfen cofnodion lluosog
@@ -530,7 +530,7 @@ furtherInformation.heading = Ychwanegwch ragor o wybodaeth at eich cais
 furtherInformation.checkYourAnswersLabel = Gwybodaeth ychwanegol
 furtherInformation.error.required = Nodwch yr wybodaeth ychwanegol
 furtherInformation.error.length = Mae’n rhaid i’r wybodaeth ychwanegol fod yn 1400 o gymeriadau neu lai
-furtherInformation.hintText = Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth yr ydych yn dewis ei hychwanegu neu neges yn gofyn am gael canslo’ch cais.
+furtherInformation.hintText = Gall hyn fod yn wybodaeth y mae CThEF wedi gofyn amdani, gwybodaeth yr ydych yn dewis ei hychwanegu neu neges yn gofyn am gael canslo’ch cais.
 
 amendCaseResponseType.title = Beth y mae angen i chi ei wneud?
 amendCaseResponseType.heading = Beth y mae angen i chi ei wneud?
