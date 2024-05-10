@@ -73,7 +73,7 @@ isVATRegistered.02	No	Na
 isVATRegistered.checkYourAnswersLabel	Are you VAT registered?	A ydych wedi’ch cofrestru ar gyfer TAW?
 isVATRegistered.error.required	Select yes if you are VAT registered	Dewiswch ‘Iawn’ os ydych wedi’ch cofrestru ar gyfer TAW
 isVATRegistered.details.header	Help with VAT registration	Help gyda chofrestru ar gyfer TAW
-isVATRegistered.details.p1	You must register your business for VAT with HMRC if its VAT taxable turnover is over the current VAT registration threshold.	Mae’n rhaid i chi gofrestru’ch busnes ar gyfer TAW gyda CThEM os yw ei drosiant trethadwy TAW dros y trothwy cofrestru TAW presennol.
+isVATRegistered.details.p1	You must register your business for VAT with HMRC if its VAT taxable turnover is over the current VAT registration threshold.	Mae’n rhaid i chi gofrestru’ch busnes ar gyfer TAW gyda CThEF os yw ei drosiant trethadwy TAW dros y trothwy cofrestru TAW presennol.
 isVATRegistered.details.p2	You can register voluntarily if your turnover is under the threshold, unless everything you sell is exempt.	Gallwch gofrestru’n wirfoddol os yw’ch trosiant o dan y trothwy, oni bai bod popeth yr ydych yn ei werthu wedi’i eithrio.
 importerClaimantVrn.title	What is your VRN number?	Beth yw’ch Rhif Cofrestru TAW (VRN)?
 importerClaimantVrn.heading	What is your VRN number?	Beth yw’ch Rhif Cofrestru TAW (VRN)?
@@ -291,12 +291,12 @@ vatPaid.title	VAT overpayment	Gordaliad TAW
 vatPaid.checkYourAnswersLabel	VAT overpayment	Gordaliad TAW
 vatPaid.single.entry.hint	Do not include any agent fees.	Peidiwch â chynnwys unrhyw ffioedd asiant.
 vatPaid.multiple.entry.hint	This should be the total amount of overpayment for all entries. Do not include any agent fees.	Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.
-vatPaid.actualamountpaid.heading	Amount of VAT that was paid to HMRC	Swm y TAW a dalwyd i CThEM
-vatPaid.actualamountpaid.error.required	Enter the amount of VAT that was paid to HMRC	Nodwch swm y TAW a dalwyd i CThEM
-vatPaid.actualamountpaid.error.notANumber	The amount of VAT that was paid to HMRC must be a number	Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn rhif
-vatPaid.actualamountpaid.error.greaterThanZero	The amount of VAT that was paid to HMRC must be more than £0	Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn fwy na £0
-vatPaid.actualamountpaid.error.length	The amount of VAT that was paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai
-vatPaid.actualamountpaid.error.decimalPlaces	The amount of VAT that was paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y TAW a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248
+vatPaid.actualamountpaid.heading	Amount of VAT that was paid to HMRC	Swm y TAW a dalwyd i CThEF
+vatPaid.actualamountpaid.error.required	Enter the amount of VAT that was paid to HMRC	Nodwch swm y TAW a dalwyd i CThEF
+vatPaid.actualamountpaid.error.notANumber	The amount of VAT that was paid to HMRC must be a number	Mae’n rhaid i swm y TAW a dalwyd i CThEF fod yn rhif
+vatPaid.actualamountpaid.error.greaterThanZero	The amount of VAT that was paid to HMRC must be more than £0	Mae’n rhaid i swm y TAW a dalwyd i CThEF fod yn fwy na £0
+vatPaid.actualamountpaid.error.length	The amount of VAT that was paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y TAW a dalwyd i CThEF fod yn £99,999,999,999.99 neu lai
+vatPaid.actualamountpaid.error.decimalPlaces	The amount of VAT that was paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y TAW a dalwyd i CThEF fod yn swm o arian, megis £123.45 neu £248
 vatPaid.shouldhavepaid.heading	Amount of VAT that you think should have been paid	Swm y TAW y credwch y dylid bod wedi’i thalu
 vatPaid.shouldhavepaid.hint	For refunded or destroyed goods, this amount can be £0.	Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.
 vatPaid.shouldhavepaid.error.required	Enter the amount of VAT that should have been paid	Nodwch swm y TAW y dylid bod wedi’i thalu
@@ -304,19 +304,19 @@ vatPaid.shouldhavepaid.error.greaterThanZero	The amount cannot be a negative num
 vatPaid.shouldhavepaid.error.length	The amount of VAT that should have been paid must £99,999,999,999.99 or less	Mae’n rhaid i swm y TAW y dylid bod wedi’i thalu fod yn £99,999,999,999.99 neu lai
 vatPaid.shouldhavepaid.error.decimalPlaces	The amount of VAT that should have been paid must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y TAW y dylid bod wedi’i thalu fod yn swm o arian, megis £123.45 neu £248
 vatPaid.shouldhavepaid.error.notANumber	The amount of VAT that should have been paid must be a number	Mae’n rhaid i swm y TAW y dylid bod wedi’i thalu fod yn rhif
-vatPaid.amounts.error.same	The amount of VAT that should have been paid cannot be the same as the amount of VAT that was paid to HMRC	Ni all swm y TAW y dylid bod wedi’i thalu fod yr un fath â swm y TAW a dalwyd i CThEM
-vatPaid.amounts.error.greater	The amount of import VAT that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y TAW mewnforio y dylid bod wedi’i thalu i CThEM fod yn fwy na’r swm a dalwyd
+vatPaid.amounts.error.same	The amount of VAT that should have been paid cannot be the same as the amount of VAT that was paid to HMRC	Ni all swm y TAW y dylid bod wedi’i thalu fod yr un fath â swm y TAW a dalwyd i CThEF
+vatPaid.amounts.error.greater	The amount of import VAT that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y TAW mewnforio y dylid bod wedi’i thalu i CThEF fod yn fwy na’r swm a dalwyd
 customsDutyPaid.title	Customs Duty overpayment	Gordaliad o’r Doll Dramor
 customsDutyPaid.heading	Customs Duty overpayment	Gordaliad o’r Doll Dramor
 customsDutyPaid.single_entry.hint	Do not include any agent fees.	Peidiwch â chynnwys unrhyw ffioedd asiant.
 customsDutyPaid.multiple_entry.hint	This should be the total amount of overpayment for all entries. Do not include any agent fees.	Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.
-customsDutyPaid.actualamountpaid.heading	Amount of Customs Duty that was paid to HMRC	Swm y Doll Dramor a dalwyd i CThEM
-customsDutyPaid.actualamountpaid.error.required	Enter the amount of Customs Duty that was paid to HMRC	Nodwch swm y Doll Dramor a dalwyd i CThEM
-customsDutyPaid.actualamountpaid.error.greaterThanZero	The amount of Customs Duty that was paid to HMRC must be more than £0	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn fwy na £0
-customsDutyPaid.actualamountpaid.error.notANumber	The amount of Customs Duty that was paid to HMRC must be a number	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn rhif
-customsDutyPaid.actualamountpaid.error.length	The amount of Customs Duty that was paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai
-customsDutyPaid.actualamountpaid.error.decimalPlaces	The amount of Customs Duty that was paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248
-customsDutyPaid.checkYourAnswersLabel	How much Customs Duty was paid to HMRC?	Faint o Doll Dramor a dalwyd i CThEM?
+customsDutyPaid.actualamountpaid.heading	Amount of Customs Duty that was paid to HMRC	Swm y Doll Dramor a dalwyd i CThEF
+customsDutyPaid.actualamountpaid.error.required	Enter the amount of Customs Duty that was paid to HMRC	Nodwch swm y Doll Dramor a dalwyd i CThEF
+customsDutyPaid.actualamountpaid.error.greaterThanZero	The amount of Customs Duty that was paid to HMRC must be more than £0	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEF fod yn fwy na £0
+customsDutyPaid.actualamountpaid.error.notANumber	The amount of Customs Duty that was paid to HMRC must be a number	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEF fod yn rhif
+customsDutyPaid.actualamountpaid.error.length	The amount of Customs Duty that was paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEF fod yn £99,999,999,999.99 neu lai
+customsDutyPaid.actualamountpaid.error.decimalPlaces	The amount of Customs Duty that was paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y Doll Dramor a dalwyd i CThEF fod yn swm o arian, megis £123.45 neu £248
+customsDutyPaid.checkYourAnswersLabel	How much Customs Duty was paid to HMRC?	Faint o Doll Dramor a dalwyd i CThEF?
 customsDutyPaid.checkYourAnswersLabel.hint	This should be the total amount of overpayment for all entries.	Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod.
 customsDutyPaid.shouldhavepaid.heading	Amount of Customs Duty that you think should have been paid	Swm y Doll Dramor y credwch y dylid bod wedi’i thalu
 customsDutyPaid.shouldhavepaid.hint	For refunded or destroyed goods, this amount can be £0.	Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.
@@ -325,18 +325,18 @@ customsDutyPaid.shouldhavepaid.error.greaterThanZero	The amount cannot be a nega
 customsDutyPaid.shouldhavepaid.error.notANumber	The amount of Customs Duty that should have been paid must be a number	Mae’n rhaid i swm y Doll Dramor y dylid bod wedi’i thalu fod yn rhif
 customsDutyPaid.shouldhavepaid.error.length	The amount of Customs Duty that should have been paid must £99,999,999,999.99 or less	Mae’n rhaid i swm y Doll Dramor y dylid bod wedi’i thalu fod yn £99,999,999,999.99 neu lai
 customsDutyPaid.shouldhavepaid.error.decimalPlaces	The amount of Customs Duty that should have been paid must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y Doll Dramor y dylid bod wedi’i thalu fod yn swm o arian, megis £123.45 neu £248
-customsDutyPaid.amounts.error.same	The amount of Customs Duty that should have been paid cannot be the same as the amount of Customs Duty that was paid to HMRC	Ni all swm y Doll Dramor y dylid bod wedi’i thalu fod yr un fath â swm y Doll Dramor a dalwyd i CThEM
-customsDutyPaid.amounts.error.greater	The amount of customs duty that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y Doll Dramor y dylid bod wedi’i thalu i CThEM fod yn fwy na’r swm a dalwyd
+customsDutyPaid.amounts.error.same	The amount of Customs Duty that should have been paid cannot be the same as the amount of Customs Duty that was paid to HMRC	Ni all swm y Doll Dramor y dylid bod wedi’i thalu fod yr un fath â swm y Doll Dramor a dalwyd i CThEF
+customsDutyPaid.amounts.error.greater	The amount of customs duty that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y Doll Dramor y dylid bod wedi’i thalu i CThEF fod yn fwy na’r swm a dalwyd
 otherDutiesPaid.title	Overpayment of other duties	Gordaliad o dollau eraill
 otherDutiesPaid.heading	Overpayment of other duties	Gordaliad o dollau eraill
 otherDutiesPaid.single_entry.hint	Do not include any agent fees.	Peidiwch â chynnwys unrhyw ffioedd asiant.
 otherDutiesPaid.multiple_entry.hint	This should be the total amount of overpayment for all entries. Do not include any agent fees.	Dylai hyn fod yn gyfanswm y gordaliad ar gyfer pob cofnod. Peidiwch â chynnwys unrhyw ffioedd asiant.
-otherDutiesPaid.actualamountpaid.heading	Amount of other duties that were paid to HMRC	Swm y tollau eraill a dalwyd i CThEM
-otherDutiesPaid.actualamountpaid.error.required	Enter the amount of other duties that were paid to HMRC	Nodwch swm y tollau eraill a dalwyd i CThEM
-otherDutiesPaid.actualamountpaid.error.greaterThanZero	The amount of other duties that were paid to HMRC must be more than £0	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn fwy na £0
-otherDutiesPaid.actualamountpaid.error.notANumber	The amount of other duties that were paid to HMRC must be a number	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn rhif
-otherDutiesPaid.actualamountpaid.error.length	The amount of other duties that were paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn £99,999,999,999.99 neu lai
-otherDutiesPaid.actualamountpaid.error.decimalPlaces	The amount of other duties that were paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEM fod yn swm o arian, megis £123.45 neu £248
+otherDutiesPaid.actualamountpaid.heading	Amount of other duties that were paid to HMRC	Swm y tollau eraill a dalwyd i CThEF
+otherDutiesPaid.actualamountpaid.error.required	Enter the amount of other duties that were paid to HMRC	Nodwch swm y tollau eraill a dalwyd i CThEF
+otherDutiesPaid.actualamountpaid.error.greaterThanZero	The amount of other duties that were paid to HMRC must be more than £0	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEF fod yn fwy na £0
+otherDutiesPaid.actualamountpaid.error.notANumber	The amount of other duties that were paid to HMRC must be a number	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEF fod yn rhif
+otherDutiesPaid.actualamountpaid.error.length	The amount of other duties that were paid to HMRC must £99,999,999,999.99 or less	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEF fod yn £99,999,999,999.99 neu lai
+otherDutiesPaid.actualamountpaid.error.decimalPlaces	The amount of other duties that were paid to HMRC must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y tollau eraill a dalwyd i CThEF fod yn swm o arian, megis £123.45 neu £248
 otherDutiesPaid.shouldhavepaid.heading	Amount of other duties that you think should have been paid	Swm y tollau eraill y credwch y dylid bod wedi’u talu
 otherDutiesPaid.shouldhavepaid.hint	For refunded or destroyed goods, this amount can be £0.	Ar gyfer nwyddau sydd wedi’u had-dalu neu eu dinistrio, gall y swm hwn fod yn £0.
 otherDutiesPaid.shouldhavepaid.error.required	Enter the amount of other duties that should have been paid	Nodwch swm y tollau eraill y dylid bod wedi’u talu
@@ -344,9 +344,9 @@ otherDutiesPaid.shouldhavepaid.error.greaterThanZero	The amount cannot be a nega
 otherDutiesPaid.shouldhavepaid.error.notANumber	The amount of other duties that should have been paid must be a number	Mae’n rhaid i swm y tollau eraill y dylid bod wedi’u talu fod yn rhif
 otherDutiesPaid.shouldhavepaid.error.length	The amount of other duties that should have been paid must £99,999,999,999.99 or less	Mae’n rhaid i swm y tollau eraill y dylid bod wedi’u talu fod yn £99,999,999,999.99 neu lai
 otherDutiesPaid.shouldhavepaid.error.decimalPlaces	The amount of other duties that should have been paid must be an amount of money, like £123.45 or £248	Mae’n rhaid i swm y tollau eraill y dylid bod wedi’u talu fod yn swm o arian, megis £123.45 neu £248
-otherDutiesPaid.amounts.error.same	The amount of other duties that should have been paid cannot be the same as the amount of other duties that were paid to HMRC	Ni all swm y tollau eraill y dylid bod wedi’u talu fod yr un fath â swm y tollau eraill a dalwyd i CThEM
-otherDutiesPaid.amounts.error.greater	The amount of other duties that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y tollau eraill y dylid bod wedi’u talu i CThEM fod yn fwy na’r swm a dalwyd
-otherDutiesPaid.checkYourAnswersLabel	How much was paid in other duties to HMRC?	Faint a dalwyd mewn tollau eraill i CThEM?
+otherDutiesPaid.amounts.error.same	The amount of other duties that should have been paid cannot be the same as the amount of other duties that were paid to HMRC	Ni all swm y tollau eraill y dylid bod wedi’u talu fod yr un fath â swm y tollau eraill a dalwyd i CThEF
+otherDutiesPaid.amounts.error.greater	The amount of other duties that should have been paid to HMRC cannot be more than the amount that was paid	Ni all swm y tollau eraill y dylid bod wedi’u talu i CThEF fod yn fwy na’r swm a dalwyd
+otherDutiesPaid.checkYourAnswersLabel	How much was paid in other duties to HMRC?	Faint a dalwyd mewn tollau eraill i CThEF?
 importerAddress.title	What is your address?	Beth yw’ch cyfeiriad?
 importerAddress.heading	What is your address?	Beth yw’ch cyfeiriad?
 importerAddress.checkYourAnswersLabel	Importer address	Cyfeiriad y mewnforiwr
@@ -532,8 +532,8 @@ bulkFileUpload.paragraph1	Your uploaded file must include:	Mae’n rhaid i’r f
 bulkFileUpload.01	the entry processing unit (EPU) number, entry number and entry date	rhif yr Uned Prosesu Cofnodion (EPU), rhif y cofnod a dyddiad y cofnod
 bulkFileUpload.02	all item numbers	rhif pob eitem
 bulkFileUpload.03	the type of duty or tax you are claiming for each entry	y math o doll neu dreth yr ydych yn ei hawlio ar gyfer pob cofnod
-bulkFileUpload.04	the amount that was paid to HMRC	y swm a dalwyd i CThEM
-bulkFileUpload.05	the amount that should have been paid to HMRC	y swm y dylid bod wedi’i dalu i CThEM
+bulkFileUpload.04	the amount that was paid to HMRC	y swm a dalwyd i CThEF
+bulkFileUpload.05	the amount that should have been paid to HMRC	y swm y dylid bod wedi’i dalu i CThEF
 bulkFileUpload.paragraph2	The file must be 6MB or less.	Mae’n rhaid i’r ffeil fod yn 6MB neu lai.
 bulkFileUpload.file.details.heading	Types of files you can upload	Y mathau o ffeiliau y gallwch eu huwchlwytho
 bulkFileUpload.checkYourAnswersLabel	Multiple entries spreadsheet	Taenlen cofnodion lluosog
@@ -551,7 +551,7 @@ furtherInformation.heading	Give us further information	Rhowch wybodaeth bellach 
 furtherInformation.checkYourAnswersLabel	Additional information	Gwybodaeth ychwanegol
 furtherInformation.error.required	Enter the further information	Nodwch yr wybodaeth bellach
 furtherInformation.error.length	Further information must be 1400 characters or less	Mae’n rhaid i’r wybodaeth bellach fod yn 1400 o gymeriadau neu lai
-furtherInformation.hintText	Send the information that HMRC has asked for.	Anfonwch yr wybodaeth y mae CThEM wedi gofyn amdani.
+furtherInformation.hintText	Send the information that HMRC has asked for.	Anfonwch yr wybodaeth y mae CThEF wedi gofyn amdani.
 amendCaseResponseType.title	What do you need to do?	Beth y mae angen i chi ei wneud?
 amendCaseResponseType.heading	What do you need to do?	Beth y mae angen i chi ei wneud?
 amendCaseResponseType.supportingDocuments	Send more supporting documents	Anfon rhagor o ddogfennau ategol
@@ -729,7 +729,7 @@ amend.application.closed.email.subject	Closed application reference {0}	Cyfeirno
 claimReason.documents.airway_bill	an <b>airway bill</b> or <b>bill of lading</b> that show shipping details	<b>bil teithrestr awyr</b> neu <b>bil llwytho</b>, sy’n dangos y manylion cludo
 claimReason.documents.c88	the <b>C88</b>, which authorises imports from the country of origin	y ddogfen <b>C88</b>, sy’n awdurdodi mewnforion o’r wlad wreiddiol
 claimReason.documents.commercial_invoice	a <b>commercial invoice</b>, which shows the value of the goods	a<b>anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
-claimReason.documents.e2	the <b>E2</b>, which confirms your import entry has been logged by HMRC	y ddogfen <b>E2</b>, sy’n cadarnhau bod eich cofnod mewnforio wedi’i nodi gan CThEM
+claimReason.documents.e2	the <b>E2</b>, which confirms your import entry has been logged by HMRC	y ddogfen <b>E2</b>, sy’n cadarnhau bod eich cofnod mewnforio wedi’i nodi gan CThEF
 claimReason.documents.proof_of_origin	<b>proof of origin documents</b>, such as a GSP certificate	<b>dogfennau tystiolaeth o darddiad</b>, megis tystysgrif GSP
 claimReason.documents.substitute_entry	a <b>substitute entry</b>, which shows changes made to the original entry	<b>cofnod cyfnewid</b>, sy’n dangos newidiadau a wnaed i’r cofnod gwreiddiol
 claimantType.title	Are you the importer?	Ai chi yw’r mewnforiwr?
@@ -756,15 +756,15 @@ evidenceSupportingDocs.title	Documents we need from you	Dogfennau sydd eu hangen
 evidenceSupportingDocs.heading	Documents we need from you	Dogfennau sydd eu hangen arnom gennych
 claimantType.error.required	Confirm if you are the importer or their representative	Cadarnhewch ai’r mewnforiwr neu gynrychiolydd y mewnforiwr ydych chi
 claimReasonType.error.required	Select the main reason for making an application	Dewiswch y prif reswm dros wneud cais
-whomToPay.error.required	Select who you want HMRC to repay	Dewiswch pwy yr hoffech i CThEM ad-dalu
-furtherInformation.hintText	This may be information that HMRC has asked for, information you choose to add or a request to cancel your application.	Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth y byddwch yn dewis ei hychwanegu neu gais i ganslo’ch cais.
+whomToPay.error.required	Select who you want HMRC to repay	Dewiswch pwy yr hoffech i CThEF ad-dalu
+furtherInformation.hintText	This may be information that HMRC has asked for, information you choose to add or a request to cancel your application.	Gall hyn fod yn wybodaeth y mae CThEF wedi gofyn amdani, gwybodaeth y byddwch yn dewis ei hychwanegu neu gais i ganslo’ch cais.
 entryDetails.importer.hint	You can find these on the E2 or C88 documents. If you’re unsure, you can speak to your shipping agent or courier.	Gallwch ddod o hyd i’r rhain ar y dogfennau E2 neu C88. Os ydych yn ansicr, gallwch siarad â’ch asiant cludo neu’ch cludwr.
 entryDetails.representative.hint	You can find these on the E2 or C88 documents.	Gallwch ddod o hyd i’r rhain ar y dogfennau E2 neu C88.
 enterAgentEORI.hint	This has 2 letters, followed by either 12 or 15 numbers. For example, GB123456789123 or GB123456789123000.	Mae hwn yn cynnwys 2 lythyren, wedi’u dilyn gan naill ai 12 neu 15 rhif. Er enghraifft, GB123456789123 neu GB123456789123000.
 claimReasonType.title	What is the main reason for making an application?	Beth yw’r prif reswm dros wneud cais?
 claimReasonType.heading	What is the main reason for making an application?	Beth yw’r prif reswm dros wneud cais?
-whomToPay.title	Who do you want HMRC to repay?	Pwy ydych am i CThEM ad-dalu?
-whomToPay.heading	Who do you want HMRC to repay?	Pwy ydych am i CThEM ad-dalu?
+whomToPay.title	Who do you want HMRC to repay?	Pwy ydych am i CThEF ad-dalu?
+whomToPay.heading	Who do you want HMRC to repay?	Pwy ydych am i CThEF ad-dalu?
 numberOfEntriesType.02.label	Number of entries	Nifer y cofnodion
 claimReasonType.multiple.title	Why are you making an application?	Pam ydych yn gwneud cais?
 claimReasonType.multiple.heading	Why are you making an application?	Pam ydych yn gwneud cais?
@@ -800,7 +800,7 @@ reasonForOverpayment.bullet.claimReasonMultiple	if your application has more tha
 claimReason.documents.commercial_invoice	a <b>commercial invoice</b>, which shows the value of the goods	<b>anfoneb fasnachol</b>, sy’n dangos gwerth y nwyddau
 furtherInformation.title	Add more information to your application	Ychwanegwch ragor o wybodaeth at eich cais
 furtherInformation.heading	Add more information to your application	Ychwanegwch ragor o wybodaeth at eich cais
-furtherInformation.hintText	This may be information that HMRC has asked for, information you choose to add or a request to cancel your application.	Gall hyn fod yn wybodaeth y mae CThEM wedi gofyn amdani, gwybodaeth yr ydych yn dewis ei hychwanegu neu neges yn gofyn am gael canslo’ch cais.
+furtherInformation.hintText	This may be information that HMRC has asked for, information you choose to add or a request to cancel your application.	Gall hyn fod yn wybodaeth y mae CThEF wedi gofyn amdani, gwybodaeth yr ydych yn dewis ei hychwanegu neu neges yn gofyn am gael canslo’ch cais.
 
 timeout.title	You’re about to be signed out	Rydych ar fin cael eich allgofnodi
 timeout.messageSuffix	Your answers will not be saved.	Ni chaiff eich atebion eu cadw.
