@@ -61,8 +61,7 @@
         }
 
         @uploadSummary(uploadedFiles, ref => routes.FileUploadController.onRemove(ref).url)
-
-        <form id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" class="js-form file-uploadzzz" novalidate>
+        @forms.formWithCSRF(action = Call("POST", uploadRequest.href),Symbol("enctype") -> "multipart/form-data",Symbol("novalidate") -> "novalidate", Symbol("id") -> "upload-form", Symbol("class") -> "js-form file-uploadzzz") {
 
             @uploadRequest.fields.map { case (key, value) =>
                 @forms.inputHidden(key, value)
@@ -79,7 +78,7 @@
             </div>
 
             <div class="file-upload__loading-container" aria-live="polite" role="region"></div>
-        </form>
+        }
 
         <div class="ndrc-display-none-non-javascript">
         @forms.formWithCSRF(action = FileUploadController.onContinue(), args = Symbol("novalidate") -> "novalidate") {

@@ -52,11 +52,10 @@
         @supportedFileTypeList()
 
         @uploadSummary(uploadedFiles, ref => routes.AmendCaseSendInformationController.onRemove(ref).url)
-
-        <form id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate>
-            @uploadRequest.fields.map { case (key, value) =>
-                @forms.inputHidden(key, value)
-            }
+        @forms.formWithCSRF(action = Call("POST", uploadRequest.href),Symbol("enctype") -> "multipart/form-data",Symbol("novalidate") -> "novalidate", Symbol("id") -> "upload-form") {
+                @uploadRequest.fields.map { case (key, value) =>
+                   @forms.inputHidden(key, value)
+                }
 
             @fileUpload(if(uploadedFiles.isEmpty) "view.amend-upload-file.label.upload.first" else "view.amend-upload-file.label.upload.next", maybeUploadError)
 
@@ -67,9 +66,7 @@
                     classes = "file-upload__submit"
                 ))
             </div>
-
-        </form>
-
+        }
         <div class="ndrc-display-none-non-javascript">
             @forms.formWithCSRF(action = AmendCaseSendInformationController.onContinue(), args = Symbol("novalidate") -> "novalidate") {
                 @govukButton(Button(
