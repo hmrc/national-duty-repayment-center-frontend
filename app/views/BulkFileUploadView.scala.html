@@ -63,7 +63,8 @@
     }
 
     @uploadSummary(uploadedFiles, ref => routes.BulkFileUploadController.onRemove(ref).url)
-    @forms.formWithCSRF(action = Call("POST", uploadRequest.href),Symbol("enctype") -> "multipart/form-data",Symbol("novalidate") -> "novalidate", Symbol("id") -> "upload-form") {
+
+    <form id="upload-form" action="@uploadRequest.href" method="POST" enctype="multipart/form-data" novalidate>
 
         @uploadRequest.fields.map { case (key, value) =>
             @forms.inputHidden(key, value)
@@ -81,7 +82,7 @@
             ))
             </div>
         }
-    }
+    </form>
 
     <div class="ndrc-display-none-non-javascript">
         @forms.formWithCSRF(action = BulkFileUploadController.onContinue(), args = Symbol("novalidate") -> "novalidate") {
