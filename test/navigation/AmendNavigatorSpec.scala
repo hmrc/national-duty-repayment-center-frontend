@@ -161,4 +161,8 @@ class AmendNavigatorSpec extends SpecBase {
       )
     }
   }
+
+  "Amend Confirmation Page should have correct toString value" in {
+    AmendConfirmationPage.toString mustBe "amendFileUploadedPage"
+  }
 }
