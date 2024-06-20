@@ -23,9 +23,6 @@ package object models {
     def setObject(path: JsPath, value: JsValue): JsResult[JsObject] =
       jsObject.set(path, value).flatMap(_.validate[JsObject])
 
-    def removeObject(path: JsPath): JsResult[JsObject] =
-      jsObject.remove(path).flatMap(_.validate[JsObject])
-
   }
 
   implicit class RichJsValue(jsValue: JsValue) {

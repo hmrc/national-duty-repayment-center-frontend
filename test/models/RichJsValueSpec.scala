@@ -45,6 +45,13 @@ class RichJsValueSpec
       value.set(JsPath, Json.obj()) mustEqual JsError("path cannot be empty")
     }
 
+    "recursive search" in {
+
+      val path  = JsPath \\ "key"
+      val value = Json.obj("newKey" -> "newValue")
+      value.set(path, value) mustEqual JsError("recursive search not supported")
+    }
+
     "must set a value on a JsObject" in {
 
       val gen = for {
@@ -207,9 +214,16 @@ class RichJsValueSpec
   "remove" - {
     "must return an error if the path is empty" in {
 
-      val value = Json.obj()
+      val path  = JsPath()
+      val value = Json.obj("key" -> "value")
+      value.remove(path) mustEqual JsError("path cannot be empty")
+    }
 
-      value.set(JsPath, Json.obj()) mustEqual JsError("path cannot be empty")
+    "should return an error if trying to remove a key from non-JsObject" in {
+
+      val path  = JsPath \ "key"
+      val value = Json.arr("first", "second")
+      value.remove(path) mustEqual JsError("cannot remove a key on [\"first\",\"second\"]")
     }
 
     "must return an error if the path does not contain a value" in {
