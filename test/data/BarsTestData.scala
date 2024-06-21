@@ -39,6 +39,9 @@ trait BarsTestData {
   val invalidCompanyNameMatchResponse: AssessBusinessBankDetailsResponse =
     AssessBusinessBankDetailsResponse("yes", "yes", "no", "yes", "no", "yes")
 
+  val invalidAccountResponse: AssessBusinessBankDetailsResponse =
+    AssessBusinessBankDetailsResponse("yes", "yes", "no", "no", "yes", "yes")
+
   // Bars
   val barsSuccessResult: BARSResult = BARSResult(validAssessResponse)
 
@@ -52,4 +55,5 @@ trait BarsTestData {
 
   val barsCompanyNameDoesNotMatchResult: BARSResult = BARSResult(invalidCompanyNameMatchResponse)
 
+  val barsInvalidAccountNumberResult: BARSResult = BARSResult(invalidAccountResponse)
 }
