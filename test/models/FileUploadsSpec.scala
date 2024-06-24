@@ -79,5 +79,26 @@ class FileUploadsSpec extends AnyWordSpec with Matchers {
 
       fileUploads.toUploadedFiles.head.fileName shouldBe "a" * (MAX - 4) + ".pdf"
     }
+
+    "create FileVerificationStatus for DUPLICATE file upload" in {
+      val fileUpload =
+        FileUpload.Duplicate(1, "foo-bar-ref-2", "12312312312", "saSas", "file1.pdf", Some(SupportingEvidence))
+      val status = FileVerificationStatus(fileUpload)
+      status.fileStatus shouldBe "DUPLICATE"
+    }
+
+    "create FileVerificationStatus for REJECTED file upload" in {
+      val fileUpload = FileUpload.Rejected(
+        1,
+        "foo-bar-ref-2",
+        S3UploadError(
+          key = "foo-bar-ref-2",
+          errorCode = "REJECTED",
+          errorMessage = "some failure reason"
+        )
+      )
+      val status = FileVerificationStatus(fileUpload)
+      status.fileStatus mustBe "REJECTED"
+    }
   }
 }

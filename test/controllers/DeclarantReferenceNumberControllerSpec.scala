@@ -22,6 +22,7 @@ import models.{DeclarantReferenceNumber, DeclarantReferenceType, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
 import pages.DeclarantReferenceNumberPage
+import play.api.data.FormBinding.Implicits.formBinding
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.DeclarantReferenceNumberView
@@ -97,6 +98,31 @@ class DeclarantReferenceNumberControllerSpec extends SpecBase with MockitoSugar 
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual defaultNextPage.url
+
+      application.stop()
+    }
+
+    "Display form error when declarant reference number is empty" in {
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .build()
+
+      implicit val request =
+        FakeRequest(POST, declarantReferenceNumberRoute)
+          .withFormUrlEncodedBody(("value", "01"), ("declarantReferenceNumber", ""))
+
+      val bindForm = form.bindFromRequest()
+
+      val view = application.injector.instanceOf[DeclarantReferenceNumberView]
+
+      val result = route(application, request).value
+
+      bindForm.errors.head.message mustBe "declarantReferenceNumber.error.required.declarantReferenceNumber"
+      contentAsString(result) mustEqual
+        view(bindForm, defaultBackLink)(request, messages).toString
 
       application.stop()
     }

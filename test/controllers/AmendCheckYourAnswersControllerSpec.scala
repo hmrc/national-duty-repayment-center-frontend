@@ -393,5 +393,31 @@ class AmendCheckYourAnswersControllerSpec extends SpecBase with BeforeAndAfterEa
 
       application.stop()
     }
+
+    "amend submission failure" in {
+
+      val values: Seq[AmendCaseResponseType] = Seq(FurtherInformation)
+
+      val userAnswers = UserAnswers(userIdentification).set(ReferenceNumberPage, "1234").success.value
+        .set(AmendCaseResponseTypePage, values.toSet).success.value
+        .set(FurtherInformationPage, "hello").success.value
+        .copy(changePage = Some(ReferenceNumberPage))
+
+      val errorResponse =
+        ClientClaimResponse("id", Some("case-id"), Some(ApiError("code", None)))
+
+      when(mockClaimService.submitAmendClaim(any())(any())).thenReturn(Future.successful(errorResponse))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(POST, routes.AmendCheckYourAnswersController.onSubmit().url)
+
+      val result = route(application, request).value
+
+      val exception = intercept[RuntimeException](status(result))
+      exception.getMessage mustEqual "Amend claim submission failed"
+
+      application.stop()
+    }
   }
 }

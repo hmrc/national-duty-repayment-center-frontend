@@ -51,7 +51,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
       val userAnswers = UserAnswers(userIdentification).set(
         ClaimRepaymentTypePage,
         ClaimRepaymentType.values.toSet
-      ).success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Multiple, Some("2"))).success.value
+      ).success.value.set(NumberOfEntriesTypePage, Entries(NumberOfEntriesType.Single, None)).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -64,7 +64,7 @@ class OtherDutiesPaidControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, defaultBackLink, false)(request, messages).toString
+        view(form, defaultBackLink, true)(request, messages).toString
 
       application.stop()
     }

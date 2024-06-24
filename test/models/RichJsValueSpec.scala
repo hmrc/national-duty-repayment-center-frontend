@@ -45,6 +45,13 @@ class RichJsValueSpec
       value.set(JsPath, Json.obj()) mustEqual JsError("path cannot be empty")
     }
 
+    "recursive search" in {
+
+      val path  = JsPath \\ "key"
+      val value = Json.obj("newKey" -> "newValue")
+      value.set(path, value) mustEqual JsError("recursive search not supported")
+    }
+
     "must set a value on a JsObject" in {
 
       val gen = for {
@@ -207,9 +214,16 @@ class RichJsValueSpec
   "remove" - {
     "must return an error if the path is empty" in {
 
-      val value = Json.obj()
+      val path  = JsPath()
+      val value = Json.obj("key" -> "value")
+      value.remove(path) mustEqual JsError("path cannot be empty")
+    }
 
-      value.set(JsPath, Json.obj()) mustEqual JsError("path cannot be empty")
+    "should return an error if trying to remove a key from non-JsObject" in {
+
+      val path  = JsPath \ "key"
+      val value = Json.arr("first", "second")
+      value.remove(path) mustEqual JsError("cannot remove a key on [\"first\",\"second\"]")
     }
 
     "must return an error if the path does not contain a value" in {
@@ -281,6 +295,22 @@ class RichJsValueSpec
 
           removed mustBe JsSuccess(expectedOutcome)
       }
+    }
+
+    "must give an out of bound error given an index node out side of the array-" in {
+
+      val key           = "1"
+      val values        = List("1", "2")
+      val indexToRemove = 100
+
+      val valuesInArrays: Seq[JsValue] = values.map(Json.toJson[String])
+      val initialObj: JsObject         = buildJsObj(Seq(key), Seq(valuesInArrays))
+
+      val pathToRemove = JsPath \ key \ indexToRemove
+
+      val removed: JsResult[JsValue] = initialObj.remove(pathToRemove)
+
+      removed mustBe JsError("array index out of bounds: 100, [\"1\",\"2\"]")
     }
 
     "remove a value from one of many arrays" in {

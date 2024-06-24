@@ -233,6 +233,12 @@ class BankDetailsFormProviderSpec extends StringFieldBehaviours with BarsTestDat
         FormError(accountNameField, "bankDetails.bars.validation.companyNameInvalid", Seq.empty)
       )
     }
+
+    "return form with error when account is invalid" in {
+      provider.processBarsResult(barsInvalidAccountNumberResult, bankDetails).map(_.errors).get shouldEqual Seq(
+        FormError(accountNumberField, "bankDetails.bars.validation.accountInvalid", Seq.empty)
+      )
+    }
   }
 
   private def buildFormData(sortCode: String, accountNumber: String) =
