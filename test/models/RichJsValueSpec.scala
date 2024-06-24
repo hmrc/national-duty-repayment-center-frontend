@@ -297,6 +297,22 @@ class RichJsValueSpec
       }
     }
 
+    "must give an out of bound error given an index node out side of the array-" in {
+
+      val key           = "1"
+      val values        = List("1", "2")
+      val indexToRemove = 100
+
+      val valuesInArrays: Seq[JsValue] = values.map(Json.toJson[String])
+      val initialObj: JsObject         = buildJsObj(Seq(key), Seq(valuesInArrays))
+
+      val pathToRemove = JsPath \ key \ indexToRemove
+
+      val removed: JsResult[JsValue] = initialObj.remove(pathToRemove)
+
+      removed mustBe JsError("array index out of bounds: 100, [\"1\",\"2\"]")
+    }
+
     "remove a value from one of many arrays" in {
 
       val input = Json.obj(
