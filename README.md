@@ -8,6 +8,10 @@ The frontend to "Apply for repayment of import duty and import VAT"
 National Duty Repayment Centre (NDRC) is for the repayments of import charges which may arise when post clearance amendments are made or imported goods are returned or rejected.
 Previously users would fill out an C285 form and submit as a PDF with the relevant documentation and email it to the National Duty Repayment Centre email address. Now they can use the service to complete an online C285 form, attach the necessary documentation and to submit it the Duty Repayment Centre for processing.
 
+Other related NDRC services:
+- Backend service: [National-Duty-Repayment-Center](https://github.com/hmrc/national-duty-repayment-center)
+- Stubs: [National-Duty-Repayment-Center-Stubs](https://github.com/hmrc/national-duty-repayment-center-stubs)
+
 ## User journey
 
 The landing page of the service allows users to select if they would like to submit a new claim (create claim) or add additional information to an existing claim (amend claim).
@@ -45,7 +49,7 @@ Dependencies will also need to be started from source or using service manager.
 
 Ensure your service manager config is up to date, and run the following command:
 
-`sm --start NDRC_ALL -r`
+`sm2 --start NDRC_ALL`
 
 This will start all the required services
 
