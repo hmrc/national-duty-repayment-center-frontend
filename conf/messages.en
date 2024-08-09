@@ -406,7 +406,11 @@ confirmation.start = Start a new application
 confirmation.whatHappensNext.heading = What happens next
 confirmation.whatHappensNext.p1 = We will process your application and send our decision by post within 30 days.
 confirmation.whatHappensNext.p2 = We will contact you if we need more information to complete your application.
-confirmation.improveService.link.text1 = What did you think of this service?
+
+confirmation.feedback.title = Before you go
+confirmation.feedback.p1 = Your feedback helps us make our service better.
+confirmation.feedback.link = Take a short survey
+confirmation.feedback.p2 = to share your feedback on this service.
 
 confirmation.amend.title = Information sent
 confirmation.amend.heading = Information sent
