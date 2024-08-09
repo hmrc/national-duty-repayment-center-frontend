@@ -67,10 +67,11 @@
         @html.p{ @messages("confirmation.whatHappensNext.p1") }
         @html.p{ @messages("confirmation.whatHappensNext.p2") }
 
-
-        @html.p{
-            @html.a(config.feedbackSurvey, messages("confirmation.improveService.link.text1"))
-        }
+        <h2 class="govuk-heading-m">@messages("confirmation.feedback.title")</h2>
+        <p class="govuk-body">@messages("confirmation.feedback.p1")</p>
+        <p class="govuk-body">
+            <a class="govuk-link" href="@config.feedbackSurvey">@messages("confirmation.feedback.link")</a> @messages("confirmation.feedback.p2")
+        </p>
 
     </div>
     <div class="ndrc-!-display-only-print">

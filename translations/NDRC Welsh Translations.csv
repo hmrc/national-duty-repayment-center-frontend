@@ -412,7 +412,10 @@ confirmation.start	Start a new application	Dechrau cais newydd
 confirmation.whatHappensNext.heading	What happens next	Yr hyn sy’n digwydd nesaf
 confirmation.whatHappensNext.p1	We will process your application and send our decision by post within 30 days.	Byddwn yn prosesu’ch cais ac yn anfon ein penderfyniad drwy’r post cyn pen 30 diwrnod.
 confirmation.whatHappensNext.p2	We will contact you if we need more information to complete your application.	Byddwn yn cysylltu â chi os bydd angen rhagor o wybodaeth arnom i gwblhau’ch cais.
-confirmation.improveService.link.text1	What did you think of this service?	Beth oedd eich barn am y gwasanaeth hwn?
+confirmation.feedback.title  Before you go  Cyn i chi fynd
+confirmation.feedback.p1    Your feedback helps us make our service better. Mae’ch adborth yn ein helpu i wella ein gwasanaeth.
+confirmation.feedback.link  Take a short survey Llenwch ein harolwg
+confirmation.feedback.p2    to share your feedback on this service. i rannu’ch adborth ar y gwasanaeth.
 confirmation.amend.title	Information sent	Gwybodaeth wedi’i hanfon
 confirmation.amend.heading	Information sent	Gwybodaeth wedi’i hanfon
 confirmation.summary.title	Your application details	Manylion eich cais

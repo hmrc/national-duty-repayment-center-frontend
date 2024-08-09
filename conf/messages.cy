@@ -409,7 +409,11 @@ confirmation.start = Dechrau cais newydd
 confirmation.whatHappensNext.heading = Yr hyn sy’n digwydd nesaf
 confirmation.whatHappensNext.p1 = Byddwn yn prosesu’ch cais ac yn anfon ein penderfyniad drwy’r post cyn pen 30 diwrnod.
 confirmation.whatHappensNext.p2 = Byddwn yn cysylltu â chi os bydd angen rhagor o wybodaeth arnom i gwblhau’ch cais.
-confirmation.improveService.link.text1 = Beth oedd eich barn am y gwasanaeth hwn?
+
+confirmation.feedback.title = Cyn i chi fynd
+confirmation.feedback.p1 = Mae’ch adborth yn ein helpu i wella ein gwasanaeth.
+confirmation.feedback.link = Llenwch ein harolwg
+confirmation.feedback.p2 = i rannu’ch adborth ar y gwasanaeth.
 
 confirmation.amend.title = Gwybodaeth wedi’i hanfon
 confirmation.amend.heading = Gwybodaeth wedi’i hanfon
