@@ -18,6 +18,7 @@
 @import views.ViewUtils._
 @import navigation.NavigatorBack
 @import models.Address
+@import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
 
 @this(
     govukLayout: views.html.layouts.GovukLayoutWrapper,
@@ -92,22 +93,18 @@
         )
 
         <div class="govuk-!-width-two-thirds">
-            @forms.inputSelect(
-                form = form,
-                id = "CountryCode",
-                name = "CountryCode",
-                items = countryOptions.map { item =>
-                    item.copy(selected = form("CountryCode").value match {
-                    case Some(previousValue) => item.value.contains(previousValue)
-                    case None => item.value.contains("")
-                })
-                },
-                label = "importerManualAddress.country.heading",
-                classes = Some("govuk-!-width-two-thirds"),
-                isPageHeading = false,
-                attributes = Map("autocomplete" -> "off")
+            @govukSelect(
+                Select(
+                    id = "CountryCode",
+                    name = "CountryCode",
+                    items = countryOptions.toSeq,
+                    label = Label(content = Text(messages("importerManualAddress.country.heading"))),
+                    classes = "govuk-!-width-one-half",
+                    attributes = Map("autocomplete" -> "off")
+                )
+                .asAccessibleAutocomplete()
+                .withFormField(form("CountryCode"))
             )
-            @components.autocomplete.countryCode()
         </div>
 
         @components.hiddenInput("auditRef", form.value.flatMap(add => add.auditRef).getOrElse(""))

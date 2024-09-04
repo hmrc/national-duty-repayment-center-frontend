@@ -32,7 +32,10 @@ trait CountryService {
   def findAll(welshFlag: Boolean = false): Seq[Country]
 
   def selectItems(welshFlag: Boolean = false) =
-    findAll(welshFlag).map(country => SelectItem(text = country.name, value = Some(country.code)))
+    SelectItem(Some("")) +:
+      findAll(welshFlag).map { country =>
+        SelectItem(text = country.name, value = Some(country.code))
+      }
 
   def find(code: String, welshFlag: Boolean = false): Country
 
