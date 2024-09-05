@@ -1,10 +1,9 @@
-$govuk-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/assets/lib/govuk-frontend/govuk/assets/";
-$hmrc-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/assets/lib/hmrc-frontend/hmrc/";
+$govuk-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/hmrc-frontend/assets/govuk/";
+$hmrc-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/hmrc-frontend/assets/";
 @import "lib/hmrc-frontend/hmrc/all";
-@import "lib/govuk-frontend/govuk/all";
+@import "lib/govuk-frontend/dist/govuk/all";
 
 // Components
-@import "accessible-autocomplete.min.css";
 @import "media";
 @import "upload-loading";
 
