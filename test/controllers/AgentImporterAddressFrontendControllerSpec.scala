@@ -336,7 +336,11 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, defaultBackLink, Seq(SelectItem(text = "United Kingdom", value = Some("GB"))))(
+        view(
+          boundForm,
+          defaultBackLink,
+          Seq(SelectItem(Some("")), SelectItem(text = "United Kingdom", value = Some("GB")))
+        )(
           request,
           messages
         ).toString
