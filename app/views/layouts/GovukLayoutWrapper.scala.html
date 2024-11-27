@@ -99,7 +99,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 @beforeContentBlock = {
 
     @if(appConfig.showPhaseBanner) {
-        <header>
+        <header class="govuk-phase-banner">
             @phaseBanner("Beta")
         </header>
     }
