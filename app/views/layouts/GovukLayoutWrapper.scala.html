@@ -25,9 +25,7 @@
 govukLayout: GovukLayout,
 govukPhaseBanner: GovukPhaseBanner,
 govukBackLink: GovukBackLink,
-hmrcHeader: HmrcHeader,
-siteHeader: components.siteHeader,
-phaseBanner: components.phaseBanner,
+siteHeader: components.CustomHMRCStandardHeader,
 link: components.link,
 paragraph: components.p,
 hmrcTimeoutDialog : HmrcTimeoutDialog,
@@ -98,10 +96,6 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 
 @beforeContentBlock = {
 
-    @if(appConfig.showPhaseBanner) {
-        @phaseBanner("Beta")
-    }
-
     @if(appConfig.languageTranslationEnabled) {
         @languageSelection(
             appConfig.languageMap,
@@ -133,7 +127,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Me
 @govukLayout(
   pageTitle = pageTitle,
   headBlock = Some(head),
-  headerBlock = Some(siteHeader(timeout)),
+  headerBlock = Some(siteHeader(signOutUrl = if(timeout) Some(appConfig.signOutUrl) else None)),
   beforeContentBlock = Some(beforeContentBlock),
   footerBlock = Some(hmrcStandardFooter()),
   bodyEndBlock = Some(afterContentScripts),
