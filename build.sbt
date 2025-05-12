@@ -8,7 +8,7 @@ lazy val appName: String = "national-duty-repayment-center-frontend"
 
 PlayKeys.devSettings := Seq("play.server.http.port" -> "8450")
 
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / majorVersion := 0
 
 lazy val root = (project in file("."))
