@@ -1,7 +1,7 @@
 $govuk-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/hmrc-frontend/assets/govuk/";
 $hmrc-assets-path: "/apply-for-repayment-of-import-duty-and-import-vat/hmrc-frontend/assets/";
 @import "lib/hmrc-frontend/hmrc/all";
-@import "lib/govuk-frontend/dist/govuk/all";
+@import "lib/govuk-frontend/dist/govuk/index";
 
 // Components
 @import "media";
