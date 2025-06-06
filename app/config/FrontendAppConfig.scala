@@ -173,7 +173,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
   override val signOutUrl: String       = configuration.get[String]("urls.logout")
   private lazy val feedbackHost: String = configuration.get[String]("feedback-frontend.host")
   private lazy val feedbackUrl: String  = configuration.get[String]("feedback-frontend.url")
-  lazy val feedbackSurvey: String       = s"$feedbackHost$feedbackUrl"
+  lazy val feedbackSurvey: String       = s"$feedbackHost/bas-gateway/sign-out-without-state?continue=$feedbackHost$feedbackUrl"
 
   override val fileFormats: FrontendAppConfig.FileFormats = FrontendAppConfig.FileFormats(
     maxFileSizeMb = configuration.get[Int]("file-formats.max-file-size-mb"),
