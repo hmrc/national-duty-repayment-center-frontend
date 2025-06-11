@@ -28,7 +28,7 @@ class SignOutController @Inject() (config: FrontendAppConfig, val controllerComp
     extends FrontendBaseController with I18nSupport {
 
   def signOut: Action[AnyContent] = Action.async {
-    Future.successful(Redirect(config.feedbackSurvey).withNewSession)
+    Future.successful(Redirect(config.signOutUrl, Map("continue" -> Seq(config.feedbackSurvey))))
   }
 
 }
