@@ -8,6 +8,7 @@ GET         /                                                                   
 GET         /language/:lang                                                       controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
 GET         /this-service-has-been-reset                                          controllers.SessionExpiredController.onPageLoad()
+GET         /timeout-signed-out                                                   controllers.SessionExpiredController.showView()
 
 GET         /keep-alive                                                           controllers.KeepAliveController.keepAlive()
 

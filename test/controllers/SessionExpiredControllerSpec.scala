@@ -21,11 +21,13 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.SessionExpiredView
 
+import java.net.URLEncoder
+
 class SessionExpiredControllerSpec extends SpecBase {
 
   "SessionExpired Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct redirect URL for a GET" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
@@ -33,12 +35,11 @@ class SessionExpiredControllerSpec extends SpecBase {
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[SessionExpiredView]
+      val feedbackURLEncoded: String = URLEncoder.encode(routes.SessionExpiredController.showView().url, "UTF-8")
 
-      status(result) mustEqual OK
+      status(result) mustEqual SEE_OTHER
 
-      contentAsString(result) mustEqual
-        view()(request, messages).toString
+      redirectLocation(result).value mustEqual s"${frontendAppConfig.signOutUrl}?continue=$feedbackURLEncoded"
 
       application.stop()
     }

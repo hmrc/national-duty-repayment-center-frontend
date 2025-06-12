@@ -21,6 +21,8 @@ import org.mockito.MockitoSugar
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
+import java.net.URLEncoder
+
 class SignOutControllerSpec extends SpecBase with MockitoSugar {
 
   private def signOutRoute: String = controllers.routes.SignOutController.signOut().url
@@ -31,10 +33,11 @@ class SignOutControllerSpec extends SpecBase with MockitoSugar {
     "Sign in using Government Gateway page" in {
 
       when(mockAppConfig.signOutUrl).thenReturn(frontendAppConfig.signOutUrl)
-      val result = route(application, FakeRequest(GET, signOutRoute)).value
+      val result                     = route(application, FakeRequest(GET, signOutRoute)).value
+      val feedbackURLEncoded: String = URLEncoder.encode(frontendAppConfig.feedbackSurvey, "UTF-8")
 
       status(result) mustBe SEE_OTHER
-      redirectLocation(result) mustBe Some(frontendAppConfig.feedbackSurvey)
+      redirectLocation(result) mustBe Some(s"${frontendAppConfig.signOutUrl}?continue=$feedbackURLEncoded")
     }
   }
 }
