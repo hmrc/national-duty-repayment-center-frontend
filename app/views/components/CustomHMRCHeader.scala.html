@@ -26,7 +26,7 @@
     appConfig: config.FrontendAppConfig
 )
 
-@(params: Header, showSignOut: Boolean = true)(implicit request: Request[_], messages: Messages)
+@(params: Header, showSignOut: Boolean = true)(implicit request: RequestHeader, messages: Messages)
 
 <header role="banner">
     <div class="govuk-header hmrc-header hmrc-header--with-additional-navigation" data-module="govuk-header">
