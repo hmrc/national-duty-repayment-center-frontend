@@ -22,7 +22,7 @@
 @(
     signOutUrl: Option[String] = None,
     phaseBanner: Option[PhaseBanner] = None
-)(implicit request: Request[_], messages: Messages)
+)(implicit request: RequestHeader, messages: Messages)
 
 @hmrcHeader(Header(
     phaseBanner = phaseBanner,

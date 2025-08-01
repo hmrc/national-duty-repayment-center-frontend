@@ -45,7 +45,7 @@ autocompleteJavascript: HmrcAccessibleAutocompleteJavascript
     timeout: Boolean = true,
     js: Option[Html] = None,
     backLinkNav: Option[NavigatorBack] = None,
-refresh: Int = 0)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+refresh: Int = 0)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @backLinkCall = @{
     backLinkNav.flatMap(_.maybeCall)
