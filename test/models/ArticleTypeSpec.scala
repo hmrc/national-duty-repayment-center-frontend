@@ -30,7 +30,7 @@ class ArticleTypeSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyC
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(ArticleType.values.toSeq)
+      val gen = Gen.oneOf(ArticleType.values)
 
       forAll(gen) {
         articleType =>
@@ -50,7 +50,7 @@ class ArticleTypeSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyC
 
     "serialise" in {
 
-      val gen = Gen.oneOf(ArticleType.values.toSeq)
+      val gen = Gen.oneOf(ArticleType.values)
 
       forAll(gen) {
         articleType =>

@@ -30,7 +30,7 @@ class RepaymentTypeSpec extends AnyWordSpec with Matchers with ScalaCheckPropert
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(RepaymentType.values.toSeq)
+      val gen = Gen.oneOf(RepaymentType.values)
 
       forAll(gen) {
         repaymentType =>
@@ -50,7 +50,7 @@ class RepaymentTypeSpec extends AnyWordSpec with Matchers with ScalaCheckPropert
 
     "serialise" in {
 
-      val gen = Gen.oneOf(RepaymentType.values.toSeq)
+      val gen = Gen.oneOf(RepaymentType.values)
 
       forAll(gen) {
         repaymentType =>

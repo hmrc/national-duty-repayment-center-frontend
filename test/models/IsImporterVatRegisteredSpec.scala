@@ -30,7 +30,7 @@ class IsImporterVatRegisteredSpec extends AnyWordSpec with Matchers with ScalaCh
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(IsImporterVatRegistered.values.toSeq)
+      val gen = Gen.oneOf(IsImporterVatRegistered.values)
 
       forAll(gen) {
         isImporterVatRegistered =>
@@ -52,7 +52,7 @@ class IsImporterVatRegisteredSpec extends AnyWordSpec with Matchers with ScalaCh
 
     "serialise" in {
 
-      val gen = Gen.oneOf(IsImporterVatRegistered.values.toSeq)
+      val gen = Gen.oneOf(IsImporterVatRegistered.values)
 
       forAll(gen) {
         isImporterVatRegistered =>

@@ -30,7 +30,7 @@ class NumberOfEntriesTypeSpec extends AnyWordSpec with Matchers with ScalaCheckP
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(NumberOfEntriesType.values.toSeq)
+      val gen = Gen.oneOf(NumberOfEntriesType.values)
 
       forAll(gen) {
         numberOfEntriesType =>
@@ -50,7 +50,7 @@ class NumberOfEntriesTypeSpec extends AnyWordSpec with Matchers with ScalaCheckP
 
     "serialise" in {
 
-      val gen = Gen.oneOf(NumberOfEntriesType.values.toSeq)
+      val gen = Gen.oneOf(NumberOfEntriesType.values)
 
       forAll(gen) {
         numberOfEntriesType =>
