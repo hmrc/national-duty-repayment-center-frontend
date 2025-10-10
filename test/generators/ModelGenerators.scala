@@ -29,12 +29,12 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryAmendCaseResponseType: Arbitrary[AmendCaseResponseType] =
     Arbitrary {
-      Gen.oneOf(AmendCaseResponseType.values.toSeq)
+      Gen.oneOf(AmendCaseResponseType.values)
     }
 
   implicit lazy val arbitraryBulkFileUpload: Arbitrary[BulkFileUpload] =
     Arbitrary {
-      Gen.oneOf(BulkFileUpload.values.toSeq)
+      Gen.oneOf(BulkFileUpload.values)
     }
 
   // telephoneNumber <- Gen.option(Gen.listOfN(11, Gen.numStr).map(_.mkString))

@@ -30,7 +30,7 @@ class AgentImporterHasEORISpec extends AnyWordSpec with Matchers with ScalaCheck
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(AgentImporterHasEORI.values.toSeq)
+      val gen = Gen.oneOf(AgentImporterHasEORI.values)
 
       forAll(gen) {
         agentImporterHasEORI =>
@@ -52,7 +52,7 @@ class AgentImporterHasEORISpec extends AnyWordSpec with Matchers with ScalaCheck
 
     "serialise" in {
 
-      val gen = Gen.oneOf(AgentImporterHasEORI.values.toSeq)
+      val gen = Gen.oneOf(AgentImporterHasEORI.values)
 
       forAll(gen) {
         agentImporterHasEORI =>
