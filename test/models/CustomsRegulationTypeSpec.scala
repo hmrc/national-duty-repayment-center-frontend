@@ -30,7 +30,7 @@ class CustomsRegulationTypeSpec extends AnyWordSpec with Matchers with ScalaChec
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(CustomsRegulationType.values.toSeq)
+      val gen = Gen.oneOf(CustomsRegulationType.values)
 
       forAll(gen) {
         customsRegulationType =>
@@ -52,7 +52,7 @@ class CustomsRegulationTypeSpec extends AnyWordSpec with Matchers with ScalaChec
 
     "serialise" in {
 
-      val gen = Gen.oneOf(CustomsRegulationType.values.toSeq)
+      val gen = Gen.oneOf(CustomsRegulationType.values)
 
       forAll(gen) {
         customsRegulationType =>

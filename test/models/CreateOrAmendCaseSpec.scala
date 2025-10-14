@@ -30,7 +30,7 @@ class CreateOrAmendCaseSpec extends AnyWordSpec with Matchers with ScalaCheckPro
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(CreateOrAmendCase.values.toSeq)
+      val gen = Gen.oneOf(CreateOrAmendCase.values)
 
       forAll(gen) {
         createOrAmendCase =>
@@ -50,7 +50,7 @@ class CreateOrAmendCaseSpec extends AnyWordSpec with Matchers with ScalaCheckPro
 
     "serialise" in {
 
-      val gen = Gen.oneOf(CreateOrAmendCase.values.toSeq)
+      val gen = Gen.oneOf(CreateOrAmendCase.values)
 
       forAll(gen) {
         createOrAmendCase =>

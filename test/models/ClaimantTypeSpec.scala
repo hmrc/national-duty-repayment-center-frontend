@@ -30,7 +30,7 @@ class ClaimantTypeSpec extends AnyWordSpec with Matchers with ScalaCheckProperty
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(ClaimantType.values.toSeq)
+      val gen = Gen.oneOf(ClaimantType.values)
 
       forAll(gen) {
         claimantType =>
@@ -50,7 +50,7 @@ class ClaimantTypeSpec extends AnyWordSpec with Matchers with ScalaCheckProperty
 
     "serialise" in {
 
-      val gen = Gen.oneOf(ClaimantType.values.toSeq)
+      val gen = Gen.oneOf(ClaimantType.values)
 
       forAll(gen) {
         claimantType =>

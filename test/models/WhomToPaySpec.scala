@@ -30,7 +30,7 @@ class WhomToPaySpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(WhomToPay.values.toSeq)
+      val gen = Gen.oneOf(WhomToPay.values)
 
       forAll(gen) {
         whomToPay =>
@@ -50,7 +50,7 @@ class WhomToPaySpec extends AnyWordSpec with Matchers with ScalaCheckPropertyChe
 
     "serialise" in {
 
-      val gen = Gen.oneOf(WhomToPay.values.toSeq)
+      val gen = Gen.oneOf(WhomToPay.values)
 
       forAll(gen) {
         whomToPay =>
