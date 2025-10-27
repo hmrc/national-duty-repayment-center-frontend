@@ -146,26 +146,10 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
       }
     }
 
-    "the user doesn't have sufficient enrolments and EoriIntegration not enabled" must {
-
-      "redirect the user to the unauthorised page" in {
-
-        whenEoriIntegrationEnabled(false)
-
-        val result: Future[Result] = handleAuthError(InsufficientEnrolments())
-
-        status(result) mustBe SEE_OTHER
-
-        redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad().url)
-      }
-    }
-
     "the user doesn't have sufficient enrolments and EoriIntegration enabled" must {
 
       "redirect the user to the enrolment page" in {
-
-        whenEoriIntegrationEnabled(true)
-
+        whenEoriIntegrationEnabled()
         val result: Future[Result] = handleAuthError(InsufficientEnrolments())
 
         status(result) mustBe SEE_OTHER
@@ -177,9 +161,7 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
     "the user has the wrong enrolment and EoriIntegration enabled" must {
 
       "redirect the user to the enrolment page" in {
-
-        whenEoriIntegrationEnabled(true)
-
+        whenEoriIntegrationEnabled()
         val result: Future[Result] = handleAuthWithEnrolments(enrolmentsWithoutEORI)
 
         status(result) mustBe SEE_OTHER
@@ -191,9 +173,7 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
     "the user has correct enrolment and EoriIntegration enabled" must {
 
       "redirect the user to the next page" in {
-
-        whenEoriIntegrationEnabled(true)
-
+        whenEoriIntegrationEnabled()
         val result: Future[Result] = handleAuthWithEnrolments(enrolmentsWithEORI)
 
         status(result) mustBe OK
@@ -222,9 +202,7 @@ class AuthActionSpec extends SpecBase with BeforeAndAfterEach {
     controller.onPageLoad()(request)
   }
 
-  private def whenEoriIntegrationEnabled(enabled: Boolean) = {
-    when(mockConfig.get[Boolean]("eori-integration.enabled")).thenReturn(enabled)
+  private def whenEoriIntegrationEnabled() =
     when(mockConfig.get[String]("eori-integration.enrolment-url")).thenReturn("/some-enrolment-url")
-  }
 
 }

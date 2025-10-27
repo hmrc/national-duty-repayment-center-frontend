@@ -53,7 +53,7 @@ object FrontendAppConfig {
     bulkExtensions: String
   )
 
-  case class EoriIntegration(enabled: Boolean, enrolmentKey: String, enrolmentUrl: Option[String])
+  case class EoriIntegration(enrolmentKey: String, enrolmentUrl: Option[String])
 
   case class Emails(customsAccountingRepayments: String)
 
@@ -188,14 +188,11 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
     entryAgeDays = configuration.get[Int]("allow-cma-threshold.entry-age-days")
   )
 
-  override val eoriIntegration: FrontendAppConfig.EoriIntegration = {
-    val enabled = configuration.get[Boolean]("eori-integration.enabled")
+  override val eoriIntegration: FrontendAppConfig.EoriIntegration =
     FrontendAppConfig.EoriIntegration(
-      enabled = enabled,
       enrolmentKey = configuration.get[String]("eori-integration.enrolment-key"),
-      enrolmentUrl = if (enabled) configuration.getOptional[String]("eori-integration.enrolment-url") else None
+      enrolmentUrl = configuration.getOptional[String]("eori-integration.enrolment-url")
     )
-  }
 
   override val emails: FrontendAppConfig.Emails =
     FrontendAppConfig.Emails(customsAccountingRepayments =
