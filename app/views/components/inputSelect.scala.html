@@ -46,7 +46,7 @@
     hint = hint.map(hintKey => Hint(
     content = HtmlContent(messages(hintKey))
     )),
-    errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*)))),
+    errorMessage = form(name).error.map(err => ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(err.message, err.args:_*)))),
     classes = classes.getOrElse(""),
     attributes = attributes
 ))
