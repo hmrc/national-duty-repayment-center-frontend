@@ -53,5 +53,5 @@
                 checked = form("value").value.contains("false")
             )
         ),
-        errorMessage = form("value").error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+        errorMessage = form("value").error.map(err => ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(err.message, err.args:_*))))
 ))

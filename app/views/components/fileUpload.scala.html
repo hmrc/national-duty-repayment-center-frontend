@@ -43,7 +43,7 @@ window.addEventListener('load', addFileChangeEvent);
         isPageHeading = false
     ),
     hint = None,
-    errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
+    errorMessage = maybeUploadError.map(context.toFormError).map(err => ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(err.message, err.args: _*)))),
     classes = "",
     attributes = Map(
         "accept" -> appConfig.fileFormats.approvedFileExtensions

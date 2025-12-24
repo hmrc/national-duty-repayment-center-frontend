@@ -40,6 +40,6 @@
     content = HtmlContent(messages(hintKey))
 )),
     value = form(name).value,
-    errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*)))),
+    errorMessage = form(name).error.map(err => ErrorMessage.errorMessageWithDefaultStringsTranslated(content = Text(messages(err.message, err.args:_*)))),
     attributes = if(isDecimal) Map("inputmode" -> "decimal") else Map("inputmode" -> "numeric", "pattern" -> "[0-9]*")
 ))
