@@ -37,22 +37,17 @@
 
     @components.error_summary(form.errors)
 
-    @forms.fieldset(
-        legend = messages("declarantReferenceNumber.heading")
-        ) {
-
-        @html.p{@messages("declarantReferenceNumber.hint1")}
-        @html.p{@messages("declarantReferenceNumber.hint2")}
-
         @forms.inputRadio(
             form = form,
             idPrefix = "value",
             name = "value",
             items = DeclarantReferenceType.options(form),
-            inline = false
+            inline = false,
+            legendAsHeading = true,
+            legend = Some(messages("declarantReferenceNumber.heading")),
+            hint = Some(Html("<p class=\"govuk-body\">" + messages("declarantReferenceNumber.hint1") + "</p> <p class=\"govuk-body\">" + messages("declarantReferenceNumber.hint2") + "</p>"))
         )
 
-    }
 
     @html.button("site.continue")
   }
