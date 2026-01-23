@@ -33,6 +33,8 @@ bin
 /*.ipr
 /.bsp
 *.iws
+.metals/
+.vscode/
 
 node_modules/
 app/assets/build/
