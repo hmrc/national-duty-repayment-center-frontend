@@ -19,11 +19,12 @@ package connectors
 import com.codahale.metrics.MetricRegistry
 import config.FrontendAppConfig
 import org.slf4j.LoggerFactory
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http._
+import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.play.bootstrap.metrics.Metrics
 
-import java.net.URL
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
@@ -32,25 +33,24 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class UpscanInitiateConnector @Inject() (appConfig: FrontendAppConfig, http: HttpGet with HttpPost, metrics: Metrics)
+class UpscanInitiateConnector @Inject() (appConfig: FrontendAppConfig, http: HttpClientV2, metrics: Metrics)
     extends HttpAPIMonitor {
 
   private val logger = LoggerFactory.getLogger("application." + getClass.getCanonicalName)
 
   val baseUrl: String                          = appConfig.upscanInitiateBaseUrl
   val upscanInitiatev2Path                     = "/upscan/v2/initiate"
-  val userAgent                                = "national-duty-repayment-center-frontend"
   override val kenshooRegistry: MetricRegistry = metrics.defaultRegistry
 
   def initiate(
     request: UpscanInitiateRequest
   )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[UpscanInitiateResponse] =
     monitor(s"ConsumedAPI-upscan-v2-initiate-POST") {
+      val url = s"$baseUrl$upscanInitiatev2Path"
       http
-        .POST[UpscanInitiateRequest, UpscanInitiateResponse](
-          new URL(baseUrl + upscanInitiatev2Path).toExternalForm,
-          request
-        )
+        .post(url"$url")
+        .withBody(Json.toJson(request))
+        .execute[UpscanInitiateResponse]
         .recoverWith {
           case e: Throwable =>
             logger.error(s"Upscan initiate request failed due to: $e")

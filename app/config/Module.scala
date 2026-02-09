@@ -16,31 +16,18 @@
 
 package config
 
-import com.google.inject.name.Named
-import com.google.inject.{AbstractModule, Inject, Singleton}
-import com.typesafe.config.Config
+import com.google.inject.AbstractModule
 import controllers.CheckStateActor
 import controllers.actions._
 import navigation.{CreateNavigator, CreateNavigatorImpl}
-import org.apache.pekko.actor.ActorSystem
-import play.api.Configuration
 import play.api.libs.concurrent.PekkoGuiceSupport
-import play.api.libs.ws.WSClient
 import repositories.{CacheDataRepository, SessionRepository}
-import uk.gov.hmrc.http.hooks.HttpHook
-import uk.gov.hmrc.http.{HttpGet, HttpPost}
-import uk.gov.hmrc.play.audit.http.HttpAuditing
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.play.http.ws.WSHttp
 
 import java.time.{Clock, ZoneOffset}
-import scala.util.matching.Regex
 
 class Module extends AbstractModule with PekkoGuiceSupport {
 
   override def configure(): Unit = {
-    bind(classOf[HttpGet]).to(classOf[CustomHttpClient])
-    bind(classOf[HttpPost]).to(classOf[CustomHttpClient])
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
     bind(classOf[FrontendAppConfig]).to(classOf[FrontendAppConfigImpl]).asEagerSingleton()
     bindActor[CheckStateActor]("check-state-actor")
@@ -54,26 +41,4 @@ class Module extends AbstractModule with PekkoGuiceSupport {
 
   }
 
-}
-
-@Singleton
-class CustomHttpAuditing @Inject() (val auditConnector: AuditConnector, @Named("appName") val appName: String)
-    extends HttpAuditing {
-
-  override val auditDisabledForPattern: Regex =
-    """.*?\/auth\/authorise$""".r
-
-}
-
-@Singleton
-class CustomHttpClient @Inject() (
-  config: Configuration,
-  val httpAuditing: CustomHttpAuditing,
-  override val wsClient: WSClient,
-  override protected val actorSystem: ActorSystem
-) extends uk.gov.hmrc.http.HttpClient with WSHttp {
-
-  override lazy val configuration: Config = config.underlying
-
-  override val hooks: Seq[HttpHook] = Seq(httpAuditing.AuditingHook)
 }
