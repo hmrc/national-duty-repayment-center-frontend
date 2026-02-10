@@ -18,13 +18,14 @@ package controllers
 
 import base.SpecBase
 import forms.OtherDutiesPaidFormProvider
-import models._
+import models.*
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, OtherDutiesPaidPage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.OtherDutiesPaidView
 
 import scala.concurrent.Future

@@ -22,11 +22,11 @@ import play.api.data.FormError
 
 import java.time.LocalDate
 import forms.mappings.LocalDateFormatter
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.{should, shouldBe, shouldEqual}
 
 class EntryDetailsFormProviderSpec extends StringFieldBehaviours with DateBehaviours {
 
-  def formData(year: Int, month: Int, day: Int) =
+  def formData(year: Int, month: Int, day: Int): Map[String, String] =
     Map("EntryDate.year" -> year.toString, "EntryDate.month" -> month.toString, "EntryDate.day" -> day.toString)
 
   val form = new EntryDetailsFormProvider()()

@@ -22,12 +22,15 @@ import data.TestData.addressLookupConfirmation
 import forms.AgentImporterManualAddressFormProvider
 import models.addresslookup.AddressLookupOnRamp
 import models.{Address, UserAnswers}
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{ArgumentCaptor, MockitoSugar}
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.AgentImporterAddressPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.{AddressLookupService, CountryService}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SelectItem
 import views.html.AgentImporterManualAddressView
@@ -39,11 +42,13 @@ class AgentImporterAddressFrontendControllerSpec extends SpecBase with MockitoSu
 
   implicit val countriesService: CountryService = TestData.testCountryService
   val formProvider                              = new AgentImporterManualAddressFormProvider()
-  val form                                      = formProvider()
+  val form: Form[Address]                       = formProvider()
 
-  lazy val agentImporterManualAddressRoute = routes.AgentImporterAddressFrontendController.onPageLoad().url
-  lazy val agentImporterChangeAddressRoute = routes.AgentImporterAddressFrontendController.onChange().url
-  lazy val agentImporterUpdateAddressRoute = routes.AgentImporterAddressFrontendController.onUpdate(Some("id")).url
+  lazy val agentImporterManualAddressRoute: String = routes.AgentImporterAddressFrontendController.onPageLoad().url
+  lazy val agentImporterChangeAddressRoute: String = routes.AgentImporterAddressFrontendController.onChange().url
+
+  lazy val agentImporterUpdateAddressRoute: String =
+    routes.AgentImporterAddressFrontendController.onUpdate(Some("id")).url
 
   "AgentImporterAddressFrontendController" must {
 

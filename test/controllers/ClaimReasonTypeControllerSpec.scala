@@ -18,28 +18,29 @@ package controllers
 
 import base.SpecBase
 import forms.ClaimReasonTypeFormProvider
-import models.ClaimReasonType
 import models.ClaimReasonType.{CommodityCodeChange, CurrencyChanges}
+import models.{ClaimReasonType, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.verifyNoInteractions
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.{reset, verifyNoInteractions, when}
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimReasonTypeMultiplePage, ClaimReasonTypePage}
+import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.ClaimReasonTypeView
 
 import scala.concurrent.Future
 
 class ClaimReasonTypeControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val claimReasonTypeRoute = routes.ClaimReasonTypeController.onPageLoad().url
+  lazy val claimReasonTypeRoute: String = routes.ClaimReasonTypeController.onPageLoad().url
 
-  val formProvider = new ClaimReasonTypeFormProvider()
-  val form         = formProvider()
+  val formProvider                = new ClaimReasonTypeFormProvider()
+  val form: Form[ClaimReasonType] = formProvider()
 
   val reasons: Set[ClaimReasonType] = Set(CurrencyChanges, CommodityCodeChange)
 
-  val multipleClaimReasonsAnswers =
+  val multipleClaimReasonsAnswers: UserAnswers =
     emptyUserAnswers.set(ClaimReasonTypeMultiplePage, reasons).success.value
 
   "ClaimReasonType Controller" must {

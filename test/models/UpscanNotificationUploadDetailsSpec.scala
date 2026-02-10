@@ -16,7 +16,7 @@
 
 package models
 
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
 import org.scalatest.wordspec.AnyWordSpec

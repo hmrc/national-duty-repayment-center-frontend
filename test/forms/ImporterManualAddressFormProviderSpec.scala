@@ -18,7 +18,7 @@ package forms
 
 import data.TestData
 import forms.behaviours.StringFieldBehaviours
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.shouldBe
 import play.api.data.{Form, FormError}
 import services.CountryService
 

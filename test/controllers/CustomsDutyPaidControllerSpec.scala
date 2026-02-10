@@ -20,11 +20,13 @@ import base.SpecBase
 import forms.CustomsDutyPaidFormProvider
 import models.{ClaimRepaymentType, Entries, NumberOfEntriesType, RepaymentAmounts, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimRepaymentTypePage, CustomsDutyPaidPage, NumberOfEntriesTypePage}
+import play.api.data.Form
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.CustomsDutyPaidView
 
 import scala.concurrent.Future
@@ -39,10 +41,10 @@ class CustomsDutyPaidControllerSpec extends SpecBase with MockitoSugar {
     )
   )
 
-  val formProvider = new CustomsDutyPaidFormProvider()
-  val form         = formProvider()
+  val formProvider                 = new CustomsDutyPaidFormProvider()
+  val form: Form[RepaymentAmounts] = formProvider()
 
-  lazy val CustomsDutyPaidRoute = routes.CustomsDutyPaidController.onPageLoad().url
+  lazy val CustomsDutyPaidRoute: String = routes.CustomsDutyPaidController.onPageLoad().url
 
   "customsDutyPaid Controller" must {
 

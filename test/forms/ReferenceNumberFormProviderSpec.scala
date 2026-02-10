@@ -17,7 +17,7 @@
 package forms
 
 import forms.behaviours.StringFieldBehaviours
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.{shouldBe, shouldEqual}
 import play.api.data.FormError
 
 class ReferenceNumberFormProviderSpec extends StringFieldBehaviours {
@@ -38,7 +38,7 @@ class ReferenceNumberFormProviderSpec extends StringFieldBehaviours {
     "bind valid data" in {
 
       forAll(stringsWithMaxLengthAlpha(maxLength - 4) -> "validDataItem") {
-        dataItem: String =>
+        (dataItem: String) =>
           val result = form.bind(Map(fieldName -> ("ndrc" + dataItem))).apply(fieldName)
           result.value.value shouldBe ("ndrc" + dataItem)
       }

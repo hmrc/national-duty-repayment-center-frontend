@@ -17,9 +17,10 @@
 package controllers
 
 import base.SpecBase
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 
 import java.net.URLEncoder
 

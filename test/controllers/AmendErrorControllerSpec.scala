@@ -21,11 +21,13 @@ import models.AmendCaseResponseType
 import models.AmendCaseResponseType.FurtherInformation
 import navigation.NavigatorBack
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.reset
+import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import pages.{AmendCaseResponseTypePage, ReferenceNumberPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.twirl.api.HtmlFormat
 import views.html.{ApplicationClosedView, ApplicationNotFoundView}
 

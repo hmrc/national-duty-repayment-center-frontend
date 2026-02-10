@@ -19,7 +19,7 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import models.EORI
 import org.scalacheck.Gen
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.shouldBe
 import play.api.data.{Form, FormError}
 
 class EnterAgentEORIFormProviderSpec extends StringFieldBehaviours {

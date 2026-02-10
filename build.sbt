@@ -8,7 +8,7 @@ lazy val appName: String = "national-duty-repayment-center-frontend"
 
 PlayKeys.devSettings := Seq("play.server.http.port" -> "8450")
 
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "3.3.7"
 ThisBuild / majorVersion := 0
 
 lazy val root = (project in file("."))
@@ -43,7 +43,8 @@ lazy val root = (project in file("."))
     pipelineStages        := Seq(digest),
     Assets / pipelineStages := Seq(concat),
     scalacOptions += "-Wconf:src=routes/.*:s",
-    scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s"
+    scalacOptions += "-Wconf:msg=unused import&src=html/.*:s",
+    scalacOptions += "-Wconf:msg=Flag.*repeatedly:s"
   ).settings(scalafmtOnCompile := true)
   .configs(Test)
 

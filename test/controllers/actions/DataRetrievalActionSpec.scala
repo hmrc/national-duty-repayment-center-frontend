@@ -19,8 +19,9 @@ package controllers.actions
 import base.SpecBase
 import models.UserAnswers
 import models.requests.{Identification, IdentifierRequest, OptionalDataRequest}
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatestplus.mockito.MockitoSugar
 import repositories.SessionRepository
 
 import scala.concurrent.ExecutionContext.Implicits.global

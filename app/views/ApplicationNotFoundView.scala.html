@@ -44,7 +44,7 @@ html: views.components.html
     @html.p {@Html(messages("amend.application.not.found.p2"))}
 
     <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("amend.application.not.found.b1") @html.a(AmendCheckYourAnswersController.onChange(ReferenceNumberPage).url, "amend.application.not.found.b1.link") </li>
+        <li>@messages("amend.application.not.found.b1") @html.a(controllers.routes.AmendCheckYourAnswersController.onChange(ReferenceNumberPage).url, "amend.application.not.found.b1.link") </li>
         <li>@Html(messages("amend.application.not.found.b2", html.a(emailUrl, appConfig.emails.customsAccountingRepayments, isExternal = true), caseReference))</li>
     </ul>
 

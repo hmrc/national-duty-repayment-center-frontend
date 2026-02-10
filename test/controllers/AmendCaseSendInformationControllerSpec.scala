@@ -20,12 +20,14 @@ import base.SpecBase
 import models.FileType.SupportingEvidence
 import models.requests.UploadRequest
 import models.{AmendCaseResponseType, FileType, FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{ArgumentCaptor, MockitoSugar}
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.AmendCaseResponseTypePage
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.twirl.api.HtmlFormat
 import services.{FileUploadState, FileUploaded, UploadFile}
 

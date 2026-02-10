@@ -20,11 +20,13 @@ import base.SpecBase
 import forms.AmendCaseResponseTypeFormProvider
 import models.AmendCaseResponseType.{FurtherInformation, SupportingDocuments}
 import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{ArgumentCaptor, MockitoSugar}
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{AmendCaseResponseTypePage, FurtherInformationPage}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.FileUploaded
 import views.html.AmendCaseResponseTypeView
 

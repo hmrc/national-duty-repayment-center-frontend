@@ -28,7 +28,7 @@ import models.addresslookup.AddressLookupRequest.Options.TimeoutConfig
 import models.addresslookup.AddressLookupRequest.{Labels, Options}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.must.Matchers
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.i18n.MessagesApi
 import utils.Injector
 
@@ -56,7 +56,7 @@ class AddressLookupRequestSpec extends AnyWordSpec with Matchers with MockitoSug
     }
   }
 
-  val expectedRequest =
+  val expectedRequest: AddressLookupRequest =
     AddressLookupRequestSpec.addressLookupRequest(appConfig.timeout)
 
 }

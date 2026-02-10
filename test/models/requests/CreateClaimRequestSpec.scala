@@ -16,13 +16,14 @@
 
 package models.requests
 
-import java.time.LocalDate
 import base.SpecBase
-import models._
+import models.*
 import models.eis.EISAddress
 import org.scalatest.matchers.must.Matchers
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
+
+import java.time.LocalDate
 
 class CreateClaimRequestSpec extends SpecBase with Matchers with MockitoSugar {
 

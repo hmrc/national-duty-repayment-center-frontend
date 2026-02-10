@@ -24,12 +24,12 @@ import models.{AmendCaseResponseType, FileUpload, FileUploads, UserAnswers}
 import navigation.{AmendNavigator, NavigatorBack}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.Mockito.{reset, verifyNoInteractions, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.{AmendCaseResponseTypePage, AmendCheckYourAnswersPage, FurtherInformationPage, ReferenceNumberPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.twirl.api.HtmlFormat
 import queries.AmendClaimIdQuery
 import services.FileUploaded

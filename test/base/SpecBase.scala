@@ -18,22 +18,23 @@ package base
 
 import config.FrontendAppConfig
 import connectors.{UpscanInitiateConnector, UpscanInitiateRequest, UpscanInitiateResponse}
-import controllers.actions._
+import controllers.actions.*
 import models.AmendCaseResponseType.FurtherInformation
-import models._
+import models.*
 import models.eis.EISAddress
 import models.requests.{AmendClaimRequest, CreateClaimRequest, Identification, UploadRequest}
 import navigation.{AmendNavigator, CreateNavigator, NavigatorBack}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice._
+import org.scalatestplus.play.guice.*
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{bind, Injector}
-import play.api.libs.json.{JsArray, Json}
+import play.api.libs.json.{JsArray, JsObject, Json}
 import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
@@ -71,7 +72,7 @@ trait SpecBase
 
   implicit lazy val messages: Messages = messagesApi.preferred(fakeRequest)
 
-  val upscanMock = mock[UpscanInitiateConnector]
+  val upscanMock: UpscanInitiateConnector = mock[UpscanInitiateConnector]
 
   val uscanResponse =
     UpscanInitiateResponse(
@@ -83,21 +84,21 @@ trait SpecBase
   when(upscanMock.initiate(any[UpscanInitiateRequest])(any[HeaderCarrier], any[ExecutionContext]))
     .thenReturn(Future.successful(uscanResponse))
 
-  val mockSessionRepository = mock[SessionRepository]
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
   val defaultBackLink         = NavigatorBack(Some(Call("GET", "/default-back-link")))
   def navBackLink(call: Call) = NavigatorBack(Some(call))
   val defaultNextPage         = Call("GET", "/default-next-page")
 
-  val mockCreateNavigator = mock[CreateNavigator]
+  val mockCreateNavigator: CreateNavigator = mock[CreateNavigator]
   when(mockCreateNavigator.previousPage(any(), any())).thenReturn(defaultBackLink)
   when(mockCreateNavigator.nextPage(any(), any())).thenReturn(defaultNextPage)
 
-  val mockAmendNavigator = mock[AmendNavigator]
+  val mockAmendNavigator: AmendNavigator = mock[AmendNavigator]
   when(mockAmendNavigator.previousPage(any(), any())).thenReturn(defaultBackLink)
   when(mockAmendNavigator.nextPage(any(), any())).thenReturn(defaultNextPage)
 
-  val mockClaimService = mock[ClaimService]
+  val mockClaimService: ClaimService = mock[ClaimService]
 
   protected def applicationBuilder(
     userAnswers: Option[UserAnswers] = None,
@@ -170,13 +171,13 @@ trait SpecBase
     ImporterBankDetails = Some(BankDetails("account name", "123456", "12345678"))
   )
 
-  val dutyTypeTaxList = Seq(
+  val dutyTypeTaxList: Seq[DutyTypeTaxList] = Seq(
     DutyTypeTaxList(ClaimRepaymentType.Customs, "100.00", "50.00", "50.00"),
     DutyTypeTaxList(ClaimRepaymentType.Vat, "100.00", "50.00", "50.00"),
     DutyTypeTaxList(ClaimRepaymentType.Other, "100.00", "50.00", "50.00")
   )
 
-  val documentList = Seq(
+  val documentList: Seq[DocumentList] = Seq(
     DocumentList(EvidenceSupportingDocs.CopyOfC88, Some(DocumentDescription("this is a copy of c88"))),
     DocumentList(EvidenceSupportingDocs.Invoice, Some(DocumentDescription("this is an invoice"))),
     DocumentList(EvidenceSupportingDocs.PackingList, Some(DocumentDescription("this is a packing list")))
@@ -184,7 +185,7 @@ trait SpecBase
 
   val dutyTypeTaxDetails = DutyTypeTaxDetails(dutyTypeTaxList)
 
-  val uploadedFiles = Seq(
+  val uploadedFiles: Seq[UploadedFile] = Seq(
     UploadedFile(
       "ref-123",
       downloadUrl = "/bucket/test1.jpeg",
@@ -216,7 +217,7 @@ trait SpecBase
     Nil
   )
 
-  val amendJson = Json.obj(
+  val amendJson: JsObject = Json.obj(
     "Content" -> Json.obj(
       "CaseID"           -> "Risk-2507",
       "Description"      -> "update request for Risk-2507",
@@ -225,7 +226,7 @@ trait SpecBase
     "uploadedFiles" -> JsArray()
   )
 
-  val json = Json.obj(
+  val json: JsObject = Json.obj(
     "Content" -> Json.obj(
       "ClaimDetails" -> Json.obj(
         "FormType"             -> "01",

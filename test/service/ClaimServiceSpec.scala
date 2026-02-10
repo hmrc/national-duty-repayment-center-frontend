@@ -24,6 +24,7 @@ import models.responses.ClientClaimResponse
 import models.{ClaimDescription, ClaimReasonType}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalatest.OptionValues
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -37,9 +38,9 @@ import scala.util.matching.Regex
 
 class ClaimServiceSpec extends SpecBase with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  val createClaimBuilder = injector.instanceOf[CreateClaimBuilder]
-  val amendClaimBuilder  = injector.instanceOf[AmendClaimBuilder]
-  val uuidMatcher: Regex = "[A-Za-z0-9-]{36}".r
+  val createClaimBuilder: CreateClaimBuilder = injector.instanceOf[CreateClaimBuilder]
+  val amendClaimBuilder: AmendClaimBuilder   = injector.instanceOf[AmendClaimBuilder]
+  val uuidMatcher: Regex                     = "[A-Za-z0-9-]{36}".r
 
   "Claim service" should {
 

@@ -48,7 +48,7 @@ class VATPaidFormProvider @Inject() extends Mappings {
           ).transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
           .verifying(maximumValue[BigDecimal](99999999999.99, "vatPaid.actualamountpaid.error.length"))
           .transform[String](d => d.toString, i => i.toDouble)
-      )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
+      )(RepaymentAmounts.apply)(model => Some((model.ActualPaidAmount, model.ShouldHavePaidAmount)))
         .verifying("vatPaid.amounts.error.same", vat => vat.dueAmount != 0)
         .verifying("vatPaid.amounts.error.greater", vat => vat.dueAmount >= 0)
     )

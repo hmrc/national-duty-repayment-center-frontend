@@ -19,15 +19,17 @@ package controllers
 import base.SpecBase
 import models.ClaimantType.{Importer, Representative}
 import models.FileType.SupportingEvidence
-import models._
+import models.*
 import models.requests.UploadRequest
 import navigation.CreateNavigator
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{ArgumentCaptor, MockitoSugar}
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{AgentImporterHasEORIPage, ClaimantTypePage, ImporterHasEoriPage}
 import play.api.i18n.Messages
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.twirl.api.HtmlFormat
 import services.{FileUploadState, FileUploaded, UploadFile}
 

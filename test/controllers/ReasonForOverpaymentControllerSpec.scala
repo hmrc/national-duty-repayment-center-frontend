@@ -21,10 +21,11 @@ import forms.ReasonForOverpaymentFormProvider
 import models.ClaimReasonType.{CommodityCodeChange, CurrencyChanges}
 import models.{ClaimDescription, ClaimReasonType}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimReasonTypeMultiplePage, ReasonForOverpaymentPage}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.ReasonForOverpaymentView
 
 import scala.concurrent.Future

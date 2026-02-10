@@ -17,10 +17,11 @@
 package models.requests
 
 import base.SpecBase
-import data.TestData._
+import data.TestData.*
 import models.EORI
 import models.eis.QuoteFormatter
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.verify
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.must.Matchers
 
 class CreateClaimBuilderSpec extends SpecBase with Matchers with MockitoSugar {

@@ -31,7 +31,7 @@
     backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = EnterAgentEORIController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
+    @forms.formWithCSRF(action = controllers.routes.EnterAgentEORIController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
 
         @components.error_summary(form.errors)
 

@@ -570,7 +570,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
   }
 
   private def numberOfEntriesType: Option[AnswerRow] = numberOfEntriesTypePage map {
-    x =>
+    _ =>
       AnswerRow(
         HtmlFormat.escape(messages("numberOfEntriesType.checkYourAnswersLabel")),
         HtmlFormat.escape(numberOfEntriesTypePage match {
@@ -631,7 +631,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers, dateTimeFormats: DateTime
   }
 
   private def claimantType: Option[AnswerRow] = claimantTypePage map {
-    x =>
+    _ =>
       AnswerRow(
         HtmlFormat.escape(messages("claimantType.checkYourAnswersLabel")),
         HtmlFormat.escape(claimantTypePage match {

@@ -21,7 +21,9 @@ import models.FileType.Bulk
 import models.requests.UploadRequest
 import models.{FileUpload, FileUploads, SessionState, UpscanNotification, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{ArgumentCaptor, MockitoSugar}
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.Status.SEE_OTHER
 import play.api.i18n.Messages
 import play.api.test.FakeRequest

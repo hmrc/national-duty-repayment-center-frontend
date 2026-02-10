@@ -173,7 +173,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
   override val signOutUrl: String       = configuration.get[String]("urls.logout")
   private lazy val feedbackHost: String = configuration.get[String]("feedback-frontend.host")
   private lazy val feedbackUrl: String  = configuration.get[String]("feedback-frontend.url")
-  lazy val feedbackSurvey: String       = s"$feedbackHost$feedbackUrl"
+  val feedbackSurvey: String            = s"$feedbackHost$feedbackUrl"
 
   override val fileFormats: FrontendAppConfig.FileFormats = FrontendAppConfig.FileFormats(
     maxFileSizeMb = configuration.get[Int]("file-formats.max-file-size-mb"),
@@ -208,7 +208,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
   override val upscanInitiateBaseUrl: String =
     configuration.get[Service]("microservice.services.upscan-initiate").baseUrl
 
-  lazy val locationCanonicalList: String = configuration.getOptional[String]("location.canonical.list").getOrElse(
+  val locationCanonicalList: String = configuration.getOptional[String]("location.canonical.list").getOrElse(
     throw new Exception(s"Missing configuration key: location.canonical.list")
   )
 

@@ -29,7 +29,9 @@ class UpscanS3ErrorFormProvider {
       "errorMessage"   -> text,
       "errorRequestId" -> optional(text),
       "errorResource"  -> optional(text)
-    )(S3UploadError.apply)(S3UploadError.unapply)
+    )(S3UploadError.apply)(model =>
+      Some((model.key, model.errorCode, model.errorMessage, model.errorRequestId, model.errorResource))
+    )
   )
 
 }

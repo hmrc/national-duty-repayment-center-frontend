@@ -40,12 +40,12 @@ object FileVerificationStatus {
 
   def apply(fileUpload: FileUpload): FileVerificationStatus =
     fileUpload match {
-      case f: FileUpload.Accepted  => FileVerificationStatus("ACCEPTED")
-      case f: FileUpload.Failed    => FileVerificationStatus("FAILED")
-      case f: FileUpload.Rejected  => FileVerificationStatus("REJECTED")
-      case f: FileUpload.Initiated => FileVerificationStatus("NOT_UPLOADED")
-      case f: FileUpload.Duplicate => FileVerificationStatus("DUPLICATE")
-      case f: FileUpload.TimedOut  => FileVerificationStatus("TIMEDOUT")
+      case _: FileUpload.Accepted  => FileVerificationStatus("ACCEPTED")
+      case _: FileUpload.Failed    => FileVerificationStatus("FAILED")
+      case _: FileUpload.Rejected  => FileVerificationStatus("REJECTED")
+      case _: FileUpload.Initiated => FileVerificationStatus("NOT_UPLOADED")
+      case _: FileUpload.Duplicate => FileVerificationStatus("DUPLICATE")
+      case _: FileUpload.TimedOut  => FileVerificationStatus("TIMEDOUT")
     }
 
   implicit val formats: Format[FileVerificationStatus] = Json.format[FileVerificationStatus]
