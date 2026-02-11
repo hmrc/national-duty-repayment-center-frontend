@@ -25,7 +25,7 @@ import play.api.libs.json.Json
 import services.FileUploadState
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
-import uk.gov.hmrc.play.http.logging.Mdc
+import uk.gov.hmrc.mdc.Mdc
 
 import java.time.{Clock, Instant}
 import java.util.concurrent.TimeUnit
@@ -44,7 +44,7 @@ class CacheDataRepository @Inject() (mongoComponent: MongoComponent, config: Con
         IndexModel(
           ascending("lastUpdated"),
           IndexOptions().name("user-answers-last-updated-index").expireAfter(
-            config.get[Int]("mongodb.timeToLiveInSeconds"),
+            config.get[Long]("mongodb.timeToLiveInSeconds"),
             TimeUnit.SECONDS
           )
         )

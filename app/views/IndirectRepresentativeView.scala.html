@@ -31,7 +31,7 @@
     backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = IndirectRepresentativeController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
+    @forms.formWithCSRF(action = controllers.routes.IndirectRepresentativeController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
 
         @components.error_summary(form.errors)
 

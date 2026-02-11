@@ -66,7 +66,9 @@ class EmailAddressAndPhoneNumberFormProvider @Inject() extends Mappings {
               )
             )
         )
-      )(EmailAndPhoneNumber.apply)(EmailAndPhoneNumber.unapply)
+      )(EmailAndPhoneNumber.apply)(model =>
+        Some((model.emailOrPhone, model.email, model.phone))
+      )
     )
 
 }

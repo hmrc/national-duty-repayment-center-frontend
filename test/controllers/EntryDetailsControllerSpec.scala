@@ -20,11 +20,12 @@ import base.SpecBase
 import forms.EntryDetailsFormProvider
 import models.{Entries, EntryDetails, NumberOfEntriesType, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{EntryDetailsPage, NumberOfEntriesTypePage}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.EntryDetailsView
 
 import java.time.LocalDate

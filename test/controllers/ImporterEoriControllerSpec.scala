@@ -21,10 +21,11 @@ import forms.ImporterEoriFormProvider
 import models.ClaimantType.Importer
 import models.{EORI, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimantTypePage, ImporterEoriPage}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.ImporterEoriView
 
 import scala.concurrent.Future

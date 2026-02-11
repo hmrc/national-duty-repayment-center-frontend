@@ -28,11 +28,11 @@ import models.{
 }
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.verifyNoInteractions
-import pages._
+import org.mockito.Mockito.{reset, verifyNoInteractions, when}
+import pages.*
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 import views.html.RepaymentAmountSummaryView
@@ -43,10 +43,10 @@ import scala.concurrent.Future
 class RepaymentAmountSummaryControllerSpec extends SpecBase {
 
   implicit class Improvements(s: Double) {
-    def format2d = "%.2f".format(s)
+    def format2d: String = "%.2f".format(s)
   }
 
-  def answersViewModel = Seq(
+  def answersViewModel: Seq[AnswerSection] = Seq(
     AnswerSection(
       Some("Customs Duty"),
       Seq(
@@ -138,7 +138,7 @@ class RepaymentAmountSummaryControllerSpec extends SpecBase {
     )
   )
 
-  val userAnswersWithDuty = UserAnswers(
+  val userAnswersWithDuty: UserAnswers = UserAnswers(
     userAnswersId,
     None,
     Json.obj(

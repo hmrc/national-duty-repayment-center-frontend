@@ -21,13 +21,17 @@ import config.Service
 import models.requests.{AmendClaimRequest, CreateClaimRequest}
 import models.responses.ClientClaimResponse
 import play.api.Configuration
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.{HttpClient, _}
+import uk.gov.hmrc.http.HttpReadsInstances.readFromJson
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http._
 import uk.gov.hmrc.nationaldutyrepaymentcenter.models.responses.ApiError
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class NDRCConnector @Inject() (config: Configuration, httpClient: HttpClient)(implicit ec: ExecutionContext)
+class NDRCConnector @Inject() (config: Configuration, http: HttpClientV2)(implicit ec: ExecutionContext)
     extends HttpErrorFunctions {
 
   private val baseUrl: Service = config.get[Service]("microservice.services.national-duty-repayment-center")
@@ -35,20 +39,20 @@ class NDRCConnector @Inject() (config: Configuration, httpClient: HttpClient)(im
   def submitClaim(request: CreateClaimRequest, correlationId: String)(implicit
     hc: HeaderCarrier
   ): Future[ClientClaimResponse] =
-    httpClient.POST[CreateClaimRequest, ClientClaimResponse](
-      s"$baseUrl/create-case",
-      request,
-      Seq("X-Correlation-Id" -> correlationId)
-    )
+    http
+      .post(url"$baseUrl/create-case")
+      .withBody(Json.toJson(request))
+      .setHeader("X-Correlation-Id" -> correlationId)
+      .execute[ClientClaimResponse]
 
   def submitAmendClaim(request: AmendClaimRequest, correlationId: String)(implicit
     hc: HeaderCarrier
   ): Future[ClientClaimResponse] =
-    httpClient.POST[AmendClaimRequest, Either[UpstreamErrorResponse, ClientClaimResponse]](
-      s"$baseUrl/amend-case",
-      request,
-      Seq("X-Correlation-Id" -> correlationId)
-    ) map {
+    http
+      .post(url"$baseUrl/amend-case")
+      .withBody(Json.toJson(request))
+      .setHeader("X-Correlation-Id" -> correlationId)
+      .execute[Either[UpstreamErrorResponse, ClientClaimResponse]] map {
       case Right(response) => response
       case Left(UpstreamErrorResponse(message, 400, _, _)) =>
         ClientClaimResponse(correlationId, Some(request.Content.CaseID), Some(ApiError("400", Some(message))))

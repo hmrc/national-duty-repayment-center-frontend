@@ -54,9 +54,9 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
       val isOtherDutiesExists = dutyType.equals("repaymentAmountSummary.otherduties")
 
       val message: String = dutyType match {
-        case y if isCustomDutyExists  => messages(s"$dutyType.$index")
-        case y if isVATExists         => messages(s"$dutyType.$index")
-        case y if isOtherDutiesExists => messages(s"$dutyType.$index")
+        case _ if isCustomDutyExists  => messages(s"$dutyType.$index")
+        case _ if isVATExists         => messages(s"$dutyType.$index")
+        case _ if isOtherDutiesExists => messages(s"$dutyType.$index")
         case _                        => messages(s"$dutyType")
       }
 
@@ -69,8 +69,8 @@ class RepaymentAmountSummaryAnswersHelper(userAnswers: UserAnswers)(implicit mes
 
       x =>
         AnswerRow(
-          Html(x.map(value => HtmlFormat.escape(message).toString).mkString("")),
-          Html(x.map(value => formattedAmount).mkString("")),
+          Html(x.map(_ => HtmlFormat.escape(message).toString).mkString("")),
+          Html(x.map(_ => formattedAmount).mkString("")),
           index match {
             case "2" if isCustomDutyExists =>
               Some(routes.CheckYourAnswersController.onChange(CustomsDutyPaidPage).url)

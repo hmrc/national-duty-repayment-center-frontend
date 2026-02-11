@@ -20,20 +20,22 @@ import base.SpecBase
 import forms.FurtherInformationFormProvider
 import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.FurtherInformationPage
+import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.FurtherInformationView
 
 import scala.concurrent.Future
 
 class FurtherInformationControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new FurtherInformationFormProvider()
-  val form         = formProvider()
+  val formProvider       = new FurtherInformationFormProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val furtherInformationRoute = routes.FurtherInformationController.onPageLoad().url
+  lazy val furtherInformationRoute: String = routes.FurtherInformationController.onPageLoad().url
 
   "FurtherInformation Controller" must {
 

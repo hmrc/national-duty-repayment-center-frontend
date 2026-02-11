@@ -20,11 +20,12 @@ import base.SpecBase
 import forms.RepresentativeDeclarantAndBusinessNameFormProvider
 import models.{RepresentativeDeclarantAndBusinessName, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.RepresentativeDeclarantAndBusinessNamePage
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.RepresentativeDeclarantAndBusinessNameView
 
 import scala.concurrent.Future

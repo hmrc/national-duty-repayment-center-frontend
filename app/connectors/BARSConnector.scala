@@ -18,20 +18,23 @@ package connectors
 
 import config.FrontendAppConfig
 import models.bars.{AssessBusinessBankDetailsRequest, AssessBusinessBankDetailsResponse}
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class BARSConnector @Inject() (httpClient: HttpClient, appConfig: FrontendAppConfig)(implicit ec: ExecutionContext) {
+class BARSConnector @Inject() (http: HttpClientV2, appConfig: FrontendAppConfig)(implicit ec: ExecutionContext) {
 
   def assessBusinessBankDetails(
     request: AssessBusinessBankDetailsRequest
   )(implicit hc: HeaderCarrier): Future[AssessBusinessBankDetailsResponse] =
-    httpClient.POST[AssessBusinessBankDetailsRequest, AssessBusinessBankDetailsResponse](
-      appConfig.barsBusinessAssessUrl,
-      request
-    )
+    http
+      .post(url"${appConfig.barsBusinessAssessUrl}")
+      .withBody(Json.toJson(request))
+      .execute[AssessBusinessBankDetailsResponse]
 
 }

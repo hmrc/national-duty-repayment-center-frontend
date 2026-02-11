@@ -33,7 +33,7 @@
     backLinkNav = Some(backLink)
 ) {
 
-    @forms.formWithCSRF(action = RepaymentTypeController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
+    @forms.formWithCSRF(action = controllers.routes.RepaymentTypeController.onSubmit(), args = Symbol("novalidate") -> "novalidate") {
 
         @components.error_summary(form.errors)
 

@@ -97,7 +97,9 @@ object UpscanNotification {
       ((__ \ "uploadTimestamp").write[ZonedDateTime] and
         (__ \ "checksum").write[String] and
         (__ \ "fileName").write[String] and
-        (__ \ "fileMimeType").write[String])(unlift(UploadDetails.unapply))
+        (__ \ "fileMimeType").write[String])(model =>
+        (model.uploadTimestamp, model.checksum, model.fileName, model.fileMimeType)
+      )
     )
 
     def decodeMimeEncodedWord(word: String): String =

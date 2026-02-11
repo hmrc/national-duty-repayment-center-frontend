@@ -18,7 +18,8 @@ package forms
 
 import forms.behaviours.DecimalFieldBehaviours
 import models.RepaymentAmounts
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalacheck.Gen
+import org.scalatest.matchers.should.Matchers.{shouldBe, shouldEqual}
 import play.api.data.{Form, FormError}
 
 class OtherDutiesPaidFormProviderSpec extends DecimalFieldBehaviours {
@@ -29,7 +30,7 @@ class OtherDutiesPaidFormProviderSpec extends DecimalFieldBehaviours {
   val minimum                     = 0.00
   var maximum                     = 99999999999.99
 
-  val validDataGenerator = decimalInRangeWithCommas(minimum.toDouble, maximum)
+  val validDataGenerator: Gen[String] = decimalInRangeWithCommas(minimum, maximum)
 
   def buildFormDataWithSpaces(
     ActualPaidAmount: Option[String] = Some(" 2 2 2 "),

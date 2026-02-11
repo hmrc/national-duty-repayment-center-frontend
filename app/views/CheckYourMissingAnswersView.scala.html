@@ -31,7 +31,7 @@
 @warningContent = {
     @messages("checkYourAnswers.missing.warning")
     @html.a(
-        link = CheckYourAnswersController.onResolve().url,
+        link = controllers.routes.CheckYourAnswersController.onResolve().url,
         messageKey = messages("checkYourAnswers.missing.resolve.link")
     )
 }
@@ -54,7 +54,7 @@
     @html.p{
         @messages("checkYourAnswers.missing.paragraph")
     }
-    @forms.formWithCSRF(action = CheckYourAnswersController.onResolve(), args = Symbol("novalidate") -> "novalidate") {
+    @forms.formWithCSRF(action = controllers.routes.CheckYourAnswersController.onResolve(), args = Symbol("novalidate") -> "novalidate") {
         @html.button("checkYourAnswers.missing.resolve")
     }
 }

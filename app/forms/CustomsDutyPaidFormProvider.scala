@@ -52,7 +52,9 @@ class CustomsDutyPaidFormProvider @Inject() extends Mappings {
         .transform[BigDecimal](BigDecimal.apply, _.setScale(2).toString)
         .verifying(maximumValue[BigDecimal](99999999999.99, "customsDutyPaid.shouldhavepaid.error.length"))
         .transform[String](d => d.toString, i => i.toDouble)
-    )(RepaymentAmounts.apply)(RepaymentAmounts.unapply)
+    )(RepaymentAmounts.apply)(model =>
+      Some((model.ActualPaidAmount, model.ShouldHavePaidAmount))
+    )
       .verifying("customsDutyPaid.amounts.error.same", duty => duty.dueAmount != 0)
       .verifying("customsDutyPaid.amounts.error.greater", duty => duty.dueAmount >= 0)
   )

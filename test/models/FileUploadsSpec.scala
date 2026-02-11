@@ -18,7 +18,7 @@ package models
 
 import models.FileType.SupportingEvidence
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.time.ZonedDateTime

@@ -21,10 +21,11 @@ import forms.ReferenceNumberFormProvider
 import models.UserAnswers
 import navigation.NavigatorBack
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.ReferenceNumberPage
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.ReferenceNumberView
 
 import scala.concurrent.Future

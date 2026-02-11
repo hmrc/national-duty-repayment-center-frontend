@@ -18,7 +18,7 @@ package forms
 
 import forms.behaviours.{OptionFieldBehaviours, StringFieldBehaviours}
 import models.{DeclarantReferenceNumber, DeclarantReferenceType}
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.shouldEqual
 import play.api.data.FormError
 
 class DeclarantReferenceNumberFormProviderSpec extends OptionFieldBehaviours with StringFieldBehaviours {

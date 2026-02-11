@@ -21,12 +21,13 @@ import config.FrontendAppConfigImpl
 import controllers.routes
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, spy, when}
 import org.scalatest.BeforeAndAfterEach
 import play.api.Configuration
 import play.api.i18n.Langs
-import play.api.mvc._
-import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core._
+import play.api.mvc.*
+import play.api.test.Helpers.*
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.allEnrolments
 import uk.gov.hmrc.http.SessionKeys
 

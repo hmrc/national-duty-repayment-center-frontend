@@ -17,16 +17,16 @@
 package controllers
 
 import base.SpecBase
-import data.TestData._
+import data.TestData.*
 import models.UserAnswers
 import navigation.CreateNavigatorImpl
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.Mockito.{reset, verifyNoInteractions, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.{CheckYourAnswersPage, ClaimRepaymentTypePage, ImporterHasEoriPage}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import queries.ClaimIdQuery
 import views.html.{CheckYourAnswersView, CheckYourMissingAnswersView}
 

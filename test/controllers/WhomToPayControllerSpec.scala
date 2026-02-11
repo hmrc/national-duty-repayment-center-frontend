@@ -20,20 +20,23 @@ import base.SpecBase
 import forms.WhomToPayFormProvider
 import models.{BankDetails, UserAnswers, WhomToPay}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{ArgumentCaptor, MockitoSugar}
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito.{atLeastOnce, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{BankDetailsPage, IndirectRepresentativePage, WhomToPayPage}
+import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.WhomToPayView
 
 import scala.concurrent.Future
 
 class WhomToPayControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val whomToPayRoute = routes.WhomToPayController.onPageLoad().url
+  lazy val whomToPayRoute: String = routes.WhomToPayController.onPageLoad().url
 
-  val formProvider = new WhomToPayFormProvider()
-  val form         = formProvider()
+  val formProvider          = new WhomToPayFormProvider()
+  val form: Form[WhomToPay] = formProvider()
 
   "WhomToPay Controller" must {
 

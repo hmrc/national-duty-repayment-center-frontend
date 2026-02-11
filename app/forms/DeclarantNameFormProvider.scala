@@ -32,7 +32,7 @@ class DeclarantNameFormProvider @Inject() extends Mappings {
           .verifying(firstError(maxLength(255, "declarantName.firstName.error.length"))),
         "lastName" -> text("declarantName.lastName.error.required")
           .verifying(firstError(maxLength(255, "declarantName.lastName.error.length")))
-      )(Name.apply)(Name.unapply)
+      )(Name.apply)(model => Some((model.firstName, model.lastName)))
     )
 
 }

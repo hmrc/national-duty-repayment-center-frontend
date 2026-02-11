@@ -45,7 +45,7 @@ class EntryDetailsFormProvider @Inject() extends Mappings {
           .verifying(
             minDate(minDateLimit, "entryDetails.claimEntryDate.error.invalid_past", Format.formattedDate(minDateLimit))
           )
-      )(EntryDetails.apply)(EntryDetails.unapply)
+      )(EntryDetails.apply)(model => Some((model.EPU, model.EntryNumber, model.EntryDate)))
     )
   }
 

@@ -50,7 +50,9 @@ class BankDetailsFormProvider @Inject() extends Mappings {
               regexp(Validation.accountNumberPattern, "bankDetails.accountNumber.error.invalid", _.stripSpacesAndDashes)
             )
           )
-      )(formToModel)(BankDetails.unapply)
+      )(formToModel)(model =>
+        Some((model.AccountName, model.SortCode, model.AccountNumber))
+      )
     )
   }
 

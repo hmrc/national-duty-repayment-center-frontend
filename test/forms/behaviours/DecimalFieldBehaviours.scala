@@ -16,7 +16,7 @@
 
 package forms.behaviours
 
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers.shouldEqual
 import play.api.data.{Form, FormError}
 
 import scala.math.BigDecimal.RoundingMode
@@ -37,7 +37,7 @@ trait DecimalFieldBehaviours extends FieldBehaviours {
     s"not bind numbers below $minimum" in {
 
       forAll(decimalsBelowValue(minimum) -> "decimalBelowMin") {
-        number: BigDecimal =>
+        (number: BigDecimal) =>
           val result = form.bind(Map(fieldName -> number.setScale(2, RoundingMode.FLOOR).toString)).apply(fieldName)
           result.errors shouldEqual Seq(expectedError)
       }
@@ -47,7 +47,7 @@ trait DecimalFieldBehaviours extends FieldBehaviours {
     s"not bind numbers above $maximum" in {
 
       forAll(decimalsAboveValue(maximum) -> "decimalAboveMax") {
-        number: BigDecimal =>
+        (number: BigDecimal) =>
           val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
           result.errors shouldEqual Seq(expectedError)
       }

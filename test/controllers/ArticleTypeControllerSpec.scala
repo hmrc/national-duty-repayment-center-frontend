@@ -20,10 +20,11 @@ import base.SpecBase
 import forms.ArticleTypeFormProvider
 import models.{ArticleType, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.ArticleTypePage
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.ArticleTypeView
 
 import scala.concurrent.Future

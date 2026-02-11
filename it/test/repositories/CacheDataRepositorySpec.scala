@@ -18,12 +18,13 @@ package test.repositories
 
 import models.requests.Identification
 import models.{EORI, FileUpload, FileUploads, SessionState, UserAnswers}
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
 import org.mongodb.scala.model.Filters
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.Configuration
 import play.api.libs.json.Json
 import repositories.CacheDataRepository
@@ -45,7 +46,7 @@ class CacheDataRepositorySpec
   when(mockConfig.get[Int]("mongodb.timeToLiveInSeconds")) thenReturn 1
   when(mockConfig.getOptional[Boolean]("mongodb.replaceIndexes")) thenReturn Some(true)
 
-  protected override val repository = new CacheDataRepository(
+  protected override val repository: CacheDataRepository = new CacheDataRepository(
     mongoComponent = mongoComponent,
     config = mockConfig,
     stubClock

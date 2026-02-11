@@ -17,15 +17,16 @@
 package controllers.internal
 
 import base.SpecBase
+import models.*
 import models.FileType.SupportingEvidence
-import models._
 import models.requests.UploadRequest
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsValue, Json}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.{FileUploaded, UploadFile}
 
 import java.time.ZonedDateTime

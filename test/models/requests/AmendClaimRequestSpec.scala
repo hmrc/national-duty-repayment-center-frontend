@@ -18,7 +18,7 @@ package models.requests
 
 import base.SpecBase
 import org.scalatest.matchers.must.Matchers
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsSuccess, Json}
 
 class AmendClaimRequestSpec extends SpecBase with Matchers with MockitoSugar {

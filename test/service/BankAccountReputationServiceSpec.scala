@@ -19,8 +19,9 @@ package service
 import base.SpecBase
 import connectors.BARSConnector
 import data.BarsTestData
-import data.TestData._
+import data.TestData.*
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.must.Matchers
 import services.BankAccountReputationService

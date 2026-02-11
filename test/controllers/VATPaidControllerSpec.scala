@@ -18,23 +18,25 @@ package controllers
 
 import base.SpecBase
 import forms.VATPaidFormProvider
-import models._
+import models.*
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.{ClaimRepaymentTypePage, NumberOfEntriesTypePage, VATPaidPage}
+import play.api.data.Form
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.VATPaidView
 
 import scala.concurrent.Future
 
 class VATPaidControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new VATPaidFormProvider()
-  val form         = formProvider()
+  val formProvider                 = new VATPaidFormProvider()
+  val form: Form[RepaymentAmounts] = formProvider()
 
-  lazy val vATPaidRoute = routes.VATPaidController.onPageLoad().url
+  lazy val vATPaidRoute: String = routes.VATPaidController.onPageLoad().url
 
   private val userAnswers = UserAnswers(
     userAnswersId,

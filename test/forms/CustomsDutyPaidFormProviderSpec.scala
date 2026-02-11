@@ -18,7 +18,8 @@ package forms
 
 import forms.behaviours.{DecimalFieldBehaviours, StringFieldBehaviours}
 import models.RepaymentAmounts
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalacheck.Gen
+import org.scalatest.matchers.should.Matchers.{shouldBe, shouldEqual}
 import play.api.data.{Form, FormError}
 
 class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with StringFieldBehaviours {
@@ -38,7 +39,7 @@ class CustomsDutyPaidFormProviderSpec extends DecimalFieldBehaviours with String
         ShouldHavePaidAmount.map(_ => "ShouldHavePaidAmount" -> ShouldHavePaidAmount.get)
     ).toMap
 
-  val validDataGenerator = decimalInRangeWithCommas(minimum.toDouble, maximum)
+  val validDataGenerator: Gen[String] = decimalInRangeWithCommas(minimum, maximum)
 
   val form: Form[RepaymentAmounts] = new CustomsDutyPaidFormProvider()()
 

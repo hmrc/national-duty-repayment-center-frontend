@@ -21,7 +21,9 @@ import forms.IndirectRepresentativeFormProvider
 import models.FileType.ProofOfAuthority
 import models.{FileUpload, FileUploads, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.{ArgumentCaptor, MockitoSugar}
+import org.mockito.ArgumentCaptor
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import pages.IndirectRepresentativePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

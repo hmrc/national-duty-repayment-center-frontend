@@ -21,29 +21,32 @@ import connectors.InitialiseAddressLookupHttpParser.InitialiseAddressLookupReads
 import models.addresslookup.{AddressLookupConfirmation, AddressLookupOnRamp, AddressLookupRequest}
 import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads, HttpResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, StringContextOps}
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AddressLookupFrontendConnector @Inject() (http: HttpClient, implicit val config: FrontendAppConfig) {
+class AddressLookupFrontendConnector @Inject() (http: HttpClientV2, implicit val config: FrontendAppConfig) {
 
   def initialiseJourney(
     addressLookupRequest: AddressLookupRequest
   )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AddressLookupOnRamp] =
-    http.POST[AddressLookupRequest, AddressLookupOnRamp](config.addressLookupInitUrl, addressLookupRequest)(
-      implicitly,
-      InitialiseAddressLookupReads,
-      hc,
-      ec
-    )
+    http
+      .post(url"${config.addressLookupInitUrl}")
+      .withBody(Json.toJson(addressLookupRequest))
+      .execute[AddressLookupOnRamp](InitialiseAddressLookupReads, ec)
 
   private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupConfirmedUrl}?id=$id"
 
   def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AddressLookupConfirmation] =
-    http.GET[AddressLookupConfirmation](getAddressUrl(id))(implicitly, hc, ec)
+    http
+      .get(url"${getAddressUrl(id)}")
+      .execute[AddressLookupConfirmation]
 
 }
 
