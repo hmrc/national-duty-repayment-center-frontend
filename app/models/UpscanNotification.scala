@@ -20,7 +20,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 import java.time.ZonedDateTime
-import javax.mail.internet.MimeUtility
+import jakarta.mail.internet.MimeUtility
 import scala.util.Try
 
 /** Upscan service notification */
