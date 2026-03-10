@@ -2,7 +2,7 @@ import sbt._
 
 object AppDependencies {
 
-  private val bootstrapVersion = "10.6.0"
+  private val bootstrapVersion = "10.7.0"
   private val playVersion      = "play-30"
   private val mongoVersion     = "2.12.0"
 
@@ -14,9 +14,8 @@ object AppDependencies {
   val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
     "uk.gov.hmrc"       %% s"bootstrap-frontend-$playVersion"            % bootstrapVersion,
-    "uk.gov.hmrc"       %% s"play-frontend-hmrc-$playVersion"            % "12.31.0",
-    "uk.gov.hmrc.mongo" %% s"hmrc-mongo-$playVersion"                    % mongoVersion,
-    "uk.gov.hmrc"       %% s"play-conditional-form-mapping-$playVersion" % "3.4.0",
+    "uk.gov.hmrc"       %% s"play-frontend-hmrc-$playVersion"            % "12.32.0",
+    "uk.gov.hmrc"       %% s"play-conditional-form-mapping-$playVersion" % "3.5.0",
   ) ++ mailDependencies
 
   val test: Seq[ModuleID] = Seq(
