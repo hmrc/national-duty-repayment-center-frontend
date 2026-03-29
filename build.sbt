@@ -8,7 +8,8 @@ lazy val appName: String = "national-duty-repayment-center-frontend"
 
 PlayKeys.devSettings := Seq("play.server.http.port" -> "8450")
 
-ThisBuild / scalaVersion := "3.3.7"
+ThisBuild /
+  scalaVersion := "3.3.7"
 ThisBuild / majorVersion := 0
 
 lazy val root = (project in file("."))
@@ -60,3 +61,4 @@ lazy val it = project
   .dependsOn(root % "test->test") // the "test->test" allows reusing test code and test dependencies
   .settings(DefaultBuildSettings.itSettings())
   .settings(libraryDependencies ++= AppDependencies.test)
+

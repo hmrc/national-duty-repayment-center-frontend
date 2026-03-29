@@ -13,8 +13,6 @@ addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0" exclude("org.
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.3.1")
 
-addSbtPlugin("io.github.irundaia" % "sbt-sassify" % "1.5.2")
-
 addSbtPlugin("com.github.sbt" % "sbt-concat" % "1.0.0")
 
 addSbtPlugin("com.github.sbt" % "sbt-digest" % "2.1.0")
