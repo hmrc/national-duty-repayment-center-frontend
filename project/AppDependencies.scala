@@ -19,9 +19,9 @@ object AppDependencies {
   ) ++ mailDependencies
 
   val test: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"          %% s"bootstrap-test-$playVersion"  % bootstrapVersion,
+    "uk.gov.hmrc"          %% s"bootstrap-test-$playVersion"  % bootstrapVersion % Test,
     "uk.gov.hmrc.mongo"    %% s"hmrc-mongo-test-$playVersion" % mongoVersion,
-    "org.scalatestplus"    %% "scalacheck-1-17"               % "3.2.18.0",
+    "org.scalatestplus"    %% "scalacheck-1-17"               % "3.2.18.0" % Test,
     "io.github.wolfendale" %% "scalacheck-gen-regexp"         % "1.1.0"
   ) ++ mailDependencies.map(_ % Test)
 
