@@ -61,4 +61,3 @@ lazy val it = project
   .dependsOn(root % "test->test") // the "test->test" allows reusing test code and test dependencies
   .settings(DefaultBuildSettings.itSettings())
   .settings(libraryDependencies ++= AppDependencies.test)
-
