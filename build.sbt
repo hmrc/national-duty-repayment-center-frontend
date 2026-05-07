@@ -57,7 +57,7 @@ lazy val testSettings: Seq[Def.Setting[_]] = Seq(
 )
 
 lazy val it = project
-  .enablePlugins(PlayScala)
+  .enablePlugins(PlayScala, SbtWeb)
   .dependsOn(root % "test->test") // the "test->test" allows reusing test code and test dependencies
   .settings(DefaultBuildSettings.itSettings())
   .settings(libraryDependencies ++= AppDependencies.test)

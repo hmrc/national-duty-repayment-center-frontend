@@ -18,3 +18,5 @@ addSbtPlugin("com.github.sbt" % "sbt-concat" % "1.0.0")
 addSbtPlugin("com.github.sbt" % "sbt-digest" % "2.1.0")
 
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.2")
+
+addSbtPlugin("uk.gov.hmrc" % "sbt-sass-compiler" % "0.13.0")
