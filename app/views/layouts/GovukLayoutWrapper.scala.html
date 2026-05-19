@@ -137,7 +137,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: RequestHeader, messages:
             ),
             userResearchBanner = appConfig.researchBannerUrl.map(bannerUrl => UserResearchBanner(url = bannerUrl))
         ),
-        pageTitle = Some(messages("site.service_name")),
+        pageTitle = Some(pageTitle.head),
         templateOverrides = TemplateOverrides(
             additionalHeadBlock = Some(head),
             additionalScriptsBlock = Some(scripts),
