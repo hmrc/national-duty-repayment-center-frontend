@@ -18,25 +18,25 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.components._
 @import uk.gov.hmrc.govukfrontend.views.html.components.{Header => _, _}
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.{HmrcStandardPageParams, ServiceURLs, TemplateOverrides, Banners}
 @import navigation.NavigatorBack
 @import views.html.helper.CSPNonce
 
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.userresearchbanner.UserResearchBanner
+
 @this(
-govukLayout: GovukLayout,
-govukPhaseBanner: GovukPhaseBanner,
-govukBackLink: GovukBackLink,
-siteHeader: components.CustomHMRCStandardHeader,
-link: components.link,
-paragraph: components.p,
-hmrcTimeoutDialog : HmrcTimeoutDialog,
-hmrcScripts: HmrcScripts,
-appConfig: config.FrontendAppConfig,
-languageSelection: components.languageSelection,
-hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet,
-hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-hmrcStandardFooter: HmrcStandardFooter,
-autocompleteCss: HmrcAccessibleAutocompleteCss,
-autocompleteJavascript: HmrcAccessibleAutocompleteJavascript
+    hmrcStandardPage: HmrcStandardPage,
+    govukLayout: GovukLayout,
+    link: components.link,
+    paragraph: components.p,
+    hmrcTimeoutDialog : HmrcTimeoutDialog,
+    hmrcScripts: HmrcScripts,
+    appConfig: config.FrontendAppConfig,
+    hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet,
+    hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+    hmrcStandardFooter: HmrcStandardFooter,
+    autocompleteCss: HmrcAccessibleAutocompleteCss,
+    autocompleteJavascript: HmrcAccessibleAutocompleteJavascript
 )
 
 @(
@@ -94,28 +94,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: RequestHeader, messages:
     }
 }
 
-@beforeContentBlock = {
-
-    @if(appConfig.languageTranslationEnabled) {
-        @languageSelection(
-            appConfig.languageMap,
-            appConfig.routeToSwitchLanguage
-        )
-    }
-
-    @{backLinkCall match {
-        case Some(call) => govukBackLink(BackLink(
-            attributes = Map("id"->"back-link"),
-            classes = "govuk-!-display-none-print",
-            href = call.url,
-            content = Text(messages("site.back"))
-        ))
-        case None => paragraph(Html(""), "govuk-!-margin-bottom-8")
-    }}
-}
-
 @content = {
-
   <div class="govuk-!-margin-bottom-6">
     @contentBlock
   </div>
@@ -124,12 +103,46 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: RequestHeader, messages:
   </p>
 }
 
-@govukLayout(
-  pageTitle = pageTitle,
-  headBlock = Some(head),
-  headerBlock = Some(siteHeader(signOutUrl = if(timeout) Some(appConfig.signOutUrl) else None)),
-  beforeContentBlock = Some(beforeContentBlock),
-  footerBlock = Some(hmrcStandardFooter()),
-  bodyEndBlock = Some(afterContentScripts),
-  scriptsBlock = Some(scripts)
+@feedbackBannerContent = {
+    @messages("feedback.before")
+    <a class='govuk-link' href='@{appConfig.betaFeedbackUrl}'>@messages("feedback.link")</a>
+    @messages("feedback.after")
+}
+
+@optBackLink = @{
+    backLinkNav
+        .flatMap(_.maybeCall)
+        .map { call =>
+            BackLink(
+                attributes = Map("id"->"back-link"),
+                classes = "govuk-!-display-none-print",
+                href = call.url,
+                content = Text(messages("site.back"))
+            )
+        }
+}
+
+@hmrcStandardPage(
+    HmrcStandardPageParams(
+        serviceURLs = ServiceURLs(
+            serviceUrl = Some(controllers.routes.IndexController.onPageLoad().url),
+            signOutUrl = Some(controllers.routes.SignOutController.signOut().url)
+        ),
+        banners = Banners(
+            phaseBanner = Some(
+                PhaseBanner(
+                    tag = Some(Tag(content = Text("Beta"))),
+                    content = HtmlContent(feedbackBannerContent)
+                )
+            ),
+            userResearchBanner = appConfig.researchBannerUrl.map(bannerUrl => UserResearchBanner(url = bannerUrl))
+        ),
+        pageTitle = Some(messages("site.service_name")),
+        templateOverrides = TemplateOverrides(
+            additionalHeadBlock = Some(head),
+            additionalScriptsBlock = Some(scripts),
+        ),
+        isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
+        backLink = optBackLink
+    )
 )(content)
