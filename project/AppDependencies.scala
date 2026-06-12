@@ -14,7 +14,7 @@ object AppDependencies {
   val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
     "uk.gov.hmrc"       %% s"bootstrap-frontend-$playVersion"            % bootstrapVersion,
-    "uk.gov.hmrc"       %% s"play-frontend-hmrc-$playVersion"            % "13.5.0",
+    "uk.gov.hmrc"       %% s"play-frontend-hmrc-$playVersion"            % "13.9.0",
     "uk.gov.hmrc"       %% s"play-conditional-form-mapping-$playVersion" % "3.5.0"
   ) ++ mailDependencies
 
