@@ -15,14 +15,13 @@ object AppDependencies {
     play.sbt.PlayImport.ws,
     "uk.gov.hmrc"       %% s"bootstrap-frontend-$playVersion"            % bootstrapVersion,
     "uk.gov.hmrc"       %% s"play-frontend-hmrc-$playVersion"            % "13.13.0",
-    "uk.gov.hmrc"       %% s"play-conditional-form-mapping-$playVersion" % "3.5.0",
-    "uk.gov.hmrc.mongo" %% s"hmrc-mongo-test-$playVersion"               % mongoVersion
+    "uk.gov.hmrc"       %% s"play-conditional-form-mapping-$playVersion" % "3.5.0"
   ) ++ mailDependencies
 
   val test: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"          %% s"bootstrap-test-$playVersion"  % bootstrapVersion % Test,
     "org.scalatestplus"    %% "scalacheck-1-17"               % "3.2.18.0"       % Test,
-    "uk.gov.hmrc.mongo" %% s"hmrc-mongo-test-$playVersion"    % mongoVersion     % Test,
+    "uk.gov.hmrc.mongo" %% s"hmrc-mongo-test-$playVersion"    % mongoVersion,
     "io.github.wolfendale" %% "scalacheck-gen-regexp"         % "1.1.0"
   ) ++ mailDependencies.map(_ % Test)
 
