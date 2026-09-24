@@ -141,6 +141,7 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: RequestHeader, messages:
             additionalScriptsBlock = Some(scripts),
         ),
         isWelshTranslationAvailable = appConfig.languageTranslationEnabled,
-        backLink = optBackLink
+        backLink = optBackLink,
+        serviceName = Some(messages("site.service_name").toString())
     )
 )(content)
