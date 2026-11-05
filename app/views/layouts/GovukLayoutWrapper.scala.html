@@ -44,7 +44,8 @@
     timeout: Boolean = true,
     js: Option[Html] = None,
     backLinkNav: Option[NavigatorBack] = None,
-refresh: Int = 0)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+    refresh: Int = 0,
+    displayUserResearchBanner: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @backLinkCall = @{
     backLinkNav.flatMap(_.maybeCall)
@@ -133,7 +134,9 @@ refresh: Int = 0)(contentBlock: Html)(implicit request: RequestHeader, messages:
                     content = HtmlContent(feedbackBannerContent)
                 )
             ),
-            userResearchBanner = appConfig.researchBannerUrl.map(bannerUrl => UserResearchBanner(url = bannerUrl))
+            userResearchBanner = Option.when(displayUserResearchBanner && appConfig.userResearchBannerEnabled)(
+                UserResearchBanner(url = appConfig.userResearchBannerUrl(), hideCloseButton = true)
+            )
         ),
         pageTitle = Some(pageTitle.head),
         templateOverrides = TemplateOverrides(

@@ -22,7 +22,7 @@ import com.google.inject.{ImplementedBy, Inject}
 import controllers.routes
 import javax.inject.Singleton
 import play.api.Configuration
-import play.api.i18n.{Lang, Langs}
+import play.api.i18n.{Lang, Langs, Messages}
 import play.api.mvc.Call
 
 import scala.concurrent.duration.{FiniteDuration, MILLISECONDS}
@@ -85,8 +85,8 @@ trait FrontendAppConfig {
   val baseExternalCallbackUrl: String
   val baseInternalCallbackUrl: String
 
-  val showResearchBanner: Boolean
-  val researchBannerUrl: Option[String]
+  val userResearchBannerEnabled: Boolean
+  def userResearchBannerUrl()(implicit messages: Messages): String
 
   val eoriIntegration: FrontendAppConfig.EoriIntegration
   val emails: FrontendAppConfig.Emails
@@ -165,10 +165,13 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration, langs: Lang
 
   override val languageTranslationEnabled: Boolean = langs.availables.exists(_.language == "cy")
 
-  override val showResearchBanner: Boolean = configuration.get[Boolean]("researchBanner.display")
+  override val userResearchBannerEnabled: Boolean =
+    configuration.getOptional[Boolean]("features.user-research-banner").getOrElse(false)
 
-  override val researchBannerUrl: Option[String] =
-    if (showResearchBanner) configuration.getOptional[String]("urls.researchBanner") else None
+  override def userResearchBannerUrl()(implicit messages: Messages): String = {
+    val languageKey = if (messages.lang.code == "cy") "cy" else "en"
+    configuration.get[String](s"urls.user-research-banner-$languageKey")
+  }
 
   override val signOutUrl: String       = configuration.get[String]("urls.logout")
   private lazy val feedbackHost: String = configuration.get[String]("feedback-frontend.host")
